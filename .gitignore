@@ -1,4 +1,4 @@
 Cargo.lock
 target/*
-__pycache__/*
-.mypy_cache*
+*__pycache__/*
+*.mypy_cache*
