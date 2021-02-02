@@ -17,7 +17,6 @@ path = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(path, 'README.md')) as file:
     readme = file.read()
 
-print('We need to write a license file')
 License = 'Apache-2.0'
 
 
@@ -36,8 +35,8 @@ install_requires = [
     'pandas'
 ]
 
-authors = ('HQS Quantum Simulations'
-           )
+authors = 'HQS Quantum Simulations'
+           
 
 
 setup(name='qoqo',
