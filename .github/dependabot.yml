@@ -1,0 +1,11 @@
+# Set update schedule for each package manager
+
+version: 2
+updates:
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      # Check for updates to GitHub Actions every weekday
+      interval: "daily"
+    target-branch: "main"

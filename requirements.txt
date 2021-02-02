@@ -1,0 +1,10 @@
+hqsbase>=0.7.5
+numpy
+pytest
+networkx
+pandas
+pyyaml
+sphinx >= 1.4
+pygments
+recommonmark
+sphinx_rtd_theme
