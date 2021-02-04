@@ -31,8 +31,8 @@ jobs:
         run: |
           # stop the build if there are Python syntax errors or undefined names
           flake8 --config=./.flake8 ./qoqo --count
-      - name: Mypy check
-        run: |
-          # stop the build if there are Python syntax errors or undefined names
-          mypy --config-file=./.mypy.ini ./qoqo  
+      # - name: Mypy check
+      #   run: |
+      #     # stop the build if there are Python syntax errors or undefined names
+      #     mypy --config-file=./.mypy.ini ./qoqo  
 
