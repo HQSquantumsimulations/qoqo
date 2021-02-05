@@ -181,7 +181,7 @@ class CNOT(TwoQubitGateOperation):
         matrix = np.array([[1, 0, 0, 0],
                            [0, 1, 0, 0],
                            [0, 0, 0, 1],
-                           [0, 0, 1, 0]], dtype=np.complex)
+                           [0, 0, 1, 0]], dtype=complex)
         return matrix
 
     @property
@@ -254,7 +254,7 @@ class ISwap(TwoQubitGateOperation):
         matrix = np.array([[1, 0, 0, 0],
                            [0, 0, 1j, 0],
                            [0, 1j, 0, 0],
-                           [0, 0, 0, 1]], dtype=np.complex)
+                           [0, 0, 0, 1]], dtype=complex)
         return matrix
 
     @property
@@ -325,7 +325,7 @@ class FSwap(TwoQubitGateOperation):
         matrix = np.array([[1, 0, 0, 0],
                            [0, 0, 1, 0],
                            [0, 1, 0, 0],
-                           [0, 0, 0, -1]], dtype=np.complex)
+                           [0, 0, 0, -1]], dtype=complex)
         return matrix
 
     @property
@@ -395,7 +395,7 @@ class SqrtISwap(TwoQubitGateOperation):
         matrix = np.array([[1, 0, 0, 0],
                            [0, 1 / np.sqrt(2), 1j / np.sqrt(2), 0],
                            [0, 1j / np.sqrt(2), 1 / np.sqrt(2), 0],
-                           [0, 0, 0, 1]], dtype=np.complex)
+                           [0, 0, 0, 1]], dtype=complex)
         return matrix
 
     @property
@@ -465,7 +465,7 @@ class InvSqrtISwap(TwoQubitGateOperation):
         matrix = np.array([[1, 0, 0, 0],
                            [0, 1 / np.sqrt(2), -1j / np.sqrt(2), 0],
                            [0, -1j / np.sqrt(2), 1 / np.sqrt(2), 0],
-                           [0, 0, 0, 1]], dtype=np.complex)
+                           [0, 0, 0, 1]], dtype=complex)
         return matrix
 
     @property
@@ -535,11 +535,11 @@ class MolmerSorensenXX(TwoQubitGateOperation):
         # matrix = np.array([[1, 0, 0, 1j],
         #                    [0, 1, 1j, 0],
         #                    [0, 1j, 1, 0],
-        #                    [1j, 0, 0, 1]], dtype=np.complex) * (1 - 1j) / 2
+        #                    [1j, 0, 0, 1]], dtype=complex) * (1 - 1j) / 2
         matrix = np.array([[1, 0, 0, -1j],
                            [0, 1, -1j, 0],
                            [0, -1j, 1, 0],
-                           [-1j, 0, 0, 1]], dtype=np.complex) / np.sqrt(2)
+                           [-1j, 0, 0, 1]], dtype=complex) / np.sqrt(2)
         return matrix
 
     @property
@@ -616,7 +616,7 @@ class VariableMSXX(TwoQubitGateOperation):
         matrix = np.array([[cos, 0, 0, -sin],
                            [0, cos, -sin, 0],
                            [0, -sin, cos, 0],
-                           [-sin, 0, 0, cos]], dtype=np.complex)
+                           [-sin, 0, 0, cos]], dtype=complex)
         return matrix
 
     @property
@@ -689,7 +689,7 @@ class SWAP(TwoQubitGateOperation):
         matrix = np.array([[1, 0, 0, 0],
                            [0, 0, 1, 0],
                            [0, 1, 0, 0],
-                           [0, 0, 0, 1]], dtype=np.complex)
+                           [0, 0, 0, 1]], dtype=complex)
         return matrix
 
     @property
@@ -764,7 +764,7 @@ class ControlledPhaseShift(TwoQubitGateOperation):
         matrix = np.array([[1, 0, 0, 0],
                            [0, 1, 0, 0],
                            [0, 0, 1, 0],
-                           [0, 0, 0, np.exp(1j * theta)]], dtype=np.complex)
+                           [0, 0, 0, np.exp(1j * theta)]], dtype=complex)
         return matrix
 
     @property
@@ -836,7 +836,7 @@ class ControlledPauliY(TwoQubitGateOperation):
         matrix = np.array([[1, 0, 0, 0],
                            [0, 1, 0, 0],
                            [0, 0, 0, -1j],
-                           [0, 0, 1j, 0]], dtype=np.complex)
+                           [0, 0, 1j, 0]], dtype=complex)
         return matrix
 
     @property
@@ -910,7 +910,7 @@ class ControlledPauliZ(TwoQubitGateOperation):
         matrix = np.array([[1, 0, 0, 0],
                            [0, 1, 0, 0],
                            [0, 0, 1, 0],
-                           [0, 0, 0, -1]], dtype=np.complex)
+                           [0, 0, 0, -1]], dtype=complex)
         return matrix
 
     @property
@@ -1667,7 +1667,7 @@ class XY(TwoQubitGateOperation):
         matrix = np.array([[1, 0, 0, 0],
                            [0, np.cos(theta / 2), 1j * np.sin(theta / 2), 0],
                            [0, 1j * np.sin(theta / 2), np.cos(theta / 2), 0],
-                           [0, 0, 0, 1]], dtype=np.complex)
+                           [0, 0, 0, 1]], dtype=complex)
         return matrix
 
     @property

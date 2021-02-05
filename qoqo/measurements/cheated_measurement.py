@@ -164,7 +164,7 @@ class PurePragmaMeasurement(MeasurementBaseClass):
             for name in op_matrices.keys():
                 matrix = self.measurement_input.operator_matrices[register_name][name]
                 if self.measurement_input.use_density_matrix:
-                    exp_val = np.trace(matrix @ result)
+                    exp_val = float(np.trace(matrix @ result))
                 else:
                     exp_val = (result.conj().T @ matrix @ result)
                 if np.isclose(np.imag(exp_val), 0):

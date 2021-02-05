@@ -621,7 +621,7 @@ class PragmaNoise(Pragma):
         Returns:
             np.ndarray
         """
-        return np.array()
+        return np.array([])
 
     @staticmethod
     def unitary_matrix_from_parameters(**kwargs) -> np.ndarray:
@@ -744,7 +744,7 @@ class PragmaDamping(PragmaNoise):
         matrix = np.array([[1, 0, 0, prob],
                            [0, sqmp, 0, 0],
                            [0, 0, sqmp, 0],
-                           [0, 0, 0, 1 - prob]], dtype=np.complex)
+                           [0, 0, 0, 1 - prob]], dtype=complex)
         return matrix
 
     @property
@@ -812,7 +812,7 @@ class PragmaDepolarise(PragmaNoise):
         matrix = np.array([[one_plus, 0, 0, two_three],
                            [0, one_minus, 0, 0],
                            [0, 0, one_minus, 0],
-                           [two_three, 0, 0, one_plus]], dtype=np.complex)
+                           [two_three, 0, 0, one_plus]], dtype=complex)
         return matrix
 
     @property
@@ -878,7 +878,7 @@ class PragmaDephasing(PragmaNoise):
         matrix = np.array([[1, 0, 0, 0],
                            [0, 1 - 2 * probability, 0, 0],
                            [0, 0, 1 - 2 * probability, 0],
-                           [0, 0, 0, 1]], dtype=np.complex)
+                           [0, 0, 0, 1]], dtype=complex)
         return matrix
 
     @property
