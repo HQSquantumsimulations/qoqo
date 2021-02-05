@@ -122,7 +122,7 @@ class BRMeasurementInput(object):
         pp_qubit_masks: Dict[str, Dict[str, List[int]]] = config['pauli_product_qubit_masks']
         pauli_product_qubit_masks: Dict[str, Dict[int, List[int]]] = dict()
         for readout_key, readout_val in pp_qubit_masks.items():
-            dict_for_readout: Dict[int, np.ndarray] = dict()
+            dict_for_readout: Dict[int, List] = dict()
             for pp_key, pp_val in readout_val.items():
                 dict_for_readout[int(pp_key)] = pp_val
             pauli_product_qubit_masks[readout_key] = dict_for_readout
@@ -268,7 +268,7 @@ class PurePragmaMeasurementInput(object):
     _qonfig_never_receives_values = True
 
     def __init__(self,
-                 operator_matrices: Optional[Dict[str, Dict[str, np.ndarray]]] = None,
+                 operator_matrices: Optional[Dict[str, Dict[str, sp.spmatrix]]] = None,
                  use_density_matrix: bool = False,
                  ) -> None:
         """Initialize PurePragmaMeasurementInput
@@ -278,7 +278,7 @@ class PurePragmaMeasurementInput(object):
             use_density_matrix: Use density matrix in simulator backend
         """
         if operator_matrices is None:
-            self.operator_matrices: Dict[str, Dict[str, np.ndarray]] = dict()
+            self.operator_matrices: Dict[str, Dict[str, sp.spmatrix]] = dict()
         else:
             self.operator_matrices = operator_matrices
         self.use_density_matrix = use_density_matrix
@@ -296,7 +296,7 @@ class PurePragmaMeasurementInput(object):
             PurePragmaMeasurementInput
         """
         # Reconstructing operator matrices
-        operator_matrices: Dict[str, np.ndarray] = dict()
+        operator_matrices: Dict[str, sp.spmatrix] = dict()
         dim: int = config['operator_matrices_dim']
         real_dict: Dict[str, Dict[str, List[float]]] = config['operator_matrices_real_data']
         imag_dict: Dict[str, Dict[str, List[float]]] = config['operator_matrices_imag_data']

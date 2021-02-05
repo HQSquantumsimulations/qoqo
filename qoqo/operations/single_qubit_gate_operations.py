@@ -269,7 +269,7 @@ class SingleQubitGate(SingleQubitGateOperation):
         alpha = alpha_r + 1j * alpha_i
         beta = beta_r + 1j * beta_i
         matrix = np.exp(1j * global_phase) * np.array([[alpha, -np.conj(beta)],
-                                                       [beta, np.conj(alpha)]], dtype=np.complex)
+                                                       [beta, np.conj(alpha)]], dtype=complex)
         return matrix
 
     def __imul__(self, other: 'SingleQubitGateOperation') -> 'SingleQubitGate':
@@ -387,7 +387,7 @@ class Hadamard(SingleQubitGateOperation):
             np.ndarray
         """
         matrix = 1 / np.sqrt(2) * np.array([[1, 1],
-                                            [1, -1]], dtype=np.complex)
+                                            [1, -1]], dtype=complex)
         return matrix
 
     def _alpha_r(self) -> CalculatorFloat:
@@ -453,7 +453,7 @@ class PauliX(SingleQubitGateOperation):
             np.ndarray
         """
         matrix = np.array([[0, 1],
-                           [1, 0]], dtype=np.complex)
+                           [1, 0]], dtype=complex)
         return matrix
 
     def _alpha_r(self) -> CalculatorFloat:
@@ -519,7 +519,7 @@ class PauliY(SingleQubitGateOperation):
             np.ndarray
         """
         matrix = np.array([[0, -1j],
-                           [1j, 0]], dtype=np.complex)
+                           [1j, 0]], dtype=complex)
         return matrix
 
     def _alpha_r(self) -> CalculatorFloat:
@@ -585,7 +585,7 @@ class PauliZ(SingleQubitGateOperation):
             np.ndarray
         """
         matrix = np.array([[1, 0],
-                           [0, -1]], dtype=np.complex)
+                           [0, -1]], dtype=complex)
         return matrix
 
     def _alpha_r(self) -> CalculatorFloat:
@@ -650,7 +650,7 @@ class SGate(SingleQubitGateOperation):
             np.ndarray
         """
         matrix = np.array([[1, 0],
-                           [0, 1j]], dtype=np.complex)
+                           [0, 1j]], dtype=complex)
         return matrix
 
     def _alpha_r(self) -> CalculatorFloat:
@@ -715,7 +715,7 @@ class TGate(SingleQubitGateOperation):
             np.ndarray
         """
         matrix = np.array([[1, 0],
-                           [0, np.exp(1j * np.pi / 4)]], dtype=np.complex)
+                           [0, np.exp(1j * np.pi / 4)]], dtype=complex)
         return matrix
 
     def _alpha_r(self) -> CalculatorFloat:
@@ -782,7 +782,7 @@ class SqrtPauliX(SingleQubitGateOperation):
         theta = np.pi / 2
         c = np.cos(theta / 2)
         s = np.sin(theta / 2)
-        matrix = np.array([[c, -1j * s], [-1j * s, c]], dtype=np.complex)
+        matrix = np.array([[c, -1j * s], [-1j * s, c]], dtype=complex)
         return matrix
 
     def _alpha_r(self) -> CalculatorFloat:
@@ -849,7 +849,7 @@ class InvSqrtPauliX(SingleQubitGateOperation):
         theta = -np.pi / 2
         c = np.cos(theta / 2)
         s = np.sin(theta / 2)
-        matrix = np.array([[c, -1j * s], [-1j * s, c]], dtype=np.complex)
+        matrix = np.array([[c, -1j * s], [-1j * s, c]], dtype=complex)
         return matrix
 
     def _alpha_r(self) -> CalculatorFloat:
@@ -924,7 +924,7 @@ class RotateX(SingleQubitGateOperation):
         """
         c = np.cos(theta / 2)
         s = np.sin(theta / 2)
-        matrix = np.array([[c, -1j * s], [-1j * s, c]], dtype=np.complex)
+        matrix = np.array([[c, -1j * s], [-1j * s, c]], dtype=complex)
         return matrix
 
     def _alpha_r(self) -> CalculatorFloat:
@@ -1000,7 +1000,7 @@ class RotateY(SingleQubitGateOperation):
         """
         c = np.cos(theta / 2)
         s = np.sin(theta / 2)
-        matrix = np.array([[c, -s], [s, c]], dtype=np.complex)
+        matrix = np.array([[c, -s], [s, c]], dtype=complex)
         return matrix
 
     def _alpha_r(self) -> CalculatorFloat:
@@ -1076,7 +1076,7 @@ class RotateZ(SingleQubitGateOperation):
         """
         c = np.cos(theta / 2)
         s = np.sin(theta / 2)
-        matrix = np.array([[c - 1j * s, 0], [0, c + 1j * s]], dtype=np.complex)
+        matrix = np.array([[c - 1j * s, 0], [0, c + 1j * s]], dtype=complex)
         return matrix
 
     def _alpha_r(self) -> CalculatorFloat:
@@ -1172,7 +1172,7 @@ class RotateAroundSphericalAxis(SingleQubitGateOperation):
         vy = np.sin(spherical_theta) * np.sin(spherical_phi)
         vz = np.cos(spherical_theta)
         matrix = np.array([[c - 1j * s * vz, s * (-1j * vx - vy)],
-                           [s * (-1j * vx + vy), c + 1j * s * vz]], dtype=np.complex)
+                           [s * (-1j * vx + vy), c + 1j * s * vz]], dtype=complex)
         return matrix
 
     def _alpha_r(self) -> CalculatorFloat:
@@ -1273,7 +1273,7 @@ class W(RotateAroundSphericalAxis):
         vy = np.sin(spherical_phi)
         vz = 0
         matrix = np.array([[c - 1j * s * vz, s * (-1j * vx - vy)],
-                           [s * (-1j * vx + vy), c + 1j * s * vz]], dtype=np.complex)
+                           [s * (-1j * vx + vy), c + 1j * s * vz]], dtype=complex)
         return matrix
 
     def _alpha_r(self) -> CalculatorFloat:

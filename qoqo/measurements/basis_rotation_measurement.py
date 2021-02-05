@@ -179,7 +179,7 @@ class BasisRotationMeasurement(MeasurementBaseClass):
         # Dict for all read-out registers
         output_register_dict: Dict[str, RegisterOutput] = dict()
         # Dict for pauli products calculated from each read out register
-        pauli_product_dict: Dict[str, np.array] = dict()
+        pauli_product_dict: Dict[str, np.ndarray] = dict()
         return_None = False
         for co, circuit in enumerate(self._circuit_list):
             self.backend.circuit = self._constant_circuit + circuit
@@ -245,8 +245,8 @@ class BasisRotationMeasurement(MeasurementBaseClass):
                                                    index] = np.power(
                                                        -1, np.sum(tmp_array[:, val], axis=1))
             # Averaging over the single shots to obatian pauli product expectation values
-            pauli_product_dict[register_name] = np.mean(single_shot_pauli_products, axis=0)
-
+            pauli_product_dict[register_name] = np.array(np.mean(
+                single_shot_pauli_products, axis=0))
         # Applying measurement correction when flipped measurement is used
         if self.measurement_input._use_flipped_measurement:
             for register_name in pauli_product_dict.keys():
@@ -257,9 +257,9 @@ class BasisRotationMeasurement(MeasurementBaseClass):
                         measurement_correction_factors[register_name]
                     )
         pauli_products = np.zeros(self.measurement_input._number_pauli_products)
-        for register_name, val in pauli_product_dict.items():
+        for register_name, nd_array_val in pauli_product_dict.items():
             if not register_name.endswith('flipped'):
-                pauli_products += val
+                pauli_products += nd_array_val
 
         expectation_values = self.measurement_input._pp_to_exp_val_matrix @ pauli_products
 
