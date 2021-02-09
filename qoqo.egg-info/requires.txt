@@ -1,4 +1,0 @@
-hqsbase>=0.7.0
-numpy
-pytest
-networkx
