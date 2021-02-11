@@ -637,7 +637,7 @@ class PragmaNoise(Pragma):
             TypeError: Noise cannot be represented by a unitary matrix
         """
         raise TypeError('Noise cannot be represented by a unitary matrix')
-        return np.ndarray()
+        return np.array([])
 
     @property
     def probability(self) -> CalculatorFloat:
@@ -974,6 +974,81 @@ class PragmaRandomNoise(PragmaNoise):
                               [2, 3, 0, 1],
                               [3, 2, 1, 0]], dtype=int)
         return op_matrix[left, right]
+
+
+# class PragmaRandomNoise(PragmaNoise):
+#     r"""Implements the RandomNoise PRAGMA.
+
+#     This PRAGMA operation applies a stochastically unravelled combination
+#     of dephasing and depolarisation.
+
+#     .. math::
+#         \rho &= \mathcal{K} \rho \mathcal{K}\\
+
+#     """
+
+#     _operation_tags = ('Operation', 'Pragma', 'GateOperation', 'PragmaNoise', 'PragmaRandomNoise')
+#     _ordered_qubits_dict_default = dict()
+#     _ordered_qubits_dict_default['qubit'] = 0
+
+#     _ordered_parameter_dict_default: Dict[str, CalculatorFloat]
+#     _ordered_parameter_dict_default = dict()
+#     _ordered_parameter_dict_default['gate_time'] = CalculatorFloat(0)
+#     _ordered_parameter_dict_default['depolarisation_rate'] = CalculatorFloat(0)
+#     _ordered_parameter_dict_default['dephasing_rate'] = CalculatorFloat(0)
+
+#     _hqs_lang_name = 'PragmaRandomNoise'
+#     _rotation_strength_parameters = ['gate_time']
+
+#     _qonfig_never_receives_values = True
+
+#     _qonfig_defaults_dict = {
+#         'ordered_qubits_dict': {'doc': 'Ordered qubit dictionary for this gate operation',
+#                                 'default': {'qubit': 0}},
+#         'ordered_parameter_dict': {'doc': 'Ordered parameter dictionary for this gate operation',
+#                                    'default': {'operators': dict()}},
+#     }
+
+#     @staticmethod
+#     def superoperator_from_parameters(operators: Dict) -> np.ndarray:
+#         """Return the superoperator representation of the noise gate
+
+#         Args:
+#             operators: The Kraus operators based on the Pauli matrices
+
+#         Returns:
+#             np.ndarray
+#         """
+#         conversion_dict = {
+#             'X': np.array([[0, 1], [1, 0]], dtype=complex),
+#             'Y': np.array([[0, -1j], [1j, 0]], dtype=complex),
+#             'Z': np.array([[1, 0], [0, -1]], dtype=complex)
+#         }
+#         for key, val in operators.items():
+
+#         prob = (
+#             1 - np.exp(-float(gate_time)
+#                        * float(rate)))
+#         sqmp = np.sqrt(1 - prob)
+#         matrix = np.array([[1, 0, 0, prob],
+#                            [0, sqmp, 0, 0],
+#                            [0, 0, sqmp, 0],
+#                            [0, 0, 0, 1 - prob]], dtype=complex)
+#         return matrix
+
+#     @property
+#     def operators(self) -> List[np.ndarray]:
+#         """Return the probability of the noise channel affecting the qubit
+
+#         Returns:
+#             CalculatorFloat
+#         """
+#         prob = list()
+
+#         1 - (-self._ordered_parameter_dict['gate_time']
+#              * self._ordered_parameter_dict['rate']).exp()
+
+#         return operators
 
 
 class PragmaRepeatGate(Pragma):
@@ -1934,4 +2009,219 @@ class PragmaActiveReset(Pragma):
         """
         string = self.get_hqs_lang_name()
         string += " {}".format(self._qubit)
+        return string
+
+
+class PragmaStartDecompositionBlock(Pragma):
+    """Implements the StartDecompositionBlock PRAGMA.
+
+    This PRAGMA operation signals the START of a decomposition block.
+
+    """
+
+    _operation_tags = ('Operation', 'Pragma', 'PragmaStartDecompositionBlock')
+    _hqs_lang_name = 'PragmaStartDecompositionBlock'
+
+    _qonfig_never_receives_values = True
+
+    _qonfig_defaults_dict = {
+        'qubits': {'doc': 'Qubits involved in the block',
+                   'default': None},
+        'reordering_dictionary': {'doc': 'Reordering dictionary of the block',
+                                  'default': None},
+    }
+
+    def __init__(self,
+                 qubits: Optional[List[Union[int, str]]] = None,
+                 reordering_dictionary: Optional[Dict[int, int]] = None,
+                 ) -> None:
+        """Initialize 'start decomposition block' PRAGMA
+
+        Args:
+            qubits: Qubits involved in the block
+            reordering_dictionary: Reordering dictionary of the block
+        """
+        if qubits is None:
+            qubits = ['ALL']
+        self._qubits = qubits
+        self._involved_qubits: Set[Union[int, str]] = set(self._qubits)
+        self.reordering_dictionary = reordering_dictionary
+
+    @classmethod
+    def from_qonfig(cls,
+                    config: Qonfig['PragmaStartDecompositionBlock']
+                    ) -> 'PragmaStartDecompositionBlock':
+        """Create an Instance from Qonfig
+
+        Args:
+            config: Qonfig of class
+
+        Returns:
+            PragmaStartDecompositionBlock
+        """
+        instance_rd: Dict[int, int] = dict()
+        if config['reordering_dictionary'] is not None:
+            for key, value in config['reordering_dictionary'].items():
+                instance_rd[int(key)] = value
+        return cls(qubits=config['qubits'],
+                   reordering_dictionary=(
+                       instance_rd if config['reordering_dictionary'] is not None else None))
+
+    def to_qonfig(self) -> 'Qonfig[PragmaStartDecompositionBlock]':
+        """Create a Qonfig from Instance
+
+        Returns:
+            Qonfig[PragmaStartDecompositionBlock]
+        """
+        config = Qonfig(self.__class__)
+        config['qubits'] = self._qubits
+        config['reordering_dictionary'] = self.reordering_dictionary
+
+        return config
+
+    def __eq__(self, other: object) -> bool:
+        """Compare the PRAGMA with the other Python object and returns True when equal
+
+        Args:
+            other: Object the PRAGMA is compared to
+
+        Returns:
+            bool
+        """
+        if not isinstance(other, self.__class__):
+            return False
+        if not set(self._qubits) == set(other._qubits):
+            return False
+        if not self.reordering_dictionary == other.reordering_dictionary:
+            return False
+        return True
+
+    def remap_qubits(self,
+                     mapping_dict: Dict[int, int]) -> None:
+        r"""Remap the qubits in the operation
+
+        Args:
+            mapping_dict: Dict containing mapping old qubit indices to new qubit indices
+        """
+        if self._qubits != ['ALL']:
+            new_qubits: List[Union[int, str]] = list()
+            qubits = cast(List[int], self._qubits)
+            for qubit in qubits:
+                new_qubits.append(mapping_dict[qubit])
+            self._qubits = new_qubits
+            self._involved_qubits = set(self._qubits)
+
+    def to_hqs_lang(self) -> str:
+        r"""Translate the operation to an hqs_lang dialect expression
+
+        Returns:
+            str
+        """
+        string = "PragmaStartDecompositionBlock"
+        string += '({})'.format(self.reordering_dictionary)
+        if self._qubits == ['ALL']:
+            string += ' ALL'
+        else:
+            for qubit in self._qubits:
+                string += " {}".format(qubit)
+        return string
+
+
+class PragmaStopDecompositionBlock(Pragma):
+    """Implements the StopDecompositionBlock PRAGMA.
+
+    This PRAGMA operation signals the STOP of a decomposition block.
+
+    """
+
+    _operation_tags = ('Operation', 'Pragma', 'PragmaStopDecompositionBlock')
+    _hqs_lang_name = 'PragmaStopDecompositionBlock'
+
+    _qonfig_never_receives_values = True
+
+    _qonfig_defaults_dict = {
+        'qubits': {'doc': 'Qubits involved in the block',
+                   'default': None},
+    }
+
+    def __init__(self,
+                 qubits: Optional[List[Union[int, str]]] = None,
+                 ) -> None:
+        """Initialize 'stop decomposition block' PRAGMA
+
+        Args:
+            qubits: Qubits involved in the block
+        """
+        if qubits is None:
+            qubits = ['ALL']
+        self._qubits = qubits
+        self._involved_qubits: Set[Union[int, str]] = set(self._qubits)
+
+    @classmethod
+    def from_qonfig(cls,
+                    config: Qonfig['PragmaStopDecompositionBlock']
+                    ) -> 'PragmaStopDecompositionBlock':
+        """Create an Instance from Qonfig
+
+        Args:
+            config: Qonfig of class
+
+        Returns:
+            PragmaStopDecompositionBlock
+        """
+        return cls(qubits=config['qubits'])
+
+    def to_qonfig(self) -> 'Qonfig[PragmaStopDecompositionBlock]':
+        """Create a Qonfig from Instance
+
+        Returns:
+            Qonfig[PragmaStopDecompositionBlock]
+        """
+        config = Qonfig(self.__class__)
+        config['qubits'] = self._qubits
+
+        return config
+
+    def __eq__(self, other: object) -> bool:
+        """Compare the PRAGMA with the other Python object and returns True when equal
+
+        Args:
+            other: Object the PRAGMA is compared to
+
+        Returns:
+            bool
+        """
+        if not isinstance(other, self.__class__):
+            return False
+        if not set(self._qubits) == set(other._qubits):
+            return False
+        return True
+
+    def remap_qubits(self,
+                     mapping_dict: Dict[int, int]) -> None:
+        r"""Remap the qubits in the operation
+
+        Args:
+            mapping_dict: Dict containing mapping old qubit indices to new qubit indices
+        """
+        if self._qubits != ['ALL']:
+            new_qubits: List[Union[int, str]] = list()
+            qubits = cast(List[int], self._qubits)
+            for qubit in qubits:
+                new_qubits.append(mapping_dict[qubit])
+            self._qubits = new_qubits
+            self._involved_qubits = set(self._qubits)
+
+    def to_hqs_lang(self) -> str:
+        r"""Translate the operation to an hqs_lang dialect expression
+
+        Returns:
+            str
+        """
+        string = "PragmaStopDecompositionBlock"
+        if self._qubits == ['ALL']:
+            string += ' ALL'
+        else:
+            for qubit in self._qubits:
+                string += " {}".format(qubit)
         return string

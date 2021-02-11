@@ -242,7 +242,7 @@ class BasisRotationMeasurement(MeasurementBaseClass):
                     else:
                         single_shot_pauli_products[:, index] = np.power(
                             -1, np.sum(tmp_array[:, val], axis=1))
-            # Averaging over the single shots to obatian pauli product expectation values
+            # Averaging over the single shots to obtain pauli product expectation values
             pauli_product_dict[register_name] = np.array(np.mean(
                 single_shot_pauli_products, axis=0))
         # Applying measurement correction when flipped measurement is used
