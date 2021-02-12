@@ -327,6 +327,71 @@ def test_global_phase_pragma():
     assert gate2 == gate
 
 
+def test_start_decomposition_block_pragma():
+    """Test PragmaStartDecompositionBlock PRAGMA"""
+    op = ops.PragmaStartDecompositionBlock
+
+    string = "PragmaStartDecompositionBlock(None) ALL"
+    operation = op()
+    assert(operation.to_hqs_lang() == string)
+    assert(operation.involved_qubits == set(['ALL']))
+    operation3 = _serialisation_convertion(operation)
+    assert operation3 == operation
+
+    string = "PragmaStartDecompositionBlock(None) 1"
+    Q1 = 1
+    operation = op(qubits=[Q1])
+    assert(operation.involved_qubits == set([Q1]))
+    assert(operation.to_hqs_lang() == string)
+    operation3 = _serialisation_convertion(operation)
+    assert operation3 == operation
+
+    string = "PragmaStartDecompositionBlock({1: 2, 0: 1}) 0 1 2"
+    Q1 = [0, 1, 2]
+    operation = op(qubits=Q1, reordering_dictionary={1: 2, 0: 1})
+    assert(operation.involved_qubits == set(Q1))
+    assert(operation.to_hqs_lang() == string)
+    operation3 = _serialisation_convertion(operation)
+    assert operation3 == operation
+
+
+def test_stop_decomposition_block_pragma():
+    """Test PragmaStopDecompositionBlock PRAGMA"""
+    op = ops.PragmaStopDecompositionBlock
+
+    string = "PragmaStopDecompositionBlock ALL"
+    operation = op()
+    assert(operation.to_hqs_lang() == string)
+    assert(operation.involved_qubits == set(['ALL']))
+    operation3 = _serialisation_convertion(operation)
+    assert operation3 == operation
+
+    string = "PragmaStopDecompositionBlock 1"
+    Q1 = 1
+    operation = op(qubits=[Q1])
+    assert(operation.involved_qubits == set([Q1]))
+    assert(operation.to_hqs_lang() == string)
+    operation3 = _serialisation_convertion(operation)
+    assert operation3 == operation
+
+
+@pytest.mark.parametrize("gate", [ops.PragmaStartDecompositionBlock,
+                                  ops.PragmaStopDecompositionBlock])
+def test_remap_qubits_stop(gate):
+    """Test remap qubits function of Decomposition block PRAGMAs"""
+    operation = gate(qubits=[0, 1])
+    mapping = {0: 2, 1: 3}
+    operation.remap_qubits(mapping)
+    assert operation.involved_qubits == set([2, 3])
+    operation = ops.PragmaStop()
+    mapping = {0: 2, 1: 3}
+    operation.remap_qubits(mapping)
+    assert operation.involved_qubits == set(['ALL'])
+
+    operation3 = _serialisation_convertion(operation)
+    assert operation3 == operation
+
+
 def _serialisation_convertion(to_conv):
     """Convertion function for all serialisation unittests
 

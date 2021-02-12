@@ -105,7 +105,9 @@ from qoqo.operations.pragma_operations import (
     PragmaSleep,
     PragmaParameterSubstitution,
     PragmaGlobalPhase,
-    PragmaActiveReset
+    PragmaActiveReset,
+    PragmaStartDecompositionBlock,
+    PragmaStopDecompositionBlock
 )
 
 from qoqo.operations.define_operations import Definition
