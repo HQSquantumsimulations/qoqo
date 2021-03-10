@@ -30,7 +30,6 @@ install_requires = [
     'hqsbase>=0.7.5',
     'numpy',
     'scipy',
-    'pytest',
     'networkx',
     'pandas'
 ]
