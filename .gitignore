@@ -2,4 +2,4 @@ Cargo.lock
 target/*
 *__pycache__*
 *.mypy_cache*
-qoqo.egg-info/*
+*.egg-info*
