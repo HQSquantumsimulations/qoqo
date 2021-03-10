@@ -37,8 +37,7 @@ def test_noise_operators(init, gate_time, rate):
     op = init[0]
     string = init[1]
 
-    (Gate_time, Rate, q0) = ('gate_time',
-                             'rate', 0)
+    (Gate_time, Rate, q0) = ('gate_time', 'rate', 0)
     operation = op(qubit=q0, gate_time=Gate_time, rate=Rate)
 
     assert(operation.to_hqs_lang() == string)
@@ -98,16 +97,39 @@ def test_random_noise_operator(gate_time, depolarisation_rate, dephasing_rate):
         1.5 * operation._ordered_parameter_dict['gate_time'])
 
 
-@pytest.mark.parametrize("init", [(ops.PragmaDamping,
-                                   'PragmaDamping(gate_time, rate) 0'),
-                                  (ops.PragmaDepolarise,
-                                   'PragmaDepolarise(gate_time, rate) 0'),
-                                  (ops.PragmaDephasing, 0),
-                                  (ops.PragmaRandomNoise, 'InvSqrtPauliX 0'),
-                                  ])
+@pytest.mark.parametrize("gate_time", list(np.arange(0, 2 * np.pi, 2 * np.pi / 3)))
+@pytest.mark.parametrize("rate", list(np.arange(0, 2 * np.pi, 2 * np.pi / 3)))
+@pytest.mark.parametrize("operators", [
+    np.array([[0, 3, 1], [2, 0, 0], [0, 0, 1]]),
+    np.array([[2, 1, 4], [0, 2, 0], [1, 6, 7]]),
+    np.array([[0, 0, 0], [2, 4, 6], [0, 5, 0]]),
+])
+def test_general_noise_operator(gate_time, rate, operators):
+    """Test PRAGMA operators applying general noise"""
+    op = ops.PragmaGeneralNoise
+    string = 'PragmaGeneralNoise(gate_time, rate, operators) 0'
+
+    (Gate_time, Rate, Operators, q0) = ('gate_time', 'rate', 'operators', 0)
+    operation = op(gate_time=Gate_time, rate=Rate, operators=Operators)
+
+    assert(operation.to_hqs_lang() == string)
+    assert(operation.is_parameterized)
+
+    operation = op(gate_time=gate_time, rate=rate, operators=operators)
+
+    operation3 = _serialisation_convertion(operation)
+    assert operation3 == operation
+
+    assert(not operation.is_parameterized)
+    assert(operation.involved_qubits == set([0]))
+
+
+@pytest.mark.parametrize("init", [
+    ops.PragmaDamping, ops.PragmaDepolarise, ops.PragmaDephasing, ops.PragmaRandomNoise
+])
 def test_remap_qubits_single_qubit_gates(init):
     """Test remap qubits function of noise PRAGMAs"""
-    gate = init[0]()
+    gate = init()
     qubit_mapping = {0: 2}
     new_gate = copy(gate)
     new_gate.remap_qubits(qubit_mapping)

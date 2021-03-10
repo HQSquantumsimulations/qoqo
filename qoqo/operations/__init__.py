@@ -98,6 +98,7 @@ from qoqo.operations.pragma_operations import (
     PragmaDephasing,
     PragmaDepolarise,
     PragmaRandomNoise,
+    PragmaGeneralNoise,
     PragmaRepeatGate,
     PragmaBoostNoise,
     PragmaOverrotation,
