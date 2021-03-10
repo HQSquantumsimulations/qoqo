@@ -35,8 +35,6 @@ install_requires = [
 ]
 
 authors = 'HQS Quantum Simulations'
-           
-
 
 setup(name='qoqo',
       description='Quantum Computing Base Package',
