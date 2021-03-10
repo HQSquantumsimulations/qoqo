@@ -30,14 +30,11 @@ install_requires = [
     'hqsbase>=0.7.5',
     'numpy',
     'scipy',
-    'pytest',
     'networkx',
     'pandas'
 ]
 
 authors = 'HQS Quantum Simulations'
-           
-
 
 setup(name='qoqo',
       description='Quantum Computing Base Package',
