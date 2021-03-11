@@ -1,10 +1,10 @@
 # qoqo
 
 [![Documentation Status](https://readthedocs.org/projects/qoqo/badge/?version=latest)](https://qoqo.readthedocs.io/en/latest/?badge=latest)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/HQSquantumsimulations/qoqo/ci_tests)
-![PyPI](https://img.shields.io/pypi/v/qoqo)
+[![GitHub Workflow Status](https://github.com/HQSquantumsimulations/qoqo/workflows/ci_tests/badge.svg)](https://github.com/HQSquantumsimulations/qoqo/actions)
+[![PyPI](https://img.shields.io/pypi/v/qoqo)](https://pypi.org/project/qoqo/)
 ![PyPI - License](https://img.shields.io/pypi/l/qoqo)
-![PyPI - Format](https://img.shields.io/pypi/format/qoqo)
+[![PyPI - Format](https://img.shields.io/pypi/format/qoqo)](https://pypi.org/project/qoqo/)
 
 Quantum Operation Quantum Operation  
 Yes we use [reduplication](https://en.wikipedia.org/wiki/Reduplication)
@@ -13,7 +13,7 @@ qoqo is a python package to represent quantum circuits by [HQS Quantum Simulatio
 
 qoqo provides:
 
-* A circuit class to represent quantum programms
+* A circuit class to represent quantum programs
 * Single- and Two-Qubit Operations that can be executed (decomposed) on any universal quantum computer
 * PRAGMA Operations that only apply to certain hardware, simulators or annotate circuits with additional informations
 * Classical Register and Measurement operations to use in a quantum program
