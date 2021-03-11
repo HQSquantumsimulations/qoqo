@@ -110,18 +110,37 @@ def test_general_noise_operator(gate_time, rate, operators):
     string = 'PragmaGeneralNoise(gate_time, rate, operators) 0'
 
     (Gate_time, Rate, Operators, q0) = ('gate_time', 'rate', 'operators', 0)
-    operation = op(gate_time=Gate_time, rate=Rate, operators=Operators)
+    operation = op(qubits=[q0], gate_time=Gate_time, rate=Rate, operators=Operators)
 
     assert(operation.to_hqs_lang() == string)
     assert(operation.is_parameterized)
 
-    operation = op(gate_time=gate_time, rate=rate, operators=operators)
+    operation = op(qubits=[q0], gate_time=gate_time, rate=rate, operators=operators)
+    substitution_dict = {'gate_time': gate_time, 'rate': rate, 'operators': operators}
+    # calculator = Calculator()
+    # for name, val in substitution_dict.items():
+    #     calculator.set(name, val)
+
+    # operation.substitute_parameters(substitution_dict)
 
     operation3 = _serialisation_convertion(operation)
     assert operation3 == operation
 
     assert(not operation.is_parameterized)
     assert(operation.involved_qubits == set([0]))
+
+    operation.remap_qubits({0: 2})
+    assert operation.involved_qubits == set([2])
+    assert operation._qubits == [2]
+
+    assert operation != ops.PragmaStop()
+    assert operation != op([2], 12, rate, operators)
+    assert operation != op([2], gate_time, 25, operators)
+    assert operation != op([2], gate_time, rate, np.zeros((2, 6)))
+    assert operation != op([0], gate_time, rate, operators)
+
+    operation = op(['ALL'], Gate_time, Rate, Operators)
+    assert operation.to_hqs_lang() == 'PragmaGeneralNoise(gate_time, rate, operators) ALL'
 
 
 @pytest.mark.parametrize("init", [

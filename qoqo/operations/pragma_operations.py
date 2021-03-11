@@ -1069,7 +1069,7 @@ class PragmaGeneralNoise(Pragma):
             return False
         if not self._rate == other._rate:
             return False
-        if not (self._operators == other._operators).all():
+        if not np.array_equal(self._operators, other._operators):
             return False
         if not set(self._qubits) == set(other._qubits):
             return False
