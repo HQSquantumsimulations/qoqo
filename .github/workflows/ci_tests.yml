@@ -25,6 +25,7 @@ jobs:
           python -m pip install pytest flake8 flake8-bugbear flake8-docstrings flake8-annotations darglint mypy
       - name: Test with pytest
         run: |
+          pip install pytest
           pip install -e ./
           pytest
       - name: Lint with flake8
