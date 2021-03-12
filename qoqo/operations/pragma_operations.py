@@ -993,35 +993,37 @@ class PragmaGeneralNoise(Pragma):
     _qonfig_never_receives_values = True
 
     _qonfig_defaults_dict = {
-        'qubits': {'doc': 'Qubits involved in general noise PRAGMA',
-                   'default': [0]},
+        'qubit': {'doc': 'Qubit involved in general noise PRAGMA',
+                  'default': 0},
         'gate_time': {'doc': 'The gate time of the GeneralNoise PRAGMA',
                       'default': CalculatorFloat(0)},
         'rate': {'doc': 'The rate of the GeneralNoise PRAGMA',
                  'default': CalculatorFloat(0)},
         'operators': {'doc': 'The operators representing the general noise',
                       'default': np.zeros(shape=(3, 3))},
-}
+    }
 
     def __init__(self,
-                 qubits: Optional[List[Union[int, str]]] = [0],
+                 qubit: int = 0,
                  gate_time: IntoCalculatorFloat = 0,
                  rate: IntoCalculatorFloat = 0,
-                 operators: np.ndarray = np.zeros((3, 3))) -> None:
+                 operators: np.ndarray = None) -> None:
         """Initialize General Noise PRAGMA
 
         Args:
-            qubits: Qubits involved in general noise PRAGMA
+            qubit: Qubits involved in general noise PRAGMA
             gate_time: The gate time of the GeneralNoise PRAGMA
             rate: The rate of the GeneralNoise PRAGMA
             operators: The operators representing the general noise
         """
-        self._qubits = qubits
+        if operators is None:
+            operators = np.zeros((3, 3))
+        self._qubit = qubit
         self._gate_time = CalculatorFloat(gate_time)
         self._rate = CalculatorFloat(rate)
         self._operators = operators
         self._parameterized = not (self._gate_time.is_float & self._rate.is_float)
-        self._involved_qubits: Set[Union[str, int]] = set(self._qubits)
+        self._involved_qubits: Set[Union[str, int]] = set([self._qubit])
 
     @classmethod
     def from_qonfig(cls,
@@ -1035,7 +1037,7 @@ class PragmaGeneralNoise(Pragma):
         Returns:
             PragmaGeneralNoise
         """
-        return cls(qubits=config['qubits'],
+        return cls(qubit=config['qubit'],
                    gate_time=config['gate_time'],
                    rate=config['rate'],
                    operators=config['operators'])
@@ -1047,7 +1049,7 @@ class PragmaGeneralNoise(Pragma):
             Qonfig[PragmaGeneralNoise]
         """
         config = Qonfig(self.__class__)
-        config['qubits'] = self._qubits
+        config['qubit'] = self._qubit
         config['gate_time'] = self._gate_time
         config['rate'] = self._rate
         config['operators'] = self._operators
@@ -1071,7 +1073,7 @@ class PragmaGeneralNoise(Pragma):
             return False
         if not np.array_equal(self._operators, other._operators):
             return False
-        if not set(self._qubits) == set(other._qubits):
+        if not self._qubit == other._qubit:
             return False
         return True
 
@@ -1111,29 +1113,17 @@ class PragmaGeneralNoise(Pragma):
                 parameter = parse_string(substitution_string + '; ' + parameter)
                 self._rate = CalculatorFloat(parameter)
 
-            parameter = self._operators
-            if isinstance(parameter, np.ndarray):
-                parameter = np.array(parameter)
-            elif isinstance(parameter, str):
-                parameter = parse_string(substitution_string + '; ' + parameter)
-                self._rate = np.array(parameter)
-
             self._parameterized = False
 
     def remap_qubits(self,
                      mapping_dict: Dict[int, int]) -> None:
-        r"""Remap the qubits in the operation
+        r"""Remap the qubit in the operation
 
         Args:
             mapping_dict: Dict containing mapping old qubit indices to new qubit indices
         """
-        if self._qubits != ['ALL']:
-            new_qubits: List[Union[int, str]] = list()
-            qubits = cast(List[int], self._qubits)
-            for qubit in qubits:
-                new_qubits.append(mapping_dict[qubit])
-            self._qubits = new_qubits
-            self._involved_qubits = set(self._qubits)
+        self._qubit = mapping_dict[self._qubit]
+        self._involved_qubits = set([self._qubit])
 
     def to_hqs_lang(self) -> str:
         r"""Translate the operation to an hqs_lang dialect expression
@@ -1145,11 +1135,7 @@ class PragmaGeneralNoise(Pragma):
         string += '({}, '.format(self._gate_time)
         string += '{}, '.format(self._rate)
         string += '{})'.format(self._operators)
-        if self._qubits == ['ALL']:
-            string += ' ALL'
-        else:
-            for qubit in self._qubits:
-                string += " {}".format(qubit)
+        string += " {}".format(self._qubit)
         return string
 
 
