@@ -29,7 +29,7 @@ from the Operation Base Class.
 
 """
 
-from ._operations_base_classes import (
+from qoqo.operations._operations_base_classes import (
     OperationNotInBackendError,
     GateOperation,
     Operation,
