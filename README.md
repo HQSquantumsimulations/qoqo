@@ -25,4 +25,6 @@ This software is still in the beta stage. Functions and documentation are not ye
 
 ## Examples
 
-For a collection of Examples see the jupyter notebook in examples. The examples also require the qoqo_pyquest and qoqo_mock interfaces.
+For an expanding collection of Examples see the jupyter notebook in examples. The examples also require the qoqo_pyquest and qoqo_mock interfaces.
+
+* [Intro example](https://nbviewer.jupyter.org/github/HQSquantumsimulations/qoqo/blob/main/examples/Intro_to_qoqo.ipynb)
