@@ -2,18 +2,17 @@ Welcome to qoqo's documentation!
 ======================================
 qoqo the HQS Quantum Simulation software package to represent quantum circuits.
 
+Introduction to qoqo with a jupyter `notebook <https://nbviewer.jupyter.org/github/HQSquantumsimulations/qoqo/blob/main/examples/Intro_to_qoqo.ipynb>`_.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    modules
-   Intro_to_qoqo.ipynb
 
 
-Indices and tables
+
+Documentation Index
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
