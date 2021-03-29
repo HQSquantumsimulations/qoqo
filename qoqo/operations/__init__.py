@@ -29,7 +29,7 @@ from the Operation Base Class.
 
 """
 
-from ._operations_base_classes import (
+from qoqo.operations._operations_base_classes import (
     OperationNotInBackendError,
     GateOperation,
     Operation,
@@ -98,6 +98,7 @@ from qoqo.operations.pragma_operations import (
     PragmaDephasing,
     PragmaDepolarise,
     PragmaRandomNoise,
+    PragmaGeneralNoise,
     PragmaRepeatGate,
     PragmaBoostNoise,
     PragmaOverrotation,

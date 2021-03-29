@@ -81,7 +81,8 @@ class Definition(Operation):
         Args:
             name: The name of the register that is defined
             vartype: The type of the register that is defined
-            length: The length of the register that is defined
+            length: The length of the register that is defined, usually the number of qubits to
+                    be measured
             is_input: T/F Is the variable an input to the program
             is_output: T/F Is the variable an output to the program
         """

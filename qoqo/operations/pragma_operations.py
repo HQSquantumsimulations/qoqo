@@ -166,6 +166,11 @@ class PragmaSetStateVector(Pragma):
     """Implements the SetStateVector PRAGMA.
 
     This PRAGMA operation sets the statevector of a quantum register.
+    The Circuit() module autmatically initializes the qubits in the |0> state, so this PRAGMA
+    operation allows you to set the state of the qubits to a state of your choosing.
+    For instance, to initialise the psi-minus Bell state, we pass the following vector to
+    the PRAGMA:
+        vector = np.array([0, 1 / np.sqrt(2), -1 / np.sqrt(2), 0])
 
     """
 
@@ -974,6 +979,169 @@ class PragmaRandomNoise(PragmaNoise):
                               [2, 3, 0, 1],
                               [3, 2, 1, 0]], dtype=int)
         return op_matrix[left, right]
+
+
+class PragmaGeneralNoise(Pragma):
+    r"""Implements the RandomNoise PRAGMA.
+
+    This PRAGMA operation applies a stochastically unravelled combination
+    of dephasing and depolarisation.
+
+    .. math::
+        \rho &= \mathcal{K} \rho \mathcal{K}\\
+
+    """
+
+    _operation_tags = ('Operation', 'Pragma', 'PragmaGeneralNoise')
+    _hqs_lang_name = 'PragmaGeneralNoise'
+
+    _qonfig_never_receives_values = True
+
+    _qonfig_defaults_dict = {
+        'qubit': {'doc': 'Qubit involved in general noise PRAGMA',
+                  'default': 0},
+        'gate_time': {'doc': 'The gate time of the GeneralNoise PRAGMA',
+                      'default': CalculatorFloat(0)},
+        'rate': {'doc': 'The rate of the GeneralNoise PRAGMA',
+                 'default': CalculatorFloat(0)},
+        'operators': {'doc': 'The operators representing the general noise',
+                      'default': np.zeros(shape=(3, 3))},
+    }
+
+    def __init__(self,
+                 qubit: int = 0,
+                 gate_time: IntoCalculatorFloat = 0,
+                 rate: IntoCalculatorFloat = 0,
+                 operators: np.ndarray = None) -> None:
+        """Initialize General Noise PRAGMA
+
+        Args:
+            qubit: Qubits involved in general noise PRAGMA
+            gate_time: The gate time of the GeneralNoise PRAGMA
+            rate: The rate of the GeneralNoise PRAGMA
+            operators: The operators representing the general noise
+        """
+        if operators is None:
+            operators = np.zeros((3, 3))
+        self._qubit = qubit
+        self._gate_time = CalculatorFloat(gate_time)
+        self._rate = CalculatorFloat(rate)
+        self._operators = operators
+        self._parameterized = not (self._gate_time.is_float & self._rate.is_float)
+        self._involved_qubits: Set[Union[str, int]] = set([self._qubit])
+
+    @classmethod
+    def from_qonfig(cls,
+                    config: Qonfig['PragmaGeneralNoise']
+                    ) -> 'PragmaGeneralNoise':
+        """Create an Instance from Qonfig
+
+        Args:
+            config: Qonfig of class
+
+        Returns:
+            PragmaGeneralNoise
+        """
+        return cls(qubit=config['qubit'],
+                   gate_time=config['gate_time'],
+                   rate=config['rate'],
+                   operators=config['operators'])
+
+    def to_qonfig(self) -> 'Qonfig[PragmaGeneralNoise]':
+        """Create a Qonfig from Instance
+
+        Returns:
+            Qonfig[PragmaGeneralNoise]
+        """
+        config = Qonfig(self.__class__)
+        config['qubit'] = self._qubit
+        config['gate_time'] = self._gate_time
+        config['rate'] = self._rate
+        config['operators'] = self._operators
+
+        return config
+
+    def __eq__(self, other: object) -> bool:
+        """Compare the PRAGMA with the other Python object and returns True when equal
+
+        Args:
+            other: Object the PRAGMA is compared to
+
+        Returns:
+            bool
+        """
+        if not isinstance(other, self.__class__):
+            return False
+        if not self._gate_time == other._gate_time:
+            return False
+        if not self._rate == other._rate:
+            return False
+        if not np.array_equal(self._operators, other._operators):
+            return False
+        if not self._qubit == other._qubit:
+            return False
+        return True
+
+    def substitute_parameters(self,
+                              substitution_dict: Dict[str, float],
+                              ) -> None:
+        r"""Substitute the symbolic parameters in the operation
+
+        Substitutes the symbols in the parameters and qubits of the gate
+        according to the provided substitution_dict.
+
+        Args:
+            substitution_dict: Dict of the form {'name': new_value}.
+                 Where 'name' is the name of the symbol to be substituted
+                 and new_value is the substituted value (can be another symbol)
+        """
+        if self.is_parameterized:
+            substitution_string = ''
+            for key, val in substitution_dict.items():
+                substitution_string += '{}={}; '.format(key, val)
+
+            parameter = self._gate_time
+            if parameter.is_float is True:
+                parameter = parameter.__float__()
+            else:
+                parameter = parameter.__str__()
+            if isinstance(parameter, str):
+                parameter = parse_string(substitution_string + '; ' + parameter)
+                self._gate_time = CalculatorFloat(parameter)
+
+            parameter = self._rate
+            if parameter.is_float is True:
+                parameter = parameter.__float__()
+            else:
+                parameter = parameter.__str__()
+            if isinstance(parameter, str):
+                parameter = parse_string(substitution_string + '; ' + parameter)
+                self._rate = CalculatorFloat(parameter)
+
+            self._parameterized = False
+
+    def remap_qubits(self,
+                     mapping_dict: Dict[int, int]) -> None:
+        r"""Remap the qubit in the operation
+
+        Args:
+            mapping_dict: Dict containing mapping old qubit indices to new qubit indices
+        """
+        self._qubit = mapping_dict[self._qubit]
+        self._involved_qubits = set([self._qubit])
+
+    def to_hqs_lang(self) -> str:
+        r"""Translate the operation to an hqs_lang dialect expression
+
+        Returns:
+            str
+        """
+        string = self.get_hqs_lang_name()
+        string += '({}, '.format(self._gate_time)
+        string += '{}, '.format(self._rate)
+        string += '{})'.format(self._operators)
+        string += " {}".format(self._qubit)
+        return string
 
 
 class PragmaRepeatGate(Pragma):

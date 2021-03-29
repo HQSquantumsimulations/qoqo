@@ -27,15 +27,20 @@ class BRMeasurementInput(object):
 
     BRMeasurementInput us the input class for BasisRotationMeasurement, dictating which expectation
     values are measured by BasisRotationMeasurement. These expecation values are defined as
-    expectation values of pauli products, such as 3 * < Z0 > + < Z0 Z1 >.
+    expectation values of pauli products, such as 3 * < Z0 > + < Z0 Z1 > (where Z0 represents the
+    Pauli sigma-Z matrix acting on the 0 qubit).
     In order to pass 3 * < Z0 > + < Z0 Z1 > to BRMeasurementInput, we define:
     1) the pauli_product_qubit_masks: these are the masks for the involved qubits in the pauli
        products. In our example, 3 * < Z0 > + < Z0 Z1 > is composed of < Z0 > and < Z0Z1 >. These
        will be measured into the classical register 'ro'. The pauli products involve qubits [0] and
        [0, 1], respectively, so pauli_product_qubit_masks = {'ro': {0: [0], 1: [0, 1]}}.
+       If you have several registers you are measuring, the structure of the
+       pauli_product_qubit_masks is:
+       {'1st reg': {0: [qubits], 1: [qubits], ..., n: [qubits]}, '2nd reg': {n + 1: [qubits], ...}}
     2) the values by which the pauli products are multiplied. In our example, those are 3 and 1 as
        we have 3 * < Z0 > + 1 * < Z0 Z1 >. The way we pass this to BRMeasurementInput is using
-       pp_to_exp_val_matrix, which here will be np.array([3, 1]).
+       pp_to_exp_val_matrix, which here will be np.array([3, 1]). This array should have the same
+       number of entries as the number of entries in the pauli_product_qubit_masks dictionaries.
     3) the number of qubits in the measurement, here 2 (qubit 0 and qubit 1)
     4) the number of pauli products, here 2 (< Z0 > and < Z0Z1 >)
     5) the name of the measured expectation value, here (for instance) ["example"].
