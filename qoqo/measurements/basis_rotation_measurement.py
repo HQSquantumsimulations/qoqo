@@ -40,7 +40,7 @@ class BasisRotationMeasurement(MeasurementBaseClass):
     passed to BasisRotationMeasurement as the "measurement_input". These expectation values are
     measured on a certain backend and device, with additional parameters that can be defined.
 
-    Note: 
+    Note:
     (1) the BasisRotationMeasurement class does not perform the basis rotation itself, just the
         associated measurement. The user must perform relevant gate operations for the qubits to be
         in the Z-basis before the BasisRotationMeasurement is applied.

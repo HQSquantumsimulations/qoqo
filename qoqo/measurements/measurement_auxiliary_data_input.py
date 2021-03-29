@@ -35,7 +35,7 @@ class BRMeasurementInput(object):
        will be measured into the classical register 'ro'. The pauli products involve qubits [0] and
        [0, 1], respectively, so pauli_product_qubit_masks = {'ro': {0: [0], 1: [0, 1]}}.
        If you have several registers you are measuring, the structure of the
-       pauli_product_qubit_masks is: 
+       pauli_product_qubit_masks is:
        {'1st reg': {0: [qubits], 1: [qubits], ..., n: [qubits]}, '2nd reg': {n + 1: [qubits], ...}}
     2) the values by which the pauli products are multiplied. In our example, those are 3 and 1 as
        we have 3 * < Z0 > + 1 * < Z0 Z1 >. The way we pass this to BRMeasurementInput is using
