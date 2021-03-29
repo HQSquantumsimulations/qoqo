@@ -12,7 +12,7 @@
 """Qoqo
 
 | Quantum Operation Quantum Operation
-| Yes we use `reduplication <https://en.wikipedia.org/wiki/Reduplication>`
+| Yes we use `reduplication <https://en.wikipedia.org/wiki/Reduplication>`_.
 
 qoqo is the HQS python package to represent quantum circuits.
 
