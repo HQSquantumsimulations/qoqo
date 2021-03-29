@@ -20,6 +20,7 @@ qoqo provides:
 * Measurement classes for evaluating observable measurements based on projective measurements from quantum hardware or simulator readouts
 * A Backend base class defining a standard for interfacing from qoqo to other toolkits, hardware and simulators
 * A Device base class defining a standard for device representation
+* A method to serialize and deserialize circuits via the to_qonfig/from_qonfig functions. These can be used in conjunction with to_json/from_json functions to create a serialized json file of the circuit.
 
 This software is still in the beta stage. Functions and documentation are not yet complete and breaking changes can occur.
 

@@ -40,6 +40,14 @@ class BasisRotationMeasurement(MeasurementBaseClass):
     passed to BasisRotationMeasurement as the "measurement_input". These expectation values are
     measured on a certain backend and device, with additional parameters that can be defined.
 
+    Note: 
+    (1) the BasisRotationMeasurement class does not perform the basis rotation itself, just the
+        associated measurement. The user must perform relevant gate operations for the qubits to be
+        in the Z-basis before the BasisRotationMeasurement is applied.
+    (2) When setting the backend for the BasisRotationMeasurement, the user does not need to give
+        the circuit(s) in circuit_list to the backend. These will be passed on automatically to
+        the backend by the DoUnitary.
+
     """
 
     _qonfig_defaults_dict = {
@@ -72,7 +80,7 @@ class BasisRotationMeasurement(MeasurementBaseClass):
         """Initialize measurement
 
         Args:
-            backend: qoqo backend
+            backend: qoqo backend (see qoqo_interfaces: each interface has an associated backend)
             measurement_input: Additional input (matrices) required for measurement
             circuit_list: The circuits that are run and measured on the backend
             constant_circuit: Circuit that is always applied before each circuit in the circuit_list

@@ -166,6 +166,11 @@ class PragmaSetStateVector(Pragma):
     """Implements the SetStateVector PRAGMA.
 
     This PRAGMA operation sets the statevector of a quantum register.
+    The Circuit() module autmatically initializes the qubits in the |0> state, so this PRAGMA
+    operation allows you to set the state of the qubits to a state of your choosing.
+    For instance, to initialise the psi-minus Bell state, we pass the following vector to
+    the PRAGMA:
+        vector = np.array([0, 1 / np.sqrt(2), -1 / np.sqrt(2), 0])
 
     """
 
