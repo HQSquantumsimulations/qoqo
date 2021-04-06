@@ -9,6 +9,24 @@
 # is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 # or implied. See the License for the specific language governing permissions and limitations under
 # the License.
-"""qoqo version information"""
+"""Testing example notebooks"""
 
-__version__ = 'v0.2.5'
+import pytest
+import sys
+import nbformat
+from nbconvert.preprocessors import ExecutePreprocessor
+import os
+from pathlib import Path
+
+
+def test_intro_to_qoqo():
+    """Test cheated basis rotation measurement input using the init function"""
+    path = os.path.dirname(Path(os.path.abspath(__file__)).parents[1])
+    with open(os.path.join(path, 'examples/Intro_to_qoqo.ipynb'), 'r') as file:
+        notebook = nbformat.read(file, as_version=4)
+    executor = ExecutePreprocessor(timeout=120)
+    executor.preprocess(notebook)
+
+
+if __name__ == '__main__':
+    pytest.main(sys.argv)
