@@ -7,3 +7,4 @@ target/*
 *doc/_build*
 *doc/generated*
 *.DS_Store
+*.ipynb_checkpoints*
