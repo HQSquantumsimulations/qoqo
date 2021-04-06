@@ -3,3 +3,7 @@ target/*
 *__pycache__*
 *.mypy_cache*
 *.egg-info*
+*.coverage
+*doc/_build*
+*doc/generated*
+*.DS_Store
