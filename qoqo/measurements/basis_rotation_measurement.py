@@ -276,4 +276,4 @@ class BasisRotationMeasurement(MeasurementBaseClass):
         if 'global_phase' in output_register_dict.keys():
             tmp_dict['global_phase'] = output_register_dict['global_phase'].register[0][0]
 
-        return pd.Series(tmp_dict, dtype=float)
+        return pd.Series(tmp_dict, dtype=complex)
