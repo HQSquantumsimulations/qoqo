@@ -209,7 +209,7 @@ class DoUnitary(object):
                                            overwrite=False)
             return None
         self._backend_cached = self._measurement._backend
-        parameter_series = pd.Series(parameter_substitution_dict, dtype=float)
+        parameter_series = pd.Series(parameter_substitution_dict)
         parameter_series = parameter_series.add_prefix('unitary_parameter_')
         expectation_values = expectation_values.append(parameter_series)
         return expectation_values

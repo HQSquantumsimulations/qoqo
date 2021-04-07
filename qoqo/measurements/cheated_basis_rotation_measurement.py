@@ -147,7 +147,7 @@ class CheatedBasisRotationMeasurement(MeasurementBaseClass):
 
         """
         if self.backend is None:
-            return pd.Series({})
+            return pd.Series({}, dtype=complex)
         # Dict for all read-out registers
         output_register_dict: Dict[str, RegisterOutput] = dict()
         # Dict for pauli products calculated from each read out register
