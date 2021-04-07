@@ -22,18 +22,20 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install pytest flake8 flake8-bugbear flake8-docstrings flake8-annotations darglint mypy nbconvert nbformat
+          python -m pip install pytest pytest-cov flake8 flake8-bugbear flake8-docstrings flake8-annotations darglint mypy nbconvert nbformat
       - name: Test with pytest
         run: |
           pip install pytest
           pip install -e ./
-          pytest
+          pytest --cov=qoqo --cov-fail-under=79 ./
+      - name: codecov upload
+        uses: codecov/codecov-action@v1
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
           flake8 --config=./.flake8 ./qoqo --count
-      # - name: Mypy check
-      #   run: |
-      #     # stop the build if there are Python syntax errors or undefined names
-      #     mypy --config-file=./.mypy.ini ./qoqo  
+      - name: Mypy check
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          mypy --config-file=./.mypy.ini ./qoqo  
 
