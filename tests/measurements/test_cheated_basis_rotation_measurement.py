@@ -23,8 +23,8 @@ from hqsbase.qonfig import Qonfig
 from typing import Any
 
 PAULI_PRODUCT_QUBIT_MASKS = dict()
-PAULI_PRODUCT_QUBIT_MASKS['test1'] = {0: np.array([0, 0]), 1: np.array([1, 1])}
-PAULI_PRODUCT_QUBIT_MASKS['test2'] = {2: np.array([1, 0]), 3: np.array([0, 1])}
+PAULI_PRODUCT_QUBIT_MASKS['test1'] = {0: [], 1: [0, 1]}
+PAULI_PRODUCT_QUBIT_MASKS['test2'] = {2: [0], 3: [1]}
 PP_TO_EXP_VAL_ΜΑΤRIX = np.zeros((4, 4), dtype=complex)
 PP_TO_EXP_VAL_ΜΑΤRIX[0, 0] = 0.5
 PP_TO_EXP_VAL_ΜΑΤRIX[1, 0] = 1j

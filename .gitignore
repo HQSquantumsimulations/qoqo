@@ -8,3 +8,5 @@ target/*
 *doc/generated*
 *.DS_Store
 *.ipynb_checkpoints*
+*.json
+*.yaml
