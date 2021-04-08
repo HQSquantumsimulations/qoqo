@@ -175,4 +175,9 @@ class CheatedBasisRotationMeasurement(MeasurementBaseClass):
         if 'global_phase' in output_register_dict.keys():
             tmp_dict['global_phase'] = output_register_dict['global_phase'].register[0][0]
 
-        return pd.Series(tmp_dict)
+        if not tmp_dict:
+            return_series = pd.Series({}, dtype=complex)
+        else:
+            return_series = pd.Series(tmp_dict)
+
+        return return_series
