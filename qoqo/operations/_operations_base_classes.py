@@ -187,7 +187,7 @@ class Operation():
     def __init__(self) -> None:
         """Initialize the Operation class"""
         self._involved_qubits: Set[Union[int, str]] = set()
-        self._parametezrized = False
+        self._parametrized = False
 
     @property
     def is_parametrized(self) -> bool:
@@ -631,11 +631,11 @@ class GateOperation(Operation):
             np.ndarray
 
         Raises:
-            ValueError: Parameterized gate can not be returned as unitary matrix
+            ValueError: Parametrized gate can not be returned as unitary matrix
             AttributeError: Operation has no unitary matrix method
         """
         if self.is_parametrized:
-            raise ValueError('Parameterized gate can not be returned as unitary matrix')
+            raise ValueError('Parametrized gate can not be returned as unitary matrix')
         parameters = {key: val.value for key, val in self._ordered_parameter_dict.items()}
         matrix_method = getattr(self, 'unitary_matrix_from_parameters', None)
         if matrix_method is None:

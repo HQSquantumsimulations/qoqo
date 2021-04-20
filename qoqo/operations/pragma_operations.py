@@ -663,10 +663,10 @@ class PragmaNoise(Pragma):
             np.ndarray
 
         Raises:
-            ValueError: Parameterized noise PRAGMA cannot be returned as superoperator
+            ValueError: Parametrized noise PRAGMA cannot be returned as superoperator
         """
         if self.is_parametrized:
-            raise ValueError("Parameterized noise PRAGMA cannot be returned as superoperator")
+            raise ValueError("Parametrized noise PRAGMA cannot be returned as superoperator")
         parameter_dict: Dict[str, float] = dict()
         for key, val in self._ordered_parameter_dict.items():
             parameter_dict[key] = float(val)
@@ -1403,8 +1403,7 @@ class PragmaOverrotation(Pragma):
         self._parameter = CalculatorFloat(parameter)
         self._variance = CalculatorFloat(variance)
         self._mean = CalculatorFloat(mean)
-        self._parametrized = not (self._mean.is_float
-                                   and self._variance.is_float)
+        self._parametrized = not (self._mean.is_float and self._variance.is_float)
 
     @classmethod
     def from_qonfig(cls,
