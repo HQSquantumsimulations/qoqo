@@ -69,7 +69,7 @@ class MeasureQubit(Operation):
             readout_index = qubit
         self._readout_index = readout_index
         self._readout = readout
-        self._parameterized = False
+        self._parametrized = False
 
     @classmethod
     def from_qonfig(cls,
@@ -179,7 +179,7 @@ class PragmaGetStateVector(Pragma):
         self._readout = readout
         self._qubit_mapping = qubit_mapping
         self._involved_qubits = set(['ALL'])
-        self._parameterized = False
+        self._parametrized = False
         self._circuit = circuit
 
     @classmethod
@@ -320,7 +320,7 @@ class PragmaGetDensityMatrix(Pragma):
         self._readout = readout
         self._qubit_mapping = qubit_mapping
         self._involved_qubits = set(['ALL'])
-        self._parameterized = False
+        self._parametrized = False
         self._circuit = circuit
 
     @classmethod
@@ -457,7 +457,7 @@ class PragmaGetOccupationProbability(Pragma):
         self._readout = readout
         self._qubit_mapping = qubit_mapping
         self._involved_qubits = set(['ALL'])
-        self._parameterized = False
+        self._parametrized = False
 
     @classmethod
     def from_qonfig(cls,
@@ -569,7 +569,7 @@ class PragmaGetRotatedOccupationProbability(PragmaGetOccupationProbability):
         """
         self._readout = readout
         self._circuit = circuit
-        self._parameterized = False
+        self._parametrized = False
         self._involved_qubits = set(['ALL'])
 
     @classmethod
@@ -701,7 +701,7 @@ class PragmaGetPauliProduct(Pragma):
         self._readout = readout
         self._circuit = circuit
         self._pauli_product = pauli_product
-        self._parameterized = False
+        self._parametrized = False
         self._involved_qubits = set(['ALL'])
 
     @classmethod
@@ -833,7 +833,7 @@ class PragmaRepeatedMeasurement(Pragma):
         self._number_measurements = number_measurements
         self._qubit_mapping = qubit_mapping
         self._involved_qubits = set(['ALL'])
-        self._parameterized = False
+        self._parametrized = False
         self._readout = readout
 
     @classmethod
@@ -1002,7 +1002,7 @@ class PragmaPauliProdMeasurement(Pragma):
             paulis = cast(List[int], list())
         self._qubits = qubits
         self._involved_qubits = set(self._qubits)
-        self._parameterized = False
+        self._parametrized = False
         self._paulis = paulis
         self._readout = readout
         self._readout_index = readout_index

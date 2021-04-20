@@ -93,7 +93,7 @@ class Definition(Operation):
         self._is_input = is_input
         self._is_output = is_output
         self._involved_qubits = set()
-        self._parameterized = False
+        self._parametrized = False
 
     @classmethod
     def from_qonfig(cls,

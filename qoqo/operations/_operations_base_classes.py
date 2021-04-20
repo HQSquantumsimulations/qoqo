@@ -110,7 +110,7 @@ class Operation():
 
     Qoqo operations can be serialised to json or yaml using the HQS qonfig package.
 
-    Operations can be parameterized, where one or more of its internal parameters can be
+    Operations can be parametrized, where one or more of its internal parameters can be
     string expressions instead of standard Python types.
     These parameters can be substituted with a substitute_parameters method or by
     adding a PragmaParameterSubstitution in the circuit.
@@ -187,7 +187,7 @@ class Operation():
     def __init__(self) -> None:
         """Initialize the Operation class"""
         self._involved_qubits: Set[Union[int, str]] = set()
-        self._parameterized = False
+        self._parametezrized = False
 
     @property
     def is_parametrized(self) -> bool:
@@ -199,7 +199,7 @@ class Operation():
         Returns:
             bool
         """
-        return self._parameterized
+        return self._parametrized
 
     def substitute_parameters(
             self,
@@ -415,12 +415,12 @@ class GateOperation(Operation):
         self._ordered_parameter_dict: Dict[str, CalculatorFloat]
         self._ordered_parameter_dict = dict()
         if not for_copy:
-            self._parameterized = False
+            self._parametrized = False
             for key in self._ordered_parameter_dict_default.keys():
                 self._ordered_parameter_dict[key] = CalculatorFloat(
                     kwargs.get(key, self._ordered_parameter_dict_default[key]))
                 if not self._ordered_parameter_dict[key].is_float:
-                    self._parameterized = True
+                    self._parametrized = True
             for key in self._ordered_qubits_dict_default.keys():
                 self._ordered_qubits_dict[key] = cast(
                     int,
@@ -486,7 +486,7 @@ class GateOperation(Operation):
                 (self._ordered_parameter_dict[parameter] * other)
             )
         if any([not p.is_float for p in return_operation._ordered_parameter_dict.values()]):
-            return_operation._parameterized = True
+            return_operation._parametrized = True
         return return_operation
 
     def __and__(self, other: object) -> bool:
@@ -554,7 +554,7 @@ class GateOperation(Operation):
         self_copy = self.__class__(for_copy=True)
         self_copy._ordered_qubits_dict = copy(self._ordered_qubits_dict)
         self_copy._ordered_parameter_dict = copy(self._ordered_parameter_dict)
-        self_copy._parameterized = copy(self._parameterized)
+        self_copy._parametrized = copy(self._parametrized)
         self_copy._involved_qubits = copy(self._involved_qubits)
         return self_copy
 
@@ -589,7 +589,7 @@ class GateOperation(Operation):
                 if not parameter.is_float:
                     new_parameter = parse_string(substitution_string + '; ' + parameter.value)
                     self._ordered_parameter_dict[key] = CalculatorFloat(new_parameter)
-            self._parameterized = False
+            self._parametrized = False
 
     def remap_qubits(self,
                      mapping_dict: Dict[int, int]) -> None:
