@@ -32,7 +32,7 @@ def test_measurement() -> None:
                    readout_index=ri)
 
     assert(operation.to_hqs_lang() == string)
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
     assert(set(operation.involved_qubits) == set([0]))
 
     operation2 = _serialisation_convertion(operation)
@@ -63,7 +63,7 @@ def test_pragma_repeated_measurement() -> None:
     operation = op(readout='ro',
                    number_measurements=100)
     assert(operation.to_hqs_lang() == string1)
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
     assert(operation.involved_qubits == set(['ALL']))
 
     operation2 = _serialisation_convertion(operation)
@@ -102,7 +102,7 @@ def test_pragma_get_statevec() -> None:
                    qubit_mapping=None
                    )
     assert(operation.to_hqs_lang() == string1)
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
     assert(operation.involved_qubits == set(['ALL']))
 
     operation2 = _serialisation_convertion(operation)
@@ -141,7 +141,7 @@ def test_pragma_get_densitymatrix() -> None:
     operation = op(readout='ro',
                    )
     assert(operation.to_hqs_lang() == string1)
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
     assert(operation.involved_qubits == set(['ALL']))
 
     operation2 = _serialisation_convertion(operation)
@@ -156,7 +156,7 @@ def test_pragma_get_occupation_probability() -> None:
                    qubit_mapping=None
                    )
     assert(operation.to_hqs_lang() == string1)
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
     assert(operation.involved_qubits == set(['ALL']))
 
     operation2 = _serialisation_convertion(operation)
@@ -173,7 +173,7 @@ def test_pragma_get_rotated_occupation_probability() -> None:
                    circuit=circuit
                    )
     assert(operation.to_hqs_lang() == string1)
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
     assert(operation.involved_qubits == set(['ALL']))
 
     operation3 = _serialisation_convertion(operation)
@@ -205,7 +205,7 @@ def test_pragma_pauli_prod_measurement() -> None:
                    paulis=[1]
                    )
     assert(operation.to_hqs_lang() == string1)
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
     assert(operation.involved_qubits == set([0]))
 
     operation3 = _serialisation_convertion(operation)
@@ -239,7 +239,7 @@ def test_pragma_get_pauli_prod_measurement() -> None:
                    pauli_product=[1, 0]
                    )
     assert(operation.to_hqs_lang() == string1)
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
     assert(operation.involved_qubits == set(['ALL']))
 
     operation3 = _serialisation_convertion(operation)

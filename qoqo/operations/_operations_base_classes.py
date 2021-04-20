@@ -190,7 +190,7 @@ class Operation():
         self._parameterized = False
 
     @property
-    def is_parameterized(self) -> bool:
+    def is_parametrized(self) -> bool:
         """Return True if the operation has symbolic parameters
 
         True if any of the parameters of the gate is a symbol that can be replaced
@@ -371,7 +371,7 @@ class GateOperation(Operation):
             arguments; init then automatically compares with the default qubit_dict and
             parameter_dict of the gate and updates the values that where provided at
             initialization. If the keyword arguments have string type, they are
-            considered symbolic and is_parameterized is true.
+            considered symbolic and is_parametrized is true.
 
     """
 
@@ -409,7 +409,7 @@ class GateOperation(Operation):
                 arguments; init then automatically compares with the default qubit_dict and
                 parameter_dict of the gate and updates the values that where provided at
                 initialization. If the keyword arguments have string type, they are
-                considered symbolic and is_parameterized is true.
+                considered symbolic and is_parametrized is true.
         """
         self._ordered_qubits_dict = dict()
         self._ordered_parameter_dict: Dict[str, CalculatorFloat]
@@ -580,7 +580,7 @@ class GateOperation(Operation):
                                Where 'name' is the name of the symbol to be substituted
                                and new_value is the substituted value
         """
-        if self.is_parameterized:
+        if self.is_parametrized:
             substitution_string = ''
             for key, val in substitution_dict.items():
                 substitution_string += '{}={}; '.format(key, val)
@@ -634,7 +634,7 @@ class GateOperation(Operation):
             ValueError: Parameterized gate can not be returned as unitary matrix
             AttributeError: Operation has no unitary matrix method
         """
-        if self.is_parameterized:
+        if self.is_parametrized:
             raise ValueError('Parameterized gate can not be returned as unitary matrix')
         parameters = {key: val.value for key, val in self._ordered_parameter_dict.items()}
         matrix_method = getattr(self, 'unitary_matrix_from_parameters', None)

@@ -366,7 +366,7 @@ class PragmaNoise(Pragma):
     arguments; init then automatically compares with the default qubit_dict and
     parameter_dict of the gate and updates the values that where provided at
     initialization. If the keyword arguments have string type, they are
-    considered symbolic and is_parameterized is true.
+    considered symbolic and is_parametrized is true.
 
     """
 
@@ -572,7 +572,7 @@ class PragmaNoise(Pragma):
                  Where 'name' is the name of the symbol to be substituted
                  and new_value is the substituted value (can be another symbol)
         """
-        if self.is_parameterized:
+        if self.is_parametrized:
             substitution_string = ''
             for key, val in substitution_dict.items():
                 substitution_string += '{}={}; '.format(key, val)
@@ -665,7 +665,7 @@ class PragmaNoise(Pragma):
         Raises:
             ValueError: Parameterized noise PRAGMA cannot be returned as superoperator
         """
-        if self.is_parameterized:
+        if self.is_parametrized:
             raise ValueError("Parameterized noise PRAGMA cannot be returned as superoperator")
         parameter_dict: Dict[str, float] = dict()
         for key, val in self._ordered_parameter_dict.items():
@@ -1095,7 +1095,7 @@ class PragmaGeneralNoise(Pragma):
                  Where 'name' is the name of the symbol to be substituted
                  and new_value is the substituted value (can be another symbol)
         """
-        if self.is_parameterized:
+        if self.is_parametrized:
             substitution_string = ''
             for key, val in substitution_dict.items():
                 substitution_string += '{}={}; '.format(key, val)
@@ -1226,7 +1226,7 @@ class PragmaRepeatGate(Pragma):
                  Where 'name' is the name of the symbol to be substituted
                  and new_value is the substituted value (can be another symbol)
         """
-        if self.is_parameterized:
+        if self.is_parametrized:
             substitution_string = ''
             for key, val in substitution_dict.items():
                 substitution_string += '{}={}; '.format(key, val)
@@ -1326,7 +1326,7 @@ class PragmaBoostNoise(Pragma):
                  Where 'name' is the name of the symbol to be substituted
                  and new_value is the substituted value (can be another symbol)
         """
-        if self.is_parameterized:
+        if self.is_parametrized:
             substitution_string = ''
             for key, val in substitution_dict.items():
                 substitution_string += '{}={}; '.format(key, val)
@@ -1535,7 +1535,7 @@ class PragmaOverrotation(Pragma):
                  Where 'name' is the name of the symbol to be substituted
                  and new_value is the substituted value (can be another symbol)
         """
-        if self.is_parameterized:
+        if self.is_parametrized:
             substitution_string = ''
             for key, val in substitution_dict.items():
                 substitution_string += '{}={}; '.format(key, val)
@@ -1771,7 +1771,7 @@ class PragmaGlobalPhase(Pragma):
                  Where 'name' is the name of the symbol to be substituted
                  and new_value is the substituted value (must be CalculatorFloat)
         """
-        if self.is_parameterized:
+        if self.is_parametrized:
             substitution_string = ''
             for key, val in substitution_dict.items():
                 substitution_string += '{}={}; '.format(key, val)
