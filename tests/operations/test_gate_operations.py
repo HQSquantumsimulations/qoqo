@@ -125,7 +125,7 @@ def test_single_qubit_gate(init, a, b, c, d) -> None:
 @pytest.mark.parametrize("c", list(np.arange(2 * np.pi / 3, 2 * np.pi, 2 * np.pi / 3)))
 @pytest.mark.parametrize("d", list(np.arange(2 * np.pi / 3, np.pi, 2 * np.pi / 3)))
 def test_single_qubit_multiplication(op, a, b, c, d):
-    """Test single qubit gate mulitplication"""
+    """Test single qubit gate multiplication"""
     alpha = np.exp(1j * a) * np.cos(b)
     beta = np.exp(1j * c) * np.sin(b)
     op1 = ops.SingleQubitGate(qubit=0, alpha_r=np.real(alpha),

@@ -982,7 +982,7 @@ class PragmaRandomNoise(PragmaNoise):
 
 
 class PragmaGeneralNoise(Pragma):
-    r"""Implements the RandomNoise PRAGMA.
+    r"""Implements the GeneralNoise PRAGMA.
 
     This PRAGMA operation applies a stochastically unravelled combination
     of dephasing and depolarisation.
@@ -1271,7 +1271,7 @@ class PragmaBoostNoise(Pragma):
         """
         self._coefficient = CalculatorFloat(noise_coefficient)
         self._parametrized = not self._coefficient.is_float
-        self._involved_qubits: Set[Union[str, int]] = set()
+        self._involved_qubits: Set[Union[int, str]] = set()
 
     @classmethod
     def from_qonfig(cls,
@@ -1367,7 +1367,7 @@ class PragmaOverrotation(Pragma):
                                 'default': None},
         'parameter': {'doc': 'Name of the overrotated parameter',
                       'default': ''},
-        'overrotation_parameter': {'doc': 'String form of overroation parameter',
+        'overrotation_parameter': {'doc': 'String form of overrotation parameter',
                                    'default': ''},
         'variance': {'doc': 'Variance of the overrotation',
                      'default': 0},
@@ -1389,7 +1389,7 @@ class PragmaOverrotation(Pragma):
             statistic_type: Type of the overrotation, static or statistic
             ordered_qubits_dict: Qubits in the gate
             parameter: Name of the overrotated parameter
-            overrotation_parameter: String form of overroation parameter
+            overrotation_parameter: String form of overrotation parameter
             variance: Variance of the overrotation
             mean: Mean of the overrotation
         """
