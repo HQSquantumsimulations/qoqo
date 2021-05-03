@@ -11,4 +11,4 @@
 # the License.
 """qoqo version information"""
 
-__version__ = 'v0.2.6'
+__version__ = 'v0.3.0'
