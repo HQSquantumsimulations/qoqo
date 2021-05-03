@@ -41,7 +41,7 @@ def test_noise_operators(init, gate_time, rate):
     operation = op(qubit=q0, gate_time=Gate_time, rate=Rate)
 
     assert(operation.to_hqs_lang() == string)
-    assert(operation.is_parameterized)
+    assert(operation.is_parametrized)
     substitution_dict = {'gate_time': gate_time, 'rate': rate}
     calculator = Calculator()
     for name, val in substitution_dict.items():
@@ -52,7 +52,7 @@ def test_noise_operators(init, gate_time, rate):
     operation3 = _serialisation_convertion(operation)
     assert operation3 == operation
 
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
     assert(operation.involved_qubits == set([0]))
 
     operation2 = operation**1.5
@@ -76,7 +76,7 @@ def test_random_noise_operator(gate_time, depolarisation_rate, dephasing_rate):
                    depolarisation_rate=depol_Rate, dephasing_rate=dephasing_Rate)
 
     assert(operation.to_hqs_lang() == string)
-    assert(operation.is_parameterized)
+    assert(operation.is_parametrized)
     substitution_dict = {'gate_time': gate_time,
                          'depolarisation_rate': depolarisation_rate,
                          'dephasing_rate': dephasing_rate}
@@ -89,7 +89,7 @@ def test_random_noise_operator(gate_time, depolarisation_rate, dephasing_rate):
     operation3 = _serialisation_convertion(operation)
     assert operation3 == operation
 
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
     assert(operation.involved_qubits == set([0]))
 
     operation2 = operation**1.5
@@ -113,7 +113,7 @@ def test_general_noise_operator(gate_time, rate, operators):
     operation = op(qubit=q0, gate_time=Gate_time, rate=Rate, operators=Operators)
 
     assert(operation.to_hqs_lang() == string)
-    assert(operation.is_parameterized)
+    assert(operation.is_parametrized)
 
     operation = op(qubit=q0, gate_time=gate_time, rate=rate, operators=operators)
     substitution_dict = {'gate_time': gate_time, 'rate': rate}
@@ -126,7 +126,7 @@ def test_general_noise_operator(gate_time, rate, operators):
     operation3 = _serialisation_convertion(operation)
     assert operation3 == operation
 
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
     assert(operation.involved_qubits == set([0]))
 
     operation.remap_qubits({0: 2})
@@ -183,14 +183,14 @@ def test_repeat_pragma():
     string = "PragmaRepeatGate(coefficient)"
     operation = op(repetition_coefficient=Coefficient)
     assert(operation.to_hqs_lang() == string)
-    assert(operation.is_parameterized)
+    assert(operation.is_parametrized)
 
     operation.substitute_parameters({'coefficient': 2})
 
     operation3 = _serialisation_convertion(operation)
     assert operation3 == operation
 
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
     assert(operation.involved_qubits == set(['ALL']))
 
 
@@ -205,14 +205,14 @@ def test_noise_boost_pragma(init):
     string = "PragmaBoostNoise(coefficient)"
     operation = op(noise_coefficient=Coefficient)
     assert(operation.to_hqs_lang() == string)
-    assert(operation.is_parameterized)
+    assert(operation.is_parametrized)
 
     operation.substitute_parameters({'coefficient': 2})
 
     operation3 = _serialisation_convertion(operation)
     assert operation3 == operation
 
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
     assert(operation.involved_qubits == set())
 
 
@@ -249,7 +249,7 @@ def test_overrotation_pragma(init, stype):
                    variance=Variance,
                    mean=Mean)
     assert(operation.to_hqs_lang() == string)
-    assert(operation.is_parameterized)
+    assert(operation.is_parametrized)
 
     operation3 = _serialisation_convertion(operation)
     assert operation3 == operation
@@ -283,7 +283,7 @@ def test_stop_pragma():
     string = "PragmaStop ALL"
     operation = op()
     assert(operation.to_hqs_lang() == string)
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
     assert(operation.involved_qubits == set(['ALL']))
 
     operation3 = _serialisation_convertion(operation)
@@ -355,10 +355,10 @@ def test_global_phase_pragma():
     """Test global phase PRAGMA"""
     gate = ops.PragmaGlobalPhase(phase="test")
     assert gate.to_hqs_lang() == "PragmaGlobalPhase test"
-    assert gate.is_parameterized is True
+    assert gate.is_parametrized is True
     substitution_dict = {'test': 0.1}
     gate.substitute_parameters(substitution_dict)
-    assert not gate.is_parameterized
+    assert not gate.is_parametrized
     assert gate.phase == 0.1
 
     gate2 = _serialisation_convertion(gate)

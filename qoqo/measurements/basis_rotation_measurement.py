@@ -183,7 +183,7 @@ class BasisRotationMeasurement(MeasurementBaseClass):
 
         """
         if self.backend is None:
-            return pd.Series({})
+            return pd.Series({}, dtype=complex)
         # Dict for all read-out registers
         output_register_dict: Dict[str, RegisterOutput] = dict()
         # Dict for pauli products calculated from each read out register
@@ -276,4 +276,9 @@ class BasisRotationMeasurement(MeasurementBaseClass):
         if 'global_phase' in output_register_dict.keys():
             tmp_dict['global_phase'] = output_register_dict['global_phase'].register[0][0]
 
-        return pd.Series(tmp_dict, dtype=complex)
+        if not tmp_dict:
+            return_series = pd.Series({}, dtype=complex)
+        else:
+            return_series = pd.Series(tmp_dict)
+
+        return return_series

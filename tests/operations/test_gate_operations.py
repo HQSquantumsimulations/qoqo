@@ -60,7 +60,7 @@ def test_simple_gate_matrices(init):
     operation2 = _serialisation_convertion(operation)
     assert operation2 == operation
 
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
     if op.number_of_qubits() == 1:
         npt.assert_equal(set(operation.involved_qubits), set([0]))
     else:
@@ -94,7 +94,7 @@ def test_single_qubit_gate(init, a, b, c, d) -> None:
                    beta_r=Beta_r, beta_i=Beta_i, global_phase=Global_phase)
 
     assert(operation.to_hqs_lang() == string)
-    assert(operation.is_parameterized)
+    assert(operation.is_parametrized)
 
     operation2 = _serialisation_convertion(operation)
     assert operation2 == operation
@@ -110,7 +110,7 @@ def test_single_qubit_gate(init, a, b, c, d) -> None:
 
     operation.substitute_parameters(substitution_dict)
 
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
 
     npt.assert_equal(set(operation.involved_qubits), set([0]))
 
@@ -125,7 +125,7 @@ def test_single_qubit_gate(init, a, b, c, d) -> None:
 @pytest.mark.parametrize("c", list(np.arange(2 * np.pi / 3, 2 * np.pi, 2 * np.pi / 3)))
 @pytest.mark.parametrize("d", list(np.arange(2 * np.pi / 3, np.pi, 2 * np.pi / 3)))
 def test_single_qubit_multiplication(op, a, b, c, d):
-    """Test single qubit gate mulitplication"""
+    """Test single qubit gate multiplication"""
     alpha = np.exp(1j * a) * np.cos(b)
     beta = np.exp(1j * c) * np.sin(b)
     op1 = ops.SingleQubitGate(qubit=0, alpha_r=np.real(alpha),
@@ -197,11 +197,11 @@ def test_single_parameter_gate_matrices(init, theta_p) -> None:
         (theta, q0, q1) = ('theta', 0, 1)
         operation = op(control=q1, qubit=q0, theta=theta)
     assert(operation.to_hqs_lang() == string)
-    assert(operation.is_parameterized)
+    assert(operation.is_parametrized)
 
     substitution_dict = {'theta': theta_p}
     operation.substitute_parameters(substitution_dict)
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
 
     op2 = _serialisation_convertion(operation)
     assert op2 == operation
@@ -234,7 +234,7 @@ def test_parameter_gate_matrices(init, theta_p, phi_p) -> None:
         operation = op(control=q1, qubit=q0,
                        theta=theta, spherical_phi=spherical_phi)
     assert(operation.to_hqs_lang() == string)
-    assert(operation.is_parameterized)
+    assert(operation.is_parametrized)
 
     if op.number_of_qubits() == 1:
         operation.substitute_parameters({'theta': theta_p,
@@ -242,7 +242,7 @@ def test_parameter_gate_matrices(init, theta_p, phi_p) -> None:
     else:
         operation.substitute_parameters({'theta': theta_p,
                                          'spherical_phi': phi_p})
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
 
     op2 = _serialisation_convertion(operation)
     assert op2 == operation
@@ -274,7 +274,7 @@ def test_PM(init, theta) -> None:
         operation = op(i=q1, j=q0,
                        theta=Theta)
     assert(operation.to_hqs_lang() == string)
-    assert(operation.is_parameterized)
+    assert(operation.is_parametrized)
 
     if op.number_of_qubits() == 1:
         operation.substitute_parameters({'theta': theta,
@@ -282,7 +282,7 @@ def test_PM(init, theta) -> None:
     else:
         operation.substitute_parameters({'theta': theta,
                                          })
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
 
     op2 = _serialisation_convertion(operation)
     assert op2 == operation
@@ -323,7 +323,7 @@ def test_Givens(init, theta, phi) -> None:
             operation = op(qubit=q0, control=q1,
                            theta=Theta, phi=Phi)
     assert(operation.to_hqs_lang() == string)
-    assert(operation.is_parameterized)
+    assert(operation.is_parametrized)
 
     if op.number_of_qubits() == 1:
         operation.substitute_parameters({'theta': theta,
@@ -331,7 +331,7 @@ def test_Givens(init, theta, phi) -> None:
     else:
         operation.substitute_parameters({'theta': theta,
                                          'phi': phi})
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
 
     op2 = _serialisation_convertion(operation)
     assert op2 == operation
@@ -364,7 +364,7 @@ def test_Bogoliubov(init, delta, delta_arg) -> None:
         operation = op(i=q1, j=q0,
                        Delta_real=Delta_real, Delta_imag=Delta_imag)
     assert(operation.to_hqs_lang() == string)
-    assert(operation.is_parameterized)
+    assert(operation.is_parametrized)
 
     if op.number_of_qubits() == 1:
         operation.substitute_parameters({'Delta_real': delta_real,
@@ -372,7 +372,7 @@ def test_Bogoliubov(init, delta, delta_arg) -> None:
     else:
         operation.substitute_parameters({'Delta_real': delta_real,
                                          'Delta_imag': delta_imag})
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
 
     op2 = _serialisation_convertion(operation)
     assert op2 == operation
@@ -412,7 +412,7 @@ def test_Fsim(init, U, t, Delta) -> None:
         operation = op(qubit=q0, control=q1,
                        U=Us, t=ts, Delta=Deltas)
     assert(operation.to_hqs_lang() == string)
-    assert(operation.is_parameterized)
+    assert(operation.is_parametrized)
 
     if op.number_of_qubits() == 1:
         operation.substitute_parameters({'U': U,
@@ -420,7 +420,7 @@ def test_Fsim(init, U, t, Delta) -> None:
     else:
         operation.substitute_parameters({'U': U,
                                          't': t, 'Delta': Delta})
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
 
     op2 = _serialisation_convertion(operation)
     assert op2 == operation
@@ -447,7 +447,7 @@ def test_Qsim(init, x, y, z) -> None:
         operation = op(qubit=q0, control=q1,
                        x=xs, y=ys, z=zs)
     assert(operation.to_hqs_lang() == string)
-    assert(operation.is_parameterized)
+    assert(operation.is_parametrized)
 
     if op.number_of_qubits() == 1:
         operation.substitute_parameters({'x': x,
@@ -455,7 +455,7 @@ def test_Qsim(init, x, y, z) -> None:
     else:
         operation.substitute_parameters({'x': x,
                                          'y': y, 'z': z})
-    assert(not operation.is_parameterized)
+    assert(not operation.is_parametrized)
 
     op2 = _serialisation_convertion(operation)
     assert op2 == operation

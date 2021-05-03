@@ -147,7 +147,7 @@ class PurePragmaMeasurement(MeasurementBaseClass):
 
         """
         if self.backend is None:
-            return pd.Series({})
+            return pd.Series({}, dtype=complex)
         # Dict for all read-out registers
         output_register_dict: Dict[str, RegisterOutput] = dict()
         # Dict for pauli products calculated from each read out register
@@ -175,4 +175,9 @@ class PurePragmaMeasurement(MeasurementBaseClass):
         if 'global_phase' in output_register_dict.keys():
             expectation_values['global_phase'] = output_register_dict['global_phase'].register[0][0]
 
-        return pd.Series(expectation_values)
+        if not expectation_values:
+            return_series = pd.Series({}, dtype=complex)
+        else:
+            return_series = pd.Series(expectation_values)
+
+        return return_series

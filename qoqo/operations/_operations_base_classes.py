@@ -110,7 +110,7 @@ class Operation():
 
     Qoqo operations can be serialised to json or yaml using the HQS qonfig package.
 
-    Operations can be parameterized, where one or more of its internal parameters can be
+    Operations can be parametrized, where one or more of its internal parameters can be
     string expressions instead of standard Python types.
     These parameters can be substituted with a substitute_parameters method or by
     adding a PragmaParameterSubstitution in the circuit.
@@ -187,10 +187,10 @@ class Operation():
     def __init__(self) -> None:
         """Initialize the Operation class"""
         self._involved_qubits: Set[Union[int, str]] = set()
-        self._parameterized = False
+        self._parametrized = False
 
     @property
-    def is_parameterized(self) -> bool:
+    def is_parametrized(self) -> bool:
         """Return True if the operation has symbolic parameters
 
         True if any of the parameters of the gate is a symbol that can be replaced
@@ -199,7 +199,7 @@ class Operation():
         Returns:
             bool
         """
-        return self._parameterized
+        return self._parametrized
 
     def substitute_parameters(
             self,
@@ -371,7 +371,7 @@ class GateOperation(Operation):
             arguments; init then automatically compares with the default qubit_dict and
             parameter_dict of the gate and updates the values that where provided at
             initialization. If the keyword arguments have string type, they are
-            considered symbolic and is_parameterized is true.
+            considered symbolic and is_parametrized is true.
 
     """
 
@@ -409,18 +409,18 @@ class GateOperation(Operation):
                 arguments; init then automatically compares with the default qubit_dict and
                 parameter_dict of the gate and updates the values that where provided at
                 initialization. If the keyword arguments have string type, they are
-                considered symbolic and is_parameterized is true.
+                considered symbolic and is_parametrized is true.
         """
         self._ordered_qubits_dict = dict()
         self._ordered_parameter_dict: Dict[str, CalculatorFloat]
         self._ordered_parameter_dict = dict()
         if not for_copy:
-            self._parameterized = False
+            self._parametrized = False
             for key in self._ordered_parameter_dict_default.keys():
                 self._ordered_parameter_dict[key] = CalculatorFloat(
                     kwargs.get(key, self._ordered_parameter_dict_default[key]))
                 if not self._ordered_parameter_dict[key].is_float:
-                    self._parameterized = True
+                    self._parametrized = True
             for key in self._ordered_qubits_dict_default.keys():
                 self._ordered_qubits_dict[key] = cast(
                     int,
@@ -486,7 +486,7 @@ class GateOperation(Operation):
                 (self._ordered_parameter_dict[parameter] * other)
             )
         if any([not p.is_float for p in return_operation._ordered_parameter_dict.values()]):
-            return_operation._parameterized = True
+            return_operation._parametrized = True
         return return_operation
 
     def __and__(self, other: object) -> bool:
@@ -554,7 +554,7 @@ class GateOperation(Operation):
         self_copy = self.__class__(for_copy=True)
         self_copy._ordered_qubits_dict = copy(self._ordered_qubits_dict)
         self_copy._ordered_parameter_dict = copy(self._ordered_parameter_dict)
-        self_copy._parameterized = copy(self._parameterized)
+        self_copy._parametrized = copy(self._parametrized)
         self_copy._involved_qubits = copy(self._involved_qubits)
         return self_copy
 
@@ -580,7 +580,7 @@ class GateOperation(Operation):
                                Where 'name' is the name of the symbol to be substituted
                                and new_value is the substituted value
         """
-        if self.is_parameterized:
+        if self.is_parametrized:
             substitution_string = ''
             for key, val in substitution_dict.items():
                 substitution_string += '{}={}; '.format(key, val)
@@ -589,7 +589,7 @@ class GateOperation(Operation):
                 if not parameter.is_float:
                     new_parameter = parse_string(substitution_string + '; ' + parameter.value)
                     self._ordered_parameter_dict[key] = CalculatorFloat(new_parameter)
-            self._parameterized = False
+            self._parametrized = False
 
     def remap_qubits(self,
                      mapping_dict: Dict[int, int]) -> None:
@@ -631,11 +631,11 @@ class GateOperation(Operation):
             np.ndarray
 
         Raises:
-            ValueError: Parameterized gate can not be returned as unitary matrix
+            ValueError: Parametrized gate can not be returned as unitary matrix
             AttributeError: Operation has no unitary matrix method
         """
-        if self.is_parameterized:
-            raise ValueError('Parameterized gate can not be returned as unitary matrix')
+        if self.is_parametrized:
+            raise ValueError('Parametrized gate can not be returned as unitary matrix')
         parameters = {key: val.value for key, val in self._ordered_parameter_dict.items()}
         matrix_method = getattr(self, 'unitary_matrix_from_parameters', None)
         if matrix_method is None:

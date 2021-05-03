@@ -432,13 +432,13 @@ class Circuit(object):
             self._operations.insert(index, operation)
 
     @property
-    def is_parameterized(self) -> bool:
+    def is_parametrized(self) -> bool:
         """Return True if the circuit has operations with symbolic parameters
 
         Returns:
             bool
         """
-        return any([op.is_parameterized for op in self._operations])
+        return any([op.is_parametrized for op in self._operations])
 
     def substitute_parameters(self, substitution_dict: Dict[str, float]
                               ) -> None:

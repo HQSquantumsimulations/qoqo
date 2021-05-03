@@ -70,7 +70,7 @@ class PragmaSetNumberOfMeasurements(Pragma):
         """
         self._number_measurements = number_measurements
         self._involved_qubits: Set[Union[int, str]] = set()
-        self._parameterized = False
+        self._parametrized = False
         self._readout = readout
 
     @classmethod
@@ -194,7 +194,7 @@ class PragmaSetStateVector(Pragma):
         """
         self._statevec = statevec
         self._involved_qubits: Set[Union[str, int]] = set(['ALL'])
-        self._parameterized = False
+        self._parametrized = False
 
     @classmethod
     def from_qonfig(cls,
@@ -287,7 +287,7 @@ class PragmaSetDensityMatrix(Pragma):
         """
         self._density_matrix = density_matrix
         self._involved_qubits: Set[Union[str, int]] = set(['ALL'])
-        self._parameterized = False
+        self._parametrized = False
 
     @classmethod
     def from_qonfig(cls,
@@ -366,7 +366,7 @@ class PragmaNoise(Pragma):
     arguments; init then automatically compares with the default qubit_dict and
     parameter_dict of the gate and updates the values that where provided at
     initialization. If the keyword arguments have string type, they are
-    considered symbolic and is_parameterized is true.
+    considered symbolic and is_parametrized is true.
 
     """
 
@@ -406,12 +406,12 @@ class PragmaNoise(Pragma):
         self._ordered_parameter_dict: Dict[str, CalculatorFloat]
         self._ordered_parameter_dict = dict()
         if not for_copy:
-            self._parameterized = False
+            self._parametrized = False
             for key in self._ordered_parameter_dict_default.keys():
                 self._ordered_parameter_dict[key] = CalculatorFloat(
                     kwargs.get(key, self._ordered_parameter_dict_default[key]))
                 if not self._ordered_parameter_dict[key].is_float:
-                    self._parameterized = True
+                    self._parametrized = True
             for key in self._ordered_qubits_dict_default.keys():
                 self._ordered_qubits_dict[key] = cast(
                     int,
@@ -478,7 +478,7 @@ class PragmaNoise(Pragma):
                 (self._ordered_parameter_dict[parameter] * other)
             )
         if any([not p.is_float for p in return_operation._ordered_parameter_dict.values()]):
-            return_operation._parameterized = True
+            return_operation._parametrized = True
         return return_operation
 
     def __and__(self, other: object) -> bool:
@@ -546,7 +546,7 @@ class PragmaNoise(Pragma):
         self_copy = self.__class__(for_copy=True)
         self_copy._ordered_qubits_dict = copy(self._ordered_qubits_dict)
         self_copy._ordered_parameter_dict = copy(self._ordered_parameter_dict)
-        self_copy._parameterized = copy(self._parameterized)
+        self_copy._parametrized = copy(self._parametrized)
         self_copy._involved_qubits = copy(self._involved_qubits)
         return self_copy
 
@@ -572,7 +572,7 @@ class PragmaNoise(Pragma):
                  Where 'name' is the name of the symbol to be substituted
                  and new_value is the substituted value (can be another symbol)
         """
-        if self.is_parameterized:
+        if self.is_parametrized:
             substitution_string = ''
             for key, val in substitution_dict.items():
                 substitution_string += '{}={}; '.format(key, val)
@@ -581,7 +581,7 @@ class PragmaNoise(Pragma):
                 if not parameter.is_float:
                     new_parameter = parse_string(substitution_string + '; ' + parameter.value)
                     self._ordered_parameter_dict[key] = CalculatorFloat(new_parameter)
-            self._parameterized = False
+            self._parametrized = False
 
     def remap_qubits(self,
                      mapping_dict: Dict[int, int]) -> None:
@@ -663,10 +663,10 @@ class PragmaNoise(Pragma):
             np.ndarray
 
         Raises:
-            ValueError: Parameterized noise PRAGMA cannot be returned as superoperator
+            ValueError: Parametrized noise PRAGMA cannot be returned as superoperator
         """
-        if self.is_parameterized:
-            raise ValueError("Parameterized noise PRAGMA cannot be returned as superoperator")
+        if self.is_parametrized:
+            raise ValueError("Parametrized noise PRAGMA cannot be returned as superoperator")
         parameter_dict: Dict[str, float] = dict()
         for key, val in self._ordered_parameter_dict.items():
             parameter_dict[key] = float(val)
@@ -982,7 +982,7 @@ class PragmaRandomNoise(PragmaNoise):
 
 
 class PragmaGeneralNoise(Pragma):
-    r"""Implements the RandomNoise PRAGMA.
+    r"""Implements the GeneralNoise PRAGMA.
 
     This PRAGMA operation applies a stochastically unravelled combination
     of dephasing and depolarisation.
@@ -1027,7 +1027,7 @@ class PragmaGeneralNoise(Pragma):
         self._gate_time = CalculatorFloat(gate_time)
         self._rate = CalculatorFloat(rate)
         self._operators = operators
-        self._parameterized = not (self._gate_time.is_float & self._rate.is_float)
+        self._parametrized = not (self._gate_time.is_float & self._rate.is_float)
         self._involved_qubits: Set[Union[str, int]] = set([self._qubit])
 
     @classmethod
@@ -1095,7 +1095,7 @@ class PragmaGeneralNoise(Pragma):
                  Where 'name' is the name of the symbol to be substituted
                  and new_value is the substituted value (can be another symbol)
         """
-        if self.is_parameterized:
+        if self.is_parametrized:
             substitution_string = ''
             for key, val in substitution_dict.items():
                 substitution_string += '{}={}; '.format(key, val)
@@ -1118,7 +1118,7 @@ class PragmaGeneralNoise(Pragma):
                 parameter = parse_string(substitution_string + '; ' + parameter)
                 self._rate = CalculatorFloat(parameter)
 
-            self._parameterized = False
+            self._parametrized = False
 
     def remap_qubits(self,
                      mapping_dict: Dict[int, int]) -> None:
@@ -1170,7 +1170,7 @@ class PragmaRepeatGate(Pragma):
             repetition_coefficient: Number of times the following gate is repeated
         """
         self._coefficient = CalculatorFloat(repetition_coefficient)
-        self._parameterized = not (self._coefficient.is_float)
+        self._parametrized = not (self._coefficient.is_float)
         self._involved_qubits: Set[Union[str, int]] = set(['ALL'])
 
     @classmethod
@@ -1226,14 +1226,14 @@ class PragmaRepeatGate(Pragma):
                  Where 'name' is the name of the symbol to be substituted
                  and new_value is the substituted value (can be another symbol)
         """
-        if self.is_parameterized:
+        if self.is_parametrized:
             substitution_string = ''
             for key, val in substitution_dict.items():
                 substitution_string += '{}={}; '.format(key, val)
             parameter = self._coefficient.__str__()
             parameter = parse_string(substitution_string + '; ' + parameter)
             self._coefficient = CalculatorFloat(parameter)
-            self._parameterized = False
+            self._parametrized = False
 
     def to_hqs_lang(self) -> str:
         r"""Translate the operation to an hqs_lang dialect expression
@@ -1270,8 +1270,8 @@ class PragmaBoostNoise(Pragma):
             noise_coefficient: The coefficient by which the noise is boosted
         """
         self._coefficient = CalculatorFloat(noise_coefficient)
-        self._parameterized = not self._coefficient.is_float
-        self._involved_qubits: Set[Union[str, int]] = set()
+        self._parametrized = not self._coefficient.is_float
+        self._involved_qubits: Set[Union[int, str]] = set()
 
     @classmethod
     def from_qonfig(cls,
@@ -1326,14 +1326,14 @@ class PragmaBoostNoise(Pragma):
                  Where 'name' is the name of the symbol to be substituted
                  and new_value is the substituted value (can be another symbol)
         """
-        if self.is_parameterized:
+        if self.is_parametrized:
             substitution_string = ''
             for key, val in substitution_dict.items():
                 substitution_string += '{}={}; '.format(key, val)
             parameter = self._coefficient.__str__()
             parameter = parse_string(substitution_string + '; ' + parameter)
             self._coefficient = CalculatorFloat(parameter)
-            self._parameterized = False
+            self._parametrized = False
 
     def to_hqs_lang(self) -> str:
         r"""Translate the operation to an hqs_lang dialect expression
@@ -1367,7 +1367,7 @@ class PragmaOverrotation(Pragma):
                                 'default': None},
         'parameter': {'doc': 'Name of the overrotated parameter',
                       'default': ''},
-        'overrotation_parameter': {'doc': 'String form of overroation parameter',
+        'overrotation_parameter': {'doc': 'String form of overrotation parameter',
                                    'default': ''},
         'variance': {'doc': 'Variance of the overrotation',
                      'default': 0},
@@ -1389,7 +1389,7 @@ class PragmaOverrotation(Pragma):
             statistic_type: Type of the overrotation, static or statistic
             ordered_qubits_dict: Qubits in the gate
             parameter: Name of the overrotated parameter
-            overrotation_parameter: String form of overroation parameter
+            overrotation_parameter: String form of overrotation parameter
             variance: Variance of the overrotation
             mean: Mean of the overrotation
         """
@@ -1403,8 +1403,7 @@ class PragmaOverrotation(Pragma):
         self._parameter = CalculatorFloat(parameter)
         self._variance = CalculatorFloat(variance)
         self._mean = CalculatorFloat(mean)
-        self._parameterized = not (self._mean.is_float
-                                   and self._variance.is_float)
+        self._parametrized = not (self._mean.is_float and self._variance.is_float)
 
     @classmethod
     def from_qonfig(cls,
@@ -1487,7 +1486,7 @@ class PragmaOverrotation(Pragma):
         self_copy._parameter = copy(self._parameter)
         self_copy._variance = copy(self._variance)
         self_copy._mean = copy(self._mean)
-        self_copy._parameterized = copy(self._parameterized)
+        self_copy._parametrized = copy(self._parametrized)
         return self_copy
 
     def __pow__(self, other: IntoCalculatorFloat) -> 'PragmaOverrotation':
@@ -1506,7 +1505,7 @@ class PragmaOverrotation(Pragma):
         return_operation._variance = (return_operation._variance * other)
         return_operation._mean = (return_operation._mean * other)
         if not (return_operation._variance.is_float and return_operation._mean.is_float):
-            return_operation._parameterized = True
+            return_operation._parametrized = True
         return return_operation
 
     def remap_qubits(self,
@@ -1535,7 +1534,7 @@ class PragmaOverrotation(Pragma):
                  Where 'name' is the name of the symbol to be substituted
                  and new_value is the substituted value (can be another symbol)
         """
-        if self.is_parameterized:
+        if self.is_parametrized:
             substitution_string = ''
             for key, val in substitution_dict.items():
                 substitution_string += '{}={}; '.format(key, val)
@@ -1557,7 +1556,7 @@ class PragmaOverrotation(Pragma):
             if isinstance(parameter, str):
                 parameter = parse_string(substitution_string + '; ' + parameter)
                 self._mean = CalculatorFloat(parameter)
-            self._parameterized = False
+            self._parametrized = False
 
     def to_hqs_lang(self) -> str:
         r"""Translate the operation to an hqs_lang dialect expression
@@ -1611,7 +1610,7 @@ class PragmaStop(Pragma):
         self._qubits = qubits
         self._involved_qubits: Set[Union[int, str]] = set(self._qubits)
         self.execution_time = execution_time
-        self._parameterized = False
+        self._parametrized = False
 
     @classmethod
     def from_qonfig(cls,
@@ -1716,7 +1715,7 @@ class PragmaGlobalPhase(Pragma):
         """
         self._involved_qubits: Set[Union[int, str]] = set()
         self.phase = CalculatorFloat(phase)
-        self._parameterized = not (self.phase.is_float)
+        self._parametrized = not (self.phase.is_float)
 
     @classmethod
     def from_qonfig(cls,
@@ -1771,7 +1770,7 @@ class PragmaGlobalPhase(Pragma):
                  Where 'name' is the name of the symbol to be substituted
                  and new_value is the substituted value (must be CalculatorFloat)
         """
-        if self.is_parameterized:
+        if self.is_parametrized:
             substitution_string = ''
             for key, val in substitution_dict.items():
                 substitution_string += '{}={}; '.format(key, val)
@@ -1783,7 +1782,7 @@ class PragmaGlobalPhase(Pragma):
             if isinstance(parameter, str):
                 new_parameter = parse_string(substitution_string + '; ' + parameter)
                 self.phase = CalculatorFloat(new_parameter)
-            self._parameterized = False
+            self._parametrized = False
 
     def to_hqs_lang(self) -> str:
         r"""Translate the operation to an hqs_lang dialect expression
@@ -1826,7 +1825,7 @@ class PragmaParameterSubstitution(Pragma):
             substitution_dict = cast(Dict[str, float], dict())
         self._substitution_dict = substitution_dict
         self._involved_qubits: Set[Union[int, str]] = set()
-        self._parameterized = False
+        self._parametrized = False
 
     @classmethod
     def from_qonfig(cls,
@@ -1935,7 +1934,7 @@ class PragmaSleep(Pragma):
         self._qubits = qubits
         self._involved_qubits: Set[Union[int, str]] = set(self._qubits)
         self.execution_time = execution_time
-        self._parameterized = False
+        self._parametrized = False
 
     @classmethod
     def from_qonfig(cls,
@@ -2040,7 +2039,7 @@ class PragmaActiveReset(Pragma):
         """
         self._qubit = qubit
         self._involved_qubits: Set[Union[int, str]] = set([self._qubit])
-        self._parameterized = False
+        self._parametrized = False
 
     @classmethod
     def from_qonfig(cls,
