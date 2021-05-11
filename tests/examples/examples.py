@@ -19,7 +19,7 @@ import os
 from pathlib import Path
 
 
-def test_intro_to_qoqo():
+def test_intro_to_qoqo() -> None:
     """Test cheated basis rotation measurement input using the init function"""
     path = os.path.dirname(Path(os.path.abspath(__file__)).parents[1])
     with open(os.path.join(path, 'examples/Intro_to_qoqo.ipynb'), 'r') as file:
