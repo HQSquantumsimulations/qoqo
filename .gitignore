@@ -4,9 +4,15 @@ target/*
 *.mypy_cache*
 *.egg-info*
 *.coverage
-*doc/_build*
-*doc/generated*
+*coveragehtml/*
+*/docs/_build*
+*/docs/generated*
 *.DS_Store
 *.ipynb_checkpoints*
 *.json
 *.yaml
+.vscode/*
+roqoqo/src/operations/_auto_generated_operations.rs
+qoqo/src/operations/_auto_generated_operation_conversion.rs
+*.profraw
+*.lcov

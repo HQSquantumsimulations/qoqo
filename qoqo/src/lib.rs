@@ -1,0 +1,89 @@
+// Copyright © 2021 HQS Quantum Simulations GmbH. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+// in compliance with the License. You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software distributed under the
+// License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+// express or implied. See the License for the specific language governing permissions and
+// limitations under the License.
+
+#![deny(missing_docs)]
+#![deny(missing_crate_level_docs)]
+#![deny(missing_debug_implementations)]
+
+//! Qoqo quantum computing toolkit
+//!
+//! Quantum Operation Quantum Operation
+//! Yes we use [reduplication](https://en.wikipedia.org/wiki/Reduplication)
+
+use pyo3::prelude::*;
+use pyo3::types::PyDict;
+use pyo3::wrap_pymodule;
+
+pub mod operations;
+use operations::*;
+
+pub mod measurements;
+use measurements::*;
+
+mod circuit;
+pub use circuit::{convert_into_circuit, CircuitWrapper, OperationIteratorWrapper};
+
+/// qoqo version information, used for qoqo import/export checks
+pub const QOQO_VERSION: &str = env!("CARGO_PKG_VERSION");
+
+use roqoqo::RoqoqoError;
+use thiserror::Error;
+
+/// Errors that can occur in qoqo.
+#[derive(Error, Debug, PartialEq)]
+pub enum QoqoError {
+    /// Error an Operation cannot be extracted from PyAny object passed from python.
+    #[error("Converting PyAny to Operation not possible")]
+    ConversionError,
+    /// Error a Circuit cannot be extracted from PyAny object passed from python.
+    #[error("Cannot extract Circuit from python object")]
+    CannotExtractCircuit,
+    /// Error for version mismatch between separately compiled packages.
+    ///
+    /// Error when trying to extract a Circuit from a PyAny python object that has been created
+    /// from a python package that has been compiled separately.
+    /// To avoid unexpected behaviour this is only allowed when qoqo and roqoqo in both packages are the same version.
+    #[error("Package versions of qoqo and roqoqo do not match versions of qoqo object passed from python")]
+    VersionMismatch,
+    /// Transparent forwarding of roqoqo errors.
+    #[error(transparent)]
+    RoqoqoError(#[from] RoqoqoError),
+}
+
+/// Quantum Operation Quantum Operation (qoqo)
+///
+/// Yes, we use reduplication.
+///
+/// qoqo is the HQS python package to represent quantum circuits.
+///
+/// .. autosummary::
+///     :toctree: generated/
+///
+///     Circuit
+///     operations
+///     measurements
+///
+#[pymodule]
+fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
+    module.add_class::<CircuitWrapper>()?;
+    let wrapper = wrap_pymodule!(operations);
+    module.add_wrapped(wrapper)?;
+    let wrapper2 = wrap_pymodule!(measurements);
+    module.add_wrapped(wrapper2)?;
+
+    // Adding nice imports corresponding to maturin example
+    let system = PyModule::import(_py, "sys")?;
+    let system_modules: &PyDict = system.getattr("modules")?.downcast()?;
+    system_modules.set_item("qoqo.operations", module.getattr("operations")?)?;
+    system_modules.set_item("qoqo.measurements", module.getattr("measurements")?)?;
+    Ok(())
+}
