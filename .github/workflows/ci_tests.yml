@@ -38,8 +38,8 @@ jobs:
           default: true
           components: rustfmt
       - run: |
-        cargo test --workspace --no-default-features
-        cargo fmt --all -- --check
+          cargo test --workspace --no-default-features
+          cargo fmt --all -- --check
   
   doctes_check:
     name: unittests_check-${{ matrix.combinations.runs_on }}
