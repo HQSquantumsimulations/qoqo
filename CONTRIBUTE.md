@@ -10,6 +10,6 @@ Please fill and sign the CLA found in this repository as CLA.pdf and send it to 
 
 ## Code Guidelines
 
-1. Testing: We use `cargo test` for qoqo_calculator and `pytest` for qoqo_calculator_pyo3. We require that all previous tests pass and that your provide proper tests with your contribution.
+1. Testing: We use `cargo test` for roqoqo and `cargo test -- workspace ---no-default-features` for qoqo. We require that all previous tests pass and that your provide proper tests with your contribution.
 2. Linting: We use `cargo clippy -- -D warnings` to lint all code.
 3. Formatting: We check formatting with `cargo fmt --all --check`
