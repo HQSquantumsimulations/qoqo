@@ -1,3 +1,6 @@
+<img src="qoqo_Logo_vertical_color.png" alt="qoqo logo" width="300" />
+
+
 # qoqo
 
 [![Documentation Status](https://readthedocs.org/projects/qoqo/badge/?version=latest)](https://qoqo.readthedocs.io/en/latest/?badge=latest)
