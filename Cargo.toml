@@ -1,0 +1,14 @@
+[workspace]
+members = [
+    "roqoqo",
+    "roqoqo-derive",
+    "roqoqo-test",
+    "qoqo",
+    "qoqo-macros"
+]
+
+[profile.release]
+lto = true
+
+[profile.bench]
+lto = true

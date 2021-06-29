@@ -1,4 +1,13 @@
-                                 Apache License
+The source of this software is licensed under the Apache 2.0 license (see below)
+In building the binary distribution other products the software listed in the file DEPENDENCIES are also used and/or linked.
+The licenses an Copyright notices are also listed in the DEPENDENCIES file.
+
+This product in binary form links dynamically against Python  available under the Python license. For full license text see file qoqo_calculator_pyo3/PYTHON_LICENSE
+Python (Copyright © 2001-2021 Python Software Foundation; All Rights
+Reserved)
+
+
+                          Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
 

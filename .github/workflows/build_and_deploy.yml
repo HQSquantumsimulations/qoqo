@@ -1,31 +1,88 @@
 # This workflow will upload a Python Package using Twine when a release is created
 # For more information see: https://help.github.com/en/actions/language-and-framework-guides/using-python-with-github-actions#publishing-to-package-registries
-name: Build and deploy
+# name: Build and deploy
+name: build_and_deploy
 
 on:
   release:
     types: [created]
 
 jobs:
-  deploy:
-
+  deploy_cratesio:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
+    - uses: actions-rs/toolchain@v1
       with:
-        python-version: '3.x'
-    - name: Install dependencies
+        profile: minimal
+        toolchain: stable
+        default: true
+    - name: setup cargo
       run: |
-        python -m pip install --upgrade pip
-        pip install setuptools wheel twine
-    - name: Build and publish
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-      run: |
-        python setup.py sdist bdist_wheel --universal
-        twine upload dist/*
+        cargo login ${{ secrets.CRATES_IO_API_TOKEN }}
+        cargo publish --manifest-path=roqoqo-derive/Cargo.toml
+        sleep 60
+        cargo publish --manifest-path=roqoqo/Cargo.toml
+        sleep 60
+        cargo publish --manifest-path=qoqo-macros/Cargo.toml
+        sleep 60
+        cargo publish --manifest-path=qoqo/Cargo.toml
+        sleep 60
+        cargo publish --manifest-path=roqoqo-test/Cargo.toml
 
+  deploy_pypi_manylinux:
 
+      runs-on: ubuntu-latest
+      #container: konstin2/maturin
+      steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          echo $GITHUB_WORKSPACE
+      - name: Build Manylinux Maturin
+        uses: addnab/docker-run-action@v3
+        with:
+          image: konstin2/maturin
+          options: -v /home/runner/work/qoqo/qoqo:/io
+          run: maturin build --release --manylinux 2010
+      - name: Publish
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          python -m pip install --upgrade pip
+          pip install twine
+          python -m twine upload target/wheels/*
+
+  deploy_macos:
+  
+      runs-on: macOS-latest
+      strategy:
+        matrix:
+          python: [
+            {py: 3.6, interpreter: "python3.6"},
+            {py: 3.7, interpreter: "python3.7"},
+            {py: 3.8, interpreter: "python3.8"},
+            {py: 3.9, interpreter: "python3.9"}
+        ]
+      steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python.py }}
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          target: ${{ matrix.combinations.rust }}
+          default: true
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip maturin pytest numpy twine
+      - name: build
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          maturin build -i ${{ matrix.python.interpreter }} -m qoqo/Cargo.toml
+          python -m twine upload target/wheels/*

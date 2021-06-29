@@ -1,4 +1,44 @@
+<img src="qoqo_Logo_vertical_color.png" alt="qoqo logo" width="300" />
+
 # qoqo
+
+Quantum Operation Quantum Operation  
+Yes we use [reduplication](https://en.wikipedia.org/wiki/Reduplication)
+
+qoqo is a toolkit to represent quantum circuits by [HQS Quantum Simulations](https://quantumsimulations.de).
+
+This repository contains two components:
+
+* roqoqo: the core rust library
+* qoqo: the python interface to roqoqo
+
+What roqoqo/qoqo is:
+
+* A toolkit to represent quantum operations and circuits
+* A thin runtime to run quantum measurements
+* A way to serialize quantum circuits and measurement information
+* A set of optional interfaces to devices, simulators and toolkits (e.g. [qoqo_pyqest](https://github.com/HQSquantumsimulations/qoqo_pyquest), [qoqo_mock](https://github.com/HQSquantumsimulations/qoqo_mock), [qoqo_qasm](https://github.com/HQSquantumsimulations/qoqo_qasm))
+
+What roqoqo/qoqo is **not**:
+
+* A decomposer translating circuits to a specific set of gates
+* A quantum circuit optimizer
+* A collection of quantum algorithms
+
+## roqoqo
+
+roqoqo provides:
+
+* A circuit struct to represent quantum programs
+* Single-Qubit, Two-Qubit and Multi-Qubit Operations that can be executed (decomposed) on any universal quantum computer
+* PRAGMA Operations that only apply to certain hardware, simulators or annotate circuits with additional information
+* Classical Registers and Measurement operations to use with a quantum program
+* Measurement structs for evaluating observable measurements based on projective measurements from quantum hardware or simulator readouts
+* A Backend trait defining a standard for interfacing from qoqo to other toolkits, hardware and simulators that can return measured values
+* Serialize and deserialize support for circuits and measurement information via the serde crate.
+
+This software is still in the beta stage. Functions and documentation are not yet complete and breaking changes can occur.
+## qoqo
 
 [![Documentation Status](https://readthedocs.org/projects/qoqo/badge/?version=latest)](https://qoqo.readthedocs.io/en/latest/?badge=latest)
 [![GitHub Workflow Status](https://github.com/HQSquantumsimulations/qoqo/workflows/ci_tests/badge.svg)](https://github.com/HQSquantumsimulations/qoqo/actions)
@@ -6,26 +46,22 @@
 ![PyPI - License](https://img.shields.io/pypi/l/qoqo)
 [![PyPI - Format](https://img.shields.io/pypi/format/qoqo)](https://pypi.org/project/qoqo/)
 
-Quantum Operation Quantum Operation  
-Yes we use [reduplication](https://en.wikipedia.org/wiki/Reduplication)
-
-qoqo is a python package to represent quantum circuits by [HQS Quantum Simulations](https://quantumsimulations.de).
-
-qoqo provides:
+qoqo provides a full python interface to the underlying roqoqo library, including:
 
 * A circuit class to represent quantum programs
-* Single- and Two-Qubit Operations that can be executed (decomposed) on any universal quantum computer
+* Single-Qubit, Two-Qubit and Multi-Qubit Operations that can be executed (decomposed) on any universal quantum computer
 * PRAGMA Operations that only apply to certain hardware, simulators or annotate circuits with additional information
-* Classical Register and Measurement operations to use in a quantum program
-* Measurement classes for evaluating observable measurements based on projective measurements from quantum hardware or simulator readouts
-* A Backend base class defining a standard for interfacing from qoqo to other toolkits, hardware and simulators
-* A Device base class defining a standard for device representation
-* A method to serialize and deserialize circuits via the to_qonfig/from_qonfig functions. These can be used in conjunction with to_json/from_json functions to create a serialized json file of the circuit.
+* Classical Register and Measurement operations to use with a quantum program
+* Measurement structs for evaluating observable measurements based on projective measurements from quantum hardware or simulator readouts
+* A DoUnitary class combining circuits and measurement information in complete quantum programms with a simple interface
+* Serialization to json and deserialization from json for circuits and measurement information. Serialization support can easily be expanded to other targets with the help of the serde crate.
 
-This software is still in the beta stage. Functions and documentation are not yet complete and breaking changes can occur.
+### Examples
 
-## Examples
+For an expanded collection of Examples see the jupyter notebooks in qoqo/examples. The examples require the qoqo_pyquest and qoqo_mock interfaces.
 
-For an expanding collection of Examples see the jupyter notebook in examples. The examples also require the qoqo_pyquest and qoqo_mock interfaces.
+* [Intro example](https://nbviewer.jupyter.org/github/HQSquantumsimulations/qoqo/blob/main/qoqo/examples/Intro_to_qoqo.ipynb)
 
-* [Intro example](https://nbviewer.jupyter.org/github/HQSquantumsimulations/qoqo/blob/main/examples/Intro_to_qoqo.ipynb)
+## Contributing
+
+We welcome contributions to the project. If you want to contribute code, please have a look at CONTRIBUTE.md for our code contribution guidelines.

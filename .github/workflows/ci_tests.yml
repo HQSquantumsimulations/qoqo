@@ -7,35 +7,72 @@ on:
     branches: [main]
 
 jobs:
-  check_linting_and_tests:
-    name: unittests_check
+  clippy_check:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.7, 3.8, 3.9]
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+      - uses: actions-rs/toolchain@v1
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install pytest pytest-cov flake8 flake8-bugbear flake8-docstrings flake8-annotations darglint mypy nbconvert nbformat
-      - name: Test with pytest
-        run: |
-          pip install pytest
-          pip install -e ./
-          pytest --cov=qoqo --cov-fail-under=70 ./
-      # - name: codecov upload
-      #   uses: codecov/codecov-action@v1
-      - name: Lint with flake8
-        run: |
-          # stop the build if there are Python syntax errors or undefined names
-          flake8 --config=./.flake8 ./qoqo --count
-      - name: Mypy check
-        run: |
-          # stop the build if there are Python syntax errors or undefined names
-          mypy --config-file=./.mypy.ini ./qoqo  
+          profile: minimal
+          toolchain: stable
+          components: clippy
+      - run: cargo clippy -- -D warnings
 
+  unittests_check:
+    name: unittests_check-${{ matrix.combinations.runs_on }}
+    runs-on: ${{ matrix.combinations.runs_on }}
+    strategy:
+      matrix:
+        combinations: [
+          { runs_on: "macOS-latest", rust: "x86_64-apple-darwin" },
+          { runs_on: "ubuntu-latest",  rust: "x86_64-unknown-linux-gnu" },
+          { runs_on: "windows-latest", rust: "x86_64-pc-windows-msvc" },
+        ]
+        python: [
+            #{py: 3.6, interpreter: "python3.6"},
+            #{py: 3.7, interpreter: "python3.7"},
+            #{py: 3.8, interpreter: "python3.8"},
+            {py: 3.9, interpreter: "python3.9"}
+        ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          target: ${{ matrix.combinations.rust }}
+          default: true
+          components: rustfmt
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python.py }}
+      - run: |
+          python -m pip install --upgrade pip maturin pytest numpy twine
+          cargo test --workspace --no-default-features
+          cargo fmt --all -- --check
+  
+  doctes_check:
+    name: unittests_check-${{ matrix.combinations.runs_on }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          target: x86_64-unknown-linux-gnu
+          default: true
+      - run: |
+          cargo test --doc --package=roqoqo
+
+  
+  # format_check: # needs to run after test otherwise auogenerated files are not built
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions-rs/toolchain@v1
+  #       with:
+  #         profile: minimal
+  #         toolchain: stable
+  #         components: rustfmt
+  #     - run: cargo fmt --all -- --check

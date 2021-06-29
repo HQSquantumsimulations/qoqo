@@ -1,7 +1,0 @@
-hqsbase >= 0.7.5
-numpy
-pytest
-networkx
-pandas
-qoqo_mock
-qoqo_pyquest
