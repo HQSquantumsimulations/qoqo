@@ -40,7 +40,7 @@ jobs:
         run: |
           echo $GITHUB_WORKSPACE
       - name: Build Manylinux Maturin
-        uses: addnab/docker-run-action@v1
+        uses: addnab/docker-run-action@v3
         with:
           image: konstin2/maturin
           options: -v /home/runner/work/qoqo/qoqo:/io
