@@ -36,7 +36,10 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - run: cargo test --workspace --no-default-features
+          components: rustfmt
+      - run: |
+        cargo test --workspace --no-default-features
+        cargo fmt --all -- --check
   
   doctes_check:
     name: unittests_check-${{ matrix.combinations.runs_on }}
@@ -49,15 +52,17 @@ jobs:
           toolchain: stable
           target: x86_64-unknown-linux-gnu
           default: true
-      - run: cargo test --doc --package=roqoqo
+      - run: |
+          cargo test --doc --package=roqoqo
+
   
-  format_check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          components: rustfmt
-      - run: cargo fmt --all -- --check
+  # format_check: # needs to run after test otherwise auogenerated files are not built
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions-rs/toolchain@v1
+  #       with:
+  #         profile: minimal
+  #         toolchain: stable
+  #         components: rustfmt
+  #     - run: cargo fmt --all -- --check
