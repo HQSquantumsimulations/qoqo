@@ -20,15 +20,15 @@ jobs:
     - name: setup cargo
       run: |
         cargo login ${{ secrets.CRATES_IO_API_TOKEN }}
-        cargo publish --manifest-path=roqoqo-derive/Cargo.toml
-        sleep 60
-        cargo publish --manifest-path=roqoqo/Cargo.toml
-        sleep 60
-        cargo publish --manifest-path=qoqo-macros/Cargo.toml
-        sleep 60
-        cargo publish --manifest-path=qoqo/Cargo.toml
-        sleep 60
-        cargo publish --manifest-path=roqoqo-test/Cargo.toml
+        cargo publish --manifest-path=roqoqo-derive/Cargo.toml --no-verify
+        sleep 30
+        cargo publish --manifest-path=roqoqo/Cargo.toml --no-verify
+        sleep 30
+        cargo publish --manifest-path=qoqo-macros/Cargo.toml --no-verify
+        sleep 30
+        cargo publish --manifest-path=qoqo/Cargo.toml --no-verify
+        sleep 30
+        cargo publish --manifest-path=roqoqo-test/Cargo.toml --no-verify
 
   deploy_pypi_manylinux:
 
@@ -83,7 +83,7 @@ jobs:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         run: |
-          maturin build -i ${{ matrix.python.interpreter }} -m qoqo/Cargo.toml --release --cargo-extra-args="--locked"
+          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} -m qoqo/Cargo.toml --release --cargo-extra-args="--locked"
           python -m twine upload target/wheels/*
 
   # deploy_windows:
