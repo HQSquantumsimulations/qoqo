@@ -465,7 +465,7 @@ fn test_pyo3_substitute_parameters_error(input_operation: Operation) {
     let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
     let result_ref = result.as_ref();
     assert!(result_ref.is_err());
-
+}
 /// Test DefinitionFloat, DefinitionComplex, DefinitionUsize, DefinitionBit remap_qubits functions
 #[test_case(Operation::from(DefinitionFloat::new(String::from("ro"), 1, false)); "DefinitionFloat")]
 #[test_case(Operation::from(DefinitionComplex::new(String::from("ro"), 1, false)); "DefinitionComplex")]
