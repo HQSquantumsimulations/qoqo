@@ -20,18 +20,18 @@ jobs:
     - name: setup cargo
       run: |
         cargo login ${{ secrets.CRATES_IO_API_TOKEN }}
-        cargo publish --manifest-path=roqoqo-derive/Cargo.toml --no-verify
+        #cargo publish --manifest-path=roqoqo-derive/Cargo.toml --no-verify
         sleep 30
-        cargo publish --manifest-path=roqoqo/Cargo.toml --no-verify
+        #cargo publish --manifest-path=roqoqo/Cargo.toml --no-verify
         sleep 30
-        cargo publish --manifest-path=qoqo-macros/Cargo.toml --no-verify
+        #cargo publish --manifest-path=qoqo-macros/Cargo.toml --no-verify
         sleep 30
-        cargo publish --manifest-path=qoqo/Cargo.toml --no-verify
+        #cargo publish --manifest-path=qoqo/Cargo.toml --no-verify
         sleep 30
-        cargo publish --manifest-path=roqoqo-test/Cargo.toml --no-verify
+        #cargo publish --manifest-path=roqoqo-test/Cargo.toml --no-verify
 
   deploy_pypi_manylinux:
-
+      needs: deploy_cratesio
       runs-on: ubuntu-latest
       #container: konstin2/maturin
       steps:
@@ -44,7 +44,7 @@ jobs:
         with:
           image: konstin2/maturin
           options: -v /home/runner/work/qoqo/qoqo:/io
-          run: maturin build -m qoqo/Cargo.toml --release --manylinux 2010 --cargo-extra-args="--locked"
+          run: maturin build -m qoqo/Cargo.toml --release --manylinux 2010
       - name: Publish
         env:
           TWINE_USERNAME: __token__
@@ -55,6 +55,7 @@ jobs:
           python -m twine upload target/wheels/*
 
   deploy_macos:
+      needs: deploy_cratesio
       runs-on: macOS-latest
       strategy:
         matrix:
@@ -83,7 +84,7 @@ jobs:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         run: |
-          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} -m qoqo/Cargo.toml --release --cargo-extra-args="--locked"
+          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} -m qoqo/Cargo.toml --release
           python -m twine upload target/wheels/*
 
   # deploy_windows:
