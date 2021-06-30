@@ -20,15 +20,15 @@ jobs:
     - name: setup cargo
       run: |
         cargo login ${{ secrets.CRATES_IO_API_TOKEN }}
-        #cargo publish --manifest-path=roqoqo-derive/Cargo.toml --no-verify
+        cargo publish --manifest-path=roqoqo-derive/Cargo.toml --no-verify
         sleep 30
-        #cargo publish --manifest-path=roqoqo/Cargo.toml --no-verify
+        cargo publish --manifest-path=roqoqo/Cargo.toml --no-verify
         sleep 30
-        #cargo publish --manifest-path=qoqo-macros/Cargo.toml --no-verify
+        cargo publish --manifest-path=qoqo-macros/Cargo.toml --no-verify
         sleep 30
-        #cargo publish --manifest-path=qoqo/Cargo.toml --no-verify
+        cargo publish --manifest-path=qoqo/Cargo.toml --no-verify
         sleep 30
-        #cargo publish --manifest-path=roqoqo-test/Cargo.toml --no-verify
+        cargo publish --manifest-path=roqoqo-test/Cargo.toml --no-verify
 
   deploy_pypi_manylinux:
       needs: deploy_cratesio
