@@ -44,7 +44,7 @@ jobs:
         with:
           image: konstin2/maturin
           options: -v /home/runner/work/qoqo/qoqo:/io
-          run: maturin build -i ${{ matrix.python.interpreter } -m qoqo/Cargo.toml --release --manylinux 2010 --cargo-extra-args="--locked"
+          run: maturin build -m qoqo/Cargo.toml --release --manylinux 2010 --cargo-extra-args="--locked"
       - name: Publish
         env:
           TWINE_USERNAME: __token__
@@ -55,7 +55,6 @@ jobs:
           python -m twine upload target/wheels/*
 
   deploy_macos:
-  
       runs-on: macOS-latest
       strategy:
         matrix:
