@@ -6,7 +6,6 @@ license = "Apache-2.0"
 edition = "2018"
 categories = ["science", "simulation"]
 readme = "../README.md"
-include = ["katex.html"]
 repository = "https://github.com/HQSquantumsimulations/qoqo"
 description = "Rust Quantum Computing Toolkit by HQS"
 
