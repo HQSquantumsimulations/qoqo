@@ -260,16 +260,19 @@ fn main() {
         }
     };
     let final_str = format!("{}", final_quote);
-    // Write to file
-    fs::write(
-        "src/operations/_auto_generated_operation_conversion.rs",
-        final_str,
-    )
-    .expect("Could not write to file");
-    // Try to format auto generated operations
-    let _unused_output = Command::new("rustfmt")
-        .arg("src/operations/_auto_generated_operation_conversion.rs")
-        .output();
+    // Don't write to file when running on docs.rs
+    if std::env::var("DOCS_RS").is_err() {
+        // Write to file
+        fs::write(
+            "src/operations/_auto_generated_operation_conversion.rs",
+            final_str,
+        )
+        .expect("Could not write to file");
+        // Try to format auto generated operations
+        let _unused_output = Command::new("rustfmt")
+            .arg("src/operations/_auto_generated_operation_conversion.rs")
+            .output();
+    }
 }
 
 fn extract_fields_with_types(input_fields: Fields) -> Vec<(Ident, Option<String>, Type)> {
