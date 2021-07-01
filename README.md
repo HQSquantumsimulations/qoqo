@@ -26,7 +26,7 @@ What roqoqo/qoqo is **not**:
 * A collection of quantum algorithms
 
 ## roqoqo
-[![Documentation Status]( https://docs.rs/roqoqo/badge.svg?version=0.4.0)
+[![Documentation Status]( https://docs.rs/roqoqo/badge.svg?version=0.1.0)]
 (crates.io link?)
 
 roqoqo provides:
