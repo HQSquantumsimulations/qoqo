@@ -1,6 +1,6 @@
 [package]
 name = "qoqo"
-version = "0.4.1"
+version = "0.4.2"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 readme = "../README.md"
@@ -46,7 +46,7 @@ syn = { version = "1.0", features = ["full", "visit"] }
 proc-macro2 = "1.0"
 
 [package.metadata.docs.rs]
-rustdoc-args = [ "--html-in-header", "../katex.html" ]
+no-default-features = true
 
 [features]
 extension-module = ["pyo3/extension-module"]#, "qoqo_calculator_pyo3/extension-module"]
