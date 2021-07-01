@@ -1,10 +1,11 @@
 [package]
 name = "roqoqo-derive"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2018"
 categories = ["science", "simulation"]
+readme = "../README.md"
 description = "Maros for the roqoqo crate"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

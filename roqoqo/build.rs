@@ -444,11 +444,13 @@ fn main() {
 
     };
     let final_str = format!("{}", final_quote);
-    // Write to file
-    fs::write("src/operations/_auto_generated_operations.rs", final_str)
-        .expect("Could not write to file");
-    // Try to format auto generated operations
-    let _unused_output = Command::new("rustfmt")
-        .arg("src/operations/_auto_generated_operations.rs")
-        .output();
+    if std::env::var("DOCS_RS").is_err() {
+        // Write to file
+        fs::write("src/operations/_auto_generated_operations.rs", final_str)
+            .expect("Could not write to file");
+        // Try to format auto generated operations
+        let _unused_output = Command::new("rustfmt")
+            .arg("src/operations/_auto_generated_operations.rs")
+            .output();
+    }
 }
