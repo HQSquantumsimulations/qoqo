@@ -117,7 +117,7 @@ pub enum RoqoqoError {
         /// Error message.
         msg: String,
     },
-    /// Transparen propagation of CalculatorError.
+    /// Transparent propagation of CalculatorError.
     #[error(transparent)]
     CalculatorError(#[from] CalculatorError),
 }
@@ -157,10 +157,10 @@ pub enum RoqoqoBackendError {
         /// Path of file to be created
         path: String,
     },
-    /// Transparen propagation of RoqoqoError.
+    /// Transparent propagation of RoqoqoError.
     #[error(transparent)]
     RoqoqoError(#[from] RoqoqoError),
-    /// Transparen propagation of CalculatorError.
+    /// Transparent propagation of CalculatorError.
     #[error(transparent)]
     CalculatorError(#[from] CalculatorError),
 }
