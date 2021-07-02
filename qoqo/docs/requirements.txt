@@ -1,7 +1,8 @@
 qoqo>=0.4.0
 numpy
-sphinx >= 1.4
+sphinx >= 2.1
 nbsphinx
 pygments
 recommonmark
+myst_parser
 sphinx_rtd_theme
