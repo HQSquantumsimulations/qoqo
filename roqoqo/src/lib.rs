@@ -117,7 +117,7 @@ pub enum RoqoqoError {
         /// Error message.
         msg: String,
     },
-    /// Transparent propagation of CalculatorError.
+    /// Transparen propagation of CalculatorError.
     #[error(transparent)]
     CalculatorError(#[from] CalculatorError),
 }
@@ -151,7 +151,13 @@ pub enum RoqoqoBackendError {
         /// Error msg
         msg: String,
     },
-    /// Transparent propagation of RoqoqoError.
+    /// Error when communicating with backend over the network.
+    #[error("The file at this location already exists: {path} ")]
+    FileAlreadyExists {
+        /// Path of file to be created
+        path: String,
+    },
+    /// Transparen propagation of RoqoqoError.
     #[error(transparent)]
     RoqoqoError(#[from] RoqoqoError),
     /// Transparen propagation of CalculatorError.
@@ -161,7 +167,6 @@ pub enum RoqoqoBackendError {
 
 pub mod operations;
 
-#[doc(hidden)]
 mod circuit;
 pub mod prelude;
 pub use circuit::*;
