@@ -27,6 +27,11 @@ What roqoqo/qoqo is **not**:
 
 ## roqoqo
 
+[![Crates.io](https://img.shields.io/crates/v/roqoqo)](https://crates.io/crates/roqoqo)
+[![GitHub Workflow Status](https://github.com/HQSquantumsimulations/qoqo/workflows/ci_tests/badge.svg)](https://github.com/HQSquantumsimulations/qoqo/actions)
+[![docs.rs](https://img.shields.io/docsrs/roqoqo)](https://docs.rs/roqoqo/)
+![Crates.io](https://img.shields.io/crates/l/roqoqo)
+
 roqoqo provides:
 
 * A circuit struct to represent quantum programs
@@ -43,8 +48,9 @@ This software is still in the beta stage. Functions and documentation are not ye
 [![Documentation Status](https://readthedocs.org/projects/qoqo/badge/?version=latest)](https://qoqo.readthedocs.io/en/latest/?badge=latest)
 [![GitHub Workflow Status](https://github.com/HQSquantumsimulations/qoqo/workflows/ci_tests/badge.svg)](https://github.com/HQSquantumsimulations/qoqo/actions)
 [![PyPI](https://img.shields.io/pypi/v/qoqo)](https://pypi.org/project/qoqo/)
-![PyPI - License](https://img.shields.io/pypi/l/qoqo)
 [![PyPI - Format](https://img.shields.io/pypi/format/qoqo)](https://pypi.org/project/qoqo/)
+[![Crates.io](https://img.shields.io/crates/v/roqoqo)](https://crates.io/crates/qoqo)
+![Crates.io](https://img.shields.io/crates/l/qoqo)
 
 qoqo provides a full python interface to the underlying roqoqo library, including:
 

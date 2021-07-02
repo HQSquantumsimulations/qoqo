@@ -29,7 +29,7 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.viewcode',
               'sphinx.ext.napoleon',
               'sphinx.ext.autosummary',
-              'nbsphinx', 
+              'nbsphinx',
               'myst_parser']
 # automatically use sphinx-autogen
 autosummary_generate = True
