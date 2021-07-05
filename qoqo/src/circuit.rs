@@ -198,9 +198,9 @@ impl CircuitWrapper {
     pub fn to_bincode(&self) -> PyResult<Py<PyByteArray>> {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize Circuit to bytes"))?;
-        let gil = Python::acquire_gil();
-        let py = gil.python();
-        let b: Py<PyByteArray> = PyByteArray::new(py, &serialized[..]).into();
+        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+         PyByteArray::new(py, &serialized[..]).into();
+        });
         Ok(b)
     }
 
@@ -414,9 +414,7 @@ impl PyObjectProtocol for CircuitWrapper {
     /// Raises:
     ///     NotImplementedError: Other comparison not implemented
     fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let other_ref = other.as_ref(py);
+        let other_ref = Python::with_gil(|py| -> &PyAny {other.as_ref(py)});
         let other = convert_into_circuit(other_ref);
         match op {
             pyo3::class::basic::CompareOp::Eq => match other {
@@ -444,9 +442,7 @@ impl PyNumberProtocol for CircuitWrapper {
     /// Raises:
     ///     TypeError: Right hand side can not be converted to Operation or Circuit.
     fn __iadd__(&'p mut self, other: Py<PyAny>) -> PyResult<()> {
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let other_ref = other.as_ref(py);
+        let other_ref = Python::with_gil(|py| -> &PyAny {other.as_ref(py)});
         match convert_pyany_to_operation(other_ref) {
             Ok(x) => self.internal += x,
             Err(_) => {
@@ -475,10 +471,7 @@ impl PyNumberProtocol for CircuitWrapper {
     ///     TypeError: Left hand side can not be converted to Circuit.
     ///     TypeError: Right hand side can not be converted to Operation or Circuit.
     fn __add__(lhs: Py<PyAny>, rhs: Py<PyAny>) -> PyResult<CircuitWrapper> {
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let lhs_ref = lhs.as_ref(py);
-        let rhs_ref = rhs.as_ref(py);
+        let (lhs_ref, rhs_ref) = Python::with_gil(|py| -> (&PyAny, &PyAny) {(lhs.as_ref(py),rhs.as_ref(py))});
         let self_circ = convert_into_circuit(lhs_ref)
             .map_err(|_| PyTypeError::new_err("Left hand side can not be converted to Circuit"))?;
         match convert_pyany_to_operation(rhs_ref) {

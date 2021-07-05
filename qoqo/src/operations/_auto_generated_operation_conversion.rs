@@ -11,363 +11,366 @@ use roqoqo::operations::*;
 use std::collections::HashMap;
 #[doc = r" Tries to convert a [roqoqo::operations::Operation] to a PyObject"]
 pub fn convert_operation_to_pyobject(operation: Operation) -> PyResult<PyObject> {
-    let gil = Python::acquire_gil();
-    let py = gil.python();
-    match operation {
-        Operation::SingleQubitGate(internal) => {
-            let pyref: Py<SingleQubitGateWrapper> =
-                Py::new(py, SingleQubitGateWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
+    Python::with_gil(|py| -> PyResult<PyObject> {
+        match operation {
+            Operation::SingleQubitGate(internal) => {
+                let pyref: Py<SingleQubitGateWrapper> =
+                    Py::new(py, SingleQubitGateWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::RotateX(internal) => {
+                let pyref: Py<RotateXWrapper> = Py::new(py, RotateXWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::RotateY(internal) => {
+                let pyref: Py<RotateYWrapper> = Py::new(py, RotateYWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::RotateZ(internal) => {
+                let pyref: Py<RotateZWrapper> = Py::new(py, RotateZWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PauliX(internal) => {
+                let pyref: Py<PauliXWrapper> = Py::new(py, PauliXWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PauliY(internal) => {
+                let pyref: Py<PauliYWrapper> = Py::new(py, PauliYWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PauliZ(internal) => {
+                let pyref: Py<PauliZWrapper> = Py::new(py, PauliZWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::SqrtPauliX(internal) => {
+                let pyref: Py<SqrtPauliXWrapper> =
+                    Py::new(py, SqrtPauliXWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::InvSqrtPauliX(internal) => {
+                let pyref: Py<InvSqrtPauliXWrapper> =
+                    Py::new(py, InvSqrtPauliXWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::Hadamard(internal) => {
+                let pyref: Py<HadamardWrapper> = Py::new(py, HadamardWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::SGate(internal) => {
+                let pyref: Py<SGateWrapper> = Py::new(py, SGateWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::TGate(internal) => {
+                let pyref: Py<TGateWrapper> = Py::new(py, TGateWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::RotateAroundSphericalAxis(internal) => {
+                let pyref: Py<RotateAroundSphericalAxisWrapper> =
+                    Py::new(py, RotateAroundSphericalAxisWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaSetNumberOfMeasurements(internal) => {
+                let pyref: Py<PragmaSetNumberOfMeasurementsWrapper> =
+                    Py::new(py, PragmaSetNumberOfMeasurementsWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaRepeatGate(internal) => {
+                let pyref: Py<PragmaRepeatGateWrapper> =
+                    Py::new(py, PragmaRepeatGateWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaOverrotation(internal) => {
+                let pyref: Py<PragmaOverrotationWrapper> =
+                    Py::new(py, PragmaOverrotationWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaBoostNoise(internal) => {
+                let pyref: Py<PragmaBoostNoiseWrapper> =
+                    Py::new(py, PragmaBoostNoiseWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaStopParallelBlock(internal) => {
+                let pyref: Py<PragmaStopParallelBlockWrapper> =
+                    Py::new(py, PragmaStopParallelBlockWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaGlobalPhase(internal) => {
+                let pyref: Py<PragmaGlobalPhaseWrapper> =
+                    Py::new(py, PragmaGlobalPhaseWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaSleep(internal) => {
+                let pyref: Py<PragmaSleepWrapper> =
+                    Py::new(py, PragmaSleepWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaActiveReset(internal) => {
+                let pyref: Py<PragmaActiveResetWrapper> =
+                    Py::new(py, PragmaActiveResetWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaStartDecompositionBlock(internal) => {
+                let pyref: Py<PragmaStartDecompositionBlockWrapper> =
+                    Py::new(py, PragmaStartDecompositionBlockWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaStopDecompositionBlock(internal) => {
+                let pyref: Py<PragmaStopDecompositionBlockWrapper> =
+                    Py::new(py, PragmaStopDecompositionBlockWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaDamping(internal) => {
+                let pyref: Py<PragmaDampingWrapper> =
+                    Py::new(py, PragmaDampingWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaDepolarising(internal) => {
+                let pyref: Py<PragmaDepolarisingWrapper> =
+                    Py::new(py, PragmaDepolarisingWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaDephasing(internal) => {
+                let pyref: Py<PragmaDephasingWrapper> =
+                    Py::new(py, PragmaDephasingWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaRandomNoise(internal) => {
+                let pyref: Py<PragmaRandomNoiseWrapper> =
+                    Py::new(py, PragmaRandomNoiseWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaConditional(internal) => {
+                let pyref: Py<PragmaConditionalWrapper> =
+                    Py::new(py, PragmaConditionalWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::CNOT(internal) => {
+                let pyref: Py<CNOTWrapper> = Py::new(py, CNOTWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::SWAP(internal) => {
+                let pyref: Py<SWAPWrapper> = Py::new(py, SWAPWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::ISwap(internal) => {
+                let pyref: Py<ISwapWrapper> = Py::new(py, ISwapWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::SqrtISwap(internal) => {
+                let pyref: Py<SqrtISwapWrapper> =
+                    Py::new(py, SqrtISwapWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::InvSqrtISwap(internal) => {
+                let pyref: Py<InvSqrtISwapWrapper> =
+                    Py::new(py, InvSqrtISwapWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::FSwap(internal) => {
+                let pyref: Py<FSwapWrapper> = Py::new(py, FSwapWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::MolmerSorensenXX(internal) => {
+                let pyref: Py<MolmerSorensenXXWrapper> =
+                    Py::new(py, MolmerSorensenXXWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::VariableMSXX(internal) => {
+                let pyref: Py<VariableMSXXWrapper> =
+                    Py::new(py, VariableMSXXWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::GivensRotation(internal) => {
+                let pyref: Py<GivensRotationWrapper> =
+                    Py::new(py, GivensRotationWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::GivensRotationLittleEndian(internal) => {
+                let pyref: Py<GivensRotationLittleEndianWrapper> =
+                    Py::new(py, GivensRotationLittleEndianWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::XY(internal) => {
+                let pyref: Py<XYWrapper> = Py::new(py, XYWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::ControlledPhaseShift(internal) => {
+                let pyref: Py<ControlledPhaseShiftWrapper> =
+                    Py::new(py, ControlledPhaseShiftWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::ControlledPauliY(internal) => {
+                let pyref: Py<ControlledPauliYWrapper> =
+                    Py::new(py, ControlledPauliYWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::ControlledPauliZ(internal) => {
+                let pyref: Py<ControlledPauliZWrapper> =
+                    Py::new(py, ControlledPauliZWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::Qsim(internal) => {
+                let pyref: Py<QsimWrapper> = Py::new(py, QsimWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::Fsim(internal) => {
+                let pyref: Py<FsimWrapper> = Py::new(py, FsimWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::SpinInteraction(internal) => {
+                let pyref: Py<SpinInteractionWrapper> =
+                    Py::new(py, SpinInteractionWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::Bogoliubov(internal) => {
+                let pyref: Py<BogoliubovWrapper> =
+                    Py::new(py, BogoliubovWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PMInteraction(internal) => {
+                let pyref: Py<PMInteractionWrapper> =
+                    Py::new(py, PMInteractionWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::ComplexPMInteraction(internal) => {
+                let pyref: Py<ComplexPMInteractionWrapper> =
+                    Py::new(py, ComplexPMInteractionWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::MeasureQubit(internal) => {
+                let pyref: Py<MeasureQubitWrapper> =
+                    Py::new(py, MeasureQubitWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaGetStateVector(internal) => {
+                let pyref: Py<PragmaGetStateVectorWrapper> =
+                    Py::new(py, PragmaGetStateVectorWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaGetDensityMatrix(internal) => {
+                let pyref: Py<PragmaGetDensityMatrixWrapper> =
+                    Py::new(py, PragmaGetDensityMatrixWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaGetOccupationProbability(internal) => {
+                let pyref: Py<PragmaGetOccupationProbabilityWrapper> =
+                    Py::new(py, PragmaGetOccupationProbabilityWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaGetPauliProduct(internal) => {
+                let pyref: Py<PragmaGetPauliProductWrapper> =
+                    Py::new(py, PragmaGetPauliProductWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaRepeatedMeasurement(internal) => {
+                let pyref: Py<PragmaRepeatedMeasurementWrapper> =
+                    Py::new(py, PragmaRepeatedMeasurementWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::DefinitionFloat(internal) => {
+                let pyref: Py<DefinitionFloatWrapper> =
+                    Py::new(py, DefinitionFloatWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::DefinitionComplex(internal) => {
+                let pyref: Py<DefinitionComplexWrapper> =
+                    Py::new(py, DefinitionComplexWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::DefinitionUsize(internal) => {
+                let pyref: Py<DefinitionUsizeWrapper> =
+                    Py::new(py, DefinitionUsizeWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::DefinitionBit(internal) => {
+                let pyref: Py<DefinitionBitWrapper> =
+                    Py::new(py, DefinitionBitWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::InputSymbolic(internal) => {
+                let pyref: Py<InputSymbolicWrapper> =
+                    Py::new(py, InputSymbolicWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaSetStateVector(internal) => {
+                let pyref: Py<PragmaSetStateVectorWrapper> =
+                    Py::new(py, PragmaSetStateVectorWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaSetDensityMatrix(internal) => {
+                let pyref: Py<PragmaSetDensityMatrixWrapper> =
+                    Py::new(py, PragmaSetDensityMatrixWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
+            Operation::PragmaGeneralNoise(internal) => {
+                let pyref: Py<PragmaGeneralNoiseWrapper> =
+                    Py::new(py, PragmaGeneralNoiseWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
         }
-        Operation::RotateX(internal) => {
-            let pyref: Py<RotateXWrapper> = Py::new(py, RotateXWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::RotateY(internal) => {
-            let pyref: Py<RotateYWrapper> = Py::new(py, RotateYWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::RotateZ(internal) => {
-            let pyref: Py<RotateZWrapper> = Py::new(py, RotateZWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PauliX(internal) => {
-            let pyref: Py<PauliXWrapper> = Py::new(py, PauliXWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PauliY(internal) => {
-            let pyref: Py<PauliYWrapper> = Py::new(py, PauliYWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PauliZ(internal) => {
-            let pyref: Py<PauliZWrapper> = Py::new(py, PauliZWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::SqrtPauliX(internal) => {
-            let pyref: Py<SqrtPauliXWrapper> = Py::new(py, SqrtPauliXWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::InvSqrtPauliX(internal) => {
-            let pyref: Py<InvSqrtPauliXWrapper> =
-                Py::new(py, InvSqrtPauliXWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::Hadamard(internal) => {
-            let pyref: Py<HadamardWrapper> = Py::new(py, HadamardWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::SGate(internal) => {
-            let pyref: Py<SGateWrapper> = Py::new(py, SGateWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::TGate(internal) => {
-            let pyref: Py<TGateWrapper> = Py::new(py, TGateWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::RotateAroundSphericalAxis(internal) => {
-            let pyref: Py<RotateAroundSphericalAxisWrapper> =
-                Py::new(py, RotateAroundSphericalAxisWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaSetNumberOfMeasurements(internal) => {
-            let pyref: Py<PragmaSetNumberOfMeasurementsWrapper> =
-                Py::new(py, PragmaSetNumberOfMeasurementsWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaRepeatGate(internal) => {
-            let pyref: Py<PragmaRepeatGateWrapper> =
-                Py::new(py, PragmaRepeatGateWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaOverrotation(internal) => {
-            let pyref: Py<PragmaOverrotationWrapper> =
-                Py::new(py, PragmaOverrotationWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaBoostNoise(internal) => {
-            let pyref: Py<PragmaBoostNoiseWrapper> =
-                Py::new(py, PragmaBoostNoiseWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaStopParallelBlock(internal) => {
-            let pyref: Py<PragmaStopParallelBlockWrapper> =
-                Py::new(py, PragmaStopParallelBlockWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaGlobalPhase(internal) => {
-            let pyref: Py<PragmaGlobalPhaseWrapper> =
-                Py::new(py, PragmaGlobalPhaseWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaSleep(internal) => {
-            let pyref: Py<PragmaSleepWrapper> =
-                Py::new(py, PragmaSleepWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaActiveReset(internal) => {
-            let pyref: Py<PragmaActiveResetWrapper> =
-                Py::new(py, PragmaActiveResetWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaStartDecompositionBlock(internal) => {
-            let pyref: Py<PragmaStartDecompositionBlockWrapper> =
-                Py::new(py, PragmaStartDecompositionBlockWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaStopDecompositionBlock(internal) => {
-            let pyref: Py<PragmaStopDecompositionBlockWrapper> =
-                Py::new(py, PragmaStopDecompositionBlockWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaDamping(internal) => {
-            let pyref: Py<PragmaDampingWrapper> =
-                Py::new(py, PragmaDampingWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaDepolarising(internal) => {
-            let pyref: Py<PragmaDepolarisingWrapper> =
-                Py::new(py, PragmaDepolarisingWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaDephasing(internal) => {
-            let pyref: Py<PragmaDephasingWrapper> =
-                Py::new(py, PragmaDephasingWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaRandomNoise(internal) => {
-            let pyref: Py<PragmaRandomNoiseWrapper> =
-                Py::new(py, PragmaRandomNoiseWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaConditional(internal) => {
-            let pyref: Py<PragmaConditionalWrapper> =
-                Py::new(py, PragmaConditionalWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::CNOT(internal) => {
-            let pyref: Py<CNOTWrapper> = Py::new(py, CNOTWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::SWAP(internal) => {
-            let pyref: Py<SWAPWrapper> = Py::new(py, SWAPWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::ISwap(internal) => {
-            let pyref: Py<ISwapWrapper> = Py::new(py, ISwapWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::SqrtISwap(internal) => {
-            let pyref: Py<SqrtISwapWrapper> = Py::new(py, SqrtISwapWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::InvSqrtISwap(internal) => {
-            let pyref: Py<InvSqrtISwapWrapper> =
-                Py::new(py, InvSqrtISwapWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::FSwap(internal) => {
-            let pyref: Py<FSwapWrapper> = Py::new(py, FSwapWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::MolmerSorensenXX(internal) => {
-            let pyref: Py<MolmerSorensenXXWrapper> =
-                Py::new(py, MolmerSorensenXXWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::VariableMSXX(internal) => {
-            let pyref: Py<VariableMSXXWrapper> =
-                Py::new(py, VariableMSXXWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::GivensRotation(internal) => {
-            let pyref: Py<GivensRotationWrapper> =
-                Py::new(py, GivensRotationWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::GivensRotationLittleEndian(internal) => {
-            let pyref: Py<GivensRotationLittleEndianWrapper> =
-                Py::new(py, GivensRotationLittleEndianWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::XY(internal) => {
-            let pyref: Py<XYWrapper> = Py::new(py, XYWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::ControlledPhaseShift(internal) => {
-            let pyref: Py<ControlledPhaseShiftWrapper> =
-                Py::new(py, ControlledPhaseShiftWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::ControlledPauliY(internal) => {
-            let pyref: Py<ControlledPauliYWrapper> =
-                Py::new(py, ControlledPauliYWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::ControlledPauliZ(internal) => {
-            let pyref: Py<ControlledPauliZWrapper> =
-                Py::new(py, ControlledPauliZWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::Qsim(internal) => {
-            let pyref: Py<QsimWrapper> = Py::new(py, QsimWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::Fsim(internal) => {
-            let pyref: Py<FsimWrapper> = Py::new(py, FsimWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::SpinInteraction(internal) => {
-            let pyref: Py<SpinInteractionWrapper> =
-                Py::new(py, SpinInteractionWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::Bogoliubov(internal) => {
-            let pyref: Py<BogoliubovWrapper> = Py::new(py, BogoliubovWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PMInteraction(internal) => {
-            let pyref: Py<PMInteractionWrapper> =
-                Py::new(py, PMInteractionWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::ComplexPMInteraction(internal) => {
-            let pyref: Py<ComplexPMInteractionWrapper> =
-                Py::new(py, ComplexPMInteractionWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::MeasureQubit(internal) => {
-            let pyref: Py<MeasureQubitWrapper> =
-                Py::new(py, MeasureQubitWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaGetStateVector(internal) => {
-            let pyref: Py<PragmaGetStateVectorWrapper> =
-                Py::new(py, PragmaGetStateVectorWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaGetDensityMatrix(internal) => {
-            let pyref: Py<PragmaGetDensityMatrixWrapper> =
-                Py::new(py, PragmaGetDensityMatrixWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaGetOccupationProbability(internal) => {
-            let pyref: Py<PragmaGetOccupationProbabilityWrapper> =
-                Py::new(py, PragmaGetOccupationProbabilityWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaGetPauliProduct(internal) => {
-            let pyref: Py<PragmaGetPauliProductWrapper> =
-                Py::new(py, PragmaGetPauliProductWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaRepeatedMeasurement(internal) => {
-            let pyref: Py<PragmaRepeatedMeasurementWrapper> =
-                Py::new(py, PragmaRepeatedMeasurementWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::DefinitionFloat(internal) => {
-            let pyref: Py<DefinitionFloatWrapper> =
-                Py::new(py, DefinitionFloatWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::DefinitionComplex(internal) => {
-            let pyref: Py<DefinitionComplexWrapper> =
-                Py::new(py, DefinitionComplexWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::DefinitionUsize(internal) => {
-            let pyref: Py<DefinitionUsizeWrapper> =
-                Py::new(py, DefinitionUsizeWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::DefinitionBit(internal) => {
-            let pyref: Py<DefinitionBitWrapper> =
-                Py::new(py, DefinitionBitWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::InputSymbolic(internal) => {
-            let pyref: Py<InputSymbolicWrapper> =
-                Py::new(py, InputSymbolicWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaSetStateVector(internal) => {
-            let pyref: Py<PragmaSetStateVectorWrapper> =
-                Py::new(py, PragmaSetStateVectorWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaSetDensityMatrix(internal) => {
-            let pyref: Py<PragmaSetDensityMatrixWrapper> =
-                Py::new(py, PragmaSetDensityMatrixWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-        Operation::PragmaGeneralNoise(internal) => {
-            let pyref: Py<PragmaGeneralNoiseWrapper> =
-                Py::new(py, PragmaGeneralNoiseWrapper { internal }).unwrap();
-            let pyobject: PyObject = pyref.to_object(py);
-            Ok(pyobject)
-        }
-    }
+    })
 }
 #[doc = r" Tries to convert any python object to a [roqoqo::operations::Operation]"]
 pub fn convert_pyany_to_operation(op: &PyAny) -> Result<Operation, QoqoError> {

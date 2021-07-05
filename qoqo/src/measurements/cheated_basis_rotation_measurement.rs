@@ -82,9 +82,7 @@ impl CheatedBasisRotationWrapper {
         complex_registers: HashMap<String, ComplexOutputRegister>,
     ) -> PyResult<Option<HashMap<String, f64>>> {
         let mut bit_registers: HashMap<String, BitOutputRegister> = HashMap::new();
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let bit_registers_ref = input_bit_registers.as_ref(py);
+        let bit_registers_ref = Python::with_gil(|py| -> &PyAny {input_bit_registers.as_ref(py)});
         if let Ok(try_downcast) = bit_registers_ref.extract::<HashMap<String, BitOutputRegister>>()
         {
             bit_registers = try_downcast
