@@ -151,17 +151,22 @@ pub enum RoqoqoBackendError {
         /// Error msg
         msg: String,
     },
+    /// Error when communicating with backend over the network.
+    #[error("The file at this location already exists: {path} ")]
+    FileAlreadyExists {
+        /// Path of file to be created
+        path: String,
+    },
     /// Transparent propagation of RoqoqoError.
     #[error(transparent)]
     RoqoqoError(#[from] RoqoqoError),
-    /// Transparen propagation of CalculatorError.
+    /// Transparent propagation of CalculatorError.
     #[error(transparent)]
     CalculatorError(#[from] CalculatorError),
 }
 
 pub mod operations;
 
-#[doc(hidden)]
 mod circuit;
 pub mod prelude;
 pub use circuit::*;
