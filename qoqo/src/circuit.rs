@@ -349,6 +349,24 @@ impl CircuitWrapper {
         Ok(defs)
     }
 
+    /// Return a list of all operations in the Circuit.
+    ///
+    /// Returns:
+    ///     list[Operation]: A vector of the operations in the Circuit.
+    pub fn operations(&self) -> PyResult<Vec<PyObject>> {
+        let mut ops: Vec<PyObject> = Vec::new();
+        for op in self
+            .internal
+            .operations()
+            .iter()
+            .cloned()
+            .map(convert_operation_to_pyobject)
+        {
+            ops.push(op?)
+        }
+        Ok(ops)
+    }
+
     /// Return a list of operations with given tag.
     ///
     /// Args:
