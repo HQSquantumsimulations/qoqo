@@ -722,11 +722,11 @@ fn test_pyo3_copy_deepcopy_overrotation() {
     let comparison_copy = bool::extract(
         copy_op
             .as_ref(py)
-            .call_method1("__ne__", (operation.clone(),))
+            .call_method1("__eq__", (operation.clone(),))
             .unwrap(),
     )
     .unwrap();
-    assert!(!comparison_copy);
+    assert!(comparison_copy);
 
     let extracted_copy: PragmaOverrotationWrapper =
         PragmaOverrotationWrapper::extract(copy_op.as_ref(py)).unwrap();
@@ -734,14 +734,6 @@ fn test_pyo3_copy_deepcopy_overrotation() {
         extracted_copy.internal,
         PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)
     );
-    let comparison_deepcopy = bool::extract(
-        deepcopy_op
-            .as_ref(py)
-            .call_method1("__ne__", (operation.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(!comparison_deepcopy);
     let comparison_deepcopy = bool::extract(
         deepcopy_op
             .as_ref(py)
@@ -1028,11 +1020,11 @@ fn test_pyo3_substitute_parameters_overrotation() {
     let comparison = bool::extract(
         substitute_op
             .as_ref(py)
-            .call_method1("__ne__", (operation.clone(),))
+            .call_method1("__eq__", (operation.clone(),))
             .unwrap(),
     )
     .unwrap();
-    assert!(!comparison);
+    assert!(comparison);
 }
 
 /// Test substitute_parameters() causing an error `None`
@@ -1182,11 +1174,11 @@ fn test_pyo3_remap_qubits_overrotation() {
     let comparison = bool::extract(
         remapped_op
             .as_ref(py)
-            .call_method1("__ne__", (operation_two.clone(),))
+            .call_method1("__eq__", (operation_two.clone(),))
             .unwrap(),
     )
     .unwrap();
-    assert!(!comparison);
+    assert!(comparison);
 
     let qubit_mapping: HashMap<usize, usize> = HashMap::new();
     let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
@@ -1731,11 +1723,11 @@ fn test_pyo3_new_overrotation() {
     let comparison = bool::extract(
         new_op
             .as_ref()
-            .call_method1("__ne__", (copy_param.clone(),))
+            .call_method1("__eq__", (copy_param.clone(),))
             .unwrap(),
     )
     .unwrap();
-    assert!(!comparison);
+    assert!(comparison);
 
     // Testing PartialEq, Clone and Debug
     let pragma_wrapper = new_op.extract::<PragmaOverrotationWrapper>().unwrap();
