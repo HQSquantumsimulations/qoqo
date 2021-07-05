@@ -1511,11 +1511,12 @@ fn pragma_start_decomp_block_substitute_trait() {
 
     // (2) Remap qubits function
     let mut reordering_test = HashMap::new();
+    reordering_test.insert(1, 1);
     reordering_test.insert(0, 0);
-    reordering_test.insert(2, 1);
-    let pragma_test = PragmaStartDecompositionBlock::new(vec![0, 1], reordering_test);
+    let pragma_test = PragmaStartDecompositionBlock::new(vec![1, 0], reordering_test);
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
-    qubit_mapping_test.insert(2, 1);
+    qubit_mapping_test.insert(0, 1);
+    qubit_mapping_test.insert(1, 0);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
 }

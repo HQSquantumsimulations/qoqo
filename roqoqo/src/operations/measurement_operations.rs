@@ -76,20 +76,19 @@ const TAGS_PragmaGetStateVector: &[&str; 4] = &[
 impl Substitute for PragmaGetStateVector {
     /// Remaps qubits in operations in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
-        let new_circuit = self
-            .circuit
-            .as_ref()
-            .map(|c| c.remap_qubits(mapping).unwrap());
+        let new_circuit = match self.circuit.as_ref() {
+            Some(x) => Some(x.remap_qubits(mapping)?),
+            _ => None,
+        };
         Ok(PragmaGetStateVector::new(self.readout.clone(), new_circuit))
     }
 
     /// Substitutes symbolic parameters in clone of the operation.
     fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
-        let new_circuit = self
-            .circuit
-            .as_ref()
-            .map(|c| c.substitute_parameters(calculator).unwrap());
-        // .map(|c| c.substitute_parameters(calculator));
+        let new_circuit = match self.circuit.as_ref() {
+            Some(x) => Some(x.substitute_parameters(calculator)?),
+            _ => None,
+        };
         Ok(PragmaGetStateVector::new(self.readout.clone(), new_circuit))
     }
 }
@@ -125,10 +124,10 @@ const TAGS_PragmaGetDensityMatrix: &[&str; 4] = &[
 impl Substitute for PragmaGetDensityMatrix {
     /// Remaps qubits in operations in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
-        let new_circuit = self
-            .circuit
-            .as_ref()
-            .map(|c| c.remap_qubits(mapping).unwrap());
+        let new_circuit = match self.circuit.as_ref() {
+            Some(x) => Some(x.remap_qubits(mapping)?),
+            _ => None,
+        };
         Ok(PragmaGetDensityMatrix::new(
             self.readout.clone(),
             new_circuit,
@@ -137,10 +136,10 @@ impl Substitute for PragmaGetDensityMatrix {
 
     /// Substitutes symbolic parameters in clone of the operation.
     fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
-        let new_circuit = self
-            .circuit
-            .as_ref()
-            .map(|c| c.substitute_parameters(calculator).unwrap());
+        let new_circuit = match self.circuit.as_ref() {
+            Some(x) => Some(x.substitute_parameters(calculator)?),
+            _ => None,
+        };
         Ok(PragmaGetDensityMatrix::new(
             self.readout.clone(),
             new_circuit,
@@ -182,10 +181,10 @@ const TAGS_PragmaGetOccupationProbability: &[&str; 4] = &[
 impl Substitute for PragmaGetOccupationProbability {
     /// Remaps qubits in operations in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
-        let new_circuit = self
-            .circuit
-            .as_ref()
-            .map(|c| c.remap_qubits(mapping).unwrap());
+        let new_circuit = match self.circuit.as_ref() {
+            Some(x) => Some(x.remap_qubits(mapping)?),
+            _ => None,
+        };
         Ok(PragmaGetOccupationProbability::new(
             self.readout.clone(),
             new_circuit,
@@ -194,10 +193,10 @@ impl Substitute for PragmaGetOccupationProbability {
 
     /// Substitutes symbolic parameters in clone of the operation.
     fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
-        let new_circuit = self
-            .circuit
-            .as_ref()
-            .map(|c| c.substitute_parameters(calculator).unwrap());
+        let new_circuit = match self.circuit.as_ref() {
+            Some(x) => Some(x.substitute_parameters(calculator)?),
+            _ => None,
+        };
         Ok(PragmaGetOccupationProbability::new(
             self.readout.clone(),
             new_circuit,

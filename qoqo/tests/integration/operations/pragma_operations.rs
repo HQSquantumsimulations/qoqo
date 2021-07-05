@@ -45,7 +45,13 @@ fn convert_cf_to_pyobject(
 
 fn reordering() -> HashMap<usize, usize> {
     let mut reordering: HashMap<usize, usize> = HashMap::new();
-    reordering.insert(0, 1);
+    reordering.insert(0, 0);
+    reordering
+}
+
+fn reordering_remapped() -> HashMap<usize, usize> {
+    let mut reordering: HashMap<usize, usize> = HashMap::new();
+    reordering.insert(2, 2);
     reordering
 }
 
@@ -608,7 +614,7 @@ fn test_pyo3_involved_qubits_qubit_overrotation(input_definition: Operation) {
 #[test_case(Operation::from(PragmaActiveReset::new(0)),
             "PragmaActiveReset { qubit: 0 }"; "PragmaActiveReset")]
 #[test_case(Operation::from(PragmaStartDecompositionBlock::new(vec![0, 1], reordering())),
-            "PragmaStartDecompositionBlock { qubits: [0, 1], reordering_dictionary: {0: 1} }"; "PragmaStartDecompositionBlock")]
+            "PragmaStartDecompositionBlock { qubits: [0, 1], reordering_dictionary: {0: 0} }"; "PragmaStartDecompositionBlock")]
 #[test_case(Operation::from(PragmaStopDecompositionBlock::new(vec![0, 1])),
             "PragmaStopDecompositionBlock { qubits: [0, 1] }"; "PragmaStopDecompositionBlock")]
 #[test_case(Operation::from(PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))),
@@ -1093,7 +1099,7 @@ fn test_pyo3_substituteparameters_error(input_operation: Operation) {
             Operation::from(PragmaActiveReset::new(2));
             "PragmaActiveReset")]
 #[test_case(Operation::from(PragmaStartDecompositionBlock::new(vec![0], reordering())),
-            Operation::from(PragmaStartDecompositionBlock::new(vec![0], qubits_remapped()));
+            Operation::from(PragmaStartDecompositionBlock::new(vec![2], reordering_remapped()));
             "PragmaStartDecompositionBlock")]
 #[test_case(Operation::from(PragmaStopDecompositionBlock::new(vec![0])),
             Operation::from(PragmaStopDecompositionBlock::new(vec![2]));
@@ -2030,7 +2036,7 @@ fn test_pyo3_new_start_decomposition_block() {
 
     assert_eq!(
         format!("{:?}", pragma_wrapper),
-        "PragmaStartDecompositionBlockWrapper { internal: PragmaStartDecompositionBlock { qubits: [0], reordering_dictionary: {0: 1} } }"
+        "PragmaStartDecompositionBlockWrapper { internal: PragmaStartDecompositionBlock { qubits: [0], reordering_dictionary: {0: 0} } }"
     );
 }
 
@@ -2418,6 +2424,7 @@ fn test_pyo3_new_conditional() {
 #[test_case(Operation::from(PragmaStopParallelBlock::new(vec![0, 1], CalculatorFloat::from(0.0000001))); "PragmaStopParallelBlock")]
 #[test_case(Operation::from(PragmaSleep::new(vec![0, 1], CalculatorFloat::from(0.0000001))); "PragmaSleep")]
 #[test_case(Operation::from(PragmaActiveReset::new(0)); "PragmaActiveReset")]
+#[test_case(Operation::from(PragmaStartDecompositionBlock::new(vec![0, 1], reordering())); "PragmaStartDecompositionBlock")]
 #[test_case(Operation::from(PragmaStopDecompositionBlock::new(vec![0, 1])); "PragmaStopDecompositionBlock")]
 #[test_case(Operation::from(PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDamping")]
 #[test_case(Operation::from(PragmaDepolarising::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDepolarising")]
