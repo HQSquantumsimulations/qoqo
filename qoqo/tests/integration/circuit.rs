@@ -12,6 +12,7 @@
 
 use pyo3::exceptions::PyIndexError;
 use pyo3::prelude::*;
+use qoqo::measurements::{BasisRotationInputWrapper, BasisRotationWrapper};
 use qoqo::operations::{
     convert_operation_to_pyobject, PragmaOverrotationWrapper, RotateXWrapper, RotateYWrapper,
 };
@@ -272,9 +273,54 @@ fn test_to_from_bincode() {
         new.call_method1("from_bincode", (bincode::serialize(&vec![0]).unwrap(),));
     assert!(deserialised_error.is_err());
 
+    let deserialised_error = deserialised.call_method0("from_bincode");
+    assert!(deserialised_error.is_err());
+
+    let serialised_error = serialised.call_method0("to_bincode");
+    assert!(serialised_error.is_err());
+
     let comparison =
         bool::extract(deserialised.call_method1("__eq__", (circuit,)).unwrap()).unwrap();
     assert!(comparison)
+}
+
+#[test]
+fn test_value_error_bincode() {
+    let gil = Python::acquire_gil();
+    let py = gil.python();
+
+    let input_type = py.get_type::<BasisRotationInputWrapper>();
+    let input = input_type
+        .call1((3, false))
+        .unwrap()
+        .cast_as::<PyCell<BasisRotationInputWrapper>>()
+        .unwrap();
+    let tmp_vec: Vec<usize> = Vec::new();
+    let _ = input
+        .call_method1("add_pauli_product", ("ro", tmp_vec))
+        .unwrap();
+
+    let mut circs: Vec<CircuitWrapper> = Vec::new();
+    circs.push(CircuitWrapper::new());
+
+    let br_type = py.get_type::<BasisRotationWrapper>();
+    let br = br_type
+        .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+        .unwrap()
+        .cast_as::<PyCell<BasisRotationWrapper>>()
+        .unwrap();
+
+    let new_br = br.clone();
+    let serialised = br.call_method0("to_json").unwrap();
+    let deserialised = new_br
+        .call_method1("from_json", (serialised,))
+        .unwrap()
+        .cast_as::<PyCell<BasisRotationWrapper>>()
+        .unwrap();
+
+    let new = new_circuit(py);
+    let deserialised_error = new.call_method1("from_bincode", (deserialised,));
+    assert!(deserialised_error.is_err());
 }
 
 /// Test to_ and from_json functions of Circuit
@@ -299,6 +345,9 @@ fn test_to_from_json() {
 
     let serialised_error = serialised.call_method0("to_json");
     assert!(serialised_error.is_err());
+
+    let deserialised_error = deserialised.call_method0("from_json");
+    assert!(deserialised_error.is_err());
 
     let comparison =
         bool::extract(deserialised.call_method1("__eq__", (circuit,)).unwrap()).unwrap();
@@ -421,6 +470,29 @@ fn test_definitions() {
     circuit.call_method1("add", (operation2.clone(),)).unwrap();
 
     let comp_op = circuit.call_method0("definitions").unwrap();
+    let comparison = bool::extract(
+        comp_op
+            .call_method1("__eq__", (vec![operation1, operation2],))
+            .unwrap(),
+    )
+    .unwrap();
+    assert!(comparison)
+}
+
+/// Test operations function of Circuit
+#[test]
+fn test_operations() {
+    let added_op1 = Operation::from(RotateX::new(0, CalculatorFloat::from("theta")));
+    let added_op2 = Operation::from(RotateZ::new(0, CalculatorFloat::from(0.0)));
+    let gil = pyo3::Python::acquire_gil();
+    let py = gil.python();
+    let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
+    let operation2 = convert_operation_to_pyobject(added_op2).unwrap();
+    let circuit = new_circuit(py);
+    circuit.call_method1("add", (operation1.clone(),)).unwrap();
+    circuit.call_method1("add", (operation2.clone(),)).unwrap();
+
+    let comp_op = circuit.call_method0("operations").unwrap();
     let comparison = bool::extract(
         comp_op
             .call_method1("__eq__", (vec![operation1, operation2],))
@@ -780,7 +852,6 @@ fn test_circuit_overrotate() {
     let _new_overrotation_1 = overrotation_type
         .call1(("RotateY".to_string(), vec![1], 20.0, 30.0))
         .unwrap();
-    // TypeError('Cannot convert python object to Operation')
     circuit.call_method1("add", (_new_overrotation_1,)).unwrap();
 
     let rotatex_type = py.get_type::<RotateXWrapper>();
@@ -796,25 +867,23 @@ fn test_circuit_overrotate() {
     let new_rotatey_1 = rotatey_type.call1((1, 3.0)).unwrap();
     circuit.call_method1("add", (new_rotatey_1,)).unwrap();
 
-    // println!("{}", format!("{:?}", circuit.clone()));
-
     let circuit_overrotated = circuit
         .call_method0("overrotate")
         .unwrap()
         .cast_as::<PyCell<CircuitWrapper>>()
         .unwrap();
 
-    // println!("{}", format!("{:?}", circuit_overrotated.clone()));
-
-    // actually, the original circuit and the overrotated circuit are supposed to be different.
-    // test to be adapted, once PragmaOverrotation operation can be added to the circuit without causing an error
-    // assert_ne!(format!("{:?}", circuit.clone()), format!("{:?}", circuit_overrotated.clone()));
     assert_ne!(
         format!("{:?}", circuit.clone()),
         format!("{:?}", circuit_overrotated.clone())
     );
-    assert_eq!(
-        format!("{:?}", circuit.clone()),
-        format!("{:?}", circuit.clone())
-    );
+
+    let comparison = bool::extract(
+        circuit
+            .as_ref()
+            .call_method1("__ne__", (circuit_overrotated,))
+            .unwrap(),
+    )
+    .unwrap();
+    assert!(comparison);
 }
