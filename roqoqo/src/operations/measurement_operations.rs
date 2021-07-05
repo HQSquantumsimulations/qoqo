@@ -85,10 +85,11 @@ impl Substitute for PragmaGetStateVector {
 
     /// Substitutes symbolic parameters in clone of the operation.
     fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
-        let new_circuit = self
-            .circuit
-            .as_ref()
-            .map(|c| c.substitute_parameters(calculator).unwrap());
+        let new_circuit = match self.circuit.as_ref() {
+            Some(x) => Some(x.substitute_parameters(calculator)?),
+            _ => None,
+        };
+        //.map(|c| c.substitute_parameters(calculator).unwrap());
         // .map(|c| c.substitute_parameters(calculator));
         Ok(PragmaGetStateVector::new(self.readout.clone(), new_circuit))
     }

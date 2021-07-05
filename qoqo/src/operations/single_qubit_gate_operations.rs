@@ -22,7 +22,7 @@ use qoqo_macros::*;
 use roqoqo::operations::*;
 use std::collections::HashMap;
 
-#[wrap(Operate, OperateSingleQubit)]
+#[wrap(Operate, OperateSingleQubit, OperateSingleQubitGate, OperateGate)]
 /// The general single qubit unitary gate.
 ///
 /// .. math::
@@ -48,14 +48,14 @@ struct SingleQubitGate {
     global_phase: CalculatorFloat,
 }
 
-#[pymethods]
-impl SingleQubitGateWrapper {
-    fn unitary_matrix(&self) -> PyResult<Py<PyArray2<Complex64>>> {
-        let gil = Python::acquire_gil();
-        let py = gil.python();
-        Ok(self.internal.unitary_matrix().map_err(|_| PyRuntimeError::new_err("Operation cannot return float unitary matrix. Please substitute symbolic parameters or verify  the matrix normalization."))?.to_pyarray(py).to_owned())
-    }
-}
+// #[pymethods]
+// impl SingleQubitGateWrapper {
+//     fn unitary_matrix(&self) -> PyResult<Py<PyArray2<Complex64>>> {
+//         let gil = Python::acquire_gil();
+//         let py = gil.python();
+//         Ok(self.internal.unitary_matrix().map_err(|_| PyRuntimeError::new_err("Operation cannot return float unitary matrix. Please substitute symbolic parameters or verify  the matrix normalization."))?.to_pyarray(py).to_owned())
+//     }
+// }
 
 #[wrap(
     Operate,
