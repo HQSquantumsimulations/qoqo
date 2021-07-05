@@ -781,7 +781,7 @@ fn test_circuit_overrotate() {
         .call1(("RotateY".to_string(), vec![1], 20.0, 30.0))
         .unwrap();
     // TypeError('Cannot convert python object to Operation')
-    // circuit.call_method1("add", (_new_overrotation_1,)).unwrap();
+    circuit.call_method1("add", (_new_overrotation_1,)).unwrap();
 
     let rotatex_type = py.get_type::<RotateXWrapper>();
     let new_rotatex_0 = rotatex_type.call1((0, 0.0)).unwrap();
@@ -809,8 +809,12 @@ fn test_circuit_overrotate() {
     // actually, the original circuit and the overrotated circuit are supposed to be different.
     // test to be adapted, once PragmaOverrotation operation can be added to the circuit without causing an error
     // assert_ne!(format!("{:?}", circuit.clone()), format!("{:?}", circuit_overrotated.clone()));
-    assert_eq!(
+    assert_ne!(
         format!("{:?}", circuit.clone()),
         format!("{:?}", circuit_overrotated.clone())
+    );
+    assert_eq!(
+        format!("{:?}", circuit.clone()),
+        format!("{:?}", circuit.clone())
     );
 }

@@ -27,13 +27,17 @@ mod operate;
 // mod operate_unitary;
 
 /// Array of field names that are reserved for use with specific traits
-const RESERVED_FIELDS: &[&str; 6] = &[
-    "qubit", "control", "target", "theta", "qubits",
-    //     "global_phase",
-    //     "alpha_r",
-    //     "alpha_i",
-    //     "beta_r",
-    //     "beta_i",
+const RESERVED_FIELDS: &[&str; 11] = &[
+    "qubit",
+    "control",
+    "target",
+    "theta",
+    "qubits",
+    "global_phase",
+    "alpha_r",
+    "alpha_i",
+    "beta_r",
+    "beta_i",
     "name",
 ];
 

@@ -736,6 +736,14 @@ fn test_pyo3_copy_deepcopy_overrotation() {
     )
     .unwrap();
     assert!(!comparison_deepcopy);
+    let comparison_deepcopy = bool::extract(
+        deepcopy_op
+            .as_ref(py)
+            .call_method1("__eq__", (operation.clone(),))
+            .unwrap(),
+    )
+    .unwrap();
+    assert!(comparison_deepcopy);
 }
 
 /// Test tags function for simple Pragmas
