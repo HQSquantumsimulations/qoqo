@@ -285,7 +285,8 @@ fn pragma_set_density_matrix(_py: Python, module: &PyModule) -> PyResult<()> {
 /// operation allows you to set the state of the qubits by setting a density matrix of your choosing.
 ///
 /// Args:
-///     density_matrix (2d array of complex numbers): The density matrix that is initialized.
+///     density_matrix (array of complex numbers): The density matrix that is initialized.
+///                                                The array needs to be flattened before input, using np.flatten.
 ///
 pub struct PragmaSetDensityMatrixWrapper {
     /// PragmaSetDensityMatrix to be wrapped and converted to Python.
@@ -857,6 +858,8 @@ fn pragma_general_noise(_py: Python, module: &PyModule) -> PyResult<()> {
 ///     gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
 ///     rate (CalculatorFloat): The error rate of the noise (in 1/second).
 ///     operators (CalculatorFloat): The operators representing the general noise.
+///                                  The array needs to be flattened before input, using np.flatten.
+///
 pub struct PragmaGeneralNoiseWrapper {
     /// PragmaGeneralNoise to be wrapped and converted to Python.
     pub internal: PragmaGeneralNoise,
