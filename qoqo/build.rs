@@ -237,12 +237,12 @@ fn main() {
 
         /// Tries to convert a [roqoqo::operations::Operation] to a PyObject
         pub fn convert_operation_to_pyobject(operation: Operation) -> PyResult<PyObject> {
-            let gil = Python::acquire_gil();
-            let py = gil.python();
+            Python::with_gil(|py| -> PyResult<PyObject> {
             match operation {
                 #(#operation_to_pyobject_quotes),*
                 #(#operation_to_pyobject_injected_quotes),*
             }
+        })
         }
 
         /// Tries to convert any python object to a [roqoqo::operations::Operation]
