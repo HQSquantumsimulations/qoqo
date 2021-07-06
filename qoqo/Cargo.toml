@@ -30,7 +30,7 @@ qoqo_calculator = {version="0.2"}
 qoqo_calculator_pyo3 = {version="0.3", default-features=false}
 
 qoqo-macros = {version="0.1", path="../qoqo-macros"}
-roqoqo = {version="0.1", path="../roqoqo", features=["serialize", "overrotate"]}
+roqoqo = {version="0.2", path="../roqoqo", features=["serialize", "overrotate"]}
 roqoqo-derive = {version="0.1", path="../roqoqo-derive"}
 numpy = "=0.13.1"
 bincode = "1.3"
