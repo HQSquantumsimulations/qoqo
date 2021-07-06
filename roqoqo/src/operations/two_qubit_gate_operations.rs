@@ -2151,3 +2151,89 @@ impl OperateTwoQubitGate for ComplexPMInteraction {
         }
     }
 }
+
+/// Implements the phased-shifted controlled-Z gate.
+///
+/// Modified, i.e. phase-shifted ControlledPauliZ two-qubit gate (https://arxiv.org/pdf/1908.06101.pdf eq.(1)).
+/// The unitary matrix representation is:
+///
+/// $$
+/// U = \begin{pmatrix}
+/// 1 & 0 & 0 & 0 \\\\
+/// 0 & e^{i \phi} & 0 & 0 \\\\
+/// 0 & 0 & e^{i \phi} & 0 \\\\
+/// 0 & 0 & 0 & e^{i (2\cdot\phi - \pi}
+/// \end{pmatrix}
+/// $$
+///
+#[allow(clippy::upper_case_acronyms)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateTwoQubit,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+pub struct PhaseShiftedControlledZ {
+    /// The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the phase-shift on the target qubit.
+    control: usize,
+    /// The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
+    target: usize,
+    /// The single qubit phase $\phi$.
+    phi: CalculatorFloat,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_PhaseShiftedControlledZ: &[&str; 4] = &[
+    "Operation",
+    "GateOperation",
+    "TwoQubitGateOperation",
+    "PhaseShiftedControlledZ",
+];
+
+/// Trait for all Operations acting with a unitary gate on a set of qubits.
+impl OperateGate for PhaseShiftedControlledZ {
+    /// Returns unitary matrix of the gate.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Array2<Complex64>)` - The unitary matrix representation of the gate.
+    /// * `Err(RoqoqoError)` - The conversion of parameters to f64 failed.
+    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
+        // exp(i*x) = cos(x)+i*sin(x)
+        let phi: f64 = f64::try_from(self.phi.clone())?;
+        let cos: f64 = phi.cos();
+        let sin: f64 = phi.sin();
+        let cos2: f64 = (2.0 * phi - PI).cos();
+        let sin2: f64 = (2.0 * phi - PI).sin();
+        Ok(array![
+            [
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(cos, sin),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(cos, sin),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(cos2, sin2)
+            ],
+        ])
+    }
+}

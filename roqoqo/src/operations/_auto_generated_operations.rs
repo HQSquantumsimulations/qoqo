@@ -157,6 +157,9 @@ pub enum Operation {
     #[doc = "Variant for ComplexPMInteraction"]
     ComplexPMInteraction(ComplexPMInteraction),
     #[allow(clippy::upper_case_acronyms)]
+    #[doc = "Variant for PhaseShiftedControlledZ"]
+    PhaseShiftedControlledZ(PhaseShiftedControlledZ),
+    #[allow(clippy::upper_case_acronyms)]
     #[doc = "Variant for MeasureQubit"]
     MeasureQubit(MeasureQubit),
     #[allow(clippy::upper_case_acronyms)]
@@ -310,6 +313,9 @@ pub enum TwoQubitOperation {
     #[allow(clippy::upper_case_acronyms)]
     #[doc = "Variant for ComplexPMInteraction"]
     ComplexPMInteraction(ComplexPMInteraction),
+    #[allow(clippy::upper_case_acronyms)]
+    #[doc = "Variant for PhaseShiftedControlledZ"]
+    PhaseShiftedControlledZ(PhaseShiftedControlledZ),
 }
 #[doc = r" Enum of all Operations implementing [OperateMultiQubit]"]
 #[derive(
@@ -516,6 +522,9 @@ pub enum GateOperation {
     #[allow(clippy::upper_case_acronyms)]
     #[doc = "Variant for ComplexPMInteraction"]
     ComplexPMInteraction(ComplexPMInteraction),
+    #[allow(clippy::upper_case_acronyms)]
+    #[doc = "Variant for PhaseShiftedControlledZ"]
+    PhaseShiftedControlledZ(PhaseShiftedControlledZ),
 }
 #[doc = r" Enum of all Operations implementing [Rotate]"]
 #[allow(clippy::upper_case_acronyms)]
