@@ -21,39 +21,38 @@ use std::collections::HashMap;
 
 #[test]
 fn test_returning_circuits() {
-    let gil = Python::acquire_gil();
-    let py = gil.python();
+    Python::with_gil(|py| -> () {
+        let input_type = py.get_type::<CheatedBasisRotationInputWrapper>();
+        let input = input_type
+            .call0()
+            .unwrap()
+            .cast_as::<PyCell<CheatedBasisRotationInputWrapper>>()
+            .unwrap();
+        let _ = input.call_method1("add_pauli_product", ("ro",)).unwrap();
 
-    let input_type = py.get_type::<CheatedBasisRotationInputWrapper>();
-    let input = input_type
-        .call0()
-        .unwrap()
-        .cast_as::<PyCell<CheatedBasisRotationInputWrapper>>()
-        .unwrap();
-    let _ = input.call_method1("add_pauli_product", ("ro",)).unwrap();
+        let mut circs: Vec<CircuitWrapper> = Vec::new();
+        circs.push(CircuitWrapper::new());
+        let mut circ1 = CircuitWrapper::new();
+        circ1.internal += roqoqo::operations::RotateX::new(0, 0.0.into());
+        circs.push(circ1);
+        let br_type = py.get_type::<CheatedBasisRotationWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .unwrap()
+            .cast_as::<PyCell<CheatedBasisRotationWrapper>>()
+            .unwrap();
 
-    let mut circs: Vec<CircuitWrapper> = Vec::new();
-    circs.push(CircuitWrapper::new());
-    let mut circ1 = CircuitWrapper::new();
-    circ1.internal += roqoqo::operations::RotateX::new(0, 0.0.into());
-    circs.push(circ1);
-    let br_type = py.get_type::<CheatedBasisRotationWrapper>();
-    let br = br_type
-        .call1((Some(CircuitWrapper::new()), circs.clone(), input))
-        .unwrap()
-        .cast_as::<PyCell<CheatedBasisRotationWrapper>>()
-        .unwrap();
-
-    let circuits: Vec<CircuitWrapper> = br.call_method0("circuits").unwrap().extract().unwrap();
-    for (index, b) in circuits.iter().enumerate() {
-        assert_eq!(b, circs.get(index).unwrap());
-    }
-    let const_circuit: CircuitWrapper = br
-        .call_method0("constant_circuit")
-        .unwrap()
-        .extract()
-        .unwrap();
-    assert_eq!(CircuitWrapper::new(), const_circuit);
+        let circuits: Vec<CircuitWrapper> = br.call_method0("circuits").unwrap().extract().unwrap();
+        for (index, b) in circuits.iter().enumerate() {
+            assert_eq!(b, circs.get(index).unwrap());
+        }
+        let const_circuit: CircuitWrapper = br
+            .call_method0("constant_circuit")
+            .unwrap()
+            .extract()
+            .unwrap();
+        assert_eq!(CircuitWrapper::new(), const_circuit);
+    })
 }
 
 /// Test evaluate() function for CheatedBasisRotation measurement

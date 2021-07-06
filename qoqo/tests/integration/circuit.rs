@@ -53,21 +53,21 @@ fn populate_circuit_rotatex(
 #[test]
 fn test_default() {
     let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let circuit = new_circuit(py);
-    circuit.call_method1("add", (operation.clone(),)).unwrap();
-    let circuit_wrapper = circuit.extract::<CircuitWrapper>();
+    Python::with_gil(|py| -> () {
+        let circuit = new_circuit(py);
+        circuit.call_method1("add", (operation.clone(),)).unwrap();
+        let circuit_wrapper = circuit.extract::<CircuitWrapper>();
 
-    let helper_ne: bool = CircuitWrapper::default() != circuit_wrapper.unwrap();
-    assert!(helper_ne);
-    let helper_eq: bool = CircuitWrapper::default() == CircuitWrapper::new();
-    assert!(helper_eq);
+        let helper_ne: bool = CircuitWrapper::default() != circuit_wrapper.unwrap();
+        assert!(helper_ne);
+        let helper_eq: bool = CircuitWrapper::default() == CircuitWrapper::new();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", CircuitWrapper::new()),
-        "CircuitWrapper { internal: Circuit { definitions: [], operations: [] } }"
-    );
+        assert_eq!(
+            format!("{:?}", CircuitWrapper::new()),
+            "CircuitWrapper { internal: Circuit { definitions: [], operations: [] } }"
+        );
+    })
 }
 
 /// Test substitute_parameters function of Circuit

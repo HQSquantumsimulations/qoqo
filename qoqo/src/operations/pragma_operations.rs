@@ -94,9 +94,9 @@ impl PragmaSetStateVectorWrapper {
     ///     self: The new PragmaSetStateVector.
     #[new]
     fn new(statevector: Py<PyAny>) -> Self {
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let statevec_casted: Vec<Complex64> = Vec::extract(statevector.as_ref(py)).unwrap();
+        let statevec_casted: Vec<Complex64> = Python::with_gil(|py| -> Vec<Complex64> {
+            Vec::extract(statevector.as_ref(py)).unwrap()
+        });
         let statevec_array: Array1<Complex64> = Array1::from(statevec_casted);
         Self {
             internal: PragmaSetStateVector::new(statevec_array),
@@ -108,9 +108,9 @@ impl PragmaSetStateVectorWrapper {
     /// Returns:
     ///     np.ndarray: The statevector representing the qubit register.
     fn statevector(&self) -> Py<PyArray1<Complex64>> {
-        let gil = Python::acquire_gil();
-        let py = gil.python();
-        self.internal.statevector().to_pyarray(py).to_owned()
+        Python::with_gil(|py| -> Py<PyArray1<Complex64>> {
+            self.internal.statevector().to_pyarray(py).to_owned()
+        })
     }
 
     /// List all involved qubits (here, all).
@@ -118,10 +118,8 @@ impl PragmaSetStateVectorWrapper {
     /// Returns:
     ///     set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits(&self) -> PyObject {
-        let gil = Python::acquire_gil();
-        let py = gil.python();
-        let pyref: &PySet = PySet::new(py, &["All"]).unwrap();
-        let pyobject: PyObject = pyref.to_object(py);
+        let pyobject: PyObject =
+            Python::with_gil(|py| -> PyObject { PySet::new(py, &["All"]).unwrap().to_object(py) });
         pyobject
     }
 
@@ -247,15 +245,15 @@ impl PyObjectProtocol for PragmaSetStateVectorWrapper {
     /// Returns:
     ///     bool: Whether the two operations compared evaluated to True or False.
     fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let other_ref = other.as_ref(py);
-        let other: Operation =
+        let other: Operation = Python::with_gil(|py| -> PyResult<Operation> {
+            let other_ref = other.as_ref(py);
+
             crate::operations::convert_pyany_to_operation(other_ref).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
                     "Right hand side can not be converted to Operation",
                 )
-            })?;
+            })
+        })?;
         match op {
             pyo3::class::basic::CompareOp::Eq => {
                 Ok(Operation::from(self.internal.clone()) == other)
@@ -326,15 +324,13 @@ impl PragmaSetDensityMatrixWrapper {
     ///     self: The new PragmaSetDensityMatrix.
     #[new]
     fn new(density_matrix: Py<PyAny>) -> PyResult<Self> {
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-
-        let densmat_casted: Vec<Complex64> =
+        let densmat_casted: Vec<Complex64> = Python::with_gil(|py| -> PyResult<Vec<Complex64>> {
             Vec::extract(density_matrix.as_ref(py)).map_err(|_| {
                 PyTypeError::new_err(
                     "density_matrix input cannot be converted to list of complex numbers",
                 )
-            })?;
+            })
+        })?;
         let length: usize = densmat_casted.len();
         let dim: usize = (length as f64).sqrt() as usize;
         let densmat_array = Array::from_shape_vec((dim, dim), densmat_casted).unwrap();
@@ -348,10 +344,8 @@ impl PragmaSetDensityMatrixWrapper {
     /// Returns:
     ///     np.ndarray: The density matrix representing the qubit register.
     fn density_matrix(&self) -> Py<PyArray1<Complex64>> {
-        let gil = Python::acquire_gil();
-        let py = gil.python();
         let array: Vec<Complex64> = self.internal.density_matrix().iter().cloned().collect();
-        array.to_pyarray(py).to_owned()
+        Python::with_gil(|py| -> Py<PyArray1<Complex64>> { array.to_pyarray(py).to_owned() })
     }
 
     /// List all involved qubits (here, all).
@@ -359,10 +353,8 @@ impl PragmaSetDensityMatrixWrapper {
     /// Returns:
     ///     set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits(&self) -> PyObject {
-        let gil = Python::acquire_gil();
-        let py = gil.python();
-        let pyref: &PySet = PySet::new(py, &["All"]).unwrap();
-        let pyobject: PyObject = pyref.to_object(py);
+        let pyobject: PyObject =
+            Python::with_gil(|py| -> PyObject { PySet::new(py, &["All"]).unwrap().to_object(py) });
         pyobject
     }
 
@@ -488,15 +480,14 @@ impl PyObjectProtocol for PragmaSetDensityMatrixWrapper {
     /// Returns:
     ///     bool: Whether the two operations compared evaluated to True or False.
     fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let other_ref = other.as_ref(py);
-        let other: Operation =
+        let other: Operation = Python::with_gil(|py| -> PyResult<Operation> {
+            let other_ref = other.as_ref(py);
             crate::operations::convert_pyany_to_operation(other_ref).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
                     "Right hand side can not be converted to Operation",
                 )
-            })?;
+            })
+        })?;
         match op {
             pyo3::class::basic::CompareOp::Eq => {
                 Ok(Operation::from(self.internal.clone()) == other)
@@ -644,14 +635,13 @@ impl PragmaDampingWrapper {
     /// Returns:
     ///     np.ndarray: The superoperator representation of the PRAGMA operation.
     pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
-        let gil = Python::acquire_gil();
-        let py = gil.python();
-        Ok(self
-            .internal
-            .superoperator()
-            .unwrap()
-            .to_pyarray(py)
-            .to_owned())
+        Ok(Python::with_gil(|py| -> Py<PyArray2<f64>> {
+            self.internal
+                .superoperator()
+                .unwrap()
+                .to_pyarray(py)
+                .to_owned()
+        }))
     }
     /// Return the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
     ///
@@ -698,14 +688,13 @@ impl PragmaDepolarisingWrapper {
     /// Returns:
     ///     np.ndarray: The superoperator representation of the PRAGMA operation.
     pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
-        let gil = Python::acquire_gil();
-        let py = gil.python();
-        Ok(self
-            .internal
-            .superoperator()
-            .unwrap()
-            .to_pyarray(py)
-            .to_owned())
+        Ok(Python::with_gil(|py| -> Py<PyArray2<f64>> {
+            self.internal
+                .superoperator()
+                .unwrap()
+                .to_pyarray(py)
+                .to_owned()
+        }))
     }
     /// Return the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
     ///
@@ -752,14 +741,13 @@ impl PragmaDephasingWrapper {
     /// Returns:
     ///     np.ndarray: The superoperator representation of the PRAGMA operation.
     pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
-        let gil = Python::acquire_gil();
-        let py = gil.python();
-        Ok(self
-            .internal
-            .superoperator()
-            .unwrap()
-            .to_pyarray(py)
-            .to_owned())
+        Ok(Python::with_gil(|py| -> Py<PyArray2<f64>> {
+            self.internal
+                .superoperator()
+                .unwrap()
+                .to_pyarray(py)
+                .to_owned()
+        }))
     }
     /// Return the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
     ///
@@ -808,14 +796,13 @@ impl PragmaRandomNoiseWrapper {
     /// Returns:
     ///     np.ndarray: The superoperator representation of the PRAGMA operation.
     pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
-        let gil = Python::acquire_gil();
-        let py = gil.python();
-        Ok(self
-            .internal
-            .superoperator()
-            .unwrap()
-            .to_pyarray(py)
-            .to_owned())
+        Ok(Python::with_gil(|py| -> Py<PyArray2<f64>> {
+            self.internal
+                .superoperator()
+                .unwrap()
+                .to_pyarray(py)
+                .to_owned()
+        }))
     }
     /// Return the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
     ///
@@ -924,19 +911,23 @@ impl PragmaGeneralNoiseWrapper {
         rate: Py<PyAny>,
         operators: Py<PyAny>,
     ) -> PyResult<Self> {
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let operators_casted: Vec<Complex64> = Vec::extract(operators.as_ref(py)).unwrap();
+        let operators_casted: Vec<Complex64> = Python::with_gil(|py| -> Vec<Complex64> {
+            Vec::extract(operators.as_ref(py)).unwrap()
+        });
         let operators_array = Array::from_shape_vec((3, 3), operators_casted).unwrap();
-        let gate_time_cf = convert_into_calculator_float(gate_time.as_ref(py)).map_err(|_| {
-            pyo3::exceptions::PyTypeError::new_err(
-                "Argument gate time cannot be converted to CalculatorFloat",
-            )
+        let gate_time_cf = Python::with_gil(|py| -> PyResult<CalculatorFloat> {
+            convert_into_calculator_float(gate_time.as_ref(py)).map_err(|_| {
+                pyo3::exceptions::PyTypeError::new_err(
+                    "Argument gate time cannot be converted to CalculatorFloat",
+                )
+            })
         })?;
-        let rate_cf = convert_into_calculator_float(rate.as_ref(py)).map_err(|_| {
-            pyo3::exceptions::PyTypeError::new_err(
-                "Argument rate cannot be converted to CalculatorFloat",
-            )
+        let rate_cf = Python::with_gil(|py| -> PyResult<CalculatorFloat> {
+            convert_into_calculator_float(rate.as_ref(py)).map_err(|_| {
+                pyo3::exceptions::PyTypeError::new_err(
+                    "Argument rate cannot be converted to CalculatorFloat",
+                )
+            })
         })?;
         Ok(Self {
             internal: PragmaGeneralNoise::new(qubit, gate_time_cf, rate_cf, operators_array),
@@ -976,10 +967,15 @@ impl PragmaGeneralNoiseWrapper {
     /// Returns:
     ///     np.ndarray: The operators of the PRAGMA operation.
     fn operators(&self) -> Py<PyArray1<Complex64>> {
-        let gil = Python::acquire_gil();
-        let py = gil.python();
-        let array: Vec<Complex64> = self.internal.operators().iter().cloned().collect();
-        array.to_pyarray(py).to_owned()
+        Python::with_gil(|py| -> Py<PyArray1<Complex64>> {
+            self.internal
+                .operators()
+                .iter()
+                .cloned()
+                .collect::<Vec<Complex64>>()
+                .to_pyarray(py)
+                .to_owned()
+        })
     }
 
     /// List all involved qubits.
@@ -987,10 +983,11 @@ impl PragmaGeneralNoiseWrapper {
     /// Returns:
     ///     set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits(&self) -> PyObject {
-        let gil = Python::acquire_gil();
-        let py = gil.python();
-        let pyref: &PySet = PySet::new(py, &[*self.internal.qubit()]).unwrap();
-        let pyobject: PyObject = pyref.to_object(py);
+        let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
+            PySet::new(py, &[*self.internal.qubit()])
+                .unwrap()
+                .to_object(py)
+        });
         pyobject
     }
 
@@ -1116,15 +1113,14 @@ impl PyObjectProtocol for PragmaGeneralNoiseWrapper {
     /// Returns:
     ///     bool: Whether the two operations compared evaluated to True or False.
     fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let other_ref = other.as_ref(py);
-        let other: Operation =
+        let other: Operation = Python::with_gil(|py| -> PyResult<Operation> {
+            let other_ref = other.as_ref(py);
             crate::operations::convert_pyany_to_operation(other_ref).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
                     "Right hand side can not be converted to Operation",
                 )
-            })?;
+            })
+        })?;
         match op {
             pyo3::class::basic::CompareOp::Eq => {
                 Ok(Operation::from(self.internal.clone()) == other)
