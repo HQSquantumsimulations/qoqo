@@ -82,13 +82,21 @@ impl CheatedWrapper {
         complex_registers: HashMap<String, ComplexOutputRegister>,
     ) -> PyResult<Option<HashMap<String, f64>>> {
         let mut bit_registers: HashMap<String, BitOutputRegister> = HashMap::new();
-        let bit_registers_ref = Python::with_gil(|py| -> &PyAny {input_bit_registers.as_ref(py)});
-        if let Ok(try_downcast) = bit_registers_ref.extract::<HashMap<String, BitOutputRegister>>()
-        {
+        let bit_registers_bool: PyResult<HashMap<String, Vec<Vec<bool>>>> =
+            Python::with_gil(|py| -> PyResult<HashMap<String, Vec<Vec<bool>>>> {
+                input_bit_registers
+                    .as_ref(py)
+                    .extract::<HashMap<String, BitOutputRegister>>()
+            });
+        if let Ok(try_downcast) = bit_registers_bool {
             bit_registers = try_downcast
         } else {
             let tmp_bit_registers =
-                bit_registers_ref.extract::<HashMap<String, Vec<Vec<usize>>>>()?;
+                Python::with_gil(|py| -> PyResult<HashMap<String, Vec<Vec<usize>>>> {
+                    input_bit_registers
+                        .as_ref(py)
+                        .extract::<HashMap<String, Vec<Vec<usize>>>>()
+                })?;
             for (name, output_reg) in tmp_bit_registers {
                 let mut tmp_output_reg: Vec<Vec<bool>> = Vec::with_capacity(output_reg.len());
                 for reg in output_reg {

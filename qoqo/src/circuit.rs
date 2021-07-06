@@ -199,7 +199,7 @@ impl CircuitWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize Circuit to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-         PyByteArray::new(py, &serialized[..]).into();
+            PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -432,8 +432,10 @@ impl PyObjectProtocol for CircuitWrapper {
     /// Raises:
     ///     NotImplementedError: Other comparison not implemented
     fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
-        let other_ref = Python::with_gil(|py| -> &PyAny {other.as_ref(py)});
-        let other = convert_into_circuit(other_ref);
+        let other = Python::with_gil(|py| -> Result<Circuit, QoqoError> {
+            let other_ref = other.as_ref(py);
+            crate::convert_into_circuit(other_ref)
+        });
         match op {
             pyo3::class::basic::CompareOp::Eq => match other {
                 Ok(circ) => Ok(self.internal == circ),
@@ -460,20 +462,30 @@ impl PyNumberProtocol for CircuitWrapper {
     /// Raises:
     ///     TypeError: Right hand side can not be converted to Operation or Circuit.
     fn __iadd__(&'p mut self, other: Py<PyAny>) -> PyResult<()> {
-        let other_ref = Python::with_gil(|py| -> &PyAny {other.as_ref(py)});
-        match convert_pyany_to_operation(other_ref) {
-            Ok(x) => self.internal += x,
-            Err(_) => {
-                let other = convert_into_circuit(other_ref).map_err(|x| {
-                    pyo3::exceptions::PyTypeError::new_err(format!(
-                        "Right hand side can not be converted to Operation or Circuit {:?}",
-                        x
-                    ))
-                })?;
-                self.internal += other
+        Python::with_gil(|py| -> PyResult<()> {
+            let other_ref = other.as_ref(py);
+            match convert_pyany_to_operation(other_ref) {
+                Ok(x) => {
+                    self.internal += x;
+                    Ok(())
+                }
+                Err(_) => {
+                    let other = convert_into_circuit(other_ref).map_err(|x| {
+                        pyo3::exceptions::PyTypeError::new_err(format!(
+                            "Right hand side can not be converted to Operation or Circuit {:?}",
+                            x
+                        ))
+                    });
+                    match other {
+                        Ok(x) => {
+                            self.internal += x;
+                            Ok(())
+                        }
+                        Err(y) => Err(y),
+                    }
+                }
             }
-        }
-        Ok(())
+        })
     }
 
     /// Implement the `+` (__add__) magic method to add two Circuits.
@@ -489,24 +501,27 @@ impl PyNumberProtocol for CircuitWrapper {
     ///     TypeError: Left hand side can not be converted to Circuit.
     ///     TypeError: Right hand side can not be converted to Operation or Circuit.
     fn __add__(lhs: Py<PyAny>, rhs: Py<PyAny>) -> PyResult<CircuitWrapper> {
-        let (lhs_ref, rhs_ref) = Python::with_gil(|py| -> (&PyAny, &PyAny) {(lhs.as_ref(py),rhs.as_ref(py))});
-        let self_circ = convert_into_circuit(lhs_ref)
-            .map_err(|_| PyTypeError::new_err("Left hand side can not be converted to Circuit"))?;
-        match convert_pyany_to_operation(rhs_ref) {
-            Ok(x) => Ok(CircuitWrapper {
-                internal: self_circ + x,
-            }),
-            Err(_) => {
-                let other = convert_into_circuit(rhs_ref).map_err(|_| {
-                    pyo3::exceptions::PyTypeError::new_err(
-                        "Right hand side can not be converted to Operation or Circuit",
-                    )
-                })?;
-                Ok(CircuitWrapper {
-                    internal: self_circ + other,
-                })
+        Python::with_gil(|py| -> PyResult<CircuitWrapper> {
+            let (lhs_ref, rhs_ref) = (lhs.as_ref(py), rhs.as_ref(py));
+            let self_circ = convert_into_circuit(lhs_ref).map_err(|_| {
+                PyTypeError::new_err("Left hand side can not be converted to Circuit")
+            })?;
+            match convert_pyany_to_operation(rhs_ref) {
+                Ok(x) => Ok(CircuitWrapper {
+                    internal: self_circ + x,
+                }),
+                Err(_) => {
+                    let other = convert_into_circuit(rhs_ref).map_err(|_| {
+                        pyo3::exceptions::PyTypeError::new_err(
+                            "Right hand side can not be converted to Operation or Circuit",
+                        )
+                    })?;
+                    Ok(CircuitWrapper {
+                        internal: self_circ + other,
+                    })
+                }
             }
-        }
+        })
     }
 }
 
