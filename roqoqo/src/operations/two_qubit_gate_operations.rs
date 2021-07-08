@@ -2237,3 +2237,33 @@ impl OperateGate for PhaseShiftedControlledZ {
         ])
     }
 }
+
+/// Trait for all gate operations acting on exactly two qubits.
+impl OperateTwoQubitGate for PhaseShiftedControlledZ {
+    /// Returns [KakDecomposition] of the gate.
+    ///
+    /// # Returns
+    ///
+    /// * struct `KakDecomposition { global_phase, k_vector, circuit_before, circuit_after }`
+    fn kak_decomposition(&self) -> KakDecomposition {
+        let mut circuit_b = Circuit::new();
+        circuit_b += RotateZ::new(self.control, CalculatorFloat::FRAC_PI_2);
+        circuit_b += RotateZ::new(self.target, CalculatorFloat::FRAC_PI_2);
+
+        let mut circuit_a = Circuit::new();
+        circuit_a += RotateZ::new(self.control, self.phi.clone());
+        circuit_a += RotateZ::new(self.target, self.phi.clone());
+
+        let g: CalculatorFloat = CalculatorFloat::FRAC_PI_4 + self.phi.clone();
+        KakDecomposition {
+            global_phase: g,
+            k_vector: [
+                CalculatorFloat::ZERO,
+                CalculatorFloat::ZERO,
+                CalculatorFloat::FRAC_PI_4,
+            ],
+            circuit_before: Some(circuit_b),
+            circuit_after: Some(circuit_a),
+        }
+    }
+}
