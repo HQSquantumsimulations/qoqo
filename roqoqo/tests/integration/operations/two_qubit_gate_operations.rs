@@ -269,30 +269,33 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
 //
 
 // Test unitary matrix for TwoQubitGate Operations
-#[test_case(TwoQubitGateOperation::from(CNOT::new(0, 1)); "CNOT")]
-#[test_case(TwoQubitGateOperation::from(SWAP::new(0, 1)); "SWAP")]
-#[test_case(TwoQubitGateOperation::from(ISwap::new(0, 1)); "ISwap")]
-#[test_case(TwoQubitGateOperation::from(FSwap::new(0, 1)); "FSwap")]
-#[test_case(TwoQubitGateOperation::from(SqrtISwap::new(0, 1)); "SqrtISwap")]
-#[test_case(TwoQubitGateOperation::from(InvSqrtISwap::new(0, 1)); "InvSqrtISwap")]
-#[test_case(TwoQubitGateOperation::from(XY::new(0, 1, CalculatorFloat::PI)); "XY")]
-#[test_case(TwoQubitGateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
-#[test_case(TwoQubitGateOperation::from(ControlledPauliY::new(0, 1)); "ControlledPauliY")]
-#[test_case(TwoQubitGateOperation::from(ControlledPauliZ::new(0, 1)); "ControlledPauliZ")]
-#[test_case(TwoQubitGateOperation::from(MolmerSorensenXX::new(0, 1)); "MolmerSorensenXX")]
-#[test_case(TwoQubitGateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)); "VariableMSXX")]
-#[test_case(TwoQubitGateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
-#[test_case(TwoQubitGateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
-#[test_case(TwoQubitGateOperation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
-#[test_case(TwoQubitGateOperation::from(Qsim::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4, CalculatorFloat::from(1.0))); "Qsim_1")]
-#[test_case(TwoQubitGateOperation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
-#[test_case(TwoQubitGateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
-#[test_case(TwoQubitGateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
-#[test_case(TwoQubitGateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::ZERO)); "Bogoliubov_r")]
-#[test_case(TwoQubitGateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::from(1.0))); "Bogoliubov_i")]
-#[test_case(TwoQubitGateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
-#[test_case(TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
-fn test_twoqubitgates_unitarity(gate: TwoQubitGateOperation) {
+#[test_case(GateOperation::from(CNOT::new(0, 1)); "CNOT")]
+#[test_case(GateOperation::from(SWAP::new(0, 1)); "SWAP")]
+#[test_case(GateOperation::from(ISwap::new(0, 1)); "ISwap")]
+#[test_case(GateOperation::from(FSwap::new(0, 1)); "FSwap")]
+#[test_case(GateOperation::from(SqrtISwap::new(0, 1)); "SqrtISwap")]
+#[test_case(GateOperation::from(InvSqrtISwap::new(0, 1)); "InvSqrtISwap")]
+#[test_case(GateOperation::from(XY::new(0, 1, CalculatorFloat::PI)); "XY")]
+#[test_case(GateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
+#[test_case(GateOperation::from(ControlledPauliY::new(0, 1)); "ControlledPauliY")]
+#[test_case(GateOperation::from(ControlledPauliZ::new(0, 1)); "ControlledPauliZ")]
+#[test_case(GateOperation::from(MolmerSorensenXX::new(0, 1)); "MolmerSorensenXX")]
+#[test_case(GateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)); "VariableMSXX")]
+#[test_case(GateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
+#[test_case(GateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
+#[test_case(GateOperation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
+#[test_case(GateOperation::from(Qsim::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4, CalculatorFloat::from(1.0))); "Qsim_1")]
+#[test_case(GateOperation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
+#[test_case(GateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
+#[test_case(GateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
+#[test_case(GateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::ZERO)); "Bogoliubov_r")]
+#[test_case(GateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::from(1.0))); "Bogoliubov_i")]
+#[test_case(GateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
+#[test_case(GateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
+#[test_case(GateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ_pi_4")]
+#[test_case(GateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::ZERO)); "PhaseShiftedControlledZ_zero")]
+#[test_case(GateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from(1.33))); "PhaseShiftedControlledZ_1_33")]
+fn test_twoqubitgates_unitarity(gate: GateOperation) {
     let result: Result<Array2<Complex64>, RoqoqoError> = gate.unitary_matrix();
     let result_array: Array2<Complex64> = result.unwrap();
     // check unitarity with nalgebra
@@ -311,27 +314,28 @@ fn test_twoqubitgates_unitarity(gate: TwoQubitGateOperation) {
 //
 
 /// Test clone function for TwoQubitGate Operations
-#[test_case(TwoQubitGateOperation::from(CNOT::new(0, 1)); "CNOT")]
-#[test_case(TwoQubitGateOperation::from(SWAP::new(0, 1)); "SWAP")]
-#[test_case(TwoQubitGateOperation::from(ISwap::new(0, 1)); "ISwap")]
-#[test_case(TwoQubitGateOperation::from(FSwap::new(0, 1)); "FSwap")]
-#[test_case(TwoQubitGateOperation::from(SqrtISwap::new(0, 1)); "SqrtISwap")]
-#[test_case(TwoQubitGateOperation::from(InvSqrtISwap::new(0, 1)); "InvSqrtISwap")]
-#[test_case(TwoQubitGateOperation::from(XY::new(0, 1, CalculatorFloat::PI)); "XY")]
-#[test_case(TwoQubitGateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
-#[test_case(TwoQubitGateOperation::from(ControlledPauliY::new(0, 1)); "ControlledPauliY")]
-#[test_case(TwoQubitGateOperation::from(ControlledPauliZ::new(0, 1)); "ControlledPauliZ")]
-#[test_case(TwoQubitGateOperation::from(MolmerSorensenXX::new(0, 1)); "MolmerSorensenXX")]
-#[test_case(TwoQubitGateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)); "VariableMSXX")]
-#[test_case(TwoQubitGateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
-#[test_case(TwoQubitGateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
-#[test_case(TwoQubitGateOperation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
-#[test_case(TwoQubitGateOperation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
-#[test_case(TwoQubitGateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
-#[test_case(TwoQubitGateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
-#[test_case(TwoQubitGateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
-#[test_case(TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
-fn test_twoqubitgates_clone(gate1: TwoQubitGateOperation) {
+#[test_case(Operation::from(CNOT::new(0, 1)); "CNOT")]
+#[test_case(Operation::from(SWAP::new(0, 1)); "SWAP")]
+#[test_case(Operation::from(ISwap::new(0, 1)); "ISwap")]
+#[test_case(Operation::from(FSwap::new(0, 1)); "FSwap")]
+#[test_case(Operation::from(SqrtISwap::new(0, 1)); "SqrtISwap")]
+#[test_case(Operation::from(InvSqrtISwap::new(0, 1)); "InvSqrtISwap")]
+#[test_case(Operation::from(XY::new(0, 1, CalculatorFloat::PI)); "XY")]
+#[test_case(Operation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
+#[test_case(Operation::from(ControlledPauliY::new(0, 1)); "ControlledPauliY")]
+#[test_case(Operation::from(ControlledPauliZ::new(0, 1)); "ControlledPauliZ")]
+#[test_case(Operation::from(MolmerSorensenXX::new(0, 1)); "MolmerSorensenXX")]
+#[test_case(Operation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)); "VariableMSXX")]
+#[test_case(Operation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
+#[test_case(Operation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
+#[test_case(Operation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
+#[test_case(Operation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
+#[test_case(Operation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
+#[test_case(Operation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
+#[test_case(Operation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
+#[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
+#[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ_pi_4")]
+fn test_twoqubitgates_clone(gate1: Operation) {
     let gate2 = gate1.clone();
     assert_eq!(gate2, gate1);
 }
@@ -368,43 +372,45 @@ fn test_qubits_twoqubitgates(gate: TwoQubitGateOperation) {
     assert_eq!(gate.involved_qubits(), test_qubits);
 }
 
-#[test_case(TwoQubitGateOperation::from(CNOT::new(0, 1)); "CNOT")]
-#[test_case(TwoQubitGateOperation::from(SWAP::new(0, 1)); "SWAP")]
-#[test_case(TwoQubitGateOperation::from(ISwap::new(0, 1)); "ISwap")]
-#[test_case(TwoQubitGateOperation::from(FSwap::new(0, 1)); "FSwap")]
-#[test_case(TwoQubitGateOperation::from(SqrtISwap::new(0, 1)); "SqrtISwap")]
-#[test_case(TwoQubitGateOperation::from(InvSqrtISwap::new(0, 1)); "InvSqrtISwap")]
-#[test_case(TwoQubitGateOperation::from(XY::new(0, 1, CalculatorFloat::PI)); "XY")]
-#[test_case(TwoQubitGateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
-#[test_case(TwoQubitGateOperation::from(ControlledPauliY::new(0, 1)); "ControlledPauliY")]
-#[test_case(TwoQubitGateOperation::from(ControlledPauliZ::new(0, 1)); "ControlledPauliZ")]
-#[test_case(TwoQubitGateOperation::from(MolmerSorensenXX::new(0, 1)); "MolmerSorensenXX")]
-#[test_case(TwoQubitGateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)); "VariableMSXX")]
-#[test_case(TwoQubitGateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
-#[test_case(TwoQubitGateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
-#[test_case(TwoQubitGateOperation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
-#[test_case(TwoQubitGateOperation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
-#[test_case(TwoQubitGateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
-#[test_case(TwoQubitGateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
-#[test_case(TwoQubitGateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
-#[test_case(TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
-fn test_is_parametrized_false(gate: TwoQubitGateOperation) {
+#[test_case(Operation::from(CNOT::new(0, 1)); "CNOT")]
+#[test_case(Operation::from(SWAP::new(0, 1)); "SWAP")]
+#[test_case(Operation::from(ISwap::new(0, 1)); "ISwap")]
+#[test_case(Operation::from(FSwap::new(0, 1)); "FSwap")]
+#[test_case(Operation::from(SqrtISwap::new(0, 1)); "SqrtISwap")]
+#[test_case(Operation::from(InvSqrtISwap::new(0, 1)); "InvSqrtISwap")]
+#[test_case(Operation::from(XY::new(0, 1, CalculatorFloat::PI)); "XY")]
+#[test_case(Operation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
+#[test_case(Operation::from(ControlledPauliY::new(0, 1)); "ControlledPauliY")]
+#[test_case(Operation::from(ControlledPauliZ::new(0, 1)); "ControlledPauliZ")]
+#[test_case(Operation::from(MolmerSorensenXX::new(0, 1)); "MolmerSorensenXX")]
+#[test_case(Operation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)); "VariableMSXX")]
+#[test_case(Operation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
+#[test_case(Operation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
+#[test_case(Operation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
+#[test_case(Operation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
+#[test_case(Operation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
+#[test_case(Operation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
+#[test_case(Operation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
+#[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
+#[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ_pi_4")]
+fn test_is_parametrized_false(gate: Operation) {
     let bool_parameter = gate.is_parametrized();
     assert!(!bool_parameter);
 }
 
-#[test_case(TwoQubitGateOperation::from(XY::new(0, 1, CalculatorFloat::from("parameter"))); "XY")]
-#[test_case(TwoQubitGateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::from("parameter"))); "ControlledPhaseShift")]
-#[test_case(TwoQubitGateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::from("parameter"))); "VariableMSXX")]
-#[test_case(TwoQubitGateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::from("parameter1"), CalculatorFloat::from("parameter2"))); "GivensRotation")]
-#[test_case(TwoQubitGateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::from("parameter1"), CalculatorFloat::from("parameter2"))); "GivensRotationLittleEndian")]
-#[test_case(TwoQubitGateOperation::from(Qsim::new(0, 1, CalculatorFloat::from("x"), CalculatorFloat::from("y"), CalculatorFloat::from("z"))); "Qsim")]
-#[test_case(TwoQubitGateOperation::from(Fsim::new(0, 1, CalculatorFloat::from("x"), CalculatorFloat::from("y"), CalculatorFloat::from("z"))); "Fsim")]
-#[test_case(TwoQubitGateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from("x"), CalculatorFloat::from("y"), CalculatorFloat::from("z"))); "SpinInteraction")]
-#[test_case(TwoQubitGateOperation::from(Bogoliubov::new(0, 1,CalculatorFloat::from("parameter1"), CalculatorFloat::from("parameter2"))); "Bogoliubov")]
-#[test_case(TwoQubitGateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::from("parameter"))); "PMInteraction")]
-#[test_case(TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from("parameter1"), CalculatorFloat::from("parameter2"))); "ComplexPMInteraction")]
-fn test_is_parametrized_true(gate: TwoQubitGateOperation) {
+#[test_case(Operation::from(XY::new(0, 1, CalculatorFloat::from("parameter"))); "XY")]
+#[test_case(Operation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::from("parameter"))); "ControlledPhaseShift")]
+#[test_case(Operation::from(VariableMSXX::new(0, 1, CalculatorFloat::from("parameter"))); "VariableMSXX")]
+#[test_case(Operation::from(GivensRotation::new(0, 1, CalculatorFloat::from("parameter1"), CalculatorFloat::from("parameter2"))); "GivensRotation")]
+#[test_case(Operation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::from("parameter1"), CalculatorFloat::from("parameter2"))); "GivensRotationLittleEndian")]
+#[test_case(Operation::from(Qsim::new(0, 1, CalculatorFloat::from("x"), CalculatorFloat::from("y"), CalculatorFloat::from("z"))); "Qsim")]
+#[test_case(Operation::from(Fsim::new(0, 1, CalculatorFloat::from("x"), CalculatorFloat::from("y"), CalculatorFloat::from("z"))); "Fsim")]
+#[test_case(Operation::from(SpinInteraction::new(0, 1, CalculatorFloat::from("x"), CalculatorFloat::from("y"), CalculatorFloat::from("z"))); "SpinInteraction")]
+#[test_case(Operation::from(Bogoliubov::new(0, 1,CalculatorFloat::from("parameter1"), CalculatorFloat::from("parameter2"))); "Bogoliubov")]
+#[test_case(Operation::from(PMInteraction::new(0, 1, CalculatorFloat::from("parameter"))); "PMInteraction")]
+#[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from("parameter1"), CalculatorFloat::from("parameter2"))); "ComplexPMInteraction")]
+#[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from("phi"))); "PhaseShiftedControlledZ_pi_4")]
+fn test_is_parametrized_true(gate: Operation) {
     let bool_parameter = gate.is_parametrized();
     assert!(bool_parameter);
 }
@@ -432,72 +438,76 @@ fn test_is_parametrized_true(gate: TwoQubitGateOperation) {
 #[test_case("Bogoliubov", Operation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
 #[test_case("PMInteraction", Operation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
 #[test_case("ComplexPMInteraction", Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
+#[test_case("PhaseShiftedControlledZ", Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from("phi"))); "PhaseShiftedControlledZ")]
 fn test_twoqubitgateoperations_hqslang(name: &'static str, gate: Operation) {
     assert!(!gate.hqslang().is_empty());
     assert_eq!(gate.hqslang(), name);
 }
 
 #[test_case(
-    TwoQubitGateOperation::from(CNOT::new(0, 1)),
-    TwoQubitGateOperation::from(CNOT::new(1, 0)); "CNOT")]
+    GateOperation::from(CNOT::new(0, 1)),
+    GateOperation::from(CNOT::new(1, 0)); "CNOT")]
 #[test_case(
-    TwoQubitGateOperation::from(SWAP::new(0, 1)),
-    TwoQubitGateOperation::from(SWAP::new(1, 0)); "SWAP")]
+    GateOperation::from(SWAP::new(0, 1)),
+    GateOperation::from(SWAP::new(1, 0)); "SWAP")]
 #[test_case(
-    TwoQubitGateOperation::from(ISwap::new(0, 1)),
-    TwoQubitGateOperation::from(ISwap::new(1, 0)); "ISwap")]
+    GateOperation::from(ISwap::new(0, 1)),
+    GateOperation::from(ISwap::new(1, 0)); "ISwap")]
 #[test_case(
-    TwoQubitGateOperation::from(FSwap::new(0, 1)),
-    TwoQubitGateOperation::from(FSwap::new(1, 0)); "FSwap")]
+    GateOperation::from(FSwap::new(0, 1)),
+    GateOperation::from(FSwap::new(1, 0)); "FSwap")]
 #[test_case(
-    TwoQubitGateOperation::from(SqrtISwap::new(0, 1)),
-    TwoQubitGateOperation::from(SqrtISwap::new(1, 0)); "SqrtISwap")]
+    GateOperation::from(SqrtISwap::new(0, 1)),
+    GateOperation::from(SqrtISwap::new(1, 0)); "SqrtISwap")]
 #[test_case(
-    TwoQubitGateOperation::from(InvSqrtISwap::new(0, 1)),
-    TwoQubitGateOperation::from(InvSqrtISwap::new(1, 0)); "InvSqrtISwap")]
+    GateOperation::from(InvSqrtISwap::new(0, 1)),
+    GateOperation::from(InvSqrtISwap::new(1, 0)); "InvSqrtISwap")]
 #[test_case(
-    TwoQubitGateOperation::from(XY::new(0, 1, CalculatorFloat::PI)),
-    TwoQubitGateOperation::from(XY::new(1, 0, CalculatorFloat::PI)); "XY")]
+    GateOperation::from(XY::new(0, 1, CalculatorFloat::PI)),
+    GateOperation::from(XY::new(1, 0, CalculatorFloat::PI)); "XY")]
 #[test_case(
-    TwoQubitGateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)),
-    TwoQubitGateOperation::from(ControlledPhaseShift::new(1, 0, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
+    GateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)),
+    GateOperation::from(ControlledPhaseShift::new(1, 0, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
 #[test_case(
-    TwoQubitGateOperation::from(ControlledPauliY::new(0, 1)),
-    TwoQubitGateOperation::from(ControlledPauliY::new(1, 0)); "ControlledPauliY")]
+    GateOperation::from(ControlledPauliY::new(0, 1)),
+    GateOperation::from(ControlledPauliY::new(1, 0)); "ControlledPauliY")]
 #[test_case(
-    TwoQubitGateOperation::from(ControlledPauliZ::new(0, 1)),
-    TwoQubitGateOperation::from(ControlledPauliZ::new(1, 0)); "ControlledPauliZ")]
+    GateOperation::from(ControlledPauliZ::new(0, 1)),
+    GateOperation::from(ControlledPauliZ::new(1, 0)); "ControlledPauliZ")]
 #[test_case(
-    TwoQubitGateOperation::from(MolmerSorensenXX::new(0, 1)),
-    TwoQubitGateOperation::from(MolmerSorensenXX::new(1, 0)); "MolmerSorensenXX")]
+    GateOperation::from(MolmerSorensenXX::new(0, 1)),
+    GateOperation::from(MolmerSorensenXX::new(1, 0)); "MolmerSorensenXX")]
 #[test_case(
-    TwoQubitGateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)),
-    TwoQubitGateOperation::from(VariableMSXX::new(1, 0, CalculatorFloat::PI)); "VariableMSXX")]
+    GateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)),
+    GateOperation::from(VariableMSXX::new(1, 0, CalculatorFloat::PI)); "VariableMSXX")]
 #[test_case(
-    TwoQubitGateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)),
-    TwoQubitGateOperation::from(GivensRotation::new(1, 0, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
+    GateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)),
+    GateOperation::from(GivensRotation::new(1, 0, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
 #[test_case(
-    TwoQubitGateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)),
-    TwoQubitGateOperation::from(GivensRotationLittleEndian::new(1, 0, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
+    GateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)),
+    GateOperation::from(GivensRotationLittleEndian::new(1, 0, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
 #[test_case(
-    TwoQubitGateOperation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))),
-    TwoQubitGateOperation::from(Qsim::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
+    GateOperation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))),
+    GateOperation::from(Qsim::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
 #[test_case(
-    TwoQubitGateOperation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))),
-    TwoQubitGateOperation::from(Fsim::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
+    GateOperation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))),
+    GateOperation::from(Fsim::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
 #[test_case(
-    TwoQubitGateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))),
-    TwoQubitGateOperation::from(SpinInteraction::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
+    GateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))),
+    GateOperation::from(SpinInteraction::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
 #[test_case(
-    TwoQubitGateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))),
-    TwoQubitGateOperation::from(Bogoliubov::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
+    GateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))),
+    GateOperation::from(Bogoliubov::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
 #[test_case(
-    TwoQubitGateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)),
-    TwoQubitGateOperation::from(PMInteraction::new(1, 0, CalculatorFloat::PI)); "PMInteraction")]
+    GateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)),
+    GateOperation::from(PMInteraction::new(1, 0, CalculatorFloat::PI)); "PMInteraction")]
 #[test_case(
-    TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))),
-    TwoQubitGateOperation::from(ComplexPMInteraction::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
-fn remap_qubits_result(gate: TwoQubitGateOperation, test_gate: TwoQubitGateOperation) {
+    GateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))),
+    GateOperation::from(ComplexPMInteraction::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
+#[test_case(
+    GateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)),
+    GateOperation::from(PhaseShiftedControlledZ::new(1, 0, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
+fn remap_qubits_result(gate: GateOperation, test_gate: GateOperation) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 1);
     qubit_mapping.insert(1, 0);
@@ -505,67 +515,60 @@ fn remap_qubits_result(gate: TwoQubitGateOperation, test_gate: TwoQubitGateOpera
     assert_eq!(&result, &Ok(test_gate));
 }
 
-#[test_case(TwoQubitGateOperation::from(CNOT::new(0, 1)); "CNOT")]
-#[test_case(TwoQubitGateOperation::from(SWAP::new(0, 1)); "SWAP")]
-#[test_case(TwoQubitGateOperation::from(ISwap::new(0, 1)); "ISwap")]
-#[test_case(TwoQubitGateOperation::from(FSwap::new(0, 1)); "FSwap")]
-#[test_case(TwoQubitGateOperation::from(SqrtISwap::new(0, 1)); "SqrtISwap")]
-#[test_case(TwoQubitGateOperation::from(InvSqrtISwap::new(0, 1)); "InvSqrtISwap")]
-#[test_case(TwoQubitGateOperation::from(XY::new(0, 1, CalculatorFloat::PI)); "XY")]
-#[test_case(TwoQubitGateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
-#[test_case(TwoQubitGateOperation::from(ControlledPauliY::new(0, 1)); "ControlledPauliY")]
-#[test_case(TwoQubitGateOperation::from(ControlledPauliZ::new(0, 1)); "ControlledPauliZ")]
-#[test_case(TwoQubitGateOperation::from(MolmerSorensenXX::new(0, 1)); "MolmerSorensenXX")]
-#[test_case(TwoQubitGateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)); "VariableMSXX")]
-#[test_case(TwoQubitGateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
-#[test_case(TwoQubitGateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
-#[test_case(TwoQubitGateOperation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
-#[test_case(TwoQubitGateOperation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
-#[test_case(TwoQubitGateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
-#[test_case(TwoQubitGateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
-#[test_case(TwoQubitGateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
-#[test_case(TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
-fn remap_qubits_error0(gate: TwoQubitGateOperation) {
+#[test_case(GateOperation::from(CNOT::new(0, 1)); "CNOT")]
+#[test_case(GateOperation::from(SWAP::new(0, 1)); "SWAP")]
+#[test_case(GateOperation::from(ISwap::new(0, 1)); "ISwap")]
+#[test_case(GateOperation::from(FSwap::new(0, 1)); "FSwap")]
+#[test_case(GateOperation::from(SqrtISwap::new(0, 1)); "SqrtISwap")]
+#[test_case(GateOperation::from(InvSqrtISwap::new(0, 1)); "InvSqrtISwap")]
+#[test_case(GateOperation::from(XY::new(0, 1, CalculatorFloat::PI)); "XY")]
+#[test_case(GateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
+#[test_case(GateOperation::from(ControlledPauliY::new(0, 1)); "ControlledPauliY")]
+#[test_case(GateOperation::from(ControlledPauliZ::new(0, 1)); "ControlledPauliZ")]
+#[test_case(GateOperation::from(MolmerSorensenXX::new(0, 1)); "MolmerSorensenXX")]
+#[test_case(GateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)); "VariableMSXX")]
+#[test_case(GateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
+#[test_case(GateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
+#[test_case(GateOperation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
+#[test_case(GateOperation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
+#[test_case(GateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
+#[test_case(GateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
+#[test_case(GateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
+#[test_case(GateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
+#[test_case(GateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
+fn remap_qubits_error0(gate: GateOperation) {
     let qubit_mapping: HashMap<usize, usize> = HashMap::new();
     let result = gate.remap_qubits(&qubit_mapping);
     assert_eq!(result, Err(QubitMappingError { qubit: 0 }));
 }
 
-#[test_case(TwoQubitGateOperation::from(CNOT::new(0, 1)); "CNOT")]
-#[test_case(TwoQubitGateOperation::from(SWAP::new(0, 1)); "SWAP")]
-#[test_case(TwoQubitGateOperation::from(ISwap::new(0, 1)); "ISwap")]
-#[test_case(TwoQubitGateOperation::from(FSwap::new(0, 1)); "FSwap")]
-#[test_case(TwoQubitGateOperation::from(SqrtISwap::new(0, 1)); "SqrtISwap")]
-#[test_case(TwoQubitGateOperation::from(InvSqrtISwap::new(0, 1)); "InvSqrtISwap")]
-#[test_case(TwoQubitGateOperation::from(XY::new(0, 1, CalculatorFloat::PI)); "XY")]
-#[test_case(TwoQubitGateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
-#[test_case(TwoQubitGateOperation::from(ControlledPauliY::new(0, 1)); "ControlledPauliY")]
-#[test_case(TwoQubitGateOperation::from(ControlledPauliZ::new(0, 1)); "ControlledPauliZ")]
-#[test_case(TwoQubitGateOperation::from(MolmerSorensenXX::new(0, 1)); "MolmerSorensenXX")]
-#[test_case(TwoQubitGateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)); "VariableMSXX")]
-#[test_case(TwoQubitGateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
-#[test_case(TwoQubitGateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
-#[test_case(TwoQubitGateOperation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
-#[test_case(TwoQubitGateOperation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
-#[test_case(TwoQubitGateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
-#[test_case(TwoQubitGateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
-#[test_case(TwoQubitGateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
-#[test_case(TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
-fn remap_qubits_error1(gate: TwoQubitGateOperation) {
+#[test_case(GateOperation::from(CNOT::new(0, 1)); "CNOT")]
+#[test_case(GateOperation::from(SWAP::new(0, 1)); "SWAP")]
+#[test_case(GateOperation::from(ISwap::new(0, 1)); "ISwap")]
+#[test_case(GateOperation::from(FSwap::new(0, 1)); "FSwap")]
+#[test_case(GateOperation::from(SqrtISwap::new(0, 1)); "SqrtISwap")]
+#[test_case(GateOperation::from(InvSqrtISwap::new(0, 1)); "InvSqrtISwap")]
+#[test_case(GateOperation::from(XY::new(0, 1, CalculatorFloat::PI)); "XY")]
+#[test_case(GateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
+#[test_case(GateOperation::from(ControlledPauliY::new(0, 1)); "ControlledPauliY")]
+#[test_case(GateOperation::from(ControlledPauliZ::new(0, 1)); "ControlledPauliZ")]
+#[test_case(GateOperation::from(MolmerSorensenXX::new(0, 1)); "MolmerSorensenXX")]
+#[test_case(GateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)); "VariableMSXX")]
+#[test_case(GateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
+#[test_case(GateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
+#[test_case(GateOperation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
+#[test_case(GateOperation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
+#[test_case(GateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
+#[test_case(GateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
+#[test_case(GateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
+#[test_case(GateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
+#[test_case(GateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
+fn remap_qubits_error1(gate: GateOperation) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 2);
     let result = gate.remap_qubits(&qubit_mapping);
     assert_eq!(result, Err(QubitMappingError { qubit: 1 }));
 }
-
-// !!!
-// #[test_case(TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
-// fn remap_qubits_error2(gate: TwoQubitGateOperation) {
-//     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
-//     qubit_mapping.insert(0, 2);
-//     qubit_mapping.insert(1, 2);
-//     let result = gate.remap_qubits(&qubit_mapping);
-// }
 
 #[test_case(
     vec![
@@ -574,7 +577,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "TwoQubitGateOperation",
         "CNOT",
         ],
-    TwoQubitGateOperation::from(CNOT::new(1, 0)); "CNOT")]
+    Operation::from(CNOT::new(1, 0)); "CNOT")]
 #[test_case(
     vec![
         "Operation",
@@ -582,7 +585,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "TwoQubitGateOperation",
         "SWAP",
         ],
-    TwoQubitGateOperation::from(SWAP::new(1, 0)); "SWAP")]
+    Operation::from(SWAP::new(1, 0)); "SWAP")]
 #[test_case(
     vec![
         "Operation",
@@ -590,7 +593,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "TwoQubitGateOperation",
         "ISwap",
         ],
-    TwoQubitGateOperation::from(ISwap::new(1, 0)); "ISwap")]
+    Operation::from(ISwap::new(1, 0)); "ISwap")]
 #[test_case(
     vec![
         "Operation",
@@ -598,7 +601,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "TwoQubitGateOperation",
         "FSwap",
         ],
-    TwoQubitGateOperation::from(FSwap::new(1, 0)); "FSwap")]
+    Operation::from(FSwap::new(1, 0)); "FSwap")]
 #[test_case(
     vec![
         "Operation",
@@ -606,7 +609,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "TwoQubitGateOperation",
         "SqrtISwap",
         ],
-    TwoQubitGateOperation::from(SqrtISwap::new(1, 0)); "SqrtISwap")]
+    Operation::from(SqrtISwap::new(1, 0)); "SqrtISwap")]
 #[test_case(
     vec![
         "Operation",
@@ -614,7 +617,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "TwoQubitGateOperation",
         "InvSqrtISwap",
         ],
-    TwoQubitGateOperation::from(InvSqrtISwap::new(1, 0)); "InvSqrtISwap")]
+    Operation::from(InvSqrtISwap::new(1, 0)); "InvSqrtISwap")]
 #[test_case(
     vec![
         "Operation",
@@ -623,7 +626,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "Rotation",
         "XY",
         ],
-    TwoQubitGateOperation::from(XY::new(1, 0, CalculatorFloat::PI)); "XY")]
+    Operation::from(XY::new(1, 0, CalculatorFloat::PI)); "XY")]
 #[test_case(
     vec![
         "Operation",
@@ -632,7 +635,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "Rotation",
         "ControlledPhaseShift",
         ],
-    TwoQubitGateOperation::from(ControlledPhaseShift::new(1, 0, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
+    Operation::from(ControlledPhaseShift::new(1, 0, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
 #[test_case(
     vec![
         "Operation",
@@ -640,7 +643,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "TwoQubitGateOperation",
         "ControlledPauliY",
         ],
-    TwoQubitGateOperation::from(ControlledPauliY::new(1, 0)); "ControlledPauliY")]
+    Operation::from(ControlledPauliY::new(1, 0)); "ControlledPauliY")]
 #[test_case(
     vec![
         "Operation",
@@ -648,7 +651,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "TwoQubitGateOperation",
         "ControlledPauliZ",
         ],
-    TwoQubitGateOperation::from(ControlledPauliZ::new(1, 0)); "ControlledPauliZ")]
+    Operation::from(ControlledPauliZ::new(1, 0)); "ControlledPauliZ")]
 #[test_case(
     vec![
         "Operation",
@@ -656,7 +659,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "TwoQubitGateOperation",
         "MolmerSorensenXX",
         ],
-    TwoQubitGateOperation::from(MolmerSorensenXX::new(1, 0)); "MolmerSorensenXX")]
+    Operation::from(MolmerSorensenXX::new(1, 0)); "MolmerSorensenXX")]
 #[test_case(
     vec![
         "Operation",
@@ -665,7 +668,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "Rotation",
         "VariableMSXX",
         ],
-    TwoQubitGateOperation::from(VariableMSXX::new(1, 0, CalculatorFloat::PI)); "VariableMSXX")]
+    Operation::from(VariableMSXX::new(1, 0, CalculatorFloat::PI)); "VariableMSXX")]
 #[test_case(
     vec![
         "Operation",
@@ -674,7 +677,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "Rotation",
         "GivensRotation",
         ],
-    TwoQubitGateOperation::from(GivensRotation::new(1, 0, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
+    Operation::from(GivensRotation::new(1, 0, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
 #[test_case(
     vec![
         "Operation",
@@ -683,7 +686,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "Rotation",
         "GivensRotationLittleEndian",
         ],
-    TwoQubitGateOperation::from(GivensRotationLittleEndian::new(1, 0, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
+    Operation::from(GivensRotationLittleEndian::new(1, 0, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
 #[test_case(
     vec![
         "Operation",
@@ -691,7 +694,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "TwoQubitGateOperation",
         "Qsim",
         ],
-    TwoQubitGateOperation::from(Qsim::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
+    Operation::from(Qsim::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
 #[test_case(
     vec![
         "Operation",
@@ -699,7 +702,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "TwoQubitGateOperation",
         "Fsim",
         ],
-    TwoQubitGateOperation::from(Fsim::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
+    Operation::from(Fsim::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
 #[test_case(
     vec![
         "Operation",
@@ -707,7 +710,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "TwoQubitGateOperation",
         "SpinInteraction",
         ],
-    TwoQubitGateOperation::from(SpinInteraction::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
+    Operation::from(SpinInteraction::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
 #[test_case(
     vec![
         "Operation",
@@ -715,7 +718,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "TwoQubitGateOperation",
         "Bogoliubov",
         ],
-    TwoQubitGateOperation::from(Bogoliubov::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
+    Operation::from(Bogoliubov::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
 #[test_case(
     vec![
         "Operation",
@@ -723,7 +726,7 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "TwoQubitGateOperation",
         "PMInteraction",
         ],
-    TwoQubitGateOperation::from(PMInteraction::new(1, 0, CalculatorFloat::PI)); "PMInteraction")]
+    Operation::from(PMInteraction::new(1, 0, CalculatorFloat::PI)); "PMInteraction")]
 #[test_case(
     vec![
         "Operation",
@@ -731,8 +734,16 @@ fn remap_qubits_error1(gate: TwoQubitGateOperation) {
         "TwoQubitGateOperation",
         "ComplexPMInteraction",
         ],
-    TwoQubitGateOperation::from(ComplexPMInteraction::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
-pub fn test_tags(tags: Vec<&str>, gate: TwoQubitGateOperation) {
+    Operation::from(ComplexPMInteraction::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
+#[test_case(
+    vec![
+        "Operation",
+        "GateOperation",
+        "TwoQubitGateOperation",
+        "PhaseShiftedControlledZ",
+        ],
+    Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
+pub fn test_tags(tags: Vec<&str>, gate: Operation) {
     for i in 0..tags.len() {
         assert_eq!(gate.tags()[i], tags[i]);
     }
@@ -740,130 +751,136 @@ pub fn test_tags(tags: Vec<&str>, gate: TwoQubitGateOperation) {
 
 #[test_case(
     "CNOT(CNOT { control: 1, target: 0 })",
-    TwoQubitGateOperation::from(CNOT::new(1, 0)); "CNOT")]
+    Operation::from(CNOT::new(1, 0)); "CNOT")]
 #[test_case(
     "SWAP(SWAP { control: 1, target: 0 })",
-    TwoQubitGateOperation::from(SWAP::new(1, 0)); "SWAP")]
+    Operation::from(SWAP::new(1, 0)); "SWAP")]
 #[test_case(
     "ISwap(ISwap { control: 1, target: 0 })",
-    TwoQubitGateOperation::from(ISwap::new(1, 0)); "ISwap")]
+    Operation::from(ISwap::new(1, 0)); "ISwap")]
 #[test_case(
     "FSwap(FSwap { control: 1, target: 0 })",
-    TwoQubitGateOperation::from(FSwap::new(1, 0)); "FSwap")]
+    Operation::from(FSwap::new(1, 0)); "FSwap")]
 #[test_case(
     "SqrtISwap(SqrtISwap { control: 1, target: 0 })",
-    TwoQubitGateOperation::from(SqrtISwap::new(1, 0)); "SqrtISwap")]
+    Operation::from(SqrtISwap::new(1, 0)); "SqrtISwap")]
 #[test_case(
     "InvSqrtISwap(InvSqrtISwap { control: 1, target: 0 })",
-    TwoQubitGateOperation::from(InvSqrtISwap::new(1, 0)); "InvSqrtISwap")]
+    Operation::from(InvSqrtISwap::new(1, 0)); "InvSqrtISwap")]
 #[test_case(
     "XY(XY { control: 1, target: 0, theta: Float(3.141592653589793) })",
-    TwoQubitGateOperation::from(XY::new(1, 0, CalculatorFloat::PI)); "XY")]
+    Operation::from(XY::new(1, 0, CalculatorFloat::PI)); "XY")]
 #[test_case(
     "ControlledPhaseShift(ControlledPhaseShift { control: 1, target: 0, theta: Float(0.7853981633974483) })",
-    TwoQubitGateOperation::from(ControlledPhaseShift::new(1, 0, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
+    Operation::from(ControlledPhaseShift::new(1, 0, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
 #[test_case(
     "ControlledPauliY(ControlledPauliY { control: 1, target: 0 })",
-    TwoQubitGateOperation::from(ControlledPauliY::new(1, 0)); "ControlledPauliY")]
+    Operation::from(ControlledPauliY::new(1, 0)); "ControlledPauliY")]
 #[test_case(
     "ControlledPauliZ(ControlledPauliZ { control: 1, target: 0 })",
-    TwoQubitGateOperation::from(ControlledPauliZ::new(1, 0)); "ControlledPauliZ")]
+    Operation::from(ControlledPauliZ::new(1, 0)); "ControlledPauliZ")]
 #[test_case(
     "MolmerSorensenXX(MolmerSorensenXX { control: 1, target: 0 })",
-    TwoQubitGateOperation::from(MolmerSorensenXX::new(1, 0)); "MolmerSorensenXX")]
+    Operation::from(MolmerSorensenXX::new(1, 0)); "MolmerSorensenXX")]
 #[test_case(
     "VariableMSXX(VariableMSXX { control: 1, target: 0, theta: Float(3.141592653589793) })",
-    TwoQubitGateOperation::from(VariableMSXX::new(1, 0, CalculatorFloat::PI)); "VariableMSXX")]
+    Operation::from(VariableMSXX::new(1, 0, CalculatorFloat::PI)); "VariableMSXX")]
 #[test_case(
     "GivensRotation(GivensRotation { control: 1, target: 0, theta: Float(0.0), phi: Float(0.0) })",
-    TwoQubitGateOperation::from(GivensRotation::new(1, 0, CalculatorFloat::ZERO, CalculatorFloat::ZERO)); "GivensRotation")]
+    Operation::from(GivensRotation::new(1, 0, CalculatorFloat::ZERO, CalculatorFloat::ZERO)); "GivensRotation")]
 #[test_case(
     "GivensRotationLittleEndian(GivensRotationLittleEndian { control: 1, target: 0, theta: Float(0.0), phi: Float(0.0) })",
-    TwoQubitGateOperation::from(GivensRotationLittleEndian::new(1, 0, CalculatorFloat::ZERO, CalculatorFloat::ZERO)); "GivensRotationLittleEndian")]
+    Operation::from(GivensRotationLittleEndian::new(1, 0, CalculatorFloat::ZERO, CalculatorFloat::ZERO)); "GivensRotationLittleEndian")]
 #[test_case(
     "Qsim(Qsim { control: 1, target: 0, x: Float(1.0), y: Float(1.0), z: Float(-1.0) })",
-    TwoQubitGateOperation::from(Qsim::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
+    Operation::from(Qsim::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
 #[test_case(
     "Fsim(Fsim { control: 1, target: 0, t: Float(1.0), u: Float(2.0), delta: Float(-1.0) })",
-    TwoQubitGateOperation::from(Fsim::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
+    Operation::from(Fsim::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
 #[test_case(
     "SpinInteraction(SpinInteraction { control: 1, target: 0, x: Float(1.0), y: Float(2.0), z: Float(-1.0) })",
-    TwoQubitGateOperation::from(SpinInteraction::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
+    Operation::from(SpinInteraction::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
 #[test_case(
     "Bogoliubov(Bogoliubov { control: 1, target: 0, delta_real: Float(1.0), delta_imag: Float(-1.0) })",
-    TwoQubitGateOperation::from(Bogoliubov::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
+    Operation::from(Bogoliubov::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
 #[test_case(
     "PMInteraction(PMInteraction { control: 1, target: 0, t: Float(3.141592653589793) })",
-    TwoQubitGateOperation::from(PMInteraction::new(1, 0, CalculatorFloat::PI)); "PMInteraction")]
+    Operation::from(PMInteraction::new(1, 0, CalculatorFloat::PI)); "PMInteraction")]
 #[test_case(
     "ComplexPMInteraction(ComplexPMInteraction { control: 1, target: 0, t_real: Float(1.0), t_imag: Float(-1.0) })",
-    TwoQubitGateOperation::from(ComplexPMInteraction::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
-fn test_two_qubitgates_debug(message: &'static str, gate: TwoQubitGateOperation) {
+    Operation::from(ComplexPMInteraction::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
+#[test_case(
+    "PhaseShiftedControlledZ(PhaseShiftedControlledZ { control: 1, target: 0, phi: Float(-1.0) })",
+    Operation::from(PhaseShiftedControlledZ::new(1, 0, CalculatorFloat::from(-1.0))); "PhaseShiftedControlledZ")]
+fn test_two_qubitgates_debug(message: &'static str, gate: Operation) {
     assert_eq!(format!("{:?}", gate), message);
 }
 
 /// Test PartialEq for TwoQubitGate Operations
 #[test_case(
-    TwoQubitGateOperation::from(CNOT::new(0, 1)),
-    TwoQubitGateOperation::from(CNOT::new(1, 0)); "CNOT")]
+    Operation::from(CNOT::new(0, 1)),
+    Operation::from(CNOT::new(1, 0)); "CNOT")]
 #[test_case(
-    TwoQubitGateOperation::from(SWAP::new(0, 1)),
-    TwoQubitGateOperation::from(SWAP::new(1, 0)); "SWAP")]
+    Operation::from(SWAP::new(0, 1)),
+    Operation::from(SWAP::new(1, 0)); "SWAP")]
 #[test_case(
-    TwoQubitGateOperation::from(ISwap::new(0, 1)),
-    TwoQubitGateOperation::from(ISwap::new(1, 0)); "ISwap")]
+    Operation::from(ISwap::new(0, 1)),
+    Operation::from(ISwap::new(1, 0)); "ISwap")]
 #[test_case(
-    TwoQubitGateOperation::from(FSwap::new(0, 1)),
-    TwoQubitGateOperation::from(FSwap::new(1, 0)); "FSwap")]
+    Operation::from(FSwap::new(0, 1)),
+    Operation::from(FSwap::new(1, 0)); "FSwap")]
 #[test_case(
-    TwoQubitGateOperation::from(SqrtISwap::new(0, 1)),
-    TwoQubitGateOperation::from(SqrtISwap::new(1, 0)); "SqrtISwap")]
+    Operation::from(SqrtISwap::new(0, 1)),
+    Operation::from(SqrtISwap::new(1, 0)); "SqrtISwap")]
 #[test_case(
-    TwoQubitGateOperation::from(InvSqrtISwap::new(0, 1)),
-    TwoQubitGateOperation::from(InvSqrtISwap::new(1, 0)); "InvSqrtISwap")]
+    Operation::from(InvSqrtISwap::new(0, 1)),
+    Operation::from(InvSqrtISwap::new(1, 0)); "InvSqrtISwap")]
 #[test_case(
-    TwoQubitGateOperation::from(XY::new(0, 1, CalculatorFloat::PI)),
-    TwoQubitGateOperation::from(XY::new(1, 0, CalculatorFloat::PI)); "XY")]
+    Operation::from(XY::new(0, 1, CalculatorFloat::PI)),
+    Operation::from(XY::new(1, 0, CalculatorFloat::PI)); "XY")]
 #[test_case(
-    TwoQubitGateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)),
-    TwoQubitGateOperation::from(ControlledPhaseShift::new(1, 0, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
+    Operation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)),
+    Operation::from(ControlledPhaseShift::new(1, 0, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
 #[test_case(
-    TwoQubitGateOperation::from(ControlledPauliY::new(0, 1)),
-    TwoQubitGateOperation::from(ControlledPauliY::new(1, 0)); "ControlledPauliY")]
+    Operation::from(ControlledPauliY::new(0, 1)),
+    Operation::from(ControlledPauliY::new(1, 0)); "ControlledPauliY")]
 #[test_case(
-    TwoQubitGateOperation::from(ControlledPauliZ::new(0, 1)),
-    TwoQubitGateOperation::from(ControlledPauliZ::new(1, 0)); "ControlledPauliZ")]
+    Operation::from(ControlledPauliZ::new(0, 1)),
+    Operation::from(ControlledPauliZ::new(1, 0)); "ControlledPauliZ")]
 #[test_case(
-    TwoQubitGateOperation::from(MolmerSorensenXX::new(0, 1)),
-    TwoQubitGateOperation::from(MolmerSorensenXX::new(1, 0)); "MolmerSorensenXX")]
+    Operation::from(MolmerSorensenXX::new(0, 1)),
+    Operation::from(MolmerSorensenXX::new(1, 0)); "MolmerSorensenXX")]
 #[test_case(
-    TwoQubitGateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)),
-    TwoQubitGateOperation::from(VariableMSXX::new(1, 0, CalculatorFloat::PI)); "VariableMSXX")]
+    Operation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)),
+    Operation::from(VariableMSXX::new(1, 0, CalculatorFloat::PI)); "VariableMSXX")]
 #[test_case(
-    TwoQubitGateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)),
-    TwoQubitGateOperation::from(GivensRotation::new(1, 0, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
+    Operation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)),
+    Operation::from(GivensRotation::new(1, 0, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
 #[test_case(
-    TwoQubitGateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)),
-    TwoQubitGateOperation::from(GivensRotationLittleEndian::new(1, 0, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
+    Operation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)),
+    Operation::from(GivensRotationLittleEndian::new(1, 0, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
 #[test_case(
-    TwoQubitGateOperation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))),
-    TwoQubitGateOperation::from(Qsim::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
+    Operation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))),
+    Operation::from(Qsim::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
 #[test_case(
-    TwoQubitGateOperation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))),
-    TwoQubitGateOperation::from(Fsim::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
+    Operation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))),
+    Operation::from(Fsim::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
 #[test_case(
-    TwoQubitGateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))),
-    TwoQubitGateOperation::from(SpinInteraction::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
+    Operation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))),
+    Operation::from(SpinInteraction::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
 #[test_case(
-    TwoQubitGateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))),
-    TwoQubitGateOperation::from(Bogoliubov::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
+    Operation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))),
+    Operation::from(Bogoliubov::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
 #[test_case(
-    TwoQubitGateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)),
-    TwoQubitGateOperation::from(PMInteraction::new(1, 0, CalculatorFloat::PI)); "PMInteraction")]
+    Operation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)),
+    Operation::from(PMInteraction::new(1, 0, CalculatorFloat::PI)); "PMInteraction")]
 #[test_case(
-    TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))),
-    TwoQubitGateOperation::from(ComplexPMInteraction::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
-fn test_twoqubitgates_partialeq(gate1: TwoQubitGateOperation, gate2: TwoQubitGateOperation) {
+    Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))),
+    Operation::from(ComplexPMInteraction::new(1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
+#[test_case(
+    Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)),
+    Operation::from(PhaseShiftedControlledZ::new(1, 0, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
+fn test_twoqubitgates_partialeq(gate1: Operation, gate2: Operation) {
     assert!(gate1.clone() == gate1);
     assert!(gate1 == gate1.clone());
     assert!(gate2 != gate1);
@@ -888,59 +905,62 @@ fn test_rotate_powercf(gate: Rotation, gate2: Rotation) {
 }
 
 /// Test substitute parameters function for TwoQubitGate Operations where it has no effect
-#[test_case(TwoQubitGateOperation::from(CNOT::new(0, 1)); "CNOT")]
-#[test_case(TwoQubitGateOperation::from(SWAP::new(0, 1)); "Swap")]
-#[test_case(TwoQubitGateOperation::from(ISwap::new(0, 1)); "ISwap")]
-#[test_case(TwoQubitGateOperation::from(FSwap::new(0, 1)); "FSwap")]
-#[test_case(TwoQubitGateOperation::from(SqrtISwap::new(0, 1)); "SqrtISwap")]
-#[test_case(TwoQubitGateOperation::from(InvSqrtISwap::new(0, 1)); "InvSqrtISwap")]
-#[test_case(TwoQubitGateOperation::from(XY::new(0, 1, CalculatorFloat::PI)); "XY")]
-#[test_case(TwoQubitGateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
-#[test_case(TwoQubitGateOperation::from(ControlledPauliZ::new(0, 1)); "ControlledPauliZ")]
-#[test_case(TwoQubitGateOperation::from(MolmerSorensenXX::new(0, 1)); "MolmerSorensenXX")]
-#[test_case(TwoQubitGateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "VariableMSXX")]
-#[test_case(TwoQubitGateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)); "VariableMSXX_pi")]
-#[test_case(TwoQubitGateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
-#[test_case(TwoQubitGateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
-#[test_case(TwoQubitGateOperation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
-#[test_case(TwoQubitGateOperation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
-#[test_case(TwoQubitGateOperation::from(Fsim::new(0, 1, CalculatorFloat::PI, CalculatorFloat::PI, CalculatorFloat::PI)); "Fsim_PI")]
-#[test_case(TwoQubitGateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
-#[test_case(TwoQubitGateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
-#[test_case(TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
-#[test_case(TwoQubitGateOperation::from(ControlledPauliY::new(0, 1)); "ControlledPauliY")]
-#[test_case(TwoQubitGateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
-fn test_ineffective_substitute_parameters(gate: TwoQubitGateOperation) {
+#[test_case(Operation::from(CNOT::new(0, 1)); "CNOT")]
+#[test_case(Operation::from(SWAP::new(0, 1)); "Swap")]
+#[test_case(Operation::from(ISwap::new(0, 1)); "ISwap")]
+#[test_case(Operation::from(FSwap::new(0, 1)); "FSwap")]
+#[test_case(Operation::from(SqrtISwap::new(0, 1)); "SqrtISwap")]
+#[test_case(Operation::from(InvSqrtISwap::new(0, 1)); "InvSqrtISwap")]
+#[test_case(Operation::from(XY::new(0, 1, CalculatorFloat::PI)); "XY")]
+#[test_case(Operation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
+#[test_case(Operation::from(ControlledPauliZ::new(0, 1)); "ControlledPauliZ")]
+#[test_case(Operation::from(MolmerSorensenXX::new(0, 1)); "MolmerSorensenXX")]
+#[test_case(Operation::from(VariableMSXX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "VariableMSXX")]
+#[test_case(Operation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)); "VariableMSXX_pi")]
+#[test_case(Operation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
+#[test_case(Operation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
+#[test_case(Operation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
+#[test_case(Operation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
+#[test_case(Operation::from(Fsim::new(0, 1, CalculatorFloat::PI, CalculatorFloat::PI, CalculatorFloat::PI)); "Fsim_PI")]
+#[test_case(Operation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
+#[test_case(Operation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
+#[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
+#[test_case(Operation::from(ControlledPauliY::new(0, 1)); "ControlledPauliY")]
+#[test_case(Operation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
+#[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
+fn test_ineffective_substitute_parameters(gate: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
     let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
     assert_eq!(result, gate.clone());
 }
 
-/// Test substitute parameters function for TwoQubitGate Operations where it has no effect
-#[test_case(TwoQubitGateOperation::from(XY::new(0, 1, CalculatorFloat::from("theta"))),
-            TwoQubitGateOperation::from(XY::new(0, 1, CalculatorFloat::ZERO)); "XY")]
-#[test_case(TwoQubitGateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::from("theta"))),
-            TwoQubitGateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::ZERO)); "ControlledPhaseShift")]
-#[test_case(TwoQubitGateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::from("theta"))),
-            TwoQubitGateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::ZERO)); "VariableMSXX")]
-#[test_case(TwoQubitGateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::FRAC_PI_4)),
-            TwoQubitGateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
-#[test_case(TwoQubitGateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::FRAC_PI_4)),
-            TwoQubitGateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
-#[test_case(TwoQubitGateOperation::from(Qsim::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))),
-            TwoQubitGateOperation::from(Qsim::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
-#[test_case(TwoQubitGateOperation::from(Fsim::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))),
-            TwoQubitGateOperation::from(Fsim::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
-#[test_case(TwoQubitGateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))),
-            TwoQubitGateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
-#[test_case(TwoQubitGateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::from("theta"))),
-            TwoQubitGateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::ZERO)); "PMInteraction")]
-#[test_case(TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(-1.0))),
-            TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
-#[test_case(TwoQubitGateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(-1.0))),
-            TwoQubitGateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::from(-1.0))); "Bogoliubov")]
-fn test_substitute_parameters(gate: TwoQubitGateOperation, gate2: TwoQubitGateOperation) {
+/// Test substitute parameters function for TwoQubitGate Operations
+#[test_case(Operation::from(XY::new(0, 1, CalculatorFloat::from("theta"))),
+            Operation::from(XY::new(0, 1, CalculatorFloat::ZERO)); "XY")]
+#[test_case(Operation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::from("theta"))),
+            Operation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::ZERO)); "ControlledPhaseShift")]
+#[test_case(Operation::from(VariableMSXX::new(0, 1, CalculatorFloat::from("theta"))),
+            Operation::from(VariableMSXX::new(0, 1, CalculatorFloat::ZERO)); "VariableMSXX")]
+#[test_case(Operation::from(GivensRotation::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::FRAC_PI_4)),
+            Operation::from(GivensRotation::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
+#[test_case(Operation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::FRAC_PI_4)),
+            Operation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
+#[test_case(Operation::from(Qsim::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))),
+            Operation::from(Qsim::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
+#[test_case(Operation::from(Fsim::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))),
+            Operation::from(Fsim::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
+#[test_case(Operation::from(SpinInteraction::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))),
+            Operation::from(SpinInteraction::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
+#[test_case(Operation::from(PMInteraction::new(0, 1, CalculatorFloat::from("theta"))),
+            Operation::from(PMInteraction::new(0, 1, CalculatorFloat::ZERO)); "PMInteraction")]
+#[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(-1.0))),
+            Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
+#[test_case(Operation::from(Bogoliubov::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(-1.0))),
+            Operation::from(Bogoliubov::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::from(-1.0))); "Bogoliubov")]
+#[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from("theta"))),
+            Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::ZERO)); "PhaseShiftedControlledZ")]
+fn test_substitute_parameters(gate: Operation, gate2: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
     let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
@@ -948,20 +968,21 @@ fn test_substitute_parameters(gate: TwoQubitGateOperation, gate2: TwoQubitGateOp
 }
 
 /// Test substitute parameters function for TwoQubitGate Operations with error
-#[test_case(TwoQubitGateOperation::from(XY::new(0, 1, CalculatorFloat::from("theta"))); "XY")]
-#[test_case(TwoQubitGateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::from("theta"))); "ControlledPhaseShift")]
-#[test_case(TwoQubitGateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::from("theta"))); "VariableMSXX")]
-#[test_case(TwoQubitGateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::from("theta"))); "VariableMSXX_pi")]
-#[test_case(TwoQubitGateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
-#[test_case(TwoQubitGateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
-#[test_case(TwoQubitGateOperation::from(Qsim::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
-#[test_case(TwoQubitGateOperation::from(Fsim::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
-#[test_case(TwoQubitGateOperation::from(Fsim::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::PI, CalculatorFloat::PI)); "Fsim_PI")]
-#[test_case(TwoQubitGateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
-#[test_case(TwoQubitGateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::from("theta"))); "PMInteraction")]
-#[test_case(TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
-#[test_case(TwoQubitGateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(-1.0))); "Bogoliubov")]
-fn test_substitute_parameters_error(gate: TwoQubitGateOperation) {
+#[test_case(Operation::from(XY::new(0, 1, CalculatorFloat::from("theta"))); "XY")]
+#[test_case(Operation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::from("theta"))); "ControlledPhaseShift")]
+#[test_case(Operation::from(VariableMSXX::new(0, 1, CalculatorFloat::from("theta"))); "VariableMSXX")]
+#[test_case(Operation::from(VariableMSXX::new(0, 1, CalculatorFloat::from("theta"))); "VariableMSXX_pi")]
+#[test_case(Operation::from(GivensRotation::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
+#[test_case(Operation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
+#[test_case(Operation::from(Qsim::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
+#[test_case(Operation::from(Fsim::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
+#[test_case(Operation::from(Fsim::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::PI, CalculatorFloat::PI)); "Fsim_PI")]
+#[test_case(Operation::from(SpinInteraction::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
+#[test_case(Operation::from(PMInteraction::new(0, 1, CalculatorFloat::from("theta"))); "PMInteraction")]
+#[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
+#[test_case(Operation::from(Bogoliubov::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(-1.0))); "Bogoliubov")]
+#[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from("theta"))); "PhaseShiftedControlledZ")]
+fn test_substitute_parameters_error(gate: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("error", 0.0);
     let result = gate.substitute_parameters(&mut substitution_dict);
@@ -1008,6 +1029,12 @@ fn test_inputs_pminteraction_complexpminteraction() {
     let gate = ComplexPMInteraction::new(0, 1, CalculatorFloat::PI, CalculatorFloat::ZERO);
     assert_eq!(gate.t_real(), &CalculatorFloat::PI);
     assert_eq!(gate.t_imag(), &CalculatorFloat::ZERO);
+}
+
+#[test]
+fn test_inputs_phaseshiftedcontrolledz() {
+    let gate = PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI);
+    assert_eq!(gate.phi(), &CalculatorFloat::PI);
 }
 
 #[test]

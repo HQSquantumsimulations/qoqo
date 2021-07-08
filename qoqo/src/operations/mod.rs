@@ -172,6 +172,7 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<BogoliubovWrapper>()?;
     m.add_class::<PMInteractionWrapper>()?;
     m.add_class::<ComplexPMInteractionWrapper>()?;
+    m.add_class::<PhaseShiftedControlledZWrapper>()?;
 
     Ok(())
 }

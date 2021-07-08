@@ -491,3 +491,30 @@ pub struct ComplexPMInteraction {
     t_real: CalculatorFloat,
     t_imag: CalculatorFloat,
 }
+
+#[allow(clippy::upper_case_acronyms)]
+#[wrap(Operate, OperateTwoQubit, OperateGate)] //+ OperateTwoQubitGate (tbd)
+/// The phased-shifted controlled-Z gate.
+///
+/// Modified, i.e. phase-shifted ControlledPauliZ two-qubit gate (https://arxiv.org/pdf/1908.06101.pdf eq.(1)).
+///
+/// The unitary matrix representation is:
+///
+/// .. math::
+///     U = \begin{pmatrix}
+///         1 & 0 & 0 & 0 \\\\
+///         0 & e^{i \phi} & 0 & 0 \\\\
+///         0 & 0 & e^{i \phi} & 0 \\\\
+///         0 & 0 & 0 & e^{i (2\cdot\phi - \pi}
+///         \end{pmatrix}
+///
+/// Args:
+///     control (int): The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the phase-shift on the target qubit.
+///     target (int):: The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
+///     phi (CalculatorFloat): The single qubit phase $\phi$.
+///
+pub struct PhaseShiftedControlledZ {
+    control: usize,
+    target: usize,
+    phi: CalculatorFloat,
+}
