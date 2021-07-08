@@ -166,7 +166,7 @@ pub enum RoqoqoBackendError {
 }
 
 pub mod operations;
-
+#[doc(hidden)]
 mod circuit;
 pub mod prelude;
 pub use circuit::*;
