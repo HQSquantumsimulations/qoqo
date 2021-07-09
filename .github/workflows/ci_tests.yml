@@ -68,7 +68,13 @@ jobs:
   code_coverage_roqoqo:
     runs-on: ubuntu-latest
     steps:
-      - name: Generate coverage report
+      - uses: actions/checkout@master
+      - uses: actions-rs/toolchain@v1
+        with:
+            toolchain: nightly
+            components: clippy
+            override: true
+      # - name: Generate coverage report
         run: |
           RUSTFLAGS="-Zinstrument-coverage" RUSTDOCFLAGS="-Zinstrument-coverage" LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo +nightly test --package=roqoqo --no-default-features
           cd roqoqo/
