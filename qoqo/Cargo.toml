@@ -23,7 +23,7 @@ features = ["num-complex"]
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 ndarray = "0.14"
-num-complex = "0.3"
+num-complex = "0.4"
 thiserror = "1.0"
 qoqo_calculator = {version="0.2"}
 

@@ -330,6 +330,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "747d632c0c558b87dbabbe6a82f3b4ae03720d0646ac5b7b4dae89394be5f2c5"
 dependencies = [
  "num-traits",
+]
+
+[[package]]
+name = "num-complex"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "26873667bbbb7c5182d4a37c1add32cdf09f841af72da53318fdb81543c15085"
+dependencies = [
+ "num-traits",
  "serde",
 ]
 
@@ -383,7 +392,7 @@ dependencies = [
  "cfg-if 0.1.10",
  "libc",
  "ndarray",
- "num-complex 0.3.1",
+ "num-complex 0.2.4",
  "num-traits",
  "pyo3",
 ]
@@ -506,7 +515,7 @@ dependencies = [
  "bincode",
  "nalgebra",
  "ndarray",
- "num-complex 0.3.1",
+ "num-complex 0.4.0",
  "numpy",
  "proc-macro2",
  "pyo3",
@@ -662,7 +671,7 @@ dependencies = [
  "dyn-clone",
  "nalgebra",
  "ndarray",
- "num-complex 0.3.1",
+ "num-complex 0.4.0",
  "proc-macro2",
  "qoqo_calculator",
  "quote",

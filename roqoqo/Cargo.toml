@@ -20,7 +20,7 @@ doctest = false
 [dependencies]
 serde = { version = "1.0", features = ["derive"], optional=true}
 ndarray = { version = "0.14" }
-num-complex = { version = "0.3"}
+num-complex = { version = "0.4"}
 thiserror = "1.0"
 dyn-clone = {version="1.0", optional=true}
 qoqo_calculator = { version="0.2"}
