@@ -627,20 +627,16 @@ pub fn convert_into_circuit(input: &PyAny) -> Result<Circuit, QoqoError> {
         qsplit.next().expect("QOQO_VERSION badly formatted"),
         qsplit.next().expect("QOQO_VERSION badly formatted")
     );
-    let test_version: (&str, &str) = (
-        rver.as_str(),
-        qver.as_str()
-    );
+    let test_version: (&str, &str) = (rver.as_str(), qver.as_str());
     if version == test_version {
-            let get_bytes = input
-                .call_method0("to_bincode")
-                .map_err(|_| QoqoError::CannotExtractCircuit)?;
-            let bytes = get_bytes
-                .extract::<Vec<u8>>()
-                .map_err(|_| QoqoError::CannotExtractCircuit)?;
-            deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractCircuit)
-    }
-    else {
+        let get_bytes = input
+            .call_method0("to_bincode")
+            .map_err(|_| QoqoError::CannotExtractCircuit)?;
+        let bytes = get_bytes
+            .extract::<Vec<u8>>()
+            .map_err(|_| QoqoError::CannotExtractCircuit)?;
+        deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractCircuit)
+    } else {
         Err(QoqoError::VersionMismatch)
     }
 }
