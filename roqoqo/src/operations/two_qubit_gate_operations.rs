@@ -2162,7 +2162,7 @@ impl OperateTwoQubitGate for ComplexPMInteraction {
 /// 1 & 0 & 0 & 0 \\\\
 /// 0 & e^{i \phi} & 0 & 0 \\\\
 /// 0 & 0 & e^{i \phi} & 0 \\\\
-/// 0 & 0 & 0 & e^{i (2\cdot\phi - \pi}
+/// 0 & 0 & 0 & e^{i (2\cdot\phi - \pi)}
 /// \end{pmatrix}
 /// $$
 ///
