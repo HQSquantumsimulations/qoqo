@@ -66,6 +66,7 @@ jobs:
           cargo test --doc --package=roqoqo
 
   code_coverage_roqoqo:
+    runs-on: ubuntu-latest
     steps:
       - name: Generate coverage report
         run: |
