@@ -51,7 +51,7 @@ jobs:
           cargo test --workspace --no-default-features
           cargo fmt --all -- --check
   
-  doctes_check:
+  doctest_check:
     name: unittests_check-${{ matrix.combinations.runs_on }}
     runs-on: ubuntu-latest
     steps:
@@ -65,6 +65,25 @@ jobs:
       - run: |
           cargo test --doc --package=roqoqo
 
+  code_coverage_roqoqo:
+    steps:
+      - name: Generate coverage report
+        run: |
+          RUSTFLAGS="-Zinstrument-coverage" RUSTDOCFLAGS="-Zinstrument-coverage" LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo +nightly test --package=roqoqo --no-default-features
+          cd roqoqo/
+          grcov . --binary-path ../target/debug -s . -t lcov --branch --ignore-not-existing --ignore "cargo" --keep-only "src/*" -o coverage.lcov --ignore "/mod.rs" --ignore "/lib.rs" --ignore "*/_auto_generated_operations.rs"
+          genhtml coverage.lcov -o ./coveragehtml/lcov.info
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          # token: ${{ secrets.CODECOV_TOKEN }}
+          files: lcov.info
+          directory: ./roqoqo/coveragehtml/
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          path_to_write_report: ./coveragehtml/codecov_report.txt
+          verbose: true
   
   # format_check: # needs to run after test otherwise auogenerated files are not built
   #   runs-on: ubuntu-latest
