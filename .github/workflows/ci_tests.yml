@@ -82,7 +82,7 @@ jobs:
           LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo +nightly test --package=roqoqo --no-default-features
           cd roqoqo/
           cargo install grcov
-          cargo install genhtml
+          cargo install lcov
           grcov . --binary-path ../target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "cargo" --ignore "/mod.rs" --ignore "/lib.rs" --ignore "*/_auto_generated_operations.rs" --keep-only "src/*" -o coverage.lcov
           genhtml coverage.lcov -o ./coveragehtml/lcov.info
       - name: Upload coverage to Codecov
