@@ -21,7 +21,7 @@ qoqo_calculator = {version="0.2"}
 roqoqo = {version="0.2", path="../roqoqo", features=["serialize"]}
 rand = "0.8"
 nalgebra = "0.26"
-ndarray = { version = "0.14" }
+ndarray = { version = "0.15" }
 roqoqo-derive = {version="0.1", path="../roqoqo-derive"}
 
 [build-dependencies]
