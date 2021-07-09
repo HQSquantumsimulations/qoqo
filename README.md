@@ -43,6 +43,17 @@ roqoqo provides:
 * Serialize and deserialize support for circuits and measurement information via the serde crate.
 
 This software is still in the beta stage. Functions and documentation are not yet complete and breaking changes can occur.
+
+### Installation
+
+To use roqoqo in a Rust project simply add
+
+```TOML
+roqoqo = {version="0.2"}
+```
+
+to the `[dependencies]` section of the project Cargo.toml.
+
 ## qoqo
 
 [![Documentation Status](https://readthedocs.org/projects/qoqo/badge/?version=latest)](https://qoqo.readthedocs.io/en/latest/?badge=latest)
@@ -61,6 +72,31 @@ qoqo provides a full python interface to the underlying roqoqo library, includin
 * Measurement structs for evaluating observable measurements based on projective measurements from quantum hardware or simulator readouts
 * A DoUnitary class combining circuits and measurement information in complete quantum programms with a simple interface
 * Serialization to json and deserialization from json for circuits and measurement information. Serialization support can easily be expanded to other targets with the help of the serde crate.
+
+### Installation
+
+On Linux and macOS on x86 precompiled packages can be found on PyPi and installed via
+
+```shell
+pip install qoqo
+```
+
+For other platforms we recommend checking out the latest tagged version from github and using the [maturin](https://github.com/PyO3/maturin) tool to build a python package for qoqo locally and install it via pip.
+Please note that the package should be built from the top level directory of the workspace selecting the qoqo package with the `-m qoqo/Cargo.toml` option.
+Specifically for macOS on Apple Silicon the following build command should be used.
+
+```shell
+RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -m qoqo/Cargo.toml  --release
+pip install target/wheels/$NAME_OF_WHEEL
+```
+
+When using qoqo in a rust project providing a python interface add
+
+```TOML
+qoqo = {version="0.4", default-features=false}
+```
+
+to the `[dependencies]` section of the project Cargo.toml.
 
 ### Examples
 

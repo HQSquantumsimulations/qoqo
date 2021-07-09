@@ -238,9 +238,9 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "libc"
-version = "0.2.97"
+version = "0.2.98"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "12b8adadd720df158f4d70dfe7ccc6adb0472d7c55ca83445f6a5ab3e36f8fb6"
+checksum = "320cfe77175da3a483efed4bc0adc1968ca050b098ce4f2f1c13a56626128790"
 
 [[package]]
 name = "libm"
@@ -501,7 +501,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "0.4.4"
+version = "0.5.0"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -525,7 +525,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -534,9 +534,9 @@ dependencies = [
 
 [[package]]
 name = "qoqo_calculator"
-version = "0.2.1"
+version = "0.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "db4e277fbd69cfae03b2fdaaf8f0f64da772921e34fec8ebc75e0917d437fb8d"
+checksum = "13de3d20a02df465b391f64457e40f7a6833bf3faaa76c9894e816b24df70ddf"
 dependencies = [
  "num-complex 0.3.1",
  "serde",
@@ -545,9 +545,9 @@ dependencies = [
 
 [[package]]
 name = "qoqo_calculator_pyo3"
-version = "0.3.0"
+version = "0.3.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d544380aa09a2df6509511e041da5140fe958607df2d6b230d7c1fdbec32f24f"
+checksum = "a9801b5fdfb4285d42e7ed2f8c7ab0f66f04de27ace2b4d6073d46ecc3a6b462"
 dependencies = [
  "num-complex 0.3.1",
  "pyo3",
@@ -680,7 +680,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -689,7 +689,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "nalgebra",
  "ndarray",
@@ -814,18 +814,18 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "1.0.25"
+version = "1.0.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fa6f76457f59514c7eeb4e59d891395fab0b2fd1d40723ae737d64153392e9c6"
+checksum = "93119e4feac1cbe6c798c34d3a53ea0026b0b1de6a120deef895137c0529bfe2"
 dependencies = [
  "thiserror-impl",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "1.0.25"
+version = "1.0.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8a36768c0fbf1bb15eca10defa29526bda730a2376c2ab4393ccfa16fb1a318d"
+checksum = "060d69a0afe7796bf42e9e2ff91f5ee691fb15c53d38b4b62a9a53eb23164745"
 dependencies = [
  "proc-macro2",
  "quote",

@@ -247,10 +247,22 @@ fn test_qoqo_versions() {
     let py = gil.python();
     let circuit = new_circuit(py);
     populate_circuit_rotatex(py, circuit, 0, 3);
+    let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+    let mut qsplit = QOQO_VERSION.split('.').take(2);
+    let rver = format!(
+        "{}.{}",
+        rsplit.next().expect("ROQOQO_VERSION badly formatted"),
+        rsplit.next().expect("ROQOQO_VERSION badly formatted")
+    );
+    let qver = format!(
+        "{}.{}",
+        qsplit.next().expect("QOQO_VERSION badly formatted"),
+        qsplit.next().expect("QOQO_VERSION badly formatted")
+    );
 
     let comparison_copy: Vec<&str> =
         Vec::extract(circuit.call_method0("_qoqo_versions").unwrap()).unwrap();
-    assert_eq!(comparison_copy, vec![ROQOQO_VERSION, QOQO_VERSION]);
+    assert_eq!(comparison_copy, vec![rver.as_str(), qver.as_str()]);
 }
 
 /// Test to_ and from_bincode functions of Circuit
