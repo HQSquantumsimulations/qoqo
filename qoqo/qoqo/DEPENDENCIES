@@ -5868,7 +5868,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-libc 0.2.97
+libc 0.2.98
 https://github.com/rust-lang/libc
 by The Rust Project Developers
 Raw FFI bindings to platform libraries like libc.
@@ -11537,29 +11537,30 @@ LICENSE:
 
 
 ====================================================
-qoqo 0.4.0
+qoqo 0.5.0
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoq
 License: Apache-2.0
 
 ====================================================
-qoqo-macros 0.1.0
+qoqo-macros 0.1.5
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
 
 ====================================================
-qoqo_calculator 0.2.0
+qoqo_calculator 0.2.6
 https://github.com/HQSquantumsimulations/qoqo_calculator
 by HQS Quantum Simulations <info@quantumsimulations.de>
 qoqo-calculator is the calculator backend of the qoqo quantum computing toolkit by HQS Quantum Simulations
 License: Apache-2.0
 
 ====================================================
-qoqo_calculator_pyo3 0.3.0
+qoqo_calculator_pyo3 0.3.6
 https://github.com/HQSquantumsimulations/qoqo_calculator_pyo3
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Python interface to qoqo calculator, the calculator backend of the qoqo quantum computing toolkit by HQS Quantum Simulations
+License: Apache-2.0
 
 ====================================================
 quote 1.0.9
@@ -13776,20 +13777,20 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-roqoqo 0.1.0
+roqoqo 0.2.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
 License: Apache-2.0
 
 ====================================================
-roqoqo-derive 0.1.0
+roqoqo-derive 0.1.6
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Maros for the roqoqo crate
 License: Apache-2.0
 
 ====================================================
-roqoqo-test 0.1.0
+roqoqo-test 0.1.5
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
@@ -16197,7 +16198,7 @@ SOFTWARE.
 
 
 ====================================================
-thiserror 1.0.25
+thiserror 1.0.26
 https://github.com/dtolnay/thiserror
 by David Tolnay <dtolnay@gmail.com>
 derive(Error)
@@ -16436,7 +16437,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-thiserror-impl 1.0.25
+thiserror-impl 1.0.26
 https://github.com/dtolnay/thiserror
 by David Tolnay <dtolnay@gmail.com>
 Implementation detail of the `thiserror` crate
