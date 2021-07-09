@@ -69,6 +69,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Generate coverage report
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          target: x86_64-unknown-linux-gnu
+          default: true
         run: |
           RUSTFLAGS="-Zinstrument-coverage" RUSTDOCFLAGS="-Zinstrument-coverage" LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo test --package=roqoqo --no-default-features
           cd roqoqo/
