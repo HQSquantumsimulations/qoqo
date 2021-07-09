@@ -34,7 +34,7 @@ rand = {version="0.8", optional=true}
 [dev-dependencies]
 serde_test = {version="1.0"}
 test-case = "1.1.0"
-nalgebra = "0.26"
+nalgebra = "0.27"
 
 [build-dependencies]
 quote = "1.0"
