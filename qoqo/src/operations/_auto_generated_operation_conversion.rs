@@ -285,6 +285,12 @@ pub fn convert_operation_to_pyobject(operation: Operation) -> PyResult<PyObject>
                 let pyobject: PyObject = pyref.to_object(py);
                 Ok(pyobject)
             }
+            Operation::PhaseShiftedControlledZ(internal) => {
+                let pyref: Py<PhaseShiftedControlledZWrapper> =
+                    Py::new(py, PhaseShiftedControlledZWrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
             Operation::MeasureQubit(internal) => {
                 let pyref: Py<MeasureQubitWrapper> =
                     Py::new(py, MeasureQubitWrapper { internal }).unwrap();
@@ -1185,6 +1191,26 @@ pub fn convert_pyany_to_operation(op: &PyAny) -> Result<Operation, QoqoError> {
             let t_imag = convert_into_calculator_float(t_imag_pyobject)
                 .map_err(|_| QoqoError::ConversionError)?;
             Ok(ComplexPMInteraction::new(control, target, t_real, t_imag).into())
+        }
+        "PhaseShiftedControlledZ" => {
+            let control_pyobject = op
+                .call_method0("control")
+                .map_err(|_| QoqoError::ConversionError)?;
+            let control: usize = control_pyobject
+                .extract()
+                .map_err(|_| QoqoError::ConversionError)?;
+            let target_pyobject = op
+                .call_method0("target")
+                .map_err(|_| QoqoError::ConversionError)?;
+            let target: usize = target_pyobject
+                .extract()
+                .map_err(|_| QoqoError::ConversionError)?;
+            let phi_pyobject = op
+                .call_method0("phi")
+                .map_err(|_| QoqoError::ConversionError)?;
+            let phi = convert_into_calculator_float(phi_pyobject)
+                .map_err(|_| QoqoError::ConversionError)?;
+            Ok(PhaseShiftedControlledZ::new(control, target, phi).into())
         }
         "MeasureQubit" => {
             let qubit_pyobject = op

@@ -165,9 +165,9 @@ pub enum RoqoqoBackendError {
     CalculatorError(#[from] CalculatorError),
 }
 
-pub mod operations;
-
+#[doc(hidden)]
 mod circuit;
+pub mod operations;
 pub mod prelude;
 pub use circuit::*;
 pub mod backends;
