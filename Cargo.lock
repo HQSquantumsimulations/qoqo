@@ -238,9 +238,9 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "libc"
-version = "0.2.97"
+version = "0.2.98"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "12b8adadd720df158f4d70dfe7ccc6adb0472d7c55ca83445f6a5ab3e36f8fb6"
+checksum = "320cfe77175da3a483efed4bc0adc1968ca050b098ce4f2f1c13a56626128790"
 
 [[package]]
 name = "libm"
@@ -334,6 +334,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "num-complex"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "26873667bbbb7c5182d4a37c1add32cdf09f841af72da53318fdb81543c15085"
+dependencies = [
+ "num-traits",
+]
+
+[[package]]
 name = "num-integer"
 version = "0.1.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -385,8 +394,14 @@ dependencies = [
  "ndarray",
  "num-complex 0.3.1",
  "num-traits",
- "pyo3",
+ "pyo3 0.13.2",
 ]
+
+[[package]]
+name = "once_cell"
+version = "1.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "692fcb63b64b1758029e0a96ee63e049ce8c5948587f2f7208df04625e5f6b56"
 
 [[package]]
 name = "parking_lot"
@@ -473,8 +488,34 @@ dependencies = [
  "num-complex 0.3.1",
  "parking_lot",
  "paste 0.1.18",
- "pyo3-macros",
+ "pyo3-macros 0.13.2",
  "unindent",
+]
+
+[[package]]
+name = "pyo3"
+version = "0.14.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "338f7f3701e11fd7f76508c91fbcaabc982564bcaf4d1ca7e1574ff2b4778aec"
+dependencies = [
+ "cfg-if 1.0.0",
+ "indoc",
+ "libc",
+ "num-complex 0.4.0",
+ "parking_lot",
+ "paste 0.1.18",
+ "pyo3-build-config",
+ "pyo3-macros 0.14.1",
+ "unindent",
+]
+
+[[package]]
+name = "pyo3-build-config"
+version = "0.14.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dcb2e98cc9ccc83d4f7115c8f925e0057e88c8d324b1bc4c2db4a7270c06ac9d"
+dependencies = [
+ "once_cell",
 ]
 
 [[package]]
@@ -483,7 +524,18 @@ version = "0.13.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a47f2c300ceec3e58064fd5f8f5b61230f2ffd64bde4970c81fdd0563a2db1bb"
 dependencies = [
- "pyo3-macros-backend",
+ "pyo3-macros-backend 0.13.2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "pyo3-macros"
+version = "0.14.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cfb8671a42d0ecc4bec8cc107ae96d49292ca20cd1968e09b98af4aafd516adf"
+dependencies = [
+ "pyo3-macros-backend 0.14.1",
  "quote",
  "syn",
 ]
@@ -500,8 +552,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "pyo3-macros-backend"
+version = "0.14.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9addf6dc422f05d4949cc0990195ee74fa43e3c3780cc9a1972fe9e7b68a9f48"
+dependencies = [
+ "proc-macro2",
+ "pyo3-build-config",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "qoqo"
-version = "0.4.4"
+version = "0.5.0"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -509,7 +573,7 @@ dependencies = [
  "num-complex 0.3.1",
  "numpy",
  "proc-macro2",
- "pyo3",
+ "pyo3 0.14.1",
  "qoqo-macros",
  "qoqo_calculator",
  "qoqo_calculator_pyo3",
@@ -525,7 +589,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -534,9 +598,9 @@ dependencies = [
 
 [[package]]
 name = "qoqo_calculator"
-version = "0.2.1"
+version = "0.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "db4e277fbd69cfae03b2fdaaf8f0f64da772921e34fec8ebc75e0917d437fb8d"
+checksum = "13de3d20a02df465b391f64457e40f7a6833bf3faaa76c9894e816b24df70ddf"
 dependencies = [
  "num-complex 0.3.1",
  "serde",
@@ -545,12 +609,12 @@ dependencies = [
 
 [[package]]
 name = "qoqo_calculator_pyo3"
-version = "0.3.0"
+version = "0.3.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d544380aa09a2df6509511e041da5140fe958607df2d6b230d7c1fdbec32f24f"
+checksum = "a9801b5fdfb4285d42e7ed2f8c7ab0f66f04de27ace2b4d6073d46ecc3a6b462"
 dependencies = [
  "num-complex 0.3.1",
- "pyo3",
+ "pyo3 0.13.2",
  "qoqo_calculator",
  "serde",
  "thiserror",
@@ -680,7 +744,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -689,7 +753,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "nalgebra",
  "ndarray",
@@ -814,18 +878,18 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "1.0.25"
+version = "1.0.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fa6f76457f59514c7eeb4e59d891395fab0b2fd1d40723ae737d64153392e9c6"
+checksum = "93119e4feac1cbe6c798c34d3a53ea0026b0b1de6a120deef895137c0529bfe2"
 dependencies = [
  "thiserror-impl",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "1.0.25"
+version = "1.0.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8a36768c0fbf1bb15eca10defa29526bda730a2376c2ab4393ccfa16fb1a318d"
+checksum = "060d69a0afe7796bf42e9e2ff91f5ee691fb15c53d38b4b62a9a53eb23164745"
 dependencies = [
  "proc-macro2",
  "quote",
