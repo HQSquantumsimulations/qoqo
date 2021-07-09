@@ -70,7 +70,7 @@ jobs:
     steps:
       - name: Generate coverage report
         run: |
-          rustup toolchain install nightly --allow-downgrade --profile minimal --component clippy
+          rustup toolchain install nightly
           RUSTFLAGS="-Zinstrument-coverage" RUSTDOCFLAGS="-Zinstrument-coverage" LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo +nightly test --package=roqoqo --no-default-features
           cd roqoqo/
           grcov . --binary-path ../target/debug -s . -t lcov --branch --ignore-not-existing --ignore "cargo" --keep-only "src/*" -o coverage.lcov --ignore "/mod.rs" --ignore "/lib.rs" --ignore "*/_auto_generated_operations.rs"
