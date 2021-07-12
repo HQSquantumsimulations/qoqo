@@ -708,6 +708,9 @@ pub enum TwoQubitGateOperation {
     #[allow(clippy::upper_case_acronyms)]
     #[doc = "Variant for ComplexPMInteraction"]
     ComplexPMInteraction(ComplexPMInteraction),
+    #[allow(clippy::upper_case_acronyms)]
+    #[doc = "Variant for PhaseShiftedControlledZ"]
+    PhaseShiftedControlledZ(PhaseShiftedControlledZ),
 }
 #[doc = r" Enum of all Operations implementing [OperateMultiQubitGate]"]
 #[derive(
