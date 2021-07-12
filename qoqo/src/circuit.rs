@@ -184,8 +184,20 @@ impl CircuitWrapper {
     ///
     /// Returns:
     ///     tuple[str, str]: The roqoqo and qoqo versions.
-    fn _qoqo_versions(&self) -> (&'static str, &'static str) {
-        (ROQOQO_VERSION, QOQO_VERSION)
+    fn _qoqo_versions(&self) -> (String, String) {
+        let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+        let mut qsplit = QOQO_VERSION.split('.').take(2);
+        let rver = format!(
+            "{}.{}",
+            rsplit.next().expect("ROQOQO_VERSION badly formatted"),
+            rsplit.next().expect("ROQOQO_VERSION badly formatted")
+        );
+        let qver = format!(
+            "{}.{}",
+            qsplit.next().expect("QOQO_VERSION badly formatted"),
+            qsplit.next().expect("QOQO_VERSION badly formatted")
+        );
+        (rver, qver)
     }
 
     /// Return the bincode representation of the Circuit using the [bincode] crate.
@@ -603,18 +615,29 @@ pub fn convert_into_circuit(input: &PyAny) -> Result<Circuit, QoqoError> {
     let version = get_version
         .extract::<(&str, &str)>()
         .map_err(|_| QoqoError::CannotExtractCircuit)?;
-
-    match version {
-        (ROQOQO_VERSION, QOQO_VERSION) => {
-            let get_bytes = input
-                .call_method0("to_bincode")
-                .map_err(|_| QoqoError::CannotExtractCircuit)?;
-            let bytes = get_bytes
-                .extract::<Vec<u8>>()
-                .map_err(|_| QoqoError::CannotExtractCircuit)?;
-            deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractCircuit)
-        }
-        _ => Err(QoqoError::VersionMismatch),
+    let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+    let mut qsplit = QOQO_VERSION.split('.').take(2);
+    let rver = format!(
+        "{}.{}",
+        rsplit.next().expect("ROQOQO_VERSION badly formatted"),
+        rsplit.next().expect("ROQOQO_VERSION badly formatted")
+    );
+    let qver = format!(
+        "{}.{}",
+        qsplit.next().expect("QOQO_VERSION badly formatted"),
+        qsplit.next().expect("QOQO_VERSION badly formatted")
+    );
+    let test_version: (&str, &str) = (rver.as_str(), qver.as_str());
+    if version == test_version {
+        let get_bytes = input
+            .call_method0("to_bincode")
+            .map_err(|_| QoqoError::CannotExtractCircuit)?;
+        let bytes = get_bytes
+            .extract::<Vec<u8>>()
+            .map_err(|_| QoqoError::CannotExtractCircuit)?;
+        deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractCircuit)
+    } else {
+        Err(QoqoError::VersionMismatch)
     }
 }
 /// Iterator for iterating over Operations in a Circuit.

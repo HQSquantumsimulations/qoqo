@@ -35,7 +35,7 @@ pub use circuit::{convert_into_circuit, CircuitWrapper, OperationIteratorWrapper
 /// qoqo version information, used for qoqo import/export checks
 pub const QOQO_VERSION: &str = env!("CARGO_PKG_VERSION");
 
-use roqoqo::RoqoqoError;
+use roqoqo::{RoqoqoBackendError, RoqoqoError};
 use thiserror::Error;
 
 /// Errors that can occur in qoqo.
@@ -57,6 +57,24 @@ pub enum QoqoError {
     /// Transparent forwarding of roqoqo errors.
     #[error(transparent)]
     RoqoqoError(#[from] RoqoqoError),
+}
+
+/// Errors that can occur in qoqo backends.
+#[derive(Error, Debug, PartialEq)]
+pub enum QoqoBackendError {
+    /// Error a Circuit cannot be extracted from PyAny object passed from python.
+    #[error("Cannot extract rust object from python object")]
+    CannotExtractObject,
+    /// Error for version mismatch between separately compiled packages.
+    ///
+    /// Error when trying to extract a Backend or Device from a PyAny python object that has been created
+    /// from a python package that has been compiled separately.
+    /// To avoid unexpected behaviour this is only allowed when qoqo and roqoqo in both packages are the same version.
+    #[error("Package versions of qoqo backend and roqoqo backend do not match versions of qoqo object passed from python")]
+    VersionMismatch,
+    /// Transparent forwarding of roqoqo errors.
+    #[error(transparent)]
+    RoqoqoBackendError(#[from] RoqoqoBackendError),
 }
 
 /// Quantum Operation Quantum Operation (qoqo)
