@@ -493,7 +493,7 @@ pub struct ComplexPMInteraction {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate)] //+ OperateTwoQubitGate (tbd)
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
 /// The phased-shifted controlled-Z gate.
 ///
 /// Modified, i.e. phase-shifted ControlledPauliZ two-qubit gate (https://arxiv.org/pdf/1908.06101.pdf eq.(1)).
@@ -505,7 +505,7 @@ pub struct ComplexPMInteraction {
 ///         1 & 0 & 0 & 0 \\\\
 ///         0 & e^{i \phi} & 0 & 0 \\\\
 ///         0 & 0 & e^{i \phi} & 0 \\\\
-///         0 & 0 & 0 & e^{i (2\cdot\phi - \pi}
+///         0 & 0 & 0 & e^{i (2\cdot\phi - \pi)}
 ///         \end{pmatrix}
 ///
 /// Args:

@@ -166,7 +166,7 @@ impl OperateSingleQubitGate for SingleQubitGate {
 /// 0 & \cos(\frac{\theta}{2})
 /// \end{pmatrix}
 ///  + \begin{pmatrix}
-///  - i \sin(\frac{\theta}{2}) & 0\\\\
+///  -i \sin(\frac{\theta}{2}) & 0\\\\
 /// 0 & i \sin(\frac{\theta}{2})
 /// \end{pmatrix}
 ///  $$
@@ -1276,7 +1276,7 @@ impl OperateGate for RotateAroundSphericalAxis {
             * ((f64::try_from(self.spherical_phi.clone())?).cos());
         let vy: f64 = ((f64::try_from(self.spherical_theta.clone())?).sin())
             * ((f64::try_from(self.spherical_phi.clone())?).sin());
-        let vz: f64 = 0.0;
+        let vz: f64 = (f64::try_from(self.spherical_theta.clone())?).cos();
         Ok(array![
             [
                 Complex64::new(c, -1.0 * s * vz),
