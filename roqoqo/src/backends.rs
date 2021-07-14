@@ -98,7 +98,7 @@ pub trait EvaluatingBackend: Sized {
     /// Runs all circuits corresponding to one measurement with the backend.
     ///
     /// An expectation value measurement in general involves several circuits.
-    /// Each circuit is passes to the backend and executed separately
+    /// Each circuit is passes to the backend and executed separately.
     /// During execution values are written to and read from classical registers
     /// ([crate::registers::BitRegister], [crate::registers::FloatRegister] and [crate::registers::ComplexRegister]).
     /// To produce sufficient statistics for evaluating expectationg values,

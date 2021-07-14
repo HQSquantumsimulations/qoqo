@@ -14,9 +14,10 @@ use crate::measurements::{CheatedInput, Measure, MeasureExpectationValues};
 use crate::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
 use crate::Circuit;
 use crate::RoqoqoError;
-use ndarray::{Array1, Array2, ArrayView1, ArrayView2};
+use ndarray::{Array1, ArrayView1, ArrayView2};
+//use ndarray::{Array2};
 use num_complex::Complex64;
-use sprs::{CsMat, TriMat};
+//use sprs::{CsMat, TriMat};
 use std::collections::HashMap;
 
 /// Cheated measurement using state obtained from simulator backend.
@@ -117,11 +118,11 @@ impl MeasureExpectationValues for Cheated {
         // Evaluating expectation values
         let mut results: HashMap<String, f64> = HashMap::new();
         for (name, (operator, readout)) in self.input.measured_operators.iter() {
-            let row_inds: Vec<usize> = operator.iter().map(|(row, _, _)| row).cloned().collect();
-            let col_inds: Vec<usize> = operator.iter().map(|(_, col, _)| col).cloned().collect();
-            let data: Vec<Complex64> = operator.iter().map(|(_, _, val)| val).cloned().collect();
-            let tmp_tri = TriMat::from_triplets((dimension, dimension), row_inds, col_inds, data);
-            let matrix: CsMat<Complex64> = tmp_tri.to_csc();
+            // let row_inds: Vec<usize> = operator.iter().map(|(row, _, _)| row).cloned().collect();
+            // let col_inds: Vec<usize> = operator.iter().map(|(_, col, _)| col).cloned().collect();
+            // let data: Vec<Complex64> = operator.iter().map(|(_, _, val)| val).cloned().collect();
+            // let tmp_tri = TriMat::from_triplets((dimension, dimension), row_inds, col_inds, data);
+            // let matrix: CsMat<Complex64> = tmp_tri.to_csc();
             let register_vec =
                 complex_registers
                     .get(readout)
@@ -132,25 +133,27 @@ impl MeasureExpectationValues for Cheated {
             for (index, register) in register_vec.iter().enumerate() {
                 if register.len() == dimension {
                     let vector: ArrayView1<Complex64> = ArrayView1::<Complex64>::from(register);
-                    let complex_conj_vec: Vec<Complex64> =
-                        register.iter().map(|x| x.conj()).collect();
-                    let complex_conj: ArrayView1<Complex64> =
-                        ArrayView1::<Complex64>::from(&complex_conj_vec);
-                    let tmp_val: Complex64 = complex_conj.dot(&(&matrix * &vector));
+                    // let complex_conj_vec: Vec<Complex64> =
+                    //     register.iter().map(|x| x.conj()).collect();
+                    // let complex_conj: ArrayView1<Complex64> =
+                    //     ArrayView1::<Complex64>::from(&complex_conj_vec);
+                    // let tmp_val: Complex64 = complex_conj.dot(&(&matrix * &vector));
+                    let tmp_val: Complex64 = sparse_matrix_vector_expectation_value(operator, &vector);
                     local_results[index] = tmp_val.re;
                 } else if register.len() == dimension * dimension {
                     let vector: ArrayView2<Complex64> =
                         ArrayView2::<Complex64>::from_shape((dimension, dimension), register)
                             .expect("Unexpected error reshaping array");
-                    let complex_conj_vec: Vec<Complex64> =
-                        register.iter().map(|x| x.conj()).collect();
-                    let complex_conj: Array2<Complex64> = Array2::<Complex64>::from_shape_vec(
-                        (dimension, dimension),
-                        complex_conj_vec,
-                    )
-                    .expect("Unexpected error reshaping array");
-                    let tmp_val: Complex64 =
-                        ((complex_conj.t()).dot(&(&matrix * &vector))).diag().sum();
+                    // let complex_conj_vec: Vec<Complex64> =
+                    //     register.iter().map(|x| x.conj()).collect();
+                    // let complex_conj: Array2<Complex64> = Array2::<Complex64>::from_shape_vec(
+                    //     (dimension, dimension),
+                    //     complex_conj_vec,
+                    // )
+                    // .expect("Unexpected error reshaping array");
+                    // let tmp_val: Complex64 =
+                    //     ((complex_conj.t()).dot(&(&matrix * &vector))).diag().sum();
+                    let tmp_val = sparse_matrix_matrix_expectation_value(operator, &vector, dimension);
                     local_results[index] = tmp_val.re;
                 } else {
                     return Err(RoqoqoError::MismatchedRegisterDimension {
@@ -169,4 +172,24 @@ impl MeasureExpectationValues for Cheated {
         }
         Ok(Some(results))
     }
+}
+
+#[inline]
+fn sparse_matrix_vector_expectation_value(matrix: &Vec<(usize, usize, Complex64)>, vector: &ArrayView1<Complex64>) -> Complex64{
+    let mut val: Complex64 = Complex64::new(0.0, 0.0);
+    for (index_i, index_j, value) in matrix{
+        val += vector[*index_i].conj() * value * vector[*index_j] 
+    }
+    val
+}
+
+#[inline]
+fn sparse_matrix_matrix_expectation_value(matrix: &Vec<(usize, usize, Complex64)>, dense_matrix: &ArrayView2<Complex64>, dimension: usize) -> Complex64{
+    let mut val: Complex64 = Complex64::new(0.0, 0.0);
+    for (index_j, index_k, value) in matrix{
+        for index_i in 0.. dimension{
+            val += dense_matrix[(*index_j, index_i)].conj() * value * dense_matrix[(*index_k, index_i)] 
+    }
+}
+    val
 }
