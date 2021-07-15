@@ -20,6 +20,8 @@ use std::collections::HashMap;
 
 #[test]
 fn test_returning_circuits() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -50,6 +52,8 @@ fn test_returning_circuits() {
 /// Test copy
 #[test]
 fn test_pyo3_copy() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -90,6 +94,8 @@ fn test_pyo3_copy() {
 /// Test debug and clone
 #[test]
 fn test_pyo3_debug() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -114,6 +120,8 @@ fn test_pyo3_debug() {
 /// Test to_json and from_json functions
 #[test]
 fn test_to_from_json() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -182,6 +190,8 @@ fn test_substitute_parameters() {
 /// Test substitute_parameters returning an error
 #[test]
 fn test_substitute_parameters_error() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 

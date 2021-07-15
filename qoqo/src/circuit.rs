@@ -411,6 +411,14 @@ impl CircuitWrapper {
         self.internal.add_operation(operation);
         Ok(())
     }
+
+    /// Return a string containing a formatted (string) representation of the Circuit.
+    ///
+    /// Returns:
+    ///     str: The string representation of the Circuit.
+    fn __format__(&self, _format_spec: &str) -> PyResult<String> {
+        Ok(format!("{}", self.internal))
+    }
 }
 
 #[pyproto]
@@ -420,14 +428,6 @@ impl PyObjectProtocol for CircuitWrapper {
     /// Returns:
     ///     str: The printable string representation of the Circuit.
     fn __repr__(&self) -> PyResult<String> {
-        Ok(format!("{}", self.internal))
-    }
-
-    /// Return a string containing a formatted (string) representation of the Circuit.
-    ///
-    /// Returns:
-    ///     str: The string representation of the Circuit.
-    fn __format__(&self, _format_spec: &str) -> PyResult<String> {
         Ok(format!("{}", self.internal))
     }
 

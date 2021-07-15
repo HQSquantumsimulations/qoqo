@@ -215,6 +215,14 @@ impl PragmaSetStateVectorWrapper {
     fn __deepcopy__(&self, _memodict: Py<PyAny>) -> PragmaSetStateVectorWrapper {
         self.clone()
     }
+
+    /// Return a string containing a formatted (string) representation of the PRAGMA operation.
+    ///
+    /// Returns:
+    ///     str: The string representation of the operation.
+    fn __format__(&self, _format_spec: &str) -> PyResult<String> {
+        Ok(format!("{:?}", self.internal))
+    }
 }
 
 #[pyproto]
@@ -224,14 +232,6 @@ impl PyObjectProtocol for PragmaSetStateVectorWrapper {
     /// Returns:
     ///     str: The printable string representation of the operation.
     fn __repr__(&self) -> PyResult<String> {
-        Ok(format!("{:?}", self.internal))
-    }
-
-    /// Return a string containing a formatted (string) representation of the PRAGMA operation.
-    ///
-    /// Returns:
-    ///     str: The string representation of the operation.
-    fn __format__(&self, _format_spec: &str) -> PyResult<String> {
         Ok(format!("{:?}", self.internal))
     }
 
@@ -450,6 +450,14 @@ impl PragmaSetDensityMatrixWrapper {
     fn __deepcopy__(&self, _memodict: Py<PyAny>) -> PragmaSetDensityMatrixWrapper {
         self.clone()
     }
+
+    /// Return a string containing a formatted (string) representation of the PRAGMA operation.
+    ///
+    /// Returns:
+    ///     str: The string representation of the operation.
+    fn __format__(&self, _format_spec: &str) -> PyResult<String> {
+        Ok(format!("{:?}", self.internal))
+    }
 }
 
 #[pyproto]
@@ -459,14 +467,6 @@ impl PyObjectProtocol for PragmaSetDensityMatrixWrapper {
     /// Returns:
     ///     str: The printable string representation of the operation.
     fn __repr__(&self) -> PyResult<String> {
-        Ok(format!("{:?}", self.internal))
-    }
-
-    /// Return a string containing a formatted (string) representation of the PRAGMA operation.
-    ///
-    /// Returns:
-    ///     str: The string representation of the operation.
-    fn __format__(&self, _format_spec: &str) -> PyResult<String> {
         Ok(format!("{:?}", self.internal))
     }
 
@@ -613,7 +613,7 @@ pub struct PragmaStopDecompositionBlock {
     qubits: Vec<usize>,
 }
 
-#[wrap(Operate, OperateSingleQubit, OperatePragma)]
+#[wrap(Operate, OperateSingleQubit, OperatePragma, OperatePragmaNoise)]
 /// The damping PRAGMA noise operation.
 ///
 /// This PRAGMA operation applies a pure damping error corresponding to zero temperature environments.
@@ -628,45 +628,45 @@ pub struct PragmaDamping {
     rate: CalculatorFloat,
 }
 
-#[pymethods]
-impl PragmaDampingWrapper {
-    /// Return the superoperator defining the evolution of the density matrix under the noise gate.
-    ///
-    /// Returns:
-    ///     np.ndarray: The superoperator representation of the PRAGMA operation.
-    pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
-        Ok(Python::with_gil(|py| -> Py<PyArray2<f64>> {
-            self.internal
-                .superoperator()
-                .unwrap()
-                .to_pyarray(py)
-                .to_owned()
-        }))
-    }
-    /// Return the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
-    ///
-    /// Returns:
-    ///     CalculatorFloat: The probability of the PRAGMA operation.
-    pub fn probability(&self) -> CalculatorFloatWrapper {
-        CalculatorFloatWrapper {
-            cf_internal: self.internal.probability(),
-        }
-    }
-    /// Takes the power of the PRAGMA noise operation.
-    ///
-    /// Args:
-    ///     power (CalculatorFloat): The exponent in the power operation of the noise gate.
-    ///
-    /// Returns:
-    ///     self: The PRAGMA operation to the power of `power`.
-    pub fn powercf(&self, power: CalculatorFloatWrapper) -> Self {
-        Self {
-            internal: self.internal.powercf(power.cf_internal),
-        }
-    }
-}
+// #[pymethods]
+// impl PragmaDampingWrapper {
+//     /// Return the superoperator defining the evolution of the density matrix under the noise gate.
+//     ///
+//     /// Returns:
+//     ///     np.ndarray: The superoperator representation of the PRAGMA operation.
+//     pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
+//         Ok(Python::with_gil(|py| -> Py<PyArray2<f64>> {
+//             self.internal
+//                 .superoperator()
+//                 .unwrap()
+//                 .to_pyarray(py)
+//                 .to_owned()
+//         }))
+//     }
+//     /// Return the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
+//     ///
+//     /// Returns:
+//     ///     CalculatorFloat: The probability of the PRAGMA operation.
+//     pub fn probability(&self) -> CalculatorFloatWrapper {
+//         CalculatorFloatWrapper {
+//             cf_internal: self.internal.probability(),
+//         }
+//     }
+//     /// Takes the power of the PRAGMA noise operation.
+//     ///
+//     /// Args:
+//     ///     power (CalculatorFloat): The exponent in the power operation of the noise gate.
+//     ///
+//     /// Returns:
+//     ///     self: The PRAGMA operation to the power of `power`.
+//     pub fn powercf(&self, power: CalculatorFloatWrapper) -> Self {
+//         Self {
+//             internal: self.internal.powercf(power.cf_internal),
+//         }
+//     }
+// }
 
-#[wrap(Operate, OperateSingleQubit, OperatePragma)]
+#[wrap(Operate, OperateSingleQubit, OperatePragma, OperatePragmaNoise)]
 /// The depolarising PRAGMA noise operation.
 ///
 /// This PRAGMA operation applies a depolarising error corresponding to infinite temperature environments.
@@ -681,45 +681,45 @@ pub struct PragmaDepolarising {
     rate: CalculatorFloat,
 }
 
-#[pymethods]
-impl PragmaDepolarisingWrapper {
-    /// Return the superoperator defining the evolution of the density matrix under the noise gate.
-    ///
-    /// Returns:
-    ///     np.ndarray: The superoperator representation of the PRAGMA operation.
-    pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
-        Ok(Python::with_gil(|py| -> Py<PyArray2<f64>> {
-            self.internal
-                .superoperator()
-                .unwrap()
-                .to_pyarray(py)
-                .to_owned()
-        }))
-    }
-    /// Return the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
-    ///
-    /// Returns:
-    ///     CalculatorFloat: The probability of the PRAGMA operation.
-    pub fn probability(&self) -> CalculatorFloatWrapper {
-        CalculatorFloatWrapper {
-            cf_internal: self.internal.probability(),
-        }
-    }
-    /// Take the power of the noise PRAGMA operation.
-    ///
-    /// Args:
-    ///     power (CalculatorFloat): The exponent in the power operation of the noise gate.
-    ///
-    /// Returns:
-    ///     self: The PRAGMA operation to the power of `power`.
-    pub fn powercf(&self, power: CalculatorFloatWrapper) -> Self {
-        Self {
-            internal: self.internal.powercf(power.cf_internal),
-        }
-    }
-}
+// #[pymethods]
+// impl PragmaDepolarisingWrapper {
+//     /// Return the superoperator defining the evolution of the density matrix under the noise gate.
+//     ///
+//     /// Returns:
+//     ///     np.ndarray: The superoperator representation of the PRAGMA operation.
+//     pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
+//         Ok(Python::with_gil(|py| -> Py<PyArray2<f64>> {
+//             self.internal
+//                 .superoperator()
+//                 .unwrap()
+//                 .to_pyarray(py)
+//                 .to_owned()
+//         }))
+//     }
+//     /// Return the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
+//     ///
+//     /// Returns:
+//     ///     CalculatorFloat: The probability of the PRAGMA operation.
+//     pub fn probability(&self) -> CalculatorFloatWrapper {
+//         CalculatorFloatWrapper {
+//             cf_internal: self.internal.probability(),
+//         }
+//     }
+//     /// Take the power of the noise PRAGMA operation.
+//     ///
+//     /// Args:
+//     ///     power (CalculatorFloat): The exponent in the power operation of the noise gate.
+//     ///
+//     /// Returns:
+//     ///     self: The PRAGMA operation to the power of `power`.
+//     pub fn powercf(&self, power: CalculatorFloatWrapper) -> Self {
+//         Self {
+//             internal: self.internal.powercf(power.cf_internal),
+//         }
+//     }
+// }
 
-#[wrap(Operate, OperateSingleQubit, OperatePragma)]
+#[wrap(Operate, OperateSingleQubit, OperatePragma, OperatePragmaNoise)]
 /// The dephasing PRAGMA noise operation.
 ///
 /// This PRAGMA operation applies a pure dephasing error.
@@ -734,45 +734,45 @@ pub struct PragmaDephasing {
     rate: CalculatorFloat,
 }
 
-#[pymethods]
-impl PragmaDephasingWrapper {
-    /// Return the superoperator defining the evolution of the density matrix under the noise gate.
-    ///
-    /// Returns:
-    ///     np.ndarray: The superoperator representation of the PRAGMA operation.
-    pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
-        Ok(Python::with_gil(|py| -> Py<PyArray2<f64>> {
-            self.internal
-                .superoperator()
-                .unwrap()
-                .to_pyarray(py)
-                .to_owned()
-        }))
-    }
-    /// Return the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
-    ///
-    /// Returns:
-    ///     CalculatorFloat: The probability of the PRAGMA operation.
-    pub fn probability(&self) -> CalculatorFloatWrapper {
-        CalculatorFloatWrapper {
-            cf_internal: self.internal.probability(),
-        }
-    }
-    /// Take the power of the noise PRAGMA operation.
-    ///
-    /// Args:
-    ///     power (CalculatorFloat): The exponent in the power operation of the noise gate.
-    ///
-    /// Returns:
-    ///     self: The PRAGMA operation to the power of `power`.
-    pub fn powercf(&self, power: CalculatorFloatWrapper) -> Self {
-        Self {
-            internal: self.internal.powercf(power.cf_internal),
-        }
-    }
-}
+// #[pymethods]
+// impl PragmaDephasingWrapper {
+//     /// Return the superoperator defining the evolution of the density matrix under the noise gate.
+//     ///
+//     /// Returns:
+//     ///     np.ndarray: The superoperator representation of the PRAGMA operation.
+//     pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
+//         Ok(Python::with_gil(|py| -> Py<PyArray2<f64>> {
+//             self.internal
+//                 .superoperator()
+//                 .unwrap()
+//                 .to_pyarray(py)
+//                 .to_owned()
+//         }))
+//     }
+//     /// Return the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
+//     ///
+//     /// Returns:
+//     ///     CalculatorFloat: The probability of the PRAGMA operation.
+//     pub fn probability(&self) -> CalculatorFloatWrapper {
+//         CalculatorFloatWrapper {
+//             cf_internal: self.internal.probability(),
+//         }
+//     }
+//     /// Take the power of the noise PRAGMA operation.
+//     ///
+//     /// Args:
+//     ///     power (CalculatorFloat): The exponent in the power operation of the noise gate.
+//     ///
+//     /// Returns:
+//     ///     self: The PRAGMA operation to the power of `power`.
+//     pub fn powercf(&self, power: CalculatorFloatWrapper) -> Self {
+//         Self {
+//             internal: self.internal.powercf(power.cf_internal),
+//         }
+//     }
+// }
 
-#[wrap(Operate, OperateSingleQubit, OperatePragma)]
+#[wrap(Operate, OperateSingleQubit, OperatePragma, OperatePragmaNoise)]
 /// The random noise PRAGMA operation.
 ///
 /// This PRAGMA operation applies a pure damping error corresponding to zero temperature environments.
@@ -789,43 +789,43 @@ pub struct PragmaRandomNoise {
     dephasing_rate: CalculatorFloat,
 }
 
-#[pymethods]
-impl PragmaRandomNoiseWrapper {
-    /// Return the superoperator defining the evolution of the density matrix under the noise gate.
-    ///
-    /// Returns:
-    ///     np.ndarray: The superoperator representation of the PRAGMA operation.
-    pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
-        Ok(Python::with_gil(|py| -> Py<PyArray2<f64>> {
-            self.internal
-                .superoperator()
-                .unwrap()
-                .to_pyarray(py)
-                .to_owned()
-        }))
-    }
-    /// Return the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
-    ///
-    /// Returns:
-    ///     CalculatorFloat: The probability of the PRAGMA operation.
-    pub fn probability(&self) -> CalculatorFloatWrapper {
-        CalculatorFloatWrapper {
-            cf_internal: self.internal.probability(),
-        }
-    }
-    /// Take the power of the noise PRAGMA operation.
-    ///
-    /// Args:
-    ///     power (CalculatorFloat): The exponent in the power operation of the noise gate.
-    ///
-    /// Returns:
-    ///     self: The PRAGMA operation to the power of `power`.
-    pub fn powercf(&self, power: CalculatorFloatWrapper) -> Self {
-        Self {
-            internal: self.internal.powercf(power.cf_internal),
-        }
-    }
-}
+// #[pymethods]
+// impl PragmaRandomNoiseWrapper {
+//     /// Return the superoperator defining the evolution of the density matrix under the noise gate.
+//     ///
+//     /// Returns:
+//     ///     np.ndarray: The superoperator representation of the PRAGMA operation.
+//     pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
+//         Ok(Python::with_gil(|py| -> Py<PyArray2<f64>> {
+//             self.internal
+//                 .superoperator()
+//                 .unwrap()
+//                 .to_pyarray(py)
+//                 .to_owned()
+//         }))
+//     }
+//     /// Return the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
+//     ///
+//     /// Returns:
+//     ///     CalculatorFloat: The probability of the PRAGMA operation.
+//     pub fn probability(&self) -> CalculatorFloatWrapper {
+//         CalculatorFloatWrapper {
+//             cf_internal: self.internal.probability(),
+//         }
+//     }
+//     /// Take the power of the noise PRAGMA operation.
+//     ///
+//     /// Args:
+//     ///     power (CalculatorFloat): The exponent in the power operation of the noise gate.
+//     ///
+//     /// Returns:
+//     ///     self: The PRAGMA operation to the power of `power`.
+//     pub fn powercf(&self, power: CalculatorFloatWrapper) -> Self {
+//         Self {
+//             internal: self.internal.powercf(power.cf_internal),
+//         }
+//     }
+// }
 
 /// Module containing the PragmaGeneralNoise class.
 #[pymodule]
@@ -1083,6 +1083,14 @@ impl PragmaGeneralNoiseWrapper {
     fn __deepcopy__(&self, _memodict: Py<PyAny>) -> PragmaGeneralNoiseWrapper {
         self.clone()
     }
+
+    /// Return a string containing a formatted (string) representation of the PRAGMA operation.
+    ///
+    /// Returns:
+    ///     str: The string representation of the operation.
+    fn __format__(&self, _format_spec: &str) -> PyResult<String> {
+        Ok(format!("{:?}", self.internal))
+    }
 }
 
 #[pyproto]
@@ -1092,14 +1100,6 @@ impl PyObjectProtocol for PragmaGeneralNoiseWrapper {
     /// Returns:
     ///     str: The printable string representation of the operation.
     fn __repr__(&self) -> PyResult<String> {
-        Ok(format!("{:?}", self.internal))
-    }
-
-    /// Return a string containing a formatted (string) representation of the PRAGMA operation.
-    ///
-    /// Returns:
-    ///     str: The string representation of the operation.
-    fn __format__(&self, _format_spec: &str) -> PyResult<String> {
         Ok(format!("{:?}", self.internal))
     }
 

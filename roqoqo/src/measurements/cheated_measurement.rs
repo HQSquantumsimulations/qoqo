@@ -138,7 +138,8 @@ impl MeasureExpectationValues for Cheated {
                     // let complex_conj: ArrayView1<Complex64> =
                     //     ArrayView1::<Complex64>::from(&complex_conj_vec);
                     // let tmp_val: Complex64 = complex_conj.dot(&(&matrix * &vector));
-                    let tmp_val: Complex64 = sparse_matrix_vector_expectation_value(operator, &vector);
+                    let tmp_val: Complex64 =
+                        sparse_matrix_vector_expectation_value(operator, &vector);
                     local_results[index] = tmp_val.re;
                 } else if register.len() == dimension * dimension {
                     let vector: ArrayView2<Complex64> =
@@ -153,7 +154,8 @@ impl MeasureExpectationValues for Cheated {
                     // .expect("Unexpected error reshaping array");
                     // let tmp_val: Complex64 =
                     //     ((complex_conj.t()).dot(&(&matrix * &vector))).diag().sum();
-                    let tmp_val = sparse_matrix_matrix_expectation_value(operator, &vector, dimension);
+                    let tmp_val =
+                        sparse_matrix_matrix_expectation_value(operator, &vector, dimension);
                     local_results[index] = tmp_val.re;
                 } else {
                     return Err(RoqoqoError::MismatchedRegisterDimension {
@@ -175,21 +177,29 @@ impl MeasureExpectationValues for Cheated {
 }
 
 #[inline]
-fn sparse_matrix_vector_expectation_value(matrix: &Vec<(usize, usize, Complex64)>, vector: &ArrayView1<Complex64>) -> Complex64{
+fn sparse_matrix_vector_expectation_value(
+    matrix: &[(usize, usize, Complex64)],
+    vector: &ArrayView1<Complex64>,
+) -> Complex64 {
     let mut val: Complex64 = Complex64::new(0.0, 0.0);
-    for (index_i, index_j, value) in matrix{
-        val += vector[*index_i].conj() * value * vector[*index_j] 
+    for (index_i, index_j, value) in matrix {
+        val += vector[*index_i].conj() * value * vector[*index_j]
     }
     val
 }
 
 #[inline]
-fn sparse_matrix_matrix_expectation_value(matrix: &Vec<(usize, usize, Complex64)>, dense_matrix: &ArrayView2<Complex64>, dimension: usize) -> Complex64{
+fn sparse_matrix_matrix_expectation_value(
+    matrix: &[(usize, usize, Complex64)],
+    dense_matrix: &ArrayView2<Complex64>,
+    dimension: usize,
+) -> Complex64 {
     let mut val: Complex64 = Complex64::new(0.0, 0.0);
-    for (index_j, index_k, value) in matrix{
-        for index_i in 0.. dimension{
-            val += dense_matrix[(*index_j, index_i)].conj() * value * dense_matrix[(*index_k, index_i)] 
+    for (index_j, index_k, value) in matrix {
+        for index_i in 0..dimension {
+            val +=
+                dense_matrix[(*index_j, index_i)].conj() * value * dense_matrix[(*index_k, index_i)]
+        }
     }
-}
     val
 }

@@ -131,6 +131,7 @@ fn new_circuit(py: Python) -> &PyCell<CircuitWrapper> {
 #[test]
 fn test_pyo3_inputs_setnumbermeasurements() {
     let input_pragma = Operation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro")));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_pragma).unwrap();
@@ -155,6 +156,7 @@ fn test_pyo3_inputs_setnumbermeasurements() {
 #[test]
 fn test_pyo3_inputs_setstatevector() {
     let input_pragma = Operation::from(PragmaSetStateVector::new(statevector()));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_pragma).unwrap();
@@ -174,6 +176,7 @@ fn test_pyo3_inputs_setstatevector() {
 #[test]
 fn test_pyo3_inputs_setdensitymatrix() {
     let input_pragma = Operation::from(PragmaSetDensityMatrix::new(densitymatrix()));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_pragma).unwrap();
@@ -193,6 +196,7 @@ fn test_pyo3_inputs_setdensitymatrix() {
 #[test]
 fn test_pyo3_inputs_repeatgate() {
     let input_pragma = Operation::from(PragmaRepeatGate::new(3));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_pragma).unwrap();
@@ -216,6 +220,7 @@ fn test_pyo3_inputs_overrotation() {
         0.03,
         0.001,
     ));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_pragma).unwrap();
@@ -243,6 +248,7 @@ fn test_pyo3_inputs_overrotation() {
 #[test]
 fn test_pyo3_inputs_boostnoise() {
     let input_pragma = Operation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.003)));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_pragma).unwrap();
@@ -267,6 +273,7 @@ fn test_pyo3_inputs_stop() {
         vec![0, 1],
         CalculatorFloat::from(0.0000001),
     ));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_pragma).unwrap();
@@ -293,6 +300,7 @@ fn test_pyo3_inputs_stop() {
 #[test]
 fn test_pyo3_inputs_globalphase() {
     let input_pragma = Operation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.05)));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_pragma).unwrap();
@@ -309,6 +317,7 @@ fn test_pyo3_inputs_sleep() {
         vec![0, 1],
         CalculatorFloat::from(0.0000001),
     ));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_pragma).unwrap();
@@ -330,6 +339,7 @@ fn test_pyo3_inputs_sleep() {
 #[test]
 fn test_pyo3_inputs_activereset() {
     let input_pragma = Operation::from(PragmaActiveReset::new(0));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_pragma).unwrap();
@@ -345,6 +355,7 @@ fn test_pyo3_inputs_activereset() {
 fn test_pyo3_inputs_startdecompblock() {
     let input_pragma =
         Operation::from(PragmaStartDecompositionBlock::new(vec![0, 1], reordering()));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_pragma).unwrap();
@@ -368,6 +379,7 @@ fn test_pyo3_inputs_startdecompblock() {
 #[test]
 fn test_pyo3_inputs_stopdecompblock() {
     let input_pragma = Operation::from(PragmaStopDecompositionBlock::new(vec![0, 1]));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_pragma).unwrap();
@@ -383,6 +395,7 @@ fn test_pyo3_inputs_stopdecompblock() {
 #[test_case(Operation::from(PragmaDepolarising::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDepolarising")]
 #[test_case(Operation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDephasing")]
 fn test_pyo3_inputs_noise(input_pragma: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_pragma).unwrap();
@@ -413,6 +426,7 @@ fn test_pyo3_inputs_randomnoise() {
         CalculatorFloat::from(0.02),
         CalculatorFloat::from(0.01),
     ));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_pragma).unwrap();
@@ -463,6 +477,7 @@ fn test_pyo3_inputs_generalnoise() {
         CalculatorFloat::from(0.02),
         operators(),
     ));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_pragma).unwrap();
@@ -497,6 +512,7 @@ fn test_pyo3_inputs_conditional() {
         1,
         create_circuit(),
     ));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_pragma).unwrap();
@@ -535,6 +551,7 @@ fn test_pyo3_inputs_conditional() {
 #[test_case(Operation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.003))); "PragmaBoostNoise")]
 #[test_case(Operation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.05))); "PragmaGlobalPhase")]
 fn test_pyo3_involved_qubits_none(input_definition: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_definition).unwrap();
@@ -549,6 +566,7 @@ fn test_pyo3_involved_qubits_none(input_definition: Operation) {
 #[test_case(Operation::from(PragmaSetDensityMatrix::new(densitymatrix())); "PragmaSetDensityMatrix")]
 #[test_case(Operation::from(PragmaRepeatGate::new(3)); "PragmaRepeatGate")]
 fn test_pyo3_involved_qubits_all(input_definition: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_definition).unwrap();
@@ -572,6 +590,7 @@ fn test_pyo3_involved_qubits_all(input_definition: Operation) {
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())); "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 fn test_pyo3_involved_qubits_qubit(input_definition: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_definition).unwrap();
@@ -584,6 +603,7 @@ fn test_pyo3_involved_qubits_qubit(input_definition: Operation) {
 
 #[test_case(Operation::from(PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)); "PragmaOverrotation")]
 fn test_pyo3_involved_qubits_qubit_overrotation(input_definition: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_definition).unwrap();
@@ -630,6 +650,7 @@ fn test_pyo3_involved_qubits_qubit_overrotation(input_definition: Operation) {
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, Circuit::default())),
             "PragmaConditional { condition_register: \"ro\", condition_index: 1, circuit: Circuit { definitions: [], operations: [] } }"; "PragmaConditional")]
 fn test_pyo3_format_repr(input_measurement: Operation, format_repr: &str) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_measurement).unwrap();
@@ -644,6 +665,7 @@ fn test_pyo3_format_repr(input_measurement: Operation, format_repr: &str) {
 #[test_case(Operation::from(PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)),
             "PragmaOverrotation { gate_hqslang: \"RotateX\", qubits: [0], amplitude: 0.03, variance: 0.001 }"; "PragmaOverrotation")]
 fn test_pyo3_format_repr_overrotation(input_measurement: Operation, format_repr: &str) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_measurement).unwrap();
@@ -674,6 +696,7 @@ fn test_pyo3_format_repr_overrotation(input_measurement: Operation, format_repr:
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())); "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 fn test_pyo3_copy_deepcopy(input_measurement: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_measurement).unwrap();
@@ -701,6 +724,7 @@ fn test_pyo3_copy_deepcopy(input_measurement: Operation) {
 
 #[test]
 fn test_pyo3_copy_deepcopy_overrotation() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(Operation::from(PragmaOverrotation::new(
@@ -752,6 +776,7 @@ fn test_pyo3_copy_deepcopy_overrotation() {
 #[test_case(Operation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.003))), "PragmaBoostNoise"; "PragmaBoostNoise")]
 #[test_case(Operation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.05))), "PragmaGlobalPhase"; "PragmaGlobalPhase")]
 fn test_pyo3_tags_simple(input_measurement: Operation, tag_name: &str) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_measurement).unwrap();
@@ -767,6 +792,7 @@ fn test_pyo3_tags_simple(input_measurement: Operation, tag_name: &str) {
 #[test_case(Operation::from(PragmaStartDecompositionBlock::new(vec![0, 1], reordering())), "PragmaStartDecompositionBlock"; "PragmaStartDecompositionBlock")]
 #[test_case(Operation::from(PragmaStopDecompositionBlock::new(vec![0, 1])), "PragmaStopDecompositionBlock"; "PragmaStopDecompositionBlock")]
 fn test_pyo3_tags_multi(input_measurement: Operation, tag_name: &str) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_measurement).unwrap();
@@ -783,6 +809,7 @@ fn test_pyo3_tags_multi(input_measurement: Operation, tag_name: &str) {
 
 #[test_case(Operation::from(PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)), "PragmaOverrotation"; "PragmaOverrotation")]
 fn test_pyo3_tags_multi_overrotation(input_measurement: Operation, tag_name: &str) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_measurement).unwrap();
@@ -802,6 +829,7 @@ fn test_pyo3_tags_multi_overrotation(input_measurement: Operation, tag_name: &st
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())), "PragmaGeneralNoise"; "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())), "PragmaConditional"; "PragmaConditional")]
 fn test_pyo3_tags_single(input_measurement: Operation, tag_name: &str) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_measurement).unwrap();
@@ -822,6 +850,7 @@ fn test_pyo3_tags_single(input_measurement: Operation, tag_name: &str) {
 #[test_case(Operation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))), "PragmaDephasing"; "PragmaDephasing")]
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))), "PragmaRandomNoise"; "PragmaRandomNoise")]
 fn test_pyo3_tags_noise(input_measurement: Operation, tag_name: &str) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_measurement).unwrap();
@@ -856,6 +885,7 @@ fn test_pyo3_tags_noise(input_measurement: Operation, tag_name: &str) {
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())), "PragmaGeneralNoise"; "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())), "PragmaConditional"; "PragmaConditional")]
 fn test_pyo3_hqslang(input_measurement: Operation, hqslang_param: &str) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_measurement).unwrap();
@@ -866,6 +896,7 @@ fn test_pyo3_hqslang(input_measurement: Operation, hqslang_param: &str) {
 
 #[test_case(Operation::from(PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)), "PragmaOverrotation"; "PragmaOverrotation")]
 fn test_pyo3_hqslang_overrotation(input_measurement: Operation, hqslang_param: &str) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_measurement).unwrap();
@@ -893,6 +924,7 @@ fn test_pyo3_hqslang_overrotation(input_measurement: Operation, hqslang_param: &
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())); "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 fn test_pyo3_is_parametrized(input_measurement: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_measurement).unwrap();
@@ -907,6 +939,7 @@ fn test_pyo3_is_parametrized(input_measurement: Operation) {
 
 #[test_case(Operation::from(PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)); "PragmaOverrotation")]
 fn test_pyo3_is_parametrized_overrotation(input_measurement: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_measurement).unwrap();
@@ -972,6 +1005,7 @@ fn test_pyo3_is_parametrized_overrotation(input_measurement: Operation) {
             Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit()));
             "PragmaConditional")]
 fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(first_op).unwrap();
@@ -994,6 +1028,7 @@ fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
 
 #[test]
 fn test_pyo3_substitute_parameters_overrotation() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(Operation::from(PragmaOverrotation::new(
@@ -1047,6 +1082,7 @@ fn test_pyo3_substitute_parameters_overrotation() {
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from("test"), CalculatorFloat::from(0.02), operators()));
             "PragmaGeneralNoise")]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -1060,6 +1096,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 #[test_case(Operation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro"))); "PragmaSetNumberOfMeasurements")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 fn test_pyo3_substituteparameters_error(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -1123,6 +1160,7 @@ fn test_pyo3_substituteparameters_error(input_operation: Operation) {
             Operation::from(PragmaConditional::new(String::from("ro"), 1, circuit_remapped()));
             "PragmaConditional")]
 fn test_pyo3_remap_qubits(first_op: Operation, second_op: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(first_op).unwrap();
@@ -1144,6 +1182,7 @@ fn test_pyo3_remap_qubits(first_op: Operation, second_op: Operation) {
 
 #[test]
 fn test_pyo3_remap_qubits_overrotation() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(Operation::from(PragmaOverrotation::new(
@@ -1194,6 +1233,7 @@ fn test_pyo3_noise_superoperator_damping() {
         CalculatorFloat::from(0.005),
         CalculatorFloat::from(0.02),
     ));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(noise_pragma).unwrap();
@@ -1225,6 +1265,7 @@ fn test_pyo3_noise_superoperator_depolarising() {
         CalculatorFloat::from(0.005),
         CalculatorFloat::from(0.02),
     ));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(noise_pragma).unwrap();
@@ -1258,6 +1299,7 @@ fn test_pyo3_noise_superoperator_dephasing() {
         CalculatorFloat::from(0.005),
         CalculatorFloat::from(0.02),
     ));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(noise_pragma).unwrap();
@@ -1290,6 +1332,7 @@ fn test_pyo3_noise_superoperator_randomnoise() {
         CalculatorFloat::from(0.02),
         CalculatorFloat::from(0.01),
     ));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(noise_pragma).unwrap();
@@ -1319,6 +1362,7 @@ fn test_pyo3_noise_superoperator_randomnoise() {
 #[test_case(Operation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))), 0.00009999000066662767; "PragmaDephasing")]
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))), 0.000125; "PragmaRandomNoise")]
 fn test_pyo3_noise_proba(noise_pragma: Operation, proba: f64) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(noise_pragma).unwrap();
@@ -1350,6 +1394,7 @@ fn test_pyo3_noise_proba(noise_pragma: Operation, proba: f64) {
             Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005 * 1.5), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01)));
             "PragmaRandomNoise")]
 fn test_pyo3_noise_powercf(first_op: Operation, second_op: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(first_op).unwrap();
@@ -1421,6 +1466,7 @@ fn test_pyo3_noise_powercf(first_op: Operation, second_op: Operation) {
             Operation::from(PragmaConditional::new(String::from("ro"), 1, circuit_remapped()));
             "PragmaConditional")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_one = convert_operation_to_pyobject(definition_1).unwrap();
@@ -1453,6 +1499,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 
 #[test]
 fn test_pyo3_richcmp_overrotation() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_one = convert_operation_to_pyobject(Operation::from(PragmaOverrotation::new(
@@ -1496,6 +1543,7 @@ fn test_pyo3_richcmp_overrotation() {
 /// Test PragmaSetNumberOfMeasurements new() function
 #[test]
 fn test_pyo3_new_set_number_of_measurements() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = py.get_type::<PragmaSetNumberOfMeasurementsWrapper>();
@@ -1543,6 +1591,7 @@ fn test_pyo3_new_set_number_of_measurements() {
 /// Test PragmaSetStateVector new() function
 #[test]
 fn test_pyo3_new_set_statevector() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = py.get_type::<PragmaSetStateVectorWrapper>();
@@ -1598,6 +1647,7 @@ fn test_pyo3_new_set_statevector() {
 /// Test PragmaSetDensityMatrix new() function
 #[test]
 fn test_pyo3_new_set_densitymatrix() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = py.get_type::<PragmaSetDensityMatrixWrapper>();
@@ -1653,6 +1703,7 @@ fn test_pyo3_new_set_densitymatrix() {
 /// Test PragmaRepeatGate new() function
 #[test]
 fn test_pyo3_new_repeated_gate() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = py.get_type::<PragmaRepeatGateWrapper>();
@@ -1695,6 +1746,7 @@ fn test_pyo3_new_repeated_gate() {
 /// Test PragmaOverrotation new() function
 #[test]
 fn test_pyo3_new_overrotation() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1751,6 +1803,7 @@ fn test_pyo3_new_overrotation() {
 /// Test PragmaBoostNoise new() function
 #[test]
 fn test_pyo3_new_boost_noise() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1800,6 +1853,7 @@ fn test_pyo3_new_boost_noise() {
 /// Test PragmaStopParallelBlock new() function
 #[test]
 fn test_pyo3_new_stop() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1854,6 +1908,7 @@ fn test_pyo3_new_stop() {
 /// Test PragmaGlobalPhase new() function
 #[test]
 fn test_pyo3_new_global_phase() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1903,6 +1958,7 @@ fn test_pyo3_new_global_phase() {
 /// Test PragmaSleep new() function
 #[test]
 fn test_pyo3_new_sleep() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1954,6 +2010,7 @@ fn test_pyo3_new_sleep() {
 /// Test PragmaActiveReset new() function
 #[test]
 fn test_pyo3_new_active_reset() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = py.get_type::<PragmaActiveResetWrapper>();
@@ -1996,6 +2053,7 @@ fn test_pyo3_new_active_reset() {
 /// Test PragmaStartDecompositionBlock new() function
 #[test]
 fn test_pyo3_new_start_decomposition_block() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = py.get_type::<PragmaStartDecompositionBlockWrapper>();
@@ -2043,6 +2101,7 @@ fn test_pyo3_new_start_decomposition_block() {
 /// Test PragmaStopDecompositionBlock new() function
 #[test]
 fn test_pyo3_new_stop_decomposition_block() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = py.get_type::<PragmaStopDecompositionBlockWrapper>();
@@ -2089,6 +2148,7 @@ fn test_pyo3_new_stop_decomposition_block() {
 /// Test PragmaDamping new() function
 #[test]
 fn test_pyo3_new_damping() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -2145,6 +2205,7 @@ fn test_pyo3_new_damping() {
 /// Test PragmaDepolarising new() function
 #[test]
 fn test_pyo3_new_depolarising() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -2201,6 +2262,7 @@ fn test_pyo3_new_depolarising() {
 /// Test PragmaDephasing new() function
 #[test]
 fn test_pyo3_new_dephasing() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -2257,6 +2319,7 @@ fn test_pyo3_new_dephasing() {
 /// Test PragmaRandomNoise new() function
 #[test]
 fn test_pyo3_new_randomnoise() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -2317,6 +2380,7 @@ fn test_pyo3_new_randomnoise() {
 /// Test PragmaGeneralNoise new() function
 #[test]
 fn test_pyo3_new_general_noise() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -2380,6 +2444,7 @@ fn test_pyo3_new_general_noise() {
 /// Test PragmaConditional new() function
 #[test]
 fn test_pyo3_new_conditional() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = py.get_type::<PragmaConditionalWrapper>();
@@ -2433,6 +2498,7 @@ fn test_pyo3_new_conditional() {
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())); "PragmaGeneralNoise")]
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();

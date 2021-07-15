@@ -1,6 +1,6 @@
 [package]
 name = "roqoqo"
-version = "0.3.0"
+version = "0.5.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2018"
@@ -26,10 +26,8 @@ ndarray = { version = "0.15" }
 num-complex = { version = "0.4"}
 thiserror = "1.0"
 dyn-clone = {version="1.0", optional=true}
-#qoqo_calculator = { version="0.2"}
-qoqo_calculator = { git="https://github.com/nfwvogt/qoqo_calculator.git", branch="main"}
-
-roqoqo-derive = {version="0.1", path="../roqoqo-derive"}
+qoqo_calculator = { version="0.3"}
+roqoqo-derive = {version="0.5", path="../roqoqo-derive"}
 typetag = {version="0.1", optional=true}
 #sprs = {version="0.10"}
 
@@ -52,6 +50,6 @@ rustdoc-args = [ "--html-in-header", "katex.html", "--document-private-items" ]
 [features]
 default = ["serialize"]
 dynamic = ["typetag", "dyn-clone"]
-serialize = ["serde", "ndarray/serde", "num-complex/serde", "sprs/serde"]
+serialize = ["serde", "ndarray/serde", "num-complex/serde"]
 overrotate = ["rand", "rand_distr", "roqoqo-derive/overrotate"]
 

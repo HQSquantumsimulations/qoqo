@@ -74,6 +74,7 @@ fn test_default() {
 #[test]
 fn test_substitute_parameters() {
     let added_operation = Operation::from(RotateX::new(0, CalculatorFloat::from("test")));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(added_operation).unwrap();
@@ -104,6 +105,7 @@ fn test_substitute_parameters() {
 #[test]
 fn test_remap_qubits() {
     let added_operation = Operation::from(RotateX::new(0, CalculatorFloat::from(1.0)));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(added_operation).unwrap();
@@ -140,6 +142,7 @@ fn test_count_occurences() {
     let added_op1 = Operation::from(DefinitionBit::new("ro".to_string(), 1, false));
     let added_op2 = Operation::from(RotateX::new(0, CalculatorFloat::from(1.0)));
     let added_op3 = Operation::from(PauliX::new(0));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
@@ -193,6 +196,7 @@ fn test_get_operation_types() {
     let added_op1 = Operation::from(DefinitionBit::new("ro".to_string(), 1, false));
     let added_op2 = Operation::from(RotateX::new(0, CalculatorFloat::from(1.0)));
     let added_op3 = Operation::from(PauliX::new(0));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
@@ -215,6 +219,7 @@ fn test_get_operation_types() {
 /// Test copy and deepcopy functions of Circuit
 #[test]
 fn test_copy_deepcopy() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let circuit = new_circuit(py);
@@ -243,6 +248,7 @@ fn test_copy_deepcopy() {
 /// Test qoqo_versions function of Circuit
 #[test]
 fn test_qoqo_versions() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let circuit = new_circuit(py);
@@ -268,6 +274,7 @@ fn test_qoqo_versions() {
 /// Test to_ and from_bincode functions of Circuit
 #[test]
 fn test_to_from_bincode() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let circuit = new_circuit(py);
@@ -298,6 +305,7 @@ fn test_to_from_bincode() {
 
 #[test]
 fn test_value_error_bincode() {
+    pyo3::prepare_freethreaded_python();
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -338,6 +346,7 @@ fn test_value_error_bincode() {
 /// Test to_ and from_json functions of Circuit
 #[test]
 fn test_to_from_json() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let circuit = new_circuit(py);
@@ -369,6 +378,7 @@ fn test_to_from_json() {
 ///  Test single index set and write access using "get" function
 #[test]
 fn test_single_index_access_get() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let circuit = new_circuit(py);
@@ -407,6 +417,7 @@ fn test_single_index_access_get() {
 /// Test get_slice property of Circuit
 #[test]
 fn test_get_slice() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let circuit = new_circuit(py);
@@ -473,6 +484,7 @@ fn test_get_slice() {
 fn test_definitions() {
     let added_op1 = Operation::from(DefinitionBit::new("ro".to_string(), 1, false));
     let added_op2 = Operation::from(InputSymbolic::new("test".to_string(), 1.0));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
@@ -496,6 +508,7 @@ fn test_definitions() {
 fn test_operations() {
     let added_op1 = Operation::from(RotateX::new(0, CalculatorFloat::from("theta")));
     let added_op2 = Operation::from(RotateZ::new(0, CalculatorFloat::from(0.0)));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
@@ -519,6 +532,7 @@ fn test_operations() {
 fn test_filter_by_tag() {
     let added_op1 = Operation::from(DefinitionBit::new("ro".to_string(), 1, false));
     let added_op2 = Operation::from(InputSymbolic::new("test".to_string(), 1.0));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
@@ -566,6 +580,7 @@ fn test_filter_by_tag() {
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(1.3))); "RotateZ float")]
 #[test_case(Operation::from(SingleQubitGate::new(2, CalculatorFloat::from(0), CalculatorFloat::from("var"), CalculatorFloat::from(0), CalculatorFloat::from(0), CalculatorFloat::from(0), )); "SingleQubitGate float")]
 fn test_circuit_add_function(added_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(added_operation).unwrap();
@@ -583,6 +598,7 @@ fn test_circuit_add_function(added_operation: Operation) {
 /// Test the __repr__ and __format__ functions
 #[test]
 fn test_format_repr() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let circuit = new_circuit(py);
@@ -602,6 +618,7 @@ fn test_format_repr() {
 /// Test fmt::Debug for OperationIteratorWrapper
 #[test]
 fn test_fmt_circuititerator() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let new_circuit = new_circuit(py);
@@ -620,6 +637,7 @@ fn test_fmt_circuititerator() {
 /// Test the __richcmp__ function
 #[test]
 fn test_richcmp() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let circuit_one = new_circuit(py);
@@ -659,6 +677,7 @@ fn test_circuit_iadd_magic_method() {
     let added_op1 = Operation::from(DefinitionBit::new("ro".to_string(), 1, false));
     let added_op2 = Operation::from(RotateX::new(0, CalculatorFloat::from(1.0)));
     let added_op3 = Operation::from(PauliX::new(0));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
@@ -700,6 +719,7 @@ fn test_circuit_add_magic_method() {
     let added_op1 = Operation::from(DefinitionBit::new("ro".to_string(), 1, false));
     let added_op2 = Operation::from(RotateX::new(0, CalculatorFloat::from(1.0)));
     let added_op3 = Operation::from(PauliX::new(0));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
@@ -739,6 +759,7 @@ fn test_circuit_add_magic_method() {
 /// Test iterator interface of Circuit
 #[test]
 fn test_iter() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let new_circuit = new_circuit(py);
@@ -787,6 +808,7 @@ fn test_iter() {
 /// Test the __len__ function
 #[test]
 fn test_len() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let circuit = new_circuit(py);
@@ -799,6 +821,7 @@ fn test_len() {
 ///  Test single index set and write access using "__getitem__" function
 #[test]
 fn test_single_index_access_getitem() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let circuit = new_circuit(py);
@@ -843,6 +866,7 @@ fn test_single_index_access_getitem() {
 #[test]
 fn test_convert_into_circuit() {
     let added_op = Operation::from(PauliX::new(0));
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(added_op).unwrap();
@@ -856,6 +880,7 @@ fn test_convert_into_circuit() {
 #[test]
 // #[cfg(feature = "overrotate")]
 fn test_circuit_overrotate() {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let circuit = new_circuit(py);
