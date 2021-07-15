@@ -23,6 +23,8 @@ use test_case::test_case;
 
 #[test]
 fn test_returning_circuits() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -69,6 +71,8 @@ fn test_py03_evaluate_bool(
     value_diagonal: f64,
     value_off_diagonal: f64,
 ) {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -131,6 +135,8 @@ fn test_py03_evaluate_bool(
 /// Test evaluate failure
 #[test]
 fn test_py03_evaluate_error0() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -200,6 +206,8 @@ fn test_py03_evaluate_error0() {
 /// Test copy
 #[test]
 fn test_pyo3_copy() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -256,6 +264,8 @@ fn test_pyo3_copy() {
 /// Test debug and clone
 #[test]
 fn test_pyo3_debug() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -310,6 +320,8 @@ fn test_pyo3_debug() {
 /// Test to_json and from_json functions
 #[test]
 fn test_to_from_json() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -363,6 +375,8 @@ fn test_to_from_json() {
 /// Test substitute_parameters
 #[test]
 fn test_substitute_parameters() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -410,6 +424,8 @@ fn test_substitute_parameters() {
 /// Test substitute_parameters returning an error
 #[test]
 fn test_substitute_parameters_error() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 

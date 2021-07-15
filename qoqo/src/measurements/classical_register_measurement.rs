@@ -21,7 +21,7 @@ use roqoqo::prelude::*;
 use roqoqo::Circuit;
 use std::collections::HashMap;
 
-#[pyclass(name = "Cheated", module = "qoqo.measurements")]
+#[pyclass(name = "ClassicalRegister", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Collected information for executing a classical register.
 pub struct ClassicalRegisterWrapper {

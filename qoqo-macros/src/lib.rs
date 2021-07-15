@@ -360,7 +360,9 @@ pub fn wrap(
             #operate_pragma_noise_quote
             #define_quote
             #operate_constant_gate_quote
-
+            fn __format__(&self, _format_spec: &str) -> PyResult<String> {
+                Ok(format!("{:?}", self.internal))
+            }
     }
         #[pyproto]
         impl PyObjectProtocol for #wrapper_ident {
@@ -368,9 +370,7 @@ pub fn wrap(
                 Ok(format!("{:?}", self.internal))
             }
 
-            fn __format__(&self, _format_spec: &str) -> PyResult<String> {
-                Ok(format!("{:?}", self.internal))
-            }
+
 
         /// Returns the __richcmp__ magic method to perform rich comparison
         /// operations on Operation.

@@ -75,6 +75,7 @@ fn convert_cf_to_pyobject(
 #[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -262,6 +263,7 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
         ],
     Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
 fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -299,6 +301,7 @@ fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
 #[test_case("ComplexPMInteraction", Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case("PhaseShiftedControlledZ", Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -330,6 +333,7 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
 #[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_pyo3_remapqubits(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -387,6 +391,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -411,6 +416,7 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
 #[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from("test"), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from("test"))); "PhaseShiftedControlledZ")]
 fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
@@ -442,6 +448,7 @@ fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
 #[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_pyo3_unitarymatrix(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
@@ -525,6 +532,7 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
     "PhaseShiftedControlledZ { control: 0, target: 1, phi: Float(3.141592653589793) }",
     Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -559,6 +567,7 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
 #[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -649,6 +658,7 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
             Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from(1.0)));
             "PhaseShiftedControlledZ")]
 fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(first_op).unwrap();
@@ -694,6 +704,7 @@ fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from("test")));
             "PhaseShiftedControlledZ")]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -720,6 +731,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
             Operation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::from(0.005 * 1.5), CalculatorFloat::from(0.02)));
             "GivensRotationLittleEndian")]
 fn test_pyo3_powercf(first_op: Operation, second_op: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(first_op).unwrap();
@@ -743,6 +755,7 @@ fn test_pyo3_powercf(first_op: Operation, second_op: Operation) {
 #[test_case(Operation::from(CNOT::new(2, 1)), (0, 1,), "__ne__"; "CNOT_ne")]
 fn test_new_cnot(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<CNOTWrapper>();
@@ -784,6 +797,7 @@ fn test_new_cnot(input_operation: Operation, arguments: (u32, u32), method: &str
 #[test_case(Operation::from(SWAP::new(2, 1)), (0, 1,), "__ne__"; "SWAP_ne")]
 fn test_new_swap(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<SWAPWrapper>();
@@ -825,6 +839,7 @@ fn test_new_swap(input_operation: Operation, arguments: (u32, u32), method: &str
 #[test_case(Operation::from(ISwap::new(2, 1)), (0, 1,), "__ne__"; "ISwap_ne")]
 fn test_new_iswap(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<ISwapWrapper>();
@@ -866,6 +881,7 @@ fn test_new_iswap(input_operation: Operation, arguments: (u32, u32), method: &st
 #[test_case(Operation::from(FSwap::new(2, 1)), (0, 1,), "__ne__"; "FSwap_ne")]
 fn test_new_fswap(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<FSwapWrapper>();
@@ -907,6 +923,7 @@ fn test_new_fswap(input_operation: Operation, arguments: (u32, u32), method: &st
 #[test_case(Operation::from(SqrtISwap::new(2, 1)), (0, 1,), "__ne__"; "SqrtISwap_ne")]
 fn test_new_sqrtiswap(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<SqrtISwapWrapper>();
@@ -948,6 +965,7 @@ fn test_new_sqrtiswap(input_operation: Operation, arguments: (u32, u32), method:
 #[test_case(Operation::from(InvSqrtISwap::new(2, 1)), (0, 1,), "__ne__"; "InvSqrtISwap_ne")]
 fn test_new_invsqrtiswap(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<InvSqrtISwapWrapper>();
@@ -989,6 +1007,7 @@ fn test_new_invsqrtiswap(input_operation: Operation, arguments: (u32, u32), meth
 #[test_case(Operation::from(ControlledPauliY::new(2, 1)), (0, 1,), "__ne__"; "ControlledPauliY_ne")]
 fn test_new_controlledpauliy(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<ControlledPauliYWrapper>();
@@ -1030,6 +1049,7 @@ fn test_new_controlledpauliy(input_operation: Operation, arguments: (u32, u32), 
 #[test_case(Operation::from(ControlledPauliZ::new(2, 1)), (0, 1,), "__ne__"; "ControlledPauliZ_ne")]
 fn test_new_controlledpauliz(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<ControlledPauliZWrapper>();
@@ -1071,6 +1091,7 @@ fn test_new_controlledpauliz(input_operation: Operation, arguments: (u32, u32), 
 #[test_case(Operation::from(MolmerSorensenXX::new(2, 1)), (0, 1,), "__ne__"; "MolmerSorensenXX_ne")]
 fn test_new_molmersorensenxx(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<MolmerSorensenXXWrapper>();
@@ -1112,6 +1133,7 @@ fn test_new_molmersorensenxx(input_operation: Operation, arguments: (u32, u32), 
 #[test_case(Operation::from(XY::new(2, 1, CalculatorFloat::from(0.0))), (0, 1, 0.0), "__ne__"; "XY_ne")]
 fn test_new_xy(input_operation: Operation, arguments: (u32, u32, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1164,6 +1186,7 @@ fn test_new_controlledphaseshift(
     method: &str,
 ) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1216,6 +1239,7 @@ fn test_new_controlledphaseshift(
 #[test_case(Operation::from(VariableMSXX::new(2, 1, CalculatorFloat::from(0.0))), (0, 1, 0.0), "__ne__"; "VariableMSXX_ne")]
 fn test_new_variablemsxx(input_operation: Operation, arguments: (u32, u32, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1264,6 +1288,7 @@ fn test_new_variablemsxx(input_operation: Operation, arguments: (u32, u32, f64),
 #[test_case(Operation::from(PMInteraction::new(2, 1, CalculatorFloat::from(0.0))), (0, 1, 0.0), "__ne__"; "PMInteraction_ne")]
 fn test_new_pminteraction(input_operation: Operation, arguments: (u32, u32, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1316,6 +1341,7 @@ fn test_new_givensrotation(
     method: &str,
 ) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1372,6 +1398,7 @@ fn test_new_givensrotationlittleendian(
     method: &str,
 ) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1428,6 +1455,7 @@ fn test_new_givensrotationlittleendian(
 #[test_case(Operation::from(Bogoliubov::new(2, 1, CalculatorFloat::from(0.0), CalculatorFloat::from(0.0))), (0, 1, 0.0, 0.0), "__ne__"; "Bogoliubov_ne")]
 fn test_new_bogoliubov(input_operation: Operation, arguments: (u32, u32, f64, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1484,6 +1512,7 @@ fn test_new_complexpminteraction(
     method: &str,
 ) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1540,6 +1569,7 @@ fn test_new_complexpminteraction(
 #[test_case(Operation::from(Qsim::new(2, 1, CalculatorFloat::from(0.0), CalculatorFloat::from(0.0), CalculatorFloat::from(0.0))), (0, 1, 0.0, 0.0, 0.0), "__ne__"; "Qsim_ne")]
 fn test_new_qsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1596,6 +1626,7 @@ fn test_new_qsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64
 #[test_case(Operation::from(Fsim::new(2, 1, CalculatorFloat::from(0.0), CalculatorFloat::from(0.0), CalculatorFloat::from(0.0))), (0, 1, 0.0, 0.0, 0.0), "__ne__"; "Fsim_ne")]
 fn test_new_fsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1656,6 +1687,7 @@ fn test_new_spininteraction(
     method: &str,
 ) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1717,6 +1749,7 @@ fn test_new_phaseshiftedcontrolledz(
     method: &str,
 ) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -1829,6 +1862,7 @@ fn test_new_phaseshiftedcontrolledz(
     Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)),
     Operation::from(PhaseShiftedControlledZ::new(1, 0, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_one = convert_operation_to_pyobject(definition_1).unwrap();

@@ -22,6 +22,8 @@ use std::collections::HashMap;
 #[test]
 fn test_returning_circuits() {
     Python::with_gil(|py| -> () {
+        pyo3::prepare_freethreaded_python();
+
         let input_type = py.get_type::<CheatedBasisRotationInputWrapper>();
         let input = input_type
             .call0()
@@ -58,6 +60,8 @@ fn test_returning_circuits() {
 /// Test evaluate() function for CheatedBasisRotation measurement
 #[test]
 fn test_py03_evaluate_bool() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -122,6 +126,8 @@ fn test_py03_evaluate_bool() {
 /// Test evaluate() function for CheatedBasisRotation measurement with symbolic parameters
 #[test]
 fn test_evaluate_symbolic() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -176,6 +182,8 @@ fn test_evaluate_symbolic() {
 /// Test evaluate failure
 #[test]
 fn test_py03_evaluate_error0() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -227,6 +235,8 @@ fn test_py03_evaluate_error0() {
 /// Test copy
 #[test]
 fn test_pyo3_copy() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -275,6 +285,8 @@ fn test_pyo3_copy() {
 /// Test debug and clone
 #[test]
 fn test_pyo3_debug() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -329,6 +341,8 @@ fn test_pyo3_debug() {
 /// Test to_json and from_json functions
 #[test]
 fn test_to_from_json() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -374,6 +388,8 @@ fn test_to_from_json() {
 /// Test substitute_parameters
 #[test]
 fn test_substitute_parameters() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 
@@ -413,6 +429,8 @@ fn test_substitute_parameters() {
 /// Test substitute_parameters returning an error
 #[test]
 fn test_substitute_parameters_error() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = Python::acquire_gil();
     let py = gil.python();
 

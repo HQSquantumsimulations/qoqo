@@ -19,6 +19,8 @@ use test_case::test_case;
 /// Test DefinitionFloat new() function
 #[test]
 fn test_pyo3_new_definition_float() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = py.get_type::<DefinitionFloatWrapper>();
@@ -61,6 +63,8 @@ fn test_pyo3_new_definition_float() {
 /// Test DefinitionComplex new() function
 #[test]
 fn test_pyo3_new_definition_complex() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = py.get_type::<DefinitionComplexWrapper>();
@@ -103,6 +107,8 @@ fn test_pyo3_new_definition_complex() {
 /// Test DefinitionUsize new() function
 #[test]
 fn test_pyo3_new_definition_usize() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = py.get_type::<DefinitionUsizeWrapper>();
@@ -145,6 +151,8 @@ fn test_pyo3_new_definition_usize() {
 /// Test DefinitionBit new() function
 #[test]
 fn test_pyo3_new_definition_bit() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = py.get_type::<DefinitionBitWrapper>();
@@ -187,6 +195,8 @@ fn test_pyo3_new_definition_bit() {
 /// Test InputSymbolic new() function
 #[test]
 fn test_pyo3_new_input_symbolic() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = py.get_type::<InputSymbolicWrapper>();
@@ -233,6 +243,8 @@ fn test_pyo3_new_input_symbolic() {
 #[test_case(Operation::from(DefinitionBit::new(String::from("ro"), 1, false)); "DefinitionBit")]
 #[test_case(Operation::from(InputSymbolic::new(String::from("ro"), 1.0)); "InputSymbolic")]
 fn test_pyo3_name(input_definition: Operation) {
+    pyo3::prepare_freethreaded_python();
+
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_definition).unwrap();
@@ -272,6 +284,8 @@ fn test_pyo3_is_output(input_definition: Operation) {
 /// Test InputSymbolic input() input
 #[test]
 fn test_pyo3_input_symbolic_input() {
+    pyo3::prepare_freethreaded_python();
+
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation =
@@ -309,6 +323,8 @@ fn test_pyo3_involved_qubits(input_definition: Operation) {
 #[test_case(Operation::from(DefinitionUsize::new(String::from("ro"), 1, false)), "DefinitionUsize"; "DefinitionUsize")]
 #[test_case(Operation::from(DefinitionBit::new(String::from("ro"), 1, false)), "DefinitionBit"; "DefinitionBit")]
 fn test_pyo3_format_repr(input_definition: Operation, format_repr: &str) {
+    pyo3::prepare_freethreaded_python();
+
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_definition).unwrap();
@@ -380,6 +396,8 @@ fn test_pyo3_copy_deepcopy(input_definition: Operation) {
 #[test_case(Operation::from(DefinitionBit::new(String::from("ro"), 1, false)), "DefinitionBit"; "DefinitionBit")]
 #[test_case(Operation::from(InputSymbolic::new(String::from("ro"), 1.0)), "InputSymbolic"; "InputSymbolic")]
 fn test_pyo3_tags(input_definition: Operation, tag_name: &str) {
+    pyo3::prepare_freethreaded_python();
+
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_definition).unwrap();
@@ -396,6 +414,8 @@ fn test_pyo3_tags(input_definition: Operation, tag_name: &str) {
 #[test_case(Operation::from(DefinitionBit::new(String::from("ro"), 1, false)), String::from("DefinitionBit"); "DefinitionBit")]
 #[test_case(Operation::from(InputSymbolic::new(String::from("ro"), 1.0)), String::from("InputSymbolic"); "InputSymbolic")]
 fn test_pyo3_hqslang(input_definition: Operation, hqslang_param: String) {
+    pyo3::prepare_freethreaded_python();
+
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_definition).unwrap();
@@ -457,6 +477,8 @@ fn test_pyo3_substitute_parameters(input_definition: Operation) {
 #[test_case(Operation::from(DefinitionBit::new(String::from("ro"), 1, false)); "DefinitionBit")]
 #[test_case(Operation::from(InputSymbolic::new(String::from("ro"), 1.0)); "InputSymbolic")]
 fn test_pyo3_substitute_parameters_error(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
+
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -473,6 +495,8 @@ fn test_pyo3_substitute_parameters_error(input_operation: Operation) {
 #[test_case(Operation::from(DefinitionBit::new(String::from("ro"), 1, false)); "DefinitionBit")]
 #[test_case(Operation::from(InputSymbolic::new(String::from("ro"), 1.0)); "InputSymbolic")]
 fn test_pyo3_remap_qubits(input_definition: Operation) {
+    pyo3::prepare_freethreaded_python();
+
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_definition).unwrap();
@@ -510,6 +534,8 @@ fn test_pyo3_remap_qubits(input_definition: Operation) {
             Operation::from(InputSymbolic::new(String::from("ro"), 2.0));
             "InputSymbolic")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
+    pyo3::prepare_freethreaded_python();
+
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_one = convert_operation_to_pyobject(definition_1).unwrap();
