@@ -6808,7 +6808,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-proc-macro2 1.0.27
+proc-macro2 1.0.28
 https://github.com/alexcrichton/proc-macro2
 by Alex Crichton <alex@alexcrichton.com>, David Tolnay <dtolnay@gmail.com>
 A substitute implementation of the compiler's `proc_macro` API to decouple
@@ -11531,7 +11531,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-syn 1.0.73
+syn 1.0.74
 https://github.com/dtolnay/syn
 by David Tolnay <dtolnay@gmail.com>
 Parser for Rust source code
