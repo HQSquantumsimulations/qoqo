@@ -40,6 +40,12 @@ pub fn convert_operation_to_pyobject(operation: Operation) -> PyResult<PyObject>
                 let pyobject: PyObject = pyref.to_object(py);
                 Ok(pyobject)
             }
+            Operation::PhaseShiftState1(internal) => {
+                let pyref: Py<PhaseShiftState1Wrapper> =
+                    Py::new(py, PhaseShiftState1Wrapper { internal }).unwrap();
+                let pyobject: PyObject = pyref.to_object(py);
+                Ok(pyobject)
+            }
             Operation::PauliX(internal) => {
                 let pyref: Py<PauliXWrapper> = Py::new(py, PauliXWrapper { internal }).unwrap();
                 let pyobject: PyObject = pyref.to_object(py);
@@ -481,6 +487,20 @@ pub fn convert_pyany_to_operation(op: &PyAny) -> Result<Operation, QoqoError> {
             let theta = convert_into_calculator_float(theta_pyobject)
                 .map_err(|_| QoqoError::ConversionError)?;
             Ok(PhaseShiftState0::new(qubit, theta).into())
+        }
+        "PhaseShiftState1" => {
+            let qubit_pyobject = op
+                .call_method0("qubit")
+                .map_err(|_| QoqoError::ConversionError)?;
+            let qubit: usize = qubit_pyobject
+                .extract()
+                .map_err(|_| QoqoError::ConversionError)?;
+            let theta_pyobject = op
+                .call_method0("theta")
+                .map_err(|_| QoqoError::ConversionError)?;
+            let theta = convert_into_calculator_float(theta_pyobject)
+                .map_err(|_| QoqoError::ConversionError)?;
+            Ok(PhaseShiftState1::new(qubit, theta).into())
         }
         "PauliX" => {
             let qubit_pyobject = op

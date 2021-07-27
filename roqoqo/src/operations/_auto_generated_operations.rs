@@ -43,6 +43,9 @@ pub enum Operation {
     #[doc = "Variant for PhaseShiftState0"]
     PhaseShiftState0(PhaseShiftState0),
     #[allow(clippy::upper_case_acronyms)]
+    #[doc = "Variant for PhaseShiftState1"]
+    PhaseShiftState1(PhaseShiftState1),
+    #[allow(clippy::upper_case_acronyms)]
     #[doc = "Variant for RotateAroundSphericalAxis"]
     RotateAroundSphericalAxis(RotateAroundSphericalAxis),
     #[allow(clippy::upper_case_acronyms)]
@@ -235,6 +238,8 @@ pub enum SingleQubitOperation {
     TGate(TGate),
     #[doc = "Variant for PhaseShiftState0"]
     PhaseShiftState0(PhaseShiftState0),
+    #[doc = "Variant for PhaseShiftState1"]
+    PhaseShiftState1(PhaseShiftState1),
     #[doc = "Variant for RotateAroundSphericalAxis"]
     RotateAroundSphericalAxis(RotateAroundSphericalAxis),
     #[doc = "Variant for PragmaActiveReset"]
@@ -468,6 +473,9 @@ pub enum GateOperation {
     #[doc = "Variant for PhaseShiftState0"]
     PhaseShiftState0(PhaseShiftState0),
     #[allow(clippy::upper_case_acronyms)]
+    #[doc = "Variant for PhaseShiftState1"]
+    PhaseShiftState1(PhaseShiftState1),
+    #[allow(clippy::upper_case_acronyms)]
     #[doc = "Variant for RotateAroundSphericalAxis"]
     RotateAroundSphericalAxis(RotateAroundSphericalAxis),
     #[allow(clippy::upper_case_acronyms)]
@@ -557,6 +565,8 @@ pub enum Rotation {
     RotateY(RotateY),
     #[doc = "Variant for PhaseShiftState0"]
     PhaseShiftState0(PhaseShiftState0),
+    #[doc = "Variant for PhaseShiftState1"]
+    PhaseShiftState1(PhaseShiftState1),
     #[doc = "Variant for RotateAroundSphericalAxis"]
     RotateAroundSphericalAxis(RotateAroundSphericalAxis),
     #[doc = "Variant for XY"]
@@ -642,6 +652,8 @@ pub enum SingleQubitGateOperation {
     TGate(TGate),
     #[doc = "Variant for PhaseShiftState0"]
     PhaseShiftState0(PhaseShiftState0),
+    #[doc = "Variant for PhaseShiftState1"]
+    PhaseShiftState1(PhaseShiftState1),
     #[doc = "Variant for RotateAroundSphericalAxis"]
     RotateAroundSphericalAxis(RotateAroundSphericalAxis),
 }
