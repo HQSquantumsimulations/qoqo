@@ -132,6 +132,32 @@ struct RotateZ {
     theta: CalculatorFloat,
 }
 
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    Rotate,
+    OperateGate,
+    OperateSingleQubitGate
+)]
+/// The phase shift gate applied on state |0>.
+///
+/// Rotation around Z-axis by an arbitrary angle $\theta$ (AC Stark shift of the state |0>).
+///
+/// .. math::
+///     U = \begin{pmatrix}
+///         1 & 0\\\\
+///         0 & e^{-i \theta}
+///         \end{pmatrix}
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+///     theta (CalculatorFloat): The angle :math:`\theta` of the rotation.
+///
+struct PhaseShiftState0 {
+    qubit: usize,
+    theta: CalculatorFloat,
+}
+
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
 /// The Pauli X gate.
 ///
