@@ -7851,14 +7851,14 @@ LICENSE:
 
 
 ====================================================
-qoqo 0.5.0
+qoqo 0.5.1
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoq
 License: Apache-2.0
 
 ====================================================
-qoqo-macros 0.5.0
+qoqo-macros 0.5.1
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -9617,20 +9617,20 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-roqoqo 0.5.0
+roqoqo 0.5.1
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
 License: Apache-2.0
 
 ====================================================
-roqoqo-derive 0.5.0
+roqoqo-derive 0.5.1
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Maros for the roqoqo crate
 License: Apache-2.0
 
 ====================================================
-roqoqo-test 0.5.0
+roqoqo-test 0.5.1
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
@@ -10600,7 +10600,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-serde_json 1.0.64
+serde_json 1.0.65
 https://github.com/serde-rs/json
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A JSON serialization file format
