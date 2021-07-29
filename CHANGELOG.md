@@ -2,6 +2,16 @@
 
 This changelog track changes to the qoqo project starting at version 0.5.0
 
+## 0.5.1
+
+### Fixed in roqoqo
+
+* alpha_i function for Tgate
+
+### Fixed in roqoqo_test
+
+* Bugfix measurement selection in stochastic_gate_test
+
 ## 0.5.0
 
 ### Changed
