@@ -359,7 +359,7 @@ impl CheatedInput {
     ///
     /// # Arguments
     ///
-    /// * `name` - The name. of the expectation value
+    /// * `name` - The name of the expectation value
     /// * `operator` - The measured operator on the Hilbert space given as a list of sparse matrix entries of the form (row, col, value).
     /// * `readout` - The name of the readout register that contains the density matrix or satevector.
     ///
