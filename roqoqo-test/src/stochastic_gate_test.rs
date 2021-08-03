@@ -26,7 +26,20 @@ use roqoqo::{
     Circuit,
 };
 
-/// Provides input data to run a
+/// Provides input data to run a stochastic gate test.
+///
+/// # Arguments
+///
+/// * `gate` - roqoqo GateOperation to be measured.
+/// * `preparation_gates` - List of roqoqo SingleQubitGateOperations for the randomly chosen initial state preparation.
+/// * `basis_rotations_gates` - List of roqoqo SingleQubitGateOperations to perform randomly chosen basis rotation.
+/// * `two_qubit_gate` - None or Some(TwoQubitGateOperation).
+/// * `number_stochastic_tests` - Number of the test runs.
+/// * `number_projective_measurement` - Number of the measurements.
+///
+/// # Returns
+///
+/// * Tuple `(measurement, expected_values)`
 pub fn prepare_monte_carlo_gate_test(
     gate: GateOperation,
     preparation_gates: Vec<SingleQubitGateOperation>,
@@ -36,7 +49,7 @@ pub fn prepare_monte_carlo_gate_test(
     number_projective_measurement: usize,
 ) -> (BasisRotation, HashMap<String, f64>) {
     if let Some(x) = two_qubit_gate {
-        if !(x.control() == &0 && x.target() == &1 || x.control() == &1 && x.target() == &1) {
+        if !(x.control() == &0 && x.target() == &1 || x.control() == &1 && x.target() == &0) {
             panic!("Provided two_qubit_gate does not act on qubits 0 and 1")
         }
     }
@@ -45,6 +58,8 @@ pub fn prepare_monte_carlo_gate_test(
         InvolvedQubits::Set(x) => x.len(),
         _ => panic!("Tested gate has no well defined number of qubits"),
     };
+
+    // initialize variables
     let gate_matrix = ndarray_to_nalgebra(gate.unitary_matrix().unwrap());
     let id_matrix: DMatrix<Complex<f64>> = DMatrix::identity(2, 2);
     let mut starting_vec: DVector<Complex<f64>> = DVector::from_element(
@@ -56,15 +71,19 @@ pub fn prepare_monte_carlo_gate_test(
     let mut expected_values: HashMap<String, f64> = HashMap::new();
     let mut measurement_input = BasisRotationInput::new(number_qubits, false);
     let mut measurement_circuits: Vec<Circuit> = Vec::new();
+    // for random number generation
     let mut rng = thread_rng();
 
+    // loop over test runs
     for i in 0..number_stochastic_tests {
         let mut init_circuit = Circuit::new();
         let mut meas_circuit = Circuit::new();
         meas_circuit += DefinitionBit::new(format!("ro_{}", i), number_qubits, true);
 
         let mut pauli_product_mask: Vec<usize> = Vec::new();
+        // randomly choose one of the provided preparation_gates for the initial state preparation.
         let prep = preparation_gates.choose(&mut rng).unwrap();
+        // randomly choose one of the provided basis_rotations_gates for the measurement.
         let meas = basis_rotations_gates.choose(&mut rng).unwrap();
         let involve_qubit: bool = rand::random();
         let mut init_matrix: DMatrix<Complex<f64>> =
@@ -82,9 +101,10 @@ pub fn prepare_monte_carlo_gate_test(
         } else {
             id_matrix.clone()
         };
+        // loop over number of qubits in each test run
         for n in 1..number_qubits {
             let prep = preparation_gates.choose(&mut rng).unwrap();
-            let meas = preparation_gates.choose(&mut rng).unwrap();
+            let meas = basis_rotations_gates.choose(&mut rng).unwrap();
             let involve_qubit: bool = rand::random();
             let mut mapping: HashMap<usize, usize> = HashMap::new();
             let _ = mapping.insert(0, n);
@@ -120,6 +140,7 @@ pub fn prepare_monte_carlo_gate_test(
         let circuit = init_circuit + gate.clone() + meas_circuit;
         measurement_circuits.push(circuit);
 
+        //  Expectation value <0|Matrix|0>
         let expected_value = (init_matrix.conjugate().transpose()
             * gate_matrix.clone().adjoint()
             * basis_rot_matrix.adjoint()
@@ -137,6 +158,7 @@ pub fn prepare_monte_carlo_gate_test(
     (measurement, expected_values)
 }
 
+// Helper conversion function
 fn ndarray_to_nalgebra(input: Array2<Complex<f64>>) -> DMatrix<Complex<f64>> {
     let shape = input.shape();
     let matrix: DMatrix<Complex<f64>> =
