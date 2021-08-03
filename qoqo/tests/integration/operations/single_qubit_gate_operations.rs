@@ -58,6 +58,7 @@ fn convert_cf_to_pyobject(
 #[test_case(Operation::from(PauliX::new(1)), (0,), "__ne__"; "PauliX_ne")]
 fn test_new_paulix(input_operation: Operation, arguments: (u32,), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<PauliXWrapper>();
@@ -99,6 +100,7 @@ fn test_new_paulix(input_operation: Operation, arguments: (u32,), method: &str) 
 #[test_case(Operation::from(PauliY::new(1)), (0,), "__ne__"; "PauliY_ne")]
 fn test_new_pauliy(input_operation: Operation, arguments: (u32,), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<PauliYWrapper>();
@@ -140,6 +142,7 @@ fn test_new_pauliy(input_operation: Operation, arguments: (u32,), method: &str) 
 #[test_case(Operation::from(PauliZ::new(1)), (0,), "__ne__"; "PauliZ_ne")]
 fn test_new_pauliz(input_operation: Operation, arguments: (u32,), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<PauliZWrapper>();
@@ -181,6 +184,7 @@ fn test_new_pauliz(input_operation: Operation, arguments: (u32,), method: &str) 
 #[test_case(Operation::from(SqrtPauliX::new(1)), (0,), "__ne__"; "SqrtPauliX_ne")]
 fn test_new_sqrtpaulix(input_operation: Operation, arguments: (u32,), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<SqrtPauliXWrapper>();
@@ -222,6 +226,7 @@ fn test_new_sqrtpaulix(input_operation: Operation, arguments: (u32,), method: &s
 #[test_case(Operation::from(InvSqrtPauliX::new(1)), (0,), "__ne__"; "InvSqrtPauliX_ne")]
 fn test_new_invsqrtpaulix(input_operation: Operation, arguments: (u32,), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<InvSqrtPauliXWrapper>();
@@ -262,6 +267,7 @@ fn test_new_invsqrtpaulix(input_operation: Operation, arguments: (u32,), method:
 #[test_case(Operation::from(SGate::new(1)), (0,), "__ne__"; "SGate_ne")]
 fn test_new_sgate(input_operation: Operation, arguments: (u32,), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<SGateWrapper>();
@@ -302,6 +308,7 @@ fn test_new_sgate(input_operation: Operation, arguments: (u32,), method: &str) {
 #[test_case(Operation::from(TGate::new(1)), (0,), "__ne__"; "TGate_ne")]
 fn test_new_tgate(input_operation: Operation, arguments: (u32,), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<TGateWrapper>();
@@ -343,6 +350,7 @@ fn test_new_tgate(input_operation: Operation, arguments: (u32,), method: &str) {
 fn test_new_hadamard(input_operation: Operation, arguments: (u32,), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
 
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_type = py.get_type::<HadamardWrapper>();
@@ -383,6 +391,7 @@ fn test_new_hadamard(input_operation: Operation, arguments: (u32,), method: &str
 #[test_case(Operation::from(RotateX::new(1, CalculatorFloat::ZERO)), (0, 0.0,), "__ne__"; "RotateX_ne")]
 fn test_new_rotatex(input_operation: Operation, arguments: (u32, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -430,6 +439,7 @@ fn test_new_rotatex(input_operation: Operation, arguments: (u32, f64), method: &
 #[test_case(Operation::from(RotateY::new(1, CalculatorFloat::ZERO)), (0, 0.0,), "__ne__"; "RotateY_ne")]
 fn test_new_rotatey(input_operation: Operation, arguments: (u32, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -477,6 +487,7 @@ fn test_new_rotatey(input_operation: Operation, arguments: (u32, f64), method: &
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::ZERO)), (0, 0.0,), "__ne__"; "RotateZ_ne")]
 fn test_new_rotatez(input_operation: Operation, arguments: (u32, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -539,6 +550,7 @@ fn test_new_rotatez(input_operation: Operation, arguments: (u32, f64), method: &
     ), (0, 0.0, 0.0, 0.0,), "__ne__"; "rotation_ne")]
 fn test_new_rotate(input_operation: Operation, arguments: (u32, f64, f64, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -618,6 +630,7 @@ fn test_new_singlequbitgate(
     method: &str,
 ) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
 
@@ -702,6 +715,7 @@ fn test_new_singlequbitgate(
     ); "RotateAroundSphericalAxis")
 ]
 fn test_pyo3_is_parametrized(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -747,6 +761,7 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -774,6 +789,7 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     ); "RotateAroundSphericalAxis")
 ]
 fn test_pyo3_theta(theta: CalculatorFloat, input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -807,6 +823,7 @@ fn test_pyo3_theta(theta: CalculatorFloat, input_operation: Operation) {
 #[test_case(0, Operation::from(SGate::new(0)); "SGate")]
 #[test_case(0, Operation::from(Hadamard::new(0)); "Hadamard")]
 fn test_pyo3_qubit(qubit: usize, input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -847,6 +864,7 @@ fn test_pyo3_qubit(qubit: usize, input_operation: Operation) {
         CalculatorFloat::from(PI),
     )); "SingleQubitGate")]
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -992,6 +1010,7 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         ];
     "SingleQubitGate")]
 fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -1036,6 +1055,7 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
 #[test_case(Operation::from(TGate::new(0)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(0)); "Hadamard")]
 fn test_pyo3_remapqubits(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -1091,6 +1111,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 #[test_case(Operation::from(Hadamard::new(0)); "Hadamard")]
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -1134,6 +1155,7 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
     ); "SingleQubitGate")
 ]
 fn test_pyo3_unitarymatrix(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
@@ -1165,6 +1187,7 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
     ); "RotateAroundSphericalAxis")
 ]
 fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
@@ -1197,6 +1220,7 @@ fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
     ); "normalization")
 ]
 fn test_pyo3_unitarymatrix_singlequbitgate(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
@@ -1238,6 +1262,7 @@ fn test_pyo3_unitarymatrix_singlequbitgate(input_operation: Operation) {
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -1296,6 +1321,7 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 fn test_pyo3_alpha_r(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
@@ -1348,6 +1374,7 @@ fn test_pyo3_alpha_r(input_operation: Operation) {
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 fn test_pyo3_alpha_i(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
@@ -1400,6 +1427,7 @@ fn test_pyo3_alpha_i(input_operation: Operation) {
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 fn test_pyo3_beta_r(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
@@ -1452,6 +1480,7 @@ fn test_pyo3_beta_r(input_operation: Operation) {
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 fn test_pyo3_beta_i(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
@@ -1504,6 +1533,7 @@ fn test_pyo3_beta_i(input_operation: Operation) {
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 fn test_pyo3_global_phase(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
@@ -1592,6 +1622,7 @@ fn test_pyo3_global_phase(input_operation: Operation) {
     ); "SingleQubitGate")
 ]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -1625,6 +1656,7 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     ); "SingleQubitGate")
 ]
 fn test_pyo3_substitute_parameters(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
@@ -1658,6 +1690,7 @@ fn test_pyo3_substitute_parameters(input_operation: Operation) {
 #[test_case(Operation::from(RotateX::new(0, CalculatorFloat::from("theta"))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from("theta"))); "RotateY")]
 fn test_pyo3_substitute_params_rotate(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
@@ -1709,6 +1742,7 @@ fn test_pyo3_substitute_params_rotate(input_operation: Operation) {
     ); "SingleQubitGate")
 ]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -1728,6 +1762,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 fn test_ineffective_substitute_parameters(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
@@ -1774,6 +1809,7 @@ fn test_ineffective_substitute_parameters(input_operation: Operation) {
         )
     ); "Rotation")]
 fn test_pyo3_rotate_powercf(first_op: Operation, second_op: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(first_op).unwrap();
@@ -1866,6 +1902,7 @@ fn test_pyo3_rotate_powercf(first_op: Operation, second_op: Operation) {
     ); "SingleQubitGate")
 ]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation_one = convert_operation_to_pyobject(definition_1).unwrap();

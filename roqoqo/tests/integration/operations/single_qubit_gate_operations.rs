@@ -387,6 +387,49 @@ fn test_singlequbitgate_debug() {
 // unit tests for SingleQubitGate Operations
 //
 
+/// Test alpha, beta, global phase of single qubit gates with the unitary matrix
+#[test_case(SingleQubitGateOperation::from(RotateX::new(0, CalculatorFloat::from(PI/3.0))); "RotateX")]
+#[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from(PI/3.0))); "RotateY")]
+#[test_case(SingleQubitGateOperation::from(RotateZ::new(0, CalculatorFloat::from(PI/3.0))); "RotateZ")]
+#[test_case(SingleQubitGateOperation::from(PauliX::new(1)); "PauliX")]
+#[test_case(SingleQubitGateOperation::from(PauliY::new(1)); "PauliY")]
+#[test_case( SingleQubitGateOperation::from(PauliZ::new(1)); "PauliZ")]
+#[test_case(SingleQubitGateOperation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
+#[test_case(SingleQubitGateOperation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
+#[test_case(SingleQubitGateOperation::from(SGate::new(1)); "SGate")]
+#[test_case(SingleQubitGateOperation::from(TGate::new(1)); "TGate")]
+#[test_case(SingleQubitGateOperation::from(Hadamard::new(0)); "Hadamard")]
+#[test_case(SingleQubitGateOperation::from(RotateAroundSphericalAxis::new(
+    0,
+    CalculatorFloat::from(PI/3.0),
+    CalculatorFloat::from(PI/2.0),
+    CalculatorFloat::from(PI/4.0))); "Rotation")]
+fn test_alpha_beta_singlequbitgates(gate: SingleQubitGateOperation) {
+    let alpha_r = gate.alpha_r();
+    let alpha_i = gate.alpha_i();
+    let beta_r = gate.beta_r();
+    let beta_i = gate.beta_i();
+    let global_phase = gate.global_phase();
+    let qubit = gate.qubit();
+    let matrix = gate.unitary_matrix().unwrap();
+
+    let singlequbitgate = SingleQubitGate::new(
+        qubit.clone(),
+        alpha_r,
+        alpha_i,
+        beta_r,
+        beta_i,
+        global_phase,
+    );
+    let test_matrix = singlequbitgate.unitary_matrix().unwrap();
+
+    let epsilon = 1e-12;
+    for i in 0..2 {
+        assert!((matrix[[0, i]] - test_matrix[[0, i]]).norm() < epsilon);
+        assert!((matrix[[1, i]] - test_matrix[[1, i]]).norm() < epsilon);
+    }
+}
+
 /// Test RotateX,Y,Z rotate
 #[test_case(0, CalculatorFloat::from(0); "rotate0")]
 #[test_case(1, CalculatorFloat::from("theta"); "rotate1")]
@@ -733,7 +776,7 @@ fn test_rotatearoundsphericalaxis_abp(
     (PI / 4.0).cos(), 0.0, 0.0, (PI / 4.0).cos(), 0.0,
     SingleQubitGateOperation::from(InvSqrtPauliX::new(0)); "InvSqrtPauliX")]
 #[test_case(
-    (PI / 8.0).cos(), (-1.0) * (PI / 8.0).cos(), 0.0, 0.0, PI / 8.0,
+    (PI / 8.0).cos(), (-1.0) * (PI / 8.0).sin(), 0.0, 0.0, PI / 8.0,
     SingleQubitGateOperation::from(TGate::new(0)); "TGate")]
 #[test_case(
     1.0 / (2.0_f64).sqrt(), (-1.0) / (2.0_f64).sqrt(), 0.0, 0.0, PI / 4.0,

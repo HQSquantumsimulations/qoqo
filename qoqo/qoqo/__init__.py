@@ -24,9 +24,6 @@ qoqo is the HQS python package to represent quantum circuits.
     registers
     measurements
     DoUnitary
-    devices
-    BackendBaseClass
-
 """
 
 from .qoqo import *

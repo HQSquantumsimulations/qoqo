@@ -102,6 +102,7 @@ use test_case::test_case;
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())); "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 fn test_conversion(input: Operation) {
+    pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(input.clone()).unwrap();

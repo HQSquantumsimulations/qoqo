@@ -1184,7 +1184,7 @@ impl OperateSingleQubitGate for TGate {
     ///
     /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
-        CalculatorFloat::from((-1.0) * (PI / 8.0).cos())
+        CalculatorFloat::from((-1.0) * (PI / 8.0).sin())
     }
     /// Returns the beta_r parameter of the operation.
     ///
