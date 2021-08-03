@@ -85,22 +85,22 @@ fn densitymatrix() -> Array2<Complex64> {
     densitymatrix
 }
 
-fn operators() -> Array2<Complex64> {
-    let operators: Array2<Complex64> = array![
+fn operators() -> Array2<f64> {
+    let operators: Array2<f64> = array![
         [
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0)
+            1.0,
+            0.0,
+            0.0
         ],
         [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0)
+            0.0,
+            1.0,
+            0.0
         ],
         [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0)
+            0.0,
+            0.0,
+            1.0
         ],
     ];
     operators
@@ -498,7 +498,7 @@ fn test_pyo3_inputs_generalnoise() {
         &f64::extract(operation.call_method0(py, "rate").unwrap().as_ref(py)).unwrap();
     assert_eq!(CalculatorFloat::from(rate_op), CalculatorFloat::from(0.02));
 
-    let to_operators_op: Vec<Complex64> =
+    let to_operators_op: Vec<f64> =
         Vec::extract(operation.call_method0(py, "operators").unwrap().as_ref(py)).unwrap();
     let operators_op = Array::from_shape_vec((3, 3), to_operators_op).unwrap();
     assert_eq!(operators_op, operators());

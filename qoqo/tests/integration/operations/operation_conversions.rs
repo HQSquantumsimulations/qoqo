@@ -136,22 +136,22 @@ fn densitymatrix() -> Array2<Complex64> {
     densitymatrix
 }
 
-fn operators() -> Array2<Complex64> {
-    let operators: Array2<Complex64> = array![
+fn operators() -> Array2<f64> {
+    let operators: Array2<f64> = array![
         [
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0)
+            1.0,
+            0.0,
+            0.0
         ],
         [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0)
+            0.0,
+            1.0,
+            0.0
         ],
         [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0)
+            0.0,
+            0.0,
+            1.0
         ],
     ];
     operators

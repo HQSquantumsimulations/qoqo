@@ -2,6 +2,16 @@
 
 This changelog track changes to the qoqo project starting at version 0.5.0
 
+## 0.6
+
+### Added
+
+* Device trait: A minimal trait for quantum computing devices used with roqoqo
+
+### Changed in roqoqo/qoqo
+
+* PragmaGeneralNoise uses sigma^+ sigma^- and sigma^z as a basis to for Lindblad decoherence rates to avoid using complex rates.
+
 ## 0.5.1
 
 ### Fixed in roqoqo

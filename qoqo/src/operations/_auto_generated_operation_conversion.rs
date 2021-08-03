@@ -1465,7 +1465,7 @@ pub fn convert_pyany_to_operation(op: &PyAny) -> Result<Operation, QoqoError> {
             let array = op
                 .call_method0("operators")
                 .map_err(|_| QoqoError::ConversionError)?;
-            let densmat_casted: Vec<Complex64> = Vec::extract(array).unwrap();
+            let densmat_casted: Vec<f64> = Vec::extract(array).unwrap();
             let length: usize = densmat_casted.len();
             let dim: usize = (length as f64).sqrt() as usize;
             let operators = Array::from_shape_vec((dim, dim), densmat_casted).unwrap();

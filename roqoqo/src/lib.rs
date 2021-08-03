@@ -173,3 +173,4 @@ pub use circuit::*;
 pub mod backends;
 pub mod measurements;
 pub mod registers;
+pub mod devices;

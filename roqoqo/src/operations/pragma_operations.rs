@@ -749,33 +749,34 @@ impl OperatePragmaNoise for PragmaRandomNoise {
 /// \end{pmatrix} $$
 /// where the coefficients correspond to the following summands
 /// expanded from the first term of the non-coherent part of the Lindblad equation:
-/// $$
-/// a \cdot \sigma_x \rho \sigma_x + b \cdot \sigma_x \rho \sigma_y + c \cdot \sigma_x \rho \sigma_z + d \cdot \sigma_x \rho \sigma_y + e \cdot \sigma_y \rho \sigma_y + f \cdot \sigma_y \rho \sigma_z + g \cdot \sigma_x \rho \sigma_z + h \cdot \sigma_y \rho \sigma_z + j \cdot \sigma_z \rho \sigma_z.
-/// $$
+///     $$ \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
+///         L_0 = \sigma^{-} \\\\
+///         L_1 = \sigma^{+} \\\\
+///         L_3 = \sigma^{z}
+///     $$
 ///
 /// # Example
 ///
 /// ```
 /// use ndarray::{array, Array2};
-/// use num_complex::Complex64;
 /// use roqoqo::operations::PragmaGeneralNoise;
 /// use qoqo_calculator::CalculatorFloat;
 ///
-/// let operators: Array2<Complex64> = array![
+/// let operators: Array2<f64> = array![
 ///    [
-///         Complex64::new(1.0, 0.0),
-///         Complex64::new(0.0, 0.0),
-///         Complex64::new(0.0, 0.0)
+///         1.0,
+///         0.0,
+///         0.0
 ///     ],
 ///     [
-///         Complex64::new(0.0, 0.0),
-///         Complex64::new(1.0, 0.0),
-///         Complex64::new(0.0, 0.0)
+///         0.0,
+///         1.0,
+///         0.0
 ///     ],
 ///     [
-///         Complex64::new(0.0, 0.0),
-///         Complex64::new(0.0, 0.0),
-///         Complex64::new(1.0, 0.0)
+///         0.0,
+///         0.0,
+///         1.0
 ///     ],
 /// ];
 /// let pragma = PragmaGeneralNoise::new(
@@ -785,7 +786,7 @@ impl OperatePragmaNoise for PragmaRandomNoise {
 ///     operators.clone(),
 /// );
 /// ```
-/// That will result into $\sigma_x \rho \sigma_x + \sigma_y \rho \sigma_y + \sigma_z \rho \sigma_z$.
+/// That will result into $.
 ///
 #[derive(
     Debug,
@@ -806,7 +807,7 @@ pub struct PragmaGeneralNoise {
     /// The error rate of the noise (in 1/second).
     rate: CalculatorFloat,
     /// The operators representing the general noise (a 3x3 matrix).
-    operators: Array2<Complex64>,
+    operators: Array2<f64>,
 }
 
 #[allow(non_upper_case_globals)]

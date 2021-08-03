@@ -874,7 +874,7 @@ insert_pyany_to_operation!(
         let array = op.call_method0("operators")
                       .map_err(|_| QoqoError::ConversionError)?;
 
-        let densmat_casted: Vec<Complex64> = Vec::extract(array).unwrap();
+        let densmat_casted: Vec<f64> = Vec::extract(array).unwrap();
         let length: usize = densmat_casted.len();
         let dim: usize = (length as f64).sqrt() as usize;
         let operators = Array::from_shape_vec((dim, dim), densmat_casted).unwrap();
@@ -911,7 +911,7 @@ impl PragmaGeneralNoiseWrapper {
         rate: Py<PyAny>,
         operators: Py<PyAny>,
     ) -> PyResult<Self> {
-        let operators_casted: Vec<Complex64> = Python::with_gil(|py| -> Vec<Complex64> {
+        let operators_casted: Vec<f64> = Python::with_gil(|py| -> Vec<f64> {
             Vec::extract(operators.as_ref(py)).unwrap()
         });
         let operators_array = Array::from_shape_vec((3, 3), operators_casted).unwrap();
@@ -966,13 +966,13 @@ impl PragmaGeneralNoiseWrapper {
     ///
     /// Returns:
     ///     np.ndarray: The operators of the PRAGMA operation.
-    fn operators(&self) -> Py<PyArray1<Complex64>> {
-        Python::with_gil(|py| -> Py<PyArray1<Complex64>> {
+    fn operators(&self) -> Py<PyArray1<f64>> {
+        Python::with_gil(|py| -> Py<PyArray1<f64>> {
             self.internal
                 .operators()
                 .iter()
                 .cloned()
-                .collect::<Vec<Complex64>>()
+                .collect::<Vec<f64>>()
                 .to_pyarray(py)
                 .to_owned()
         })

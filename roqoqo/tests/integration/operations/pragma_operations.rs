@@ -2505,21 +2505,21 @@ fn pragma_random_noise_serde_compact() {
 /// Test PragmaGeneralNoise inputs and involved qubits
 #[test]
 fn pragma_general_noise_inputs_qubits() {
-    let operators: Array2<Complex64> = array![
+    let operators: Array2<f64> = array![
         [
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0)
+            1.0,
+            0.0,
+            0.0
         ],
         [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0)
+            0.0,
+            0.0,
+            0.0
         ],
         [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0)
+            0.0,
+            0.0,
+            0.0
         ],
     ];
     let pragma = PragmaGeneralNoise::new(
@@ -2544,21 +2544,21 @@ fn pragma_general_noise_inputs_qubits() {
 /// Test PragmaGeneralNoise standard derived traits (Debug, Clone, PartialEq)
 #[test]
 fn pragma_general_noise_simple_traits() {
-    let operators: Array2<Complex64> = array![
+    let operators: Array2<f64> = array![
         [
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0)
+            1.0,
+            0.0,
+            0.0
         ],
         [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0)
+            0.0,
+            0.0,
+            0.0
         ],
         [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0)
+            0.0,
+            0.0,
+            1.0
         ],
     ];
     let pragma = PragmaGeneralNoise::new(
@@ -2599,21 +2599,21 @@ fn pragma_general_noise_simple_traits() {
 /// Test PragmaGeneralNoise Operate trait
 #[test]
 fn pragma_general_noise_operate_trait() {
-    let operators: Array2<Complex64> = array![
+    let operators: Array2<f64> = array![
         [
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0)
+            1.0,
+            0.0,
+            0.0
         ],
         [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0)
+            0.0,
+            1.0,
+            0.0
         ],
         [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0)
+            0.0,
+            0.0,
+            1.0
         ],
     ];
     let pragma = PragmaGeneralNoise::new(
@@ -2642,21 +2642,21 @@ fn pragma_general_noise_operate_trait() {
 /// Test PragmaGeneralNoise Substitute trait
 #[test]
 fn pragma_general_noise_substitute_trait() {
-    let operators: Array2<Complex64> = array![
+    let operators: Array2<f64> = array![
         [
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0)
+            1.0,
+            0.0,
+            0.0
         ],
         [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0)
+            0.0,
+            1.0,
+            0.0
         ],
         [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0)
+            0.0,
+            0.0,
+            1.0
         ],
     ];
     let pragma = PragmaGeneralNoise::new(
@@ -2701,21 +2701,21 @@ fn pragma_general_noise_substitute_trait() {
 #[cfg(feature = "serialize")]
 #[test]
 fn pragma_general_noise_serde_readable() {
-    let operators: Array2<Complex64> = array![
+    let operators: Array2<f64> = array![
         [
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0)
+            1.0,
+            0.0,
+            0.0
         ],
         [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0)
+            0.0,
+            1.0,
+            0.0
         ],
         [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0)
+            0.0,
+            0.0,
+            1.0
         ],
     ];
     let pragma_serialization = PragmaGeneralNoise::new(
@@ -2798,21 +2798,21 @@ fn pragma_general_noise_serde_readable() {
 #[cfg(feature = "serialize")]
 #[test]
 fn pragma_general_noise_serde_compact() {
-    let operators: Array2<Complex64> = array![
+    let operators: Array2<f64> = array![
         [
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0)
+            1.0,
+            0.0,
+            0.0
         ],
         [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0)
+            0.0,
+            1.0,
+            0.0
         ],
         [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0)
+            0.0,
+            0.0,
+            1.0
         ],
     ];
     let pragma_serialization = PragmaGeneralNoise::new(
