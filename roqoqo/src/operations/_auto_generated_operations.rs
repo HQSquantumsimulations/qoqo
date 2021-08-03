@@ -40,11 +40,11 @@ pub enum Operation {
     #[doc = "Variant for TGate"]
     TGate(TGate),
     #[allow(clippy::upper_case_acronyms)]
-    #[doc = "Variant for PhaseShiftState0"]
-    PhaseShiftState0(PhaseShiftState0),
-    #[allow(clippy::upper_case_acronyms)]
     #[doc = "Variant for PhaseShiftState1"]
     PhaseShiftState1(PhaseShiftState1),
+    #[allow(clippy::upper_case_acronyms)]
+    #[doc = "Variant for PhaseShiftState0"]
+    PhaseShiftState0(PhaseShiftState0),
     #[allow(clippy::upper_case_acronyms)]
     #[doc = "Variant for RotateAroundSphericalAxis"]
     RotateAroundSphericalAxis(RotateAroundSphericalAxis),
@@ -236,10 +236,10 @@ pub enum SingleQubitOperation {
     SGate(SGate),
     #[doc = "Variant for TGate"]
     TGate(TGate),
-    #[doc = "Variant for PhaseShiftState0"]
-    PhaseShiftState0(PhaseShiftState0),
     #[doc = "Variant for PhaseShiftState1"]
     PhaseShiftState1(PhaseShiftState1),
+    #[doc = "Variant for PhaseShiftState0"]
+    PhaseShiftState0(PhaseShiftState0),
     #[doc = "Variant for RotateAroundSphericalAxis"]
     RotateAroundSphericalAxis(RotateAroundSphericalAxis),
     #[doc = "Variant for PragmaActiveReset"]
@@ -470,11 +470,11 @@ pub enum GateOperation {
     #[doc = "Variant for TGate"]
     TGate(TGate),
     #[allow(clippy::upper_case_acronyms)]
-    #[doc = "Variant for PhaseShiftState0"]
-    PhaseShiftState0(PhaseShiftState0),
-    #[allow(clippy::upper_case_acronyms)]
     #[doc = "Variant for PhaseShiftState1"]
     PhaseShiftState1(PhaseShiftState1),
+    #[allow(clippy::upper_case_acronyms)]
+    #[doc = "Variant for PhaseShiftState0"]
+    PhaseShiftState0(PhaseShiftState0),
     #[allow(clippy::upper_case_acronyms)]
     #[doc = "Variant for RotateAroundSphericalAxis"]
     RotateAroundSphericalAxis(RotateAroundSphericalAxis),
@@ -563,10 +563,10 @@ pub enum Rotation {
     RotateX(RotateX),
     #[doc = "Variant for RotateY"]
     RotateY(RotateY),
-    #[doc = "Variant for PhaseShiftState0"]
-    PhaseShiftState0(PhaseShiftState0),
     #[doc = "Variant for PhaseShiftState1"]
     PhaseShiftState1(PhaseShiftState1),
+    #[doc = "Variant for PhaseShiftState0"]
+    PhaseShiftState0(PhaseShiftState0),
     #[doc = "Variant for RotateAroundSphericalAxis"]
     RotateAroundSphericalAxis(RotateAroundSphericalAxis),
     #[doc = "Variant for XY"]
@@ -650,10 +650,10 @@ pub enum SingleQubitGateOperation {
     SGate(SGate),
     #[doc = "Variant for TGate"]
     TGate(TGate),
-    #[doc = "Variant for PhaseShiftState0"]
-    PhaseShiftState0(PhaseShiftState0),
     #[doc = "Variant for PhaseShiftState1"]
     PhaseShiftState1(PhaseShiftState1),
+    #[doc = "Variant for PhaseShiftState0"]
+    PhaseShiftState0(PhaseShiftState0),
     #[doc = "Variant for RotateAroundSphericalAxis"]
     RotateAroundSphericalAxis(RotateAroundSphericalAxis),
 }

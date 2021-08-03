@@ -1212,116 +1212,14 @@ impl OperateSingleQubitGate for TGate {
     }
 }
 
-/// The phase shift gate applied on state |0>.
-///
-/// Rotation around Z-axis by an arbitrary angle $\theta$ (AC Stark shift of the state |0>).
-///
-/// $$
-/// U = \begin{pmatrix}
-/// 1 & 0\\\\
-///  0 & e^{-i \theta}
-/// \end{pmatrix}
-/// $$
-///
-#[derive(
-    Debug,
-    Clone,
-    PartialEq,
-    roqoqo_derive::InvolveQubits,
-    roqoqo_derive::Operate,
-    roqoqo_derive::Substitute,
-    roqoqo_derive::OperateSingleQubit,
-    roqoqo_derive::Rotate,
-)]
-#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-pub struct PhaseShiftState0 {
-    /// The qubit the unitary gate is applied to.
-    qubit: usize,
-    /// The angle $\theta$ of the rotation, in the interval from 0 to $2 \pi$.
-    theta: CalculatorFloat,
-}
-
-#[allow(non_upper_case_globals)]
-const TAGS_PhaseShiftState0: &[&str; 5] = &[
-    "Operation",
-    "GateOperation",
-    "SingleQubitGateOperation",
-    "Rotation",
-    "PhaseShiftState0",
-];
-
-/// Trait for all operations acting with a unitary gate on a set of qubits.
-impl OperateGate for PhaseShiftState0 {
-    /// Returns unitary matrix of the gate.
-    ///
-    /// # Returns
-    ///
-    /// * `Ok(Array2<Complex64>)` - The unitary matrix representation of the gate.
-    /// * `Err(RoqoqoError)` - The parameter conversion to f64 failed (here, not possible).
-    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
-        let theta: f64 = f64::try_from(self.theta().clone())?;
-        Ok(array![
-            [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],
-            [
-                Complex64::new(0.0, 0.0),
-                Complex64::new(theta.cos(), theta.sin() * (-1.0))
-            ]
-        ])
-    }
-}
-
-/// Trait for unitary operations acting on exactly one qubit.
-impl OperateSingleQubitGate for PhaseShiftState0 {
-    /// Returns the alpha_r parameter of the operation.
-    ///
-    /// # Returns
-    ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
-    fn alpha_r(&self) -> CalculatorFloat {
-        (self.theta().clone() / 2.0).cos()
-    }
-    /// Returns the alpha_i parameter of the operation.
-    ///
-    /// # Returns
-    ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
-    fn alpha_i(&self) -> CalculatorFloat {
-        (self.theta().clone() / 2.0).sin()
-    }
-    /// Returns the beta_r parameter of the operation.
-    ///
-    /// # Returns
-    ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
-    fn beta_r(&self) -> CalculatorFloat {
-        CalculatorFloat::from(0.0)
-    }
-    /// Returns the beta_i parameter of the operation.
-    ///
-    /// # Returns
-    ///
-    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
-    fn beta_i(&self) -> CalculatorFloat {
-        CalculatorFloat::from(0.0)
-    }
-    /// Returns global_phase parameter of the operation.
-    ///
-    /// # Returns
-    ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
-    fn global_phase(&self) -> CalculatorFloat {
-        self.theta().clone() / 2.0 * (-1.0)
-    }
-}
-
 /// The phase shift gate applied on state |1>.
 ///
 /// Rotation around Z-axis by an arbitrary angle $\theta$ (AC Stark shift of the state |1>).
 ///
 /// $$
 /// U = \begin{pmatrix}
-/// e^{i \theta} & 0\\\\
-///  0 & 1
+/// 1 & 0\\\\
+///  0 & e^{i \theta}
 /// \end{pmatrix}
 /// $$
 ///
@@ -1363,6 +1261,108 @@ impl OperateGate for PhaseShiftState1 {
     fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
         let theta: f64 = f64::try_from(self.theta().clone())?;
         Ok(array![
+            [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(theta.cos(), theta.sin())
+            ]
+        ])
+    }
+}
+
+/// Trait for unitary operations acting on exactly one qubit.
+impl OperateSingleQubitGate for PhaseShiftState1 {
+    /// Returns the alpha_r parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    fn alpha_r(&self) -> CalculatorFloat {
+        (self.theta().clone() / 2.0).cos()
+    }
+    /// Returns the alpha_i parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    fn alpha_i(&self) -> CalculatorFloat {
+        (self.theta().clone() / 2.0).sin() * (-1.0)
+    }
+    /// Returns the beta_r parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    fn beta_r(&self) -> CalculatorFloat {
+        CalculatorFloat::from(0.0)
+    }
+    /// Returns the beta_i parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    fn beta_i(&self) -> CalculatorFloat {
+        CalculatorFloat::from(0.0)
+    }
+    /// Returns global_phase parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    fn global_phase(&self) -> CalculatorFloat {
+        self.theta().clone() / 2.0
+    }
+}
+
+/// The phase shift gate applied on state |0>.
+///
+/// Rotation around Z-axis by an arbitrary angle $\theta$ (AC Stark shift of the state |0>).
+///
+/// $$
+/// U = \begin{pmatrix}
+/// e^{i \theta} & 0\\\\
+///  0 & 1
+/// \end{pmatrix}
+/// $$
+///
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateSingleQubit,
+    roqoqo_derive::Rotate,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+pub struct PhaseShiftState0 {
+    /// The qubit the unitary gate is applied to.
+    qubit: usize,
+    /// The angle $\theta$ of the rotation, in the interval from 0 to $2 \pi$.
+    theta: CalculatorFloat,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_PhaseShiftState0: &[&str; 5] = &[
+    "Operation",
+    "GateOperation",
+    "SingleQubitGateOperation",
+    "Rotation",
+    "PhaseShiftState0",
+];
+
+/// Trait for all operations acting with a unitary gate on a set of qubits.
+impl OperateGate for PhaseShiftState0 {
+    /// Returns unitary matrix of the gate.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Array2<Complex64>)` - The unitary matrix representation of the gate.
+    /// * `Err(RoqoqoError)` - The parameter conversion to f64 failed (here, not possible).
+    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
+        let theta: f64 = f64::try_from(self.theta().clone())?;
+        Ok(array![
             [
                 Complex64::new(theta.cos(), theta.sin()),
                 Complex64::new(0.0, 0.0)
@@ -1373,7 +1373,7 @@ impl OperateGate for PhaseShiftState1 {
 }
 
 /// Trait for unitary operations acting on exactly one qubit.
-impl OperateSingleQubitGate for PhaseShiftState1 {
+impl OperateSingleQubitGate for PhaseShiftState0 {
     /// Returns the alpha_r parameter of the operation.
     ///
     /// # Returns
