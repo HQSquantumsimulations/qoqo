@@ -219,7 +219,7 @@ impl Circuit {
                 }
                 InvolvedQubits::None => (),
                 InvolvedQubits::Set(x) => {
-                    temp_involved = temp_involved.union(&x).cloned().collect()
+                    temp_involved = temp_involved.union(x).cloned().collect()
                 }
             }
         }
