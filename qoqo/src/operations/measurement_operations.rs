@@ -104,6 +104,6 @@ struct PragmaGetPauliProduct {
 ///
 struct PragmaRepeatedMeasurement {
     readout: String,
-    qubit_mapping: Option<std::collections::HashMap<usize, usize>>,
     number_measurements: usize,
+    qubit_mapping: Option<std::collections::HashMap<usize, usize>>,
 }
