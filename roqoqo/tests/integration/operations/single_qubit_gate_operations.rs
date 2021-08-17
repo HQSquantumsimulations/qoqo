@@ -391,7 +391,8 @@ fn test_singlequbitgate_debug() {
 #[test_case(SingleQubitGateOperation::from(RotateX::new(0, CalculatorFloat::from(PI/3.0))); "RotateX")]
 #[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from(PI/3.0))); "RotateY")]
 #[test_case(SingleQubitGateOperation::from(RotateZ::new(0, CalculatorFloat::from(PI/3.0))); "RotateZ")]
-#[test_case(SingleQubitGateOperation::from(PauliX::new(1)); "PauliX")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate0")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState1::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate1")]#[test_case(SingleQubitGateOperation::from(PauliX::new(1)); "PauliX")]
 #[test_case(SingleQubitGateOperation::from(PauliY::new(1)); "PauliY")]
 #[test_case( SingleQubitGateOperation::from(PauliZ::new(1)); "PauliZ")]
 #[test_case(SingleQubitGateOperation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
@@ -451,6 +452,25 @@ fn test_rotatexyz_rotate(qubit: usize, theta: CalculatorFloat) {
     // Test RotateY rotate
     let gate1 = RotateY::new(qubit, theta.clone());
     let gate2 = RotateY::new(qubit, CalculatorFloat::from(gate1.theta().clone()));
+    assert_eq!(gate1, gate2);
+    let theta_p: &CalculatorFloat = gate1.theta();
+    assert_eq!(theta_p, &theta);
+}
+
+/// Test theta() for PhaseShiftState gates
+#[test_case(0, CalculatorFloat::from(0); "test0")]
+#[test_case(1, CalculatorFloat::from("theta"); "test1")]
+fn test_rotatexyz_phaseshiftstate(qubit: usize, theta: CalculatorFloat) {
+    // Test PhaseShiftState0 rotate
+    let gate1 = PhaseShiftState0::new(qubit, theta.clone());
+    let gate2 = PhaseShiftState0::new(qubit, CalculatorFloat::from(gate1.theta().clone()));
+    assert_eq!(gate1, gate2);
+    let theta_p: &CalculatorFloat = gate1.theta();
+    assert_eq!(theta_p, &theta);
+
+    // Test PhaseShiftState1 rotate
+    let gate1 = PhaseShiftState1::new(qubit, theta.clone());
+    let gate2 = PhaseShiftState1::new(qubit, CalculatorFloat::from(gate1.theta().clone()));
     assert_eq!(gate1, gate2);
     let theta_p: &CalculatorFloat = gate1.theta();
     assert_eq!(theta_p, &theta);
