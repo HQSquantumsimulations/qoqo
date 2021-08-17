@@ -1160,7 +1160,7 @@ fn test_singlequbitgates_remap_qubits(
     assert_eq!(result2, Ok(operation.clone()));
 }
 
- /// Test error case of remap_qubits() function for SingleQubitGateOperations
+/// Test error case of remap_qubits() function for SingleQubitGateOperations
 #[test_case(SingleQubitGateOperation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from(0))); "RotateY")]
 #[test_case(SingleQubitGateOperation::from(RotateZ::new(0, CalculatorFloat::from(0))); "RotateZ")]
