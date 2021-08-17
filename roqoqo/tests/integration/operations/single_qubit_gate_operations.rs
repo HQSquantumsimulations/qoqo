@@ -1160,9 +1160,12 @@ fn test_singlequbitgates_remap_qubits(
     assert_eq!(result2, Ok(operation.clone()));
 }
 
+/// Test error case of remap_qubits() function for SingleQubitGateOperations
 #[test_case(SingleQubitGateOperation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from(0))); "RotateY")]
 #[test_case(SingleQubitGateOperation::from(RotateZ::new(0, CalculatorFloat::from(0))); "RotateZ")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0))); "PhaseShiftState0")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0))); "PhaseShiftState1")]
 #[test_case(SingleQubitGateOperation::from(PauliX::new(0)); "PauliX")]
 #[test_case(SingleQubitGateOperation::from(PauliY::new(0)); "PauliY")]
 #[test_case( SingleQubitGateOperation::from(PauliZ::new(0)); "PauliZ")]
@@ -1246,6 +1249,12 @@ fn remap_qubits_error(gate: SingleQubitGateOperation) {
             CalculatorFloat::from(0),
         )
     ); "Rotation")]
+#[test_case(
+    "PhaseShiftState0(PhaseShiftState0 { qubit: 0, theta: Float(0.0) })",
+    SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0))); "PhaseShiftState0")]
+#[test_case(
+    "PhaseShiftState1(PhaseShiftState1 { qubit: 0, theta: Float(0.0) })",
+    SingleQubitGateOperation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0))); "PhaseShiftState1")]
 fn test_singlequbitgates_debug(name: &'static str, gate: SingleQubitGateOperation) {
     assert_eq!(format!("{:?}", gate), name);
 }
@@ -1263,6 +1272,14 @@ fn test_singlequbitgates_debug(name: &'static str, gate: SingleQubitGateOperatio
     SingleQubitGateOperation::from(RotateZ::new(1, CalculatorFloat::from(1))),
     SingleQubitGateOperation::from(RotateZ::new(0, CalculatorFloat::from(0)));
     "RotateZ")]
+#[test_case(
+    SingleQubitGateOperation::from(PhaseShiftState1::new(1, CalculatorFloat::from(1))),
+    SingleQubitGateOperation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0)));
+    "PhaseShiftState1")]
+#[test_case(
+    SingleQubitGateOperation::from(PhaseShiftState0::new(1, CalculatorFloat::from(1))),
+    SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0)));
+    "PhaseShiftState0")]
 #[test_case(
     SingleQubitGateOperation::from(PauliX::new(1)),
     SingleQubitGateOperation::from(PauliX::new(0));
@@ -1543,6 +1560,34 @@ fn test_rotatez_powercf(theta: CalculatorFloat, power: CalculatorFloat) {
     assert_eq!(power_gate.global_phase(), test_gate.global_phase());
 }
 
+/// Test powerfc function for PhaseShiftState0 with symbolic parameters
+#[test_case(CalculatorFloat::from("theta"), CalculatorFloat::from("power"); "power_symbolic")]
+fn test_phaseshiftstate0_powercf(theta: CalculatorFloat, power: CalculatorFloat) {
+    let gate = PhaseShiftState0::new(0, theta);
+    let power_gate = gate.powercf(power.clone());
+    let test_theta = power * gate.theta().clone();
+    let test_gate = PhaseShiftState0::new(0, test_theta);
+    assert_eq!(power_gate.alpha_r(), test_gate.alpha_r());
+    assert_eq!(power_gate.alpha_i(), test_gate.alpha_i());
+    assert_eq!(power_gate.beta_r(), test_gate.beta_r());
+    assert_eq!(power_gate.beta_i(), test_gate.beta_i());
+    assert_eq!(power_gate.global_phase(), test_gate.global_phase());
+}
+
+/// Test powerfc function for PhaseShiftState1 with symbolic parameters
+#[test_case(CalculatorFloat::from("theta"), CalculatorFloat::from("power"); "power_symbolic")]
+fn test_phaseshiftstate1_powercf(theta: CalculatorFloat, power: CalculatorFloat) {
+    let gate = PhaseShiftState1::new(0, theta);
+    let power_gate = gate.powercf(power.clone());
+    let test_theta = power * gate.theta().clone();
+    let test_gate = PhaseShiftState1::new(0, test_theta);
+    assert_eq!(power_gate.alpha_r(), test_gate.alpha_r());
+    assert_eq!(power_gate.alpha_i(), test_gate.alpha_i());
+    assert_eq!(power_gate.beta_r(), test_gate.beta_r());
+    assert_eq!(power_gate.beta_i(), test_gate.beta_i());
+    assert_eq!(power_gate.global_phase(), test_gate.global_phase());
+}
+
 /// Test powerfc function for RotateAroundSphericalAxis
 #[test_case(
     0,
@@ -1733,6 +1778,26 @@ fn test_rotatearoundsphericalaxis_powerfc(
         "SingleQubitGate",
         ];
     "SingleQubitGate")]
+#[test_case(
+    SingleQubitGateOperation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0))),
+    vec![
+        "Operation",
+        "GateOperation",
+        "SingleQubitGateOperation",
+        "Rotation",
+        "PhaseShiftState1",
+        ];
+    "PhaseShiftState1")]
+#[test_case(
+    SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0))),
+    vec![
+        "Operation",
+        "GateOperation",
+        "SingleQubitGateOperation",
+        "Rotation",
+        "PhaseShiftState0",
+        ];
+    "PhaseShiftState0")]
 pub fn test_tags(gate: SingleQubitGateOperation, tags: Vec<&str>) {
     for i in 0..tags.len() {
         assert_eq!(gate.tags()[i], tags[i]);
