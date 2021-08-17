@@ -125,8 +125,8 @@ pub fn prepare_monte_carlo_gate_test(
         }
         meas_circuit += PragmaRepeatedMeasurement::new(
             format!("ro_{}", i),
-            None,
             number_projective_measurement,
+            None,
         );
 
         let j = measurement_input

@@ -150,7 +150,7 @@ dyn_clone::clone_trait_object!(Operate);
 /// // 3) The involved qubits are All: all of the qubits in the Circuit are affected by the Operation
 /// let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
 /// qubit_mapping.insert(0, 1);
-/// let pragma = PragmaRepeatedMeasurement::new("ro".to_string(), Some(qubit_mapping.clone()), 2);
+/// let pragma = PragmaRepeatedMeasurement::new("ro".to_string(), 2, Some(qubit_mapping.clone()));
 /// assert_eq!(pragma.involved_qubits(), InvolvedQubits::All);
 /// ```
 pub trait InvolveQubits {
