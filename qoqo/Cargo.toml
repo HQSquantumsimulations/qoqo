@@ -39,7 +39,7 @@ serde_json = "1.0"
 
 [dev-dependencies]
 test-case = "1.1.0"
-nalgebra = "0.28"
+nalgebra = "0.29"
 
 [build-dependencies]
 quote = "1.0"
