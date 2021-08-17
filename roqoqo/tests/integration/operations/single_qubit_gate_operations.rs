@@ -919,6 +919,24 @@ fn test_rotatex_substitute_parameters() {
 #[test_case(SingleQubitGateOperation::from(SGate::new(1)); "SGate")]
 #[test_case(SingleQubitGateOperation::from(TGate::new(1)); "TGate")]
 #[test_case(SingleQubitGateOperation::from(Hadamard::new(0)); "Hadamard")]
+#[test_case(SingleQubitGateOperation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
+#[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from(0))); "RotateY")]
+#[test_case(SingleQubitGateOperation::from(RotateZ::new(0, CalculatorFloat::from(0))); "RotateZ")]
+#[test_case(SingleQubitGateOperation::from(RotateAroundSphericalAxis::new(
+    0,
+    CalculatorFloat::from(0),
+    CalculatorFloat::from(0),
+    CalculatorFloat::from(0))); "Rotation")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate0")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState1::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate1")]
+#[test_case(SingleQubitGateOperation::from(SingleQubitGate::new(
+    0,
+    CalculatorFloat::from(1.0),
+    CalculatorFloat::from(0.0),
+    CalculatorFloat::from(0.0),
+    CalculatorFloat::from(0.0),
+    CalculatorFloat::from(0.0),
+)); "singlequbitgate")]
 fn test_ineffective_substitute_parameters(gate: SingleQubitGateOperation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
@@ -943,6 +961,32 @@ fn test_rotatey_substitute_parameters() {
 #[test]
 fn test_rotatez_substitute_parameters() {
     let gate: RotateZ = RotateZ::new(0, CalculatorFloat::from("theta"));
+    assert_eq!(gate.theta().clone(), CalculatorFloat::from("theta"));
+    assert!(gate.is_parametrized());
+    let mut substitution_dict: Calculator = Calculator::new();
+    substitution_dict.set_variable("theta", 0.0);
+    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
+    assert!(!result.is_parametrized());
+    assert_eq!(result.theta().clone(), CalculatorFloat::from(0.0));
+}
+
+/// Test substitute_parameters for PhaseShiftState0
+#[test]
+fn test_phaseshiftstate0_substitute_parameters() {
+    let gate: PhaseShiftState0 = PhaseShiftState0::new(0, CalculatorFloat::from("theta"));
+    assert_eq!(gate.theta().clone(), CalculatorFloat::from("theta"));
+    assert!(gate.is_parametrized());
+    let mut substitution_dict: Calculator = Calculator::new();
+    substitution_dict.set_variable("theta", 0.0);
+    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
+    assert!(!result.is_parametrized());
+    assert_eq!(result.theta().clone(), CalculatorFloat::from(0.0));
+}
+
+/// Test substitute_parameters for PhaseShiftState1
+#[test]
+fn test_phaseshiftstate1_substitute_parameters() {
+    let gate: PhaseShiftState1 = PhaseShiftState1::new(0, CalculatorFloat::from("theta"));
     assert_eq!(gate.theta().clone(), CalculatorFloat::from("theta"));
     assert!(gate.is_parametrized());
     let mut substitution_dict: Calculator = Calculator::new();
@@ -1014,6 +1058,14 @@ fn test_rotatearoundsphericalaxis_substitute_parameters() {
     SingleQubitGateOperation::from(RotateZ::new(0, CalculatorFloat::from(0))),
     SingleQubitGateOperation::from(RotateZ::new(2, CalculatorFloat::from(0))),
     2; "RotateZ_0-2")]
+#[test_case(
+    SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0))),
+    SingleQubitGateOperation::from(PhaseShiftState0::new(2, CalculatorFloat::from(0))),
+    2; "PhaseShiftState0")]
+#[test_case(
+    SingleQubitGateOperation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0))),
+    SingleQubitGateOperation::from(PhaseShiftState1::new(2, CalculatorFloat::from(0))),
+    2; "PhaseShiftState1")]
 #[test_case(
     SingleQubitGateOperation::from(RotateZ::new(0, CalculatorFloat::from(0))),
     SingleQubitGateOperation::from(RotateZ::new(0, CalculatorFloat::from(0))),
