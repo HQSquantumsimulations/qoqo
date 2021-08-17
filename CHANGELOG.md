@@ -2,6 +2,8 @@
 
 This changelog track changes to the qoqo project starting at version 0.5.0
 
+## Not released
+
 ## 0.5.1
 
 ### Fixed in roqoqo

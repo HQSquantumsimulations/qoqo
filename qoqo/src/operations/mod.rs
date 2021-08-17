@@ -24,10 +24,10 @@ mod measurement_operations;
 pub use measurement_operations::*;
 mod two_qubit_gate_operations;
 pub use two_qubit_gate_operations::*;
-mod _auto_generated_operation_conversion;
-pub use _auto_generated_operation_conversion::{
-    convert_operation_to_pyobject, convert_pyany_to_operation,
-};
+include!(concat!(
+    env!("OUT_DIR"),
+    "/_auto_generated_operation_conversion.rs"
+));
 
 use pyo3::prelude::*;
 

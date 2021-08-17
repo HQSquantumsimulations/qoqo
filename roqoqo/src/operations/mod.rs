@@ -53,10 +53,7 @@ pub use single_qubit_gate_operations::*;
 mod two_qubit_gate_operations;
 pub use two_qubit_gate_operations::*;
 
-/// Auto generated enums of Operations
-#[doc(hidden)]
-mod _auto_generated_operations;
-pub use _auto_generated_operations::*;
+include!(concat!(env!("OUT_DIR"), "/_auto_generated_operations.rs"));
 
 /// Represents qubits involved in a roqoqo Operation.
 #[derive(Debug, PartialEq, Clone, Eq)]
