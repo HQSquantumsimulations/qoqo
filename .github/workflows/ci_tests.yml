@@ -95,6 +95,7 @@ jobs:
           path_to_write_report: ./codecov_report.txt
           verbose: true
 
+
   # format_check: # needs to run after test otherwise auogenerated files are not built
   #   runs-on: ubuntu-latest
   #   steps:
