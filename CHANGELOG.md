@@ -2,6 +2,16 @@
 
 This changelog track changes to the qoqo project starting at version 0.5.0
 
+## Not released
+
+### Changed
+
+* Rarely used qubit mapping is now the last argument in PragmaRepeatedMeasurement
+
+### Added
+
+* `RoqoqoBackendError` now has a variant `GenericError` for additional backend error types
+
 ## 0.5.1
 
 ### Fixed in roqoqo

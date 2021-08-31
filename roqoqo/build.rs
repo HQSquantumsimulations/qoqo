@@ -13,13 +13,13 @@
 use quote::quote;
 use std::collections::HashSet;
 use std::fs;
+use std::path::PathBuf;
 use std::process::Command;
 use std::str::FromStr;
 use syn::parse::{Parse, ParseStream};
 use syn::punctuated::Punctuated;
 use syn::visit::{self, Visit};
 use syn::{AttrStyle, File, Ident, ItemImpl, ItemStruct, Path, Token, Type, TypePath};
-
 /// Visitor scanning rust source code for struct belonging to enums
 struct Visitor {
     // Identifiers of structs belonging to Operation enum
@@ -348,7 +348,7 @@ fn main() {
     // Construct TokenStream for auto-generated rust file containing the enums
     let final_quote = quote! {
 
-        use crate::operations::*;
+        //use crate::operations::*;
 
         /// Enum of all Operations implementing [Operate]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, Substitute)]
@@ -444,13 +444,12 @@ fn main() {
 
     };
     let final_str = format!("{}", final_quote);
-    if std::env::var("DOCS_RS").is_err() {
-        // Write to file
-        fs::write("src/operations/_auto_generated_operations.rs", final_str)
-            .expect("Could not write to file");
-        // Try to format auto generated operations
-        let _unused_output = Command::new("rustfmt")
-            .arg("src/operations/_auto_generated_operations.rs")
-            .output();
-    }
+    let out_dir = PathBuf::from(
+        std::env::var("OUT_DIR").expect("Cannot find a valid output directory for code generation"),
+    )
+    .join("_auto_generated_operations.rs");
+    // Write to file
+    fs::write(&out_dir, final_str).expect("Could not write to file");
+    // Try to format auto generated operations
+    let _unused_output = Command::new("rustfmt").arg(&out_dir).output();
 }

@@ -838,7 +838,7 @@ fn pragma_get_pauli_product_serde_compact() {
 fn pragma_repeated_measurement_inputs_qubits() {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 1);
-    let pragma = PragmaRepeatedMeasurement::new(String::from("ro"), Some(qubit_mapping.clone()), 2);
+    let pragma = PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(qubit_mapping.clone()));
 
     // Test inputs are correct
     assert_eq!(pragma.readout(), &String::from("ro"));
@@ -854,12 +854,12 @@ fn pragma_repeated_measurement_inputs_qubits() {
 fn pragma_repeated_measurement_simple_traits() {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 1);
-    let pragma = PragmaRepeatedMeasurement::new(String::from("ro"), Some(qubit_mapping.clone()), 2);
+    let pragma = PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(qubit_mapping.clone()));
 
     // Test Debug trait
     assert_eq!(
         format!("{:?}", pragma),
-        "PragmaRepeatedMeasurement { readout: \"ro\", qubit_mapping: Some({0: 1}), number_measurements: 2 }"
+        "PragmaRepeatedMeasurement { readout: \"ro\", number_measurements: 2, qubit_mapping: Some({0: 1}) }"
     );
 
     // Test Clone trait
@@ -867,9 +867,9 @@ fn pragma_repeated_measurement_simple_traits() {
 
     // Test PartialEq trait
     let pragma_0 =
-        PragmaRepeatedMeasurement::new(String::from("ro"), Some(qubit_mapping.clone()), 2);
+        PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(qubit_mapping.clone()));
     let pragma_1 =
-        PragmaRepeatedMeasurement::new(String::from("ro1"), Some(qubit_mapping.clone()), 2);
+        PragmaRepeatedMeasurement::new(String::from("ro1"), 2, Some(qubit_mapping.clone()));
     assert!(pragma_0 == pragma);
     assert!(pragma == pragma_0);
     assert!(pragma_1 != pragma);
@@ -881,7 +881,7 @@ fn pragma_repeated_measurement_simple_traits() {
 fn pragma_repeated_measurement_operate_trait() {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 1);
-    let pragma = PragmaRepeatedMeasurement::new(String::from("ro"), Some(qubit_mapping.clone()), 2);
+    let pragma = PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(qubit_mapping.clone()));
 
     // (1) Test tags function
     let tags: &[&str; 4] = &[
@@ -904,11 +904,11 @@ fn pragma_repeated_measurement_operate_trait() {
 fn pragma_repeated_measurement_substitute_trait() {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 1);
-    let pragma = PragmaRepeatedMeasurement::new(String::from("ro"), Some(qubit_mapping.clone()), 2);
+    let pragma = PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(qubit_mapping.clone()));
 
     // (1) Substitute parameters function
     let pragma_test =
-        PragmaRepeatedMeasurement::new(String::from("ro"), Some(qubit_mapping.clone()), 2);
+        PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(qubit_mapping.clone()));
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
@@ -923,7 +923,7 @@ fn pragma_repeated_measurement_substitute_trait() {
     new_qubit_mapping.insert(2, 1);
     let result = pragma.remap_qubits(&qubit_mapping_test).unwrap();
     let test_gate =
-        PragmaRepeatedMeasurement::new(String::from("ro"), Some(new_qubit_mapping.clone()), 2);
+        PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(new_qubit_mapping.clone()));
     assert_eq!(result, test_gate);
 }
 
@@ -934,7 +934,7 @@ fn pragma_repeated_measurement_serde_readable() {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 1);
     let pragma_serialization =
-        PragmaRepeatedMeasurement::new(String::from("ro"), Some(qubit_mapping.clone()), 2);
+        PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(qubit_mapping.clone()));
 
     assert_tokens(
         &pragma_serialization.clone().readable(),
@@ -945,14 +945,14 @@ fn pragma_repeated_measurement_serde_readable() {
             },
             Token::Str("readout"),
             Token::Str("ro"),
+            Token::Str("number_measurements"),
+            Token::U64(2),
             Token::Str("qubit_mapping"),
             Token::Some,
             Token::Map { len: Some(1) },
             Token::U64(0),
             Token::U64(1),
             Token::MapEnd,
-            Token::Str("number_measurements"),
-            Token::U64(2),
             Token::StructEnd,
         ],
     );
@@ -965,7 +965,7 @@ fn pragma_repeated_measurement_serde_compact() {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 1);
     let pragma_serialization =
-        PragmaRepeatedMeasurement::new(String::from("ro"), Some(qubit_mapping.clone()), 2);
+        PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(qubit_mapping.clone()));
 
     assert_tokens(
         &pragma_serialization.compact(),
@@ -976,14 +976,14 @@ fn pragma_repeated_measurement_serde_compact() {
             },
             Token::Str("readout"),
             Token::Str("ro"),
+            Token::Str("number_measurements"),
+            Token::U64(2),
             Token::Str("qubit_mapping"),
             Token::Some,
             Token::Map { len: Some(1) },
             Token::U64(0),
             Token::U64(1),
             Token::MapEnd,
-            Token::Str("number_measurements"),
-            Token::U64(2),
             Token::StructEnd,
         ],
     );
