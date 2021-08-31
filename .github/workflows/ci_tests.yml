@@ -69,6 +69,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - uses: codecov/codecov-action@v2
       - uses: actions-rs/toolchain@v1
         with:
             toolchain: nightly
@@ -84,7 +85,7 @@ jobs:
           cargo install grcov
           grcov . --binary-path ../target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "cargo" --ignore "/mod.rs" --ignore "/lib.rs" --ignore "*/_auto_generated_operations.rs" --keep-only "src/*" -o lcov.info
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+      - uses: codecov/codecov-action@v2
         with:
           # token: ${{ secrets.CODECOV_TOKEN }}
           files: lcov.info
