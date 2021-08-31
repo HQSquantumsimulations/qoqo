@@ -31,6 +31,7 @@ What roqoqo/qoqo is **not**:
 [![GitHub Workflow Status](https://github.com/HQSquantumsimulations/qoqo/workflows/ci_tests/badge.svg)](https://github.com/HQSquantumsimulations/qoqo/actions)
 [![docs.rs](https://img.shields.io/docsrs/roqoqo)](https://docs.rs/roqoqo/)
 ![Crates.io](https://img.shields.io/crates/l/roqoqo)
+[![codecov](https://codecov.io/gh/HQSquantumsimulations/qoqo/branch/main/graph/badge.svg?token=S1IN066V2W)](https://codecov.io/gh/HQSquantumsimulations/qoqo)
 
 roqoqo provides:
 
