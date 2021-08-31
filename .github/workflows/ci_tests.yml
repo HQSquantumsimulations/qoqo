@@ -69,7 +69,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: codecov/codecov-action@v2
       - uses: actions-rs/toolchain@v1
         with:
             toolchain: nightly
