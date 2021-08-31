@@ -69,7 +69,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: codecov/codecov-action@v2
       - uses: actions-rs/toolchain@v1
         with:
             toolchain: nightly
@@ -92,7 +91,6 @@ jobs:
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: true
-          path_to_write_report: ./codecov_report.txt
           verbose: true
   
   # format_check: # needs to run after test otherwise auogenerated files are not built
