@@ -82,7 +82,7 @@ use test_case::test_case;
 #[test_case(Operation::from(PragmaGetDensityMatrix::new(String::from("ro"), Some(create_circuit()))); "PragmaGetDensityMatrix")]
 #[test_case(Operation::from(PragmaGetOccupationProbability::new(String::from("ro"), Some(create_circuit()))); "PragmaGetOccupationProbability")]
 #[test_case(Operation::from(PragmaGetPauliProduct::new(reordering(), String::from("ro"), create_circuit())); "PragmaGetPauliProduct")]
-#[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), Some(reordering()), 2)); "PragmaRepeatedMeasurement")]
+#[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(reordering()))); "PragmaRepeatedMeasurement")]
 #[test_case(Operation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro"))); "PragmaSetNumberOfMeasurements")]
 #[test_case(Operation::from(PragmaSetStateVector::new(statevector())); "PragmaSetStateVector")]
 #[test_case(Operation::from(PragmaSetDensityMatrix::new(densitymatrix())); "PragmaSetDensityMatrix")]

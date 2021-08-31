@@ -290,10 +290,10 @@ impl InvolveQubits for PragmaGetPauliProduct {
 pub struct PragmaRepeatedMeasurement {
     /// The name of the classical readout register.
     readout: String,
-    /// The mapping of qubits to indices in the readout register.
-    qubit_mapping: Option<HashMap<usize, usize>>,
     /// The number of times $N$ to repeat the measurement.
     number_measurements: usize,
+    /// The mapping of qubits to indices in the readout register.
+    qubit_mapping: Option<HashMap<usize, usize>>,
 }
 
 #[allow(non_upper_case_globals)]
@@ -319,8 +319,8 @@ impl Substitute for PragmaRepeatedMeasurement {
         });
         Ok(PragmaRepeatedMeasurement::new(
             self.readout.clone(),
-            new_mapping,
             self.number_measurements,
+            new_mapping,
         ))
     }
 

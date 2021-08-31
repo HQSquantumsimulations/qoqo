@@ -157,6 +157,12 @@ pub enum RoqoqoBackendError {
         /// Path of file to be created
         path: String,
     },
+    /// Error when communicating with backend over the network.
+    #[error("An error occured in the backend: {msg} ")]
+    GenericError {
+        /// Path of file to be created
+        msg: String,
+    },
     /// Transparent propagation of RoqoqoError.
     #[error(transparent)]
     RoqoqoError(#[from] RoqoqoError),
