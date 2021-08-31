@@ -82,17 +82,15 @@ jobs:
           LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo +nightly test --package=roqoqo --no-default-features
           cd roqoqo/
           cargo install grcov
-          grcov . --binary-path ../target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "cargo" --ignore "/mod.rs" --ignore "/lib.rs" --ignore "*/_auto_generated_operations.rs" --keep-only "src/*" -o coverage/lcov.info
+          grcov . --binary-path ../target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "cargo" --ignore "/mod.rs" --ignore "/lib.rs" --ignore "*/_auto_generated_operations.rs" --keep-only "src/*" -o lcov.info
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2
         with:
           # token: ${{ secrets.CODECOV_TOKEN }}
           files: lcov.info
-          directory: qoqo/roqoqo/coverage/
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: true
-          path_to_write_report: ./codecov_report.txt
           verbose: true
   
   # format_check: # needs to run after test otherwise auogenerated files are not built
