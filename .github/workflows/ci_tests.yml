@@ -106,8 +106,9 @@ jobs:
           rustup component add llvm-tools-preview
           export RUSTFLAGS="-Zinstrument-coverage"
           export RUSTDOCFLAGS="-Zinstrument-coverage"
+          python -m pip install numpy
           cargo build --verbose
-          LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo +nightly test --package=qoqo --no-default-features
+          LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo +nightly test --workspace --package=qoqo --no-default-features
           cd qoqo/
           cargo install grcov
           grcov . --binary-path ../target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "cargo" --ignore "/mod.rs" --ignore "/lib.rs" --ignore "*/_auto_generated_operations.rs" --keep-only "src/*" -o lcov_qoqo.info
