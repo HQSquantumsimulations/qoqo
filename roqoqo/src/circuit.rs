@@ -218,9 +218,7 @@ impl Circuit {
                     return InvolvedQubits::All;
                 }
                 InvolvedQubits::None => (),
-                InvolvedQubits::Set(x) => {
-                    temp_involved = temp_involved.union(x).cloned().collect()
-                }
+                InvolvedQubits::Set(x) => temp_involved = temp_involved.union(x).cloned().collect(),
             }
         }
         match temp_involved.is_empty() {

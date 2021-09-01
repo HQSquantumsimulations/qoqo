@@ -31,6 +31,7 @@ What roqoqo/qoqo is **not**:
 [![GitHub Workflow Status](https://github.com/HQSquantumsimulations/qoqo/workflows/ci_tests/badge.svg)](https://github.com/HQSquantumsimulations/qoqo/actions)
 [![docs.rs](https://img.shields.io/docsrs/roqoqo)](https://docs.rs/roqoqo/)
 ![Crates.io](https://img.shields.io/crates/l/roqoqo)
+[![codecov](https://codecov.io/gh/HQSquantumsimulations/qoqo/branch/main/graph/badge.svg?token=S1IN066V2W)](https://codecov.io/gh/HQSquantumsimulations/qoqo)
 
 roqoqo provides:
 
@@ -49,7 +50,7 @@ This software is still in the beta stage. Functions and documentation are not ye
 To use roqoqo in a Rust project simply add
 
 ```TOML
-roqoqo = {version="0.2"}
+roqoqo = {version="0.6"}
 ```
 
 to the `[dependencies]` section of the project Cargo.toml.
@@ -93,7 +94,7 @@ pip install target/wheels/$NAME_OF_WHEEL
 When using qoqo in a rust project providing a python interface add
 
 ```TOML
-qoqo = {version="0.4", default-features=false}
+qoqo = {version="0.6", default-features=false}
 ```
 
 to the `[dependencies]` section of the project Cargo.toml.

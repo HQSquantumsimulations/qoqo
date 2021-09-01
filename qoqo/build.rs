@@ -14,6 +14,7 @@ use proc_macro2::TokenStream;
 use quote::{format_ident, quote};
 use std::collections::HashSet;
 use std::fs;
+use std::path::PathBuf;
 use std::process::Command;
 use std::str::FromStr;
 use syn::parse::{Parse, ParseStream};
@@ -223,13 +224,11 @@ fn main() {
 
     // Construct TokenStream for auto-generated rust file containing the enums
     let final_quote = quote! {
-        use crate::operations::*;
         use crate::QoqoError;
         use crate::convert_into_circuit;
         use qoqo_calculator::CalculatorFloat;
         use qoqo_calculator_pyo3::convert_into_calculator_float;
         use pyo3::conversion::ToPyObject;
-        use pyo3::prelude::*;
         use roqoqo::operations::*;
         use std::collections::HashMap;
         use ndarray::{Array1, Array};
@@ -261,18 +260,14 @@ fn main() {
     };
     let final_str = format!("{}", final_quote);
     // Don't write to file when running on docs.rs
-    if std::env::var("DOCS_RS").is_err() {
-        // Write to file
-        fs::write(
-            "src/operations/_auto_generated_operation_conversion.rs",
-            final_str,
-        )
-        .expect("Could not write to file");
-        // Try to format auto generated operations
-        let _unused_output = Command::new("rustfmt")
-            .arg("src/operations/_auto_generated_operation_conversion.rs")
-            .output();
-    }
+    let out_dir = PathBuf::from(
+        std::env::var("OUT_DIR").expect("Cannot find a valid output directory for code generation"),
+    )
+    .join("_auto_generated_operation_conversion.rs");
+    // Write to file
+    fs::write(&out_dir, final_str).expect("Could not write to file");
+    // Try to format auto generated operations
+    let _unused_output = Command::new("rustfmt").arg(&out_dir).output();
 }
 
 fn extract_fields_with_types(input_fields: Fields) -> Vec<(Ident, Option<String>, Type)> {
