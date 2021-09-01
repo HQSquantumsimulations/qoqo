@@ -2505,35 +2505,17 @@ fn pragma_random_noise_serde_compact() {
 /// Test PragmaGeneralNoise inputs and involved qubits
 #[test]
 fn pragma_general_noise_inputs_qubits() {
-    let operators: Array2<f64> = array![
-        [
-            1.0,
-            0.0,
-            0.0
-        ],
-        [
-            0.0,
-            0.0,
-            0.0
-        ],
-        [
-            0.0,
-            0.0,
-            0.0
-        ],
-    ];
+    let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0],];
     let pragma = PragmaGeneralNoise::new(
         0,
         CalculatorFloat::from(0.005),
-        CalculatorFloat::from(0.02),
         operators.clone(),
     );
 
     // Test inputs are correct
     assert_eq!(pragma.qubit(), &0_usize);
     assert_eq!(pragma.gate_time(), &CalculatorFloat::from(0.005));
-    assert_eq!(pragma.rate(), &CalculatorFloat::from(0.02));
-    assert_eq!(pragma.operators(), &operators);
+    assert_eq!(pragma.rates(), &operators);
 
     // Test InvolveQubits trait
     let mut qubits: HashSet<usize> = HashSet::new();
@@ -2544,34 +2526,17 @@ fn pragma_general_noise_inputs_qubits() {
 /// Test PragmaGeneralNoise standard derived traits (Debug, Clone, PartialEq)
 #[test]
 fn pragma_general_noise_simple_traits() {
-    let operators: Array2<f64> = array![
-        [
-            1.0,
-            0.0,
-            0.0
-        ],
-        [
-            0.0,
-            0.0,
-            0.0
-        ],
-        [
-            0.0,
-            0.0,
-            1.0
-        ],
-    ];
+    let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 1.0],];
     let pragma = PragmaGeneralNoise::new(
         0,
         CalculatorFloat::from(0.005),
-        CalculatorFloat::from(0.02),
         operators.clone(),
     );
 
     // Test Debug trait
     assert_eq!(
         format!("{:?}", pragma),
-        "PragmaGeneralNoise { qubit: 0, gate_time: Float(0.005), rate: Float(0.02), operators: [[Complex { re: 1.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }],\n [Complex { re: 0.0, im: 0.0 }, Complex { re: 1.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }],\n [Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 1.0, im: 0.0 }]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2 }"
+        "PragmaGeneralNoise { qubit: 0, gate_time: Float(0.005), rates: [[1.0, 0.0, 0.0],\n [0.0, 0.0, 0.0],\n [0.0, 0.0, 1.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2 }"
     );
 
     // Test Clone trait
@@ -2581,13 +2546,11 @@ fn pragma_general_noise_simple_traits() {
     let pragma_0 = PragmaGeneralNoise::new(
         0,
         CalculatorFloat::from(0.005),
-        CalculatorFloat::from(0.02),
         operators.clone(),
     );
     let pragma_1 = PragmaGeneralNoise::new(
         0,
         CalculatorFloat::from(0.006),
-        CalculatorFloat::from(0.02),
         operators.clone(),
     );
     assert!(pragma_0 == pragma);
@@ -2599,27 +2562,10 @@ fn pragma_general_noise_simple_traits() {
 /// Test PragmaGeneralNoise Operate trait
 #[test]
 fn pragma_general_noise_operate_trait() {
-    let operators: Array2<f64> = array![
-        [
-            1.0,
-            0.0,
-            0.0
-        ],
-        [
-            0.0,
-            1.0,
-            0.0
-        ],
-        [
-            0.0,
-            0.0,
-            1.0
-        ],
-    ];
+    let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],];
     let pragma = PragmaGeneralNoise::new(
         0,
         CalculatorFloat::from(0.005),
-        CalculatorFloat::from(0.02),
         operators.clone(),
     );
 
@@ -2642,27 +2588,10 @@ fn pragma_general_noise_operate_trait() {
 /// Test PragmaGeneralNoise Substitute trait
 #[test]
 fn pragma_general_noise_substitute_trait() {
-    let operators: Array2<f64> = array![
-        [
-            1.0,
-            0.0,
-            0.0
-        ],
-        [
-            0.0,
-            1.0,
-            0.0
-        ],
-        [
-            0.0,
-            0.0,
-            1.0
-        ],
-    ];
+    let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],];
     let pragma = PragmaGeneralNoise::new(
         0,
         CalculatorFloat::from(0.005),
-        CalculatorFloat::from(0.02),
         operators.clone(),
     );
 
@@ -2670,7 +2599,6 @@ fn pragma_general_noise_substitute_trait() {
     let pragma_test = PragmaGeneralNoise::new(
         0,
         CalculatorFloat::from("test"),
-        CalculatorFloat::from(0.02),
         operators.clone(),
     );
     let mut substitution_dict: Calculator = Calculator::new();
@@ -2684,7 +2612,6 @@ fn pragma_general_noise_substitute_trait() {
     let pragma_test = PragmaGeneralNoise::new(
         1,
         CalculatorFloat::from(0.005),
-        CalculatorFloat::from(0.02),
         operators.clone(),
     );
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
@@ -2701,27 +2628,10 @@ fn pragma_general_noise_substitute_trait() {
 #[cfg(feature = "serialize")]
 #[test]
 fn pragma_general_noise_serde_readable() {
-    let operators: Array2<f64> = array![
-        [
-            1.0,
-            0.0,
-            0.0
-        ],
-        [
-            0.0,
-            1.0,
-            0.0
-        ],
-        [
-            0.0,
-            0.0,
-            1.0
-        ],
-    ];
+    let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],];
     let pragma_serialization = PragmaGeneralNoise::new(
         0,
         CalculatorFloat::from(0.005),
-        CalculatorFloat::from(0.02),
         operators.clone(),
     );
     assert_tokens(
@@ -2729,15 +2639,13 @@ fn pragma_general_noise_serde_readable() {
         &[
             Token::Struct {
                 name: "PragmaGeneralNoise",
-                len: 4,
+                len: 3,
             },
             Token::Str("qubit"),
             Token::U64(0),
             Token::Str("gate_time"),
             Token::F64(0.005),
-            Token::Str("rate"),
-            Token::F64(0.02),
-            Token::Str("operators"),
+            Token::Str("rates"),
             Token::Struct {
                 name: "Array",
                 len: 3,
@@ -2751,42 +2659,15 @@ fn pragma_general_noise_serde_readable() {
             Token::TupleEnd,
             Token::Str("data"),
             Token::Seq { len: Some(9) },
-            Token::Tuple { len: 2 },
             Token::F64(1.0),
             Token::F64(0.0),
-            Token::TupleEnd,
-            Token::Tuple { len: 2 },
             Token::F64(0.0),
             Token::F64(0.0),
-            Token::TupleEnd,
-            Token::Tuple { len: 2 },
-            Token::F64(0.0),
-            Token::F64(0.0),
-            Token::TupleEnd,
-            Token::Tuple { len: 2 },
-            Token::F64(0.0),
-            Token::F64(0.0),
-            Token::TupleEnd,
-            Token::Tuple { len: 2 },
             Token::F64(1.0),
             Token::F64(0.0),
-            Token::TupleEnd,
-            Token::Tuple { len: 2 },
             Token::F64(0.0),
             Token::F64(0.0),
-            Token::TupleEnd,
-            Token::Tuple { len: 2 },
-            Token::F64(0.0),
-            Token::F64(0.0),
-            Token::TupleEnd,
-            Token::Tuple { len: 2 },
-            Token::F64(0.0),
-            Token::F64(0.0),
-            Token::TupleEnd,
-            Token::Tuple { len: 2 },
             Token::F64(1.0),
-            Token::F64(0.0),
-            Token::TupleEnd,
             Token::SeqEnd,
             Token::StructEnd,
             Token::StructEnd,
@@ -2798,27 +2679,10 @@ fn pragma_general_noise_serde_readable() {
 #[cfg(feature = "serialize")]
 #[test]
 fn pragma_general_noise_serde_compact() {
-    let operators: Array2<f64> = array![
-        [
-            1.0,
-            0.0,
-            0.0
-        ],
-        [
-            0.0,
-            1.0,
-            0.0
-        ],
-        [
-            0.0,
-            0.0,
-            1.0
-        ],
-    ];
+    let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],];
     let pragma_serialization = PragmaGeneralNoise::new(
         0,
         CalculatorFloat::from(0.005),
-        CalculatorFloat::from(0.02),
         operators.clone(),
     );
     assert_tokens(
@@ -2826,7 +2690,7 @@ fn pragma_general_noise_serde_compact() {
         &[
             Token::Struct {
                 name: "PragmaGeneralNoise",
-                len: 4,
+                len: 3,
             },
             Token::Str("qubit"),
             Token::U64(0),
@@ -2836,13 +2700,7 @@ fn pragma_general_noise_serde_compact() {
                 variant: "Float",
             },
             Token::F64(0.005),
-            Token::Str("rate"),
-            Token::NewtypeVariant {
-                name: "CalculatorFloat",
-                variant: "Float",
-            },
-            Token::F64(0.02),
-            Token::Str("operators"),
+            Token::Str("rates"),
             Token::Struct {
                 name: "Array",
                 len: 3,
@@ -2856,42 +2714,15 @@ fn pragma_general_noise_serde_compact() {
             Token::TupleEnd,
             Token::Str("data"),
             Token::Seq { len: Some(9) },
-            Token::Tuple { len: 2 },
             Token::F64(1.0),
             Token::F64(0.0),
-            Token::TupleEnd,
-            Token::Tuple { len: 2 },
             Token::F64(0.0),
             Token::F64(0.0),
-            Token::TupleEnd,
-            Token::Tuple { len: 2 },
-            Token::F64(0.0),
-            Token::F64(0.0),
-            Token::TupleEnd,
-            Token::Tuple { len: 2 },
-            Token::F64(0.0),
-            Token::F64(0.0),
-            Token::TupleEnd,
-            Token::Tuple { len: 2 },
             Token::F64(1.0),
             Token::F64(0.0),
-            Token::TupleEnd,
-            Token::Tuple { len: 2 },
             Token::F64(0.0),
             Token::F64(0.0),
-            Token::TupleEnd,
-            Token::Tuple { len: 2 },
-            Token::F64(0.0),
-            Token::F64(0.0),
-            Token::TupleEnd,
-            Token::Tuple { len: 2 },
-            Token::F64(0.0),
-            Token::F64(0.0),
-            Token::TupleEnd,
-            Token::Tuple { len: 2 },
             Token::F64(1.0),
-            Token::F64(0.0),
-            Token::TupleEnd,
             Token::SeqEnd,
             Token::StructEnd,
             Token::StructEnd,

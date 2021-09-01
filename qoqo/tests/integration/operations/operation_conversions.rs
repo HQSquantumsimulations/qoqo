@@ -99,7 +99,7 @@ use test_case::test_case;
 #[test_case(Operation::from(PragmaDepolarising::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDepolarising")]
 #[test_case(Operation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDephasing")]
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))); "PragmaRandomNoise")]
-#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())); "PragmaGeneralNoise")]
+#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators())); "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 fn test_conversion(input: Operation) {
     pyo3::prepare_freethreaded_python();
@@ -137,23 +137,7 @@ fn densitymatrix() -> Array2<Complex64> {
 }
 
 fn operators() -> Array2<f64> {
-    let operators: Array2<f64> = array![
-        [
-            1.0,
-            0.0,
-            0.0
-        ],
-        [
-            0.0,
-            1.0,
-            0.0
-        ],
-        [
-            0.0,
-            0.0,
-            1.0
-        ],
-    ];
+    let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],];
     operators
 }
 

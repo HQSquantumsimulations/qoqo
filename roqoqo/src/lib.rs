@@ -52,7 +52,7 @@ pub enum RoqoqoError {
         /// Qubit that can not be mapped.
         qubit: usize,
     },
-    /// Custom error for failed conversion between enums with the TryFrom crate.
+    /// Custom error for failed conversion between enums with the TryFrom trait.
     #[error("Conversion from {start_type} to {end_type} failed")]
     ConversionError {
         /// Type from which should be converted.
@@ -177,6 +177,6 @@ pub mod operations;
 pub mod prelude;
 pub use circuit::*;
 pub mod backends;
+pub mod devices;
 pub mod measurements;
 pub mod registers;
-pub mod devices;

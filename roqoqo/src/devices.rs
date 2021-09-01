@@ -33,9 +33,8 @@
 //!
 //!
 //! * Actual hardware devices: These devices are provided by roqoqo backends and contain the necessary information for
-//!     accessing the quantum computing hardware. The devices also encode a connectivity model 
+//!     accessing the quantum computing hardware. The devices also encode a connectivity model
 //!
-
 
 use ndarray::Array2;
 
@@ -45,7 +44,7 @@ use ndarray::Array2;
 pub trait Device: Sized {
     /// Returns the gate time of a single qubit operation if the single qubit operation is available on device.
     ///
-    /// The base assumption 
+    /// The base assumption
     ///
     /// # Arguments
     ///
@@ -57,7 +56,6 @@ pub trait Device: Sized {
     /// * `Some<f64>` - The gate time.
     /// * `None` - The gate is not available on the device.
     fn single_qubit_gate_time(&self, hqslang: &str, qubit: usize) -> Option<f64>;
-
 
     /// Returns the gate time of a two qubit operation if the two qubit operation is available on device-.
     ///
@@ -91,8 +89,8 @@ pub trait Device: Sized {
     /// Returns the matrix of the decoherence rates of the Lindblad equation.
     ///
     ///     $$ \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
-    ///         L_0 = \sigma^{-} \\\\
-    ///         L_1 = \sigma^{+} \\\\
+    ///         L_0 = \sigma^{+} \\\\
+    ///         L_1 = \sigma^{-} \\\\
     ///         L_3 = \sigma^{z}
     ///     $$
     ///
@@ -102,10 +100,9 @@ pub trait Device: Sized {
     ///
     /// # Returns
     ///
-    /// * `Some<Array2<f64>>` - The decoherence rates.
+    /// * `Some<&Array2<f64>>` - The decoherence rates.
     /// * `None` - The qubit is not part of the device.
-    fn qubit_decohernce_rates(&self, qubits: &[usize]) -> Option<Array2<f64>>;
-
+    fn qubit_decohernce_rates(&self, qubits: &[usize]) -> Option<&Array2<f64>>;
 
     /// Returns the number of qubits the device supports.
     fn number_qubits(&self) -> usize;
