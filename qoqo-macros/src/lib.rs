@@ -125,13 +125,6 @@ pub fn wrap(
                 let py = gil.python();
                 Ok(self.internal.superoperator().unwrap().to_pyarray(py).to_owned())
             }
-            /// Returns the probability associated with the noise operation
-            ///
-            /// Returns:
-            ///     CalculatorFloat
-            pub fn probability(&self) -> CalculatorFloatWrapper{
-                CalculatorFloatWrapper{cf_internal: self.internal.probability().clone()}
-            }
             /// Return the power of the noise gate
             ///
             /// Args:
@@ -146,6 +139,20 @@ pub fn wrap(
     } else {
         TokenStream::new()
     };
+    let operate_pragma_noise_proba_quote =
+        if attribute_arguments.contains("OperatePragmaNoiseProba") {
+            quote! {
+                /// Returns the probability associated with the noise operation
+                ///
+                /// Returns:
+                ///     CalculatorFloat
+                pub fn probability(&self) -> CalculatorFloatWrapper{
+                    CalculatorFloatWrapper{cf_internal: self.internal.probability().clone()}
+                }
+            }
+        } else {
+            TokenStream::new()
+        };
     let operate_single_qubit_quote = if attribute_arguments.contains("OperateSingleQubit") {
         quote! {
             /// Return the qubit the operation acts on
@@ -358,6 +365,7 @@ pub fn wrap(
             #rotate_quote
             #operate_pragma_quote
             #operate_pragma_noise_quote
+            #operate_pragma_noise_proba_quote
             #define_quote
             #operate_constant_gate_quote
             fn __format__(&self, _format_spec: &str) -> PyResult<String> {

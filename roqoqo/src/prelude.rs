@@ -25,7 +25,7 @@ pub use crate::measurements::{Measure, MeasureExpectationValues};
 pub use crate::operations::{
     Define, InvolveQubits, InvolvedQubits, Operate, OperateConstantGate, OperateGate,
     OperateMultiQubit, OperateMultiQubitGate, OperatePragma, OperatePragmaNoise,
-    OperateSingleQubit, OperateSingleQubitGate, OperateTwoQubit, OperateTwoQubitGate, Rotate,
-    Substitute,
+    OperatePragmaNoiseProba, OperateSingleQubit, OperateSingleQubitGate, OperateTwoQubit,
+    OperateTwoQubitGate, Rotate, Substitute,
 };
 pub use crate::{RoqoqoBackendError, RoqoqoError};

@@ -102,6 +102,15 @@ pub fn derive_operate_noise_pragmas(input: proc_macro::TokenStream) -> proc_macr
     operate_unitary::dispatch_struct_enum_operate_noise_pragma(parsed_input).into()
 }
 
+/// Derive macro for the [roqoqo::OperatePragmaNoiseProba] trait
+#[proc_macro_derive(OperatePragmaNoiseProba)]
+pub fn derive_operate_noise_proba_pragmas(
+    input: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    operate_unitary::dispatch_struct_enum_operate_noise_proba_pragma(parsed_input).into()
+}
+
 /// Derive macro for the [roqoqo::OperateGate] trait
 #[proc_macro_derive(OperateGate)]
 pub fn derive_operate_gate(input: proc_macro::TokenStream) -> proc_macro::TokenStream {

@@ -23,7 +23,8 @@
 //!     needed to execute a quantum operation and Lindblad rates for the qubits in the device.
 //!     Specifically in the noise model each qubit undergoes a continuous Lindblad-type decoherence time evolution:
 //!
-//!     $$ \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
+//!     $$
+//!     \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
 //!         L_0 = \sigma^{-} \\\\
 //!         L_1 = \sigma^{+} \\\\
 //!         L_3 = \sigma^{z}
@@ -55,14 +56,14 @@ pub trait Device: Sized {
     ///
     /// * `Some<f64>` - The gate time.
     /// * `None` - The gate is not available on the device.
-    fn single_qubit_gate_time(&self, hqslang: &str, qubit: usize) -> Option<f64>;
+    fn single_qubit_gate_time(&self, hqslang: &str, qubit: usize) -> Option<&f64>;
 
     /// Returns the gate time of a two qubit operation if the two qubit operation is available on device-.
     ///
     ///
     /// # Arguments
     ///
-    /// * `hqslang` - The hqslang name of a single qubit gate.
+    /// * `hqslang` - The hqslang name of a two qubit gate.
     /// * `control` - The control qubit the gate acts on
     /// * `target` - The target qubit the gate acts on
     ///
@@ -70,29 +71,30 @@ pub trait Device: Sized {
     ///
     /// * `Some<f64>` - The gate time.
     /// * `None` - The gate is not available on the device.
-    fn two_qubit_gate_time(&self, hqslang: &str, control: usize, target: usize) -> Option<f64>;
+    fn two_qubit_gate_time(&self, hqslang: &str, control: usize, target: usize) -> Option<&f64>;
 
-    /// Returns the gate time of a multi qubit operation if the mulit qubit operation is available on device.
+    /// Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
     ///
     ///
     /// # Arguments
     ///
-    /// * `hqslang` - The hqslang name of a single qubit gate.
+    /// * `hqslang` - The hqslang name of a multi qubit gate.
     /// * `qubits` - The qubits the gate acts on
     ///
     /// # Returns
     ///
     /// * `Some<f64>` - The gate time.
     /// * `None` - The gate is not available on the device.
-    fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64>;
+    fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<&f64>;
 
     /// Returns the matrix of the decoherence rates of the Lindblad equation.
     ///
-    ///     $$ \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
-    ///         L_0 = \sigma^{+} \\\\
-    ///         L_1 = \sigma^{-} \\\\
-    ///         L_3 = \sigma^{z}
-    ///     $$
+    /// $$
+    /// \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
+    ///     L_0 = \sigma^{+} \\\\
+    ///     L_1 = \sigma^{-} \\\\
+    ///     L_3 = \sigma^{z}
+    /// $$
     ///
     /// # Arguments
     ///
@@ -102,7 +104,7 @@ pub trait Device: Sized {
     ///
     /// * `Some<&Array2<f64>>` - The decoherence rates.
     /// * `None` - The qubit is not part of the device.
-    fn qubit_decohernce_rates(&self, qubits: &[usize]) -> Option<&Array2<f64>>;
+    fn qubit_decoherence_rates(&self, qubits: &[usize]) -> Option<Array2<f64>>; // ask
 
     /// Returns the number of qubits the device supports.
     fn number_qubits(&self) -> usize;

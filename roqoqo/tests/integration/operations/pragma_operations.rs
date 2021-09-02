@@ -1762,11 +1762,12 @@ fn pragma_damping_operate_trait() {
     let pragma = PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
 
     // (1) Test tags function
-    let tags: &[&str; 5] = &[
+    let tags: &[&str; 6] = &[
         "Operation",
         "SingleQubitOperation",
         "PragmaOperation",
         "PragmaNoiseOperation",
+        "PragmaNoiseProbaOperation",
         "PragmaDamping",
     ];
     assert_eq!(pragma.tags(), tags);
@@ -1809,7 +1810,7 @@ fn pragma_damping_substitute_trait() {
     assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
 }
 
-/// Test PragmaDamping OperatePragmaNoise trait
+/// Test PragmaDamping OperatePragmaNoise and OperatePragmaNoiseProba trait
 #[test]
 fn pragma_damping_pragmanoise_trait() {
     let pragma = PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
@@ -1946,11 +1947,12 @@ fn pragma_depolarising_operate_trait() {
         PragmaDepolarising::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
 
     // (1) Test tags function
-    let tags: &[&str; 5] = &[
+    let tags: &[&str; 6] = &[
         "Operation",
         "SingleQubitOperation",
         "PragmaOperation",
         "PragmaNoiseOperation",
+        "PragmaNoiseProbaOperation",
         "PragmaDepolarising",
     ];
     assert_eq!(pragma.tags(), tags);
@@ -1994,7 +1996,7 @@ fn pragma_depolarising_substitute_trait() {
     assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
 }
 
-/// Test PragmaDepolarising OperatePragmaNoise trait
+/// Test PragmaDepolarising OperatePragmaNoise and OperatePragmaNoiseProba trait
 #[test]
 fn pragma_depolarising_pragmanoise_trait() {
     let pragma =
@@ -2131,11 +2133,12 @@ fn pragma_dephasing_operate_trait() {
     let pragma = PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
 
     // (1) Test tags function
-    let tags: &[&str; 5] = &[
+    let tags: &[&str; 6] = &[
         "Operation",
         "SingleQubitOperation",
         "PragmaOperation",
         "PragmaNoiseOperation",
+        "PragmaNoiseProbaOperation",
         "PragmaDephasing",
     ];
     assert_eq!(pragma.tags(), tags);
@@ -2178,7 +2181,7 @@ fn pragma_dephasing_substitute_trait() {
     assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
 }
 
-/// Test PragmaDephasing OperatePragmaNoise trait
+/// Test PragmaDephasing OperatePragmaNoise and OperatePragmaNoiseProba trait
 #[test]
 fn pragma_dephasing_pragmanoise_trait() {
     let pragma = PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
@@ -2336,11 +2339,12 @@ fn pragma_random_noise_operate_trait() {
     );
 
     // (1) Test tags function
-    let tags: &[&str; 5] = &[
+    let tags: &[&str; 6] = &[
         "Operation",
         "SingleQubitOperation",
         "PragmaOperation",
         "PragmaNoiseOperation",
+        "PragmaNoiseProbaOperation",
         "PragmaRandomNoise",
     ];
     assert_eq!(pragma.tags(), tags);
@@ -2393,7 +2397,7 @@ fn pragma_random_noise_substitute_trait() {
     assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
 }
 
-/// Test PragmaRandomNoise OperatePragmaNoise trait
+/// Test PragmaRandomNoise OperatePragmaNoise and OperatePragmaNoiseProba trait
 #[test]
 fn pragma_random_noise_pragmanoise_trait() {
     let pragma = PragmaRandomNoise::new(
@@ -2506,11 +2510,7 @@ fn pragma_random_noise_serde_compact() {
 #[test]
 fn pragma_general_noise_inputs_qubits() {
     let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0],];
-    let pragma = PragmaGeneralNoise::new(
-        0,
-        CalculatorFloat::from(0.005),
-        operators.clone(),
-    );
+    let pragma = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators.clone());
 
     // Test inputs are correct
     assert_eq!(pragma.qubit(), &0_usize);
@@ -2527,11 +2527,7 @@ fn pragma_general_noise_inputs_qubits() {
 #[test]
 fn pragma_general_noise_simple_traits() {
     let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 1.0],];
-    let pragma = PragmaGeneralNoise::new(
-        0,
-        CalculatorFloat::from(0.005),
-        operators.clone(),
-    );
+    let pragma = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators.clone());
 
     // Test Debug trait
     assert_eq!(
@@ -2543,16 +2539,8 @@ fn pragma_general_noise_simple_traits() {
     assert_eq!(pragma.clone(), pragma);
 
     // Test PartialEq trait
-    let pragma_0 = PragmaGeneralNoise::new(
-        0,
-        CalculatorFloat::from(0.005),
-        operators.clone(),
-    );
-    let pragma_1 = PragmaGeneralNoise::new(
-        0,
-        CalculatorFloat::from(0.006),
-        operators.clone(),
-    );
+    let pragma_0 = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators.clone());
+    let pragma_1 = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.006), operators.clone());
     assert!(pragma_0 == pragma);
     assert!(pragma == pragma_0);
     assert!(pragma_1 != pragma);
@@ -2563,17 +2551,14 @@ fn pragma_general_noise_simple_traits() {
 #[test]
 fn pragma_general_noise_operate_trait() {
     let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],];
-    let pragma = PragmaGeneralNoise::new(
-        0,
-        CalculatorFloat::from(0.005),
-        operators.clone(),
-    );
+    let pragma = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators.clone());
 
     // (1) Test tags function
-    let tags: &[&str; 4] = &[
+    let tags: &[&str; 5] = &[
         "Operation",
         "SingleQubitOperation",
         "PragmaOperation",
+        "PragmaNoiseOperation",
         "PragmaGeneralNoise",
     ];
     assert_eq!(pragma.tags(), tags);
@@ -2589,18 +2574,10 @@ fn pragma_general_noise_operate_trait() {
 #[test]
 fn pragma_general_noise_substitute_trait() {
     let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],];
-    let pragma = PragmaGeneralNoise::new(
-        0,
-        CalculatorFloat::from(0.005),
-        operators.clone(),
-    );
+    let pragma = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators.clone());
 
     // (1) Substitute parameters function
-    let pragma_test = PragmaGeneralNoise::new(
-        0,
-        CalculatorFloat::from("test"),
-        operators.clone(),
-    );
+    let pragma_test = PragmaGeneralNoise::new(0, CalculatorFloat::from("test"), operators.clone());
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.005);
     let result = pragma_test
@@ -2609,11 +2586,7 @@ fn pragma_general_noise_substitute_trait() {
     assert_eq!(result, pragma);
 
     // (2) Remap qubits function
-    let pragma_test = PragmaGeneralNoise::new(
-        1,
-        CalculatorFloat::from(0.005),
-        operators.clone(),
-    );
+    let pragma_test = PragmaGeneralNoise::new(1, CalculatorFloat::from(0.005), operators.clone());
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(1, 0);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
@@ -2629,11 +2602,8 @@ fn pragma_general_noise_substitute_trait() {
 #[test]
 fn pragma_general_noise_serde_readable() {
     let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],];
-    let pragma_serialization = PragmaGeneralNoise::new(
-        0,
-        CalculatorFloat::from(0.005),
-        operators.clone(),
-    );
+    let pragma_serialization =
+        PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators.clone());
     assert_tokens(
         &pragma_serialization.readable(),
         &[
@@ -2680,11 +2650,8 @@ fn pragma_general_noise_serde_readable() {
 #[test]
 fn pragma_general_noise_serde_compact() {
     let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],];
-    let pragma_serialization = PragmaGeneralNoise::new(
-        0,
-        CalculatorFloat::from(0.005),
-        operators.clone(),
-    );
+    let pragma_serialization =
+        PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators.clone());
     assert_tokens(
         &pragma_serialization.compact(),
         &[

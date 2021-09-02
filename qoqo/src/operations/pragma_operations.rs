@@ -613,7 +613,13 @@ pub struct PragmaStopDecompositionBlock {
     qubits: Vec<usize>,
 }
 
-#[wrap(Operate, OperateSingleQubit, OperatePragma, OperatePragmaNoise)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperatePragma,
+    OperatePragmaNoise,
+    OperatePragmaNoiseProba
+)]
 /// The damping PRAGMA noise operation.
 ///
 /// This PRAGMA operation applies a pure damping error corresponding to zero temperature environments.
@@ -666,7 +672,13 @@ pub struct PragmaDamping {
 //     }
 // }
 
-#[wrap(Operate, OperateSingleQubit, OperatePragma, OperatePragmaNoise)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperatePragma,
+    OperatePragmaNoise,
+    OperatePragmaNoiseProba
+)]
 /// The depolarising PRAGMA noise operation.
 ///
 /// This PRAGMA operation applies a depolarising error corresponding to infinite temperature environments.
@@ -719,7 +731,13 @@ pub struct PragmaDepolarising {
 //     }
 // }
 
-#[wrap(Operate, OperateSingleQubit, OperatePragma, OperatePragmaNoise)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperatePragma,
+    OperatePragmaNoise,
+    OperatePragmaNoiseProba
+)]
 /// The dephasing PRAGMA noise operation.
 ///
 /// This PRAGMA operation applies a pure dephasing error.
@@ -772,7 +790,13 @@ pub struct PragmaDephasing {
 //     }
 // }
 
-#[wrap(Operate, OperateSingleQubit, OperatePragma, OperatePragmaNoise)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperatePragma,
+    OperatePragmaNoise,
+    OperatePragmaNoiseProba
+)]
 /// The random noise PRAGMA operation.
 ///
 /// This PRAGMA operation applies a pure damping error corresponding to zero temperature environments.
@@ -918,11 +942,7 @@ impl PragmaGeneralNoiseWrapper {
     /// Returns:
     ///     self: The new PragmaGeneralNoise.
     #[new]
-    fn new(
-        qubit: usize,
-        gate_time: Py<PyAny>,
-        rates: Py<PyAny>,
-    ) -> PyResult<Self> {
+    fn new(qubit: usize, gate_time: Py<PyAny>, rates: Py<PyAny>) -> PyResult<Self> {
         let rates_casted: Vec<f64> =
             Python::with_gil(|py| -> Vec<f64> { Vec::extract(rates.as_ref(py)).unwrap() });
         let rates_array = Array::from_shape_vec((3, 3), rates_casted).unwrap();
@@ -933,7 +953,7 @@ impl PragmaGeneralNoiseWrapper {
                 )
             })
         })?;
-       
+
         Ok(Self {
             internal: PragmaGeneralNoise::new(qubit, gate_time_cf, rates_array),
         })
@@ -979,11 +999,10 @@ impl PragmaGeneralNoiseWrapper {
     ///     np.ndarray: The rates of the PRAGMA operation.
     fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
         Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
-            match self.internal
-                .superoperator(){
-                    Ok(x) => Ok(x.to_pyarray(py).to_owned()),
-                    Err(err) => Err(PyRuntimeError::new_err(format!("{:?}", err)))
-                } 
+            match self.internal.superoperator() {
+                Ok(x) => Ok(x.to_pyarray(py).to_owned()),
+                Err(err) => Err(PyRuntimeError::new_err(format!("{:?}", err))),
+            }
         })
     }
 

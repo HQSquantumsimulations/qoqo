@@ -15,11 +15,11 @@
 
 use crate::operations::{
     InvolveQubits, InvolvedQubits, Operate, OperateMultiQubit, OperatePragma, OperatePragmaNoise,
-    OperateSingleQubit, RoqoqoError, Substitute,
+    OperatePragmaNoiseProba, OperateSingleQubit, RoqoqoError, Substitute,
 };
 use crate::Circuit;
 use nalgebra::Matrix4;
-use ndarray::{array, Array1, Array2, Array};
+use ndarray::{array, Array, Array1, Array2};
 use num_complex::Complex64;
 use qoqo_calculator::{Calculator, CalculatorFloat};
 #[cfg(feature = "serialize")]
@@ -489,11 +489,12 @@ pub struct PragmaDamping {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_PragmaDamping: &[&str; 5] = &[
+const TAGS_PragmaDamping: &[&str; 6] = &[
     "Operation",
     "SingleQubitOperation",
     "PragmaOperation",
     "PragmaNoiseOperation",
+    "PragmaNoiseProbaOperation",
     "PragmaDamping",
 ];
 
@@ -516,18 +517,21 @@ impl OperatePragmaNoise for PragmaDamping {
         ])
     }
 
-    /// Returns the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
-    fn probability(&self) -> CalculatorFloat {
-        let prob: CalculatorFloat =
-            ((self.gate_time.clone() * self.rate.clone() * (-2.0)).exp() * (-1.0) + 1.0) * 0.5;
-        prob
-    }
-
     /// Returns the gate to the power of `power`.
     fn powercf(&self, power: CalculatorFloat) -> Self {
         let mut new = self.clone();
         new.gate_time = power * self.gate_time.clone();
         new
+    }
+}
+
+/// OperatePragmaNoiseProba trait creating necessary functions for a PRAGMA noise Operation.
+impl OperatePragmaNoiseProba for PragmaDamping {
+    /// Returns the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
+    fn probability(&self) -> CalculatorFloat {
+        let prob: CalculatorFloat =
+            ((self.gate_time.clone() * self.rate.clone() * (-2.0)).exp() * (-1.0) + 1.0) * 0.5;
+        prob
     }
 }
 
@@ -556,11 +560,12 @@ pub struct PragmaDepolarising {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_PragmaDepolarising: &[&str; 5] = &[
+const TAGS_PragmaDepolarising: &[&str; 6] = &[
     "Operation",
     "SingleQubitOperation",
     "PragmaOperation",
     "PragmaNoiseOperation",
+    "PragmaNoiseProbaOperation",
     "PragmaDepolarising",
 ];
 
@@ -585,18 +590,21 @@ impl OperatePragmaNoise for PragmaDepolarising {
         ])
     }
 
-    /// Returns the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
-    fn probability(&self) -> CalculatorFloat {
-        let prob: CalculatorFloat =
-            ((self.gate_time.clone() * self.rate.clone() * (-1.0)).exp() * (-1.0) + 1.0) * 0.75;
-        prob
-    }
-
     /// Returns the gate to the power of `power`.
     fn powercf(&self, power: CalculatorFloat) -> Self {
         let mut new = self.clone();
         new.gate_time = power * self.gate_time.clone();
         new
+    }
+}
+
+/// OperatePragmaNoiseProba trait creating necessary functions for a PRAGMA noise Operation.
+impl OperatePragmaNoiseProba for PragmaDepolarising {
+    /// Returns the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
+    fn probability(&self) -> CalculatorFloat {
+        let prob: CalculatorFloat =
+            ((self.gate_time.clone() * self.rate.clone() * (-1.0)).exp() * (-1.0) + 1.0) * 0.75;
+        prob
     }
 }
 
@@ -625,11 +633,12 @@ pub struct PragmaDephasing {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_PragmaDephasing: &[&str; 5] = &[
+const TAGS_PragmaDephasing: &[&str; 6] = &[
     "Operation",
     "SingleQubitOperation",
     "PragmaOperation",
     "PragmaNoiseOperation",
+    "PragmaNoiseProbaOperation",
     "PragmaDephasing",
 ];
 
@@ -651,18 +660,21 @@ impl OperatePragmaNoise for PragmaDephasing {
         ])
     }
 
-    /// Returns the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
-    fn probability(&self) -> CalculatorFloat {
-        let prob: CalculatorFloat =
-            ((self.gate_time.clone() * self.rate.clone() * (-2.0)).exp() * (-1.0) + 1.0) * 0.5;
-        prob
-    }
-
     /// Returns the gate to the power of `power`.
     fn powercf(&self, power: CalculatorFloat) -> Self {
         let mut new = self.clone();
         new.gate_time = power * self.gate_time.clone();
         new
+    }
+}
+
+/// OperatePragmaNoiseProba trait creating necessary functions for a PRAGMA noise Operation.
+impl OperatePragmaNoiseProba for PragmaDephasing {
+    /// Returns the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
+    fn probability(&self) -> CalculatorFloat {
+        let prob: CalculatorFloat =
+            ((self.gate_time.clone() * self.rate.clone() * (-2.0)).exp() * (-1.0) + 1.0) * 0.5;
+        prob
     }
 }
 
@@ -693,11 +705,12 @@ pub struct PragmaRandomNoise {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_PragmaRandomNoise: &[&str; 5] = &[
+const TAGS_PragmaRandomNoise: &[&str; 6] = &[
     "Operation",
     "SingleQubitOperation",
     "PragmaOperation",
     "PragmaNoiseOperation",
+    "PragmaNoiseProbaOperation",
     "PragmaRandomNoise",
 ];
 
@@ -720,6 +733,16 @@ impl OperatePragmaNoise for PragmaRandomNoise {
         ])
     }
 
+    /// Returns the gate to the power of `power`.
+    fn powercf(&self, power: CalculatorFloat) -> Self {
+        let mut new = self.clone();
+        new.gate_time = power * self.gate_time.clone();
+        new
+    }
+}
+
+/// OperatePragmaNoiseProba trait creating necessary functions for a PRAGMA noise Operation.
+impl OperatePragmaNoiseProba for PragmaRandomNoise {
     /// Returns the probability of the noise gate affecting the qubit, based on its `gate_time`, `depolarising_rate` and `dephasing_rate`.
     fn probability(&self) -> CalculatorFloat {
         let rates = [
@@ -728,13 +751,6 @@ impl OperatePragmaNoise for PragmaRandomNoise {
             (self.depolarising_rate.clone() / 4.0) + self.dephasing_rate.clone(),
         ];
         (rates[0].clone() + &rates[1] + &rates[2]) * &self.gate_time
-    }
-
-    /// Returns the gate to the power of `power`.
-    fn powercf(&self, power: CalculatorFloat) -> Self {
-        let mut new = self.clone();
-        new.gate_time = power * self.gate_time.clone();
-        new
     }
 }
 
@@ -810,10 +826,11 @@ pub struct PragmaGeneralNoise {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_PragmaGeneralNoise: &[&str; 4] = &[
+const TAGS_PragmaGeneralNoise: &[&str; 5] = &[
     "Operation",
     "SingleQubitOperation",
     "PragmaOperation",
+    "PragmaNoiseOperation",
     "PragmaGeneralNoise",
 ];
 
@@ -900,7 +917,7 @@ impl OperatePragmaNoise for PragmaGeneralNoise {
         for (i, row) in PGN_SUPEROP.iter().enumerate() {
             for (j, op) in row.iter().clone().enumerate() {
                 let tmp_superop: Matrix4<f64> = (*op).into();
-                superop +=  gate_time * self.rates[(i, j)] * tmp_superop;
+                superop += gate_time * self.rates[(i, j)] * tmp_superop;
             }
         }
         // Integrate superoperator for infinitesimal time to get superoperator for given rate and gate-time
@@ -908,13 +925,9 @@ impl OperatePragmaNoise for PragmaGeneralNoise {
         let exp_superop: Matrix4<f64> = superop.exp();
         let mut tmp_iter = exp_superop.iter();
         // convert to ndarray.
-        let array: Array2<f64> = Array::from_shape_simple_fn((4,4), || *tmp_iter.next().unwrap());
+        let array: Array2<f64> = Array::from_shape_simple_fn((4, 4), || *tmp_iter.next().unwrap());
 
         Ok(array)
-    }
-
-    fn probability(&self) -> CalculatorFloat {
-        CalculatorFloat::ZERO
     }
 
     /// Returns the gate to the power of `power`.

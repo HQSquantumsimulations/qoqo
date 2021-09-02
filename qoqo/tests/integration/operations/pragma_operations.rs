@@ -805,7 +805,6 @@ fn test_pyo3_tags_multi_overrotation(input_measurement: Operation, tag_name: &st
 
 /// Test tags function for Pragmas that are also SingleQubitGates
 #[test_case(Operation::from(PragmaActiveReset::new(0)), "PragmaActiveReset"; "PragmaActiveReset")]
-#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators())), "PragmaGeneralNoise"; "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())), "PragmaConditional"; "PragmaConditional")]
 fn test_pyo3_tags_single(input_measurement: Operation, tag_name: &str) {
     pyo3::prepare_freethreaded_python();
@@ -818,6 +817,25 @@ fn test_pyo3_tags_single(input_measurement: Operation, tag_name: &str) {
         "Operation",
         "SingleQubitOperation",
         "PragmaOperation",
+        tag_name,
+    ];
+    assert_eq!(tags_op, tags_param);
+}
+
+/// Test tags function for PragmaGeneralNoise
+#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators())), "PragmaGeneralNoise"; "PragmaGeneralNoise")]
+fn test_pyo3_tags_general_noise(input_measurement: Operation, tag_name: &str) {
+    pyo3::prepare_freethreaded_python();
+    let gil = pyo3::Python::acquire_gil();
+    let py = gil.python();
+    let operation = convert_operation_to_pyobject(input_measurement).unwrap();
+    let to_tag = operation.call_method0(py, "tags").unwrap();
+    let tags_op: &Vec<&str> = &Vec::extract(to_tag.as_ref(py)).unwrap();
+    let tags_param: &[&str] = &[
+        "Operation",
+        "SingleQubitOperation",
+        "PragmaOperation",
+        "PragmaNoiseOperation",
         tag_name,
     ];
     assert_eq!(tags_op, tags_param);
@@ -840,6 +858,7 @@ fn test_pyo3_tags_noise(input_measurement: Operation, tag_name: &str) {
         "SingleQubitOperation",
         "PragmaOperation",
         "PragmaNoiseOperation",
+        "PragmaNoiseProbaOperation",
         tag_name,
     ];
     assert_eq!(tags_op, tags_param);
@@ -2373,9 +2392,7 @@ fn test_pyo3_new_general_noise() {
     let convert_to_get_operators = convert_operation_to_pyobject(to_get_operators)
         .unwrap()
         .clone();
-    let operators_op = convert_to_get_operators
-        .call_method0(py, "rates")
-        .unwrap();
+    let operators_op = convert_to_get_operators.call_method0(py, "rates").unwrap();
 
     let new_op = operation
         .call1((0, 0.005, operators_op.clone()))
