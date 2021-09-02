@@ -7,9 +7,11 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 ### Changed
 
 * Rarely used qubit mapping is now the last argument in PragmaRepeatedMeasurement
+* PragmaGeneralNoise uses sigma^+ sigma^- and sigma^z as a basis to for Lindblad decoherence rates to avoid using complex rates. Rate and operators parameters of PragmaGeneralNoise have been combined in single parameter rates.
 
 ### Added
 
+* Device trait: A minimal trait for quantum computing devices used with roqoqo
 * `RoqoqoBackendError` now has a variant `GenericError` for additional backend error types
 
 ## 0.5.1

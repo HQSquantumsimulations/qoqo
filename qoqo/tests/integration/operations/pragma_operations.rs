@@ -85,24 +85,8 @@ fn densitymatrix() -> Array2<Complex64> {
     densitymatrix
 }
 
-fn operators() -> Array2<Complex64> {
-    let operators: Array2<Complex64> = array![
-        [
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0)
-        ],
-        [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0),
-            Complex64::new(0.0, 0.0)
-        ],
-        [
-            Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0),
-            Complex64::new(1.0, 0.0)
-        ],
-    ];
+fn operators() -> Array2<f64> {
+    let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],];
     operators
 }
 
@@ -474,7 +458,6 @@ fn test_pyo3_inputs_generalnoise() {
     let input_pragma = Operation::from(PragmaGeneralNoise::new(
         0,
         CalculatorFloat::from(0.005),
-        CalculatorFloat::from(0.02),
         operators(),
     ));
     pyo3::prepare_freethreaded_python();
@@ -494,12 +477,8 @@ fn test_pyo3_inputs_generalnoise() {
         CalculatorFloat::from(0.005),
     );
 
-    let rate_op: &f64 =
-        &f64::extract(operation.call_method0(py, "rate").unwrap().as_ref(py)).unwrap();
-    assert_eq!(CalculatorFloat::from(rate_op), CalculatorFloat::from(0.02));
-
-    let to_operators_op: Vec<Complex64> =
-        Vec::extract(operation.call_method0(py, "operators").unwrap().as_ref(py)).unwrap();
+    let to_operators_op: Vec<f64> =
+        Vec::extract(operation.call_method0(py, "rates").unwrap().as_ref(py)).unwrap();
     let operators_op = Array::from_shape_vec((3, 3), to_operators_op).unwrap();
     assert_eq!(operators_op, operators());
 }
@@ -587,7 +566,7 @@ fn test_pyo3_involved_qubits_all(input_definition: Operation) {
 #[test_case(Operation::from(PragmaDepolarising::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDepolarising")]
 #[test_case(Operation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDephasing")]
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))); "PragmaRandomNoise")]
-#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())); "PragmaGeneralNoise")]
+#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators())); "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 fn test_pyo3_involved_qubits_qubit(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
@@ -645,8 +624,8 @@ fn test_pyo3_involved_qubits_qubit_overrotation(input_definition: Operation) {
             "PragmaDephasing { qubit: 0, gate_time: Float(0.005), rate: Float(0.02) }"; "PragmaDephasing")]
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))),
             "PragmaRandomNoise { qubit: 0, gate_time: Float(0.005), depolarising_rate: Float(0.02), dephasing_rate: Float(0.01) }"; "PragmaRandomNoise")]
-#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())),
-            "PragmaGeneralNoise { qubit: 0, gate_time: Float(0.005), rate: Float(0.02), operators: [[Complex { re: 1.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }],\n [Complex { re: 0.0, im: 0.0 }, Complex { re: 1.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }],\n [Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 1.0, im: 0.0 }]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2 }"; "PragmaGeneralNoise")]
+#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators())),
+            "PragmaGeneralNoise { qubit: 0, gate_time: Float(0.005), rates: [[1.0, 0.0, 0.0],\n [0.0, 1.0, 0.0],\n [0.0, 0.0, 1.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2 }"; "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, Circuit::default())),
             "PragmaConditional { condition_register: \"ro\", condition_index: 1, circuit: Circuit { definitions: [], operations: [] } }"; "PragmaConditional")]
 fn test_pyo3_format_repr(input_measurement: Operation, format_repr: &str) {
@@ -693,7 +672,7 @@ fn test_pyo3_format_repr_overrotation(input_measurement: Operation, format_repr:
 #[test_case(Operation::from(PragmaDepolarising::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDepolarising")]
 #[test_case(Operation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDephasing")]
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))); "PragmaRandomNoise")]
-#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())); "PragmaGeneralNoise")]
+#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005),  operators())); "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 fn test_pyo3_copy_deepcopy(input_measurement: Operation) {
     pyo3::prepare_freethreaded_python();
@@ -826,7 +805,7 @@ fn test_pyo3_tags_multi_overrotation(input_measurement: Operation, tag_name: &st
 
 /// Test tags function for Pragmas that are also SingleQubitGates
 #[test_case(Operation::from(PragmaActiveReset::new(0)), "PragmaActiveReset"; "PragmaActiveReset")]
-#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())), "PragmaGeneralNoise"; "PragmaGeneralNoise")]
+#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators())), "PragmaGeneralNoise"; "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())), "PragmaConditional"; "PragmaConditional")]
 fn test_pyo3_tags_single(input_measurement: Operation, tag_name: &str) {
     pyo3::prepare_freethreaded_python();
@@ -882,7 +861,7 @@ fn test_pyo3_tags_noise(input_measurement: Operation, tag_name: &str) {
 #[test_case(Operation::from(PragmaDepolarising::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))), "PragmaDepolarising"; "PragmaDepolarising")]
 #[test_case(Operation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))), "PragmaDephasing"; "PragmaDephasing")]
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))), "PragmaRandomNoise"; "PragmaRandomNoise")]
-#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())), "PragmaGeneralNoise"; "PragmaGeneralNoise")]
+#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005),  operators())), "PragmaGeneralNoise"; "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())), "PragmaConditional"; "PragmaConditional")]
 fn test_pyo3_hqslang(input_measurement: Operation, hqslang_param: &str) {
     pyo3::prepare_freethreaded_python();
@@ -921,7 +900,7 @@ fn test_pyo3_hqslang_overrotation(input_measurement: Operation, hqslang_param: &
 #[test_case(Operation::from(PragmaDepolarising::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDepolarising")]
 #[test_case(Operation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDephasing")]
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))); "PragmaRandomNoise")]
-#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())); "PragmaGeneralNoise")]
+#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005),  operators())); "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 fn test_pyo3_is_parametrized(input_measurement: Operation) {
     pyo3::prepare_freethreaded_python();
@@ -998,8 +977,8 @@ fn test_pyo3_is_parametrized_overrotation(input_measurement: Operation) {
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from("test"), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))),
             Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(1.0), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01)));
             "PragmaRandomNoise")]
-#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from("test"), CalculatorFloat::from(0.02), operators())),
-            Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(1.0), CalculatorFloat::from(0.02), operators()));
+#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from("test"), operators())),
+            Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(1.0),  operators()));
             "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())),
             Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit()));
@@ -1079,7 +1058,7 @@ fn test_pyo3_substitute_parameters_overrotation() {
             "PragmaDephasing")]
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from("test"), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01)));
             "PragmaRandomNoise")]
-#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from("test"), CalculatorFloat::from(0.02), operators()));
+#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from("test"),  operators()));
             "PragmaGeneralNoise")]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
@@ -1153,8 +1132,8 @@ fn test_pyo3_substituteparameters_error(input_operation: Operation) {
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))),
             Operation::from(PragmaRandomNoise::new(2, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01)));
             "PragmaRandomNoise")]
-#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())),
-            Operation::from(PragmaGeneralNoise::new(2, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators()));
+#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005),  operators())),
+            Operation::from(PragmaGeneralNoise::new(2, CalculatorFloat::from(0.005),  operators()));
             "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())),
             Operation::from(PragmaConditional::new(String::from("ro"), 1, circuit_remapped()));
@@ -1459,8 +1438,8 @@ fn test_pyo3_noise_powercf(first_op: Operation, second_op: Operation) {
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))),
             Operation::from(PragmaRandomNoise::new(2, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01)));
             "PragmaRandomNoise")]
-#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())),
-            Operation::from(PragmaGeneralNoise::new(2, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators()));
+#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005),  operators())),
+            Operation::from(PragmaGeneralNoise::new(2, CalculatorFloat::from(0.005), operators()));
             "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())),
             Operation::from(PragmaConditional::new(String::from("ro"), 1, circuit_remapped()));
@@ -2389,18 +2368,17 @@ fn test_pyo3_new_general_noise() {
     let to_get_operators = Operation::from(PragmaGeneralNoise::new(
         0,
         CalculatorFloat::from(0.005),
-        CalculatorFloat::from(0.02),
         operators(),
     ));
     let convert_to_get_operators = convert_operation_to_pyobject(to_get_operators)
         .unwrap()
         .clone();
     let operators_op = convert_to_get_operators
-        .call_method0(py, "operators")
+        .call_method0(py, "rates")
         .unwrap();
 
     let new_op = operation
-        .call1((0, 0.005, 0.02, operators_op.clone()))
+        .call1((0, 0.005, operators_op.clone()))
         .unwrap()
         .cast_as::<PyCell<PragmaGeneralNoiseWrapper>>()
         .unwrap();
@@ -2425,7 +2403,7 @@ fn test_pyo3_new_general_noise() {
     // Testing PartialEq, Clone and Debug
     let pragma_wrapper = new_op.extract::<PragmaGeneralNoiseWrapper>().unwrap();
     let new_op_diff = operation
-        .call1((1, 0.005, 0.02, operators_op))
+        .call1((1, 0.005, operators_op))
         .unwrap()
         .cast_as::<PyCell<PragmaGeneralNoiseWrapper>>()
         .unwrap();
@@ -2437,7 +2415,7 @@ fn test_pyo3_new_general_noise() {
 
     assert_eq!(
         format!("{:?}", pragma_wrapper),
-        "PragmaGeneralNoiseWrapper { internal: PragmaGeneralNoise { qubit: 0, gate_time: Float(0.005), rate: Float(0.02), operators: [[Complex { re: 1.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }],\n [Complex { re: 0.0, im: 0.0 }, Complex { re: 1.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }],\n [Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 1.0, im: 0.0 }]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2 } }"
+        "PragmaGeneralNoiseWrapper { internal: PragmaGeneralNoise { qubit: 0, gate_time: Float(0.005), rates: [[1.0, 0.0, 0.0],\n [0.0, 1.0, 0.0],\n [0.0, 0.0, 1.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2 } }"
     );
 }
 
@@ -2495,7 +2473,7 @@ fn test_pyo3_new_conditional() {
 #[test_case(Operation::from(PragmaDepolarising::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDepolarising")]
 #[test_case(Operation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDephasing")]
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))); "PragmaRandomNoise")]
-#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), operators())); "PragmaGeneralNoise")]
+#[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators())); "PragmaGeneralNoise")]
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
