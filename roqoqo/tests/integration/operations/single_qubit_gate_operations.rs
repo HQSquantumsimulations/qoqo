@@ -971,16 +971,23 @@ fn test_rotatez_substitute_parameters() {
 }
 
 /// Test substitute_parameters for PhaseShiftState0
-#[test]
-fn test_phaseshiftstate0_substitute_parameters() {
-    let gate: PhaseShiftState0 = PhaseShiftState0::new(0, CalculatorFloat::from("theta"));
-    assert_eq!(gate.theta().clone(), CalculatorFloat::from("theta"));
-    assert!(gate.is_parametrized());
+// #[test]
+#[test_case(
+    SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from("theta"))),
+    SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0.0))); "state0"
+)]
+fn test_phaseshiftstate0_substitute_parameters(
+    gate: SingleQubitGateOperation,
+    testgate: SingleQubitGateOperation,
+) {
+    // let gate: PhaseShiftState0 = PhaseShiftState0::new(0, CalculatorFloat::from("theta"));
+    // assert_eq!(gate.theta().clone(), CalculatorFloat::from("theta"));
+    // assert!(gate.is_parametrized());
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
     let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
-    assert!(!result.is_parametrized());
-    assert_eq!(result.theta().clone(), CalculatorFloat::from(0.0));
+    // assert!(!result.is_parametrized());
+    assert_eq!(result, testgate);
 }
 
 /// Test substitute_parameters for PhaseShiftState1

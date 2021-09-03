@@ -867,9 +867,7 @@ fn pragma_general_noise(_py: Python, module: &PyModule) -> PyResult<()> {
 /// Args:
 ///     qubit (int): The qubit the PRAGMA operation is applied to.
 ///     gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
-///     rate (CalculatorFloat): The error rate of the noise (in 1/second).
-///     operators (CalculatorFloat): The operators representing the general noise.
-///                                  The array needs to be flattened before input, using np.flatten.
+///     Rates: The rates representing the general noise matrix M (a 3x3 matrix as 1d array).
 ///
 pub struct PragmaGeneralNoiseWrapper {
     /// PragmaGeneralNoise to be wrapped and converted to Python.
