@@ -169,7 +169,7 @@ impl OperateSingleQubitGate for SingleQubitGate {
 ///  -i \sin(\frac{\theta}{2}) & 0\\\\
 /// 0 & i \sin(\frac{\theta}{2})
 /// \end{pmatrix}
-///  $$
+/// $$
 ///
 #[derive(
     Debug,

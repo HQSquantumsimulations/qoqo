@@ -613,7 +613,13 @@ pub struct PragmaStopDecompositionBlock {
     qubits: Vec<usize>,
 }
 
-#[wrap(Operate, OperateSingleQubit, OperatePragma, OperatePragmaNoise)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperatePragma,
+    OperatePragmaNoise,
+    OperatePragmaNoiseProba
+)]
 /// The damping PRAGMA noise operation.
 ///
 /// This PRAGMA operation applies a pure damping error corresponding to zero temperature environments.
@@ -666,7 +672,13 @@ pub struct PragmaDamping {
 //     }
 // }
 
-#[wrap(Operate, OperateSingleQubit, OperatePragma, OperatePragmaNoise)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperatePragma,
+    OperatePragmaNoise,
+    OperatePragmaNoiseProba
+)]
 /// The depolarising PRAGMA noise operation.
 ///
 /// This PRAGMA operation applies a depolarising error corresponding to infinite temperature environments.
@@ -719,7 +731,13 @@ pub struct PragmaDepolarising {
 //     }
 // }
 
-#[wrap(Operate, OperateSingleQubit, OperatePragma, OperatePragmaNoise)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperatePragma,
+    OperatePragmaNoise,
+    OperatePragmaNoiseProba
+)]
 /// The dephasing PRAGMA noise operation.
 ///
 /// This PRAGMA operation applies a pure dephasing error.
@@ -772,7 +790,13 @@ pub struct PragmaDephasing {
 //     }
 // }
 
-#[wrap(Operate, OperateSingleQubit, OperatePragma, OperatePragmaNoise)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperatePragma,
+    OperatePragmaNoise,
+    OperatePragmaNoiseProba
+)]
 /// The random noise PRAGMA operation.
 ///
 /// This PRAGMA operation applies a pure damping error corresponding to zero temperature environments.
@@ -864,21 +888,14 @@ insert_pyany_to_operation!(
         let gate_time: CalculatorFloat = convert_into_calculator_float(gatetm).map_err(|_| {
             QoqoError::ConversionError
         })?;
-
-        let rt = op.call_method0("rate")
-                   .map_err(|_| QoqoError::ConversionError)?;
-        let rate: CalculatorFloat = convert_into_calculator_float(rt).map_err(|_| {
-            QoqoError::ConversionError
-        })?;
-
-        let array = op.call_method0("operators")
+        let array = op.call_method0("rates")
                       .map_err(|_| QoqoError::ConversionError)?;
 
-        let densmat_casted: Vec<Complex64> = Vec::extract(array).unwrap();
+        let densmat_casted: Vec<f64> = Vec::extract(array).unwrap();
         let length: usize = densmat_casted.len();
         let dim: usize = (length as f64).sqrt() as usize;
-        let operators = Array::from_shape_vec((dim, dim), densmat_casted).unwrap();
-        Ok(PragmaGeneralNoise::new(qubit, gate_time, rate, operators).into())
+        let rates = Array::from_shape_vec((dim, dim), densmat_casted).unwrap();
+        Ok(PragmaGeneralNoise::new(qubit, gate_time, rates).into())
     }
 );
 insert_operation_to_pyobject!(
@@ -896,25 +913,39 @@ insert_operation_to_pyobject!(
 impl PragmaGeneralNoiseWrapper {
     /// Create a PragmaGeneralNoise.
     ///
+    /// This PRAGMA operation applies a noise term according to the given operators.
+    /// The operators are represented by a 3x3 matrix:
+    ///
+    /// .. math ::
+    /// M = \begin{pmatrix}
+    /// a & b & c \\
+    /// d & e & f \\
+    /// g & h & j \\
+    /// \end{pmatrix}
+    ///
+    /// where the coefficients correspond to the following summands
+    /// expanded from the first term of the non-coherent part of the Lindblad equation:
+    ///
+    ///     .. math::
+    ///     \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\
+    ///         L_0 = \sigma^{+} \\
+    ///         L_1 = \sigma^{-} \\
+    ///         L_3 = \sigma^{z}
+    ///
+    /// Applying the Pragma with a given `gate_time` corresponds to applying the full time-evolution under the Lindblad equation for `gate_time` time.
+    ///
     /// Args:
     ///     qubit (int): The qubit the PRAGMA operation is applied to.
     ///     gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
-    ///     rate (CalculatorFloat): The error rate of the noise (in 1/second).
-    ///     operators (list[complex]): The operators representing the general noise.
+    ///     rates (list[complex]): The rate matrix M.
     ///
     /// Returns:
     ///     self: The new PragmaGeneralNoise.
     #[new]
-    fn new(
-        qubit: usize,
-        gate_time: Py<PyAny>,
-        rate: Py<PyAny>,
-        operators: Py<PyAny>,
-    ) -> PyResult<Self> {
-        let operators_casted: Vec<Complex64> = Python::with_gil(|py| -> Vec<Complex64> {
-            Vec::extract(operators.as_ref(py)).unwrap()
-        });
-        let operators_array = Array::from_shape_vec((3, 3), operators_casted).unwrap();
+    fn new(qubit: usize, gate_time: Py<PyAny>, rates: Py<PyAny>) -> PyResult<Self> {
+        let rates_casted: Vec<f64> =
+            Python::with_gil(|py| -> Vec<f64> { Vec::extract(rates.as_ref(py)).unwrap() });
+        let rates_array = Array::from_shape_vec((3, 3), rates_casted).unwrap();
         let gate_time_cf = Python::with_gil(|py| -> PyResult<CalculatorFloat> {
             convert_into_calculator_float(gate_time.as_ref(py)).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
@@ -922,15 +953,9 @@ impl PragmaGeneralNoiseWrapper {
                 )
             })
         })?;
-        let rate_cf = Python::with_gil(|py| -> PyResult<CalculatorFloat> {
-            convert_into_calculator_float(rate.as_ref(py)).map_err(|_| {
-                pyo3::exceptions::PyTypeError::new_err(
-                    "Argument rate cannot be converted to CalculatorFloat",
-                )
-            })
-        })?;
+
         Ok(Self {
-            internal: PragmaGeneralNoise::new(qubit, gate_time_cf, rate_cf, operators_array),
+            internal: PragmaGeneralNoise::new(qubit, gate_time_cf, rates_array),
         })
     }
 
@@ -952,29 +977,32 @@ impl PragmaGeneralNoiseWrapper {
         }
     }
 
-    /// Return the `rate` of the PRAGMA operation.
+    /// Return the rates of the PRAGMA operation.
     ///
     /// Returns:
-    ///     CalculatorFloat: The rate of the PRAGMA operation.
-    fn rate(&self) -> CalculatorFloatWrapper {
-        CalculatorFloatWrapper {
-            cf_internal: self.internal.rate().clone(),
-        }
-    }
-
-    /// Return the operators of the PRAGMA operation.
-    ///
-    /// Returns:
-    ///     np.ndarray: The operators of the PRAGMA operation.
-    fn operators(&self) -> Py<PyArray1<Complex64>> {
-        Python::with_gil(|py| -> Py<PyArray1<Complex64>> {
+    ///     np.ndarray: The rates of the PRAGMA operation.
+    fn rates(&self) -> Py<PyArray1<f64>> {
+        Python::with_gil(|py| -> Py<PyArray1<f64>> {
             self.internal
-                .operators()
+                .rates()
                 .iter()
                 .cloned()
-                .collect::<Vec<Complex64>>()
+                .collect::<Vec<f64>>()
                 .to_pyarray(py)
                 .to_owned()
+        })
+    }
+
+    /// Return the rates of the PRAGMA operation.
+    ///
+    /// Returns:
+    ///     np.ndarray: The rates of the PRAGMA operation.
+    fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
+        Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
+            match self.internal.superoperator() {
+                Ok(x) => Ok(x.to_pyarray(py).to_owned()),
+                Err(err) => Err(PyRuntimeError::new_err(format!("{:?}", err))),
+            }
         })
     }
 

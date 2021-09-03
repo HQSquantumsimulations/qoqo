@@ -303,11 +303,7 @@ pub trait OperatePragma: Operate + InvolveQubits + Substitute + Clone + PartialE
 ///     [0.0, 0.0, 0.0, 1.0 - superop_prob],
 /// ];
 /// assert_eq!(superop, pragma.superoperator().unwrap());
-/// // 2) The probability of the noise Pragma
-/// let proba_pre_exp: f64 = -2.0 * 0.005 * 0.02;
-/// let proba = CalculatorFloat::from(0.5 * (1.0 - proba_pre_exp.exp()));
-/// assert_eq!(proba, pragma.probability());
-/// // 3) The power function applied to the noise Pragma
+/// // 2) The power function applied to the noise Pragma
 /// let pragma_test = PragmaDamping::new(
 ///     0,
 ///     CalculatorFloat::from(0.005 * 1.5),
@@ -321,10 +317,31 @@ pub trait OperatePragmaNoise:
 {
     /// Returns superoperator matrix of the Operation.
     fn superoperator(&self) -> Result<Array2<f64>, RoqoqoError>;
-    /// Returns the probability of the gate, based on its gate_time and rate.
-    fn probability(&self) -> CalculatorFloat;
     /// Returns the gate to the power of `power`.
     fn powercf(&self, power: CalculatorFloat) -> Self;
+}
+
+/// Trait for PRAGMA Operations that are not necessary available on all universal quantum hardware, that indicate noise.
+///
+/// # Example
+/// ```
+/// use ndarray::{array, Array2};
+/// use roqoqo::operations::{OperatePragmaNoiseProba, PragmaDamping};
+/// use qoqo_calculator::CalculatorFloat;
+///
+/// let pragma = PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
+///
+/// // The probability of the noise Pragma
+/// let proba_pre_exp: f64 = -2.0 * 0.005 * 0.02;
+/// let proba = CalculatorFloat::from(0.5 * (1.0 - proba_pre_exp.exp()));
+/// assert_eq!(proba, pragma.probability());
+/// ```
+///
+pub trait OperatePragmaNoiseProba:
+    Operate + InvolveQubits + Substitute + Clone + PartialEq + OperatePragma + OperatePragmaNoise
+{
+    /// Returns the probability of the gate, based on its gate_time and rate.
+    fn probability(&self) -> CalculatorFloat;
 }
 
 /// Trait for Operations acting with a unitary gate on a set of qubits.

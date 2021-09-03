@@ -441,11 +441,6 @@ fn operate_noise_pragma_enum(de: DataEnum, ident: Ident) -> TokenStream {
             &#ident::#vident(ref inner) => {OperatePragmaNoise::superoperator(&(*inner))},
         }
     });
-    let match_proba_quotes = variants_with_type.clone().map(|(vident, _, _)| {
-        quote! {
-            &#ident::#vident(ref inner) => inner.probability(),
-        }
-    });
     let match_pow_quotes = variants_with_type.map(|(vident, _, _)| {
         quote! {
             &#ident::#vident(ref inner) => #ident::#vident(OperatePragmaNoise::powercf(&(*inner), power)),
@@ -460,15 +455,38 @@ fn operate_noise_pragma_enum(de: DataEnum, ident: Ident) -> TokenStream {
                     _ => panic!("Unexpectedly cannot match variant")
                 }
             }
-            fn probability(&self) -> CalculatorFloat{
-                match self{
-                    #(#match_proba_quotes)*
-                    _ => panic!("Unexpectedly cannot match variant")
-                }
-            }
             fn powercf(&self, power: CalculatorFloat) -> #ident {
                 match self{
                     #(#match_pow_quotes)*
+                    _ => panic!("Unexpectedly cannot match variant")
+                }
+            }
+        }
+    };
+    q
+}
+
+pub fn dispatch_struct_enum_operate_noise_proba_pragma(input: DeriveInput) -> TokenStream {
+    let ident = input.ident;
+    match input.data {
+        Data::Enum(de) => operate_noise_proba_pragma_enum(de, ident),
+        _ => panic!("OperatePragmaNoiseProba can only be derived on enums"),
+    }
+}
+
+fn operate_noise_proba_pragma_enum(de: DataEnum, ident: Ident) -> TokenStream {
+    let variants_with_type = extract_variants_with_types(de).into_iter();
+    let match_proba_quotes = variants_with_type.map(|(vident, _, _)| {
+        quote! {
+            &#ident::#vident(ref inner) => inner.probability(),
+        }
+    });
+    let q = quote! {
+        #[automatically_derived]
+        impl OperatePragmaNoiseProba for #ident{
+            fn probability(&self) -> CalculatorFloat{
+                match self{
+                    #(#match_proba_quotes)*
                     _ => panic!("Unexpectedly cannot match variant")
                 }
             }
