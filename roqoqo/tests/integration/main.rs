@@ -18,3 +18,6 @@ mod measurements;
 
 #[cfg(test)]
 mod circuit;
+
+#[cfg(test)]
+mod devices;

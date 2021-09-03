@@ -34,6 +34,8 @@ struct Visitor {
     pragma_operations: Vec<Ident>,
     // Identifiers of structs belonging to PragmaNoiseOperation enum
     pragma_noise_operations: Vec<Ident>,
+    // Identifiers of structs belonging to PragmaNoiseProbaOperation enum
+    pragma_noise_proba_operations: Vec<Ident>,
     // Identifiers of structs belonging to GateOperation enum
     gate_operations: Vec<Ident>,
     // Identifiers of structs belonging to Rotation enum
@@ -59,6 +61,7 @@ impl Visitor {
             multi_qubit_operations: Vec::new(),
             pragma_operations: Vec::new(),
             pragma_noise_operations: Vec::new(),
+            pragma_noise_proba_operations: Vec::new(),
             gate_operations: Vec::new(),
             rotations: Vec::new(),
             definitions: Vec::new(),
@@ -145,6 +148,13 @@ impl<'ast> Visit<'ast> for Visitor {
                 {
                     self.pragma_noise_operations.push(i.ident.clone());
                 }
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperatePragma")
+                    && parsed_arguments.contains("OperatePragmaNoise")
+                    && parsed_arguments.contains("OperatePragmaNoiseProba")
+                {
+                    self.pragma_noise_proba_operations.push(i.ident.clone());
+                }
                 if parsed_arguments.contains("Operate") && parsed_arguments.contains("OperateGate")
                 {
                     self.gate_operations.push(i.ident.clone());
@@ -219,6 +229,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 if trait_name.as_str() == "OperatePragmaNoise" {
                     self.pragma_noise_operations.push(id.clone());
                 }
+                if trait_name.as_str() == "OperatePragmaNoiseProba" {
+                    self.pragma_noise_proba_operations.push(id.clone());
+                }
                 if trait_name.as_str() == "OperateMultiQubitGate" {
                     self.two_qubit_gate_operations.push(id);
                 }
@@ -286,12 +299,20 @@ fn main() {
         #v(#v)}
     });
     // Construct TokenStreams for variants of pragma enum
-    let pragma_noise_operations_quotes = vis.pragma_noise_operations.into_iter().map(|v| {
+    let pragma_noise_operations_quotes = vis.pragma_noise_operations.clone().into_iter().map(|v| {
         let msg = format!("Variant for {}", v);
         quote! {
         #[doc = #msg]
         #v(#v)}
     });
+    // Construct TokenStreams for variants of pragma enum
+    let pragma_noise_proba_operations_quotes =
+        vis.pragma_noise_proba_operations.into_iter().map(|v| {
+            let msg = format!("Variant for {}", v);
+            quote! {
+            #[doc = #msg]
+            #v(#v)}
+        });
     // Construct TokenStreams for variants of pragma enum
     let gate_operations_quotes = vis.gate_operations.into_iter().map(|v| {
         let msg = format!("Variant for {}", v);
@@ -390,6 +411,13 @@ fn main() {
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         pub enum PragmaNoiseOperation {
             #(#pragma_noise_operations_quotes),*
+        }
+
+        /// Enum of all Operations implementing [OperatePragmaNoiseProba]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperatePragma, OperatePragmaNoise, OperatePragmaNoiseProba)]
+        #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        pub enum PragmaNoiseProbaOperation {
+            #(#pragma_noise_proba_operations_quotes),*
         }
 
         /// Enum of all Operations implementing [OperateGate]
