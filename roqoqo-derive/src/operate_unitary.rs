@@ -476,7 +476,7 @@ pub fn dispatch_struct_enum_operate_noise_proba_pragma(input: DeriveInput) -> To
 
 fn operate_noise_proba_pragma_enum(de: DataEnum, ident: Ident) -> TokenStream {
     let variants_with_type = extract_variants_with_types(de).into_iter();
-    let match_proba_quotes = variants_with_type.clone().map(|(vident, _, _)| {
+    let match_proba_quotes = variants_with_type.map(|(vident, _, _)| {
         quote! {
             &#ident::#vident(ref inner) => inner.probability(),
         }

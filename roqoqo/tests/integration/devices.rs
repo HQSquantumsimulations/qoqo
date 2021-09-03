@@ -19,10 +19,8 @@ struct TestDevice {
     number_qubits: usize,
     single_qubit_gates: HashMap<String, HashMap<usize, f64>>,
     two_qubit_gates: HashMap<String, HashMap<(usize, usize), f64>>,
-    multi_qubit_gates: HashMap<String, HashMap<(usize, usize, usize), f64>>,
-    dephasing_rates: HashMap<usize, f64>,
-    depolarising_rates: HashMap<usize, f64>,
-    damping_rates: HashMap<usize, f64>,
+    multi_qubit_gates: HashMap<String, f64>,
+    rates: HashMap<usize, Array2<f64>>,
 }
 
 impl TestDevice {
@@ -30,19 +28,15 @@ impl TestDevice {
         number_qubits: usize,
         single_qubit_gates: HashMap<String, HashMap<usize, f64>>,
         two_qubit_gates: HashMap<String, HashMap<(usize, usize), f64>>,
-        multi_qubit_gates: HashMap<String, HashMap<(usize, usize, usize), f64>>,
-        dephasing_rates: HashMap<usize, f64>,
-        depolarising_rates: HashMap<usize, f64>,
-        damping_rates: HashMap<usize, f64>,
+        multi_qubit_gates: HashMap<String, f64>,
+        rates: HashMap<usize, Array2<f64>>,
     ) -> Self {
         TestDevice {
             number_qubits,
             single_qubit_gates,
             two_qubit_gates,
             multi_qubit_gates,
-            dephasing_rates,
-            depolarising_rates,
-            damping_rates,
+            rates,
         }
     }
 }
@@ -66,16 +60,12 @@ impl Device for TestDevice {
         }
     }
 
-    fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<&f64> {
-        match self.multi_qubit_gates.get(&hqslang.to_string()) {
-            Some(x) => x.get(&(qubits[0], qubits[1], qubits[2])), // ask,
-            None => None,
-        }
+    fn multi_qubit_gate_time(&self, hqslang: &str, _qubits: &[usize]) -> Option<&f64> {
+        self.multi_qubit_gates.get(&hqslang.to_string())
     }
 
-    fn qubit_decoherence_rates(&self, qubits: &[usize]) -> Option<Array2<f64>> {
-        let default: Array2<f64> = array![[qubits[0] as f64]];
-        Some(default)
+    fn qubit_decoherence_rates(&self, qubit: usize) -> Option<&Array2<f64>> {
+        self.rates.get(&qubit)
     }
 }
 
@@ -96,37 +86,34 @@ fn it_works() {
     let mut two_qubit_gates: HashMap<String, HashMap<(usize, usize), f64>> = HashMap::new();
     two_qubit_gates.insert("CNOT".to_string(), cnot_map);
 
-    let mut multi_ms_map: HashMap<(usize, usize, usize), f64> = HashMap::new();
-    multi_ms_map.insert((0, 1, 2), 0.8);
-    let mut multi_qubit_gates: HashMap<String, HashMap<(usize, usize, usize), f64>> =
-        HashMap::new();
-    multi_qubit_gates.insert("MultiQubitMS".to_string(), multi_ms_map);
+    let mut multi_qubit_gates: HashMap<String, f64> = HashMap::new();
+    multi_qubit_gates.insert("MultiQubitMS".to_string(), 0.8);
 
-    let mut deph_map: HashMap<usize, f64> = HashMap::new();
-    deph_map.insert(0, 0.003);
-    deph_map.insert(1, 0.002);
-    deph_map.insert(2, 0.001);
-    let mut depol_map: HashMap<usize, f64> = HashMap::new();
-    depol_map.insert(0, 0.009);
-    depol_map.insert(1, 0.008);
-    depol_map.insert(2, 0.007);
-    let mut damp_map: HashMap<usize, f64> = HashMap::new();
-    damp_map.insert(0, 0.006);
-    damp_map.insert(1, 0.005);
-    damp_map.insert(2, 0.004);
+    let mut rates: HashMap<usize, Array2<f64>> = HashMap::new();
+    rates.insert(
+        0,
+        array![[0.003, 0.0, 0.0], [0.0, 0.0, 00.0], [0.0, 0.0, 0.0]],
+    );
+    rates.insert(
+        1,
+        array![[0.0, 0.0, 0.0], [0.0, 0.002, 0.0], [0.0, 0.0, 0.0]],
+    );
+    rates.insert(
+        2,
+        array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.001, 0.0]],
+    );
 
     let device = TestDevice::new(
         3,
         single_qubit_gates,
         two_qubit_gates,
         multi_qubit_gates,
-        deph_map,
-        depol_map,
-        damp_map,
+        rates,
     );
 
+    let array: Array2<f64> = array![[0.003, 0.0, 0.0], [0.0, 0.0, 00.0], [0.0, 0.0, 0.0]];
     assert_eq!(device.number_qubits(), 3usize);
-    assert_eq!(device.qubit_decoherence_rates(&[0]), Some(array![[0.0]]));
+    assert_eq!(device.qubit_decoherence_rates(0), Some(&array));
 
     assert_eq!(device.single_qubit_gate_time("RotateX", 0), Some(&0.1f64));
     assert_eq!(device.single_qubit_gate_time("RotateX", 3), None);
@@ -139,10 +126,6 @@ fn it_works() {
     assert_eq!(
         device.multi_qubit_gate_time("MultiQubitMS", &[0, 1, 2]),
         Some(&0.8f64)
-    );
-    assert_eq!(
-        device.multi_qubit_gate_time("MultiQubitMS", &[0, 1, 3]),
-        None
     );
     assert_eq!(device.multi_qubit_gate_time("Other", &[0, 1, 2]), None);
 }
