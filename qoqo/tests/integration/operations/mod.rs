@@ -22,6 +22,9 @@ pub use operation_conversions::*;
 mod pragma_operations;
 pub use pragma_operations::*;
 
+mod multi_qubit_gate_operations;
+pub use multi_qubit_gate_operations::*;
+
 mod single_qubit_gate_operations;
 pub use single_qubit_gate_operations::*;
 

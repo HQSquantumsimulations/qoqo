@@ -119,11 +119,13 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/single_qubit_gate_operations.rs",
     "src/operations/pragma_operations.rs",
     "src/operations/two_qubit_gate_operations.rs",
+    "src/operations/multi_qubit_gate_operations.rs",
     "src/operations/measurement_operations.rs",
     "src/operations/define_operations.rs",
 ];
 
 fn main() {
+    pyo3_build_config::add_extension_module_link_args();
     // create a visitor that will go through source code and collect the identifiers of structs that belong ad variants
     // in the Operation enum, those that belong in the SingleQubitGateOperationEnum and so on
     let mut vis = Visitor::new();
@@ -231,8 +233,9 @@ fn main() {
         use pyo3::conversion::ToPyObject;
         use roqoqo::operations::*;
         use std::collections::HashMap;
-        use ndarray::{Array1, Array};
+        use ndarray::Array1;
         use num_complex::Complex64;
+        use numpy::{PyArray2, PyReadonlyArray1};
 
         /// Tries to convert a [roqoqo::operations::Operation] to a PyObject
         pub fn convert_operation_to_pyobject(operation: Operation) -> PyResult<PyObject> {

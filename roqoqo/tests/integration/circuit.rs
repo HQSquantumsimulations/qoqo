@@ -9,15 +9,17 @@
 // License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
+// use jsonschema::{Draft, JSONSchema};
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::operations::*;
 use roqoqo::{AsVec, Circuit};
+// #[cfg(feature = "serialize")]
+// use schemars::schema_for;
 use std::collections::{HashMap, HashSet};
 #[cfg(feature = "overrotate")]
 use std::convert::TryInto;
 use std::iter::FromIterator;
 use test_case::test_case;
-#[cfg(feature = "serialize")]
 
 /// Basic functional test
 #[test]
@@ -37,10 +39,8 @@ fn add_definitions(definition: Operation) {
     let mut circuit = Circuit::new();
     circuit.add_operation(RotateZ::new(0, CalculatorFloat::from(0.0)));
     circuit.add_operation(definition.clone());
-    assert!(circuit.get(0).unwrap().to_owned() == definition);
-    assert!(
-        circuit.get(1).unwrap().to_owned() == RotateZ::new(0, CalculatorFloat::from(0.0)).into()
-    );
+    assert!(*circuit.get(0).unwrap() == definition);
+    assert!(*circuit.get(1).unwrap() == RotateZ::new(0, CalculatorFloat::from(0.0)).into());
 }
 
 /// Test get function
@@ -78,9 +78,9 @@ fn simple_iter() {
     circuit.add_operation(RotateZ::new(1, CalculatorFloat::from(1.0)));
     let mut circuit_iter = circuit.iter();
 
-    assert!(circuit.get(0).unwrap().to_owned() == *circuit_iter.next().unwrap());
-    assert!(circuit.get(1).unwrap().to_owned() == *circuit_iter.next().unwrap());
-    assert!(circuit.get(2).unwrap().to_owned() == *circuit_iter.next().unwrap());
+    assert!(*circuit.get(0).unwrap() == *circuit_iter.next().unwrap());
+    assert!(*circuit.get(1).unwrap() == *circuit_iter.next().unwrap());
+    assert!(*circuit.get(2).unwrap() == *circuit_iter.next().unwrap());
 }
 
 /// Test is_parametrized function
@@ -159,7 +159,7 @@ fn substitute_params_calculator() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.5);
     let result = circuit_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, circuit)
 }
@@ -175,9 +175,9 @@ fn substitute_params_input_symbolic() {
     circuit_test.add_operation(InputSymbolic::new("test".to_string(), 0.5));
     circuit_test.add_operation(RotateX::new(0, CalculatorFloat::from("test")));
 
-    let mut substitution_dict: Calculator = Calculator::new();
+    let substitution_dict: Calculator = Calculator::new();
     let result = circuit_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, circuit)
 }
@@ -193,6 +193,7 @@ fn remap_qbits() {
 
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(2, 0);
+    qubit_mapping_test.insert(0, 2);
     let result = circuit_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, circuit)
 }
@@ -207,10 +208,10 @@ fn count_occurences() {
     circuit.add_operation(RotateX::new(1, CalculatorFloat::from(1.0)));
     circuit.add_operation(RotateX::new(1, CalculatorFloat::from(1.0)));
     circuit.add_operation(RotateX::new(1, CalculatorFloat::from(1.0)));
-    assert!(circuit.count_occurences(&vec!["RotateX"]) == 4);
-    assert!(circuit.count_occurences(&vec!["RotateZ"]) == 2);
-    assert!(circuit.count_occurences(&vec!["Rotation"]) == 6);
-    assert!(circuit.count_occurences(&vec!["Definition"]) == 0);
+    assert!(circuit.count_occurences(&["RotateX"]) == 4);
+    assert!(circuit.count_occurences(&["RotateZ"]) == 2);
+    assert!(circuit.count_occurences(&["Rotation"]) == 6);
+    assert!(circuit.count_occurences(&["Definition"]) == 0);
 }
 
 /// Test get_operation_types function
@@ -269,8 +270,8 @@ fn into_iter_from_iter() {
     circuit.add_operation(PauliZ::new(1));
 
     let circuit_to = circuit.clone().into_iter();
-    assert!(circuit.get(0).unwrap().to_owned() == circuit_to.clone().nth(0).unwrap());
-    assert!(circuit.get(1).unwrap().to_owned() == circuit_to.clone().nth(1).unwrap());
+    assert!(*circuit.get(0).unwrap() == circuit_to.clone().next().unwrap());
+    assert!(*circuit.get(1).unwrap() == circuit_to.clone().nth(1).unwrap());
 
     assert_eq!(
         format!("{:?}", circuit_to),
@@ -289,8 +290,8 @@ fn extend_iter() {
     circuit.add_operation(RotateZ::new(1, CalculatorFloat::from(1.0)));
 
     let circuit_to = circuit.clone().into_iter();
-    assert!(circuit.get(0).unwrap().to_owned() == circuit_to.clone().nth(0).unwrap());
-    assert!(circuit.get(1).unwrap().to_owned() == circuit_to.clone().nth(1).unwrap());
+    assert!(*circuit.get(0).unwrap() == circuit_to.clone().next().unwrap());
+    assert!(*circuit.get(1).unwrap() == circuit_to.clone().nth(1).unwrap());
 
     let mut circuit_from = Circuit::new();
     circuit_from.extend(circuit_to);
@@ -319,27 +320,27 @@ fn as_vec() {
     circuit.add_operation(paulix1.clone());
 
     let vec_ops = vec![
-        Operation::from(definition.clone()),
-        Operation::from(rotatez0.clone()),
-        Operation::from(rotatex1.clone()),
-        Operation::from(pauliz0.clone()),
-        Operation::from(paulix1.clone()),
+        Operation::from(definition),
+        Operation::from(rotatez0),
+        Operation::from(rotatex1),
+        Operation::from(pauliz0),
+        Operation::from(paulix1),
     ];
 
     // Range
-    assert_eq!(circuit.as_vec(0..5).clone(), None);
-    assert_eq!(circuit.as_vec(0..1).clone().unwrap(), vec_ops[0..1]);
-    assert_eq!(circuit.as_vec(0..4).clone().unwrap(), vec_ops[0..4]);
-    assert_eq!(circuit.as_vec(1..3).clone().unwrap(), vec_ops[1..3]);
+    assert_eq!(circuit.as_vec(0..5), None);
+    assert_eq!(circuit.as_vec(0..1).unwrap(), vec_ops[0..1]);
+    assert_eq!(circuit.as_vec(0..4).unwrap(), vec_ops[0..4]);
+    assert_eq!(circuit.as_vec(1..3).unwrap(), vec_ops[1..3]);
 
     // RangeTo
-    assert_eq!(circuit.as_vec(..5).clone(), None);
-    assert_eq!(circuit.as_vec(..1).clone().unwrap(), vec_ops[0..1]);
-    assert_eq!(circuit.as_vec(..2).clone().unwrap(), vec_ops[..2]);
+    assert_eq!(circuit.as_vec(..5), None);
+    assert_eq!(circuit.as_vec(..1).unwrap(), vec_ops[0..1]);
+    assert_eq!(circuit.as_vec(..2).unwrap(), vec_ops[..2]);
 
     // RangeFrom
-    assert_eq!(circuit.as_vec(0..).clone().unwrap(), vec_ops[0..]);
-    assert_eq!(circuit.as_vec(3..).clone().unwrap(), vec_ops[3..]);
+    assert_eq!(circuit.as_vec(0..).unwrap(), vec_ops[0..]);
+    assert_eq!(circuit.as_vec(3..).unwrap(), vec_ops[3..]);
 }
 
 /// Test add_operation function
@@ -400,7 +401,7 @@ fn simple_traits() {
     // Test Debug trait
     assert_eq!(
         format!("{:?}", circuit),
-        "Circuit { definitions: [DefinitionFloat(DefinitionFloat { name: \"ro\", length: 1, is_output: false })], operations: [PauliZ(PauliZ { qubit: 0 })] }"
+        "Circuit { definitions: [DefinitionFloat(DefinitionFloat { name: \"ro\", length: 1, is_output: false })], operations: [PauliZ(PauliZ { qubit: 0 })], _roqoqo_version: RoqoqoVersion }"
     );
 
     // Test Display trait
@@ -445,3 +446,26 @@ fn test_overrotate() {
     assert_eq!(t.qubit(), &1);
     assert_ne!(t.theta(), &2.0.into());
 }
+
+// #[cfg(feature = "json_schema")]
+// #[test]
+// fn test_basis_rotation_json() {
+//     let mut circuit = Circuit::new();
+//     circuit += RotateX::new(0, "theta".into());
+
+//     // Serialize Circuit
+//     let test_json = serde_json::to_string(&circuit).unwrap();
+//     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+//     // Create JSONSchema
+//     let test_schema = schema_for!(Circuit);
+//     let schema = serde_json::to_string(&test_schema).unwrap();
+//     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+//     let compiled_schema = JSONSchema::options()
+//         .with_draft(Draft::Draft7)
+//         .compile(&schema_value)
+//         .unwrap();
+
+//     let validation_result = compiled_schema.validate(&test_value);
+//     assert!(validation_result.is_ok());
+// }

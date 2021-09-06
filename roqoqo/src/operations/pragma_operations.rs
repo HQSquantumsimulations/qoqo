@@ -18,14 +18,18 @@ use crate::operations::{
     OperatePragmaNoiseProba, OperateSingleQubit, RoqoqoError, Substitute,
 };
 use crate::Circuit;
-use nalgebra::Matrix4;
+#[cfg(feature = "serialize")]
+use bincode::serialize;
+use nalgebra::{matrix, Matrix4};
 use ndarray::{array, Array, Array1, Array2};
 use num_complex::Complex64;
 use qoqo_calculator::{Calculator, CalculatorFloat};
 #[cfg(feature = "serialize")]
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::convert::TryFrom;
+
+use super::InvolvedClassical;
 
 /// This PRAGMA Operation sets the number of measurements of the circuit.
 ///
@@ -36,11 +40,13 @@ use std::convert::TryFrom;
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaSetNumberOfMeasurements {
     /// The number of measurements.
     number_measurements: usize,
@@ -70,7 +76,7 @@ impl InvolveQubits for PragmaSetNumberOfMeasurements {
 ///
 /// # Example
 ///
-/// For instance, to initialize the $|\Psi^->$ Bell state, we pass the following `statevec` to
+/// For instance, to initialize the | Ψ- > Bell state, we pass the following `statevec` to
 /// the PragmaSetStateVector operation.
 ///
 /// ```
@@ -97,6 +103,7 @@ impl InvolveQubits for PragmaSetNumberOfMeasurements {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaSetStateVector {
     /// The statevector that is initialized.
     statevector: Array1<Complex64>,
@@ -143,6 +150,7 @@ impl InvolveQubits for PragmaSetStateVector {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaSetDensityMatrix {
     /// The density matrix that is initialized.
     density_matrix: Array2<Complex64>,
@@ -168,11 +176,13 @@ impl InvolveQubits for PragmaSetDensityMatrix {
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaRepeatGate {
     /// The number of times the following gate is repeated.
     repetition_coefficient: usize,
@@ -209,6 +219,7 @@ impl InvolveQubits for PragmaRepeatGate {
     roqoqo_derive::OperateMultiQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 // #[cfg_attr(feature = "overrotate")]
 pub struct PragmaOverrotation {
     /// The unique hqslang name of the gate to overrotate.
@@ -240,6 +251,7 @@ const TAGS_PragmaOverrotation: &[&str; 4] = &[
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaBoostNoise {
     /// The coefficient by which the noise is boosted, i.e. the number by which the gate time is multiplied.
     noise_coefficient: CalculatorFloat,
@@ -269,6 +281,7 @@ impl InvolveQubits for PragmaBoostNoise {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaStopParallelBlock {
     /// The qubits involved in parallel execution block.
     qubits: Vec<usize>,
@@ -298,6 +311,7 @@ const TAGS_PragmaStopParallelBlock: &[&str; 4] = &[
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGlobalPhase {
     /// The picked up global phase.
     phase: CalculatorFloat,
@@ -330,6 +344,7 @@ impl InvolveQubits for PragmaGlobalPhase {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaSleep {
     /// The qubits involved in the sleep block.
     qubits: Vec<usize>,
@@ -351,6 +366,7 @@ const TAGS_PragmaSleep: &[&str; 4] = &[
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
@@ -358,6 +374,7 @@ const TAGS_PragmaSleep: &[&str; 4] = &[
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaActiveReset {
     /// The qubit to be reset.
     qubit: usize,
@@ -377,12 +394,14 @@ const TAGS_PragmaActiveReset: &[&str; 4] = &[
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::OperateMultiQubit,
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaStartDecompositionBlock {
     /// The qubits involved in the decomposition block.
     qubits: Vec<usize>,
@@ -402,6 +421,7 @@ const TAGS_PragmaStartDecompositionBlock: &[&str; 4] = &[
 impl Substitute for PragmaStartDecompositionBlock {
     /// Remaps qubits in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        crate::operations::check_valid_mapping(mapping)?;
         let mut new_qubits: Vec<usize> = Vec::new();
         for q in &self.qubits {
             new_qubits.push(*mapping.get(q).ok_or(Err("")).map_err(
@@ -413,16 +433,8 @@ impl Substitute for PragmaStartDecompositionBlock {
 
         let mut mutable_reordering: HashMap<usize, usize> = HashMap::new();
         for (old_qubit, new_qubit) in self.reordering_dictionary.clone() {
-            let old_remapped = *mapping.get(&old_qubit).ok_or(Err("")).map_err(
-                |_x: std::result::Result<&usize, &str>| RoqoqoError::QubitMappingError {
-                    qubit: old_qubit,
-                },
-            )?;
-            let new_remapped = *mapping.get(&new_qubit).ok_or(Err("")).map_err(
-                |_x: std::result::Result<&usize, &str>| RoqoqoError::QubitMappingError {
-                    qubit: new_qubit,
-                },
-            )?;
+            let old_remapped = *mapping.get(&old_qubit).unwrap_or(&old_qubit);
+            let new_remapped = *mapping.get(&new_qubit).unwrap_or(&new_qubit);
             mutable_reordering.insert(old_remapped, new_remapped);
         }
 
@@ -433,7 +445,7 @@ impl Substitute for PragmaStartDecompositionBlock {
     }
 
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, _calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(&self, _calculator: &Calculator) -> Result<Self, RoqoqoError> {
         Ok(self.clone())
     }
 }
@@ -444,6 +456,7 @@ impl Substitute for PragmaStartDecompositionBlock {
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
@@ -451,6 +464,7 @@ impl Substitute for PragmaStartDecompositionBlock {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaStopDecompositionBlock {
     /// The qubits involved in the decomposition block.
     qubits: Vec<usize>,
@@ -468,6 +482,12 @@ const TAGS_PragmaStopDecompositionBlock: &[&str; 4] = &[
 ///
 /// This PRAGMA Operation applies a pure damping error corresponding to zero temperature environments.
 ///
+/// # Note
+///
+/// Damping means going from state `|1>` to `|0>` and corresponds to zero-temperature in a physical
+/// device where `|0>` is the ground state.
+/// With respect to the definition of the Pauli operator `Z`, `|0>` is the excited state and damping leads to
+/// an increase in energy.
 #[derive(
     Debug,
     Clone,
@@ -479,6 +499,7 @@ const TAGS_PragmaStopDecompositionBlock: &[&str; 4] = &[
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaDamping {
     /// The qubit on which to apply the damping.
     qubit: usize,
@@ -502,18 +523,16 @@ const TAGS_PragmaDamping: &[&str; 6] = &[
 impl OperatePragmaNoise for PragmaDamping {
     /// Returns the superoperator matrix of the operation.
     fn superoperator(&self) -> Result<Array2<f64>, RoqoqoError> {
-        let gate_time: f64 = f64::try_from(self.gate_time.clone())?;
-        let rate: f64 = f64::try_from(self.rate.clone())?;
-
-        let pre_exp: f64 = -1.0 * gate_time * rate;
-        let prob: f64 = 1.0 - pre_exp.exp();
-        let sqrt: f64 = (1.0 - prob).sqrt();
+        // let prob: f64 = f64::try_from(self.probability())?;
+        let t1_decay: f64 = f64::try_from(-self.gate_time.clone() * self.rate.clone())?.exp();
+        let t2_decay: f64 = f64::try_from(-self.gate_time.clone() * self.rate.clone() * 0.5)?.exp();
+        // let sqrt: f64 = (1.0 - prob).sqrt();
 
         Ok(array![
-            [1.0, 0.0, 0.0, prob],
-            [0.0, sqrt, 0.0, 0.0],
-            [0.0, 0.0, sqrt, 0.0],
-            [0.0, 0.0, 0.0, 1.0 - prob],
+            [1.0, 0.0, 0.0, 1.0 - t1_decay],
+            [0.0, t2_decay, 0.0, 0.0],
+            [0.0, 0.0, t2_decay, 0.0],
+            [0.0, 0.0, 0.0, t1_decay],
         ])
     }
 
@@ -530,7 +549,7 @@ impl OperatePragmaNoiseProba for PragmaDamping {
     /// Returns the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
     fn probability(&self) -> CalculatorFloat {
         let prob: CalculatorFloat =
-            ((self.gate_time.clone() * self.rate.clone() * (-2.0)).exp() * (-1.0) + 1.0) * 0.5;
+            (self.gate_time.clone() * self.rate.clone() * (-1.0)).exp() * (-1.0) + 1.0;
         prob
     }
 }
@@ -550,6 +569,7 @@ impl OperatePragmaNoiseProba for PragmaDamping {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaDepolarising {
     /// The qubit on which to apply the depolarising.
     qubit: usize,
@@ -573,20 +593,13 @@ const TAGS_PragmaDepolarising: &[&str; 6] = &[
 impl OperatePragmaNoise for PragmaDepolarising {
     /// Returns the superoperator matrix of the operation.
     fn superoperator(&self) -> Result<Array2<f64>, RoqoqoError> {
-        let gate_time: f64 = f64::try_from(self.gate_time.clone())?;
-        let rate: f64 = f64::try_from(self.rate.clone())?;
-
-        let pre_exp: f64 = -1.0 * gate_time * rate;
-        let prob: f64 = (3.0 / 4.0) * (1.0 - pre_exp.exp());
-        let proba1: f64 = 1.0 - (2.0 / 3.0) * prob;
-        let proba2: f64 = 1.0 - (4.0 / 3.0) * prob;
-        let proba3: f64 = (2.0 / 3.0) * prob;
-
+        let t1_decay: f64 = f64::try_from(-self.gate_time.clone() * self.rate.clone() * 1.0)?.exp();
+        let t2_decay: f64 = f64::try_from(-self.gate_time.clone() * self.rate.clone() * 1.0)?.exp();
         Ok(array![
-            [proba1, 0.0, 0.0, proba3],
-            [0.0, proba2, 0.0, 0.0],
-            [0.0, 0.0, proba2, 0.0],
-            [proba3, 0.0, 0.0, proba1],
+            [0.5 + 0.5 * t1_decay, 0.0, 0.0, 0.5 - 0.5 * t1_decay],
+            [0.0, t2_decay, 0.0, 0.0],
+            [0.0, 0.0, t2_decay, 0.0],
+            [0.5 - 0.5 * t1_decay, 0.0, 0.0, 0.5 + 0.5 * t1_decay],
         ])
     }
 
@@ -623,6 +636,7 @@ impl OperatePragmaNoiseProba for PragmaDepolarising {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaDephasing {
     /// The qubit on which to apply the dephasing.
     qubit: usize,
@@ -693,6 +707,7 @@ impl OperatePragmaNoiseProba for PragmaDephasing {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaRandomNoise {
     /// The qubit the PRAGMA Operation is applied to.
     qubit: usize,
@@ -757,21 +772,19 @@ impl OperatePragmaNoiseProba for PragmaRandomNoise {
 /// The general noise PRAGMA operation.
 ///
 /// This PRAGMA operation applies a noise term according to the given rates.
-/// The rates are represented by a 3x3 matrix:
-/// $$ M = \begin{pmatrix}
-/// a & b & c \\\\
-/// d & e & f \\\\
-/// g & h & j \\\\
-/// \end{pmatrix} $$
-/// where the coefficients correspond to the following summands
+/// The rates are represented by a 3x3 matrix,  where the coefficients correspond to the following summands
 /// expanded from the first term of the non-coherent part of the Lindblad equation:
-///     $$ \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
-///         L_0 = \sigma^{+} \\\\
-///         L_1 = \sigma^{-} \\\\
-///         L_3 = \sigma^{z}
-///     $$
 ///
+/// d/dt * ρ = Σ Mij * Li * ρ * Lj† - 1/2 * ( Lj† * Li * ρ + ρ * Lj† * Li),
+///
+/// where the indices i and j run from 0 to 2
+///
+/// with L0 = σ+, L1 = σ- and L3 = σz.
 /// Applying the Pragma with a given `gate_time` corresponds to applying the full time-evolution under the Lindblad equation for `gate_time` time.
+///
+///  Note: as long as gate times and decoherence rates are scaled inversely
+///  any kind of units can be used. However, we recommend using nanoseconds
+///  and inverse nanosecconds as units for gate times and decoherence rates.
 ///
 /// # Example
 ///
@@ -803,7 +816,6 @@ impl OperatePragmaNoiseProba for PragmaRandomNoise {
 ///     rates.clone(),
 /// );
 /// ```
-/// That will result into $.
 ///
 #[derive(
     Debug,
@@ -816,6 +828,7 @@ impl OperatePragmaNoiseProba for PragmaRandomNoise {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGeneralNoise {
     /// The qubit the PRAGMA Operation is applied to.
     qubit: usize,
@@ -836,74 +849,74 @@ const TAGS_PragmaGeneralNoise: &[&str; 5] = &[
 
 // Collection of superoperators that appear in the Lindblad equation for a single qubit/spin with
 // a basis of the form 0: sigma+ 1:sigma- 2: sigmaz
-const PGN_SUPEROP: [[[[f64; 4]; 4]; 3]; 3] = [
+const PGN_SUPEROP: [[Matrix4<f64>; 3]; 3] = [
     [
         // sigma+ sigma+
-        [
-            [-1., 0., 0., 0.],
-            [0., -0.5, 0., 0.],
-            [0., 0., -0.5, 0.],
-            [1., 0., 0., 0.],
+        matrix![
+            0., 0., 0., 1.;
+            0., -0.5, 0., 0.;
+            0., 0., -0.5, 0.;
+            0., 0., 0., -1.;
         ],
         // sigma+ sigma-
-        [
-            [0., 0., 0., 0.],
-            [0., 0., 0., 0.],
-            [0., 1., 0., 0.],
-            [0., 0., 0., 0.],
+        matrix![
+            0., 0., 0., 0.;
+            0., 0., 1., 0.;
+            0., 0., 0., 0.;
+            0., 0., 0., 0.;
         ],
         // sigma+ sigmaz
-        [
-            [0., 0.5, 0., 0.],
-            [0., 0., 0., 0.],
-            [1.5, 0., 0., 0.5],
-            [0., -0.5, 0., 0.],
+        matrix![
+            0., 0., 0.5, 0.;
+            -0.5, 0., 0., -1.5;
+            0., 0., 0., 0.;
+            0., 0., -0.5, 0.;
         ],
     ],
     [
         // sigma- sigma+
-        [
-            [0., 0., 0., 0.],
-            [0., 0., 1., 0.],
-            [0., 0., 0., 0.],
-            [0., 0., 0., 0.],
+        matrix![
+            0., 0., 0., 0.;
+            0., 0., 0., 0.;
+            0., 1., 0., 0.;
+            0., 0., 0., 0.;
         ],
         // sigma- sigma-
-        [
-            [0., 0., 0., 1.],
-            [0., -0.5, 0., 0.],
-            [0., 0., -0.5, 0.],
-            [0., 0., 0., -1.],
-        ],
+        matrix![
+        -1., 0., 0., 0.;
+        0., -0.5, 0., 0.;
+        0., 0., -0.5, 0.;
+        1., 0., 0., 0.;
+                ],
         // sigma- sigmaz
-        [
-            [0., 0., 0.5, 0.],
-            [-0.5, 0., 0., -1.5],
-            [0., 0., 0., 0.],
-            [0., 0., -0.5, 0.],
+        matrix![
+            0., 0.5, 0., 0.;
+            0., 0., 0., 0.;
+            1.5, 0., 0., 0.5;
+            0., -0.5, 0., 0.;
         ],
     ],
     [
-        // sigmaz sigma+
-        [
-            [0., 0., 0.5, 0.],
-            [1.5, 0., 0., 0.5],
-            [0., 0., 0., 0.],
-            [0., 0., -0.5, 0.],
+        //  sigmaz sigma+
+        matrix![
+            0., 0.5, 0., 0.;
+            0., 0., 0., 0.;
+            -0.5, 0., 0., -1.5;
+            0., -0.5, 0., 0.;
         ],
         // sigmaz sigma-
-        [
-            [0., 0.5, 0., 0.],
-            [0., 0., 0., 0.],
-            [-0.5, 0., 0., -1.5],
-            [0., -0.5, 0., 0.],
+        matrix![
+            0., 0., 0.5, 0.;
+            1.5, 0., 0., 0.5;
+            0., 0., 0., 0.;
+            0., 0., -0.5, 0.;
         ],
         // sigmaz sigmaz
-        [
-            [0., 0., 0., 0.],
-            [0., -2., 0., 0.],
-            [0., 0., -2., 0.],
-            [0., 0., 0., 0.],
+        matrix![
+            0., 0., 0., 0.;
+            0., -2., 0., 0.;
+            0., 0., -2., 0.;
+            0., 0., 0., 0.;
         ],
     ],
 ];
@@ -916,13 +929,15 @@ impl OperatePragmaNoise for PragmaGeneralNoise {
         let mut superop = Matrix4::<f64>::default();
         for (i, row) in PGN_SUPEROP.iter().enumerate() {
             for (j, op) in row.iter().clone().enumerate() {
-                let tmp_superop: Matrix4<f64> = (*op).into();
+                let tmp_superop: Matrix4<f64> = *op;
                 superop += gate_time * self.rates[(i, j)] * tmp_superop;
             }
         }
         // Integrate superoperator for infinitesimal time to get superoperator for given rate and gate-time
         // Use exponential
-        let exp_superop: Matrix4<f64> = superop.exp();
+        let mut exp_superop: Matrix4<f64> = superop.exp();
+        // transpose because NAlgebra matrix iter is column major
+        exp_superop.transpose_mut();
         let mut tmp_iter = exp_superop.iter();
         // convert to ndarray.
         let array: Array2<f64> = Array::from_shape_simple_fn((4, 4), || *tmp_iter.next().unwrap());
@@ -944,6 +959,7 @@ impl OperatePragmaNoise for PragmaGeneralNoise {
 ///
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaConditional {
     /// The name of the [crate::registers::BitRegister] containting the condition bool value.
     condition_register: String,
@@ -954,18 +970,19 @@ pub struct PragmaConditional {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_PragmaConditional: &[&str; 4] = &[
-    "Operation",
-    "SingleQubitOperation",
-    "PragmaOperation",
-    "PragmaConditional",
-];
+const TAGS_PragmaConditional: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaConditional"];
 
 // Implementing the InvolveQubits trait for PragmaConditional.
 impl InvolveQubits for PragmaConditional {
     /// Lists all involved qubits.
     fn involved_qubits(&self) -> InvolvedQubits {
         self.circuit.involved_qubits()
+    }
+
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        let mut new_set: HashSet<(String, usize)> = HashSet::new();
+        new_set.insert((self.condition_register.clone(), self.condition_index));
+        super::InvolvedClassical::Set(new_set)
     }
 }
 
@@ -982,12 +999,167 @@ impl Substitute for PragmaConditional {
     }
 
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
         let new_circuit = self.circuit.substitute_parameters(calculator).unwrap();
         Ok(PragmaConditional::new(
             self.condition_register.clone(),
             self.condition_index,
             new_circuit,
         ))
+    }
+}
+
+/// A wrapper around backend specific PRAGMA operations capable of changing a device.
+///
+/// This PRAGMA is a thin wrapper around device specific operations that can change
+/// device properties.
+///
+/// # NOTE
+///
+/// Since this PRAGMA uses serde and bincode to store a representation of the wrapped
+/// operation internally it is only available when roqoqo is built with the `serialize` feature
+#[derive(Debug, Clone, PartialEq, Eq, roqoqo_derive::OperatePragma)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct PragmaChangeDevice {
+    /// The tags of the wrapped operation.
+    pub wrapped_tags: Vec<String>,
+    /// The hqslang name of the wrapped operation.
+    pub wrapped_hqslang: String,
+    /// Binary representation of the wrapped operation using serde and bincode.
+    pub wrapped_operation: Vec<u8>,
+}
+#[cfg_attr(feature = "dynamic", typetag::serde)]
+impl Operate for PragmaChangeDevice {
+    fn tags(&self) -> &'static [&'static str] {
+        TAGS_PragmaChangeDevice
+    }
+    fn hqslang(&self) -> &'static str {
+        "PragmaChangeDevice"
+    }
+    fn is_parametrized(&self) -> bool {
+        false
+    }
+}
+impl PragmaChangeDevice {
+    #[cfg(feature = "serialize")]
+    pub fn new<T>(wrapped_pragma: &T) -> Result<Self, RoqoqoError>
+    where
+        T: Operate,
+        T: Serialize,
+    {
+        Ok(Self {
+            wrapped_tags: wrapped_pragma
+                .tags()
+                .iter()
+                .map(|x| x.to_string())
+                .collect(),
+            wrapped_hqslang: wrapped_pragma.hqslang().to_string(),
+            wrapped_operation: serialize(wrapped_pragma).map_err(|err| {
+                RoqoqoError::SerializationError {
+                    msg: format!("{:?}", err),
+                }
+            })?,
+        })
+    }
+}
+#[allow(non_upper_case_globals)]
+const TAGS_PragmaChangeDevice: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaChangeDevice"];
+
+// Implementing the InvolveQubits trait for PragmaConditional.
+impl InvolveQubits for PragmaChangeDevice {
+    /// Lists all involved qubits.
+    fn involved_qubits(&self) -> InvolvedQubits {
+        InvolvedQubits::All
+    }
+}
+
+/// Substitute trait allowing to replace symbolic parameters and to perform qubit mappings.
+impl Substitute for PragmaChangeDevice {
+    /// Remaps qubits in clone of the operation.
+    /// This is not supported  for PragmaChangeDevice and should throw and error when a non-trivial remapping
+    /// is used
+    fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        match mapping.iter().find(|(x, y)| x != y) {
+            Some((x, _)) => Err(RoqoqoError::QubitMappingError { qubit: *x }),
+            None => Ok(self.clone()),
+        }
+    }
+
+    #[allow(unused_variables)]
+    /// Substitutes symbolic parameters in clone of the operation.
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
+        Ok(self.clone())
+    }
+}
+
+/// This PRAGMA repeats a circuit .
+///
+#[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct PragmaLoop {
+    /// The name of the classical readout register.
+    repetitions: CalculatorFloat,
+    /// The Circuit that is looped.
+    circuit: Circuit,
+}
+impl super::ImplementedIn1point1 for PragmaLoop {}
+
+#[allow(non_upper_case_globals)]
+const TAGS_PragmaLoop: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaLoop"];
+
+/// Implements [Substitute] trait allowing to replace symbolic parameters and to perform qubit mappings.
+impl Substitute for PragmaLoop {
+    /// Remaps qubits in operations in clone of the operation.
+    fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        let new_circuit = self.circuit.remap_qubits(mapping)?;
+        Ok(PragmaLoop::new(self.repetitions.clone(), new_circuit))
+    }
+
+    /// Substitutes symbolic parameters in clone of the operation.
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
+        let new_repetitions = calculator.parse_get(self.repetitions.clone())?;
+        let new_circuit = self.circuit.substitute_parameters(calculator)?;
+        Ok(PragmaLoop::new(new_repetitions.into(), new_circuit))
+    }
+}
+
+// Implements the InvolveQubits trait for PragmaLoop.
+impl InvolveQubits for PragmaLoop {
+    /// Lists all involved qubits (here: All).
+    fn involved_qubits(&self) -> InvolvedQubits {
+        self.circuit.involved_qubits()
+    }
+
+    fn involved_classical(&self) -> InvolvedClassical {
+        let mut involved = InvolvedClassical::None;
+        for op in self.circuit.iter() {
+            let tmp_involved = op.involved_classical();
+            match &tmp_involved {
+                InvolvedClassical::All(x) => {
+                    return InvolvedClassical::All(x.clone());
+                }
+                InvolvedClassical::AllQubits(x) => {
+                    return InvolvedClassical::AllQubits(x.clone());
+                }
+                InvolvedClassical::None => (),
+                InvolvedClassical::Set(x) => match involved {
+                    InvolvedClassical::All(y) => {
+                        return InvolvedClassical::All(y);
+                    }
+                    InvolvedClassical::AllQubits(y) => {
+                        return InvolvedClassical::AllQubits(y);
+                    }
+                    InvolvedClassical::None => involved = tmp_involved,
+                    InvolvedClassical::Set(y) => {
+                        let mut combined = x.clone();
+                        combined.extend(y);
+                        involved = InvolvedClassical::Set(combined)
+                    }
+                },
+            }
+        }
+        involved
     }
 }

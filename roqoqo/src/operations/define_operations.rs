@@ -31,6 +31,8 @@
 //! (5) InputSymbolic, where the user can define a floating point type value to replace a certain symbolic parameter.
 //!
 
+use std::collections::HashSet;
+
 use crate::operations::{Define, InvolveQubits, InvolvedQubits, Operate, RoqoqoError, Substitute};
 
 /// DefinitionFloat is the Definition for a floating point type register.
@@ -39,11 +41,13 @@ use crate::operations::{Define, InvolveQubits, InvolvedQubits, Operate, RoqoqoEr
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::Define,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct DefinitionFloat {
     /// The name of the register that is defined.
     name: String,
@@ -58,9 +62,11 @@ const TAGS_DefinitionFloat: &[&str; 3] = &["Operation", "Definition", "Definitio
 
 // Implementing the InvolveQubits trait for DefinitionFloat.
 impl InvolveQubits for DefinitionFloat {
-    /// Lists all involved Qubits (here, none).
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::None
+    }
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        super::InvolvedClassical::All(self.name.clone())
     }
 }
 
@@ -70,11 +76,14 @@ impl InvolveQubits for DefinitionFloat {
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::Define,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+
 pub struct DefinitionComplex {
     /// The name of the register that is defined.
     name: String,
@@ -85,6 +94,7 @@ pub struct DefinitionComplex {
 }
 
 #[allow(non_upper_case_globals)]
+
 const TAGS_DefinitionComplex: &[&str; 3] = &["Operation", "Definition", "DefinitionComplex"];
 
 // Implementing the InvolveQubits trait for DefinitionComplex.
@@ -92,6 +102,10 @@ impl InvolveQubits for DefinitionComplex {
     /// Lists all involved Qubits (here, none).
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::None
+    }
+
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        super::InvolvedClassical::All(self.name.clone())
     }
 }
 
@@ -101,11 +115,13 @@ impl InvolveQubits for DefinitionComplex {
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::Define,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct DefinitionUsize {
     /// The name of the register that is defined.
     name: String,
@@ -124,6 +140,10 @@ impl InvolveQubits for DefinitionUsize {
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::None
     }
+
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        super::InvolvedClassical::All(self.name.clone())
+    }
 }
 
 /// DefinitionBit is the Definition for a Bit type register.
@@ -132,11 +152,13 @@ impl InvolveQubits for DefinitionUsize {
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::Define,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct DefinitionBit {
     /// The name of the register that is defined.
     name: String,
@@ -155,6 +177,10 @@ impl InvolveQubits for DefinitionBit {
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::None
     }
+
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        super::InvolvedClassical::All(self.name.clone())
+    }
 }
 
 /// InputSymbolic is the Definition for a floating point type parameter which will replace a certain symbolic parameter.
@@ -168,6 +194,7 @@ impl InvolveQubits for DefinitionBit {
     roqoqo_derive::Define,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct InputSymbolic {
     /// The name of the register that is defined.
     name: String,
@@ -183,5 +210,52 @@ impl InvolveQubits for InputSymbolic {
     /// Lists all involved Qubits (here, none).
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::None
+    }
+
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        let mut a: HashSet<(String, usize)> = HashSet::new();
+        a.insert((self.name.clone(), 0));
+        super::InvolvedClassical::Set(a)
+    }
+}
+
+/// InputBit sets a certain bit in an existing BitRegister of the circuit.
+///
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    Eq,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::Define,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct InputBit {
+    /// The name of the register that where the bit is set.
+    name: String,
+    /// The index in the register that is set.
+    index: usize,
+    /// The value the bit is set to
+    value: bool,
+}
+
+impl super::ImplementedIn1point1 for InputBit {}
+
+#[allow(non_upper_case_globals)]
+const TAGS_InputBit: &[&str; 3] = &["Operation", "Definition", "InputBit"];
+
+// Implementing the InvolveQubits trait for InputSymbolic.
+impl InvolveQubits for InputBit {
+    /// Lists all involved Qubits (here, none).
+    fn involved_qubits(&self) -> InvolvedQubits {
+        InvolvedQubits::None
+    }
+
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        let mut a: HashSet<(String, usize)> = HashSet::new();
+        a.insert((self.name.clone(), self.index));
+        super::InvolvedClassical::Set(a)
     }
 }

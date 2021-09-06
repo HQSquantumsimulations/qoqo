@@ -24,11 +24,12 @@ mod measurement_operations;
 pub use measurement_operations::*;
 mod two_qubit_gate_operations;
 pub use two_qubit_gate_operations::*;
+mod multi_qubit_gate_operations;
+pub use multi_qubit_gate_operations::*;
 include!(concat!(
     env!("OUT_DIR"),
     "/_auto_generated_operation_conversion.rs"
 ));
-
 use pyo3::prelude::*;
 
 /// Operations are the atomic instructions in any quantum program that can be represented by qoqo.
@@ -64,6 +65,7 @@ use pyo3::prelude::*;
 ///    DefinitionFloat
 ///    DefinitionComplex
 ///    InputSymbolic
+///    InputSymbolic
 ///    MeasureQubit
 ///    PragmaGetStateVector
 ///    PragmaGetDensityMatrix
@@ -87,6 +89,7 @@ use pyo3::prelude::*;
 ///    PragmaRandomNoise
 ///    PragmaGeneralNoise
 ///    PragmaConditional
+///    PragmaLoop
 ///    CNOT
 ///    SWAP
 ///    FSwap
@@ -107,13 +110,15 @@ use pyo3::prelude::*;
 ///    Bogoliubov
 ///    PMInteraction
 ///    ComplexPMInteraction
-
+///    MultiQubitMS
 #[pymodule]
+
 pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<SingleQubitGateWrapper>()?;
     m.add_class::<RotateZWrapper>()?;
     m.add_class::<RotateYWrapper>()?;
     m.add_class::<RotateXWrapper>()?;
+    m.add_class::<RotateXYWrapper>()?;
     m.add_class::<RotateAroundSphericalAxisWrapper>()?;
     m.add_class::<PauliZWrapper>()?;
     m.add_class::<PauliYWrapper>()?;
@@ -128,6 +133,7 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<DefinitionFloatWrapper>()?;
     m.add_class::<DefinitionComplexWrapper>()?;
     m.add_class::<InputSymbolicWrapper>()?;
+    m.add_class::<InputBitWrapper>()?;
     m.add_class::<MeasureQubitWrapper>()?;
     m.add_class::<PragmaGetStateVectorWrapper>()?;
     m.add_class::<PragmaGetDensityMatrixWrapper>()?;
@@ -152,6 +158,8 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<PragmaRandomNoiseWrapper>()?;
     m.add_class::<PragmaGeneralNoiseWrapper>()?;
     m.add_class::<PragmaConditionalWrapper>()?;
+    m.add_class::<PragmaChangeDeviceWrapper>()?;
+    m.add_class::<PragmaLoopWrapper>()?;
     m.add_class::<CNOTWrapper>()?;
     m.add_class::<SWAPWrapper>()?;
     m.add_class::<FSwapWrapper>()?;
@@ -175,6 +183,7 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<PhaseShiftedControlledZWrapper>()?;
     m.add_class::<PhaseShiftState0Wrapper>()?;
     m.add_class::<PhaseShiftState1Wrapper>()?;
-
+    m.add_class::<MultiQubitMSWrapper>()?;
+    m.add_class::<MultiQubitZZWrapper>()?;
     Ok(())
 }

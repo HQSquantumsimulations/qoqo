@@ -44,7 +44,7 @@ fn operate_qubits_enum(de: DataEnum, ident: Ident) -> TokenStream {
     // TokenStream iterator for matching From implementation on variants
     let from_quotes = variants_with_type.clone().map(|(vident, _, ty)| {
         quote! {
-            /// Implements the [From] trait $\textit{from}$ this Operation.
+            /// Implements the [From] trait from this Operation.
             #[automatically_derived]
             impl From<#ty> for #ident{
                 /// Performs the conversion.
@@ -58,7 +58,7 @@ fn operate_qubits_enum(de: DataEnum, ident: Ident) -> TokenStream {
     let try_from_quotes = variants_with_type.clone().map(|(vident, _, ty)| {
         quote! {
             #[automatically_derived]
-            /// Implements the [core::convert::TryFrom] trait $\textit{into}$ this Operation.
+            /// Implements the [core::convert::TryFrom] trait into this Operation.
             impl core::convert::TryFrom<#ident> for #ty{
                 /// The type returned in case of a conversion error.
                 type Error = &'static str;

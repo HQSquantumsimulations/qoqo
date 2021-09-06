@@ -13,12 +13,12 @@
 use pyo3::exceptions::PyRuntimeError;
 use pyo3::prelude::*;
 use pyo3::types::PySet;
-use pyo3::PyObjectProtocol;
 use qoqo_macros::*;
 use roqoqo::operations::*;
 use std::collections::HashMap;
 
 #[wrap(Operate, Define)]
+#[derive(Eq)]
 /// DefinitionFloat is the Definition for a Float type register.
 ///
 /// Args:
@@ -32,6 +32,7 @@ pub struct DefinitionFloat {
 }
 
 #[wrap(Operate, Define)]
+#[derive(Eq)]
 /// DefinitionComplex is the Definition for a Complex type register.
 ///
 /// Args:
@@ -45,6 +46,7 @@ pub struct DefinitionComplex {
 }
 
 #[wrap(Operate, Define)]
+#[derive(Eq)]
 /// DefinitionUsize is the Definition for an Integer type register.
 ///
 /// Args:
@@ -58,6 +60,7 @@ pub struct DefinitionUsize {
 }
 
 #[wrap(Operate, Define)]
+#[derive(Eq)]
 /// DefinitionBit is the Definition for a Bit type register.
 ///
 /// Args:
@@ -79,4 +82,18 @@ pub struct DefinitionBit {
 pub struct InputSymbolic {
     name: String,
     input: f64,
+}
+
+#[wrap(Operate, Define)]
+#[derive(Eq)]
+/// InputBit sets a certain bit in an existing BitRegister of the circuit.
+///
+/// Args:
+///     name (string): The name of the register that is defined.
+///     index (int): The index in the register that is set.
+///     value (int): The value the bit is set to.
+pub struct InputBit {
+    name: String,
+    index: usize,
+    value: bool,
 }

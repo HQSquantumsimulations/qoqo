@@ -15,7 +15,6 @@ use numpy::{PyArray2, ToPyArray};
 use pyo3::exceptions::{PyRuntimeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PySet;
-use pyo3::PyObjectProtocol;
 use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::{convert_into_calculator_float, CalculatorFloatWrapper};
 use qoqo_macros::*;
@@ -185,6 +184,7 @@ struct PhaseShiftState0 {
 }
 
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[derive(Eq)]
 /// The Pauli X gate.
 ///
 /// .. math::
@@ -201,6 +201,7 @@ struct PauliX {
 }
 
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[derive(Eq)]
 /// The Pauli Y gate.
 ///
 /// .. math::
@@ -217,6 +218,7 @@ struct PauliY {
 }
 
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[derive(Eq)]
 /// The Pauli Z gate.
 ///
 /// .. math::
@@ -233,6 +235,7 @@ struct PauliZ {
 }
 
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[derive(Eq)]
 /// The square root of the XPower gate :math:`e^{-i \frac{\pi}{4} \sigma^x}`.
 ///
 /// .. math::
@@ -249,6 +252,7 @@ struct SqrtPauliX {
 }
 
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[derive(Eq)]
 /// The inverse square root XPower gate :math:`e^{i \frac{\pi}{2} \sigma^x}`.
 ///
 /// .. math::
@@ -265,6 +269,7 @@ struct InvSqrtPauliX {
 }
 
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[derive(Eq)]
 /// The Hadamard gate.
 ///
 /// .. math::
@@ -281,6 +286,7 @@ struct Hadamard {
 }
 
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[derive(Eq)]
 /// The S gate.
 ///
 /// .. math::
@@ -296,6 +302,7 @@ struct SGate {
     qubit: usize,
 }
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[derive(Eq)]
 /// The T gate.
 ///
 /// .. math::
@@ -340,7 +347,7 @@ struct TGate {
 /// Args:
 ///     qubit (int): The qubit the unitary gate is applied to.
 ///     theta (CalculatorFloat): The angle :math:`\theta` of the rotation.
-///     spherical_theta (CalculatorFloat): The rotation axis, unit-vector spherical coordinates :math:`\theta_{sph}.
+///     spherical_theta (CalculatorFloat): The rotation axis, unit-vector spherical coordinates :math:`\theta_{sph}`.
 ///     spherical_phi (CalculatorFloat): The rotation axis, unit-vector spherical coordinates :math:`\phi_{sph}`  gives the angle in the x-y plane.
 ///
 struct RotateAroundSphericalAxis {
@@ -348,4 +355,30 @@ struct RotateAroundSphericalAxis {
     theta: CalculatorFloat,
     spherical_theta: CalculatorFloat,
     spherical_phi: CalculatorFloat,
+}
+
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    Rotate,
+    OperateGate,
+    OperateSingleQubitGate
+)]
+/// Implements a rotation around an axis in the x-y plane in spherical coordinates.
+///
+/// .. math::
+/// U = \begin{pmatrix}
+/// \cos(\frac{\theta}{2}) & -i e^{-i \phi} \sin(\frac{\theta}{2})\\\\
+/// -i e^{i \phi} \sin(\frac{\theta}{2}) & \cos(\frac{\theta}{2})
+/// \end{pmatrix}
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+///     theta (CalculatorFloat): The angle :math:`\theta` of the rotation.
+///     phi (CalculatorFloat): The rotation axis, in spherical coordinates :math:`\phi_{sph}`  gives the angle in the x-y plane.
+///
+struct RotateXY {
+    qubit: usize,
+    theta: CalculatorFloat,
+    phi: CalculatorFloat,
 }

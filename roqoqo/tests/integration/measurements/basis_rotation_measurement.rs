@@ -14,28 +14,29 @@
 
 use std::collections::HashMap;
 
+// use jsonschema::{Draft, JSONSchema};
 use qoqo_calculator::CalculatorFloat;
 use roqoqo::operations;
 use roqoqo::prelude::*;
 use roqoqo::Circuit;
 use roqoqo::{
-    measurements::{BasisRotation, BasisRotationInput},
+    measurements::{PauliZProduct, PauliZProductInput},
     registers::BitOutputRegister,
 };
+// use schemars::schema_for;
 use test_case::test_case;
 
 #[test]
 fn test_returning_circuits() {
-    let mut bri = BasisRotationInput::new(3, false);
-    let _ = bri.add_pauli_product("ro".to_string(), vec![]);
-    let _ = bri.add_pauli_product("ro".to_string(), vec![0]);
-    let _ = bri.add_pauli_product("ro".to_string(), vec![0, 1]);
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
+    let mut bri = PauliZProductInput::new(3, false);
+    let _ = bri.add_pauliz_product("ro".to_string(), vec![]);
+    let _ = bri.add_pauliz_product("ro".to_string(), vec![0]);
+    let _ = bri.add_pauliz_product("ro".to_string(), vec![0, 1]);
+    let mut circs: Vec<Circuit> = vec![Circuit::new()];
     let mut circ1 = Circuit::new();
     circ1 += operations::RotateX::new(0, 0.0.into());
     circs.push(circ1);
-    let br = BasisRotation {
+    let br = PauliZProduct {
         constant_circuit: Some(Circuit::new()),
         circuits: circs.clone(),
         input: bri,
@@ -48,12 +49,12 @@ fn test_returning_circuits() {
 
 #[test]
 fn test_clone_eq_format() {
-    let bri = BasisRotationInput::new(3, false);
+    let bri = PauliZProductInput::new(3, false);
     let mut circs: Vec<Circuit> = Vec::new();
     let mut circ1 = Circuit::new();
     circ1 += operations::RotateX::new(0, 0.0.into());
     circs.push(circ1);
-    let br = BasisRotation {
+    let br = PauliZProduct {
         constant_circuit: Some(Circuit::new()),
         circuits: circs.clone(),
         input: bri.clone(),
@@ -67,7 +68,7 @@ fn test_clone_eq_format() {
     let mut circ1 = Circuit::new();
     circ1 += operations::RotateX::new(1, "theta".into());
     circs.push(circ1);
-    let br2 = BasisRotation {
+    let br2 = PauliZProduct {
         constant_circuit: Some(Circuit::new()),
         circuits: circs.clone(),
         input: bri,
@@ -81,7 +82,7 @@ fn test_clone_eq_format() {
 
 #[test]
 fn test_substitute_parameters() {
-    let bri = BasisRotationInput::new(3, false);
+    let bri = PauliZProductInput::new(3, false);
     let mut circs: Vec<Circuit> = Vec::new();
     let mut circ1 = Circuit::new();
     let mut circ1_subs = Circuit::new();
@@ -92,7 +93,7 @@ fn test_substitute_parameters() {
     circ2 += operations::RotateZ::new(0, "theta2".into());
     circ2_subs += operations::RotateZ::new(0, 1.0.into());
     circs.push(circ1);
-    let br = BasisRotation {
+    let br = PauliZProduct {
         constant_circuit: Some(circ2),
         circuits: circs.clone(),
         input: bri,
@@ -112,7 +113,7 @@ fn test_substitute_parameters() {
 
 #[test]
 fn test_substitute_parameters_fail() {
-    let bri = BasisRotationInput::new(3, false);
+    let bri = PauliZProductInput::new(3, false);
     let mut circs: Vec<Circuit> = Vec::new();
     let mut circ1 = Circuit::new();
     let mut circ1_subs = Circuit::new();
@@ -123,7 +124,7 @@ fn test_substitute_parameters_fail() {
     circ2 += operations::RotateZ::new(0, "theta2".into());
     circ2_subs += operations::RotateZ::new(0, 1.0.into());
     circs.push(circ1);
-    let br = BasisRotation {
+    let br = PauliZProduct {
         constant_circuit: Some(circ2),
         circuits: circs.clone(),
         input: bri,
@@ -164,11 +165,11 @@ fn test_evaluate_linear(
     two_qubit_exp_val: f64,
     two_pp_exp_val: f64,
 ) {
-    let mut bri = BasisRotationInput::new(3, false);
-    let _a = bri.add_pauli_product("ro".to_string(), vec![]);
-    let _b = bri.add_pauli_product("ro".to_string(), vec![0]);
-    let _c = bri.add_pauli_product("ro".to_string(), vec![1, 2]);
-    let _d = bri.add_pauli_product("rx".to_string(), vec![1, 2]);
+    let mut bri = PauliZProductInput::new(3, false);
+    let _a = bri.add_pauliz_product("ro".to_string(), vec![]);
+    let _b = bri.add_pauliz_product("ro".to_string(), vec![0]);
+    let _c = bri.add_pauliz_product("ro".to_string(), vec![1, 2]);
+    let _d = bri.add_pauliz_product("rx".to_string(), vec![1, 2]);
     let mut linear_map: HashMap<usize, f64> = HashMap::new();
     linear_map.insert(0, 3.0);
     bri.add_linear_exp_val("constant".to_string(), linear_map)
@@ -190,9 +191,8 @@ fn test_evaluate_linear(
     bri.add_linear_exp_val("two_pp_exp_val".to_string(), linear_map)
         .unwrap();
 
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
-    let br = BasisRotation {
+    let circs: Vec<Circuit> = vec![Circuit::new()];
+    let br = PauliZProduct {
         constant_circuit: None,
         circuits: circs,
         input: bri,
@@ -259,10 +259,10 @@ fn test_evaluate_linear_flipped(
     two_qubit_exp_val: f64,
     two_pp_exp_val: f64,
 ) {
-    let mut bri = BasisRotationInput::new(3, true);
-    let _a = bri.add_pauli_product("ro".to_string(), vec![]);
-    let _b = bri.add_pauli_product("ro".to_string(), vec![0]);
-    let _c = bri.add_pauli_product("ro".to_string(), vec![1, 2]);
+    let mut bri = PauliZProductInput::new(3, true);
+    let _a = bri.add_pauliz_product("ro".to_string(), vec![]);
+    let _b = bri.add_pauliz_product("ro".to_string(), vec![0]);
+    let _c = bri.add_pauliz_product("ro".to_string(), vec![1, 2]);
     let mut linear_map: HashMap<usize, f64> = HashMap::new();
     linear_map.insert(0, 3.0);
     bri.add_linear_exp_val("constant".to_string(), linear_map)
@@ -284,9 +284,8 @@ fn test_evaluate_linear_flipped(
     bri.add_linear_exp_val("two_pp_exp_val".to_string(), linear_map)
         .unwrap();
 
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
-    let br = BasisRotation {
+    let circs: Vec<Circuit> = vec![Circuit::new()];
+    let br = PauliZProduct {
         constant_circuit: None,
         circuits: circs,
         input: bri,
@@ -325,19 +324,18 @@ fn test_evaluate_linear_flipped(
     vec![true, true, true],
 ], 3.0_f64.sin() + 1.0_f64.sin() ; "All measurements one")]
 fn test_evaluate_symbolic(register: Vec<Vec<bool>>, constant: f64) {
-    let mut bri = BasisRotationInput::new(3, false);
-    let _a = bri.add_pauli_product("ro".to_string(), vec![]);
-    let _b = bri.add_pauli_product("ro".to_string(), vec![0]);
-    let _c = bri.add_pauli_product("ro".to_string(), vec![1, 2]);
-    let _d = bri.add_pauli_product("rx".to_string(), vec![1, 2]);
+    let mut bri = PauliZProductInput::new(3, false);
+    let _a = bri.add_pauliz_product("ro".to_string(), vec![]);
+    let _b = bri.add_pauliz_product("ro".to_string(), vec![0]);
+    let _c = bri.add_pauliz_product("ro".to_string(), vec![1, 2]);
+    let _d = bri.add_pauliz_product("rx".to_string(), vec![1, 2]);
     let symbolic: CalculatorFloat =
         "sin(3.0 * pauli_product_0) + sin(-1.0 * pauli_product_1)".into();
     bri.add_symbolic_exp_val("constant".to_string(), symbolic)
         .unwrap();
 
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
-    let br = BasisRotation {
+    let circs: Vec<Circuit> = vec![Circuit::new()];
+    let br = PauliZProduct {
         constant_circuit: None,
         circuits: circs,
         input: bri,
@@ -364,3 +362,41 @@ fn test_evaluate_symbolic(register: Vec<Vec<bool>>, constant: f64) {
         .unwrap();
     assert!((result.get("constant").unwrap() - constant).abs() < f64::EPSILON);
 }
+
+// #[cfg(feature = "json_schema")]
+// #[test]
+// fn test_basis_rotation_json() {
+//     // setting up BR measurement
+//     let bri = PauliZProductInput::new(3, false);
+//     let mut circs: Vec<Circuit> = Vec::new();
+//     let mut circ1 = Circuit::new();
+//     let mut circ1_subs = Circuit::new();
+//     circ1 += operations::RotateX::new(0, "theta".into());
+//     circ1_subs += operations::RotateX::new(0, 0.0.into());
+//     let mut circ2 = Circuit::new();
+//     let mut circ2_subs = Circuit::new();
+//     circ2 += operations::RotateZ::new(0, "theta2".into());
+//     circ2_subs += operations::RotateZ::new(0, 1.0.into());
+//     circs.push(circ1);
+//     let br = PauliZProduct {
+//         constant_circuit: Some(circ2),
+//         circuits: circs.clone(),
+//         input: bri,
+//     };
+
+//     // Serialize PauliZProduct
+//     let test_json = serde_json::to_string(&br).unwrap();
+//     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+//     // Create JSONSchema
+//     let test_schema = schema_for!(PauliZProduct);
+//     let schema = serde_json::to_string(&test_schema).unwrap();
+//     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+//     let compiled_schema = JSONSchema::options()
+//         .with_draft(Draft::Draft7)
+//         .compile(&schema_value)
+//         .unwrap();
+
+//     let validation_result = compiled_schema.validate(&test_value);
+//     assert!(validation_result.is_ok());
+// }

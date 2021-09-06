@@ -26,47 +26,15 @@ use std::convert::TryInto;
 use std::f64::consts::PI;
 use test_case::test_case;
 
-// helper function to convert a two-dimensional ndarray to a 2x2 matrix
-// output can be used to be converted into a nalebra matrix with `na::Matrix2::from()`
-fn convert_array2_matrix2(customarray: Array2<Complex64>) -> [[Complex64; 2]; 2] {
-    let mut overall_vec: Vec<[Complex64; 2]> = Vec::new();
-    for i in 0..2 {
-        let mut this_vec: Vec<Complex64> = Vec::new();
-        for j in 0..2 {
-            // CAUTION! indices are: "column, row" as required for the naalgebra Matrix in the post-processing
-            this_vec.push(customarray[[j, i]]);
-        }
-        let this_vec_to_array: [Complex64; 2] = this_vec.try_into().unwrap();
-        overall_vec.push(this_vec_to_array);
-    }
-    let overall_array: [[Complex64; 2]; 2] = [overall_vec[0], overall_vec[1]];
-    overall_array
-}
-
 // helper function to convert a two-dimensional ndarray to a 4x4 matrix
-// output can be used to be converted into a nalebra matrix with `na::Matrix4::from()`
-fn convert_array2_matrix4(customarray: Array2<Complex64>) -> [[Complex64; 4]; 4] {
-    let mut overall_vec: Vec<[Complex64; 4]> = Vec::new();
-    for i in 0..4 {
-        let mut this_vec: Vec<Complex64> = Vec::new();
-        for j in 0..4 {
-            // CAUTION! indices are: "column, row" as required for the naalgebra Matrix in the post-processing
-            this_vec.push(customarray[[j, i]]);
-        }
-        let this_vec_to_array: [Complex64; 4] = this_vec.try_into().unwrap();
-        overall_vec.push(this_vec_to_array);
-    }
-    let overall_array: [[Complex64; 4]; 4] = [
-        overall_vec[0],
-        overall_vec[1],
-        overall_vec[2],
-        overall_vec[3],
-    ];
-    overall_array
+// output can be used to be converted into a nalgebra matrix with `na::Matrix4::from()`
+fn convert_matrix(customarray: Array2<Complex64>) -> na::DMatrix<Complex64> {
+    let dim = customarray.dim();
+    na::DMatrix::<Complex64>::from_iterator(dim.0, dim.1, customarray.t().iter().cloned())
 }
 
 // helper function to convert a complex matrix to a matrix with real absolute values
-fn convert_normsqr(customarray: na::Matrix4<Complex64>) -> [[f64; 4]; 4] {
+fn convert_normsqr(customarray: na::DMatrix<Complex64>) -> [[f64; 4]; 4] {
     let mut overall_vec: Vec<[f64; 4]> = Vec::new();
     for i in [0, 4, 8, 12].iter() {
         let mut this_vec: Vec<f64> = Vec::new();
@@ -91,9 +59,9 @@ fn kak_sigma_matrix(
     y: CalculatorFloat,
     z: CalculatorFloat,
 ) -> Array2<Complex64> {
-    let x: f64 = f64::try_from(x.clone()).unwrap();
-    let y: f64 = f64::try_from(y.clone()).unwrap();
-    let z: f64 = f64::try_from(z.clone()).unwrap();
+    let x: f64 = f64::try_from(x).unwrap();
+    let y: f64 = f64::try_from(y).unwrap();
+    let z: f64 = f64::try_from(z).unwrap();
 
     let cm: f64 = (x - y).cos();
     let cp: f64 = (x + y).cos();
@@ -163,12 +131,11 @@ fn kak_sigma_matrix(
 fn test_kakdecomposition(gate: TwoQubitGateOperation) {
     // k vector
     let k = gate.kak_decomposition().k_vector;
-    let sigma_matrix: na::Matrix4<Complex64> =
-        na::Matrix4::<Complex64>::from(convert_array2_matrix4(kak_sigma_matrix(
-            k[0].clone() * (-1.0),
-            k[1].clone() * (-1.0),
-            k[2].clone() * (-1.0),
-        )));
+    let sigma_matrix: na::DMatrix<Complex64> = convert_matrix(kak_sigma_matrix(
+        k[0].clone() * (-1.0),
+        k[1].clone() * (-1.0),
+        k[2].clone() * (-1.0),
+    ));
 
     // global phase
     let g = gate.kak_decomposition().global_phase;
@@ -179,7 +146,7 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
     let circuit_before = gate.kak_decomposition().circuit_before;
 
     let mut target_before: SingleQubitGate = SingleQubitGate::new(
-        gate.target().clone(),
+        *gate.target(),
         CalculatorFloat::from(1.0),
         CalculatorFloat::ZERO,
         CalculatorFloat::ZERO,
@@ -187,7 +154,7 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
         CalculatorFloat::ZERO,
     );
     let mut control_before: SingleQubitGate = SingleQubitGate::new(
-        gate.control().clone(),
+        *gate.control(),
         CalculatorFloat::from(1.0),
         CalculatorFloat::ZERO,
         CalculatorFloat::ZERO,
@@ -196,12 +163,12 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
     );
 
     if circuit_before != None {
-        let operations_before: Vec<Operation> =
-            circuit_before.clone().unwrap().operations().clone();
-        for i in 0..operations_before.len() {
+        let operations_before: Vec<Operation> = circuit_before.unwrap().operations().clone();
+        let range = 0..operations_before.len();
+        for i in range {
             let element: SingleQubitGateOperation =
                 operations_before[i].clone().try_into().unwrap();
-            if element.qubit().clone() == gate.target().clone() {
+            if element.qubit() == gate.target() {
                 target_before = element.clone().mul(&target_before.clone()).unwrap()
             } else {
                 control_before = element.clone().mul(&control_before.clone()).unwrap()
@@ -209,19 +176,17 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
         }
     }
 
-    let target_before_matrix: na::Matrix2<Complex64> = na::Matrix2::from(convert_array2_matrix2(
-        target_before.unitary_matrix().unwrap(),
-    ));
-    let control_before_matrix: na::Matrix2<Complex64> = na::Matrix2::from(convert_array2_matrix2(
-        control_before.unitary_matrix().unwrap(),
-    ));
-    let matrix_before: na::Matrix4<Complex64> =
+    let target_before_matrix: na::DMatrix<Complex64> =
+        convert_matrix(target_before.unitary_matrix().unwrap());
+    let control_before_matrix: na::DMatrix<Complex64> =
+        convert_matrix(control_before.unitary_matrix().unwrap());
+    let matrix_before: na::DMatrix<Complex64> =
         control_before_matrix.kronecker(&target_before_matrix);
 
     // determine matrix after entanglement
     let circuit_after = gate.kak_decomposition().circuit_after;
     let mut target_after: SingleQubitGate = SingleQubitGate::new(
-        gate.target().clone(),
+        *gate.target(),
         CalculatorFloat::from(1.0),
         CalculatorFloat::ZERO,
         CalculatorFloat::ZERO,
@@ -229,7 +194,7 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
         CalculatorFloat::ZERO,
     );
     let mut control_after: SingleQubitGate = SingleQubitGate::new(
-        gate.control().clone(),
+        *gate.control(),
         CalculatorFloat::from(1.0),
         CalculatorFloat::ZERO,
         CalculatorFloat::ZERO,
@@ -238,10 +203,11 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
     );
 
     if circuit_after != None {
-        let operations_after: Vec<Operation> = circuit_after.clone().unwrap().operations().clone();
-        for i in 0..operations_after.len() {
+        let operations_after: Vec<Operation> = circuit_after.unwrap().operations().clone();
+        let range = 0..operations_after.len();
+        for i in range {
             let element: SingleQubitGateOperation = operations_after[i].clone().try_into().unwrap();
-            if element.qubit().clone() == gate.target().clone() {
+            if element.qubit() == gate.target() {
                 target_after = element.clone().mul(&target_after.clone()).unwrap()
             } else {
                 control_after = element.clone().mul(&control_after.clone()).unwrap()
@@ -249,17 +215,14 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
         }
     }
 
-    let target_after_matrix: na::Matrix2<Complex64> = na::Matrix2::from(convert_array2_matrix2(
-        target_after.unitary_matrix().unwrap(),
-    ));
-    let control_after_matrix: na::Matrix2<Complex64> = na::Matrix2::from(convert_array2_matrix2(
-        control_after.unitary_matrix().unwrap(),
-    ));
-    let matrix_after: na::Matrix4<Complex64> = control_after_matrix.kronecker(&target_after_matrix);
+    let target_after_matrix: na::DMatrix<Complex64> =
+        convert_matrix(target_after.unitary_matrix().unwrap());
+    let control_after_matrix: na::DMatrix<Complex64> =
+        convert_matrix(control_after.unitary_matrix().unwrap());
+    let matrix_after: na::DMatrix<Complex64> = control_after_matrix.kronecker(&target_after_matrix);
 
     let decomposed_matrix = matrix_after * sigma_matrix * matrix_before * phase;
-    let test_matrix: na::Matrix4<Complex64> =
-        na::Matrix4::from(convert_array2_matrix4(gate.unitary_matrix().unwrap()));
+    let test_matrix: na::DMatrix<Complex64> = convert_matrix(gate.unitary_matrix().unwrap());
 
     let epsilon = 1e-12;
     for i in 0..16 {
@@ -303,9 +266,9 @@ fn test_twoqubitgates_unitarity(gate: GateOperation) {
     let result_array: Array2<Complex64> = result.unwrap();
     // check unitarity with nalgebra
     // convert ndarray into nalgebra matrix
-    let result_matrix = na::Matrix4::from(convert_array2_matrix4(result_array));
+    let result_matrix: na::DMatrix<Complex64> = convert_matrix(result_array);
     // calculate matrix product A*A_dagger
-    let product = result_matrix * result_matrix.adjoint();
+    let product = result_matrix.clone() * result_matrix.adjoint();
     // convert complex matrix product into real matrix by taking the absolute value of the complex number, which should be sufficient if the matrix is unitary.
     let matrix_norm: na::Matrix4<f64> = na::Matrix4::from(convert_normsqr(product));
     let epsilon = 1e-12;
@@ -365,9 +328,9 @@ fn test_twoqubitgates_clone(gate1: Operation) {
 #[test_case(TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
 fn test_qubits_twoqubitgates(gate: TwoQubitGateOperation) {
-    let control: &usize = &gate.control();
+    let control: &usize = gate.control();
     assert_eq!(control, &0);
-    let target: &usize = &gate.target();
+    let target: &usize = gate.target();
     assert_eq!(target, &1);
     let mut qubits: HashSet<usize> = HashSet::new();
     qubits.insert(0);
@@ -541,7 +504,8 @@ fn remap_qubits_result(gate: GateOperation, test_gate: GateOperation) {
 #[test_case(GateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(GateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
 fn remap_qubits_error0(gate: GateOperation) {
-    let qubit_mapping: HashMap<usize, usize> = HashMap::new();
+    let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping.insert(1, 0);
     let result = gate.remap_qubits(&qubit_mapping);
     assert_eq!(result, Err(QubitMappingError { qubit: 0 }));
 }
@@ -571,7 +535,7 @@ fn remap_qubits_error1(gate: GateOperation) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 2);
     let result = gate.remap_qubits(&qubit_mapping);
-    assert_eq!(result, Err(QubitMappingError { qubit: 1 }));
+    assert_eq!(result, Err(QubitMappingError { qubit: 2 }));
 }
 
 #[test_case(
@@ -748,7 +712,8 @@ fn remap_qubits_error1(gate: GateOperation) {
         ],
     Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
 pub fn test_tags(tags: Vec<&str>, gate: Operation) {
-    for i in 0..tags.len() {
+    let range = 0..tags.len();
+    for i in range {
         assert_eq!(gate.tags()[i], tags[i]);
     }
 }
@@ -885,10 +850,10 @@ fn test_two_qubitgates_debug(message: &'static str, gate: Operation) {
     Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)),
     Operation::from(PhaseShiftedControlledZ::new(1, 0, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_twoqubitgates_partialeq(gate1: Operation, gate2: Operation) {
-    assert!(gate1.clone() == gate1);
-    assert!(gate1 == gate1.clone());
-    assert!(gate2 != gate1);
-    assert!(gate1 != gate2);
+    assert!(gate1 == gate1);
+    assert_eq!(gate1, gate1.clone());
+    assert_ne!(gate2, gate1);
+    assert_ne!(gate1, gate2);
 }
 
 /// Test powerfc function for Rotate gates
@@ -935,8 +900,8 @@ fn test_rotate_powercf(gate: Rotation, gate2: Rotation) {
 fn test_ineffective_substitute_parameters(gate: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
-    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
-    assert_eq!(result, gate.clone());
+    let result = gate.substitute_parameters(&substitution_dict).unwrap();
+    assert_eq!(result, gate);
 }
 
 /// Test substitute parameters function for TwoQubitGate Operations
@@ -967,7 +932,7 @@ fn test_ineffective_substitute_parameters(gate: Operation) {
 fn test_substitute_parameters(gate: Operation, gate2: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
-    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
+    let result = gate.substitute_parameters(&substitution_dict).unwrap();
     assert_eq!(result, gate2);
 }
 
@@ -989,7 +954,7 @@ fn test_substitute_parameters(gate: Operation, gate2: Operation) {
 fn test_substitute_parameters_error(gate: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("error", 0.0);
-    let result = gate.substitute_parameters(&mut substitution_dict);
+    let result = gate.substitute_parameters(&substitution_dict);
     assert!(result.is_err());
 }
 
@@ -1096,11 +1061,11 @@ fn test_kakdecomposition_partialeq() {
         circuit_after: None,
     };
 
-    // comparision
-    assert!(gate1.clone() == gate1);
-    assert!(gate1 == gate1.clone());
-    assert!(gate2 != gate1);
-    assert!(gate1 != gate2);
+    // comparison
+    assert!(gate1 == gate1);
+    assert_eq!(gate1, gate1.clone());
+    assert_ne!(gate2, gate1);
+    assert_ne!(gate1, gate2);
 }
 
 #[test]

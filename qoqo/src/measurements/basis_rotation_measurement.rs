@@ -10,43 +10,43 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Qoqo basis rotation measurement.
+//! Qoqo PauliZ product measurement.
 
-use super::BasisRotationInputWrapper;
+use super::PauliZProductInputWrapper;
 use crate::CircuitWrapper;
+use bincode::serialize;
 use pyo3::exceptions::{PyRuntimeError, PyValueError};
 use pyo3::prelude::*;
-use pyo3::types::PyType;
-use roqoqo::measurements::BasisRotation;
+use pyo3::types::PyByteArray;
+use roqoqo::measurements::PauliZProduct;
 use roqoqo::prelude::*;
 use roqoqo::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
 use roqoqo::Circuit;
 use std::collections::HashMap;
-
-#[pyclass(name = "BasisRotation", module = "qoqo.measurements")]
+#[pyclass(name = "PauliZProduct", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
-/// Collected information for executing a basis rotation measurement.
-pub struct BasisRotationWrapper {
-    /// Internal storage of [roqoqo::BasisRotation].
-    pub internal: BasisRotation,
+/// Collected information for executing a measurement of PauliZ product.
+pub struct PauliZProductWrapper {
+    /// Internal storage of [roqoqo::PauliZProduct].
+    pub internal: PauliZProduct,
 }
 
 #[pymethods]
-impl BasisRotationWrapper {
-    /// Create a new BasisRotation measurement.
+impl PauliZProductWrapper {
+    /// Create a new PauliZProduct measurement.
     ///
     /// Args:
     ///     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
     ///     circuits (list[Circuit]): The collection of quantum circuits for the separate basis rotations.
-    ///     input (BasisRotationInput): The additional input information required for measurement.
+    ///     input (PauliZProductInput): The additional input information required for measurement.
     ///
     /// Returns:
-    ///     BasisRotation: The BasisRotation containing the new basis rotation measurement.
+    ///     PauliZProduct: The PauliZProduct containing the new PauliZ product measurement.
     #[new]
     pub fn new(
         constant_circuit: Option<CircuitWrapper>,
         circuits: Vec<CircuitWrapper>,
-        input: BasisRotationInputWrapper,
+        input: PauliZProductInputWrapper,
     ) -> Self {
         let new_circuits: Vec<Circuit> = circuits.into_iter().map(|c| c.internal).collect();
         let new_constant: Option<Circuit> = match constant_circuit {
@@ -54,7 +54,7 @@ impl BasisRotationWrapper {
             Some(c) => Some(c.internal),
         };
         Self {
-            internal: BasisRotation {
+            internal: PauliZProduct {
                 constant_circuit: new_constant,
                 circuits: new_circuits,
                 input: input.internal,
@@ -62,7 +62,7 @@ impl BasisRotationWrapper {
         }
     }
 
-    /// Execute the basis rotation measurement.
+    /// Execute the PauliZ product measurement.
     ///
     /// Args:
     ///     input_bit_registers (dict[str, Union[list[list[int]], list[list[bool]]]]): The classical bit registers with the register name as key
@@ -74,7 +74,7 @@ impl BasisRotationWrapper {
     ///
     /// Raises:
     ///     RuntimeError: Unexpected repetition of key in bit_register.
-    ///     RuntimeError: Error evaluating basis rotation measurement.
+    ///     RuntimeError: Error evaluating PauliZ product measurement.
     pub fn evaluate(
         &mut self,
         input_bit_registers: Py<PyAny>,
@@ -114,7 +114,7 @@ impl BasisRotationWrapper {
             .evaluate(bit_registers, float_registers, complex_registers)
             .map_err(|x| {
                 PyRuntimeError::new_err(format!(
-                    "Error evaluating basis rotation measurement {:?}",
+                    "Error evaluating PauliZ product measurement {:?}",
                     x
                 ))
             })
@@ -144,6 +144,23 @@ impl BasisRotationWrapper {
             .map(|c| CircuitWrapper { internal: c })
     }
 
+    /// Returns the measurement input data defining how to construct expectation values from measurements.
+    ///
+    /// Returns:
+    ///     PauliZProductInput: The measurment input of PauliZProduct.
+    pub fn input(&self) -> PauliZProductInputWrapper {
+        let input = self.internal.input.clone();
+        PauliZProductInputWrapper { internal: input }
+    }
+
+    /// Returns the type of the measurement in string form.
+    ///
+    /// Returns:
+    ///    str: The type of the measurement.
+    pub fn measurement_type(&self) -> &'static str {
+        "PauliZProduct"
+    }
+
     /// Return clone of Measurement with symbolic parameters replaced.
     ///
     /// Args:
@@ -165,31 +182,87 @@ impl BasisRotationWrapper {
         })
     }
 
-    /// Serialize the BasisRotation to json form using the [serde_json] crate.
+    /// Return the name of the measurement and the bincode representation of the Measurement using the [bincode] crate.
     ///
     /// Returns:
-    ///     str: The serialized BasisRotation.
+    ///     (str, ByteArray): Name and serialized measurement (in [bincode] form).
     ///
     /// Raises:
-    ///     RuntimeError: Unexpected error serializing BasisRotation.
-    pub fn to_json(&self) -> PyResult<String> {
-        serde_json::to_string(&self.internal)
-            .map_err(|_| PyRuntimeError::new_err("Unexpected error serializing BasisRotation"))
+    ///     ValueError: Cannot serialize Measurement to bytes.
+    pub fn _internal_to_bincode(&self) -> PyResult<(&'static str, Py<PyByteArray>)> {
+        let serialized = serialize(&self.internal).map_err(|_| {
+            PyValueError::new_err("Cannot serialize PauliZProductMeasurement to bytes")
+        })?;
+        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+            PyByteArray::new(py, &serialized[..]).into()
+        });
+        Ok(("PauliZProduct", b))
     }
 
-    /// Deserialize the BasisRotation from json form using the [serde_json] crate.
+    /// Serialize the PauliZProduct to json form using the [serde_json] crate.
     ///
     /// Returns:
-    ///     BasisRotation: The deserialized BasisRotation.
+    ///     str: The serialized PauliZProduct.
     ///
     /// Raises:
-    ///     RuntimeError: Cannot deserialize string to BasisRotation.
-    #[allow(unused_variables)]
-    #[classmethod]
-    pub fn from_json(cls: &PyType, json_string: &str) -> PyResult<Self> {
+    ///     RuntimeError: Unexpected error serializing PauliZProduct.
+    pub fn to_json(&self) -> PyResult<String> {
+        serde_json::to_string(&self.internal)
+            .map_err(|_| PyRuntimeError::new_err("Unexpected error serializing PauliZProduct"))
+    }
+
+    /// Deserialize the PauliZProduct from json form using the [serde_json] crate.
+    ///
+    /// Returns:
+    ///     PauliZProduct: The deserialized PauliZProduct.
+    ///
+    /// Raises:
+    ///     RuntimeError: Cannot deserialize string to PauliZProduct.
+    #[staticmethod]
+    pub fn from_json(json_string: &str) -> PyResult<Self> {
         Ok(Self {
             internal: serde_json::from_str(json_string)
-                .map_err(|_| PyValueError::new_err("Cannot deserialize string to BasisRotation"))?,
+                .map_err(|_| PyValueError::new_err("Cannot deserialize string to PauliZProduct"))?,
         })
+    }
+
+    /// Implement __repr__ magic method
+    pub fn __repr__(&self) -> String {
+        format!("{:?}", self.internal)
+    }
+
+    /// Return a copy of the Object (copy here produces a deepcopy).
+    pub fn __copy__(&self) -> Self {
+        self.clone()
+    }
+
+    /// Return a deep copy of the Object.
+    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+        self.clone()
+    }
+
+    /// Return the __richcmp__ magic method to perform rich comparison operations on QuantumProgram.
+    ///
+    /// Args:
+    ///     other: The object to compare self to.
+    ///     op: Type of comparison.
+    ///
+    /// Returns:
+    ///     Whether the two operations compared evaluated to True or False
+    ///
+    /// Raises:
+    ///     NotImplementedError: Other comparison not implemented
+    fn __richcmp__(
+        &self,
+        other: PauliZProductWrapper,
+        op: pyo3::class::basic::CompareOp,
+    ) -> PyResult<bool> {
+        match op {
+            pyo3::class::basic::CompareOp::Eq => Ok(self.internal == other.internal),
+            pyo3::class::basic::CompareOp::Ne => Ok(self.internal != other.internal),
+            _ => Err(pyo3::exceptions::PyNotImplementedError::new_err(
+                "Other comparison not implemented",
+            )),
+        }
     }
 }

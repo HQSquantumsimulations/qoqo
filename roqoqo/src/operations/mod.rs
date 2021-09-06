@@ -25,7 +25,7 @@ use crate::RoqoqoError;
 use dyn_clone::DynClone;
 use ndarray::Array2;
 use num_complex::Complex64;
-use qoqo_calculator::{Calculator, CalculatorComplex, CalculatorFloat};
+use qoqo_calculator::CalculatorFloat;
 use roqoqo_derive::*;
 use std::collections::{HashMap, HashSet};
 /// Collection of roqoqo definition operations.
@@ -66,6 +66,21 @@ pub enum InvolvedQubits {
     /// Operation affects a specific set of qubits.
     Set(HashSet<usize>),
 }
+
+/// Represents classical register entries involved in a roqoqo Operation.
+#[derive(Debug, PartialEq, Clone, Eq)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+pub enum InvolvedClassical {
+    /// Operation affects all entries of a classical register.
+    All(String),
+    /// Operation affects all entries of a classical register up to the number of qubits in device.
+    AllQubits(String),
+    /// Operation affects no classical entries (annotations etc.).
+    None,
+    /// Operation affects a specific set of classical entries.
+    Set(HashSet<(String, usize)>),
+}
+
 #[cfg(feature = "dynamic")]
 /// Universal basic trait for all operations of roqoqo.
 #[cfg_attr(feature = "dynamic", typetag::serde(tag = "Operate"))]
@@ -154,8 +169,13 @@ dyn_clone::clone_trait_object!(Operate);
 /// assert_eq!(pragma.involved_qubits(), InvolvedQubits::All);
 /// ```
 pub trait InvolveQubits {
-    /// Returns a list of all involved qubits.
+    /// Returns all qubits involved in operation.
     fn involved_qubits(&self) -> InvolvedQubits;
+
+    /// Returns all classical registers involved in operation.
+    fn involved_classical(&self) -> InvolvedClassical {
+        InvolvedClassical::None
+    }
 }
 
 /// Substitute trait allowing to replace symbolic parameters and to perform qubit mappings.
@@ -171,13 +191,14 @@ pub trait InvolveQubits {
 /// let mut substitution_dict: Calculator = Calculator::new();
 /// substitution_dict.set_variable("sub", 0.0);
 /// let result = rotatez
-///     .substitute_parameters(&mut substitution_dict)
+///     .substitute_parameters(&substitution_dict)
 ///     .unwrap();
 /// assert_eq!(result, RotateZ::new(0, CalculatorFloat::from(0.0)));
 /// // 2) The remap_qubits function remaps all qubits in the Operation and its inputs
 /// let rotatez = RotateZ::new(0, CalculatorFloat::from(0.0));
 /// let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
 /// qubit_mapping_test.insert(0, 2);
+/// qubit_mapping_test.insert(2, 0);
 /// let result = rotatez.remap_qubits(&qubit_mapping_test).unwrap();
 /// assert_eq!(result, RotateZ::new(2, CalculatorFloat::from(0.0)));
 /// ```
@@ -187,7 +208,10 @@ where
     Self: Sized,
 {
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError>;
+    fn substitute_parameters(
+        &self,
+        calculator: &qoqo_calculator::Calculator,
+    ) -> Result<Self, RoqoqoError>;
     /// Remaps the qubits in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError>;
 }
@@ -198,7 +222,7 @@ pub trait SubstituteDyn {
     /// Substitute parameters in symbolic expression in clone of operation.
     fn substitute_parameters_dyn(
         &self,
-        calculator: &mut Calculator,
+        calculator: &qoqo_calculator::Calculator,
     ) -> Result<Box<dyn Operate>, RoqoqoError>;
     /// Remap qubits in operations in clone of operation.
     fn remap_qubits_dyn(
@@ -215,7 +239,7 @@ where
     /// Substitute symbolic parameters in boxed clone of operation.
     fn substitute_parameters_dyn(
         &self,
-        calculator: &mut Calculator,
+        calculator: &qoqo_calculator::Calculator,
     ) -> Result<Box<dyn Operate>, RoqoqoError> {
         Ok(Box::new(Substitute::substitute_parameters(
             self, calculator,
@@ -287,20 +311,19 @@ pub trait OperatePragma: Operate + InvolveQubits + Substitute + Clone + PartialE
 /// # Example
 /// ```
 /// use ndarray::{array, Array2};
-/// use roqoqo::operations::{OperatePragmaNoise, PragmaDamping};
+/// use roqoqo::operations::{OperatePragmaNoise, OperatePragmaNoiseProba, PragmaDamping};
 /// use qoqo_calculator::CalculatorFloat;
 ///
 /// let pragma = PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
 ///
 /// // 1) The superoperator representation of the noise Pragma
-/// let superop_pre_exp: f64 = -1.0 * 0.005 * 0.02;
-/// let superop_prob: f64 = 1.0 - superop_pre_exp.exp();
-/// let superop_sqrt: f64 = (1.0 - superop_prob).sqrt();
+/// let superop_prob: f64 = *pragma.probability().float().unwrap();
+/// let superop_sqrt: f64 = (1.0 - superop_prob.clone()).sqrt();
 /// let superop: Array2<f64> = array![
-///     [1.0, 0.0, 0.0, superop_prob],
+///     [1.0, 0.0, 0.0, superop_prob.clone()],
 ///     [0.0, superop_sqrt, 0.0, 0.0],
 ///     [0.0, 0.0, superop_sqrt, 0.0],
-///     [0.0, 0.0, 0.0, 1.0 - superop_prob],
+///     [0.0, 0.0, 0.0, 1.0 - superop_prob.clone()],
 /// ];
 /// assert_eq!(superop, pragma.superoperator().unwrap());
 /// // 2) The power function applied to the noise Pragma
@@ -318,7 +341,7 @@ pub trait OperatePragmaNoise:
     /// Returns superoperator matrix of the Operation.
     fn superoperator(&self) -> Result<Array2<f64>, RoqoqoError>;
     /// Returns the gate to the power of `power`.
-    fn powercf(&self, power: CalculatorFloat) -> Self;
+    fn powercf(&self, power: qoqo_calculator::CalculatorFloat) -> Self;
 }
 
 /// Trait for PRAGMA Operations that are not necessary available on all universal quantum hardware, that indicate noise.
@@ -332,8 +355,8 @@ pub trait OperatePragmaNoise:
 /// let pragma = PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
 ///
 /// // The probability of the noise Pragma
-/// let proba_pre_exp: f64 = -2.0 * 0.005 * 0.02;
-/// let proba = CalculatorFloat::from(0.5 * (1.0 - proba_pre_exp.exp()));
+/// let proba_pre_exp: f64 = -1.0 * 0.005 * 0.02;
+/// let proba = CalculatorFloat::from(1.0 - proba_pre_exp.exp());
 /// assert_eq!(proba, pragma.probability());
 /// ```
 ///
@@ -453,18 +476,15 @@ pub trait OperateConstantGate:
 ///
 /// Implements the general single qubit unitary gates  that can be brought into the form:
 ///
-/// $$ U =e^{i \phi}\begin{pmatrix}
-/// \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
-/// \beta_r+i \beta_i & \alpha_r-i\alpha_i
-/// \end{pmatrix} $$
+/// U =exp(i * φ) * [[Re(α)+i * Im(α), -Re(β) + i * Im(β)], [Re(β) + i * Im(β) , Re(α) - i * Im(α) ]].
 ///
 /// These gates can be parametrized by five real parameters:
 ///
-/// * `alpha_r` - The real part $ \alpha_r $ of the on-diagonal elements of the single-qubit unitary.
-/// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary.
-/// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary.
-/// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary.
-/// * `global_phase` - The global phase $ \phi $ of the single-qubit unitary.
+/// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary.
+/// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary.
+/// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary.
+/// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary.
+/// * `global_phase` - The global phase φ of the single-qubit unitary.
 ///
 /// These are the single qubit gates that are performed in the Circuit(), and are then translated
 /// to quantum hardware through the relevant backend. Two-qubit gates are also available
@@ -500,35 +520,35 @@ pub trait OperateSingleQubitGate:
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat;
 
     /// Returns alpha_i parameter of operation.
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat;
 
     /// Returns beta_r parameter of operation.
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat;
 
     /// Returns beta_i parameter of operation.
     ///
     /// # Returns
     ///
-    /// * `beta_i` -  imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` -  imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat;
 
     /// Returns global_phase parameter of operation.
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase phi φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat;
 
     /// Multiplies two compatible operations implementing OperateSingleQubitGate.
@@ -560,20 +580,66 @@ pub trait OperateSingleQubitGate:
                 oqubit: *other.qubit(),
             });
         }
-        let alpha = CalculatorComplex::new(self.alpha_r(), self.alpha_i());
-        let beta = CalculatorComplex::new(self.beta_r(), self.beta_i());
-        let oalpha = CalculatorComplex::new(other.alpha_r(), other.alpha_i());
-        let obeta = CalculatorComplex::new(other.beta_r(), other.beta_i());
+        let alpha = qoqo_calculator::CalculatorComplex::new(self.alpha_r(), self.alpha_i());
+        let beta = qoqo_calculator::CalculatorComplex::new(self.beta_r(), self.beta_i());
+        let oalpha = qoqo_calculator::CalculatorComplex::new(other.alpha_r(), other.alpha_i());
+        let obeta = qoqo_calculator::CalculatorComplex::new(other.beta_r(), other.beta_i());
         let new_alpha = alpha.clone() * &oalpha - beta.conj() * &obeta;
         let new_beta = beta * oalpha + obeta * alpha.conj();
-        Ok(SingleQubitGate::new(
-            *other.qubit(),
-            new_alpha.re,
-            new_alpha.im,
-            new_beta.re,
-            new_beta.im,
-            self.global_phase() + other.global_phase(),
-        ))
+
+        if new_alpha.re.is_float()
+            && new_alpha.im.is_float()
+            && new_beta.re.is_float()
+            && new_beta.im.is_float()
+        {
+            let norm = (new_alpha.re.float().unwrap().powf(2.0)
+                + new_alpha.im.float().unwrap().powf(2.0)
+                + new_beta.re.float().unwrap().powf(2.0)
+                + new_beta.im.float().unwrap().powf(2.0))
+            .sqrt();
+
+            if (norm - 1.0).abs() > f64::EPSILON {
+                Ok(SingleQubitGate::new(
+                    *other.qubit(),
+                    new_alpha.re / norm,
+                    new_alpha.im / norm,
+                    new_beta.re / norm,
+                    new_beta.im / norm,
+                    self.global_phase() + other.global_phase(),
+                ))
+            } else {
+                Ok(SingleQubitGate::new(
+                    *other.qubit(),
+                    new_alpha.re,
+                    new_alpha.im,
+                    new_beta.re,
+                    new_beta.im,
+                    self.global_phase() + other.global_phase(),
+                ))
+            }
+        } else {
+            Ok(SingleQubitGate::new(
+                *other.qubit(),
+                new_alpha.re,
+                new_alpha.im,
+                new_beta.re,
+                new_beta.im,
+                self.global_phase() + other.global_phase(),
+            ))
+        }
+    }
+    /// Returns equivalent SingleQubitGate.
+    ///
+    /// Converts Operation implementing OperateSingleQubitGate Trait into SingleQubitGate.
+    fn to_single_qubit_gate(&self) -> SingleQubitGate {
+        SingleQubitGate::new(
+            *self.qubit(),
+            self.alpha_r(),
+            self.alpha_i(),
+            self.beta_r(),
+            self.beta_i(),
+            self.global_phase(),
+        )
     }
 }
 
@@ -632,6 +698,9 @@ pub trait OperateMultiQubitGate:
 
 // Implementing DynOperation for storing dynamic operations from extern crates in trait object
 
+/// Marker trait to show that some operation has been implemented in roqoqo 1.1.0
+pub(crate) trait ImplementedIn1point1: Operate {}
+
 #[cfg(feature = "dynamic")]
 /// A wrapper for Operate trait objects.
 ///
@@ -664,7 +733,10 @@ impl InvolveQubits for DynOperation {
 #[cfg(feature = "dynamic")]
 /// Implements [Substitute] trait allowing to replace symbolic parameters and to perform qubit mappings.
 impl Substitute for DynOperation {
-    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(
+        &self,
+        calculator: &qoqo_calculator::Calculator,
+    ) -> Result<Self, RoqoqoError> {
         Ok(DynOperation(self.0.substitute_parameters_dyn(calculator)?))
     }
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
@@ -676,4 +748,15 @@ impl PartialEq for DynOperation {
     fn eq(&self, other: &Self) -> bool {
         self.0.hqslang() == other.0.hqslang()
     }
+}
+
+/// Check if a HashMap is a valid mapping for remapping_qubits
+#[inline]
+pub(crate) fn check_valid_mapping(mapping: &HashMap<usize, usize>) -> Result<(), RoqoqoError> {
+    for q in mapping.values() {
+        if !mapping.contains_key(q) {
+            return Err(RoqoqoError::QubitMappingError { qubit: *q });
+        }
+    }
+    Ok(())
 }

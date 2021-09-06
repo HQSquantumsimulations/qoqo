@@ -12,7 +12,10 @@
 //
 //! Integration test for public API of Measurement operations
 
-use ndarray::{array, Array1, Array2};
+#[cfg(feature = "serialize")]
+use bincode::serialize;
+use nalgebra::{matrix, Matrix4};
+use ndarray::{array, Array, Array1, Array2};
 use num_complex::Complex64;
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::operations::*;
@@ -21,6 +24,128 @@ use roqoqo::Circuit;
 #[cfg(feature = "serialize")]
 use serde_test::{assert_tokens, Configure, Token};
 use std::collections::{HashMap, HashSet};
+
+/// Test PragmaSetNumberOfMeasurements inputs and involved qubits
+#[test]
+fn pragma_loop_inputs_qubits() {
+    let pragma = PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::new());
+
+    // Test inputs are correct
+    assert_eq!(pragma.repetitions(), &CalculatorFloat::from("number_t"));
+    assert_eq!(pragma.circuit(), &Circuit::new());
+
+    // Test InvolveQubits trait
+    assert_eq!(pragma.involved_qubits(), InvolvedQubits::None);
+}
+
+/// Test PragmaSetNumberOfMeasurements standard derived traits (Debug, Clone, PartialEq)
+#[test]
+fn pragma_loop_simple_traits() {
+    let pragma = PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::new());
+    // Test Debug trait
+    assert_eq!(
+        format!("{:?}", pragma),
+        "PragmaLoop { repetitions: Str(\"number_t\"), circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"
+    );
+
+    // Test Clone trait
+    assert_eq!(pragma.clone(), pragma);
+
+    // Test PartialEq trait
+    let pragma_0 = PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::new());
+    let pragma_1 = PragmaLoop::new(CalculatorFloat::from(1.0), Circuit::new());
+    assert!(pragma_0 == pragma);
+    assert!(pragma == pragma_0);
+    assert!(pragma_1 != pragma);
+    assert!(pragma != pragma_1);
+}
+
+/// Test PragmaSetNumberOfMeasurements Operate trait
+#[test]
+fn pragma_loop_operate_trait() {
+    let pragma = PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::new());
+
+    // (1) Test tags function
+    let tags: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaLoop"];
+    assert_eq!(pragma.tags(), tags);
+
+    // (2) Test hqslang function
+    assert_eq!(pragma.hqslang(), String::from("PragmaLoop"));
+
+    // (3) Test is_parametrized function
+    assert!(!pragma.is_parametrized());
+}
+
+/// Test PragmaSetNumberOfMeasurements Substitute trait
+#[test]
+fn pragma_loop_substitute_trait() {
+    let mut circuit = Circuit::new();
+    circuit += RotateX::new(0, "ro".into());
+    let pragma_test = PragmaLoop::new(CalculatorFloat::from("number_t"), circuit);
+    let mut circuit_subbed = Circuit::new();
+    circuit_subbed += RotateX::new(0, 0.0.into());
+    let pragma = PragmaLoop::new(CalculatorFloat::from(1.0), circuit_subbed);
+    // (1) Substitute parameters function
+    let mut substitution_dict: Calculator = Calculator::new();
+    substitution_dict.set_variable("ro", 0.0);
+    substitution_dict.set_variable("number_t", 1.0);
+    let result = pragma_test
+        .substitute_parameters(&substitution_dict)
+        .unwrap();
+    assert_eq!(result, pragma);
+
+    let mut circuit_subbed = Circuit::new();
+    circuit_subbed += RotateX::new(2, "ro".into());
+    let pragma = PragmaLoop::new(CalculatorFloat::from("number_t"), circuit_subbed);
+    // (2) Remap qubits function
+    let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
+    let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
+    assert_eq!(result, pragma);
+}
+
+/// Test PragmaSetNumberOfMeasurements Serialization and Deserialization traits (readable)
+#[cfg(feature = "serialize")]
+#[test]
+fn pragma_loop_serde_readable() {
+    let pragma_serialization = PragmaSetNumberOfMeasurements::new(1, String::from("ro"));
+    assert_tokens(
+        &pragma_serialization.readable(),
+        &[
+            Token::Struct {
+                name: "PragmaSetNumberOfMeasurements",
+                len: 2,
+            },
+            Token::Str("number_measurements"),
+            Token::U64(1),
+            Token::Str("readout"),
+            Token::Str("ro"),
+            Token::StructEnd,
+        ],
+    );
+}
+
+/// Test PragmaSetNumberOfMeasurements Serialization and Deserialization traits (compact)
+#[cfg(feature = "serialize")]
+#[test]
+fn pragma_loop_serde_compact() {
+    let pragma_serialization = PragmaSetNumberOfMeasurements::new(1, String::from("ro"));
+    assert_tokens(
+        &pragma_serialization.compact(),
+        &[
+            Token::Struct {
+                name: "PragmaSetNumberOfMeasurements",
+                len: 2,
+            },
+            Token::Str("number_measurements"),
+            Token::U64(1),
+            Token::Str("readout"),
+            Token::Str("ro"),
+            Token::StructEnd,
+        ],
+    );
+}
 
 /// Test PragmaSetNumberOfMeasurements inputs and involved qubits
 #[test]
@@ -77,7 +202,7 @@ fn pragma_set_number_of_measurements_operate_trait() {
     );
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaSetNumberOfMeasurements Substitute trait
@@ -89,13 +214,14 @@ fn pragma_set_number_of_measurements_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
     // (2) Remap qubits function
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
 }
@@ -154,7 +280,7 @@ fn pragma_set_statevector_inputs_qubits() {
     let pragma = PragmaSetStateVector::new(statevec.clone());
 
     // Test inputs are correct
-    assert_eq!(pragma.statevector(), &statevec.clone());
+    assert_eq!(pragma.statevector(), &statevec);
 
     // Test InvolveQubits trait
     assert_eq!(pragma.involved_qubits(), InvolvedQubits::All);
@@ -182,7 +308,7 @@ fn pragma_set_statevector_simple_traits() {
 
     // Test PartialEq trait
     let pragma_0 = PragmaSetStateVector::new(statevec.clone());
-    let pragma_1 = PragmaSetStateVector::new(statevec.clone() + 1.0);
+    let pragma_1 = PragmaSetStateVector::new(statevec + 1.0);
     assert!(pragma_0 == pragma);
     assert!(pragma == pragma_0);
     assert!(pragma_1 != pragma);
@@ -198,7 +324,7 @@ fn pragma_set_statevector_operate_trait() {
         Complex64::new(0.0, 0.0),
         Complex64::new(0.0, 0.0)
     ];
-    let pragma = PragmaSetStateVector::new(statevec.clone());
+    let pragma = PragmaSetStateVector::new(statevec);
 
     // (1) Test tags function
     let tags: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaSetStateVector"];
@@ -208,7 +334,7 @@ fn pragma_set_statevector_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaSetStateVector"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaSetStateVector Substitute trait
@@ -221,19 +347,20 @@ fn pragma_set_statevector_substitute_trait() {
         Complex64::new(0.0, 0.0)
     ];
     let pragma = PragmaSetStateVector::new(statevec.clone());
-    let pragma_test = PragmaSetStateVector::new(statevec.clone());
+    let pragma_test = PragmaSetStateVector::new(statevec);
 
     // (1) Substitute parameters function
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
     // (2) Remap qubits function
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
 }
@@ -248,7 +375,7 @@ fn pragma_set_statevector_serde_readable() {
         Complex64::new(0.0, 0.0),
         Complex64::new(0.0, 0.0)
     ];
-    let pragma_serialization = PragmaSetStateVector::new(statevec.clone());
+    let pragma_serialization = PragmaSetStateVector::new(statevec);
     assert_tokens(
         &pragma_serialization.readable(),
         &[
@@ -302,7 +429,7 @@ fn pragma_set_statevector_serde_compact() {
         Complex64::new(0.0, 0.0),
         Complex64::new(0.0, 0.0)
     ];
-    let pragma_serialization = PragmaSetStateVector::new(statevec.clone());
+    let pragma_serialization = PragmaSetStateVector::new(statevec);
     assert_tokens(
         &pragma_serialization.compact(),
         &[
@@ -356,7 +483,7 @@ fn pragma_set_density_matrix_inputs_qubits() {
     let pragma = PragmaSetDensityMatrix::new(matrix.clone());
 
     // Test inputs are correct
-    assert_eq!(pragma.density_matrix(), &matrix.clone());
+    assert_eq!(pragma.density_matrix(), &matrix);
 
     // Test InvolveQubits trait
     assert_eq!(pragma.involved_qubits(), InvolvedQubits::All);
@@ -383,7 +510,7 @@ fn pragma_set_density_matrix_simple_traits() {
 
     // Test PartialEq trait
     let pragma_0 = PragmaSetDensityMatrix::new(matrix.clone());
-    let pragma_1 = PragmaSetDensityMatrix::new(matrix.clone() + 1.0);
+    let pragma_1 = PragmaSetDensityMatrix::new(matrix + 1.0);
     assert!(pragma_0 == pragma);
     assert!(pragma == pragma_0);
     assert!(pragma_1 != pragma);
@@ -397,7 +524,7 @@ fn pragma_set_density_matrix_operate_trait() {
         [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],
         [Complex64::new(0.0, 0.0), Complex64::new(0.0, 0.0)],
     ];
-    let pragma = PragmaSetDensityMatrix::new(matrix.clone());
+    let pragma = PragmaSetDensityMatrix::new(matrix);
 
     // (1) Test tags function
     let tags: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaSetDensityMatrix"];
@@ -407,7 +534,7 @@ fn pragma_set_density_matrix_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaSetDensityMatrix"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaSetDensityMatrix Substitute trait
@@ -418,19 +545,20 @@ fn pragma_set_density_matrix_substitute_trait() {
         [Complex64::new(0.0, 0.0), Complex64::new(0.0, 0.0)],
     ];
     let pragma = PragmaSetDensityMatrix::new(matrix.clone());
-    let pragma_test = PragmaSetDensityMatrix::new(matrix.clone());
+    let pragma_test = PragmaSetDensityMatrix::new(matrix);
 
     // (1) Substitute parameters function
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
     // (2) Remap qubits function
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
 }
@@ -443,7 +571,7 @@ fn pragma_set_density_matrix_serde_readable() {
         [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],
         [Complex64::new(0.0, 0.0), Complex64::new(0.0, 0.0)],
     ];
-    let pragma_serialization = PragmaSetDensityMatrix::new(matrix.clone());
+    let pragma_serialization = PragmaSetDensityMatrix::new(matrix);
     assert_tokens(
         &pragma_serialization.readable(),
         &[
@@ -496,7 +624,7 @@ fn pragma_set_density_matrix_serde_compact() {
         [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],
         [Complex64::new(0.0, 0.0), Complex64::new(0.0, 0.0)],
     ];
-    let pragma_serialization = PragmaSetDensityMatrix::new(matrix.clone());
+    let pragma_serialization = PragmaSetDensityMatrix::new(matrix);
     assert_tokens(
         &pragma_serialization.compact(),
         &[
@@ -589,7 +717,7 @@ fn pragma_repeat_gate_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaRepeatGate"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaRepeatGate Substitute trait
@@ -602,13 +730,14 @@ fn pragma_repeat_gate_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
     // (2) Remap qubits function
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
 }
@@ -709,7 +838,7 @@ fn pragma_overrotation_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaOverrotation"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaOverrotation Substitute trait
@@ -722,7 +851,7 @@ fn pragma_overrotation_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -730,12 +859,9 @@ fn pragma_overrotation_substitute_trait() {
     let pragma_test = PragmaOverrotation::new("RotateX".to_string(), vec![2], 0.03, 0.001);
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(2, 0);
+    qubit_mapping_test.insert(0, 2);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
-
-    let qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
-    let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 2 }));
 }
 
 /// Test PragmaOverrotation Serialization and Deserialization traits (readable)
@@ -840,7 +966,7 @@ fn pragma_boost_noise_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaBoostNoise"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaBoostNoise Substitute trait
@@ -853,13 +979,14 @@ fn pragma_boost_noise_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.003);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
     // (2) Remap qubits function
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let result = pragma.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
 }
@@ -928,10 +1055,12 @@ fn pragma_stop_simple_traits() {
     let pragma = PragmaStopParallelBlock::new(vec![0, 1], CalculatorFloat::from(0.0000001));
 
     // Test Debug trait
-    assert_eq!(
-        format!("{:?}", pragma),
-        "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(0.0000001) }"
-    );
+    let string_comparison = (format!("{:?}", pragma)
+        == "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(0.0000001) }")
+        || (format!("{:?}", pragma)
+            == "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(1e-7) }");
+
+    assert!(string_comparison);
 
     // Test Clone trait
     assert_eq!(pragma.clone(), pragma);
@@ -963,7 +1092,7 @@ fn pragma_stop_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaStopParallelBlock"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaStopParallelBlock Substitute trait
@@ -976,7 +1105,7 @@ fn pragma_stop_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.0000001);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -984,6 +1113,7 @@ fn pragma_stop_substitute_trait() {
     let pragma_test = PragmaStopParallelBlock::new(vec![2, 1], CalculatorFloat::from(0.0000001));
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(2, 0);
+    qubit_mapping_test.insert(0, 2);
     qubit_mapping_test.insert(1, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
@@ -1096,7 +1226,7 @@ fn pragma_global_phase_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaGlobalPhase"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaGlobalPhase Substitute trait
@@ -1109,13 +1239,14 @@ fn pragma_global_phase_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.05);
     let result_test = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(pragma, result_test);
 
     // (2) Remap qubits function
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let result = pragma.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, result_test);
 }
@@ -1184,10 +1315,11 @@ fn pragma_sleep_simple_traits() {
     let pragma = PragmaSleep::new(vec![0, 1], CalculatorFloat::from(0.0000001));
 
     // Test Debug trait
-    assert_eq!(
-        format!("{:?}", pragma),
-        "PragmaSleep { qubits: [0, 1], sleep_time: Float(0.0000001) }"
-    );
+    let string_comparison = (format!("{:?}", pragma)
+        == "PragmaSleep { qubits: [0, 1], sleep_time: Float(0.0000001) }")
+        || (format!("{:?}", pragma) == "PragmaSleep { qubits: [0, 1], sleep_time: Float(1e-7) }");
+
+    assert!(string_comparison);
 
     // Test Clone trait
     assert_eq!(pragma.clone(), pragma);
@@ -1219,7 +1351,7 @@ fn pragma_sleep_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaSleep"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaSleep Substitute trait
@@ -1232,7 +1364,7 @@ fn pragma_sleep_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.0000001);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -1240,6 +1372,7 @@ fn pragma_sleep_substitute_trait() {
     let pragma_test = PragmaSleep::new(vec![2, 1], CalculatorFloat::from(0.0000001));
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(2, 0);
+    qubit_mapping_test.insert(0, 2);
     qubit_mapping_test.insert(1, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
@@ -1354,7 +1487,7 @@ fn pragma_active_reset_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaActiveReset"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaActiveReset Substitute trait
@@ -1367,7 +1500,7 @@ fn pragma_active_reset_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.05);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -1375,12 +1508,9 @@ fn pragma_active_reset_substitute_trait() {
     let pragma_test = PragmaActiveReset::new(2);
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(2, 0);
+    qubit_mapping_test.insert(0, 2);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
-
-    let qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
-    let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 2 }));
 }
 
 /// Test PragmaActiveReset Serialization and Deserialization traits (readable)
@@ -1489,7 +1619,7 @@ fn pragma_start_decomp_block_operate_trait() {
     );
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaStartDecompositionBlock Substitute trait
@@ -1505,7 +1635,7 @@ fn pragma_start_decomp_block_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.05);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -1638,7 +1768,7 @@ fn pragma_stop_decomp_block_operate_trait() {
     );
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaStopDecompositionBlock Substitute trait
@@ -1651,7 +1781,7 @@ fn pragma_stop_decomp_block_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.05);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -1660,13 +1790,14 @@ fn pragma_stop_decomp_block_substitute_trait() {
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 0);
     qubit_mapping_test.insert(2, 1);
+    qubit_mapping_test.insert(1, 2);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
 
     let mut qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_err.insert(1, 2);
     let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 0 }));
+    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 2 }));
 }
 
 /// Test PragmaStopDecompositionBlock Serialization and Deserialization traits (readable)
@@ -1776,7 +1907,7 @@ fn pragma_damping_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaDamping"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaDamping Substitute trait
@@ -1793,7 +1924,7 @@ fn pragma_damping_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.005);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -1802,12 +1933,9 @@ fn pragma_damping_substitute_trait() {
         PragmaDamping::new(1, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(1, 0);
+    qubit_mapping_test.insert(0, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
-
-    let qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
-    let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
 }
 
 /// Test PragmaDamping OperatePragmaNoise and OperatePragmaNoiseProba trait
@@ -1816,8 +1944,7 @@ fn pragma_damping_pragmanoise_trait() {
     let pragma = PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
 
     // (1) Superoperator function
-    let superop_pre_exp: f64 = -1.0 * 0.005 * 0.02;
-    let superop_prob: f64 = 1.0 - superop_pre_exp.exp();
+    let superop_prob: f64 = f64::try_from(pragma.probability()).unwrap();
     let superop_sqrt: f64 = (1.0 - superop_prob).sqrt();
     let superop: Array2<f64> = array![
         [1.0, 0.0, 0.0, superop_prob],
@@ -1828,8 +1955,8 @@ fn pragma_damping_pragmanoise_trait() {
     assert_eq!(superop, pragma.superoperator().unwrap());
 
     // (2) Probability function
-    let proba_pre_exp: f64 = -2.0 * 0.005 * 0.02;
-    let proba = CalculatorFloat::from(0.5 * (1.0 - proba_pre_exp.exp()));
+    let proba_pre_exp: f64 = -1.0 * 0.005 * 0.02;
+    let proba = CalculatorFloat::from(1.0 - proba_pre_exp.exp());
     assert_eq!(proba, pragma.probability());
 
     // (3) PowerCF function
@@ -1961,7 +2088,7 @@ fn pragma_depolarising_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaDepolarising"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaDepolarising Substitute trait
@@ -1979,7 +2106,7 @@ fn pragma_depolarising_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.005);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -1988,12 +2115,9 @@ fn pragma_depolarising_substitute_trait() {
         PragmaDepolarising::new(1, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(1, 0);
+    qubit_mapping_test.insert(0, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
-
-    let qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
-    let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
 }
 
 /// Test PragmaDepolarising OperatePragmaNoise and OperatePragmaNoiseProba trait
@@ -2005,9 +2129,9 @@ fn pragma_depolarising_pragmanoise_trait() {
     // (1) Superoperator function
     let superop_pre_exp: f64 = -1.0 * 0.005 * 0.02;
     let superop_prob: f64 = 0.75 * (1.0 - superop_pre_exp.exp());
-    let superop_proba1: f64 = 1.0 - (2.0 / 3.0) * superop_prob.clone();
-    let superop_proba2: f64 = 1.0 - (4.0 / 3.0) * superop_prob.clone();
-    let superop_proba3: f64 = (2.0 / 3.0) * superop_prob.clone();
+    let superop_proba1: f64 = 1.0 - (2.0 / 3.0) * superop_prob;
+    let superop_proba2: f64 = 1.0 - (4.0 / 3.0) * superop_prob;
+    let superop_proba3: f64 = (2.0 / 3.0) * superop_prob;
     let superop: Array2<f64> = array![
         [superop_proba1, 0.0, 0.0, superop_proba3],
         [0.0, superop_proba2, 0.0, 0.0],
@@ -2147,7 +2271,7 @@ fn pragma_dephasing_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaDephasing"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaDephasing Substitute trait
@@ -2164,7 +2288,7 @@ fn pragma_dephasing_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.005);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -2173,12 +2297,9 @@ fn pragma_dephasing_substitute_trait() {
         PragmaDephasing::new(1, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(1, 0);
+    qubit_mapping_test.insert(0, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
-
-    let qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
-    let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
 }
 
 /// Test PragmaDephasing OperatePragmaNoise and OperatePragmaNoiseProba trait
@@ -2353,7 +2474,7 @@ fn pragma_random_noise_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaRandomNoise"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaRandomNoise Substitute trait
@@ -2376,7 +2497,7 @@ fn pragma_random_noise_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.005);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -2389,12 +2510,9 @@ fn pragma_random_noise_substitute_trait() {
     );
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(1, 0);
+    qubit_mapping_test.insert(0, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
-
-    let qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
-    let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
 }
 
 /// Test PragmaRandomNoise OperatePragmaNoise and OperatePragmaNoiseProba trait
@@ -2540,7 +2658,7 @@ fn pragma_general_noise_simple_traits() {
 
     // Test PartialEq trait
     let pragma_0 = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators.clone());
-    let pragma_1 = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.006), operators.clone());
+    let pragma_1 = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.006), operators);
     assert!(pragma_0 == pragma);
     assert!(pragma == pragma_0);
     assert!(pragma_1 != pragma);
@@ -2551,7 +2669,7 @@ fn pragma_general_noise_simple_traits() {
 #[test]
 fn pragma_general_noise_operate_trait() {
     let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],];
-    let pragma = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators.clone());
+    let pragma = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators);
 
     // (1) Test tags function
     let tags: &[&str; 5] = &[
@@ -2567,7 +2685,7 @@ fn pragma_general_noise_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaGeneralNoise"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaGeneralNoise Substitute trait
@@ -2581,20 +2699,52 @@ fn pragma_general_noise_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.005);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
     // (2) Remap qubits function
-    let pragma_test = PragmaGeneralNoise::new(1, CalculatorFloat::from(0.005), operators.clone());
+    let pragma_test = PragmaGeneralNoise::new(1, CalculatorFloat::from(0.005), operators);
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(1, 0);
+    qubit_mapping_test.insert(0, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
+}
 
-    let qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
-    let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
+/// Test PragmaGeneralNoise Operate trait
+#[test]
+fn pragma_general_noise_pragmanoise_trait() {
+    let time = 0.005;
+    let rates: Array2<f64> = array![[0.3, 0.7, 0.0], [0.7, 2.0, 0.8], [0.0, 0.8, 3.0]]; // add check for >= eigenvalues
+    let pragma = PragmaGeneralNoise::new(0, CalculatorFloat::from(time), rates);
+    let superop: Matrix4<f64> = matrix![-2., 0.4, 0.4, 0.3;
+    1.2, -7.15, 0.7, 0.4;
+    1.2, 0.7, -7.15, 0.4;
+    2., -0.4, -0.4, -0.3;]
+        * time;
+    let mut exponential = superop.exp();
+    exponential.transpose_mut();
+    let mut tmp_iter = exponential.iter();
+    // convert to ndarray.
+    let array: Array2<f64> = Array::from_shape_simple_fn((4, 4), || *tmp_iter.next().unwrap());
+
+    // matrix exponential using numpy:
+    let test_exponential = array![
+        [0.99006908, 0.00195677, 0.00195677, 0.00149535],
+        [0.00588459, 0.96489129, 0.00338099, 0.00197106],
+        [0.00588459, 0.00338099, 0.96489129, 0.00197106],
+        [0.00993092, -0.00195677, -0.00195677, 0.99850465]
+    ];
+
+    let result: Array2<f64> = test_exponential - pragma.superoperator().unwrap();
+    for item in result.iter() {
+        assert!(item.abs() <= 0.0001);
+    }
+    let result2: Array2<f64> = array - pragma.superoperator().unwrap();
+    for item in result2.iter() {
+        assert!(item.abs() <= 1e-6);
+    }
 }
 
 /// Test PragmaGeneralNoise Serialization and Deserialization traits (readable)
@@ -2602,8 +2752,7 @@ fn pragma_general_noise_substitute_trait() {
 #[test]
 fn pragma_general_noise_serde_readable() {
     let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],];
-    let pragma_serialization =
-        PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators.clone());
+    let pragma_serialization = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators);
     assert_tokens(
         &pragma_serialization.readable(),
         &[
@@ -2650,8 +2799,7 @@ fn pragma_general_noise_serde_readable() {
 #[test]
 fn pragma_general_noise_serde_compact() {
     let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],];
-    let pragma_serialization =
-        PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators.clone());
+    let pragma_serialization = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators);
     assert_tokens(
         &pragma_serialization.compact(),
         &[
@@ -2723,7 +2871,7 @@ fn pragma_conditional_simple_traits() {
     // Test Debug trait
     assert_eq!(
         format!("{:?}", pragma),
-        "PragmaConditional { condition_register: \"ro\", condition_index: 1, circuit: Circuit { definitions: [], operations: [] } }"
+        "PragmaConditional { condition_register: \"ro\", condition_index: 1, circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"
     );
 
     // Test Clone trait
@@ -2744,19 +2892,14 @@ fn pragma_conditional_operate_trait() {
     let pragma = PragmaConditional::new(String::from("ro"), 1, Circuit::default());
 
     // (1) Test tags function
-    let tags: &[&str; 4] = &[
-        "Operation",
-        "SingleQubitOperation",
-        "PragmaOperation",
-        "PragmaConditional",
-    ];
+    let tags: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaConditional"];
     assert_eq!(pragma.tags(), tags);
 
     // (2) Test hqslang function
     assert_eq!(pragma.hqslang(), String::from("PragmaConditional"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaConditional Substitute trait
@@ -2769,13 +2912,14 @@ fn pragma_conditional_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(pragma, result);
 
     // (2) Remap qubits function with an empty circuit
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let mut new_qubit_paulis: HashMap<usize, usize> = HashMap::new();
     new_qubit_paulis.insert(2, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
@@ -2797,6 +2941,21 @@ fn pragma_conditional_substitute_trait() {
 #[test]
 fn pragma_conditional_serde_readable() {
     let pragma_serialization = PragmaConditional::new(String::from("ro"), 1, Circuit::default());
+    use roqoqo::ROQOQO_VERSION;
+    use std::str::FromStr;
+    let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+    let major_version = u32::from_str(
+        rsplit
+            .next()
+            .expect("Internal error: Version not conforming to semver"),
+    )
+    .expect("Internal error: Major version is not unsigned integer.");
+    let minor_version = u32::from_str(
+        rsplit
+            .next()
+            .expect("Internal error: Version not conforming to semver"),
+    )
+    .expect("Internal error: Minor version is not unsigned integer.");
     assert_tokens(
         &pragma_serialization.readable(),
         &[
@@ -2811,7 +2970,7 @@ fn pragma_conditional_serde_readable() {
             Token::Str("circuit"),
             Token::Struct {
                 name: "Circuit",
-                len: 2,
+                len: 3,
             },
             Token::Str("definitions"),
             Token::Seq { len: Some(0) },
@@ -2819,6 +2978,16 @@ fn pragma_conditional_serde_readable() {
             Token::Str("operations"),
             Token::Seq { len: Some(0) },
             Token::SeqEnd,
+            Token::Str("_roqoqo_version"),
+            Token::Struct {
+                name: "RoqoqoVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(major_version),
+            Token::Str("minor_version"),
+            Token::U32(minor_version),
+            Token::StructEnd,
             Token::StructEnd,
             Token::StructEnd,
         ],
@@ -2830,6 +2999,21 @@ fn pragma_conditional_serde_readable() {
 #[test]
 fn pragma_conditional_serde_compact() {
     let pragma_serialization = PragmaConditional::new(String::from("ro"), 1, Circuit::default());
+    use roqoqo::ROQOQO_VERSION;
+    use std::str::FromStr;
+    let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+    let major_version = u32::from_str(
+        rsplit
+            .next()
+            .expect("Internal error: Version not conforming to semver"),
+    )
+    .expect("Internal error: Major version is not unsigned integer.");
+    let minor_version = u32::from_str(
+        rsplit
+            .next()
+            .expect("Internal error: Version not conforming to semver"),
+    )
+    .expect("Internal error: Minor version is not unsigned integer.");
     assert_tokens(
         &pragma_serialization.readable(),
         &[
@@ -2844,7 +3028,7 @@ fn pragma_conditional_serde_compact() {
             Token::Str("circuit"),
             Token::Struct {
                 name: "Circuit",
-                len: 2,
+                len: 3,
             },
             Token::Str("definitions"),
             Token::Seq { len: Some(0) },
@@ -2852,8 +3036,106 @@ fn pragma_conditional_serde_compact() {
             Token::Str("operations"),
             Token::Seq { len: Some(0) },
             Token::SeqEnd,
+            Token::Str("_roqoqo_version"),
+            Token::Struct {
+                name: "RoqoqoVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(major_version),
+            Token::Str("minor_version"),
+            Token::U32(minor_version),
+            Token::StructEnd,
             Token::StructEnd,
             Token::StructEnd,
         ],
     );
+}
+
+/// Test PragmaChangeDevice inputs and involved qubits
+#[test]
+#[cfg(feature = "serialize")]
+fn pragma_change_device_inputs_qubits() {
+    // This is not a change device pragma, but for testing purposes it can be used
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
+
+    // Test inputs are correct
+    assert_eq!(pragma.wrapped_hqslang, String::from("PragmaActiveReset"));
+    let tags: &[&str; 4] = &[
+        "Operation",
+        "SingleQubitOperation",
+        "PragmaOperation",
+        "PragmaActiveReset",
+    ];
+    assert_eq!(pragma.wrapped_tags, tags);
+    assert_eq!(pragma.wrapped_operation, serialize(&wrapped).unwrap());
+
+    // Test InvolveQubits trait
+    assert_eq!(pragma.involved_qubits(), InvolvedQubits::All);
+}
+
+/// Test PragmaConditional standard derived traits (Debug, Clone, PartialEq)
+#[test]
+#[cfg(feature = "serialize")]
+fn pragma_change_device_simple_traits() {
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
+    let wrapped_0: Operation = PragmaActiveReset::new(0).into();
+    let pragma_0 = PragmaChangeDevice::new(&wrapped_0).unwrap();
+
+    let wrapped_1: Operation = PragmaActiveReset::new(1).into();
+    let pragma_1 = PragmaChangeDevice::new(&wrapped_1).unwrap();
+    // Test Clone trait
+    assert_eq!(pragma.clone(), pragma);
+
+    // Test PartialEq trait
+    assert!(pragma_0 == pragma);
+    assert!(pragma == pragma_0);
+    assert!(pragma_1 != pragma);
+    assert!(pragma != pragma_1);
+}
+
+/// Test PragmaConditional Operate trait
+#[test]
+#[cfg(feature = "serialize")]
+fn pragma_change_device_operate_trait() {
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
+
+    // (1) Test tags function
+    let tags: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaChangeDevice"];
+    assert_eq!(pragma.tags(), tags);
+
+    // (2) Test hqslang function
+    assert_eq!(pragma.hqslang(), String::from("PragmaChangeDevice"));
+
+    // (3) Test is_parametrized function
+    assert!(!pragma.is_parametrized());
+}
+
+/// Test PragmaConditional Substitute trait
+#[test]
+#[cfg(feature = "serialize")]
+fn pragma_change_device_substitute_trait() {
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
+    let pragma_test = PragmaChangeDevice::new(&wrapped).unwrap();
+    // (1) Substitute parameters function
+    let mut substitution_dict: Calculator = Calculator::new();
+    substitution_dict.set_variable("ro", 0.0);
+    let result = pragma_test
+        .substitute_parameters(&substitution_dict)
+        .unwrap();
+    assert_eq!(pragma, result);
+
+    // (2) Remap qubits with a remapping
+    // This is not supported yet and should throw an error
+    let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
+    let mut new_qubit_paulis: HashMap<usize, usize> = HashMap::new();
+    new_qubit_paulis.insert(2, 1);
+    let result = pragma_test.remap_qubits(&qubit_mapping_test).is_err();
+    assert!(result);
 }

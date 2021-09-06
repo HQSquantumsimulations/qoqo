@@ -21,6 +21,8 @@ use crate::operations::{
 };
 use crate::Circuit;
 
+use super::InvolvedClassical;
+
 /// Measurement gate operation.
 ///
 /// This Operation acts on one qubit writing the result of the measurement into a readout.
@@ -28,19 +30,20 @@ use crate::Circuit;
 ///
 /// # Note
 ///
-/// Here, it is a measurement in terms of quantum mechanics. The obtained result of a $\textit{single}$ measurement will be either a `0` or a `1`.  
-/// In order to be able to derive probabilities in the $\textit{post-processing}$, the actual measurement needs to be repeated lots of times.
+/// Here, it is a measurement in terms of quantum mechanics. The obtained result of a single measurement will be either a `0` or a `1`.  
+/// In order to be able to derive probabilities in the post-processing, the actual measurement needs to be repeated lots of times.
 ///
 #[derive(
     Debug,
     Clone,
     PartialEq,
-    roqoqo_derive::InvolveQubits,
+    Eq,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct MeasureQubit {
     /// The measured qubit.
     qubit: usize,
@@ -50,6 +53,20 @@ pub struct MeasureQubit {
     readout_index: usize,
 }
 
+impl InvolveQubits for MeasureQubit {
+    fn involved_qubits(&self) -> InvolvedQubits {
+        let mut a: HashSet<usize> = HashSet::new();
+        a.insert(self.qubit);
+        InvolvedQubits::Set(a)
+    }
+
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        let mut a: HashSet<(String, usize)> = HashSet::new();
+        a.insert((self.readout.clone(), self.readout_index));
+        InvolvedClassical::Set(a)
+    }
+}
+
 #[allow(non_upper_case_globals)]
 const TAGS_MeasureQubit: &[&str; 3] = &["Operation", "Measurement", "MeasureQubit"];
 
@@ -57,6 +74,7 @@ const TAGS_MeasureQubit: &[&str; 3] = &["Operation", "Measurement", "MeasureQubi
 ///
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGetStateVector {
     /// The name of the classical readout register.
     readout: String,
@@ -84,7 +102,7 @@ impl Substitute for PragmaGetStateVector {
     }
 
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
         let new_circuit = match self.circuit.as_ref() {
             Some(x) => Some(x.substitute_parameters(calculator)?),
             _ => None,
@@ -99,12 +117,17 @@ impl InvolveQubits for PragmaGetStateVector {
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::All
     }
+
+    fn involved_classical(&self) -> InvolvedClassical {
+        InvolvedClassical::All(self.readout.clone())
+    }
 }
 
 /// This PRAGMA measurement operation returns the density matrix of a quantum register.
 ///
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGetDensityMatrix {
     /// The name of the classical readout register.
     readout: String,
@@ -135,7 +158,7 @@ impl Substitute for PragmaGetDensityMatrix {
     }
 
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
         let new_circuit = match self.circuit.as_ref() {
             Some(x) => Some(x.substitute_parameters(calculator)?),
             _ => None,
@@ -153,15 +176,20 @@ impl InvolveQubits for PragmaGetDensityMatrix {
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::All
     }
+
+    fn involved_classical(&self) -> InvolvedClassical {
+        InvolvedClassical::All(self.readout.clone())
+    }
 }
 
 /// This PRAGMA measurement operation returns the vector of the occupation probabilities.
 ///
 /// Occupation probabilities in the context of this PRAGMA Operation are probabilities of finding the quantum
-/// register in each $\sigma_z$ basis state. The quantum register remains unchanged by this PRAGMA measurement operation.
+/// register in each σ^z basis state. The quantum register remains unchanged by this PRAGMA measurement operation.
 ///
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGetOccupationProbability {
     /// The name of the classical readout register.
     readout: String,
@@ -192,7 +220,7 @@ impl Substitute for PragmaGetOccupationProbability {
     }
 
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
         let new_circuit = match self.circuit.as_ref() {
             Some(x) => Some(x.substitute_parameters(calculator)?),
             _ => None,
@@ -210,6 +238,10 @@ impl InvolveQubits for PragmaGetOccupationProbability {
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::All
     }
+
+    fn involved_classical(&self) -> InvolvedClassical {
+        InvolvedClassical::All(self.readout.clone())
+    }
 }
 
 /// This PRAGMA measurement operation returns a Pauli product expectation value.
@@ -220,6 +252,7 @@ impl InvolveQubits for PragmaGetOccupationProbability {
 ///
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGetPauliProduct {
     /// The HashMap of the pauli matrix to apply to each qubit in the form {qubit: pauli}. Allowed values to be provided for 'pauli' are: `0` = identity, `1` = PauliX, `2` = PauliY, `3` = PauliZ.
     qubit_paulis: HashMap<usize, usize>,
@@ -241,12 +274,15 @@ const TAGS_PragmaGetPauliProduct: &[&str; 4] = &[
 impl Substitute for PragmaGetPauliProduct {
     /// Remaps qubits in operations in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
-        let mut mutable_mapping: HashMap<usize, usize> = self.qubit_paulis.clone();
-        for (old_qubit, new_qubit) in mapping {
-            if let Some(v) = mutable_mapping.remove(old_qubit) {
-                mutable_mapping.insert(*new_qubit, v);
-            }
+        crate::operations::check_valid_mapping(mapping)?;
+
+        let mut mutable_mapping: HashMap<usize, usize> = HashMap::new();
+        for (key, val) in self.qubit_paulis.iter() {
+            let new_key = mapping.get(key).unwrap_or(key);
+
+            mutable_mapping.insert(*new_key, *val);
         }
+
         let new_circuit = self.circuit.remap_qubits(mapping).unwrap();
         Ok(PragmaGetPauliProduct::new(
             mutable_mapping,
@@ -256,7 +292,7 @@ impl Substitute for PragmaGetPauliProduct {
     }
 
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
         let new_circuit = self.circuit.substitute_parameters(calculator).unwrap();
         Ok(PragmaGetPauliProduct::new(
             self.qubit_paulis.clone(),
@@ -281,16 +317,21 @@ impl InvolveQubits for PragmaGetPauliProduct {
         }
         InvolvedQubits::Set(new_hash_set)
     }
+
+    fn involved_classical(&self) -> InvolvedClassical {
+        InvolvedClassical::All(self.readout.clone())
+    }
 }
 
-/// This PRAGMA measurement operation returns a measurement record for $N$ repeated measurements.
+/// This PRAGMA measurement operation returns a measurement record for N repeated measurements.
 ///
-#[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
+#[derive(Debug, Clone, PartialEq, Eq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaRepeatedMeasurement {
     /// The name of the classical readout register.
     readout: String,
-    /// The number of times $N$ to repeat the measurement.
+    /// The number of times N to repeat the measurement.
     number_measurements: usize,
     /// The mapping of qubits to indices in the readout register.
     qubit_mapping: Option<HashMap<usize, usize>>,
@@ -308,15 +349,24 @@ const TAGS_PragmaRepeatedMeasurement: &[&str; 4] = &[
 impl Substitute for PragmaRepeatedMeasurement {
     /// Remaps qubits in operations in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
-        let new_mapping = (self.qubit_mapping.clone()).map(|hm| {
-            let mut mutable_mapping: HashMap<usize, usize> = hm;
-            for (old_qubit, new_qubit) in mapping {
-                if let Some(v) = mutable_mapping.remove(old_qubit) {
-                    mutable_mapping.insert(*new_qubit, v);
+        crate::operations::check_valid_mapping(mapping)?;
+        let new_mapping = match &self.qubit_mapping {
+            Some(hm) => {
+                let mut mutable_mapping: HashMap<usize, usize> = HashMap::new();
+                for (key, val) in hm {
+                    let new_key = mapping.get(key).unwrap_or(key);
+
+                    mutable_mapping.insert(*new_key, *val);
                 }
+                for (key, val) in mapping.iter() {
+                    if mutable_mapping.get(key).is_none() {
+                        mutable_mapping.insert(*key, *val);
+                    }
+                }
+                Some(mutable_mapping)
             }
-            mutable_mapping
-        });
+            None => Some(mapping.clone()),
+        };
         Ok(PragmaRepeatedMeasurement::new(
             self.readout.clone(),
             self.number_measurements,
@@ -325,7 +375,7 @@ impl Substitute for PragmaRepeatedMeasurement {
     }
 
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, _calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(&self, _calculator: &Calculator) -> Result<Self, RoqoqoError> {
         Ok(self.clone())
     }
 }
@@ -335,5 +385,16 @@ impl InvolveQubits for PragmaRepeatedMeasurement {
     /// Lists all involved qubits (here, all).
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::All
+    }
+
+    fn involved_classical(&self) -> InvolvedClassical {
+        match &self.qubit_mapping {
+            None => InvolvedClassical::AllQubits(self.readout.clone()),
+            Some(x) => {
+                let new_set: HashSet<(String, usize)> =
+                    x.values().map(|v| (self.readout.clone(), *v)).collect();
+                InvolvedClassical::Set(new_set)
+            }
+        }
     }
 }

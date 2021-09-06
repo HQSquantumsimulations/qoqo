@@ -13,13 +13,13 @@ use crate::{convert_into_circuit, CircuitWrapper};
 use pyo3::exceptions::PyRuntimeError;
 use pyo3::prelude::*;
 use pyo3::types::PySet;
-use pyo3::PyObjectProtocol;
 use qoqo_macros::*;
 use roqoqo::operations::*;
 use roqoqo::Circuit;
 use std::collections::HashMap;
 
 #[wrap(Operate, OperateSingleQubit)]
+#[derive(Eq)]
 /// Measurement gate operation.
 ///
 /// This Operation acts on one qubit writing the result of the measurement into a readout.
@@ -95,6 +95,7 @@ struct PragmaGetPauliProduct {
 }
 
 #[wrap(Operate, OperatePragma)]
+#[derive(Eq)]
 /// This PRAGMA measurement operation returns a measurement record for N repeated measurements.
 ///
 /// Args:

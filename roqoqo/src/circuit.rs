@@ -14,6 +14,7 @@ use crate::operations::{Define, InvolveQubits, InvolvedQubits, Operate, Operatio
 #[cfg(feature = "overrotate")]
 use crate::operations::{Rotate, Rotation};
 use crate::RoqoqoError;
+use crate::RoqoqoVersion;
 use qoqo_calculator::Calculator;
 #[cfg(feature = "overrotate")]
 use std::convert::TryFrom;
@@ -23,7 +24,7 @@ use std::{
     usize,
 };
 use std::{
-    fmt::{Display, Formatter},
+    fmt::{Display, Formatter, Write},
     iter::{FromIterator, IntoIterator},
 };
 
@@ -81,11 +82,14 @@ use std::{
 ///
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct Circuit {
     /// Definitions in the quantum circuit, must be unique.
     definitions: Vec<Operation>,
     /// Operations of the quantum circuit, do not have to be unique.
     operations: Vec<Operation>,
+    /// The roqoqo version.
+    _roqoqo_version: RoqoqoVersion,
 }
 
 impl Circuit {
@@ -98,6 +102,7 @@ impl Circuit {
         Circuit {
             definitions: Vec::new(),
             operations: Vec::new(),
+            _roqoqo_version: RoqoqoVersion,
         }
     }
     /// Adds an Operation to Circuit (self).
@@ -259,22 +264,24 @@ impl Circuit {
     ///
     /// * `Ok(Self)` -  The Circuit with the parameters substituted.
     /// * `Err(RoqoqoError)` - The subsitution failed.
-    pub fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    pub fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
+        let mut tmp_calculator = calculator.clone();
         let mut tmp_def: Vec<Operation> = Vec::new();
         for def in self.definitions.iter() {
-            let tmp_op = def.substitute_parameters(calculator)?;
+            let tmp_op = def.substitute_parameters(&tmp_calculator)?;
             if let Operation::InputSymbolic(x) = &tmp_op {
-                calculator.set_variable(x.name(), *x.input())
+                tmp_calculator.set_variable(x.name(), *x.input())
             }
             tmp_def.push(tmp_op);
         }
         let mut tmp_op: Vec<Operation> = Vec::new();
         for op in self.operations.iter() {
-            tmp_op.push(op.substitute_parameters(calculator)?);
+            tmp_op.push(op.substitute_parameters(&tmp_calculator)?);
         }
         Ok(Self {
             definitions: tmp_def,
             operations: tmp_op,
+            _roqoqo_version: RoqoqoVersion,
         })
     }
     /// Remaps the qubits in operations in clone of Circuit.
@@ -295,6 +302,7 @@ impl Circuit {
         Ok(Self {
             definitions: self.definitions.clone(),
             operations: tmp_op,
+            _roqoqo_version: RoqoqoVersion,
         })
     }
 
@@ -365,6 +373,7 @@ impl Circuit {
         let mut return_circuit = Circuit {
             definitions: self.definitions.clone(),
             operations: Vec::new(),
+            _roqoqo_version: RoqoqoVersion,
         };
         let mut length = tmp_vec.len();
         while length > 0 {
@@ -387,7 +396,6 @@ impl Circuit {
                             let mut tmp_tmp_vec: Vec<Operation> = Vec::new();
                             for (mov_ind, op) in tmp_vec.into_iter().enumerate() {
                                 if mov_ind == index + ind {
-                                    println!("index: {}. op: {:?}", mov_ind, op.clone());
                                     tmp_tmp_vec.push(
                                         Rotation::try_from(op)?
                                             .overrotate(
@@ -695,6 +703,7 @@ impl ops::Add<Circuit> for Circuit {
                 .into_iter()
                 .chain(other.operations.into_iter())
                 .collect(),
+            _roqoqo_version: RoqoqoVersion,
         }
     }
 }
@@ -718,6 +727,7 @@ impl ops::Add<&Circuit> for Circuit {
                 .into_iter()
                 .chain(other.operations.iter().cloned())
                 .collect(),
+            _roqoqo_version: RoqoqoVersion,
         }
     }
 }
@@ -765,7 +775,7 @@ impl Display for Circuit {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let mut s: String = String::new();
         for op in self.iter() {
-            s.push_str(&format!("{:?}\n", op))
+            _ = writeln!(s, "{:?}", op)
         }
         write!(f, "{}", s)
     }

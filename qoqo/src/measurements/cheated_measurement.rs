@@ -14,15 +14,15 @@
 
 use super::CheatedInputWrapper;
 use crate::CircuitWrapper;
+use bincode::serialize;
 use pyo3::exceptions::{PyRuntimeError, PyValueError};
 use pyo3::prelude::*;
-use pyo3::types::PyType;
+use pyo3::types::PyByteArray;
 use roqoqo::measurements::Cheated;
 use roqoqo::prelude::*;
 use roqoqo::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
 use roqoqo::Circuit;
 use std::collections::HashMap;
-
 #[pyclass(name = "Cheated", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Collected information for executing a cheated measurement.
@@ -141,6 +141,23 @@ impl CheatedWrapper {
             .map(|c| CircuitWrapper { internal: c })
     }
 
+    /// Returns the measurement input data defining how to construct expectation values from measurements.
+    ///
+    /// Returns:
+    ///     CheatedInput: The input of Cheated measurement
+    pub fn input(&self) -> CheatedInputWrapper {
+        let input = self.internal.input.clone();
+        CheatedInputWrapper { internal: input }
+    }
+
+    /// Returns the type of the measurement in string form.
+    ///
+    /// Returns:
+    ///    str: The type of the measurement.
+    pub fn measurement_type(&self) -> &'static str {
+        "Cheated"
+    }
+
     /// Return copy of Measurement with symbolic parameters replaced.
     ///
     /// Arguments:
@@ -165,6 +182,22 @@ impl CheatedWrapper {
         })
     }
 
+    /// Return the name of the measurement and the bincode representation of the Measurement using the [bincode] crate.
+    ///
+    /// Returns:
+    ///     (str, ByteArray): Name and serialized measurement (in [bincode] form).
+    ///
+    /// Raises:
+    ///     ValueError: Cannot serialize Measurement to bytes.
+    pub fn _internal_to_bincode(&self) -> PyResult<(&'static str, Py<PyByteArray>)> {
+        let serialized = serialize(&self.internal)
+            .map_err(|_| PyValueError::new_err("Cannot serialize CheatedMeasurement to bytes"))?;
+        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+            PyByteArray::new(py, &serialized[..]).into()
+        });
+        Ok(("Cheated", b))
+    }
+
     /// Serialize the Cheated measurement to json form.
     ///
     /// Returns:
@@ -184,12 +217,51 @@ impl CheatedWrapper {
     ///
     /// Raises:
     ///     RuntimeError: Cannot deserialize string to Cheated.
-    #[allow(unused_variables)]
-    #[classmethod]
-    pub fn from_json(cls: &PyType, json_string: &str) -> PyResult<Self> {
+    #[staticmethod]
+    pub fn from_json(json_string: &str) -> PyResult<Self> {
         Ok(Self {
             internal: serde_json::from_str(json_string)
                 .map_err(|_| PyValueError::new_err("Cannot deserialize string to Cheated"))?,
         })
+    }
+
+    /// Implement __repr__ magic method
+    pub fn __repr__(&self) -> String {
+        format!("{:?}", self.internal)
+    }
+
+    /// Return a copy of the Object (copy here produces a deepcopy).
+    pub fn __copy__(&self) -> Self {
+        self.clone()
+    }
+
+    /// Return a deep copy of the Object.
+    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+        self.clone()
+    }
+
+    /// Return the __richcmp__ magic method to perform rich comparison operations on QuantumProgram.
+    ///
+    /// Args:
+    ///     other: The object to compare self to.
+    ///     op: Type of comparison.
+    ///
+    /// Returns:
+    ///     Whether the two operations compared evaluated to True or False
+    ///
+    /// Raises:
+    ///     NotImplementedError: Other comparison not implemented
+    fn __richcmp__(
+        &self,
+        other: CheatedWrapper,
+        op: pyo3::class::basic::CompareOp,
+    ) -> PyResult<bool> {
+        match op {
+            pyo3::class::basic::CompareOp::Eq => Ok(self.internal == other.internal),
+            pyo3::class::basic::CompareOp::Ne => Ok(self.internal != other.internal),
+            _ => Err(pyo3::exceptions::PyNotImplementedError::new_err(
+                "Other comparison not implemented",
+            )),
+        }
     }
 }

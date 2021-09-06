@@ -26,11 +26,6 @@ use rand_distr::{Distribution, Normal};
 
 /// The most general unitary operation acting on one qubit.
 ///
-/// $$ U =e^{i \phi}\begin{pmatrix}
-/// \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
-/// \beta_r+i \beta_i & \alpha_r-i\alpha_i
-/// \end{pmatrix} $$
-///
 /// # Warning
 ///
 /// Due to the support of parameterized values it cannot be guaranteed that the unitary matrix of the gate
@@ -46,18 +41,19 @@ use rand_distr::{Distribution, Normal};
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct SingleQubitGate {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
-    /// The real part $ \alpha_r $ of the on-diagonal elements of the single-qubit unitary.
+    /// The real part Re(α) of the on-diagonal elements of the single-qubit unitary.
     alpha_r: CalculatorFloat,
-    /// The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary.
+    /// The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary.
     alpha_i: CalculatorFloat,
-    /// The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary.
+    /// The real part Re(β) of the off-diagonal elements of the single-qubit unitary.
     beta_r: CalculatorFloat,
-    /// The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary.
+    /// The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary.
     beta_i: CalculatorFloat,
-    /// The global phase $ \phi $ of the single-qubit unitary.
+    /// The global phase φ of the single-qubit unitary.
     global_phase: CalculatorFloat,
 }
 
@@ -87,7 +83,7 @@ impl OperateGate for SingleQubitGate {
         if alpha_r == 0.0 && alpha_i == 0.0 && beta_r == 0.0 && beta_i == 0.0
             || (alpha_r.powf(2.0) + alpha_i.powf(2.0) + beta_r.powf(2.0) + beta_i.powf(2.0) - 1.0)
                 .abs()
-                > f64::EPSILON
+                > 1e-6
         {
             let norm: f64 =
                 alpha_r.powf(2.0) + alpha_i.powf(2.0) + beta_r.powf(2.0) + beta_i.powf(2.0);
@@ -120,7 +116,7 @@ impl OperateSingleQubitGate for SingleQubitGate {
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat {
         self.alpha_r.clone()
     }
@@ -128,7 +124,7 @@ impl OperateSingleQubitGate for SingleQubitGate {
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
         self.alpha_i.clone()
     }
@@ -136,7 +132,7 @@ impl OperateSingleQubitGate for SingleQubitGate {
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat {
         self.beta_r.clone()
     }
@@ -144,7 +140,7 @@ impl OperateSingleQubitGate for SingleQubitGate {
     ///
     /// # Returns
     ///
-    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
         self.beta_i.clone()
     }
@@ -152,24 +148,13 @@ impl OperateSingleQubitGate for SingleQubitGate {
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat {
         self.global_phase.clone()
     }
 }
 
-/// The ZPower gate $e^{-i \frac{\theta}{2} \sigma^z}$.
-///
-/// $$
-/// U = \begin{pmatrix}
-/// \cos(\frac{\theta}{2}) & 0\\\\
-/// 0 & \cos(\frac{\theta}{2})
-/// \end{pmatrix}
-///  + \begin{pmatrix}
-///  -i \sin(\frac{\theta}{2}) & 0\\\\
-/// 0 & i \sin(\frac{\theta}{2})
-/// \end{pmatrix}
-/// $$
+/// The ZPower gate exp(-i * θ/2 * σ^z).
 ///
 #[derive(
     Debug,
@@ -182,10 +167,11 @@ impl OperateSingleQubitGate for SingleQubitGate {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct RotateZ {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
-    /// The angle $\theta$ of the rotation, in the interval from 0 to $2^* 2 \pi$.
+    /// The angle θ of the rotation, in the interval from 0 to 2 * 2π.
     theta: CalculatorFloat,
 }
 
@@ -222,7 +208,7 @@ impl OperateSingleQubitGate for RotateZ {
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat {
         (self.theta.clone() / 2.0).cos()
     }
@@ -231,7 +217,7 @@ impl OperateSingleQubitGate for RotateZ {
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
         (self.theta.clone() / 2.0).sin() * (-1.0)
     }
@@ -240,7 +226,7 @@ impl OperateSingleQubitGate for RotateZ {
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -249,7 +235,7 @@ impl OperateSingleQubitGate for RotateZ {
     ///
     /// # Returns
     ///
-    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -258,24 +244,13 @@ impl OperateSingleQubitGate for RotateZ {
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
 }
 
-/// The XPower gate $e^{-i \frac{\theta}{2} \sigma^x}$.
-///
-/// $$
-/// U = \begin{pmatrix}
-/// \cos(\frac{\theta}{2}) & 0\\\\
-/// 0 & \cos(\frac{\theta}{2})
-/// \end{pmatrix}
-/// + \begin{pmatrix}
-/// 0  &  -i \sin(\frac{\theta}{2})   \\\\
-/// -i \sin(\frac{\theta}{2})  & 0
-/// \end{pmatrix}
-///  $$
+/// The XPower gate exp(-i * θ/2 * σ^x).
 ///
 #[derive(
     Debug,
@@ -288,10 +263,11 @@ impl OperateSingleQubitGate for RotateZ {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct RotateX {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
-    /// The angle $\theta$ of the rotation, in the interval from 0 to $2^* 2 \pi$.
+    /// The angle θ of the rotation, in the interval from 0 to 2 * 2π.
     theta: CalculatorFloat,
 }
 #[allow(non_upper_case_globals)]
@@ -327,7 +303,7 @@ impl OperateSingleQubitGate for RotateX {
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat {
         (self.theta.clone() / 2.0).cos()
     }
@@ -335,7 +311,7 @@ impl OperateSingleQubitGate for RotateX {
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -343,7 +319,7 @@ impl OperateSingleQubitGate for RotateX {
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -351,7 +327,7 @@ impl OperateSingleQubitGate for RotateX {
     ///
     /// # Returns
     ///
-    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
         (self.theta.clone() / 2.0).sin() * (-1.0)
     }
@@ -359,24 +335,13 @@ impl OperateSingleQubitGate for RotateX {
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
 }
 
-/// The YPower gate $e^{-i \frac{\theta}{2} \sigma^y}$.
-///
-/// $$
-/// U = \begin{pmatrix}
-/// \cos(\frac{\theta}{2}) & 0\\\\
-/// 0 & \cos(\frac{\theta}{2})
-/// \end{pmatrix}
-/// + \begin{pmatrix}
-/// 0 & - \sin(\frac{\theta}{2})\\\\
-/// \sin(\frac{\theta}{2}) & 0
-/// \end{pmatrix}
-///  $$
+/// The YPower gate exp(-i * θ/2 * σ^y).
 ///
 #[derive(
     Debug,
@@ -389,10 +354,11 @@ impl OperateSingleQubitGate for RotateX {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct RotateY {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
-    /// The angle $\theta$ of the rotation, in the interval from 0 to $2^* 2 \pi$.
+    /// The angle θ of the rotation, in the interval from 0 to 2 * 2π.
     theta: CalculatorFloat,
 }
 #[allow(non_upper_case_globals)]
@@ -428,7 +394,7 @@ impl OperateSingleQubitGate for RotateY {
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat {
         (self.theta.clone() / 2.0).cos()
     }
@@ -436,7 +402,7 @@ impl OperateSingleQubitGate for RotateY {
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -444,7 +410,7 @@ impl OperateSingleQubitGate for RotateY {
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat {
         (self.theta.clone() / 2.0).sin()
     }
@@ -452,7 +418,7 @@ impl OperateSingleQubitGate for RotateY {
     ///
     /// # Returns
     ///
-    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -460,7 +426,7 @@ impl OperateSingleQubitGate for RotateY {
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -468,23 +434,18 @@ impl OperateSingleQubitGate for RotateY {
 
 /// The Pauli X gate.
 ///
-/// $$
-/// U = \begin{pmatrix}
-/// 0 & 1\\\\
-/// 1 & 0
-/// \end{pmatrix}
-/// $$
-///
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PauliX {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -520,7 +481,7 @@ impl OperateSingleQubitGate for PauliX {
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -528,7 +489,7 @@ impl OperateSingleQubitGate for PauliX {
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -536,7 +497,7 @@ impl OperateSingleQubitGate for PauliX {
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -544,7 +505,7 @@ impl OperateSingleQubitGate for PauliX {
     ///
     /// # Returns
     ///
-    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(-1.0)
     }
@@ -552,7 +513,7 @@ impl OperateSingleQubitGate for PauliX {
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat {
         CalculatorFloat::from((PI) / 2.0)
     }
@@ -560,23 +521,18 @@ impl OperateSingleQubitGate for PauliX {
 
 /// The Pauli Y gate.
 ///
-/// $$
-/// U = \begin{pmatrix}
-/// 0 & -i\\\\
-/// i & 0
-/// \end{pmatrix}
-/// $$
-///
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PauliY {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -612,7 +568,7 @@ impl OperateSingleQubitGate for PauliY {
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -620,7 +576,7 @@ impl OperateSingleQubitGate for PauliY {
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -628,7 +584,7 @@ impl OperateSingleQubitGate for PauliY {
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(1.0)
     }
@@ -636,7 +592,7 @@ impl OperateSingleQubitGate for PauliY {
     ///
     /// # Returns
     ///
-    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -644,7 +600,7 @@ impl OperateSingleQubitGate for PauliY {
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat {
         CalculatorFloat::from(PI / 2.0)
     }
@@ -652,23 +608,18 @@ impl OperateSingleQubitGate for PauliY {
 
 /// The Pauli Z gate.
 ///
-/// $$
-/// U = \begin{pmatrix}
-/// 1 & 0 \\\\
-/// 0 & -1
-/// \end{pmatrix}
-/// $$
-///
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PauliZ {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -704,7 +655,7 @@ impl OperateSingleQubitGate for PauliZ {
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -712,7 +663,7 @@ impl OperateSingleQubitGate for PauliZ {
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(-1.0)
     }
@@ -720,7 +671,7 @@ impl OperateSingleQubitGate for PauliZ {
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -728,7 +679,7 @@ impl OperateSingleQubitGate for PauliZ {
     ///
     /// # Returns
     ///
-    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -736,31 +687,26 @@ impl OperateSingleQubitGate for PauliZ {
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat {
         CalculatorFloat::from(PI / 2.0)
     }
 }
 
-/// The square root of the XPower gate: $e^{-i \frac{\pi}{4} \sigma^x}$.
-///
-/// $$
-/// U = \frac{1}{\sqrt(2)}\begin{pmatrix}
-/// 1 & -i \\\\
-/// -i & 1
-/// \end{pmatrix}
-/// $$
+/// The square root of the XPower gate exp(-i * π/4 * σ^x).
 ///
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct SqrtPauliX {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -799,7 +745,7 @@ impl OperateSingleQubitGate for SqrtPauliX {
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat {
         CalculatorFloat::from((PI / 4.0).cos())
     }
@@ -807,7 +753,7 @@ impl OperateSingleQubitGate for SqrtPauliX {
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -815,7 +761,7 @@ impl OperateSingleQubitGate for SqrtPauliX {
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -823,7 +769,7 @@ impl OperateSingleQubitGate for SqrtPauliX {
     ///
     /// # Returns
     ///
-    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
         CalculatorFloat::from((PI / 4.0).sin() * (-1.0))
     }
@@ -831,31 +777,26 @@ impl OperateSingleQubitGate for SqrtPauliX {
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
 }
 
-/// The inverse square root of the XPower gate: $e^{i \frac{\pi}{2} \sigma^x}$.
-///
-/// $$
-/// U = \frac{1}{\sqrt{2}} \begin{pmatrix}
-/// 1 & i \\\\
-///  i & 1
-/// \end{pmatrix}
-/// $$
+/// The inverse square root of the XPower gate: exp(i * π/4 * σ^x).
 ///
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct InvSqrtPauliX {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -894,7 +835,7 @@ impl OperateSingleQubitGate for InvSqrtPauliX {
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat {
         CalculatorFloat::from((PI / 4.0).cos())
     }
@@ -902,7 +843,7 @@ impl OperateSingleQubitGate for InvSqrtPauliX {
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -910,7 +851,7 @@ impl OperateSingleQubitGate for InvSqrtPauliX {
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -918,7 +859,7 @@ impl OperateSingleQubitGate for InvSqrtPauliX {
     ///
     /// # Returns
     ///
-    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
         CalculatorFloat::from((PI / 4.0).sin())
     }
@@ -926,7 +867,7 @@ impl OperateSingleQubitGate for InvSqrtPauliX {
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -934,23 +875,18 @@ impl OperateSingleQubitGate for InvSqrtPauliX {
 
 /// The Hadamard gate.
 ///
-/// $$
-/// U = \frac{1}{\sqrt{2}} \begin{pmatrix}
-/// 1 & 1\\\\
-///  1 & -1
-/// \end{pmatrix}
-/// $$
-///
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct Hadamard {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -987,7 +923,7 @@ impl OperateSingleQubitGate for Hadamard {
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -995,7 +931,7 @@ impl OperateSingleQubitGate for Hadamard {
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(-1.0 / ((2.0_f64).sqrt()))
     }
@@ -1003,7 +939,7 @@ impl OperateSingleQubitGate for Hadamard {
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -1011,7 +947,7 @@ impl OperateSingleQubitGate for Hadamard {
     ///
     /// # Returns
     ///
-    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(-1.0 / ((2.0_f64).sqrt()))
     }
@@ -1019,7 +955,7 @@ impl OperateSingleQubitGate for Hadamard {
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat {
         CalculatorFloat::from(PI / 2.0)
     }
@@ -1027,23 +963,18 @@ impl OperateSingleQubitGate for Hadamard {
 
 /// The S gate.
 ///
-/// $$
-/// U = \frac{1}{\sqrt{2}} \begin{pmatrix}
-/// 1 & 0\\\\
-///  0 & i
-/// \end{pmatrix}
-/// $$
-///
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct SGate {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -1079,7 +1010,7 @@ impl OperateSingleQubitGate for SGate {
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(1.0 / ((2.0_f64).sqrt()))
     }
@@ -1087,7 +1018,7 @@ impl OperateSingleQubitGate for SGate {
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(-1.0 / ((2.0_f64).sqrt()))
     }
@@ -1095,7 +1026,7 @@ impl OperateSingleQubitGate for SGate {
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -1103,7 +1034,7 @@ impl OperateSingleQubitGate for SGate {
     ///
     /// # Returns
     ///
-    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -1111,7 +1042,7 @@ impl OperateSingleQubitGate for SGate {
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat {
         CalculatorFloat::from(PI / 4.0)
     }
@@ -1119,23 +1050,18 @@ impl OperateSingleQubitGate for SGate {
 
 /// The T gate.
 ///
-/// $$
-/// U = \frac{1}{\sqrt{2}} \begin{pmatrix}
-/// 1 & 0\\\\
-///  0 & e^{i \frac{\pi}{4}}
-/// \end{pmatrix}
-/// $$
-///
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct TGate {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -1174,7 +1100,7 @@ impl OperateSingleQubitGate for TGate {
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat {
         CalculatorFloat::from((PI / 8.0).cos())
     }
@@ -1182,7 +1108,7 @@ impl OperateSingleQubitGate for TGate {
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
         CalculatorFloat::from((-1.0) * (PI / 8.0).sin())
     }
@@ -1190,7 +1116,7 @@ impl OperateSingleQubitGate for TGate {
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -1198,7 +1124,7 @@ impl OperateSingleQubitGate for TGate {
     ///
     /// # Returns
     ///
-    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -1206,7 +1132,7 @@ impl OperateSingleQubitGate for TGate {
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat {
         CalculatorFloat::from(PI / 8.0)
     }
@@ -1214,14 +1140,7 @@ impl OperateSingleQubitGate for TGate {
 
 /// The phase shift gate applied on state |1>.
 ///
-/// Rotation around Z-axis by an arbitrary angle $\theta$ (AC Stark shift of the state |1>).
-///
-/// $$
-/// U = \begin{pmatrix}
-/// 1 & 0\\\\
-///  0 & e^{i \theta}
-/// \end{pmatrix}
-/// $$
+/// Rotation around Z-axis by an arbitrary angle θ (AC Stark shift of the state |1>).
 ///
 #[derive(
     Debug,
@@ -1234,10 +1153,11 @@ impl OperateSingleQubitGate for TGate {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PhaseShiftState1 {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
-    /// The angle $\theta$ of the rotation, in the interval from 0 to $2 \pi$.
+    /// The angle θ of the rotation, in the interval from 0 to 2π.
     theta: CalculatorFloat,
 }
 
@@ -1276,7 +1196,7 @@ impl OperateSingleQubitGate for PhaseShiftState1 {
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat {
         (self.theta().clone() / 2.0).cos()
     }
@@ -1284,7 +1204,7 @@ impl OperateSingleQubitGate for PhaseShiftState1 {
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
         (self.theta().clone() / 2.0).sin() * (-1.0)
     }
@@ -1292,7 +1212,7 @@ impl OperateSingleQubitGate for PhaseShiftState1 {
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -1300,7 +1220,7 @@ impl OperateSingleQubitGate for PhaseShiftState1 {
     ///
     /// # Returns
     ///
-    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -1308,7 +1228,7 @@ impl OperateSingleQubitGate for PhaseShiftState1 {
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat {
         self.theta().clone() / 2.0
     }
@@ -1316,14 +1236,7 @@ impl OperateSingleQubitGate for PhaseShiftState1 {
 
 /// The phase shift gate applied on state |0>.
 ///
-/// Rotation around Z-axis by an arbitrary angle $\theta$ (AC Stark shift of the state |0>).
-///
-/// $$
-/// U = \begin{pmatrix}
-/// e^{i \theta} & 0\\\\
-///  0 & 1
-/// \end{pmatrix}
-/// $$
+/// Rotation around Z-axis by an arbitrary angle θ (AC Stark shift of the state |0>).
 ///
 #[derive(
     Debug,
@@ -1336,10 +1249,11 @@ impl OperateSingleQubitGate for PhaseShiftState1 {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PhaseShiftState0 {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
-    /// The angle $\theta$ of the rotation, in the interval from 0 to $2 \pi$.
+    /// The angle θ of the rotation, in the interval from 0 to 2π.
     theta: CalculatorFloat,
 }
 
@@ -1378,7 +1292,7 @@ impl OperateSingleQubitGate for PhaseShiftState0 {
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat {
         (self.theta().clone() / 2.0).cos()
     }
@@ -1386,7 +1300,7 @@ impl OperateSingleQubitGate for PhaseShiftState0 {
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
         (self.theta().clone() / 2.0).sin()
     }
@@ -1394,7 +1308,7 @@ impl OperateSingleQubitGate for PhaseShiftState0 {
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -1402,7 +1316,7 @@ impl OperateSingleQubitGate for PhaseShiftState0 {
     ///
     /// # Returns
     ///
-    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }
@@ -1410,29 +1324,13 @@ impl OperateSingleQubitGate for PhaseShiftState0 {
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat {
         self.theta().clone() / 2.0
     }
 }
 
 /// Implements a rotation around an axis in the x-y plane in spherical coordinates.
-///
-/// $$
-/// U = \begin{pmatrix}
-/// \cos(\frac{\theta}{2}) & 0\\\\
-/// 0 & \cos(\frac{\theta}{2})
-/// \end{pmatrix}
-/// \+ \begin{pmatrix}
-/// -i \sin(\frac{\theta}{2}) v_z  &  \sin(\frac{\theta}{2}) \left(-i v_x - v_y \right)\\\\
-/// \sin(\frac{\theta}{2}) \left(-i v_x + v_y \right) & i \sin(\frac{\theta}{2}) v_z
-/// \end{pmatrix}
-///  $$
-///
-/// with
-/// $ v_x = \sin(\theta_{sph}) \cos(\phi_{sph}) $,
-/// $ v_y = \sin(\theta_{sph}) \sin(\phi_{sph}) $,
-/// $ v_z = \cos(\theta_{sph})$.
 ///
 #[derive(
     Debug,
@@ -1445,14 +1343,15 @@ impl OperateSingleQubitGate for PhaseShiftState0 {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct RotateAroundSphericalAxis {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
-    /// The angle $\theta$ of the rotation, in the interval from 0 to $2^* 2 \pi$.
+    /// The angle θ of the rotation, in the interval from 0 to 2 * 2π.
     theta: CalculatorFloat,
-    /// The rotation axis, unit-vector spherical coordinates $\theta_{sph}$.
+    /// The rotation axis, unit-vector spherical coordinates θ_{sph}.
     spherical_theta: CalculatorFloat,
-    /// The rotation axis, unit-vector spherical coordinates $\phi_{sph}$  gives the angle in the x-y plane.
+    /// The rotation axis, unit-vector spherical coordinates φ_{sph}  gives the angle in the x-y plane.
     spherical_phi: CalculatorFloat,
 }
 
@@ -1500,7 +1399,7 @@ impl OperateSingleQubitGate for RotateAroundSphericalAxis {
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat {
         (self.theta.clone() / 2.0).cos()
     }
@@ -1508,7 +1407,7 @@ impl OperateSingleQubitGate for RotateAroundSphericalAxis {
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat {
         let s = (self.theta.clone() / 2.0).sin();
         let vz = (self.spherical_theta.clone()).cos();
@@ -1518,7 +1417,7 @@ impl OperateSingleQubitGate for RotateAroundSphericalAxis {
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat {
         let s = (self.theta.clone() / 2.0).sin();
         let vy = (self.spherical_phi.clone()).sin();
@@ -1529,7 +1428,7 @@ impl OperateSingleQubitGate for RotateAroundSphericalAxis {
     ///
     /// # Returns
     ///
-    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat {
         let s = (self.theta.clone() / 2.0).sin();
         let vx = (self.spherical_phi.clone()).cos();
@@ -1540,7 +1439,113 @@ impl OperateSingleQubitGate for RotateAroundSphericalAxis {
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
+    fn global_phase(&self) -> CalculatorFloat {
+        CalculatorFloat::from(0.0)
+    }
+}
+
+/// Implements a rotation around an x- and y-axis in spherical coordinates.
+///
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateSingleQubit,
+    roqoqo_derive::Rotate,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct RotateXY {
+    /// The qubit the unitary gate is applied to.
+    qubit: usize,
+    /// The angle θ of the rotation, in the interval from 0 to 2 * 2π.
+    theta: CalculatorFloat,
+    /// The rotation axis, in spherical coordinates φ gives the angle in the x-y plane.
+    phi: CalculatorFloat,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_RotateXY: &[&str; 5] = &[
+    "Operation",
+    "GateOperation",
+    "SingleQubitGateOperation",
+    "Rotation",
+    "RotateXY",
+];
+
+/// Trait for all operations acting with a unitary gate on a set of qubits.
+impl OperateGate for RotateXY {
+    /// Returns unitary matrix of the gate.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Array2<Complex64>)` - The unitary matrix representation of the gate.
+    /// * `Err(RoqoqoError)` - The conversion of parameters to f64 failed.
+    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
+        let c: f64 = (f64::try_from(self.theta.clone())? / 2.0).cos();
+        let s: f64 = (f64::try_from(self.theta.clone())? / 2.0).sin();
+        let vx: f64 = (f64::try_from(self.phi.clone())?).cos();
+        let vy: f64 = (f64::try_from(self.phi.clone())?).sin();
+        Ok(array![
+            [
+                Complex64::new(c, 0.0),
+                Complex64::new(-1.0 * s * vy, -1.0 * s * vx)
+            ],
+            [
+                Complex64::new(s * vy, -1.0 * s * vx),
+                Complex64::new(c, 0.0)
+            ]
+        ])
+    }
+}
+
+/// Trait for unitary operations acting on exactly one qubit.
+impl OperateSingleQubitGate for RotateXY {
+    /// Returns the alpha_r parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
+    fn alpha_r(&self) -> CalculatorFloat {
+        (self.theta.clone() / 2.0).cos()
+    }
+    /// Returns the alpha_i parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
+    fn alpha_i(&self) -> CalculatorFloat {
+        CalculatorFloat::from(0.0)
+    }
+    /// Returns the beta_r parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
+    fn beta_r(&self) -> CalculatorFloat {
+        let s = (self.theta.clone() / 2.0).sin();
+        let vy = (self.phi.clone()).sin();
+        s * vy
+    }
+    /// Returns the beta_i parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
+    fn beta_i(&self) -> CalculatorFloat {
+        let s = (self.theta.clone() / 2.0).sin();
+        let vx = (self.phi.clone()).cos();
+        s * vx * (-1.0)
+    }
+    /// Returns global_phase parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat {
         CalculatorFloat::from(0.0)
     }

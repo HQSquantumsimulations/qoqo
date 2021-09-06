@@ -10,19 +10,34 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+//! Module containing the Circuit class that represents a quantum circuit in qoqo.
+//!
+//! In qoqo, single operations are collected in a circuit to build up a quantum program.
+//! Qoqo circuits are strictly linear sequences of operations.
+//! The circuit struct behaves similar to a list and provides several standard
+//! functions of a Vec<Operation>, such as len(), is_empty(), get(), iter() and into_iter().
+//!
+
 use crate::{QoqoError, QOQO_VERSION};
 use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyIndexError, PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
-use pyo3::{PyIterProtocol, PyMappingProtocol, PyNumberProtocol, PyObjectProtocol};
+use pyo3::types::PyType;
 use roqoqo::prelude::*;
 use roqoqo::{Circuit, OperationIterator, ROQOQO_VERSION};
 use std::collections::HashSet;
 
 use crate::operations::{convert_operation_to_pyobject, convert_pyany_to_operation};
 
-/// Module containing the Circuit class.
+/// Module containing the Circuit class that represents a quantum circuit in qoqo.
+///
+/// In qoqo, single operations are collected in a circuit to build up a quantum program.
+/// Qoqo circuits are strictly linear sequences of operations.
+/// The circuit struct behaves similar to a list and provides several standard
+/// functions of a Vec<Operation>, such as len(), is_empty(), get(), iter() and into_iter().
+///
+
 #[pymodule]
 fn circuit(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<CircuitWrapper>()?;
@@ -78,7 +93,7 @@ impl CircuitWrapper {
         Ok(Self {
             internal: self
                 .internal
-                .substitute_parameters(&mut calculator)
+                .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
                         "Parameter Substitution failed: {:?}",
@@ -216,6 +231,8 @@ impl CircuitWrapper {
         Ok(b)
     }
 
+    #[allow(unused_variables)]
+    #[classmethod]
     /// Convert the bincode representation of the Circuit to a Circuit using the [bincode] crate.
     ///
     /// Args:
@@ -227,12 +244,12 @@ impl CircuitWrapper {
     /// Raises:
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to Circuit.
-    pub fn from_bincode(&self, input: &PyAny) -> PyResult<CircuitWrapper> {
+    pub fn from_bincode(cls: &PyType, input: &PyAny) -> PyResult<Self> {
         let bytes = input
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
-        Ok(CircuitWrapper {
+        Ok(Self {
             internal: deserialize(&bytes[..])
                 .map_err(|_| PyValueError::new_err("Input cannot be deserialized to Circuit"))?,
         })
@@ -251,6 +268,8 @@ impl CircuitWrapper {
         Ok(serialized)
     }
 
+    #[allow(unused_variables)]
+    #[classmethod]
     /// Convert the json representation of a Circuit to a Circuit.
     ///
     /// Args:
@@ -261,9 +280,9 @@ impl CircuitWrapper {
     ///
     /// Raises:
     ///     ValueError: Input cannot be deserialized to Circuit.
-    fn from_json(&self, input: &str) -> PyResult<CircuitWrapper> {
-        Ok(CircuitWrapper {
-            internal: serde_json::from_str(input)
+    pub fn from_json(cls: &PyType, json_string: &str) -> PyResult<Self> {
+        Ok(Self {
+            internal: serde_json::from_str(json_string)
                 .map_err(|_| PyValueError::new_err("Input cannot be deserialized to Circuit"))?,
         })
     }
@@ -419,10 +438,7 @@ impl CircuitWrapper {
     fn __format__(&self, _format_spec: &str) -> PyResult<String> {
         Ok(format!("{}", self.internal))
     }
-}
 
-#[pyproto]
-impl PyObjectProtocol for CircuitWrapper {
     /// Return a string containing a printable representation of the Circuit.
     ///
     /// Returns:
@@ -436,7 +452,7 @@ impl PyObjectProtocol for CircuitWrapper {
     /// Args:
     ///     self: The PragmaGeneralNoiseWrapper object.
     ///     other: The object to compare self to.
-    ///     op: Whether they should be equal or not.
+    ///     op: Type of comparison.
     ///
     /// Returns:
     ///     Whether the two operations compared evaluated to True or False
@@ -462,83 +478,7 @@ impl PyObjectProtocol for CircuitWrapper {
             )),
         }
     }
-}
 
-#[pyproto]
-impl PyNumberProtocol for CircuitWrapper {
-    /// Implement the `+=` (__iadd__) magic method to add a Operation to a Circuit.
-    ///
-    /// Args:
-    ///     other (Operation): The Operation object to be added to self.
-    ///
-    /// Raises:
-    ///     TypeError: Right hand side can not be converted to Operation or Circuit.
-    fn __iadd__(&'p mut self, other: Py<PyAny>) -> PyResult<()> {
-        Python::with_gil(|py| -> PyResult<()> {
-            let other_ref = other.as_ref(py);
-            match convert_pyany_to_operation(other_ref) {
-                Ok(x) => {
-                    self.internal += x;
-                    Ok(())
-                }
-                Err(_) => {
-                    let other = convert_into_circuit(other_ref).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!(
-                            "Right hand side can not be converted to Operation or Circuit {:?}",
-                            x
-                        ))
-                    });
-                    match other {
-                        Ok(x) => {
-                            self.internal += x;
-                            Ok(())
-                        }
-                        Err(y) => Err(y),
-                    }
-                }
-            }
-        })
-    }
-
-    /// Implement the `+` (__add__) magic method to add two Circuits.
-    ///
-    /// Args:
-    ///     lhs (Circuit): The first Circuit object in this operation.
-    ///     rhs (Circuit): The second Circuit object in this operation.
-    ///
-    /// Returns:
-    ///     lhs + rhs (Circuit): the two Circuits added together.
-    ///
-    /// Raises:
-    ///     TypeError: Left hand side can not be converted to Circuit.
-    ///     TypeError: Right hand side can not be converted to Operation or Circuit.
-    fn __add__(lhs: Py<PyAny>, rhs: Py<PyAny>) -> PyResult<CircuitWrapper> {
-        Python::with_gil(|py| -> PyResult<CircuitWrapper> {
-            let (lhs_ref, rhs_ref) = (lhs.as_ref(py), rhs.as_ref(py));
-            let self_circ = convert_into_circuit(lhs_ref).map_err(|_| {
-                PyTypeError::new_err("Left hand side can not be converted to Circuit")
-            })?;
-            match convert_pyany_to_operation(rhs_ref) {
-                Ok(x) => Ok(CircuitWrapper {
-                    internal: self_circ + x,
-                }),
-                Err(_) => {
-                    let other = convert_into_circuit(rhs_ref).map_err(|_| {
-                        pyo3::exceptions::PyTypeError::new_err(
-                            "Right hand side can not be converted to Operation or Circuit",
-                        )
-                    })?;
-                    Ok(CircuitWrapper {
-                        internal: self_circ + other,
-                    })
-                }
-            }
-        })
-    }
-}
-
-#[pyproto]
-impl PyIterProtocol for CircuitWrapper {
     /// Create an iterator of the Circuit.
     ///
     /// Returns:
@@ -548,10 +488,7 @@ impl PyIterProtocol for CircuitWrapper {
             internal: slf.internal.clone().into_iter(),
         })
     }
-}
 
-#[pyproto]
-impl PyMappingProtocol for CircuitWrapper {
     /// Return the length of the Circuit.
     ///
     /// Returns:
@@ -598,6 +535,76 @@ impl PyMappingProtocol for CircuitWrapper {
         *mut_reference = operation;
         Ok(())
     }
+
+    /// Implement the `+=` (__iadd__) magic method to add a Operation to a Circuit.
+    ///
+    /// Args:
+    ///     other (Operation): The Operation object to be added to self.
+    ///
+    /// Raises:
+    ///     TypeError: Right hand side cannot be converted to Operation or Circuit.
+    fn __iadd__(&mut self, other: Py<PyAny>) -> PyResult<()> {
+        Python::with_gil(|py| -> PyResult<()> {
+            let other_ref = other.as_ref(py);
+            match convert_pyany_to_operation(other_ref) {
+                Ok(x) => {
+                    self.internal += x;
+                    Ok(())
+                }
+                Err(_) => {
+                    let other = convert_into_circuit(other_ref).map_err(|x| {
+                        pyo3::exceptions::PyTypeError::new_err(format!(
+                            "Right hand side cannot be converted to Operation or Circuit {:?}",
+                            x
+                        ))
+                    });
+                    match other {
+                        Ok(x) => {
+                            self.internal += x;
+                            Ok(())
+                        }
+                        Err(y) => Err(y),
+                    }
+                }
+            }
+        })
+    }
+
+    /// Implement the `+` (__add__) magic method to add two Circuits.
+    ///
+    /// Args:
+    ///     lhs (Circuit): The first Circuit object in this operation.
+    ///     rhs (Circuit): The second Circuit object in this operation.
+    ///
+    /// Returns:
+    ///     lhs + rhs (Circuit): the two Circuits added together.
+    ///
+    /// Raises:
+    ///     TypeError: Left hand side can not be converted to Circuit.
+    ///     TypeError: Right hand side cannot be converted to Operation or Circuit.
+    fn __add__(lhs: Py<PyAny>, rhs: Py<PyAny>) -> PyResult<CircuitWrapper> {
+        Python::with_gil(|py| -> PyResult<CircuitWrapper> {
+            let (lhs_ref, rhs_ref) = (lhs.as_ref(py), rhs.as_ref(py));
+            let self_circ = convert_into_circuit(lhs_ref).map_err(|_| {
+                PyTypeError::new_err("Left hand side can not be converted to Circuit")
+            })?;
+            match convert_pyany_to_operation(rhs_ref) {
+                Ok(x) => Ok(CircuitWrapper {
+                    internal: self_circ + x,
+                }),
+                Err(_) => {
+                    let other = convert_into_circuit(rhs_ref).map_err(|_| {
+                        pyo3::exceptions::PyTypeError::new_err(
+                            "Right hand side cannot be converted to Operation or Circuit",
+                        )
+                    })?;
+                    Ok(CircuitWrapper {
+                        internal: self_circ + other,
+                    })
+                }
+            }
+        })
+    }
 }
 
 /// Convert generic python object to [roqoqo::Circuit].
@@ -611,10 +618,10 @@ pub fn convert_into_circuit(input: &PyAny) -> Result<Circuit, QoqoError> {
     // compiled python packages are involved
     let get_version = input
         .call_method0("_qoqo_versions")
-        .map_err(|_| QoqoError::CannotExtractCircuit)?;
+        .map_err(|_| QoqoError::CannotExtractObject)?;
     let version = get_version
         .extract::<(&str, &str)>()
-        .map_err(|_| QoqoError::CannotExtractCircuit)?;
+        .map_err(|_| QoqoError::CannotExtractObject)?;
     let mut rsplit = ROQOQO_VERSION.split('.').take(2);
     let mut qsplit = QOQO_VERSION.split('.').take(2);
     let rver = format!(
@@ -631,15 +638,16 @@ pub fn convert_into_circuit(input: &PyAny) -> Result<Circuit, QoqoError> {
     if version == test_version {
         let get_bytes = input
             .call_method0("to_bincode")
-            .map_err(|_| QoqoError::CannotExtractCircuit)?;
+            .map_err(|_| QoqoError::CannotExtractObject)?;
         let bytes = get_bytes
             .extract::<Vec<u8>>()
-            .map_err(|_| QoqoError::CannotExtractCircuit)?;
-        deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractCircuit)
+            .map_err(|_| QoqoError::CannotExtractObject)?;
+        deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractObject)
     } else {
         Err(QoqoError::VersionMismatch)
     }
 }
+
 /// Iterator for iterating over Operations in a Circuit.
 #[pyclass(name = "OperationIterator", module = "qoqo")]
 #[derive(Debug)]
@@ -647,8 +655,8 @@ pub struct OperationIteratorWrapper {
     internal: OperationIterator,
 }
 
-#[pyproto]
-impl PyIterProtocol for OperationIteratorWrapper {
+#[pymethods]
+impl OperationIteratorWrapper {
     /// Create an iterator of the Circuit.
     ///
     /// Returns:

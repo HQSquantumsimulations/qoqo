@@ -50,6 +50,10 @@ struct Visitor {
     two_qubit_gate_operations: Vec<Ident>,
     // Identifiers of structs belonging to MultiQubitGateOperation enum
     multi_qubit_gate_operations: Vec<Ident>,
+    // Operations that have only been introduced in roqoqoq 1.1.0
+    // These operations will only be added at end of automatically created enums
+    // to maintain compatability with bincode encoding
+    roqoqo_1_1_operations: Vec<Ident>,
 }
 
 impl Visitor {
@@ -69,6 +73,7 @@ impl Visitor {
             single_qubit_gate_operations: Vec::new(),
             two_qubit_gate_operations: Vec::new(),
             multi_qubit_gate_operations: Vec::new(),
+            roqoqo_1_1_operations: Vec::new(),
         }
     }
 }
@@ -170,9 +175,7 @@ impl<'ast> Visit<'ast> for Visitor {
                 {
                     self.constant_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateGate")
-                    && parsed_arguments.contains("OperateSingleQubit")
-                {
+                if parsed_arguments.contains("OperateSingleQubitGate") {
                     self.single_qubit_gate_operations.push(i.ident.clone());
                 }
                 if parsed_arguments.contains("OperateGate")
@@ -180,9 +183,7 @@ impl<'ast> Visit<'ast> for Visitor {
                 {
                     self.two_qubit_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateGate")
-                    && parsed_arguments.contains("OperateMultiQubit")
-                {
+                if parsed_arguments.contains("OperateMultiQubitGate") {
                     self.multi_qubit_gate_operations.push(i.ident.clone());
                 }
             }
@@ -215,7 +216,10 @@ impl<'ast> Visit<'ast> for Visitor {
                 };
 
                 if trait_name.as_str() == "Operate" {
-                    self.single_qubit_gate_operations.push(id.clone());
+                    self.operations.push(id.clone());
+                }
+                if trait_name.as_str() == "ImplementedIn1point1" {
+                    self.roqoqo_1_1_operations.push(id.clone());
                 }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());
@@ -233,7 +237,7 @@ impl<'ast> Visit<'ast> for Visitor {
                     self.pragma_noise_proba_operations.push(id.clone());
                 }
                 if trait_name.as_str() == "OperateMultiQubitGate" {
-                    self.two_qubit_gate_operations.push(id);
+                    self.multi_qubit_gate_operations.push(id);
                 }
             }
         }
@@ -245,6 +249,7 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/single_qubit_gate_operations.rs",
     "src/operations/pragma_operations.rs",
     "src/operations/two_qubit_gate_operations.rs",
+    "src/operations/multi_qubit_gate_operations.rs",
     "src/operations/measurement_operations.rs",
     "src/operations/define_operations.rs",
 ];
@@ -262,13 +267,29 @@ fn main() {
     }
 
     // Construct TokenStreams for variants of operation enum
-    let operations_quotes = vis.operations.into_iter().map(|v| {
-        let msg = format!("Variant for {}", v);
-        quote! {
-        #[allow(clippy::upper_case_acronyms)]
-        #[doc = #msg]
-        #v(#v)}
-    });
+    let operations_quotes = vis
+        .operations
+        .clone()
+        .into_iter()
+        .filter(|v| !vis.roqoqo_1_1_operations.contains(v))
+        .map(|v| {
+            let msg = format!("Variant for {}", v);
+            quote! {
+            #[allow(clippy::upper_case_acronyms)]
+            #[doc = #msg]
+            #v(#v)}
+        });
+    let operations_quotes_1_1 = vis
+        .operations
+        .into_iter()
+        .filter(|v| vis.roqoqo_1_1_operations.contains(v))
+        .map(|v| {
+            let msg = format!("Variant for {}", v);
+            quote! {
+            #[allow(clippy::upper_case_acronyms)]
+            #[doc = #msg]
+            #v(#v)}
+        });
     // Construct TokenStreams for variants of operation enum
     let single_qubit_operations_quotes = vis.single_qubit_operations.into_iter().map(|v| {
         let msg = format!("Variant for {}", v);
@@ -292,12 +313,28 @@ fn main() {
         #v(#v)}
     });
     // Construct TokenStreams for variants of pragma enum
-    let pragma_operations_quotes = vis.pragma_operations.into_iter().map(|v| {
-        let msg = format!("Variant for {}", v);
-        quote! {
-        #[doc = #msg]
-        #v(#v)}
-    });
+    let pragma_operations_quotes = vis
+        .pragma_operations
+        .clone()
+        .into_iter()
+        .filter(|v| !vis.roqoqo_1_1_operations.contains(v))
+        .map(|v| {
+            let msg = format!("Variant for {}", v);
+            quote! {
+            #[doc = #msg]
+            #v(#v)}
+        });
+    // Construct TokenStreams for variants of pragma enum
+    let pragma_operations_quotes_1_1 = vis
+        .pragma_operations
+        .into_iter()
+        .filter(|v| vis.roqoqo_1_1_operations.contains(v))
+        .map(|v| {
+            let msg = format!("Variant for {}", v);
+            quote! {
+            #[doc = #msg]
+            #v(#v)}
+        });
     // Construct TokenStreams for variants of pragma enum
     let pragma_noise_operations_quotes = vis.pragma_noise_operations.clone().into_iter().map(|v| {
         let msg = format!("Variant for {}", v);
@@ -329,12 +366,28 @@ fn main() {
         #v(#v)}
     });
     // Construct TokenStreams for variants of definition enum
-    let definitions_quotes = vis.definitions.into_iter().map(|v| {
-        let msg = format!("Variant for {}", v);
-        quote! {
-            #[doc = #msg]
-        #v(#v)}
-    });
+    let definitions_quotes = vis
+        .definitions
+        .clone()
+        .into_iter()
+        .filter(|v| !vis.roqoqo_1_1_operations.contains(v))
+        .map(|v| {
+            let msg = format!("Variant for {}", v);
+            quote! {
+                #[doc = #msg]
+            #v(#v)}
+        });
+    // Construct TokenStreams for variants of definition enum
+    let definitions_quotes_1_1 = vis
+        .definitions
+        .into_iter()
+        .filter(|v| vis.roqoqo_1_1_operations.contains(v))
+        .map(|v| {
+            let msg = format!("Variant for {}", v);
+            quote! {
+                #[doc = #msg]
+            #v(#v)}
+        });
     // Construct TokenStreams for variants of operation enum
     let constant_gate_operations_quote = vis.constant_gate_operations.into_iter().map(|v| {
         let msg = format!("Variant for {}", v);
@@ -374,13 +427,16 @@ fn main() {
         /// Enum of all Operations implementing [Operate]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, Substitute)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum Operation {
-            #(#operations_quotes),*
+            #(#operations_quotes),* ,
+            #(#operations_quotes_1_1),*
         }
 
         /// Enum of all Operations implementing [OperateSingleQubit]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateSingleQubit)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum SingleQubitOperation {
             #(#single_qubit_operations_quotes),*
         }
@@ -388,6 +444,7 @@ fn main() {
         /// Enum of all Operations implementing [OperateTwoQubit]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateTwoQubit)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum TwoQubitOperation {
             #(#two_qubit_operations_quotes),*
         }
@@ -395,19 +452,23 @@ fn main() {
         /// Enum of all Operations implementing [OperateMultiQubit]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateMultiQubit)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum MultiQubitOperation {
             #(#multi_qubit_operations_quotes),*
         }
 
         /// Enum of all Operations implementing [OperatePragma]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperatePragma)]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         pub enum PragmaOperation {
-            #(#pragma_operations_quotes),*
+            #(#pragma_operations_quotes),* ,
+            #(#pragma_operations_quotes_1_1),*
         }
 
         /// Enum of all Operations implementing [OperatePragmaNoise]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperatePragma, OperatePragmaNoise)]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         pub enum PragmaNoiseOperation {
             #(#pragma_noise_operations_quotes),*
@@ -416,6 +477,7 @@ fn main() {
         /// Enum of all Operations implementing [OperatePragmaNoiseProba]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperatePragma, OperatePragmaNoise, OperatePragmaNoiseProba)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum PragmaNoiseProbaOperation {
             #(#pragma_noise_proba_operations_quotes),*
         }
@@ -423,6 +485,7 @@ fn main() {
         /// Enum of all Operations implementing [OperateGate]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum GateOperation {
             #(#gate_operations_quotes),*
         }
@@ -431,20 +494,24 @@ fn main() {
         #[allow(clippy::upper_case_acronyms)]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, Rotate)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum Rotation {
             #(#rotations_quotes),*
         }
 
         /// Enum of all Operations implementing [Define]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, Define)]
+        #[derive(Debug, Clone, PartialEq,InvolveQubits, Operate, OperateTryFromEnum, Substitute, Define)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum Definition {
-            #(#definitions_quotes),*
+            #(#definitions_quotes),* ,
+            #(#definitions_quotes_1_1),*
         }
 
         /// Enum of all Operations implementing [OperateConstantGate]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateConstantGate)]
+        #[derive(Debug, Clone, PartialEq, Eq,InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateConstantGate)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum ConstantGateOperation {
             #(#constant_gate_operations_quote),*
         }
@@ -452,6 +519,7 @@ fn main() {
         /// Enum of all Operations implementing [OperateSingleQubitGate]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateSingleQubit, OperateSingleQubitGate)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum SingleQubitGateOperation {
             #(#single_qubit_gate_operations_quote),*
         }
@@ -459,6 +527,7 @@ fn main() {
         /// Enum of all Operations implementing [OperateTwoQubitGate]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateTwoQubit, OperateTwoQubitGate)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum TwoQubitGateOperation {
             #(#two_qubit_gate_operations_quote),*
         }
@@ -466,6 +535,7 @@ fn main() {
         /// Enum of all Operations implementing [OperateMultiQubitGate]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateMultiQubit, OperateMultiQubitGate)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum MultiQubitGateOperation {
             #(#multi_qubit_gate_operations_quote),*
         }

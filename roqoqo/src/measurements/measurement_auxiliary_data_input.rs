@@ -23,6 +23,7 @@ pub type PauliProductMask = Vec<usize>;
 
 /// Defines how Pauli Products expectation values are post-processed into observable expectation value.
 #[derive(Debug, Clone, PartialEq)]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub enum PauliProductsToExpVal {
     /// Expectation value of observable is a linear combination of Pauli Product expectation values.
@@ -39,14 +40,15 @@ pub enum PauliProductsToExpVal {
     Symbolic(CalculatorFloat),
 }
 
-/// Provides Necessary Information to run a [crate::measurements::BasisRotation] measurement.
+/// Provides Necessary Information to run a [crate::measurements::PauliZProduct] measurement.
 ///
-/// BasisRotationInput is the input struct for a BasisRotation measurement, dictating which expectation
-/// values are measured by BasisRotation. These expecation values are defined as
+/// PauliZProductInput is the input struct for a PauliZProduct measurement, dictating which expectation
+/// values are measured by PauliZProduct. These expecation values are defined as
 /// expectation values of pauli products.
 #[derive(Debug, Clone, PartialEq)]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-pub struct BasisRotationInput {
+pub struct PauliZProductInput {
     /// Collection of PauliProductMasks for each readout register in Measurement.
     pub pauli_product_qubit_masks: HashMap<String, SingleReadoutPauliProductMasks>,
     /// Number of qubits that are measured.
@@ -63,17 +65,17 @@ pub struct BasisRotationInput {
     pub use_flipped_measurement: bool,
 }
 
-impl BasisRotationInput {
-    /// Creates new BasisRotationInput.
+impl PauliZProductInput {
+    /// Creates new PauliZProductInput.
     ///
-    /// The BasisRotationInput starts with just the number of qubtis and flipped measurements set.
+    /// The PauliZProductInput starts with just the number of qubtis and flipped measurements set.
     /// The pauli_product_qubit_masks and measured_exp_vals start empty
-    /// and can be extended with [BasisRotationInput::add_pauli_product],
-    /// [BasisRotationInput::add_linear_exp_val] and [BasisRotationInput::add_symbolic_exp_val].
+    /// and can be extended with [PauliZProductInput::add_pauliz_product],
+    /// [PauliZProductInput::add_linear_exp_val] and [PauliZProductInput::add_symbolic_exp_val].
     ///
     /// # Arguments
     ///
-    /// * `number_qubits` - The number of qubits in the BasisRotation measurement.
+    /// * `number_qubits` - The number of qubits in the PauliZProduct measurement.
     /// * `use_flipped_measurement` - Whether or not to use flipped measurements.
     ///
     pub fn new(number_qubits: usize, use_flipped_measurement: bool) -> Self {
@@ -86,7 +88,7 @@ impl BasisRotationInput {
         }
     }
 
-    /// Adds measured Pauli product to BasisRotationInput and returns index of Pauli product.
+    /// Adds measured Pauli product to PauliZProductInput and returns index of Pauli product.
     ///
     /// When the pauli product is already in the measurement input the function only returns
     /// it index.
@@ -100,7 +102,7 @@ impl BasisRotationInput {
     ///
     /// * `Ok(usize)` - The index of the added Pauli product in the list of all Pauli products.
     /// * `Err([RoqoqoError::PauliProductExceedsQubits])` - The pauli product involves a qubit exceeding the maximum number of qubits.
-    pub fn add_pauli_product(
+    pub fn add_pauliz_product(
         &mut self,
         readout: String,
         pauli_product_mask: PauliProductMask,
@@ -122,14 +124,14 @@ impl BasisRotationInput {
                 return Ok(*k);
             }
             m.insert(self.number_pauli_products, pauli_product_mask);
-            self.number_pauli_products += 1;
         } else {
             // Readout not yet in pauli_product_qubit_masks
             let mut new_map = HashMap::new();
             new_map.insert(self.number_pauli_products, pauli_product_mask);
             self.pauli_product_qubit_masks.insert(readout, new_map);
-            self.number_pauli_products += 1;
         }
+        self.number_pauli_products += 1;
+
         Ok(self.number_pauli_products - 1)
     }
 
@@ -196,12 +198,13 @@ impl BasisRotationInput {
     }
 }
 
-/// Provides necessary information to run a [crate::measurements::CheatedBasisRotation] measurement.
+/// Provides necessary information to run a [crate::measurements::CheatedPauliZProduct] measurement.
 ///
-/// Is used by the full measurement struct [crate::measurements::CheatedBasisRotation].
+/// Is used by the full measurement struct [crate::measurements::CheatedPauliZProduct].
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-pub struct CheatedBasisRotationInput {
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct CheatedPauliZProductInput {
     /// Collection of names and construction methods of  expectation values.
     ///
     /// The construction methods are given by [PauliProductsToExpVal] enums.
@@ -210,19 +213,19 @@ pub struct CheatedBasisRotationInput {
     pub pauli_product_keys: HashMap<String, usize>,
 }
 
-impl Default for CheatedBasisRotationInput {
-    /// Creates a default (here, new) instance of CheatedBasisRotationInput.
+impl Default for CheatedPauliZProductInput {
+    /// Creates a default (here, new) instance of CheatedPauliZProductInput.
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl CheatedBasisRotationInput {
-    /// Creates new CheatedBasisRotationInput.
+impl CheatedPauliZProductInput {
+    /// Creates new CheatedPauliZProductInput.
     ///
     /// # Returns
     ///
-    /// * `Self` - The new instance of CheatedBasisRotationInput with measured_exp_vals = an empty
+    /// * `Self` - The new instance of CheatedPauliZProductInput with measured_exp_vals = an empty
     ///            HashMap and pauli_product_keys = an empty HashMap.
     pub fn new() -> Self {
         Self {
@@ -231,7 +234,7 @@ impl CheatedBasisRotationInput {
         }
     }
 
-    /// Adds measured Pauli product to CheatedBasisRotationInput and returns index of Pauli product.
+    /// Adds measured Pauli product to CheatedPauliZProductInput and returns index of Pauli product.
     ///
     /// When the pauli product is already in the measurement input the function only returns
     /// it index.
@@ -243,7 +246,7 @@ impl CheatedBasisRotationInput {
     /// # Returns
     ///
     /// * `usize` - The index of the added Pauli product in the list of all Pauli products.
-    pub fn add_pauli_product(&mut self, readout: String) -> usize {
+    pub fn add_pauliz_product(&mut self, readout: String) -> usize {
         if let Some((_, v)) = self.pauli_product_keys.iter().find(|(k, _)| k == &&readout) {
             return *v;
         }
@@ -320,6 +323,7 @@ impl CheatedBasisRotationInput {
 /// Is used by the full measurement struct [crate::measurements::Cheated].
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct CheatedInput {
     /// Map of expectation values and corresponding operator Matrices on the Hilbert Space.
     pub measured_operators: HashMap<String, (OperatorSparseVec, String)>,

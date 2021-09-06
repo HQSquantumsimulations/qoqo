@@ -14,24 +14,25 @@
 
 use std::collections::HashMap;
 
+// use jsonschema::{Draft, JSONSchema};
 use qoqo_calculator::CalculatorFloat;
 use roqoqo::operations;
 use roqoqo::prelude::*;
 use roqoqo::Circuit;
 use roqoqo::{
-    measurements::{CheatedBasisRotation, CheatedBasisRotationInput},
+    measurements::{CheatedPauliZProduct, CheatedPauliZProductInput},
     registers::FloatOutputRegister,
 };
+// use schemars::schema_for;
 
 #[test]
 fn test_returning_circuits() {
-    let bri = CheatedBasisRotationInput::new();
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
+    let bri = CheatedPauliZProductInput::new();
+    let mut circs: Vec<Circuit> = vec![Circuit::new()];
     let mut circ1 = Circuit::new();
     circ1 += operations::RotateX::new(0, 0.0.into());
     circs.push(circ1);
-    let br = CheatedBasisRotation {
+    let br = CheatedPauliZProduct {
         constant_circuit: Some(Circuit::new()),
         circuits: circs.clone(),
         input: bri,
@@ -44,12 +45,12 @@ fn test_returning_circuits() {
 
 #[test]
 fn test_clone_eq_format() {
-    let bri = CheatedBasisRotationInput::new();
+    let bri = CheatedPauliZProductInput::new();
     let mut circs: Vec<Circuit> = Vec::new();
     let mut circ1 = Circuit::new();
     circ1 += operations::RotateX::new(0, 0.0.into());
     circs.push(circ1);
-    let br = CheatedBasisRotation {
+    let br = CheatedPauliZProduct {
         constant_circuit: Some(Circuit::new()),
         circuits: circs.clone(),
         input: bri.clone(),
@@ -63,7 +64,7 @@ fn test_clone_eq_format() {
     let mut circ1 = Circuit::new();
     circ1 += operations::RotateX::new(1, "theta".into());
     circs.push(circ1);
-    let br2 = CheatedBasisRotation {
+    let br2 = CheatedPauliZProduct {
         constant_circuit: Some(Circuit::new()),
         circuits: circs.clone(),
         input: bri,
@@ -77,7 +78,7 @@ fn test_clone_eq_format() {
 
 #[test]
 fn test_substitute_parameters() {
-    let bri = CheatedBasisRotationInput::new();
+    let bri = CheatedPauliZProductInput::new();
     let mut circs: Vec<Circuit> = Vec::new();
     let mut circ1 = Circuit::new();
     let mut circ1_subs = Circuit::new();
@@ -88,7 +89,7 @@ fn test_substitute_parameters() {
     circ2 += operations::RotateZ::new(0, "theta2".into());
     circ2_subs += operations::RotateZ::new(0, 1.0.into());
     circs.push(circ1);
-    let br = CheatedBasisRotation {
+    let br = CheatedPauliZProduct {
         constant_circuit: Some(circ2),
         circuits: circs.clone(),
         input: bri,
@@ -108,7 +109,7 @@ fn test_substitute_parameters() {
 
 #[test]
 fn test_substitute_parameters_fail() {
-    let bri = CheatedBasisRotationInput::new();
+    let bri = CheatedPauliZProductInput::new();
     let mut circs: Vec<Circuit> = Vec::new();
     let mut circ1 = Circuit::new();
     let mut circ1_subs = Circuit::new();
@@ -119,7 +120,7 @@ fn test_substitute_parameters_fail() {
     circ2 += operations::RotateZ::new(0, "theta2".into());
     circ2_subs += operations::RotateZ::new(0, 1.0.into());
     circs.push(circ1);
-    let br = CheatedBasisRotation {
+    let br = CheatedPauliZProduct {
         constant_circuit: Some(circ2),
         circuits: circs.clone(),
         input: bri,
@@ -133,10 +134,10 @@ fn test_substitute_parameters_fail() {
 
 #[test]
 fn test_evaluate_linear() {
-    let mut bri = CheatedBasisRotationInput::new();
-    let _ = bri.add_pauli_product("ro_pauli_product_0".to_string());
-    let _ = bri.add_pauli_product("ro_pauli_product_1".to_string());
-    let _ = bri.add_pauli_product("ro_pauli_product_2".to_string());
+    let mut bri = CheatedPauliZProductInput::new();
+    let _ = bri.add_pauliz_product("ro_pauli_product_0".to_string());
+    let _ = bri.add_pauliz_product("ro_pauli_product_1".to_string());
+    let _ = bri.add_pauliz_product("ro_pauli_product_2".to_string());
 
     let mut linear_map: HashMap<usize, f64> = HashMap::new();
     linear_map.insert(0, 3.0);
@@ -150,9 +151,8 @@ fn test_evaluate_linear() {
     bri.add_linear_exp_val("multi_pp_val".to_string(), linear_map)
         .unwrap();
 
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
-    let br = CheatedBasisRotation {
+    let circs: Vec<Circuit> = vec![Circuit::new()];
+    let br = CheatedPauliZProduct {
         constant_circuit: None,
         circuits: circs,
         input: bri,
@@ -172,18 +172,17 @@ fn test_evaluate_linear() {
 
 #[test]
 fn test_evaluate_symbolic() {
-    let mut bri = CheatedBasisRotationInput::new();
-    let _ = bri.add_pauli_product("ro_pauli_product_0".to_string());
-    let _ = bri.add_pauli_product("ro_pauli_product_1".to_string());
-    let _ = bri.add_pauli_product("ro_pauli_product_2".to_string());
+    let mut bri = CheatedPauliZProductInput::new();
+    let _ = bri.add_pauliz_product("ro_pauli_product_0".to_string());
+    let _ = bri.add_pauliz_product("ro_pauli_product_1".to_string());
+    let _ = bri.add_pauliz_product("ro_pauli_product_2".to_string());
     let symbolic: CalculatorFloat =
         "sin(3.0 * pauli_product_0) + sin(-1.0 * pauli_product_1)".into();
     bri.add_symbolic_exp_val("single_pp_val".to_string(), symbolic)
         .unwrap();
 
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
-    let br = CheatedBasisRotation {
+    let circs: Vec<Circuit> = vec![Circuit::new()];
+    let br = CheatedPauliZProduct {
         constant_circuit: None,
         circuits: circs,
         input: bri,
@@ -203,3 +202,41 @@ fn test_evaluate_symbolic() {
             < f64::EPSILON
     );
 }
+
+// #[cfg(feature = "json_schema")]
+// #[test]
+// fn test_cheated_basis_rotation_json() {
+//     // setting up cheated BR measurement
+//     let bri = CheatedPauliZProductInput::new();
+//     let mut circs: Vec<Circuit> = Vec::new();
+//     let mut circ1 = Circuit::new();
+//     let mut circ1_subs = Circuit::new();
+//     circ1 += operations::RotateX::new(0, "theta".into());
+//     circ1_subs += operations::RotateX::new(0, 0.0.into());
+//     let mut circ2 = Circuit::new();
+//     let mut circ2_subs = Circuit::new();
+//     circ2 += operations::RotateZ::new(0, "theta2".into());
+//     circ2_subs += operations::RotateZ::new(0, 1.0.into());
+//     circs.push(circ1);
+//     let br = CheatedPauliZProduct {
+//         constant_circuit: Some(circ2),
+//         circuits: circs.clone(),
+//         input: bri,
+//     };
+
+//     // Serialize CheatedPauliZProduct
+//     let test_json = serde_json::to_string(&br).unwrap();
+//     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+//     // Create JSONSchema
+//     let test_schema = schema_for!(CheatedPauliZProduct);
+//     let schema = serde_json::to_string(&test_schema).unwrap();
+//     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+//     let compiled_schema = JSONSchema::options()
+//         .with_draft(Draft::Draft7)
+//         .compile(&schema_value)
+//         .unwrap();
+
+//     let validation_result = compiled_schema.validate(&test_value);
+//     assert!(validation_result.is_ok());
+// }

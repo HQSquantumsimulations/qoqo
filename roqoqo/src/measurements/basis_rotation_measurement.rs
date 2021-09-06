@@ -15,19 +15,20 @@ use ndarray::{Array1, Array2};
 #[cfg(feature = "serialize")]
 use serde::{Deserialize, Serialize};
 
-/// Collected information for executing a basis rotation measurement.
+/// Collected information for executing a measurement of PauliZ product.
 #[derive(Debug, PartialEq, Clone)]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
-pub struct BasisRotation {
+pub struct PauliZProduct {
     /// Constant Circuit that is executed before each Circuit in circuits.
     pub constant_circuit: Option<Circuit>,
     /// Collection of quantum circuits for the separate basis rotations.
     pub circuits: Vec<Circuit>,
     /// Additional input information required for measurement.
-    pub input: BasisRotationInput,
+    pub input: PauliZProductInput,
 }
 
-impl Measure for BasisRotation {
+impl Measure for PauliZProduct {
     /// Returns the constant Circuit that is executed before each Circuit in circuits.
     ///
     /// # Returns
@@ -67,7 +68,7 @@ impl Measure for BasisRotation {
         }
         let new_constant_circuit = match &self.constant_circuit {
             None => None,
-            Some(c) => Some(c.substitute_parameters(&mut calculator)?),
+            Some(c) => Some(c.substitute_parameters(&calculator)?),
         };
         let mut new_circuits = Vec::new();
         for circ in self.circuits.iter() {
@@ -75,7 +76,7 @@ impl Measure for BasisRotation {
             for (name, val) in substituted_parameters.iter() {
                 calculator.set_variable(name, *val)
             }
-            new_circuits.push(circ.substitute_parameters(&mut calculator)?)
+            new_circuits.push(circ.substitute_parameters(&calculator)?)
         }
         Ok(Self {
             constant_circuit: new_constant_circuit,
@@ -85,10 +86,10 @@ impl Measure for BasisRotation {
     }
 }
 
-impl MeasureExpectationValues for BasisRotation {
+impl MeasureExpectationValues for PauliZProduct {
     // TODO add optional device later for use with flipped measurement
     #[allow(unused_variables)]
-    /// Executes the basis rotation measurement.
+    /// Executes the PauliZ product measurement.
     ///
     /// # Arguments
     ///
@@ -100,7 +101,7 @@ impl MeasureExpectationValues for BasisRotation {
     ///
     /// * `Ok(Some(HashMap<String, f64>))` - The measurement has been evaluated successfully. The HashMap contains the measured expectation values.
     /// * `Ok(None)` - The measurement did not fail but is incomplete. A new round of measurements is needed
-    /// * `Err([RoqoqoError::BasisRotationMeasurementError])` - An error occured in basis rotation measurement.
+    /// * `Err([RoqoqoError::PauliZProductMeasurementError])` - An error occured in PauliZ product measurement.
     ///
     fn evaluate(
         &self,
@@ -140,7 +141,7 @@ impl MeasureExpectationValues for BasisRotation {
             for (flip_measurement, extension) in flipped_and_extension.iter() {
                 let register = bit_registers
                     .get(&format!("{}{}", register_name.as_str(), extension))
-                    .ok_or(RoqoqoError::BasisRotationMeasurementError {
+                    .ok_or(RoqoqoError::PauliZProductMeasurementError {
                         msg: format!(
                             "bit register {}{} not found",
                             register_name.as_str(),
@@ -178,7 +179,7 @@ impl MeasureExpectationValues for BasisRotation {
                     Array1::zeros(self.input.number_pauli_products);
                 for i in 0..self.input.number_pauli_products {
                     pauli_products_tmp[i] = single_shot_pauli_products.column(i).mean().ok_or(
-                        RoqoqoError::BasisRotationMeasurementError {
+                        RoqoqoError::PauliZProductMeasurementError {
                             msg: format!(
                                 "Column {} out of index for sinlge_shot_pauli_products",
                                 i
@@ -201,13 +202,13 @@ impl MeasureExpectationValues for BasisRotation {
                 if self.input.use_flipped_measurement {
                     let tmp_pauli_products = (&pauli_product_dict
                         .get(register_name.as_str())
-                        .ok_or(RoqoqoError::BasisRotationMeasurementError {
+                        .ok_or(RoqoqoError::PauliZProductMeasurementError {
                             msg: format!("Register name {} not fount", register_name),
                         })?
                         .view()
                         + &pauli_product_dict
                             .get(format!("{}_flipped", register_name).as_str())
-                            .ok_or(RoqoqoError::BasisRotationMeasurementError {
+                            .ok_or(RoqoqoError::PauliZProductMeasurementError {
                                 msg: format!("Register name {}_flipped not fount", register_name),
                             })?
                             .view())
@@ -217,7 +218,7 @@ impl MeasureExpectationValues for BasisRotation {
                 } else {
                     pauli_products += &pauli_product_dict
                         .get(register_name.as_str())
-                        .ok_or(RoqoqoError::BasisRotationMeasurementError {
+                        .ok_or(RoqoqoError::PauliZProductMeasurementError {
                             msg: format!("Register name {} not fount", register_name),
                         })?
                         .view()

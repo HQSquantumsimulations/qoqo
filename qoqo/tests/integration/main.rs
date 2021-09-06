@@ -17,4 +17,14 @@ mod operations;
 mod circuit;
 
 #[cfg(test)]
+mod devices;
+
+#[cfg(test)]
+#[cfg(feature = "circuitdag")]
+mod circuitdag;
+
+#[cfg(test)]
+mod quantum_program;
+
+#[cfg(test)]
 mod measurements;
