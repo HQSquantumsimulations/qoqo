@@ -2597,6 +2597,54 @@ fn pragma_general_noise_substitute_trait() {
     assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
 }
 
+/// Test PragmaGeneralNoise Operate trait
+#[test]
+fn pragma_general_noise_pragmanoise_trait() {
+    let rates: Array2<f64> = array![[0.3, 0.0, 0.1], [0.7, 0.0, 0.0], [0.0, 0.8, 0.2]]; // add check for >= eigenvalues
+    let pragma = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), rates.clone());
+    // let mut test_matrix: Array2<f64> = array![
+    //     [0.0, 0.0, 0.9, 1.2],
+    //     [2.3, -1.0, 0.0, 0.5],
+    //     [0.0, 2.8, -0.6, 0.0],
+    //     [0.0, 0.0, -0.8, -1.7]
+    // ];
+    // test_matrix = test_matrix * 0.005;
+
+    // add check for >= eigenvalues
+    // matrix exponential using numpy:
+    let test_exponential = array![
+        [
+            1.00000004e+00,
+            3.13603590e-05,
+            4.48130265e-03,
+            5.97459826e-03
+        ],
+        [
+            1.14712981e-02,
+            9.95012493e-01,
+            2.86751104e-06,
+            2.49363597e-03
+        ],
+        [
+            2.44347666e-05,
+            1.39441142e-02,
+            9.97004509e-01,
+            1.74528238e-05
+        ],
+        [
+            -3.25322253e-08,
+            -2.78464407e-05,
+            -3.97707102e-03,
+            9.91536000e-01
+        ]
+    ];
+
+    let result: Array2<f64> = pragma.superoperator().unwrap() - test_exponential;
+    for item in result.iter() {
+        assert!(item.abs() <= 0.0001);
+    }
+}
+
 /// Test PragmaGeneralNoise Serialization and Deserialization traits (readable)
 #[cfg(feature = "serialize")]
 #[test]
