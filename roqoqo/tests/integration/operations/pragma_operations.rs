@@ -2602,15 +2602,7 @@ fn pragma_general_noise_substitute_trait() {
 fn pragma_general_noise_pragmanoise_trait() {
     let rates: Array2<f64> = array![[0.3, 0.0, 0.1], [0.7, 0.0, 0.0], [0.0, 0.8, 0.2]]; // add check for >= eigenvalues
     let pragma = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), rates.clone());
-    // let mut test_matrix: Array2<f64> = array![
-    //     [0.0, 0.0, 0.9, 1.2],
-    //     [2.3, -1.0, 0.0, 0.5],
-    //     [0.0, 2.8, -0.6, 0.0],
-    //     [0.0, 0.0, -0.8, -1.7]
-    // ];
-    // test_matrix = test_matrix * 0.005;
 
-    // add check for >= eigenvalues
     // matrix exponential using numpy:
     let test_exponential = array![
         [

@@ -8,6 +8,7 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 ### Added
 
 * Unittest for the superoperator method of the PragmaGeneralNoise
+* NegativeEigenvalue RoqoqoError for matrices that are not positive semi-definite
 
 ## 0.6.0
 
