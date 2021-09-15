@@ -3,6 +3,12 @@
 This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
+## 0.6.1
+
+### Added
+
+* Unittest for the superoperator method of the PragmaGeneralNoise
+* NegativeEigenvalue RoqoqoError for matrices that are not positive semi-definite
 
 ## 0.6.0
 
@@ -10,7 +16,7 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 * Device trait: A minimal trait for quantum computing devices used with roqoqo
 * `RoqoqoBackendError` now has a variant `GenericError` for additional backend error types
-### Added
+### Changed
 
 * Rarely used qubit mapping is now the last argument in PragmaRepeatedMeasurement
 * PragmaGeneralNoise uses sigma^+ sigma^- and sigma^z as a basis to for Lindblad decoherence rates to avoid using complex rates. Rate and operators parameters of PragmaGeneralNoise have been combined in single parameter rates.
