@@ -4,6 +4,10 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
 
+### Fixed in roqoqo
+
+* Bug that added operations with manually implmented Operate trait to SingleQubitGateOperation enum instead of Operation enum
+
 ## 0.6.0
 
 ### Added

@@ -569,6 +569,7 @@ dependencies = [
 name = "roqoqo"
 version = "0.6.0"
 dependencies = [
+ "bincode",
  "dyn-clone",
  "nalgebra",
  "ndarray",

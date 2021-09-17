@@ -18,6 +18,8 @@ use crate::operations::{
     OperatePragmaNoiseProba, OperateSingleQubit, RoqoqoError, Substitute,
 };
 use crate::Circuit;
+#[cfg(feature = "serialize")]
+use bincode::serialize;
 use nalgebra::Matrix4;
 use ndarray::{array, Array, Array1, Array2};
 use num_complex::Complex64;
@@ -954,12 +956,7 @@ pub struct PragmaConditional {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_PragmaConditional: &[&str; 4] = &[
-    "Operation",
-    "SingleQubitOperation",
-    "PragmaOperation",
-    "PragmaConditional",
-];
+const TAGS_PragmaConditional: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaConditional"];
 
 // Implementing the InvolveQubits trait for PragmaConditional.
 impl InvolveQubits for PragmaConditional {
@@ -989,5 +986,101 @@ impl Substitute for PragmaConditional {
             self.condition_index,
             new_circuit,
         ))
+    }
+}
+
+/// PRAGMA operation for changing a device mid circuit.
+///
+/// This PRAGMA is a thin wrapper around device specific operations that can change
+/// device properties
+///
+#[derive(Debug, Clone, PartialEq, roqoqo_derive::OperatePragma)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+pub struct PragmaChangeDevice {
+    /// The name of the [crate::registers::BitRegister] containting the condition bool value.
+    wrapped_tags: Vec<String>,
+    ///
+    wrapped_hqslang: String,
+    /// The index in the [crate::registers::BitRegister] containting the condition bool value.
+    wrapped_operation: Vec<u8>,
+    ///
+    involved_qubits: InvolvedQubits,
+}
+#[cfg_attr(feature = "dynamic", typetag::serde)]
+impl Operate for PragmaChangeDevice {
+    fn tags(&self) -> &'static [&'static str] {
+        TAGS_PragmaChangeDevice
+    }
+    fn hqslang(&self) -> &'static str {
+        "PragmaChangeDevice"
+    }
+    fn is_parametrized(&self) -> bool {
+        false
+    }
+}
+impl PragmaChangeDevice {
+    //#[cfg(feature = "serialize")]
+    pub fn new<T>(wrapped_pragma: &T) -> Result<Self, RoqoqoError>
+    where
+        T: Operate,
+        T: Serialize,
+    {
+        Ok(Self {
+            wrapped_tags: wrapped_pragma
+                .tags()
+                .into_iter()
+                .map(|x| x.to_string())
+                .collect(),
+            wrapped_hqslang: wrapped_pragma.hqslang().to_string(),
+            involved_qubits: wrapped_pragma.involved_qubits(),
+            wrapped_operation: serialize(wrapped_pragma).map_err(|err| {
+                RoqoqoError::SerializationError {
+                    msg: format!("{:?}", err),
+                }
+            })?,
+        })
+    }
+}
+#[allow(non_upper_case_globals)]
+const TAGS_PragmaChangeDevice: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaChangeDevice"];
+
+// Implementing the InvolveQubits trait for PragmaConditional.
+impl InvolveQubits for PragmaChangeDevice {
+    /// Lists all involved qubits.
+    fn involved_qubits(&self) -> InvolvedQubits {
+        self.involved_qubits.clone()
+    }
+}
+
+/// Substitute trait allowing to replace symbolic parameters and to perform qubit mappings.
+impl Substitute for PragmaChangeDevice {
+    /// Remaps qubits in clone of the operation.
+    fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        match &self.involved_qubits {
+            InvolvedQubits::All => match mapping.iter().find(|(x, y)| x != y) {
+                Some((x, _)) => Err(RoqoqoError::QubitMappingError { qubit: *x }),
+                None => Ok(self.clone()),
+            },
+            InvolvedQubits::Set(x) => {
+                for index in x {
+                    match mapping.get(&index) {
+                        Some(value) => {
+                            if value != index {
+                                return Err(RoqoqoError::QubitMappingError { qubit: *value });
+                            }
+                        }
+                        _ => (),
+                    }
+                }
+                Ok(self.clone())
+            }
+            InvolvedQubits::None => Ok(self.clone()),
+        }
+    }
+
+    #[allow(unused_variables)]
+    /// Substitutes symbolic parameters in clone of the operation.
+    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+        Ok(self.clone())
     }
 }

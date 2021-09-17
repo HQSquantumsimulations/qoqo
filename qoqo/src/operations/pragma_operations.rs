@@ -1177,3 +1177,20 @@ pub struct PragmaConditional {
     condition_index: usize,
     circuit: Circuit,
 }
+
+// #[wrap(Operate, OperatePragma)]
+// /// The general noise PRAGMA operation.
+// ///
+// /// This PRAGMA operation applies a noise term according to the given operators.
+// ///
+// /// Args:
+// ///     qubit (int): The qubit the PRAGMA operation is applied to.
+// ///     gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+// ///     rate (CalculatorFloat): The error rate of the noise (in 1/second).
+// ///     operators (CalculatorFloat): The operators representing the general noise.
+// ///                                  The array needs to be flattened before input, using np.flatten.
+// ///
+// pub struct PragmaChangeDeviceWrapper {
+//     /// PragmaGeneralNoise to be wrapped and converted to Python.
+//     pub internal: PragmaChangeDevice,
+// }

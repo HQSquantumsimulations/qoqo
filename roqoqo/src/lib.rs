@@ -117,6 +117,18 @@ pub enum RoqoqoError {
         /// Error message.
         msg: String,
     },
+    /// Error serializing an internal roqoqo object
+    #[error("An error occured serializing a roqoqo object: {msg} ")]
+    SerializationError {
+        /// Error message
+        msg: String,
+    },
+    /// Generic error that does not fit in other error categories.
+    #[error("An error occured in roqoqo: {msg} ")]
+    GenericError {
+        /// Generic error message
+        msg: String,
+    },
     /// Transparent propagation of CalculatorError.
     #[error(transparent)]
     CalculatorError(#[from] CalculatorError),
@@ -160,7 +172,7 @@ pub enum RoqoqoBackendError {
     /// Error when communicating with backend over the network.
     #[error("An error occured in the backend: {msg} ")]
     GenericError {
-        /// Path of file to be created
+        /// Generic error message
         msg: String,
     },
     /// Transparent propagation of RoqoqoError.
