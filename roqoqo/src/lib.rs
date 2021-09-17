@@ -117,6 +117,12 @@ pub enum RoqoqoError {
         /// Error message.
         msg: String,
     },
+    // /// Rates matrix has negative eigenvalues, when they should be positive semi-definite.
+    // #[error("Rates matrix has a negative eigenvalue: {value}")]
+    // NegativeEigenvalue {
+    //     /// Negative eigenvalue.
+    //     value: f64,
+    // },
     /// Transparent propagation of CalculatorError.
     #[error(transparent)]
     CalculatorError(#[from] CalculatorError),

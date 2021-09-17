@@ -766,10 +766,12 @@ impl OperatePragmaNoiseProba for PragmaRandomNoise {
 /// where the coefficients correspond to the following summands
 /// expanded from the first term of the non-coherent part of the Lindblad equation:
 ///     $$ \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
+///     $$ \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
 ///         L_0 = \sigma^{+} \\\\
 ///         L_1 = \sigma^{-} \\\\
 ///         L_3 = \sigma^{z}
 ///     $$
+/// result{sigma_z, sigma_minus} = sigma_z (x) sigma_minus.T - 1/2 * (sigma_minus.T * sigma_z) (x) 1 - 1/2 * 1 (x) (sigma_minus.T * sigma_z).T
 ///
 /// Applying the Pragma with a given `gate_time` corresponds to applying the full time-evolution under the Lindblad equation for `gate_time` time.
 ///
@@ -840,70 +842,70 @@ const PGN_SUPEROP: [[[[f64; 4]; 4]; 3]; 3] = [
     [
         // sigma+ sigma+
         [
-            [-1., 0., 0., 0.],
-            [0., -0.5, 0., 0.],
-            [0., 0., -0.5, 0.],
-            [1., 0., 0., 0.],
+            [0., 0., 0., 4.],
+            [0., -2., 0., 0.],
+            [0., 0., -2., 0.],
+            [0., 0., 0., -4.],
         ],
         // sigma+ sigma-
         [
             [0., 0., 0., 0.],
+            [0., 0., 4., 0.],
             [0., 0., 0., 0.],
-            [0., 1., 0., 0.],
             [0., 0., 0., 0.],
         ],
         // sigma+ sigmaz
         [
-            [0., 0.5, 0., 0.],
+            [0., 0., 1., 0.],
+            [-1., 0., 0., -3.],
             [0., 0., 0., 0.],
-            [1.5, 0., 0., 0.5],
-            [0., -0.5, 0., 0.],
+            [0., 0., 0., -1.],
         ],
     ],
     [
         // sigma- sigma+
         [
             [0., 0., 0., 0.],
-            [0., 0., 1., 0.],
             [0., 0., 0., 0.],
+            [0., 4., 0., 0.],
             [0., 0., 0., 0.],
         ],
         // sigma- sigma-
         [
-            [0., 0., 0., 1.],
-            [0., -0.5, 0., 0.],
-            [0., 0., -0.5, 0.],
-            [0., 0., 0., -1.],
+            [-4., 0., 0., 0.],
+            [0., -2., 0., 0.],
+            [0., 0., -2., 0.],
+            [4., 0., 0., 0.],
         ],
         // sigma- sigmaz
         [
-            [0., 0., 0.5, 0.],
-            [-0.5, 0., 0., -1.5],
+            [0., 1., 0., 0.],
             [0., 0., 0., 0.],
-            [0., 0., -0.5, 0.],
+            [3., 0., 0., 1.],
+            [0., -1., 0., 0.],
         ],
     ],
     [
-        // sigmaz sigma+
+        //  sigmaz sigma+
         [
-            [0., 0., 0.5, 0.],
-            [1.5, 0., 0., 0.5],
+            [0., 1., 0., 0.],
             [0., 0., 0., 0.],
-            [0., 0., -0.5, 0.],
+            [-1., 0., 0., -3.],
+            [0., -1., 0., 0.],
         ],
         // sigmaz sigma-
         [
-            [0., 0.5, 0., 0.],
+            [0., 0., 1., 0.],
+            [3., 0., 0., 1.],
             [0., 0., 0., 0.],
-            [-0.5, 0., 0., -1.5],
-            [0., -0.5, 0., 0.],
+            [0., 0., -1., 0.],
         ],
         // sigmaz sigmaz
         [
             [0., 0., 0., 0.],
             [0., -2., 0., 0.],
-            [0., 0., -2., 0.],
             [0., 0., 0., 0.],
+            [0., 0., 0., -2.],
         ],
     ],
 ];
