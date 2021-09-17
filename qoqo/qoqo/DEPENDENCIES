@@ -2312,7 +2312,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-libc 0.2.101
+libc 0.2.102
 https://github.com/rust-lang/libc
 by The Rust Project Developers
 Raw FFI bindings to platform libraries like libc.
@@ -7151,7 +7151,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-pyo3 0.14.4
+pyo3 0.14.5
 https://github.com/pyo3/pyo3
 by PyO3 Project and Contributors <https://github.com/PyO3>
 Bindings to Python interpreter
@@ -7351,7 +7351,7 @@ LICENSE:
 
 
 ====================================================
-pyo3-build-config 0.14.4
+pyo3-build-config 0.14.5
 https://github.com/pyo3/pyo3
 by PyO3 Project and Contributors <https://github.com/PyO3>
 Build configuration for the PyO3 ecosystem
@@ -7551,7 +7551,7 @@ LICENSE:
 
 
 ====================================================
-pyo3-macros 0.14.4
+pyo3-macros 0.14.5
 https://github.com/pyo3/pyo3
 by PyO3 Project and Contributors <https://github.com/PyO3>
 Proc macros for PyO3 package
@@ -7751,7 +7751,7 @@ LICENSE:
 
 
 ====================================================
-pyo3-macros-backend 0.14.4
+pyo3-macros-backend 0.14.5
 https://github.com/pyo3/pyo3
 by PyO3 Project and Contributors <https://github.com/PyO3>
 Code generation for PyO3 package
@@ -7951,7 +7951,7 @@ LICENSE:
 
 
 ====================================================
-qoqo 0.6.0
+qoqo 0.6.1
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoq
@@ -8163,7 +8163,7 @@ LICENSE:
 
 
 ====================================================
-qoqo-macros 0.6.0
+qoqo-macros 0.6.1
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -10127,7 +10127,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-roqoqo 0.6.0
+roqoqo 0.6.1
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
@@ -10339,7 +10339,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-derive 0.6.0
+roqoqo-derive 0.6.1
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Maros for the roqoqo crate
 License: Apache-2.0
@@ -10550,7 +10550,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-test 0.6.0
+roqoqo-test 0.6.1
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
@@ -11747,7 +11747,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-serde_json 1.0.67
+serde_json 1.0.68
 https://github.com/serde-rs/json
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A JSON serialization file format
@@ -12678,7 +12678,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-syn 1.0.75
+syn 1.0.76
 https://github.com/dtolnay/syn
 by David Tolnay <dtolnay@gmail.com>
 Parser for Rust source code
@@ -12949,7 +12949,7 @@ SOFTWARE.
 
 
 ====================================================
-thiserror 1.0.28
+thiserror 1.0.29
 https://github.com/dtolnay/thiserror
 by David Tolnay <dtolnay@gmail.com>
 derive(Error)
@@ -13188,7 +13188,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-thiserror-impl 1.0.28
+thiserror-impl 1.0.29
 https://github.com/dtolnay/thiserror
 by David Tolnay <dtolnay@gmail.com>
 Implementation detail of the `thiserror` crate
@@ -14851,7 +14851,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-wide 0.7.0
+wide 0.7.1
 https://github.com/Lokathor/wide
 by Lokathor <zefria@gmail.com>
 A crate to help you go wide.
