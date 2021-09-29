@@ -17,7 +17,7 @@ doctest = false
 crate-type = ["rlib"]
 
 [dependencies]
-qoqo_calculator = {version="0.2"}
+qoqo_calculator = { git="https://github.com/kbarkhqs/qoqo_calculator.git", branch="main"}
 roqoqo = {version="0.6", path="../roqoqo", features=["serialize"]}
 rand = "0.8"
 nalgebra = "0.29"
