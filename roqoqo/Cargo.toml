@@ -26,7 +26,7 @@ ndarray = { version = "0.15" }
 num-complex = { version = "0.4"}
 thiserror = "1.0"
 dyn-clone = {version="1.0", optional=true}
-qoqo_calculator = { git="https://github.com/kbarkhqs/qoqo_calculator.git", branch="main"}
+qoqo_calculator = { version="0.3" }
 roqoqo-derive = {version="0.6", path="../roqoqo-derive"}
 typetag = {version="0.1", optional=true}
 nalgebra = "0.29"
