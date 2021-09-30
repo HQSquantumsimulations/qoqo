@@ -4,7 +4,8 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
 
-### Changed not realease
+## 0.6.2
+### Changed
 
 * Fixed function signatures in Device trait to uniformly return values instead of references and take references for qubits
 
