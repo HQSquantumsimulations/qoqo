@@ -1,6 +1,6 @@
 [package]
 name = "qoqo"
-version = "0.6.1"
+version = "0.6.2"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 homepage = "https://github.com/HQSquantumsimulations/qoqo"
