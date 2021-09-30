@@ -3,6 +3,11 @@
 This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
+
+### Changed not realease
+
+* Fixed function signatures in Device trait to uniformly return values instead of references and take references for qubits
+
 ## 0.6.1
 
 ### Added
@@ -12,10 +17,11 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## 0.6.0
 
-### Added
+### Added 0.6.0
 
 * Device trait: A minimal trait for quantum computing devices used with roqoqo
 * `RoqoqoBackendError` now has a variant `GenericError` for additional backend error types
+
 ### Changed
 
 * Rarely used qubit mapping is now the last argument in PragmaRepeatedMeasurement
@@ -33,7 +39,7 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## 0.5.0
 
-### Changed
+### Changed 0.5.0
 
 * Fixed versioning scheme to use the same version number across the project.
 * Updated pyo3 dependency to 0.14.1, numpy to 0.14, num-complex to 0.4 and ndarray to 0.15
@@ -43,7 +49,7 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 * Wrong Python Class name of ClassicalRegister measurement (was "Cheated")
 
-### Added
+### Added 0.5.0
 
 * PhaseShiftedControlledZ gate in roqoqo
 * QoqoBackendError to use in the python interface of rust based backends

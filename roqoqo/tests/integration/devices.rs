@@ -46,26 +46,26 @@ impl Device for TestDevice {
         self.number_qubits
     }
 
-    fn single_qubit_gate_time(&self, hqslang: &str, qubit: usize) -> Option<&f64> {
+    fn single_qubit_gate_time(&self, hqslang: &str, qubit: &usize) -> Option<f64> {
         match self.single_qubit_gates.get(&hqslang.to_string()) {
-            Some(x) => x.get(&qubit),
+            Some(x) => x.get(&qubit).map(|x| *x),
             None => None,
         }
     }
 
-    fn two_qubit_gate_time(&self, hqslang: &str, control: usize, target: usize) -> Option<&f64> {
+    fn two_qubit_gate_time(&self, hqslang: &str, control: &usize, target: &usize) -> Option<f64> {
         match self.two_qubit_gates.get(&hqslang.to_string()) {
-            Some(x) => x.get(&(control, target)),
+            Some(x) => x.get(&(*control, *target)).map(|x| *x),
             None => None,
         }
     }
 
-    fn multi_qubit_gate_time(&self, hqslang: &str, _qubits: &[usize]) -> Option<&f64> {
-        self.multi_qubit_gates.get(&hqslang.to_string())
+    fn multi_qubit_gate_time(&self, hqslang: &str, _qubits: &[usize]) -> Option<f64> {
+        self.multi_qubit_gates.get(&hqslang.to_string()).map(|x| *x)
     }
 
-    fn qubit_decoherence_rates(&self, qubit: usize) -> Option<&Array2<f64>> {
-        self.rates.get(&qubit)
+    fn qubit_decoherence_rates(&self, qubit: usize) -> Option<Array2<f64>> {
+        self.rates.get(&qubit).map(|x| x.to_owned())
     }
 }
 
@@ -113,19 +113,19 @@ fn it_works() {
 
     let array: Array2<f64> = array![[0.003, 0.0, 0.0], [0.0, 0.0, 00.0], [0.0, 0.0, 0.0]];
     assert_eq!(device.number_qubits(), 3usize);
-    assert_eq!(device.qubit_decoherence_rates(0), Some(&array));
+    assert_eq!(device.qubit_decoherence_rates(0), Some(array));
 
-    assert_eq!(device.single_qubit_gate_time("RotateX", 0), Some(&0.1f64));
-    assert_eq!(device.single_qubit_gate_time("RotateX", 3), None);
-    assert_eq!(device.single_qubit_gate_time("RotateZ", 0), None);
+    assert_eq!(device.single_qubit_gate_time("RotateX", &0), Some(0.1f64));
+    assert_eq!(device.single_qubit_gate_time("RotateX", &3), None);
+    assert_eq!(device.single_qubit_gate_time("RotateZ", &0), None);
 
-    assert_eq!(device.two_qubit_gate_time("CNOT", 0, 1), Some(&0.5f64));
-    assert_eq!(device.two_qubit_gate_time("CNOT", 0, 3), None);
-    assert_eq!(device.two_qubit_gate_time("CZ", 0, 1), None);
+    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &1), Some(0.5f64));
+    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &3), None);
+    assert_eq!(device.two_qubit_gate_time("CZ", &0, &1), None);
 
     assert_eq!(
         device.multi_qubit_gate_time("MultiQubitMS", &[0, 1, 2]),
-        Some(&0.8f64)
+        Some(0.8f64)
     );
     assert_eq!(device.multi_qubit_gate_time("Other", &[0, 1, 2]), None);
 }
