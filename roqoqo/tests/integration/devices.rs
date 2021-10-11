@@ -64,7 +64,7 @@ impl Device for TestDevice {
         self.multi_qubit_gates.get(&hqslang.to_string()).map(|x| *x)
     }
 
-    fn qubit_decoherence_rates(&self, qubit: usize) -> Option<Array2<f64>> {
+    fn qubit_decoherence_rates(&self, qubit: &usize) -> Option<Array2<f64>> {
         self.rates.get(&qubit).map(|x| x.to_owned())
     }
 }
