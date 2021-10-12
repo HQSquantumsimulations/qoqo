@@ -64,7 +64,7 @@ impl Device for TestDevice {
         self.multi_qubit_gates.get(&hqslang.to_string()).map(|x| *x)
     }
 
-    fn qubit_decoherence_rates(&self, qubit: usize) -> Option<Array2<f64>> {
+    fn qubit_decoherence_rates(&self, qubit: &usize) -> Option<Array2<f64>> {
         self.rates.get(&qubit).map(|x| x.to_owned())
     }
 }
@@ -113,7 +113,7 @@ fn it_works() {
 
     let array: Array2<f64> = array![[0.003, 0.0, 0.0], [0.0, 0.0, 00.0], [0.0, 0.0, 0.0]];
     assert_eq!(device.number_qubits(), 3usize);
-    assert_eq!(device.qubit_decoherence_rates(0), Some(array));
+    assert_eq!(device.qubit_decoherence_rates(&0), Some(array));
 
     assert_eq!(device.single_qubit_gate_time("RotateX", &0), Some(0.1f64));
     assert_eq!(device.single_qubit_gate_time("RotateX", &3), None);

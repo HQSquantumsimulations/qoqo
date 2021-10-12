@@ -202,7 +202,7 @@ dependencies = [
  "approx",
  "matrixmultiply",
  "nalgebra-macros",
- "num-complex 0.4.0",
+ "num-complex",
  "num-rational",
  "num-traits",
  "simba",
@@ -227,20 +227,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "08e854964160a323e65baa19a0b1a027f76d590faba01f05c0cbc3187221a8c9"
 dependencies = [
  "matrixmultiply",
- "num-complex 0.4.0",
+ "num-complex",
  "num-integer",
  "num-traits",
  "rawpointer",
  "serde",
-]
-
-[[package]]
-name = "num-complex"
-version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "747d632c0c558b87dbabbe6a82f3b4ae03720d0646ac5b7b4dae89394be5f2c5"
-dependencies = [
- "num-traits",
 ]
 
 [[package]]
@@ -293,7 +284,7 @@ dependencies = [
  "cfg-if 0.1.10",
  "libc",
  "ndarray",
- "num-complex 0.4.0",
+ "num-complex",
  "num-traits",
  "pyo3",
 ]
@@ -384,7 +375,7 @@ dependencies = [
  "cfg-if 1.0.0",
  "indoc",
  "libc",
- "num-complex 0.4.0",
+ "num-complex",
  "parking_lot",
  "paste 0.1.18",
  "pyo3-build-config",
@@ -426,17 +417,17 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "0.6.1"
+version = "0.6.2"
 dependencies = [
  "bincode",
  "nalgebra",
  "ndarray",
- "num-complex 0.4.0",
+ "num-complex",
  "numpy",
  "proc-macro2",
  "pyo3",
  "qoqo-macros",
- "qoqo_calculator 0.3.0",
+ "qoqo_calculator",
  "qoqo_calculator_pyo3",
  "quote",
  "roqoqo",
@@ -449,7 +440,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "0.6.1"
+version = "0.6.2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -458,22 +449,11 @@ dependencies = [
 
 [[package]]
 name = "qoqo_calculator"
-version = "0.2.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13de3d20a02df465b391f64457e40f7a6833bf3faaa76c9894e816b24df70ddf"
-dependencies = [
- "num-complex 0.3.1",
- "serde",
- "thiserror",
-]
-
-[[package]]
-name = "qoqo_calculator"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4924da2cc11cc4a5385eebda81918e3bf17ba61e26d766e0646b4f334747b4ce"
 dependencies = [
- "num-complex 0.4.0",
+ "num-complex",
  "serde",
  "thiserror",
 ]
@@ -484,9 +464,9 @@ version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2ef8106b00d8e1091eaa088eaf0b7d4cac2d127c06b24c54a24e65d48ecdfb5a"
 dependencies = [
- "num-complex 0.4.0",
+ "num-complex",
  "pyo3",
- "qoqo_calculator 0.3.0",
+ "qoqo_calculator",
  "serde",
  "thiserror",
 ]
@@ -567,14 +547,14 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "0.6.1"
+version = "0.6.2"
 dependencies = [
  "dyn-clone",
  "nalgebra",
  "ndarray",
- "num-complex 0.4.0",
+ "num-complex",
  "proc-macro2",
- "qoqo_calculator 0.3.0",
+ "qoqo_calculator",
  "quote",
  "rand",
  "rand_distr",
@@ -589,7 +569,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "0.6.1"
+version = "0.6.2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -598,12 +578,12 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "0.6.1"
+version = "0.6.2"
 dependencies = [
  "nalgebra",
  "ndarray",
  "proc-macro2",
- "qoqo_calculator 0.2.6",
+ "qoqo_calculator",
  "quote",
  "rand",
  "roqoqo",
@@ -678,7 +658,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f0b7840f121a46d63066ee7a99fc81dcabbc6105e437cae43528cea199b5a05f"
 dependencies = [
  "approx",
- "num-complex 0.4.0",
+ "num-complex",
  "num-traits",
  "paste 1.0.5",
  "wide",
