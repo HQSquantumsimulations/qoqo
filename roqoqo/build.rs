@@ -180,8 +180,7 @@ impl<'ast> Visit<'ast> for Visitor {
                 {
                     self.two_qubit_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateGate")
-                    && parsed_arguments.contains("OperateMultiQubit")
+                if  parsed_arguments.contains("OperateMultiQubitGate")
                 {
                     self.multi_qubit_gate_operations.push(i.ident.clone());
                 }
@@ -233,7 +232,7 @@ impl<'ast> Visit<'ast> for Visitor {
                     self.pragma_noise_proba_operations.push(id.clone());
                 }
                 if trait_name.as_str() == "OperateMultiQubitGate" {
-                    self.two_qubit_gate_operations.push(id);
+                    self.multi_qubit_gate_operations.push(id);
                 }
             }
         }
@@ -245,6 +244,7 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/single_qubit_gate_operations.rs",
     "src/operations/pragma_operations.rs",
     "src/operations/two_qubit_gate_operations.rs",
+    "src/operations/multi_qubit_gate_operations.rs",
     "src/operations/measurement_operations.rs",
     "src/operations/define_operations.rs",
 ];

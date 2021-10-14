@@ -104,7 +104,11 @@ pub trait Device: Sized {
     ///
     /// * `Some<Array2<f64>>` - The decoherence rates.
     /// * `None` - The qubit is not part of the device.
+<<<<<<< HEAD
     fn qubit_decoherence_rates(&self, qubit: usize) -> Option<Array2<f64>>;
+=======
+    fn qubit_decoherence_rates(&self, qubit: &usize) -> Option<Array2<f64>>;
+>>>>>>> f5be12b58b2a622780f7b40391e5d642b3fe153e
 
     /// Returns the number of qubits the device supports.
     fn number_qubits(&self) -> usize;
