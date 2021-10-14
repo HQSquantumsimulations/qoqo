@@ -180,8 +180,7 @@ impl<'ast> Visit<'ast> for Visitor {
                 {
                     self.two_qubit_gate_operations.push(i.ident.clone());
                 }
-                if  parsed_arguments.contains("OperateMultiQubitGate")
-                {
+                if parsed_arguments.contains("OperateMultiQubitGate") {
                     self.multi_qubit_gate_operations.push(i.ident.clone());
                 }
             }
