@@ -4,7 +4,12 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
 
+## Fixed not released
+
+* Fix constructing enum MultiQubitGateOperation for all operations implementing OperateMultiQubitGate
+
 ## 0.6.2
+
 ### Changed
 
 * Fixed function signatures in Device trait to uniformly return values instead of references and take references for qubits
@@ -23,7 +28,7 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 * Device trait: A minimal trait for quantum computing devices used with roqoqo
 * `RoqoqoBackendError` now has a variant `GenericError` for additional backend error types
 
-### Changed
+### Changed 0.6.0
 
 * Rarely used qubit mapping is now the last argument in PragmaRepeatedMeasurement
 * PragmaGeneralNoise uses sigma^+ sigma^- and sigma^z as a basis to for Lindblad decoherence rates to avoid using complex rates. Rate and operators parameters of PragmaGeneralNoise have been combined in single parameter rates.
