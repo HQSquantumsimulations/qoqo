@@ -1,6 +1,6 @@
 [package]
 name = "qoqo"
-version = "0.6.1"
+version = "0.6.2"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 homepage = "https://github.com/HQSquantumsimulations/qoqo"
@@ -9,7 +9,7 @@ documentation = "https://docs.rs/qoqo/"
 readme = "../README.md"
 edition = "2018"
 categories = ["science", "simulation","ffi"]
-description = "Quantum computing circuit toolkit. Python interface of roqoq"
+description = "Quantum computing circuit toolkit. Python interface of roqoqo"
 exclude = ["tests*", "examples*", "docs*", "*.code-workspace"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -29,7 +29,7 @@ serde = { version = "1.0", features = ["derive"] }
 ndarray = "0.15"
 num-complex = "0.4"
 thiserror = "1.0"
-qoqo_calculator = {version="0.3"}
+qoqo_calculator = { version="0.3" }
 qoqo_calculator_pyo3 = {version="0.4", default-features=false}
 qoqo-macros = {version="0.6", path="../qoqo-macros"}
 roqoqo = {version="0.6", path="../roqoqo", features=["serialize", "overrotate"]}
