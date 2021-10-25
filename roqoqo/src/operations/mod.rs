@@ -293,7 +293,7 @@ pub trait OperatePragma: Operate + InvolveQubits + Substitute + Clone + PartialE
 /// let pragma = PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
 ///
 /// // 1) The superoperator representation of the noise Pragma
-/// let superop_prob: f64 = f64::try_from(pragma.probability())?;
+/// let superop_prob: f64 = pragma.probability();
 /// let superop_sqrt: f64 = (1.0 - superop_prob).sqrt();
 /// let superop: Array2<f64> = array![
 ///     [1.0, 0.0, 0.0, superop_prob],
