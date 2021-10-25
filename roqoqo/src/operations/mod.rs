@@ -287,7 +287,7 @@ pub trait OperatePragma: Operate + InvolveQubits + Substitute + Clone + PartialE
 /// # Example
 /// ```
 /// use ndarray::{array, Array2};
-/// use roqoqo::operations::{OperatePragmaNoise, PragmaDamping};
+/// use roqoqo::operations::{OperatePragmaNoise, OperatePragmaNoiseProba, PragmaDamping};
 /// use qoqo_calculator::CalculatorFloat;
 ///
 /// let pragma = PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
