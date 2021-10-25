@@ -122,14 +122,14 @@ impl BasisRotationInput {
                 return Ok(*k);
             }
             m.insert(self.number_pauli_products, pauli_product_mask);
-            self.number_pauli_products += 1;
         } else {
             // Readout not yet in pauli_product_qubit_masks
             let mut new_map = HashMap::new();
             new_map.insert(self.number_pauli_products, pauli_product_mask);
             self.pauli_product_qubit_masks.insert(readout, new_map);
-            self.number_pauli_products += 1;
         }
+        self.number_pauli_products += 1;
+
         Ok(self.number_pauli_products - 1)
     }
 

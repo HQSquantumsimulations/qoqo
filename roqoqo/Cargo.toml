@@ -1,9 +1,10 @@
 [package]
 name = "roqoqo"
-version = "0.6.2"
+version = "0.6.3"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
-edition = "2018"
+edition = "2021"
+rust-version = "1.56"
 categories = ["science", "simulation"]
 homepage = "https://github.com/HQSquantumsimulations/qoqo"
 repository = "https://github.com/HQSquantumsimulations/qoqo"

@@ -4,9 +4,14 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
 
-## Fixed not released
+### Changed not released
+
+* Update to rust 2021 edition
+
+### Fixed not released
 
 * Fix constructing enum MultiQubitGateOperation for all operations implementing OperateMultiQubitGate
+* Fixed calculation of superoperator for damping
 
 ## 0.6.2
 
@@ -16,7 +21,7 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## 0.6.1
 
-### Added
+### Added 0.6.1
 
 * Unittest for the superoperator method of the PragmaGeneralNoise
 * NegativeEigenvalue RoqoqoError for matrices that are not positive semi-definite

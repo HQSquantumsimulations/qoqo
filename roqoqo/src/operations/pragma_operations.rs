@@ -502,11 +502,7 @@ const TAGS_PragmaDamping: &[&str; 6] = &[
 impl OperatePragmaNoise for PragmaDamping {
     /// Returns the superoperator matrix of the operation.
     fn superoperator(&self) -> Result<Array2<f64>, RoqoqoError> {
-        let gate_time: f64 = f64::try_from(self.gate_time.clone())?;
-        let rate: f64 = f64::try_from(self.rate.clone())?;
-
-        let pre_exp: f64 = -1.0 * gate_time * rate;
-        let prob: f64 = 1.0 - pre_exp.exp();
+        let prob: f64 = f64::try_from(self.probability())?;
         let sqrt: f64 = (1.0 - prob).sqrt();
 
         Ok(array![
@@ -924,7 +920,9 @@ impl OperatePragmaNoise for PragmaGeneralNoise {
         }
         // Integrate superoperator for infinitesimal time to get superoperator for given rate and gate-time
         // Use exponential
-        let exp_superop: Matrix4<f64> = superop.exp();
+        let mut exp_superop: Matrix4<f64> = superop.exp();
+        // transpose because NAlgebra matrix iter is column major
+        exp_superop.transpose_mut();
         let mut tmp_iter = exp_superop.iter();
         // convert to ndarray.
         let array: Array2<f64> = Array::from_shape_simple_fn((4, 4), || *tmp_iter.next().unwrap());

@@ -122,9 +122,9 @@ dependencies = [
 
 [[package]]
 name = "instant"
-version = "0.1.11"
+version = "0.1.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "716d3d89f35ac6a34fd0eed635395f4c3b76fa889338a4632e5231a8684216bd"
+checksum = "7a5bbe824c507c5da5956355e86a746d82e0e1464f65d862cc5e71da70e94b2c"
 dependencies = [
  "cfg-if 1.0.0",
 ]
@@ -165,9 +165,9 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "libc"
-version = "0.2.103"
+version = "0.2.105"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dd8f7255a17a627354f321ef0055d63b898c6fb27eff628af4d1b66b7331edf6"
+checksum = "869d572136620d55835903746bcb5cdc54cb2851fd0aeec53220b4bb65ef3013"
 
 [[package]]
 name = "libm"
@@ -347,9 +347,9 @@ dependencies = [
 
 [[package]]
 name = "ppv-lite86"
-version = "0.2.14"
+version = "0.2.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c3ca011bd0129ff4ae15cd04c4eef202cadf6c51c21e47aba319b4e0501db741"
+checksum = "ed0cfbc8191465bed66e1718596ee0b0b35d5ee1f41c5df2189d0fe8bde535ba"
 
 [[package]]
 name = "proc-macro-hack"
@@ -417,7 +417,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "0.6.2"
+version = "0.6.3"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -440,7 +440,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "0.6.2"
+version = "0.6.3"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -547,7 +547,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "0.6.2"
+version = "0.6.3"
 dependencies = [
  "dyn-clone",
  "nalgebra",
@@ -569,7 +569,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "0.6.2"
+version = "0.6.3"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -578,7 +578,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "0.6.2"
+version = "0.6.3"
 dependencies = [
  "nalgebra",
  "ndarray",
