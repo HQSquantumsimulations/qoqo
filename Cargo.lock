@@ -417,7 +417,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "0.6.2"
+version = "0.6.3"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -440,7 +440,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "0.6.2"
+version = "0.6.3"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -547,7 +547,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "0.6.2"
+version = "0.6.3"
 dependencies = [
  "dyn-clone",
  "nalgebra",
@@ -569,7 +569,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "0.6.2"
+version = "0.6.3"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -578,7 +578,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "0.6.2"
+version = "0.6.3"
 dependencies = [
  "nalgebra",
  "ndarray",
