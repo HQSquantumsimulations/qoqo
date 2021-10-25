@@ -287,7 +287,7 @@ pub trait OperatePragma: Operate + InvolveQubits + Substitute + Clone + PartialE
 /// # Example
 /// ```
 /// use ndarray::{array, Array2};
-/// use roqoqo::operations::{OperatePragmaNoise, PragmaDamping};
+/// use roqoqo::operations::{OperatePragmaNoise, OperatePragmaNoiseProba, PragmaDamping};
 /// use qoqo_calculator::CalculatorFloat;
 ///
 /// let pragma = PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
@@ -296,10 +296,10 @@ pub trait OperatePragma: Operate + InvolveQubits + Substitute + Clone + PartialE
 /// let superop_prob: f64 = f64::try_from(pragma.probability())?;
 /// let superop_sqrt: f64 = (1.0 - superop_prob).sqrt();
 /// let superop: Array2<f64> = array![
-///     [1.0, 0.0, 0.0, superop_prob],
+///     [1.0, 0.0, 0.0, *superop_prob],
 ///     [0.0, superop_sqrt, 0.0, 0.0],
 ///     [0.0, 0.0, superop_sqrt, 0.0],
-///     [0.0, 0.0, 0.0, 1.0 - superop_prob],
+///     [0.0, 0.0, 0.0, 1.0 - *superop_prob],
 /// ];
 /// assert_eq!(superop, pragma.superoperator().unwrap());
 /// // 2) The power function applied to the noise Pragma
