@@ -920,7 +920,9 @@ impl OperatePragmaNoise for PragmaGeneralNoise {
         }
         // Integrate superoperator for infinitesimal time to get superoperator for given rate and gate-time
         // Use exponential
-        let exp_superop: Matrix4<f64> = superop.exp();
+        let mut exp_superop: Matrix4<f64> = superop.exp();
+        // transpose because NAlgebra matrix iter is column major
+        exp_superop.transpose_mut();
         let mut tmp_iter = exp_superop.iter();
         // convert to ndarray.
         let array: Array2<f64> = Array::from_shape_simple_fn((4, 4), || *tmp_iter.next().unwrap());

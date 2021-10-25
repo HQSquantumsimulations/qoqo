@@ -1816,8 +1816,7 @@ fn pragma_damping_pragmanoise_trait() {
     let pragma = PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
 
     // (1) Superoperator function
-    let superop_pre_exp: f64 = -1.0 * 0.005 * 0.02;
-    let superop_prob: f64 = 1.0 - superop_pre_exp.exp();
+    let superop_prob: f64 = f64::try_from(pragma.probability()).unwrap();
     let superop_sqrt: f64 = (1.0 - superop_prob).sqrt();
     let superop: Array2<f64> = array![
         [1.0, 0.0, 0.0, superop_prob],
@@ -2631,7 +2630,7 @@ fn pragma_general_noise_pragmanoise_trait() {
         ]
     ];
 
-    let result: Array2<f64> = pragma.superoperator().unwrap() - test_exponential;
+    let result: Array2<f64> = test_exponential - pragma.superoperator().unwrap().t();
     for item in result.iter() {
         assert!(item.abs() <= 0.0001);
     }

@@ -1226,18 +1226,15 @@ fn test_pyo3_remap_qubits_overrotation() {
 /// Test superoperator of PragmaDamping
 #[test]
 fn test_pyo3_noise_superoperator_damping() {
-    let noise_pragma = Operation::from(PragmaDamping::new(
-        0,
-        CalculatorFloat::from(0.005),
-        CalculatorFloat::from(0.02),
-    ));
+    let pragma_op =
+        PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
+    let noise_pragma = Operation::from(pragma_op.clone());
     pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
     let operation = convert_operation_to_pyobject(noise_pragma).unwrap();
 
-    let superop_pre_exp: f64 = -1.0 * 0.005 * 0.02;
-    let superop_prob: f64 = 1.0 - superop_pre_exp.exp();
+    let superop_prob: f64 = f64::try_from(pragma_op.probability()).unwrap();
     let superop_sqrt: f64 = (1.0 - superop_prob).sqrt();
     let superop_param: Array2<f64> = arr2(&[
         [1.0, 0.0, 0.0, superop_prob],
