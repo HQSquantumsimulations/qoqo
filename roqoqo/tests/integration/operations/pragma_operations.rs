@@ -928,10 +928,12 @@ fn pragma_stop_simple_traits() {
     let pragma = PragmaStopParallelBlock::new(vec![0, 1], CalculatorFloat::from(0.0000001));
 
     // Test Debug trait
-    assert_eq!(
-        format!("{:?}", pragma),
-        "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(0.0000001) }"
-    );
+    let string_comparison = (format!("{:?}", pragma)
+        == "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(0.0000001) }")
+        || (format!("{:?}", pragma)
+            == "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(0.1e-7) }");
+
+    assert!(string_comparison);
 
     // Test Clone trait
     assert_eq!(pragma.clone(), pragma);
@@ -1184,10 +1186,11 @@ fn pragma_sleep_simple_traits() {
     let pragma = PragmaSleep::new(vec![0, 1], CalculatorFloat::from(0.0000001));
 
     // Test Debug trait
-    assert_eq!(
-        format!("{:?}", pragma),
-        "PragmaSleep { qubits: [0, 1], sleep_time: Float(0.0000001) }"
-    );
+    let string_comparison = (format!("{:?}", pragma)
+        == "PragmaSleep { qubits: [0, 1], sleep_time: Float(0.0000001) }")
+        || (format!("{:?}", pragma) == "PragmaSleep { qubits: [0, 1], sleep_time: Float(1e-7) }");
+
+    assert!(string_comparison);
 
     // Test Clone trait
     assert_eq!(pragma.clone(), pragma);
