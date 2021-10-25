@@ -296,10 +296,10 @@ pub trait OperatePragma: Operate + InvolveQubits + Substitute + Clone + PartialE
 /// let superop_prob: &f64 = pragma.probability().float().unwrap();
 /// let superop_sqrt: f64 = (1.0 - *superop_prob).sqrt();
 /// let superop: Array2<f64> = array![
-///     [1.0, 0.0, 0.0, superop_prob],
+///     [1.0, 0.0, 0.0, *superop_prob],
 ///     [0.0, superop_sqrt, 0.0, 0.0],
 ///     [0.0, 0.0, superop_sqrt, 0.0],
-///     [0.0, 0.0, 0.0, 1.0 - superop_prob],
+///     [0.0, 0.0, 0.0, 1.0 - *superop_prob],
 /// ];
 /// assert_eq!(superop, pragma.superoperator().unwrap());
 /// // 2) The power function applied to the noise Pragma
