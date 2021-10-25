@@ -640,6 +640,7 @@ pub fn convert_into_circuit(input: &PyAny) -> Result<Circuit, QoqoError> {
         Err(QoqoError::VersionMismatch)
     }
 }
+
 /// Iterator for iterating over Operations in a Circuit.
 #[pyclass(name = "OperationIterator", module = "qoqo")]
 #[derive(Debug)]

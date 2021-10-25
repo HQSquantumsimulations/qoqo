@@ -7710,10 +7710,10 @@ LICENSE:
 
 
 ====================================================
-qoqo 0.6.1
+qoqo 0.6.2
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
-Quantum computing circuit toolkit. Python interface of roqoq
+Quantum computing circuit toolkit. Python interface of roqoqo
 License: Apache-2.0
 ----------------------------------------------------
 LICENSE:
@@ -7922,7 +7922,7 @@ LICENSE:
 
 
 ====================================================
-qoqo-macros 0.6.1
+qoqo-macros 0.6.2
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -9865,7 +9865,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-roqoqo 0.6.1
+roqoqo 0.6.2
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
@@ -10077,7 +10077,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-derive 0.6.1
+roqoqo-derive 0.6.2
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Maros for the roqoqo crate
 License: Apache-2.0
@@ -10288,7 +10288,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-test 0.6.1
+roqoqo-test 0.6.2
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
