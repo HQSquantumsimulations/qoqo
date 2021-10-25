@@ -931,7 +931,7 @@ fn pragma_stop_simple_traits() {
     let string_comparison = (format!("{:?}", pragma)
         == "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(0.0000001) }")
         || (format!("{:?}", pragma)
-            == "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(0.1e-7) }");
+            == "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(1e-7) }");
 
     assert!(string_comparison);
 
