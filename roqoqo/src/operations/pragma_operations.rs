@@ -502,11 +502,7 @@ const TAGS_PragmaDamping: &[&str; 6] = &[
 impl OperatePragmaNoise for PragmaDamping {
     /// Returns the superoperator matrix of the operation.
     fn superoperator(&self) -> Result<Array2<f64>, RoqoqoError> {
-        let gate_time: f64 = f64::try_from(self.gate_time.clone())?;
-        let rate: f64 = f64::try_from(self.rate.clone())?;
-
-        let pre_exp: f64 = -1.0 * gate_time * rate;
-        let prob: f64 = 1.0 - pre_exp.exp();
+        let prob: f64 = f64::try_from(self.probability())?;
         let sqrt: f64 = (1.0 - prob).sqrt();
 
         Ok(array![
