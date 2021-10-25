@@ -4,11 +4,13 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
 
-### Changed not released
+## 0.6.3
+
+### Changed 0.6.3
 
 * Update to rust 2021 edition
 
-### Fixed not released
+### Fixed 0.6.3
 
 * Fix constructing enum MultiQubitGateOperation for all operations implementing OperateMultiQubitGate
 * Fixed calculation of superoperator for damping
