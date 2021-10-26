@@ -1,9 +1,10 @@
 [package]
 name = "roqoqo"
-version = "0.6.0"
+version = "0.6.3"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
-edition = "2018"
+edition = "2021"
+rust-version = "1.56"
 categories = ["science", "simulation"]
 homepage = "https://github.com/HQSquantumsimulations/qoqo"
 repository = "https://github.com/HQSquantumsimulations/qoqo"
@@ -26,7 +27,7 @@ ndarray = { version = "0.15" }
 num-complex = { version = "0.4"}
 thiserror = "1.0"
 dyn-clone = {version="1.0", optional=true}
-qoqo_calculator = { version="0.3"}
+qoqo_calculator = { version="0.3" }
 roqoqo-derive = {version="0.6", path="../roqoqo-derive"}
 typetag = {version="0.1", optional=true}
 nalgebra = "0.29"

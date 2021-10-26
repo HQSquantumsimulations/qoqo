@@ -928,10 +928,12 @@ fn pragma_stop_simple_traits() {
     let pragma = PragmaStopParallelBlock::new(vec![0, 1], CalculatorFloat::from(0.0000001));
 
     // Test Debug trait
-    assert_eq!(
-        format!("{:?}", pragma),
-        "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(0.0000001) }"
-    );
+    let string_comparison = (format!("{:?}", pragma)
+        == "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(0.0000001) }")
+        || (format!("{:?}", pragma)
+            == "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(1e-7) }");
+
+    assert!(string_comparison);
 
     // Test Clone trait
     assert_eq!(pragma.clone(), pragma);
@@ -1184,10 +1186,11 @@ fn pragma_sleep_simple_traits() {
     let pragma = PragmaSleep::new(vec![0, 1], CalculatorFloat::from(0.0000001));
 
     // Test Debug trait
-    assert_eq!(
-        format!("{:?}", pragma),
-        "PragmaSleep { qubits: [0, 1], sleep_time: Float(0.0000001) }"
-    );
+    let string_comparison = (format!("{:?}", pragma)
+        == "PragmaSleep { qubits: [0, 1], sleep_time: Float(0.0000001) }")
+        || (format!("{:?}", pragma) == "PragmaSleep { qubits: [0, 1], sleep_time: Float(1e-7) }");
+
+    assert!(string_comparison);
 
     // Test Clone trait
     assert_eq!(pragma.clone(), pragma);
@@ -1816,8 +1819,7 @@ fn pragma_damping_pragmanoise_trait() {
     let pragma = PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
 
     // (1) Superoperator function
-    let superop_pre_exp: f64 = -1.0 * 0.005 * 0.02;
-    let superop_prob: f64 = 1.0 - superop_pre_exp.exp();
+    let superop_prob: f64 = f64::try_from(pragma.probability()).unwrap();
     let superop_sqrt: f64 = (1.0 - superop_prob).sqrt();
     let superop: Array2<f64> = array![
         [1.0, 0.0, 0.0, superop_prob],
@@ -2597,6 +2599,46 @@ fn pragma_general_noise_substitute_trait() {
     assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
 }
 
+/// Test PragmaGeneralNoise Operate trait
+#[test]
+fn pragma_general_noise_pragmanoise_trait() {
+    let rates: Array2<f64> = array![[0.3, 0.0, 0.1], [0.7, 0.0, 0.0], [0.0, 0.8, 0.2]]; // add check for >= eigenvalues
+    let pragma = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), rates.clone());
+
+    // matrix exponential using numpy:
+    let test_exponential = array![
+        [
+            1.00000004e+00,
+            3.13603590e-05,
+            4.48130265e-03,
+            5.97459826e-03
+        ],
+        [
+            1.14712981e-02,
+            9.95012493e-01,
+            2.86751104e-06,
+            2.49363597e-03
+        ],
+        [
+            2.44347666e-05,
+            1.39441142e-02,
+            9.97004509e-01,
+            1.74528238e-05
+        ],
+        [
+            -3.25322253e-08,
+            -2.78464407e-05,
+            -3.97707102e-03,
+            9.91536000e-01
+        ]
+    ];
+
+    let result: Array2<f64> = test_exponential - pragma.superoperator().unwrap().t();
+    for item in result.iter() {
+        assert!(item.abs() <= 0.0001);
+    }
+}
+
 /// Test PragmaGeneralNoise Serialization and Deserialization traits (readable)
 #[cfg(feature = "serialize")]
 #[test]
@@ -2744,12 +2786,7 @@ fn pragma_conditional_operate_trait() {
     let pragma = PragmaConditional::new(String::from("ro"), 1, Circuit::default());
 
     // (1) Test tags function
-    let tags: &[&str; 4] = &[
-        "Operation",
-        "SingleQubitOperation",
-        "PragmaOperation",
-        "PragmaConditional",
-    ];
+    let tags: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaConditional"];
     assert_eq!(pragma.tags(), tags);
 
     // (2) Test hqslang function
