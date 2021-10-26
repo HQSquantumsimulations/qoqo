@@ -1221,7 +1221,7 @@ insert_operation_to_pyobject!(
 #[pymethods]
 impl PragmaChangeDeviceWrapper {
     /// A PragmaChangeDevice cannot be created directly.
-    /// 
+    ///
     /// The intended mechanism for the creation of PragmaChangeDevice is to create a device specific Pragma
     /// and call the .to_pragma_change_device() function.
     #[new]

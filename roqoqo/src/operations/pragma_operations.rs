@@ -1030,7 +1030,7 @@ impl PragmaChangeDevice {
         Ok(Self {
             wrapped_tags: wrapped_pragma
                 .tags()
-                .into_iter()
+                .iter()
                 .map(|x| x.to_string())
                 .collect(),
             wrapped_hqslang: wrapped_pragma.hqslang().to_string(),
@@ -1056,6 +1056,8 @@ impl InvolveQubits for PragmaChangeDevice {
 /// Substitute trait allowing to replace symbolic parameters and to perform qubit mappings.
 impl Substitute for PragmaChangeDevice {
     /// Remaps qubits in clone of the operation.
+    /// This is not supported  for PragmaChangeDevice and should throw and error when a non-trivial remapping
+    /// is used
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
         match mapping.iter().find(|(x, y)| x != y) {
             Some((x, _)) => Err(RoqoqoError::QubitMappingError { qubit: *x }),
