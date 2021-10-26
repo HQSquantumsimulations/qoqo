@@ -119,6 +119,7 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/single_qubit_gate_operations.rs",
     "src/operations/pragma_operations.rs",
     "src/operations/two_qubit_gate_operations.rs",
+    "src/operations/multi_qubit_gate_operations.rs",
     "src/operations/measurement_operations.rs",
     "src/operations/define_operations.rs",
 ];

@@ -4,14 +4,26 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
 
+## 0.6.3
+
+### Changed 0.6.3
+
+* Update to rust 2021 edition
+
+### Fixed 0.6.3
+
+* Fix constructing enum MultiQubitGateOperation for all operations implementing OperateMultiQubitGate
+* Fixed calculation of superoperator for damping
+
 ## 0.6.2
+
 ### Changed
 
 * Fixed function signatures in Device trait to uniformly return values instead of references and take references for qubits
 
 ## 0.6.1
 
-### Added
+### Added 0.6.1
 
 * Unittest for the superoperator method of the PragmaGeneralNoise
 * NegativeEigenvalue RoqoqoError for matrices that are not positive semi-definite
@@ -23,7 +35,7 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 * Device trait: A minimal trait for quantum computing devices used with roqoqo
 * `RoqoqoBackendError` now has a variant `GenericError` for additional backend error types
 
-### Changed
+### Changed 0.6.0
 
 * Rarely used qubit mapping is now the last argument in PragmaRepeatedMeasurement
 * PragmaGeneralNoise uses sigma^+ sigma^- and sigma^z as a basis to for Lindblad decoherence rates to avoid using complex rates. Rate and operators parameters of PragmaGeneralNoise have been combined in single parameter rates.

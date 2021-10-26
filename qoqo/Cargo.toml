@@ -1,13 +1,14 @@
 [package]
 name = "qoqo"
-version = "0.6.2"
+version = "0.6.3"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 homepage = "https://github.com/HQSquantumsimulations/qoqo"
 repository = "https://github.com/HQSquantumsimulations/qoqo"
 documentation = "https://docs.rs/qoqo/"
 readme = "../README.md"
-edition = "2018"
+edition = "2021"
+rust-version = "1.56"
 categories = ["science", "simulation","ffi"]
 description = "Quantum computing circuit toolkit. Python interface of roqoqo"
 exclude = ["tests*", "examples*", "docs*", "*.code-workspace"]
