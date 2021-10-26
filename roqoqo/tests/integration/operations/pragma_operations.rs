@@ -2982,5 +2982,4 @@ fn pragma_change_device_substitute_trait() {
     new_qubit_paulis.insert(2, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).is_err();
     assert!(result);
-
 }

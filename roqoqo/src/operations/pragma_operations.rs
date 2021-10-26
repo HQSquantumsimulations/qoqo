@@ -1021,7 +1021,7 @@ impl Operate for PragmaChangeDevice {
     }
 }
 impl PragmaChangeDevice {
-    //#[cfg(feature = "serialize")]
+    #[cfg(feature = "serialize")]
     pub fn new<T>(wrapped_pragma: &T) -> Result<Self, RoqoqoError>
     where
         T: Operate,
