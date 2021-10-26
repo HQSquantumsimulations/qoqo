@@ -12,6 +12,8 @@
 //
 //! Integration test for public API of Measurement operations
 
+#[cfg(feature = "serialize")]
+use bincode::serialize;
 use ndarray::{array, Array1, Array2};
 use num_complex::Complex64;
 use qoqo_calculator::{Calculator, CalculatorFloat};
@@ -2786,12 +2788,7 @@ fn pragma_conditional_operate_trait() {
     let pragma = PragmaConditional::new(String::from("ro"), 1, Circuit::default());
 
     // (1) Test tags function
-    let tags: &[&str; 4] = &[
-        "Operation",
-        "SingleQubitOperation",
-        "PragmaOperation",
-        "PragmaConditional",
-    ];
+    let tags: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaConditional"];
     assert_eq!(pragma.tags(), tags);
 
     // (2) Test hqslang function
@@ -2898,4 +2895,91 @@ fn pragma_conditional_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+/// Test PragmaChangeDevice inputs and involved qubits
+#[test]
+#[cfg(feature = "serialize")]
+fn pragma_change_device_inputs_qubits() {
+    // This is not a change device pragma, but for testing purposes it can be used
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
+
+    // Test inputs are correct
+    assert_eq!(pragma.wrapped_hqslang, String::from("PragmaActiveReset"));
+    let tags: &[&str; 4] = &[
+        "Operation",
+        "SingleQubitOperation",
+        "PragmaOperation",
+        "PragmaActiveReset",
+    ];
+    assert_eq!(pragma.wrapped_tags, tags);
+    assert_eq!(pragma.wrapped_operation, serialize(&wrapped).unwrap());
+
+    // Test InvolveQubits trait
+    assert_eq!(pragma.involved_qubits(), InvolvedQubits::All);
+}
+
+/// Test PragmaConditional standard derived traits (Debug, Clone, PartialEq)
+#[test]
+#[cfg(feature = "serialize")]
+fn pragma_change_device_simple_traits() {
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
+    let wrapped_0: Operation = PragmaActiveReset::new(0).into();
+    let pragma_0 = PragmaChangeDevice::new(&wrapped_0).unwrap();
+
+    let wrapped_1: Operation = PragmaActiveReset::new(1).into();
+    let pragma_1 = PragmaChangeDevice::new(&wrapped_1).unwrap();
+    // Test Clone trait
+    assert_eq!(pragma.clone(), pragma);
+
+    // Test PartialEq trait
+    assert!(pragma_0 == pragma);
+    assert!(pragma == pragma_0);
+    assert!(pragma_1 != pragma);
+    assert!(pragma != pragma_1);
+}
+
+/// Test PragmaConditional Operate trait
+#[test]
+#[cfg(feature = "serialize")]
+fn pragma_change_device_operate_trait() {
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
+
+    // (1) Test tags function
+    let tags: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaChangeDevice"];
+    assert_eq!(pragma.tags(), tags);
+
+    // (2) Test hqslang function
+    assert_eq!(pragma.hqslang(), String::from("PragmaChangeDevice"));
+
+    // (3) Test is_parametrized function
+    assert_eq!(pragma.is_parametrized(), false);
+}
+
+/// Test PragmaConditional Substitute trait
+#[test]
+#[cfg(feature = "serialize")]
+fn pragma_change_device_substitute_trait() {
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
+    let pragma_test = PragmaChangeDevice::new(&wrapped).unwrap();
+    // (1) Substitute parameters function
+    let mut substitution_dict: Calculator = Calculator::new();
+    substitution_dict.set_variable("ro", 0.0);
+    let result = pragma_test
+        .substitute_parameters(&mut substitution_dict)
+        .unwrap();
+    assert_eq!(pragma, result);
+
+    // (2) Remap qubits with a remapping
+    // This is not supported yet and should throw an error
+    let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping_test.insert(0, 2);
+    let mut new_qubit_paulis: HashMap<usize, usize> = HashMap::new();
+    new_qubit_paulis.insert(2, 1);
+    let result = pragma_test.remap_qubits(&qubit_mapping_test).is_err();
+    assert!(result);
 }

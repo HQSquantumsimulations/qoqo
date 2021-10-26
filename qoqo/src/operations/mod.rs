@@ -154,6 +154,7 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<PragmaRandomNoiseWrapper>()?;
     m.add_class::<PragmaGeneralNoiseWrapper>()?;
     m.add_class::<PragmaConditionalWrapper>()?;
+    m.add_class::<PragmaChangeDeviceWrapper>()?;
     m.add_class::<CNOTWrapper>()?;
     m.add_class::<SWAPWrapper>()?;
     m.add_class::<FSwapWrapper>()?;

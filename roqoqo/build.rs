@@ -170,9 +170,7 @@ impl<'ast> Visit<'ast> for Visitor {
                 {
                     self.constant_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateGate")
-                    && parsed_arguments.contains("OperateSingleQubit")
-                {
+                if parsed_arguments.contains("OperateSingleQubitGate") {
                     self.single_qubit_gate_operations.push(i.ident.clone());
                 }
                 if parsed_arguments.contains("OperateGate")
@@ -213,7 +211,7 @@ impl<'ast> Visit<'ast> for Visitor {
                 };
 
                 if trait_name.as_str() == "Operate" {
-                    self.single_qubit_gate_operations.push(id.clone());
+                    self.operations.push(id.clone());
                 }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());
