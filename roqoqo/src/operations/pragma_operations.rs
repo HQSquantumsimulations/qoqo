@@ -764,7 +764,6 @@ impl OperatePragmaNoiseProba for PragmaRandomNoise {
 /// where the coefficients correspond to the following summands
 /// expanded from the first term of the non-coherent part of the Lindblad equation:
 ///     $$ \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
-///     $$ \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
 ///         L_0 = \sigma^{+} \\\\
 ///         L_1 = \sigma^{-} \\\\
 ///         L_3 = \sigma^{z}
