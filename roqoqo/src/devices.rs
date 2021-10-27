@@ -39,6 +39,8 @@
 
 use ndarray::Array2;
 
+use crate::RoqoqoBackendError;
+
 /// Trait for roqoqo devices.
 ///
 /// Defines standard functions available for roqoqo devices.
@@ -108,4 +110,28 @@ pub trait Device: Sized {
 
     /// Returns the number of qubits the device supports.
     fn number_qubits(&self) -> usize;
+
+    /// Changes the device topology based on a Pragma operation.
+    /// 
+    /// Specific devices and backends can allow changes to the device topology.
+    /// These changes are represented by Pragma operations that are only available for
+    /// the corresponding backend.
+    /// This function provides a generic interface for changing the devices with the help of 
+    /// these Pragma operations.
+    /// In normal operation the backend specific Pragma operations are wrapped in a [crate::operations::PragmaChangeDevice]
+    /// wrapper operation and encoded in binary form with the [bincode] crate.
+    /// This function takes the encoded binary representation, tries to deserialize it internally
+    ///  and applies the corresponding changes.
+    /// 
+    /// For most devices the default behaviour is that the device cannot be changed
+    /// and the function returns a corresponding RoqoqoBackendError
+    /// 
+    /// # Arguments
+    /// 
+    /// * `operation` - The Pragma operation encoded in binary form using the [bincode] crate
+    #[allow(unused_variables)]
+    #[allow(unused_mut)]
+    fn change_device(mut self, operation: &[u8]) -> Result<Self, RoqoqoBackendError>{
+        Err(RoqoqoBackendError::GenericError{msg: "The device ".to_string()})
+    }
 }
