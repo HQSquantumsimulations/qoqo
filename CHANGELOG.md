@@ -10,6 +10,7 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 * PramgaChangeDevice: A pragma operation acting as a wrapper around device specific Pragmas that can change the device topology.
 * change_device interface to Device trait allowing for the modification of Devices by Pragmas
+
 ## 0.6.3
 
 ### Changed 0.6.3
