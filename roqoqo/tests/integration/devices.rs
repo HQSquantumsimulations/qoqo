@@ -164,7 +164,7 @@ fn change_device_test() {
         array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.001, 0.0]],
     );
 
-    let device = TestDevice::new(
+    let mut device = TestDevice::new(
         3,
         single_qubit_gates,
         two_qubit_gates,
