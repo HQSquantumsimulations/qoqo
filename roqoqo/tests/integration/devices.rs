@@ -129,3 +129,50 @@ fn it_works() {
     );
     assert_eq!(device.multi_qubit_gate_time("Other", &[0, 1, 2]), None);
 }
+
+/// Basic functional test
+#[test]
+fn change_device_test() {
+    let mut rotate_x_map: HashMap<usize, f64> = HashMap::new();
+    rotate_x_map.insert(0, 0.1);
+    rotate_x_map.insert(1, 0.05);
+    rotate_x_map.insert(2, 0.07);
+    let mut single_qubit_gates: HashMap<String, HashMap<usize, f64>> = HashMap::new();
+    single_qubit_gates.insert("RotateX".to_string(), rotate_x_map);
+
+    let mut cnot_map: HashMap<(usize, usize), f64> = HashMap::new();
+    cnot_map.insert((0, 1), 0.5);
+    cnot_map.insert((0, 2), 0.4);
+    cnot_map.insert((1, 2), 0.3);
+    let mut two_qubit_gates: HashMap<String, HashMap<(usize, usize), f64>> = HashMap::new();
+    two_qubit_gates.insert("CNOT".to_string(), cnot_map);
+
+    let mut multi_qubit_gates: HashMap<String, f64> = HashMap::new();
+    multi_qubit_gates.insert("MultiQubitMS".to_string(), 0.8);
+
+    let mut rates: HashMap<usize, Array2<f64>> = HashMap::new();
+    rates.insert(
+        0,
+        array![[0.003, 0.0, 0.0], [0.0, 0.0, 00.0], [0.0, 0.0, 0.0]],
+    );
+    rates.insert(
+        1,
+        array![[0.0, 0.0, 0.0], [0.0, 0.002, 0.0], [0.0, 0.0, 0.0]],
+    );
+    rates.insert(
+        2,
+        array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.001, 0.0]],
+    );
+
+    let device = TestDevice::new(
+        3,
+        single_qubit_gates,
+        two_qubit_gates,
+        multi_qubit_gates,
+        rates,
+    );
+
+    let empty_serialisation: Vec<u8> = Vec::new();
+    let result = device.change_device(&empty_serialisation);
+    assert!(result.is_err());
+}
