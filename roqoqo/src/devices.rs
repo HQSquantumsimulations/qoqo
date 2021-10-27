@@ -44,7 +44,7 @@ use crate::RoqoqoBackendError;
 /// Trait for roqoqo devices.
 ///
 /// Defines standard functions available for roqoqo devices.
-pub trait Device: Sized {
+pub trait Device {
     /// Returns the gate time of a single qubit operation if the single qubit operation is available on device.
     ///
     /// The base assumption
@@ -131,7 +131,7 @@ pub trait Device: Sized {
     /// * `operation` - The Pragma operation encoded in binary form using the [bincode] crate
     #[allow(unused_variables)]
     #[allow(unused_mut)]
-    fn change_device(mut self, operation: &[u8]) -> Result<Self, RoqoqoBackendError> {
+    fn change_device(&mut self, operation: &[u8]) -> Result<(), RoqoqoBackendError> {
         Err(RoqoqoBackendError::GenericError {
             msg: "The device ".to_string(),
         })
