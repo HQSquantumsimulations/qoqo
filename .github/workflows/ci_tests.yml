@@ -91,7 +91,7 @@ jobs:
         with:
           maturin-version: latest
           command: build
-          args: -i python$ --out wheels --no-sdist -m qoqo/Cargo.toml
+          args: -i python --out wheels --no-sdist -m qoqo/Cargo.toml
       - name: universal wheels
         if: ${{ matrix.combinations.runs_on == 'macOS-latest' && matrix.python-version >= '3.8' }}
         uses: messense/maturin-action@v1
