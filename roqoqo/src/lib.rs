@@ -198,3 +198,5 @@ pub mod backends;
 pub mod devices;
 pub mod measurements;
 pub mod registers;
+mod quantum_program;
+pub use quantum_program::QuantumProgram;
