@@ -30,7 +30,7 @@ jobs:
         sleep 30
         cargo publish --manifest-path=roqoqo-test/Cargo.toml
 
-  build_maturin_builds_linux_windows:
+  build_maturin_builds_linux:
     name: maturin_build-${{ matrix.combinations.runs_on }}
     runs-on: ${{ matrix.combinations.runs_on }}
     strategy:
