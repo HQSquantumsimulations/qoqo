@@ -86,22 +86,19 @@ jobs:
           command: build
           args: -i python${{ matrix.python.py }}  --manylinux 2010 --out wheels --no-sdist -m qoqo/Cargo.toml
       - name: macos wheels
-        if: ${{ matrix.combinations.runs_on == 'macOS-latest'}}
-        steps:
-        - name: no-universal wheels
-          if: ${{ matrix.python-version < '3.8' }}
-          uses: messense/maturin-action@v1
-          with:
-            maturin-version: latest
-            command: build
-            args: -i python$ --out wheels --no-sdist -m qoqo/Cargo.toml
-        - name: universal wheels
-          if: ${{ matrix.python-version >= '3.8' }}
-          uses: messense/maturin-action@v1
-          with:
-            maturin-version: latest
-            command: build
-            args: -i python$ --universal2 --out wheels --no-sdist -m qoqo/Cargo.toml
+        if: ${{ matrix.combinations.runs_on == 'macOS-latest' && matrix.python-version < '3.8'}}
+        uses: messense/maturin-action@v1
+        with:
+          maturin-version: latest
+          command: build
+          args: -i python$ --out wheels --no-sdist -m qoqo/Cargo.toml
+      - name: universal wheels
+        if: ${{ matrix.combinations.runs_on == 'macOS-latest' && matrix.python-version >= '3.8' }}
+        uses: messense/maturin-action@v1
+        with:
+          maturin-version: latest
+          command: build
+          args: -i python$ --universal2 --out wheels --no-sdist -m qoqo/Cargo.toml
       - name: windows wheels
         if: ${{matrix.combinations.runs_on == 'windows-latest'}}
         uses: messense/maturin-action@v1
