@@ -52,7 +52,7 @@ jobs:
           cargo fmt --all -- --check
 
   test_maturin_builds_linux:
-    name: unittests_check-${{ matrix.combinations.runs_on }}
+    name: maturin_check-${{ matrix.combinations.runs_on }}
     runs-on: ${{ matrix.combinations.runs_on }}
     strategy:
       matrix:
@@ -84,33 +84,36 @@ jobs:
         with:
           maturin-version: latest
           command: build
-          args: -i python${{ matrix.python.py }} --release --out wheels --no-sdist -m qoqo/Cargo.toml
-      # - name: macos wheels
-      #   if: matrix.combinations.runs_on == "macOS-latest"
-      #   - name: no-universal wheels
-      #     if: ${{ matrix.python-version < '3.8' }}
-      #     uses: messense/maturin-action@v1
-      #     with:
-      #       maturin-version: latest
-      #       command: build
-      #       args: -i python$ --release --out wheels --no-sdist -m qoqo/Cargo.toml
-      #   - name: universal wheels
-      #     if: ${{ matrix.python-version >= '3.8' }}
-      #     uses: messense/maturin-action@v1
-      #     with:
-      #       maturin-version: latest
-      #       command: build
-      #       args: -i python$ --release --universal2 --out wheels --no-sdist -m qoqo/Cargo.toml
+          args: -i python${{ matrix.python.py }}  --manylinux 2010 --out wheels --no-sdist -m qoqo/Cargo.toml
+      - name: macos wheels
+        if: ${{ matrix.combinations.runs_on == 'macOS-latest'}}
+        - name: no-universal wheels
+          if: ${{ matrix.python-version < '3.8' }}
+          uses: messense/maturin-action@v1
+          with:
+            maturin-version: latest
+            command: build
+            args: -i python$ --out wheels --no-sdist -m qoqo/Cargo.toml
+        - name: universal wheels
+          if: ${{ matrix.python-version >= '3.8' }}
+          uses: messense/maturin-action@v1
+          with:
+            maturin-version: latest
+            command: build
+            args: -i python$ --universal2 --out wheels --no-sdist -m qoqo/Cargo.toml
       - name: windows wheels
         if: ${{matrix.combinations.runs_on == 'windows-latest'}}
         uses: messense/maturin-action@v1
         with:
           maturin-version: latest
           command: build
-          args: -i python --release --out wheels --no-sdist -m qoqo/Cargo.toml
+          args: -i python --out wheels --no-sdist -m qoqo/Cargo.toml
+      - name: test install
+        run: |
+          pip install --find-links wheels --force-reinstall
   
   doctes_check:
-    name: unittests_check-${{ matrix.combinations.runs_on }}
+    name: doctest_check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
