@@ -138,9 +138,7 @@ jobs:
           python-version: ${{ matrix.python.py }}
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip maturin pytest numpy twine
-      - name: build
-        
+          python -m pip install --upgrade pip maturin pytest numpy twine        
       - name: macos wheels
         if: ${{ matrix.combinations.runs_on == 'macOS-latest' && matrix.python-version < '3.8'}}
         run: |
