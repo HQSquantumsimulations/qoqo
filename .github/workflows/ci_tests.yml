@@ -84,7 +84,7 @@ jobs:
           maturin-version: latest
           command: build
           manylinux: 2010
-          args: -i python${{ matrix.python.py }}  --manylinux 2010 --out wheels --no-sdist -m qoqo/Cargo.toml
+          args: -i python${{ matrix.python.py }} --out wheels --no-sdist -m qoqo/Cargo.toml
       - name: windows wheels
         if: ${{matrix.combinations.runs_on == 'windows-latest'}}
         uses: messense/maturin-action@v1
