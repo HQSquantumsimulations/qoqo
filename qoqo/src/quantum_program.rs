@@ -128,7 +128,7 @@ impl QuantumProgramWrapper {
     ///     backend (Backend): The backend the program is executed on.
     ///     parameters (Optional[List[float]): List of float  parameters of the function call in order of `input_parameter_names`
     pub fn run(&self, backend: Py<PyAny>, parameters: Option<Vec<f64>>) -> PyResult<Py<PyAny>> {
-        let parameters = parameters.unwrap_or(Vec::new());
+        let parameters = parameters.unwrap_or_default();
         match &self.internal{
             QuantumProgram::BasisRotation{measurement, input_parameter_names } => {
                 if parameters.len() != input_parameter_names.len() { return Err(PyValueError::new_err( format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())))};
@@ -158,7 +158,7 @@ impl QuantumProgramWrapper {
                 Python::with_gil(|py| -> PyResult<Py<PyAny>> {
                     backend.call_method1(py, "run_measurement", (CheatedWrapper{internal: substituted_measurement}, ))
                 })            }
-            _ => Err(PyTypeError::new_err(format!("A quantum programm returning classical registeres cannot be executed by `run` use `run_registers` instead")))
+            _ => Err(PyTypeError::new_err("A quantum programm returning classical registeres cannot be executed by `run` use `run_registers` instead".to_string()))
         }
     }
 
@@ -178,7 +178,7 @@ impl QuantumProgramWrapper {
         backend: Py<PyAny>,
         parameters: Option<Vec<f64>>,
     ) -> PyResult<Py<PyAny>> {
-        let parameters = parameters.unwrap_or(Vec::new());
+        let parameters = parameters.unwrap_or_default();
         match &self.internal{
             QuantumProgram::ClassicalRegister{measurement, input_parameter_names } => {
                 if parameters.len() != input_parameter_names.len() { return Err(PyValueError::new_err( format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())))};
@@ -189,7 +189,7 @@ impl QuantumProgramWrapper {
                 Python::with_gil(|py| -> PyResult<Py<PyAny>> {
                     backend.call_method1(py, "run_measurement", (ClassicalRegisterWrapper{internal: substituted_measurement}, ))
                 })           },
-            _ => Err(PyTypeError::new_err(format!("A quantum programm returning expectation values cannot be executed by `run_registers` use `run` instead")))
+            _ => Err(PyTypeError::new_err("A quantum programm returning expectation values cannot be executed by `run_registers` use `run` instead".to_string()))
         }
     }
 

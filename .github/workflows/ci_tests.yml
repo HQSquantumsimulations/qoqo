@@ -87,6 +87,7 @@ jobs:
           args: -i python${{ matrix.python.py }}  --manylinux 2010 --out wheels --no-sdist -m qoqo/Cargo.toml
       - name: macos wheels
         if: ${{ matrix.combinations.runs_on == 'macOS-latest'}}
+        steps:
         - name: no-universal wheels
           if: ${{ matrix.python-version < '3.8' }}
           uses: messense/maturin-action@v1

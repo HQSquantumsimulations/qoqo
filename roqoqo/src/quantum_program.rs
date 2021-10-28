@@ -106,7 +106,7 @@ impl QuantumProgram {
                 )?;
                 backend.run_measurement(&substituted_measurement)
             }
-            _ => Err(RoqoqoBackendError::GenericError{msg: format!("A quantum programm returning classical registeres cannot be executed by `run` use `run_registers` instead")})
+            _ => Err(RoqoqoBackendError::GenericError{msg: "A quantum programm returning classical registeres cannot be executed by `run` use `run_registers` instead".to_string()})
         }
     }
 
@@ -135,7 +135,7 @@ impl QuantumProgram {
                 )?;
                 backend.run_measurement_registers(&substituted_measurement)
             }
-            _ => Err(RoqoqoBackendError::GenericError{msg: format!("A quantum programm returning expectation values cannot be executed by `run_registers` use `run` instead")})
+            _ => Err(RoqoqoBackendError::GenericError{msg: "A quantum programm returning expectation values cannot be executed by `run_registers` use `run` instead".to_string()})
         }
     }
 }
@@ -147,16 +147,16 @@ impl Display for QuantumProgram {
 
         match self {
             QuantumProgram::BasisRotation { .. } => {
-                s.push_str(&format!("QuantumProgram::BasisRotation"));
+                s.push_str(&"QuantumProgram::BasisRotation".to_string());
             }
             QuantumProgram::CheatedBasisRotation { .. } => {
-                s.push_str(&format!("QuantumProgram::CheatedBasisRotation"));
+                s.push_str(&"QuantumProgram::CheatedBasisRotation".to_string());
             }
             QuantumProgram::Cheated { .. } => {
-                s.push_str(&format!("QuantumProgram::Cheated"));
+                s.push_str(&"QuantumProgram::Cheated".to_string());
             }
             QuantumProgram::ClassicalRegister { .. } => {
-                s.push_str(&format!("QuantumProgram::ClassicalRegister"));
+                s.push_str(&"QuantumProgram::ClassicalRegister".to_string());
             }
         }
 
