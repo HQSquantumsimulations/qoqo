@@ -197,6 +197,6 @@ pub use circuit::*;
 pub mod backends;
 pub mod devices;
 pub mod measurements;
-pub mod registers;
 mod quantum_program;
+pub mod registers;
 pub use quantum_program::QuantumProgram;

@@ -12,11 +12,11 @@
 
 use std::collections::HashMap;
 
+use crate::backends::{EvaluatingBackend, RegisterResult};
 use crate::measurements;
 use crate::measurements::Measure;
 use crate::RoqoqoBackendError;
-use crate::backends::{EvaluatingBackend, RegisterResult};
-
+use std::fmt::{Display, Formatter};
 /// Represents a quantum program evaluating measurements based on a one or more free float parameters.
 ///
 /// The main use of QuantumProgram is to contain a Measurements implementing [crate::measurements::Measure]
@@ -25,57 +25,62 @@ use crate::backends::{EvaluatingBackend, RegisterResult};
 /// The symbolic parameters need to be replaced with real floating point numbers first.
 /// A QuantumProgram contains a list of the free parameters (`input_parameter_names`) and can automatically
 /// replace the parameters with its `run` methods and return the result.
-/// 
+///
 /// The QuantumProgram should correspond as closely as possible to a normal mulit-parameter function
 /// in classical computing that can be called with a set of parameters and returns a result.
 /// It is the intended way to interface between normal program code and roqoqo based quantum programs.
 ///
 #[derive(Debug, PartialEq, Clone)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-pub enum QuantumProgram{
+pub enum QuantumProgram {
     /// Variant for basis rotation measurement based quantum programs
-    BasisRotation{
+    BasisRotation {
         /// The measurement that is performed
         measurement: measurements::BasisRotation,
         /// List of free input parameters that can be set when the QuantumProgram is executed
         input_parameter_names: Vec<String>,
-
     },
     /// Variant for cheated basis rotation measurement based quantum programs
-    CheatedBasisRotation{
+    CheatedBasisRotation {
         /// The measurement that is performed
         measurement: measurements::CheatedBasisRotation,
         /// List of free input parameters that can be set when the QuantumProgram is executed
         input_parameter_names: Vec<String>,
-        
     },
     /// Variant for statevector/density matrix based measurements
-    Cheated{
+    Cheated {
         /// The measurement that is performed
         measurement: measurements::Cheated,
         /// List of free input parameters that can be set when the QuantumProgram is executed
         input_parameter_names: Vec<String>,
     },
     /// Variant quantum programs returning full classical registers
-    ClassicalRegister{
+    ClassicalRegister {
         /// The measurement that is performed
         measurement: measurements::ClassicalRegister,
         /// List of free input parameters that can be set when the QuantumProgram is executed
         input_parameter_names: Vec<String>,
-    }
+    },
 }
 
-impl QuantumProgram{
+impl QuantumProgram {
     /// Runs the QuantumProgram and returns expectation values.
-    /// 
+    ///
     /// Runs the quantum programm for a given set of parameters passed in the same order as the parameters
     /// listed in `input_parameter_names` and returns expectation values.
-    /// 
+    ///
     /// Arguments:
-    /// 
+    ///
     /// * `parameters` - List of float ([f64]) parameters of the function call in order of `input_parameter_names`
     /// * `backend` - The backend the program is executed on.
-    pub fn run<T>(&self, parameters: &[f64], backend: T) -> Result<Option<HashMap<String, f64>>, RoqoqoBackendError> where T: EvaluatingBackend{
+    pub fn run<T>(
+        &self,
+        parameters: &[f64],
+        backend: T,
+    ) -> Result<Option<HashMap<String, f64>>, RoqoqoBackendError>
+    where
+        T: EvaluatingBackend,
+    {
         match self{
             QuantumProgram::BasisRotation{measurement, input_parameter_names } => {
                 if parameters.len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())})};
@@ -103,22 +108,24 @@ impl QuantumProgram{
             }
             _ => Err(RoqoqoBackendError::GenericError{msg: format!("A quantum programm returning classical registeres cannot be executed by `run` use `run_registers` instead")})
         }
-        
     }
 
     /// Runs the QuantumProgram and returns the classical registers of the quantum program.
-    /// 
+    ///
     /// Runs the quantum programm for a given set of parameters passed in the same order as the parameters
     /// listed in `input_parameter_names` and returns the classical register output.  
     /// The classical registers usually contain a record of measurement values for the repeated execution
-    /// of a [crate::Circuit] quantum circuit for real quantum hardware 
+    /// of a [crate::Circuit] quantum circuit for real quantum hardware
     /// or the readout of the statevector or the density matrix for simulators.
-    /// 
+    ///
     /// Arguments:
-    /// 
+    ///
     /// * `parameters` - List of float ([f64]) parameters of the function call in order of `input_parameter_names`
     /// * `backend` - The backend the program is executed on.
-    pub fn run_registers<T>(&self, parameters: &[f64], backend: T) -> RegisterResult where T: EvaluatingBackend{
+    pub fn run_registers<T>(&self, parameters: &[f64], backend: T) -> RegisterResult
+    where
+        T: EvaluatingBackend,
+    {
         match self{
             QuantumProgram::ClassicalRegister{measurement, input_parameter_names } => {
                 if parameters.len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())})};
@@ -130,6 +137,29 @@ impl QuantumProgram{
             }
             _ => Err(RoqoqoBackendError::GenericError{msg: format!("A quantum programm returning expectation values cannot be executed by `run_registers` use `run` instead")})
         }
-        
+    }
+}
+
+/// Implements the Display trait for QuantumProgram.
+impl Display for QuantumProgram {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let mut s: String = String::new();
+
+        match self {
+            QuantumProgram::BasisRotation { .. } => {
+                s.push_str(&format!("QuantumProgram::BasisRotation"));
+            }
+            QuantumProgram::CheatedBasisRotation { .. } => {
+                s.push_str(&format!("QuantumProgram::CheatedBasisRotation"));
+            }
+            QuantumProgram::Cheated { .. } => {
+                s.push_str(&format!("QuantumProgram::Cheated"));
+            }
+            QuantumProgram::ClassicalRegister { .. } => {
+                s.push_str(&format!("QuantumProgram::ClassicalRegister"));
+            }
+        }
+
+        write!(f, "{}", s)
     }
 }

@@ -436,7 +436,7 @@ impl PyObjectProtocol for CircuitWrapper {
     /// Args:
     ///     self: The PragmaGeneralNoiseWrapper object.
     ///     other: The object to compare self to.
-    ///     op: Whether they should be equal or not.
+    ///     op: Type of comparison.
     ///
     /// Returns:
     ///     Whether the two operations compared evaluated to True or False
@@ -611,10 +611,10 @@ pub fn convert_into_circuit(input: &PyAny) -> Result<Circuit, QoqoError> {
     // compiled python packages are involved
     let get_version = input
         .call_method0("_qoqo_versions")
-        .map_err(|_| QoqoError::CannotExtractCircuit)?;
+        .map_err(|_| QoqoError::CannotExtractObject)?;
     let version = get_version
         .extract::<(&str, &str)>()
-        .map_err(|_| QoqoError::CannotExtractCircuit)?;
+        .map_err(|_| QoqoError::CannotExtractObject)?;
     let mut rsplit = ROQOQO_VERSION.split('.').take(2);
     let mut qsplit = QOQO_VERSION.split('.').take(2);
     let rver = format!(
@@ -631,11 +631,11 @@ pub fn convert_into_circuit(input: &PyAny) -> Result<Circuit, QoqoError> {
     if version == test_version {
         let get_bytes = input
             .call_method0("to_bincode")
-            .map_err(|_| QoqoError::CannotExtractCircuit)?;
+            .map_err(|_| QoqoError::CannotExtractObject)?;
         let bytes = get_bytes
             .extract::<Vec<u8>>()
-            .map_err(|_| QoqoError::CannotExtractCircuit)?;
-        deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractCircuit)
+            .map_err(|_| QoqoError::CannotExtractObject)?;
+        deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractObject)
     } else {
         Err(QoqoError::VersionMismatch)
     }

@@ -32,6 +32,9 @@ use measurements::*;
 mod circuit;
 pub use circuit::{convert_into_circuit, CircuitWrapper, OperationIteratorWrapper};
 
+mod quantum_program;
+pub use quantum_program::{QuantumProgramWrapper, convert_into_quantum_program};
+
 /// qoqo version information, used for qoqo import/export checks
 pub const QOQO_VERSION: &str = env!("CARGO_PKG_VERSION");
 
@@ -45,11 +48,11 @@ pub enum QoqoError {
     #[error("Converting PyAny to Operation not possible")]
     ConversionError,
     /// Error a Circuit cannot be extracted from PyAny object passed from python.
-    #[error("Cannot extract Circuit from python object")]
-    CannotExtractCircuit,
+    #[error("Cannot extract roqoqo object from python object")]
+    CannotExtractObject,
     /// Error for version mismatch between separately compiled packages.
     ///
-    /// Error when trying to extract a Circuit from a PyAny python object that has been created
+    /// Error when trying to extract a roqoqo object from a PyAny python object that has been created
     /// from a python package that has been compiled separately.
     /// To avoid unexpected behaviour this is only allowed when qoqo and roqoqo in both packages are the same version.
     #[error("Package versions of qoqo and roqoqo do not match versions of qoqo object passed from python")]
@@ -87,12 +90,14 @@ pub enum QoqoBackendError {
 ///     :toctree: generated/
 ///
 ///     Circuit
+///     QuantumProgram
 ///     operations
 ///     measurements
 ///
 #[pymodule]
 fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<CircuitWrapper>()?;
+    module.add_class::<QuantumProgramWrapper>()?;
     let wrapper = wrap_pymodule!(operations);
     module.add_wrapped(wrapper)?;
     let wrapper2 = wrap_pymodule!(measurements);

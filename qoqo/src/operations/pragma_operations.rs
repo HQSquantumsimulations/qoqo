@@ -240,7 +240,7 @@ impl PyObjectProtocol for PragmaSetStateVectorWrapper {
     /// Args:
     ///     self: The PragmaSetStateVector object.
     ///     other: The object to compare self to.
-    ///     op: Whether they should be equal or not.
+    ///     op: Type of comparison.
     ///
     /// Returns:
     ///     bool: Whether the two operations compared evaluated to True or False.
@@ -475,7 +475,7 @@ impl PyObjectProtocol for PragmaSetDensityMatrixWrapper {
     /// Args:
     ///     self: The PragmaSetDensityMatrix object.
     ///     other: The object to compare self to.
-    ///     op: Whether they should be equal or not.
+    ///     op: Type of comparison.
     ///
     /// Returns:
     ///     bool: Whether the two operations compared evaluated to True or False.
@@ -1136,7 +1136,7 @@ impl PyObjectProtocol for PragmaGeneralNoiseWrapper {
     /// Args:
     ///     self: The PragmaGeneralNoise object.
     ///     other: The object to compare self to.
-    ///     op: Whether they should be equal or not.
+    ///     op: Type of comparison.
     ///
     /// Returns:
     ///     bool: Whether the two operations compared evaluated to True or False.
@@ -1380,7 +1380,7 @@ impl PyObjectProtocol for PragmaChangeDeviceWrapper {
     /// Args:
     ///     self: The PragmaGeneralNoise object.
     ///     other: The object to compare self to.
-    ///     op: Whether they should be equal or not.
+    ///     op: Type of comparison.
     ///
     /// Returns:
     ///     bool: Whether the two operations compared evaluated to True or False.
