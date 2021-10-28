@@ -71,12 +71,12 @@ impl QuantumProgram {
     ///
     /// Arguments:
     ///
-    /// * `parameters` - List of float ([f64]) parameters of the function call in order of `input_parameter_names`
     /// * `backend` - The backend the program is executed on.
+    /// * `parameters` - List of float ([f64]) parameters of the function call in order of `input_parameter_names`
     pub fn run<T>(
         &self,
-        parameters: &[f64],
         backend: T,
+        parameters: &[f64],
     ) -> Result<Option<HashMap<String, f64>>, RoqoqoBackendError>
     where
         T: EvaluatingBackend,
@@ -120,9 +120,9 @@ impl QuantumProgram {
     ///
     /// Arguments:
     ///
-    /// * `parameters` - List of float ([f64]) parameters of the function call in order of `input_parameter_names`
     /// * `backend` - The backend the program is executed on.
-    pub fn run_registers<T>(&self, parameters: &[f64], backend: T) -> RegisterResult
+    /// * `parameters` - List of float ([f64]) parameters of the function call in order of `input_parameter_names`
+    pub fn run_registers<T>(&self, backend: T, parameters: &[f64]) -> RegisterResult
     where
         T: EvaluatingBackend,
     {

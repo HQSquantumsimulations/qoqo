@@ -13,15 +13,15 @@
 //! Qoqo classical registers
 
 use crate::CircuitWrapper;
+use bincode::serialize;
 use pyo3::exceptions::{PyRuntimeError, PyValueError};
 use pyo3::prelude::*;
+use pyo3::types::PyByteArray;
 use pyo3::types::PyType;
 use roqoqo::measurements::ClassicalRegister;
 use roqoqo::prelude::*;
 use roqoqo::Circuit;
 use std::collections::HashMap;
-use bincode::serialize;
-use pyo3::types::PyByteArray;
 #[pyclass(name = "ClassicalRegister", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Collected information for executing a classical register.
@@ -111,8 +111,9 @@ impl ClassicalRegisterWrapper {
     /// Raises:
     ///     ValueError: Cannot serialize Measurement to bytes.
     pub fn _internal_to_bincode(&self) -> PyResult<(&'static str, Py<PyByteArray>)> {
-        let serialized = serialize(&self.internal)
-            .map_err(|_| PyValueError::new_err("Cannot serialize BasisRoationMeasurement to bytes"))?;
+        let serialized = serialize(&self.internal).map_err(|_| {
+            PyValueError::new_err("Cannot serialize BasisRoationMeasurement to bytes")
+        })?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });

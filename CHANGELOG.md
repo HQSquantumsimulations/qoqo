@@ -4,6 +4,12 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
 
+### Added
+
+* QuantumProgram: A representation of a quantum program that accepts a list of free classical float parameters,
+runs measurements on a backend and returns expectation values or the classical register output of the quantum circuits.
+QuantumProgram is intended as the main interface between classical software and roqoqo quantum programs.  
+
 ## 0.7.0
 
 ### Added 0.7.0

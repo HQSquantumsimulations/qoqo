@@ -14,16 +14,16 @@
 
 use super::BasisRotationInputWrapper;
 use crate::CircuitWrapper;
+use bincode::serialize;
 use pyo3::exceptions::{PyRuntimeError, PyValueError};
 use pyo3::prelude::*;
+use pyo3::types::PyByteArray;
 use pyo3::types::PyType;
 use roqoqo::measurements::BasisRotation;
 use roqoqo::prelude::*;
 use roqoqo::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
 use roqoqo::Circuit;
 use std::collections::HashMap;
-use bincode::serialize;
-use pyo3::types::PyByteArray;
 #[pyclass(name = "BasisRotation", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Collected information for executing a basis rotation measurement.
@@ -174,8 +174,9 @@ impl BasisRotationWrapper {
     /// Raises:
     ///     ValueError: Cannot serialize Measurement to bytes.
     pub fn _internal_to_bincode(&self) -> PyResult<(&'static str, Py<PyByteArray>)> {
-        let serialized = serialize(&self.internal)
-            .map_err(|_| PyValueError::new_err("Cannot serialize BasisRoationMeasurement to bytes"))?;
+        let serialized = serialize(&self.internal).map_err(|_| {
+            PyValueError::new_err("Cannot serialize BasisRoationMeasurement to bytes")
+        })?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });

@@ -12,18 +12,19 @@
 
 use std::collections::HashMap;
 
-use roqoqo::measurements;
-use roqoqo::measurements::Measure;
-use roqoqo::QuantumProgram;
-use crate::measurements::{BasisRotationWrapper, CheatedBasisRotationWrapper, CheatedWrapper, ClassicalRegisterWrapper};
+use crate::measurements::{
+    BasisRotationWrapper, CheatedBasisRotationWrapper, CheatedWrapper, ClassicalRegisterWrapper,
+};
+use crate::{QoqoError, QOQO_VERSION};
+use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
-use pyo3::{PyObjectProtocol};
-use bincode::{deserialize, serialize};
-use crate::{QoqoError, QOQO_VERSION};
-use roqoqo::{ROQOQO_VERSION};
-
+use pyo3::PyObjectProtocol;
+use roqoqo::measurements;
+use roqoqo::measurements::Measure;
+use roqoqo::QuantumProgram;
+use roqoqo::ROQOQO_VERSION;
 
 /// Represents a quantum program evaluating measurements based on a one or more free float parameters.
 ///
@@ -33,7 +34,7 @@ use roqoqo::{ROQOQO_VERSION};
 /// The symbolic parameters need to be replaced with real floating point numbers first.
 /// A QuantumProgram contains a list of the free parameters (`input_parameter_names`) and can automatically
 /// replace the parameters with its `run` methods and return the result.
-/// 
+///
 /// The QuantumProgram should correspond as closely as possible to a normal mulit-parameter function
 /// in classical computing that can be called with a set of parameters and returns a result.
 /// It is the intended way to interface between normal program code and roqoqo based quantum programs.
@@ -46,29 +47,48 @@ pub struct QuantumProgramWrapper {
 }
 
 #[pymethods]
-impl QuantumProgramWrapper{
-
+impl QuantumProgramWrapper {
     /// Create a QuantumProgram.
     ///
     /// Args:
-    ///     measurement: 
-    ///     input_parameter_names (List[str]): 
+    ///     measurement:
+    ///     input_parameter_names (List[str]):
     ///
     /// Returns:
     ///     self: The new .
     #[new]
     pub fn new(measurement: &PyAny, input_parameter_names: Vec<String>) -> PyResult<Self> {
         if let Ok(try_downcast) = measurement.extract::<BasisRotationWrapper>() {
-            return Ok( Self{internal: QuantumProgram::BasisRotation{measurement: try_downcast.internal, input_parameter_names}});
+            return Ok(Self {
+                internal: QuantumProgram::BasisRotation {
+                    measurement: try_downcast.internal,
+                    input_parameter_names,
+                },
+            });
         }
         if let Ok(try_downcast) = measurement.extract::<CheatedBasisRotationWrapper>() {
-            return Ok( Self{internal: QuantumProgram::CheatedBasisRotation{measurement: try_downcast.internal, input_parameter_names}});
+            return Ok(Self {
+                internal: QuantumProgram::CheatedBasisRotation {
+                    measurement: try_downcast.internal,
+                    input_parameter_names,
+                },
+            });
         }
         if let Ok(try_downcast) = measurement.extract::<CheatedWrapper>() {
-            return Ok( Self{internal: QuantumProgram::Cheated{measurement: try_downcast.internal, input_parameter_names}});
+            return Ok(Self {
+                internal: QuantumProgram::Cheated {
+                    measurement: try_downcast.internal,
+                    input_parameter_names,
+                },
+            });
         }
         if let Ok(try_downcast) = measurement.extract::<ClassicalRegisterWrapper>() {
-            return Ok( Self{internal: QuantumProgram::ClassicalRegister{measurement: try_downcast.internal, input_parameter_names}});
+            return Ok(Self {
+                internal: QuantumProgram::ClassicalRegister {
+                    measurement: try_downcast.internal,
+                    input_parameter_names,
+                },
+            });
         }
         // Everything that follows tries to extract the circuit when two separately
         // compiled python packages are involved
@@ -100,15 +120,15 @@ impl QuantumProgramWrapper{
     }
 
     /// Runs the QuantumProgram and returns expectation values.
-    /// 
+    ///
     /// Runs the quantum programm for a given set of parameters passed in the same order as the parameters
     /// listed in `input_parameter_names` and returns expectation values.
-    /// 
-    /// Arguments:
-    /// 
-    /// * `parameters` - List of float ([f64]) parameters of the function call in order of `input_parameter_names`
-    /// * `backend` - The backend the program is executed on.
-    pub fn run(&self, parameters: Vec<f64>, backend: Py<PyAny>) -> PyResult<Py<PyAny>> {
+    ///
+    /// Args:
+    ///     backend (Backend): The backend the program is executed on.
+    ///     parameters (Optional[List[float]): List of float  parameters of the function call in order of `input_parameter_names`
+    pub fn run(&self, backend: Py<PyAny>, parameters: Option<Vec<f64>>) -> PyResult<Py<PyAny>> {
+        let parameters = parameters.unwrap_or(Vec::new());
         match &self.internal{
             QuantumProgram::BasisRotation{measurement, input_parameter_names } => {
                 if parameters.len() != input_parameter_names.len() { return Err(PyValueError::new_err( format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())))};
@@ -140,22 +160,25 @@ impl QuantumProgramWrapper{
                 })            }
             _ => Err(PyTypeError::new_err(format!("A quantum programm returning classical registeres cannot be executed by `run` use `run_registers` instead")))
         }
-        
     }
 
     /// Runs the QuantumProgram and returns the classical registers of the quantum program.
-    /// 
+    ///
     /// Runs the quantum programm for a given set of parameters passed in the same order as the parameters
     /// listed in `input_parameter_names` and returns the classical register output.  
     /// The classical registers usually contain a record of measurement values for the repeated execution
-    /// of a [crate::Circuit] quantum circuit for real quantum hardware 
+    /// of a [crate::Circuit] quantum circuit for real quantum hardware
     /// or the readout of the statevector or the density matrix for simulators.
-    /// 
-    /// Arguments:
-    /// 
-    /// * `parameters` - List of float ([f64]) parameters of the function call in order of `input_parameter_names`
-    /// * `backend` - The backend the program is executed on.
-    pub fn run_registers(&self, parameters: Vec<f64>, backend: Py<PyAny>) -> PyResult<Py<PyAny>>{
+    ///
+    /// Args:
+    ///     backend (Backend): The backend the program is executed on.
+    ///     parameters (Optional[List[float]): List of float  parameters of the function call in order of `input_parameter_names`
+    pub fn run_registers(
+        &self,
+        backend: Py<PyAny>,
+        parameters: Option<Vec<f64>>,
+    ) -> PyResult<Py<PyAny>> {
+        let parameters = parameters.unwrap_or(Vec::new());
         match &self.internal{
             QuantumProgram::ClassicalRegister{measurement, input_parameter_names } => {
                 if parameters.len() != input_parameter_names.len() { return Err(PyValueError::new_err( format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())))};
@@ -168,7 +191,6 @@ impl QuantumProgramWrapper{
                 })           },
             _ => Err(PyTypeError::new_err(format!("A quantum programm returning expectation values cannot be executed by `run_registers` use `run` instead")))
         }
-        
     }
 
     /// Return a copy of the QuantumProgram (copy here produces a deepcopy).
@@ -240,8 +262,9 @@ impl QuantumProgramWrapper{
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
         Ok(QuantumProgramWrapper {
-            internal: deserialize(&bytes[..])
-                .map_err(|_| PyValueError::new_err("Input cannot be deserialized to QuantumProgram"))?,
+            internal: deserialize(&bytes[..]).map_err(|_| {
+                PyValueError::new_err("Input cannot be deserialized to QuantumProgram")
+            })?,
         })
     }
 
@@ -270,15 +293,15 @@ impl QuantumProgramWrapper{
     ///     ValueError: Input cannot be deserialized to QuantumProgram.
     fn from_json(&self, input: &str) -> PyResult<QuantumProgramWrapper> {
         Ok(QuantumProgramWrapper {
-            internal: serde_json::from_str(input)
-                .map_err(|_| PyValueError::new_err("Input cannot be deserialized to QuantumProgram"))?,
+            internal: serde_json::from_str(input).map_err(|_| {
+                PyValueError::new_err("Input cannot be deserialized to QuantumProgram")
+            })?,
         })
     }
 }
 
 #[pyproto]
 impl PyObjectProtocol for QuantumProgramWrapper {
-
     /// Return the __richcmp__ magic method to perform rich comparison operations on QuantumProgram.
     ///
     /// Args:

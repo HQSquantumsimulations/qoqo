@@ -72,13 +72,13 @@ fn test_basis_rotation() {
 
     let backend = TestBackend;
 
-    let result_fail = program.run_registers(&[0.0, 1.0], backend);
+    let result_fail = program.run_registers(backend, &[0.0, 1.0]);
     assert!(result_fail.is_err());
-    let result = program.run(&[0.0, 1.0], backend);
+    let result = program.run(backend, &[0.0, 1.0]);
     assert!(result.is_ok());
-    let result_fail = program.run(&[0.0], backend);
+    let result_fail = program.run(backend, &[0.0]);
     assert!(result_fail.is_err());
-    let result_fail = program.run(&[0.0, 1.0, 3.0], backend);
+    let result_fail = program.run(backend, &[0.0, 1.0, 3.0]);
     assert!(result_fail.is_err());
 }
 
@@ -110,13 +110,13 @@ fn test_cheated_basis_rotation() {
 
     let backend = TestBackend;
 
-    let result_fail = program.run_registers(&[0.0, 1.0], backend);
+    let result_fail = program.run_registers(backend, &[0.0, 1.0]);
     assert!(result_fail.is_err());
-    let result = program.run(&[0.0, 1.0], backend);
+    let result = program.run(backend, &[0.0, 1.0]);
     assert!(result.is_ok());
-    let result_fail = program.run(&[0.0], backend);
+    let result_fail = program.run(backend, &[0.0]);
     assert!(result_fail.is_err());
-    let result_fail = program.run(&[0.0, 1.0, 3.0], backend);
+    let result_fail = program.run(backend, &[0.0, 1.0, 3.0]);
     assert!(result_fail.is_err());
 }
 
@@ -148,13 +148,13 @@ fn test_cheated() {
 
     let backend = TestBackend;
 
-    let result_fail = program.run_registers(&[0.0, 1.0], backend);
+    let result_fail = program.run_registers(backend, &[0.0, 1.0]);
     assert!(result_fail.is_err());
-    let result = program.run(&[0.0, 1.0], backend);
+    let result = program.run(backend, &[0.0, 1.0]);
     assert!(result.is_ok());
-    let result_fail = program.run(&[0.0], backend);
+    let result_fail = program.run(backend, &[0.0]);
     assert!(result_fail.is_err());
-    let result_fail = program.run(&[0.0, 1.0, 3.0], backend);
+    let result_fail = program.run(backend, &[0.0, 1.0, 3.0]);
     assert!(result_fail.is_err());
 }
 
@@ -184,12 +184,12 @@ fn test_registers() {
 
     let backend = TestBackend;
 
-    let result_fail = program.run(&[0.0, 1.0], backend);
+    let result_fail = program.run(backend, &[0.0, 1.0]);
     assert!(result_fail.is_err());
-    let result = program.run_registers(&[0.0, 1.0], backend);
+    let result = program.run_registers(backend, &[0.0, 1.0]);
     assert!(result.is_ok());
-    let result_fail = program.run_registers(&[0.0], backend);
+    let result_fail = program.run_registers(backend, &[0.0]);
     assert!(result_fail.is_err());
-    let result_fail = program.run_registers(&[0.0, 1.0, 3.0], backend);
+    let result_fail = program.run_registers(backend, &[0.0, 1.0, 3.0]);
     assert!(result_fail.is_err());
 }
