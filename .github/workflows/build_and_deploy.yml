@@ -31,6 +31,7 @@ jobs:
         cargo publish --manifest-path=roqoqo-test/Cargo.toml
 
   build_maturin_builds_linux:
+    needs: deploy_cratesio
     name: maturin_build-${{ matrix.combinations.runs_on }}
     runs-on: ${{ matrix.combinations.runs_on }}
     strategy:
@@ -73,6 +74,7 @@ jobs:
   
   build_maturin_builds_windows:
     name: maturin_build-${{ matrix.combinations.runs_on }}
+    needs: deploy_cratesio
     runs-on: ${{ matrix.combinations.runs_on }}
     strategy:
       matrix:
@@ -110,6 +112,7 @@ jobs:
   
   build_maturin_builds_macos:
     name: maturin_build-${{ matrix.combinations.runs_on }}
+    needs: deploy_cratesio
     runs-on: ${{ matrix.combinations.runs_on }}
     strategy:
       matrix:

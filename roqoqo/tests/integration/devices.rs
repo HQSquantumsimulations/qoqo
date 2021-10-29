@@ -173,6 +173,6 @@ fn change_device_test() {
     );
 
     let empty_serialisation: Vec<u8> = Vec::new();
-    let result = device.change_device(&empty_serialisation);
+    let result = device.change_device("", &empty_serialisation);
     assert!(result.is_err());
 }
