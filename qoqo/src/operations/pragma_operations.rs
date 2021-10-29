@@ -1251,7 +1251,7 @@ impl PragmaChangeDeviceWrapper {
     /// Returns:
     ///     ByteArray: The the binary representation of the wrapped operation.
     fn wrapped_operation(&self) -> PyResult<Py<PyByteArray>> {
-        let serialized: Vec<u8> = self.internal.wrapped_operation;
+        let serialized: Vec<u8> = self.internal.wrapped_operation.clone();
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
