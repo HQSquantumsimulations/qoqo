@@ -128,10 +128,11 @@ pub trait Device {
     ///
     /// # Arguments
     ///
+    /// * `hqslang` - The hqslang name of the wrapped operation
     /// * `operation` - The Pragma operation encoded in binary form using the [bincode] crate
     #[allow(unused_variables)]
     #[allow(unused_mut)]
-    fn change_device(&mut self, operation: &[u8]) -> Result<(), RoqoqoBackendError> {
+    fn change_device(&mut self, hqslang: &str, operation: &[u8]) -> Result<(), RoqoqoBackendError> {
         Err(RoqoqoBackendError::GenericError {
             msg: "The device ".to_string(),
         })
