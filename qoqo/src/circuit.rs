@@ -472,7 +472,7 @@ impl PyNumberProtocol for CircuitWrapper {
     ///     other (Operation): The Operation object to be added to self.
     ///
     /// Raises:
-    ///     TypeError: Right hand side can not be converted to Operation or Circuit.
+    ///     TypeError: Right hand side cannot be converted to Operation or Circuit.
     fn __iadd__(&'p mut self, other: Py<PyAny>) -> PyResult<()> {
         Python::with_gil(|py| -> PyResult<()> {
             let other_ref = other.as_ref(py);
@@ -484,7 +484,7 @@ impl PyNumberProtocol for CircuitWrapper {
                 Err(_) => {
                     let other = convert_into_circuit(other_ref).map_err(|x| {
                         pyo3::exceptions::PyTypeError::new_err(format!(
-                            "Right hand side can not be converted to Operation or Circuit {:?}",
+                            "Right hand side cannot be converted to Operation or Circuit {:?}",
                             x
                         ))
                     });
@@ -511,7 +511,7 @@ impl PyNumberProtocol for CircuitWrapper {
     ///
     /// Raises:
     ///     TypeError: Left hand side can not be converted to Circuit.
-    ///     TypeError: Right hand side can not be converted to Operation or Circuit.
+    ///     TypeError: Right hand side cannot be converted to Operation or Circuit.
     fn __add__(lhs: Py<PyAny>, rhs: Py<PyAny>) -> PyResult<CircuitWrapper> {
         Python::with_gil(|py| -> PyResult<CircuitWrapper> {
             let (lhs_ref, rhs_ref) = (lhs.as_ref(py), rhs.as_ref(py));
@@ -525,7 +525,7 @@ impl PyNumberProtocol for CircuitWrapper {
                 Err(_) => {
                     let other = convert_into_circuit(rhs_ref).map_err(|_| {
                         pyo3::exceptions::PyTypeError::new_err(
-                            "Right hand side can not be converted to Operation or Circuit",
+                            "Right hand side cannot be converted to Operation or Circuit",
                         )
                     })?;
                     Ok(CircuitWrapper {
