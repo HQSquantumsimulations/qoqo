@@ -8,30 +8,30 @@ on:
     types: [created]
 
 jobs:
-#   deploy_cratesio:
-#     runs-on: ubuntu-latest
-#     steps:
-#     - uses: actions/checkout@v2
-#     - uses: actions-rs/toolchain@v1
-#       with:
-#         profile: minimal
-#         toolchain: stable
-#         default: true
-#     - name: setup cargo
-#       run: |
-#         cargo login ${{ secrets.CRATES_IO_API_TOKEN }}
-#         cargo publish --manifest-path=roqoqo-derive/Cargo.toml
-#         sleep 30
-#         cargo publish --manifest-path=roqoqo/Cargo.toml
-#         sleep 30
-#         cargo publish --manifest-path=qoqo-macros/Cargo.toml
-#         sleep 30
-#         cargo publish --manifest-path=qoqo/Cargo.toml
-#         sleep 30
-#         cargo publish --manifest-path=roqoqo-test/Cargo.toml
+  deploy_cratesio:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        default: true
+    - name: setup cargo
+      run: |
+        cargo login ${{ secrets.CRATES_IO_API_TOKEN }}
+        cargo publish --manifest-path=roqoqo-derive/Cargo.toml
+        sleep 30
+        cargo publish --manifest-path=roqoqo/Cargo.toml
+        sleep 30
+        cargo publish --manifest-path=qoqo-macros/Cargo.toml
+        sleep 30
+        cargo publish --manifest-path=qoqo/Cargo.toml
+        sleep 30
+        cargo publish --manifest-path=roqoqo-test/Cargo.toml
 
   build_maturin_builds_linux:
-    # needs: deploy_cratesio
+    needs: deploy_cratesio
     name: maturin_build-${{ matrix.combinations.runs_on }}
     runs-on: ${{ matrix.combinations.runs_on }}
     strategy:
@@ -74,7 +74,7 @@ jobs:
   
   build_maturin_builds_windows:
     name: maturin_build-${{ matrix.combinations.runs_on }}
-    # needs: deploy_cratesio
+    needs: deploy_cratesio
     runs-on: ${{ matrix.combinations.runs_on }}
     strategy:
       matrix:
@@ -112,7 +112,7 @@ jobs:
   
   build_maturin_builds_macos:
     name: maturin_build-${{ matrix.combinations.runs_on }}
-    # needs: deploy_cratesio
+    needs: deploy_cratesio
     runs-on: ${{ matrix.combinations.runs_on }}
     strategy:
       matrix:
@@ -157,8 +157,7 @@ jobs:
           path: wheels
 
   deploy:
-      # needs: [deploy_cratesio, build_maturin_builds_macos, build_maturin_builds_linux, build_maturin_builds_windows]
-      needs: [build_maturin_builds_macos, build_maturin_builds_linux, build_maturin_builds_windows]
+      needs: [deploy_cratesio, build_maturin_builds_macos, build_maturin_builds_linux, build_maturin_builds_windows]
       runs-on: ubuntu-latest
       steps:
       - uses: actions/setup-python@v2
