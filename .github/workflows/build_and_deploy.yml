@@ -7,7 +7,7 @@ on:
   release:
     types: [created]
 
-# jobs:
+jobs:
 #   deploy_cratesio:
 #     runs-on: ubuntu-latest
 #     steps:
@@ -158,7 +158,7 @@ on:
 
   deploy:
       # needs: [deploy_cratesio, build_maturin_builds_macos, build_maturin_builds_linux, build_maturin_builds_windows]
-      needs: [build_maturin_builds_macos, build_maturin_builds_linux, build_maturin_builds_windows]
+      needs: [deploy_cratesio, build_maturin_builds_macos, build_maturin_builds_linux, build_maturin_builds_windows]
       runs-on: ubuntu-latest
       steps:
       - uses: actions/setup-python@v2
