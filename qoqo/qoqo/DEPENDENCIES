@@ -6667,9 +6667,9 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-proc-macro2 1.0.30
-https://github.com/alexcrichton/proc-macro2
-by Alex Crichton <alex@alexcrichton.com>, David Tolnay <dtolnay@gmail.com>
+proc-macro2 1.0.32
+https://github.com/dtolnay/proc-macro2
+by David Tolnay <dtolnay@gmail.com>, Alex Crichton <alex@alexcrichton.com>
 A substitute implementation of the compiler's `proc_macro` API to decouple
 token-based libraries from the procedural macro use case.
 
@@ -7710,7 +7710,7 @@ LICENSE:
 
 
 ====================================================
-qoqo 0.6.2
+qoqo 0.8.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoqo
@@ -7922,7 +7922,7 @@ LICENSE:
 
 
 ====================================================
-qoqo-macros 0.6.2
+qoqo-macros 0.8.0
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -9865,7 +9865,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-roqoqo 0.6.2
+roqoqo 0.8.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
@@ -10077,7 +10077,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-derive 0.6.2
+roqoqo-derive 0.8.0
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Maros for the roqoqo crate
 License: Apache-2.0
@@ -10288,7 +10288,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-test 0.6.2
+roqoqo-test 0.8.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
@@ -12416,7 +12416,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-syn 1.0.80
+syn 1.0.81
 https://github.com/dtolnay/syn
 by David Tolnay <dtolnay@gmail.com>
 Parser for Rust source code
@@ -12655,7 +12655,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-test-case 1.2.0
+test-case 1.2.1
 https://github.com/frondeus/test-case
 by Marcin Sas-Szymanski <marcin.sas-szymanski@anixe.pl>, Wojciech Polak <frondeus@gmail.com>, Łukasz Biel <lukasz.p.biel@gmail.com>
 Provides #[test_case(...)] procedural macro attribute for generating parametrized test cases easily

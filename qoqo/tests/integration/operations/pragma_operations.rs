@@ -805,7 +805,6 @@ fn test_pyo3_tags_multi_overrotation(input_measurement: Operation, tag_name: &st
 
 /// Test tags function for Pragmas that are also SingleQubitGates
 #[test_case(Operation::from(PragmaActiveReset::new(0)), "PragmaActiveReset"; "PragmaActiveReset")]
-#[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())), "PragmaConditional"; "PragmaConditional")]
 fn test_pyo3_tags_single(input_measurement: Operation, tag_name: &str) {
     pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
@@ -819,6 +818,19 @@ fn test_pyo3_tags_single(input_measurement: Operation, tag_name: &str) {
         "PragmaOperation",
         tag_name,
     ];
+    assert_eq!(tags_op, tags_param);
+}
+
+/// Test tags function for Pragmas that are also SingleQubitGates
+#[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())), "PragmaConditional"; "PragmaConditional")]
+fn test_pyo3_tags_conditional(input_measurement: Operation, tag_name: &str) {
+    pyo3::prepare_freethreaded_python();
+    let gil = pyo3::Python::acquire_gil();
+    let py = gil.python();
+    let operation = convert_operation_to_pyobject(input_measurement).unwrap();
+    let to_tag = operation.call_method0(py, "tags").unwrap();
+    let tags_op: &Vec<&str> = &Vec::extract(to_tag.as_ref(py)).unwrap();
+    let tags_param: &[&str] = &["Operation", "PragmaOperation", tag_name];
     assert_eq!(tags_op, tags_param);
 }
 

@@ -4,6 +4,41 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
 
+## 0.8.0
+
+### Added 0.8.0
+
+* QuantumProgram: A representation of a quantum program that accepts a list of free classical float parameters,
+runs measurements on a backend and returns expectation values or the classical register output of the quantum circuits.
+QuantumProgram is intended as the main interface between classical software and roqoqo quantum programs.  
+
+### Changed 0.8.0
+
+* In the Device Trait the `change_device` function changed the signature from
+
+    ```rust
+    fn change_device(&mut self, operation: &[u8]) -> Result<(), RoqoqoBackendError>;
+    ```
+
+    to
+
+    ```rust
+    fn change_device(&mut self, hqslang: &str, operation: &[u8]) -> Result<(), RoqoqoBackendError>
+    ```
+
+    including the `hqslang` name of the operation that changes the device.
+
+### Fixed 0.8.0
+
+* Bug in `wrapped_hqslang` and missing `wrapped_operation` functions in qoqo PragmaChangeDeviceWrapper
+
+## 0.7.0
+
+### Added 0.7.0
+
+* PramgaChangeDevice: A pragma operation acting as a wrapper around device specific Pragmas that can change the device topology.
+* change_device interface to Device trait allowing for the modification of Devices by Pragmas
+
 ## 0.6.3
 
 ### Changed 0.6.3

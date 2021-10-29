@@ -25,8 +25,8 @@
 //!
 //!     $$
 //!     \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
-//!         L_0 = \sigma^{-} \\\\
-//!         L_1 = \sigma^{+} \\\\
+//!         L_0 = \sigma^{+} \\\\
+//!         L_1 = \sigma^{-} \\\\
 //!         L_3 = \sigma^{z}
 //!     $$
 //!     Note that as long as gate times and decoherence rates are scaled inversely any kind of units can be used,
@@ -39,10 +39,12 @@
 
 use ndarray::Array2;
 
+use crate::RoqoqoBackendError;
+
 /// Trait for roqoqo devices.
 ///
 /// Defines standard functions available for roqoqo devices.
-pub trait Device: Sized {
+pub trait Device {
     /// Returns the gate time of a single qubit operation if the single qubit operation is available on device.
     ///
     /// The base assumption
@@ -108,4 +110,31 @@ pub trait Device: Sized {
 
     /// Returns the number of qubits the device supports.
     fn number_qubits(&self) -> usize;
+
+    /// Changes the device topology based on a Pragma operation.
+    ///
+    /// Specific devices and backends can allow changes to the device topology.
+    /// These changes are represented by Pragma operations that are only available for
+    /// the corresponding backend.
+    /// This function provides a generic interface for changing the devices with the help of
+    /// these Pragma operations.
+    /// In normal operation the backend specific Pragma operations are wrapped in a [crate::operations::PragmaChangeDevice]
+    /// wrapper operation and encoded in binary form with the [bincode] crate.
+    /// This function takes the encoded binary representation, tries to deserialize it internally
+    ///  and applies the corresponding changes.
+    ///
+    /// For most devices the default behaviour is that the device cannot be changed
+    /// and the function returns a corresponding RoqoqoBackendError
+    ///
+    /// # Arguments
+    ///
+    /// * `hqslang` - The hqslang name of the wrapped operation
+    /// * `operation` - The Pragma operation encoded in binary form using the [bincode] crate
+    #[allow(unused_variables)]
+    #[allow(unused_mut)]
+    fn change_device(&mut self, hqslang: &str, operation: &[u8]) -> Result<(), RoqoqoBackendError> {
+        Err(RoqoqoBackendError::GenericError {
+            msg: "The device ".to_string(),
+        })
+    }
 }

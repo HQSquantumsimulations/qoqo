@@ -398,7 +398,7 @@ pub fn wrap(
             let py = gil.python();
             let other_ref = other.as_ref(py);
             let other: Operation = crate::operations::convert_pyany_to_operation(other_ref).map_err(|x| {
-                pyo3::exceptions::PyTypeError::new_err(format!("Right hand side can not be converted to Operation {:?}",x))
+                pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
             })?;
             match op {
                 pyo3::class::basic::CompareOp::Eq => Ok(Operation::from(self.internal.clone()) == other),
