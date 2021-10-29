@@ -14,15 +14,16 @@
 
 use super::CheatedInputWrapper;
 use crate::CircuitWrapper;
+use bincode::serialize;
 use pyo3::exceptions::{PyRuntimeError, PyValueError};
 use pyo3::prelude::*;
+use pyo3::types::PyByteArray;
 use pyo3::types::PyType;
 use roqoqo::measurements::Cheated;
 use roqoqo::prelude::*;
 use roqoqo::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
 use roqoqo::Circuit;
 use std::collections::HashMap;
-
 #[pyclass(name = "Cheated", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Collected information for executing a cheated measurement.
@@ -163,6 +164,23 @@ impl CheatedWrapper {
                     ))
                 })?,
         })
+    }
+
+    /// Return the name of the measurement and the bincode representation of the Measurement using the [bincode] crate.
+    ///
+    /// Returns:
+    ///     (str, ByteArray): Name and serialized measurement (in [bincode] form).
+    ///
+    /// Raises:
+    ///     ValueError: Cannot serialize Measurement to bytes.
+    pub fn _internal_to_bincode(&self) -> PyResult<(&'static str, Py<PyByteArray>)> {
+        let serialized = serialize(&self.internal).map_err(|_| {
+            PyValueError::new_err("Cannot serialize BasisRoationMeasurement to bytes")
+        })?;
+        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+            PyByteArray::new(py, &serialized[..]).into()
+        });
+        Ok(("Cheated", b))
     }
 
     /// Serialize the Cheated measurement to json form.

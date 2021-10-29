@@ -30,21 +30,139 @@ jobs:
         sleep 30
         cargo publish --manifest-path=roqoqo-test/Cargo.toml
 
-  deploy_pypi_manylinux:
-      needs: deploy_cratesio
-      runs-on: ubuntu-latest
-      #container: konstin2/maturin
-      steps:
+  build_maturin_builds_linux:
+    name: maturin_build-${{ matrix.combinations.runs_on }}
+    runs-on: ${{ matrix.combinations.runs_on }}
+    strategy:
+      matrix:
+        combinations: [
+          { runs_on: 'ubuntu-latest',  rust: "x86_64-unknown-linux-gnu" },
+        ]
+        python: [
+            {py: 3.6, interpreter: "python3.6"},
+            {py: 3.7, interpreter: "python3.7"},
+            {py: 3.8, interpreter: "python3.8"},
+            {py: 3.9, interpreter: "python3.9"}
+        ]
+    steps:
       - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          target: ${{ matrix.combinations.rust }}
+          default: true
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python.py }}
+      - name: linux wheels
+        uses: messense/maturin-action@v1
+        with:
+          maturin-version: latest
+          command: build
+          manylinux: 2010
+          args: -i python${{ matrix.python.py }} --out wheels --no-sdist -m qoqo/Cargo.toml --release
+      - name: test install
+        run: |
+          pip install wheels/* --force-reinstall
+      - name: store artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: py_wheels
+          path: wheels
+  
+  build_maturin_builds_windows:
+    name: maturin_build-${{ matrix.combinations.runs_on }}
+    runs-on: ${{ matrix.combinations.runs_on }}
+    strategy:
+      matrix:
+        combinations: [
+          { runs_on: 'windows-latest', rust: "x86_64-pc-windows-msvc" },
+        ]
+        python: [
+            {py: 3.6, interpreter: "python3.6"},
+            {py: 3.7, interpreter: "python3.7"},
+            {py: 3.8, interpreter: "python3.8"},
+            {py: 3.9, interpreter: "python3.9"}
+        ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          target: ${{ matrix.combinations.rust }}
+          default: true
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python.py }}
+      - name: windows wheels
+        uses: messense/maturin-action@v1
+        with:
+          maturin-version: latest
+          command: build
+          args: -i python --out wheels --no-sdist -m qoqo/Cargo.toml --release
+      - name: store artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: py_wheels
+          path: wheels
+  
+  build_maturin_builds_macos:
+    name: maturin_build-${{ matrix.combinations.runs_on }}
+    runs-on: ${{ matrix.combinations.runs_on }}
+    strategy:
+      matrix:
+        combinations: [
+          { runs_on: 'macOS-latest', rust: "aarch64-apple-darwin" },
+        ]
+        python: [
+            {py: 3.6, interpreter: "python3.6"},
+            {py: 3.7, interpreter: "python3.7"},
+            {py: 3.8, interpreter: "python3.8"},
+            {py: 3.9, interpreter: "python3.9"}
+        ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          target: ${{ matrix.combinations.rust }}
+          default: true
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python.py }}
       - name: Install dependencies
         run: |
-          echo $GITHUB_WORKSPACE
-      - name: Build Manylinux Maturin
-        uses: addnab/docker-run-action@v3
+          python -m pip install --upgrade pip maturin pytest numpy twine        
+      - name: macos wheels
+        if: ${{ matrix.combinations.runs_on == 'macOS-latest' && matrix.python-version < '3.8'}}
+        run: |
+          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --out wheels --no-sdist -m qoqo/Cargo.toml --release
+      - name: universal wheels
+        if: ${{ matrix.combinations.runs_on == 'macOS-latest' && matrix.python-version >= '3.8' }}
+        run: |
+          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --universal2 --out wheels --no-sdist -m qoqo/Cargo.toml --release
+      - name: test install
+        run: |
+          pip install wheels/* --force-reinstall
+      - name: store artifact
+        uses: actions/upload-artifact@v2
         with:
-          image: konstin2/maturin
-          options: -v /home/runner/work/qoqo/qoqo:/io
-          run: maturin build -m qoqo/Cargo.toml --release --manylinux 2010
+          name: py_wheels
+          path: wheels
+
+  deploy:
+      needs: [deploy_cratesio, build_maturin_builds_macos, build_maturin_builds_linux, build_maturin_builds_windows]
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python.py }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: py_wheels
       - name: Publish
         env:
           TWINE_USERNAME: __token__
@@ -52,69 +170,4 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install twine
-          python -m twine upload target/wheels/*
-
-  deploy_macos:
-      needs: deploy_cratesio
-      runs-on: macOS-latest
-      strategy:
-        matrix:
-          python: [
-            {py: 3.6, interpreter: "python3.6"},
-            {py: 3.7, interpreter: "python3.7"},
-            {py: 3.8, interpreter: "python3.8"},
-            {py: 3.9, interpreter: "python3.9"}
-        ]
-      steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python.py }}
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          target: x86_64-apple-darwin
-          default: true
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip maturin pytest numpy twine
-      - name: build
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: |
-          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} -m qoqo/Cargo.toml --release
-          python -m twine upload target/wheels/*
-
-  # deploy_windows:
-  
-  #     runs-on: windows-latest
-  #     strategy:
-  #       matrix:
-  #         python: [
-  #           {py: 3.7, interpreter: "python3.7"},
-  #           {py: 3.8, interpreter: "python3.8"},
-  #           {py: 3.9, interpreter: "python3.9"}
-  #       ]
-  #     steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: actions/setup-python@v2
-  #       with:
-  #         python-version: ${{ matrix.python.py }}
-  #     - uses: actions-rs/toolchain@v1
-  #       with:
-  #         profile: minimal
-  #         toolchain: stable
-  #         target: x86_64-pc-windows-msvc
-  #         default: true
-  #     - name: Install dependencies
-  #       run: |
-  #         python -m pip install --upgrade pip maturin pytest numpy twine
-  #     - name: build
-  #       env:
-  #         TWINE_USERNAME: __token__
-  #         TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-  #       run: |
-  #         maturin build -i ${{ matrix.python.interpreter }}  -m qoqo/Cargo.toml --cargo-extra-args="--locked"
-  #         python -m twine upload target/wheels/*
+          python -m twine upload --skip-existing py_wheel/*

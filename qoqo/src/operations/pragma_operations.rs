@@ -16,6 +16,7 @@ use num_complex::Complex64;
 use numpy::{PyArray1, PyArray2, ToPyArray};
 use pyo3::exceptions::{PyRuntimeError, PyTypeError};
 use pyo3::prelude::*;
+use pyo3::types::PyByteArray;
 use pyo3::types::PySet;
 use pyo3::PyObjectProtocol;
 use qoqo_calculator::CalculatorFloat;
@@ -240,7 +241,7 @@ impl PyObjectProtocol for PragmaSetStateVectorWrapper {
     /// Args:
     ///     self: The PragmaSetStateVector object.
     ///     other: The object to compare self to.
-    ///     op: Whether they should be equal or not.
+    ///     op: Type of comparison.
     ///
     /// Returns:
     ///     bool: Whether the two operations compared evaluated to True or False.
@@ -250,7 +251,7 @@ impl PyObjectProtocol for PragmaSetStateVectorWrapper {
 
             crate::operations::convert_pyany_to_operation(other_ref).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
-                    "Right hand side can not be converted to Operation",
+                    "Right hand side cannot be converted to Operation",
                 )
             })
         })?;
@@ -475,7 +476,7 @@ impl PyObjectProtocol for PragmaSetDensityMatrixWrapper {
     /// Args:
     ///     self: The PragmaSetDensityMatrix object.
     ///     other: The object to compare self to.
-    ///     op: Whether they should be equal or not.
+    ///     op: Type of comparison.
     ///
     /// Returns:
     ///     bool: Whether the two operations compared evaluated to True or False.
@@ -484,7 +485,7 @@ impl PyObjectProtocol for PragmaSetDensityMatrixWrapper {
             let other_ref = other.as_ref(py);
             crate::operations::convert_pyany_to_operation(other_ref).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
-                    "Right hand side can not be converted to Operation",
+                    "Right hand side cannot be converted to Operation",
                 )
             })
         })?;
@@ -1136,7 +1137,7 @@ impl PyObjectProtocol for PragmaGeneralNoiseWrapper {
     /// Args:
     ///     self: The PragmaGeneralNoise object.
     ///     other: The object to compare self to.
-    ///     op: Whether they should be equal or not.
+    ///     op: Type of comparison.
     ///
     /// Returns:
     ///     bool: Whether the two operations compared evaluated to True or False.
@@ -1145,7 +1146,7 @@ impl PyObjectProtocol for PragmaGeneralNoiseWrapper {
             let other_ref = other.as_ref(py);
             crate::operations::convert_pyany_to_operation(other_ref).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
-                    "Right hand side can not be converted to Operation",
+                    "Right hand side cannot be converted to Operation",
                 )
             })
         })?;
@@ -1191,19 +1192,15 @@ pub struct PragmaChangeDeviceWrapper {
 
 insert_pyany_to_operation!(
     "PragmaChangeDevice" =>{
-
-            let wt = op.call_method0( "wrapped_tags").map_err(|_|QoqoError::ConversionError)?;
-            let wrapped_tags: Vec<String> = wt.extract()
+        let wt = op.call_method0( "wrapped_tags").map_err(|_|QoqoError::ConversionError)?;
+        let wrapped_tags: Vec<String> = wt.extract()
                                   .map_err(|_| QoqoError::ConversionError)?;
-                                let wh = op.call_method0( "wrapped_hqslang").map_err(|_|QoqoError::ConversionError)?;
-                                let wrapped_hqslang: String = wh.extract()
-                                                      .map_err(|_|QoqoError::ConversionError)?;
-                                                    let wo = op.call_method0( "wrapped_operation").map_err(|_|QoqoError::ConversionError)?;
-                                                    let wrapped_operation: Vec<u8> = wo.extract()
-                                                                          .map_err(|_|QoqoError::ConversionError)?;
-
-
-
+        let wh = op.call_method0( "wrapped_hqslang").map_err(|_|QoqoError::ConversionError)?;
+        let wrapped_hqslang: String = wh.extract()
+                                      .map_err(|_|QoqoError::ConversionError)?;
+        let wo = op.call_method0( "wrapped_operation").map_err(|_|QoqoError::ConversionError)?;
+        let wrapped_operation: Vec<u8> = wo.extract()
+                                        .map_err(|_|QoqoError::ConversionError)?;
            Ok( PragmaChangeDevice{wrapped_tags, wrapped_hqslang, wrapped_operation}.into())
     }
 );
@@ -1244,13 +1241,21 @@ impl PragmaChangeDeviceWrapper {
     /// Return the hqslang name of the wrapped operations.
     ///
     /// Returns:
-    ///     str: The name of teh wrapped operation.
+    ///     str: The name of the wrapped operation.
     fn wrapped_hqslang(&self) -> String {
-        self.internal
-            .wrapped_tags
-            .iter()
-            .map(|s| s.to_string())
-            .collect()
+        self.internal.wrapped_hqslang.to_string()
+    }
+
+    /// Return the binary representation of the wrapped operations.
+    ///
+    /// Returns:
+    ///     ByteArray: The the binary representation of the wrapped operation.
+    fn wrapped_operation(&self) -> PyResult<Py<PyByteArray>> {
+        let serialized: Vec<u8> = self.internal.wrapped_operation.clone();
+        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+            PyByteArray::new(py, &serialized[..]).into()
+        });
+        Ok(b)
     }
 
     /// List all involved qubits.
@@ -1380,7 +1385,7 @@ impl PyObjectProtocol for PragmaChangeDeviceWrapper {
     /// Args:
     ///     self: The PragmaGeneralNoise object.
     ///     other: The object to compare self to.
-    ///     op: Whether they should be equal or not.
+    ///     op: Type of comparison.
     ///
     /// Returns:
     ///     bool: Whether the two operations compared evaluated to True or False.
@@ -1389,7 +1394,7 @@ impl PyObjectProtocol for PragmaChangeDeviceWrapper {
             let other_ref = other.as_ref(py);
             crate::operations::convert_pyany_to_operation(other_ref).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
-                    "Right hand side can not be converted to Operation",
+                    "Right hand side cannot be converted to Operation",
                 )
             })
         })?;

@@ -50,7 +50,7 @@ This software is still in the beta stage. Functions and documentation are not ye
 To use roqoqo in a Rust project simply add
 
 ```TOML
-roqoqo = {version="0.7"}
+roqoqo = {version="0.8"}
 ```
 
 to the `[dependencies]` section of the project Cargo.toml.
@@ -94,7 +94,7 @@ pip install target/wheels/$NAME_OF_WHEEL
 When using qoqo in a rust project providing a python interface add
 
 ```TOML
-qoqo = {version="0.7", default-features=false}
+qoqo = {version="0.8", default-features=false}
 ```
 
 to the `[dependencies]` section of the project Cargo.toml.
