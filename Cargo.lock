@@ -417,15 +417,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-<<<<<<< HEAD
-<<<<<<< HEAD
-version = "0.6.2"
-=======
-version = "0.6.3"
->>>>>>> d2f7c7bfdf1f4c0aa9b14de9346e0490e8e76899
-=======
 version = "0.8.0"
->>>>>>> 7d006ca3877b28fab4dba1f958c5708ae5c5276c
 dependencies = [
  "bincode",
  "nalgebra",
@@ -448,15 +440,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-<<<<<<< HEAD
-<<<<<<< HEAD
-version = "0.6.2"
-=======
-version = "0.6.3"
->>>>>>> d2f7c7bfdf1f4c0aa9b14de9346e0490e8e76899
-=======
 version = "0.8.0"
->>>>>>> 7d006ca3877b28fab4dba1f958c5708ae5c5276c
 dependencies = [
  "proc-macro2",
  "quote",
@@ -563,15 +547,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-<<<<<<< HEAD
-<<<<<<< HEAD
-version = "0.6.2"
-=======
-version = "0.6.3"
->>>>>>> d2f7c7bfdf1f4c0aa9b14de9346e0490e8e76899
-=======
 version = "0.8.0"
->>>>>>> 7d006ca3877b28fab4dba1f958c5708ae5c5276c
 dependencies = [
  "bincode",
  "dyn-clone",
@@ -594,15 +570,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-<<<<<<< HEAD
-<<<<<<< HEAD
-version = "0.6.2"
-=======
-version = "0.6.3"
->>>>>>> d2f7c7bfdf1f4c0aa9b14de9346e0490e8e76899
-=======
 version = "0.8.0"
->>>>>>> 7d006ca3877b28fab4dba1f958c5708ae5c5276c
 dependencies = [
  "proc-macro2",
  "quote",
@@ -611,15 +579,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-<<<<<<< HEAD
-<<<<<<< HEAD
-version = "0.6.2"
-=======
-version = "0.6.3"
->>>>>>> d2f7c7bfdf1f4c0aa9b14de9346e0490e8e76899
-=======
 version = "0.8.0"
->>>>>>> 7d006ca3877b28fab4dba1f958c5708ae5c5276c
 dependencies = [
  "nalgebra",
  "ndarray",
