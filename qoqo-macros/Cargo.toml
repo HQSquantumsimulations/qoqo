@@ -1,10 +1,11 @@
 [package]
 name = "qoqo-macros"
-version = "0.6.1"
+version = "0.8.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 readme = "../README.md"
-edition = "2018"
+edition = "2021"
+rust-version = "1.56"
 categories = ["science", "simulation"]
 description = "Macros for the qoqo crate"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

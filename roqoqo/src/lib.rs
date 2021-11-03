@@ -117,6 +117,18 @@ pub enum RoqoqoError {
         /// Error message.
         msg: String,
     },
+    /// Error serializing an internal roqoqo object
+    #[error("An error occured serializing a roqoqo object: {msg} ")]
+    SerializationError {
+        /// Error message
+        msg: String,
+    },
+    /// Generic error that does not fit in other error categories.
+    #[error("An error occured in roqoqo: {msg} ")]
+    GenericError {
+        /// Generic error message
+        msg: String,
+    },
     // /// Rates matrix has negative eigenvalues, when they should be positive semi-definite.
     // #[error("Rates matrix has a negative eigenvalue: {value}")]
     // NegativeEigenvalue {
@@ -166,7 +178,7 @@ pub enum RoqoqoBackendError {
     /// Error when communicating with backend over the network.
     #[error("An error occured in the backend: {msg} ")]
     GenericError {
-        /// Path of file to be created
+        /// Generic error message
         msg: String,
     },
     /// Transparent propagation of RoqoqoError.
@@ -185,4 +197,6 @@ pub use circuit::*;
 pub mod backends;
 pub mod devices;
 pub mod measurements;
+mod quantum_program;
 pub mod registers;
+pub use quantum_program::QuantumProgram;

@@ -12,6 +12,8 @@
 //
 //! Integration test for public API of Measurement operations
 
+#[cfg(feature = "serialize")]
+use bincode::serialize;
 use ndarray::{array, Array1, Array2};
 use num_complex::Complex64;
 use qoqo_calculator::{Calculator, CalculatorFloat};
@@ -928,10 +930,12 @@ fn pragma_stop_simple_traits() {
     let pragma = PragmaStopParallelBlock::new(vec![0, 1], CalculatorFloat::from(0.0000001));
 
     // Test Debug trait
-    assert_eq!(
-        format!("{:?}", pragma),
-        "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(0.0000001) }"
-    );
+    let string_comparison = (format!("{:?}", pragma)
+        == "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(0.0000001) }")
+        || (format!("{:?}", pragma)
+            == "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(1e-7) }");
+
+    assert!(string_comparison);
 
     // Test Clone trait
     assert_eq!(pragma.clone(), pragma);
@@ -1184,10 +1188,11 @@ fn pragma_sleep_simple_traits() {
     let pragma = PragmaSleep::new(vec![0, 1], CalculatorFloat::from(0.0000001));
 
     // Test Debug trait
-    assert_eq!(
-        format!("{:?}", pragma),
-        "PragmaSleep { qubits: [0, 1], sleep_time: Float(0.0000001) }"
-    );
+    let string_comparison = (format!("{:?}", pragma)
+        == "PragmaSleep { qubits: [0, 1], sleep_time: Float(0.0000001) }")
+        || (format!("{:?}", pragma) == "PragmaSleep { qubits: [0, 1], sleep_time: Float(1e-7) }");
+
+    assert!(string_comparison);
 
     // Test Clone trait
     assert_eq!(pragma.clone(), pragma);
@@ -1816,8 +1821,7 @@ fn pragma_damping_pragmanoise_trait() {
     let pragma = PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
 
     // (1) Superoperator function
-    let superop_pre_exp: f64 = -1.0 * 0.005 * 0.02;
-    let superop_prob: f64 = 1.0 - superop_pre_exp.exp();
+    let superop_prob: f64 = f64::try_from(pragma.probability()).unwrap();
     let superop_sqrt: f64 = (1.0 - superop_prob).sqrt();
     let superop: Array2<f64> = array![
         [1.0, 0.0, 0.0, superop_prob],
@@ -2631,7 +2635,7 @@ fn pragma_general_noise_pragmanoise_trait() {
         ]
     ];
 
-    let result: Array2<f64> = pragma.superoperator().unwrap() - test_exponential;
+    let result: Array2<f64> = test_exponential - pragma.superoperator().unwrap().t();
     for item in result.iter() {
         assert!(item.abs() <= 0.0001);
     }
@@ -2784,12 +2788,7 @@ fn pragma_conditional_operate_trait() {
     let pragma = PragmaConditional::new(String::from("ro"), 1, Circuit::default());
 
     // (1) Test tags function
-    let tags: &[&str; 4] = &[
-        "Operation",
-        "SingleQubitOperation",
-        "PragmaOperation",
-        "PragmaConditional",
-    ];
+    let tags: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaConditional"];
     assert_eq!(pragma.tags(), tags);
 
     // (2) Test hqslang function
@@ -2896,4 +2895,91 @@ fn pragma_conditional_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+/// Test PragmaChangeDevice inputs and involved qubits
+#[test]
+#[cfg(feature = "serialize")]
+fn pragma_change_device_inputs_qubits() {
+    // This is not a change device pragma, but for testing purposes it can be used
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
+
+    // Test inputs are correct
+    assert_eq!(pragma.wrapped_hqslang, String::from("PragmaActiveReset"));
+    let tags: &[&str; 4] = &[
+        "Operation",
+        "SingleQubitOperation",
+        "PragmaOperation",
+        "PragmaActiveReset",
+    ];
+    assert_eq!(pragma.wrapped_tags, tags);
+    assert_eq!(pragma.wrapped_operation, serialize(&wrapped).unwrap());
+
+    // Test InvolveQubits trait
+    assert_eq!(pragma.involved_qubits(), InvolvedQubits::All);
+}
+
+/// Test PragmaConditional standard derived traits (Debug, Clone, PartialEq)
+#[test]
+#[cfg(feature = "serialize")]
+fn pragma_change_device_simple_traits() {
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
+    let wrapped_0: Operation = PragmaActiveReset::new(0).into();
+    let pragma_0 = PragmaChangeDevice::new(&wrapped_0).unwrap();
+
+    let wrapped_1: Operation = PragmaActiveReset::new(1).into();
+    let pragma_1 = PragmaChangeDevice::new(&wrapped_1).unwrap();
+    // Test Clone trait
+    assert_eq!(pragma.clone(), pragma);
+
+    // Test PartialEq trait
+    assert!(pragma_0 == pragma);
+    assert!(pragma == pragma_0);
+    assert!(pragma_1 != pragma);
+    assert!(pragma != pragma_1);
+}
+
+/// Test PragmaConditional Operate trait
+#[test]
+#[cfg(feature = "serialize")]
+fn pragma_change_device_operate_trait() {
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
+
+    // (1) Test tags function
+    let tags: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaChangeDevice"];
+    assert_eq!(pragma.tags(), tags);
+
+    // (2) Test hqslang function
+    assert_eq!(pragma.hqslang(), String::from("PragmaChangeDevice"));
+
+    // (3) Test is_parametrized function
+    assert_eq!(pragma.is_parametrized(), false);
+}
+
+/// Test PragmaConditional Substitute trait
+#[test]
+#[cfg(feature = "serialize")]
+fn pragma_change_device_substitute_trait() {
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
+    let pragma_test = PragmaChangeDevice::new(&wrapped).unwrap();
+    // (1) Substitute parameters function
+    let mut substitution_dict: Calculator = Calculator::new();
+    substitution_dict.set_variable("ro", 0.0);
+    let result = pragma_test
+        .substitute_parameters(&mut substitution_dict)
+        .unwrap();
+    assert_eq!(pragma, result);
+
+    // (2) Remap qubits with a remapping
+    // This is not supported yet and should throw an error
+    let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping_test.insert(0, 2);
+    let mut new_qubit_paulis: HashMap<usize, usize> = HashMap::new();
+    new_qubit_paulis.insert(2, 1);
+    let result = pragma_test.remap_qubits(&qubit_mapping_test).is_err();
+    assert!(result);
 }

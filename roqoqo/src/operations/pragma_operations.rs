@@ -18,6 +18,8 @@ use crate::operations::{
     OperatePragmaNoiseProba, OperateSingleQubit, RoqoqoError, Substitute,
 };
 use crate::Circuit;
+#[cfg(feature = "serialize")]
+use bincode::serialize;
 use nalgebra::Matrix4;
 use ndarray::{array, Array, Array1, Array2};
 use num_complex::Complex64;
@@ -502,11 +504,7 @@ const TAGS_PragmaDamping: &[&str; 6] = &[
 impl OperatePragmaNoise for PragmaDamping {
     /// Returns the superoperator matrix of the operation.
     fn superoperator(&self) -> Result<Array2<f64>, RoqoqoError> {
-        let gate_time: f64 = f64::try_from(self.gate_time.clone())?;
-        let rate: f64 = f64::try_from(self.rate.clone())?;
-
-        let pre_exp: f64 = -1.0 * gate_time * rate;
-        let prob: f64 = 1.0 - pre_exp.exp();
+        let prob: f64 = f64::try_from(self.probability())?;
         let sqrt: f64 = (1.0 - prob).sqrt();
 
         Ok(array![
@@ -766,7 +764,6 @@ impl OperatePragmaNoiseProba for PragmaRandomNoise {
 /// where the coefficients correspond to the following summands
 /// expanded from the first term of the non-coherent part of the Lindblad equation:
 ///     $$ \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
-///     $$ \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
 ///         L_0 = \sigma^{+} \\\\
 ///         L_1 = \sigma^{-} \\\\
 ///         L_3 = \sigma^{z}
@@ -924,7 +921,9 @@ impl OperatePragmaNoise for PragmaGeneralNoise {
         }
         // Integrate superoperator for infinitesimal time to get superoperator for given rate and gate-time
         // Use exponential
-        let exp_superop: Matrix4<f64> = superop.exp();
+        let mut exp_superop: Matrix4<f64> = superop.exp();
+        // transpose because NAlgebra matrix iter is column major
+        exp_superop.transpose_mut();
         let mut tmp_iter = exp_superop.iter();
         // convert to ndarray.
         let array: Array2<f64> = Array::from_shape_simple_fn((4, 4), || *tmp_iter.next().unwrap());
@@ -956,12 +955,7 @@ pub struct PragmaConditional {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_PragmaConditional: &[&str; 4] = &[
-    "Operation",
-    "SingleQubitOperation",
-    "PragmaOperation",
-    "PragmaConditional",
-];
+const TAGS_PragmaConditional: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaConditional"];
 
 // Implementing the InvolveQubits trait for PragmaConditional.
 impl InvolveQubits for PragmaConditional {
@@ -991,5 +985,88 @@ impl Substitute for PragmaConditional {
             self.condition_index,
             new_circuit,
         ))
+    }
+}
+
+/// A wrapper around backend specific PRAGMA operations capable of changing a device.
+///
+/// This PRAGMA is a thin wrapper around device specific operations that can change
+/// device properties.
+///
+/// # NOTE
+///
+/// Since this PRAGMA uses serde and bincode to store a representation of the wrapped
+/// operation internally it is only available when roqoqo is built with the `serialize` feature
+#[derive(Debug, Clone, PartialEq, roqoqo_derive::OperatePragma)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+pub struct PragmaChangeDevice {
+    /// The tags of the wrapped operation.
+    pub wrapped_tags: Vec<String>,
+    /// The hqslang name of the wrapped operation.
+    pub wrapped_hqslang: String,
+    /// Binary representation of the wrapped operation using serde and bincode.
+    pub wrapped_operation: Vec<u8>,
+}
+#[cfg_attr(feature = "dynamic", typetag::serde)]
+impl Operate for PragmaChangeDevice {
+    fn tags(&self) -> &'static [&'static str] {
+        TAGS_PragmaChangeDevice
+    }
+    fn hqslang(&self) -> &'static str {
+        "PragmaChangeDevice"
+    }
+    fn is_parametrized(&self) -> bool {
+        false
+    }
+}
+impl PragmaChangeDevice {
+    #[cfg(feature = "serialize")]
+    pub fn new<T>(wrapped_pragma: &T) -> Result<Self, RoqoqoError>
+    where
+        T: Operate,
+        T: Serialize,
+    {
+        Ok(Self {
+            wrapped_tags: wrapped_pragma
+                .tags()
+                .iter()
+                .map(|x| x.to_string())
+                .collect(),
+            wrapped_hqslang: wrapped_pragma.hqslang().to_string(),
+            wrapped_operation: serialize(wrapped_pragma).map_err(|err| {
+                RoqoqoError::SerializationError {
+                    msg: format!("{:?}", err),
+                }
+            })?,
+        })
+    }
+}
+#[allow(non_upper_case_globals)]
+const TAGS_PragmaChangeDevice: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaChangeDevice"];
+
+// Implementing the InvolveQubits trait for PragmaConditional.
+impl InvolveQubits for PragmaChangeDevice {
+    /// Lists all involved qubits.
+    fn involved_qubits(&self) -> InvolvedQubits {
+        InvolvedQubits::All
+    }
+}
+
+/// Substitute trait allowing to replace symbolic parameters and to perform qubit mappings.
+impl Substitute for PragmaChangeDevice {
+    /// Remaps qubits in clone of the operation.
+    /// This is not supported  for PragmaChangeDevice and should throw and error when a non-trivial remapping
+    /// is used
+    fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        match mapping.iter().find(|(x, y)| x != y) {
+            Some((x, _)) => Err(RoqoqoError::QubitMappingError { qubit: *x }),
+            None => Ok(self.clone()),
+        }
+    }
+
+    #[allow(unused_variables)]
+    /// Substitutes symbolic parameters in clone of the operation.
+    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+        Ok(self.clone())
     }
 }
