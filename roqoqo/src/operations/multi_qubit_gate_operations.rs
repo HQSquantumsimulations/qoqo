@@ -14,7 +14,7 @@ use crate::operations;
 use crate::prelude::*;
 use crate::Circuit;
 use crate::RoqoqoError;
-use ndarray::Array2;
+use ndarray::prelude::*;
 use num_complex::Complex64;
 use qoqo_calculator::CalculatorFloat;
 #[cfg(feature = "overrotate")]
@@ -82,6 +82,75 @@ impl OperateMultiQubitGate for MultiQubitMS {
         }
         for q in self.qubits.iter() {
             circuit += operations::Hadamard::new(*q);
+        }
+        circuit
+    }
+}
+
+#[allow(clippy::upper_case_acronyms)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateMultiQubit,
+)]
+#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+/// The CNOT gate with multiple controls
+pub struct MultiCNOT {
+    qubits: Vec<usize>,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_MultiCNOT: &[&str; 4] = &[
+    "Operation",
+    "GateOperation",
+    "MultiQubitGateOperation",
+    "MultiCNOT",
+];
+
+impl OperateGate for MultiCNOT {
+    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
+        let dim = 2_usize.pow(self.qubits.len() as u32);
+        let mut array = Array2::eye(dim);
+        array
+            .slice_mut(s![dim - 2.., dim - 2..])
+            .assign(&array![[0., 1.], [1., 0.]]);
+        Ok(array.map(|x| x.into()))
+    }
+}
+
+impl OperateMultiQubitGate for MultiCNOT {
+    // https://en.wikipedia.org/wiki/Toffoli_gate#/media/File:Qcircuit_ToffolifromCNOT.svg
+    fn circuit(&self) -> Circuit {
+        let mut circuit = Circuit::new();
+        match self.qubits().len() {
+            2 => {
+                circuit += operations::CNOT::new(self.qubits[0], self.qubits[1]);
+            }
+            3 => {
+                circuit += operations::Hadamard::new(self.qubits[2]);
+                circuit += operations::CNOT::new(self.qubits[1], self.qubits[2]);
+                circuit +=
+                    operations::PhaseShiftState1::new(self.qubits[2], -CalculatorFloat::FRAC_PI_4);
+                circuit += operations::CNOT::new(self.qubits[0], self.qubits[2]);
+                circuit += operations::TGate::new(self.qubits[2]);
+                circuit += operations::CNOT::new(self.qubits[1], self.qubits[2]);
+                circuit +=
+                    operations::PhaseShiftState1::new(self.qubits[2], -CalculatorFloat::FRAC_PI_4);
+                circuit += operations::CNOT::new(self.qubits[0], self.qubits[2]);
+                circuit += operations::TGate::new(self.qubits[1]);
+                circuit += operations::TGate::new(self.qubits[2]);
+                circuit += operations::Hadamard::new(self.qubits[2]);
+                circuit += operations::CNOT::new(self.qubits[0], self.qubits[1]);
+                circuit += operations::TGate::new(self.qubits[0]);
+                circuit +=
+                    operations::PhaseShiftState1::new(self.qubits[1], -CalculatorFloat::FRAC_PI_4);
+                circuit += operations::CNOT::new(self.qubits[0], self.qubits[1]);
+            }
+            _ => panic!("Only MultiCNOT gates with 2 or 3 controls can be turned into a circuit."),
         }
         circuit
     }

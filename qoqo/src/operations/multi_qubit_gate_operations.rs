@@ -34,3 +34,11 @@ pub struct MultiQubitMS {
     /// The angle of the multi qubit Molmer-Sorensen gate.
     theta: CalculatorFloat,
 }
+
+#[allow(clippy::upper_case_acronyms)]
+#[wrap(Operate, OperateMultiQubit, OperateGate, OperateMultiQubitGate)]
+/// The CNOT gate with multiple controls
+pub struct MultiCNOT {
+    /// The qubits involved in the MultiCNOT gate.
+    qubits: Vec<usize>,
+}
