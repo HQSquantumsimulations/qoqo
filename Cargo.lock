@@ -277,16 +277,16 @@ dependencies = [
 
 [[package]]
 name = "numpy"
-version = "0.14.1"
+version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "09c15af63aa0c74e0f7230d4e95d9a3d71a23449905f30f50b055df9a6a6a3e6"
+checksum = "e590538dba8432d54d3587b06df73d7c044e83cfa4b200cbc7d0567f924ac0a7"
 dependencies = [
  "cfg-if 0.1.10",
  "libc",
  "ndarray",
  "num-complex",
  "num-traits",
- "pyo3",
+ "pyo3 0.15.0",
 ]
 
 [[package]]
@@ -378,9 +378,21 @@ dependencies = [
  "num-complex",
  "parking_lot",
  "paste 0.1.18",
- "pyo3-build-config",
+ "pyo3-build-config 0.14.5",
  "pyo3-macros",
  "unindent",
+]
+
+[[package]]
+name = "pyo3"
+version = "0.15.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "64664505ce285a59b8b7e940fbe54ad65b1758a0810eddc5bc26df6f6ec8c557"
+dependencies = [
+ "cfg-if 1.0.0",
+ "libc",
+ "parking_lot",
+ "pyo3-build-config 0.15.0",
 ]
 
 [[package]]
@@ -388,6 +400,15 @@ name = "pyo3-build-config"
 version = "0.14.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d12961738cacbd7f91b7c43bc25cfeeaa2698ad07a04b3be0aa88b950865738f"
+dependencies = [
+ "once_cell",
+]
+
+[[package]]
+name = "pyo3-build-config"
+version = "0.15.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5f1e4a72de84cdcd69f62211b62f62753d0c11b7b5715f3467f3754dab22a7ca"
 dependencies = [
  "once_cell",
 ]
@@ -410,7 +431,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "71623fc593224afaab918aa3afcaf86ed2f43d34f6afde7f3922608f253240df"
 dependencies = [
  "proc-macro2",
- "pyo3-build-config",
+ "pyo3-build-config 0.14.5",
  "quote",
  "syn",
 ]
@@ -425,7 +446,7 @@ dependencies = [
  "num-complex",
  "numpy",
  "proc-macro2",
- "pyo3",
+ "pyo3 0.14.5",
  "qoqo-macros",
  "qoqo_calculator",
  "qoqo_calculator_pyo3",
@@ -465,7 +486,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2ef8106b00d8e1091eaa088eaf0b7d4cac2d127c06b24c54a24e65d48ecdfb5a"
 dependencies = [
  "num-complex",
- "pyo3",
+ "pyo3 0.14.5",
  "qoqo_calculator",
  "serde",
  "thiserror",
