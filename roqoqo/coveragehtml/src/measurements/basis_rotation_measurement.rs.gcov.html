@@ -1,0 +1,330 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.lcov - src/measurements/basis_rotation_measurement.rs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">src/measurements</a> - basis_rotation_measurement.rs<span style="font-size: 80%;"> (source / <a href="basis_rotation_measurement.rs.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.lcov</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">145</td>
+            <td class="headerCovTableEntry">147</td>
+            <td class="headerCovTableEntryHi">98.6 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2021-11-09 13:25:48</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // Copyright © 2021 HQS Quantum Simulations GmbH. All Rights Reserved.</a>
+<span class="lineNum">       2 </span>            : //
+<span class="lineNum">       3 </span>            : // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not use this file except
+<span class="lineNum">       4 </span>            : // in compliance with the License. You may obtain a copy of the License at
+<span class="lineNum">       5 </span>            : //
+<span class="lineNum">       6 </span>            : //     http://www.apache.org/licenses/LICENSE-2.0
+<span class="lineNum">       7 </span>            : //
+<span class="lineNum">       8 </span>            : // Unless required by applicable law or agreed to in writing, software distributed under the
+<span class="lineNum">       9 </span>            : // License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+<span class="lineNum">      10 </span>            : // express or implied. See the License for the specific language governing permissions and
+<span class="lineNum">      11 </span>            : // limitations under the License.
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : use super::*;
+<span class="lineNum">      14 </span>            : use ndarray::{Array1, Array2};
+<span class="lineNum">      15 </span>            : #[cfg(feature = &quot;serialize&quot;)]
+<span class="lineNum">      16 </span>            : use serde::{Deserialize, Serialize};
+<a name="17"><span class="lineNum">      17 </span>            : </a>
+<span class="lineNum">      18 </span>            : /// Collected information for executing a basis rotation measurement.
+<span class="lineNum">      19 </span><span class="lineCov">          2 : #[derive(Debug, PartialEq, Clone)]</span>
+<span class="lineNum">      20 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(Serialize, Deserialize))]
+<span class="lineNum">      21 </span>            : pub struct BasisRotation {
+<span class="lineNum">      22 </span>            :     /// Constant Circuit that is executed before each Circuit in circuits.
+<span class="lineNum">      23 </span>            :     pub constant_circuit: Option&lt;Circuit&gt;,
+<span class="lineNum">      24 </span>            :     /// Collection of quantum circuits for the separate basis rotations.
+<span class="lineNum">      25 </span>            :     pub circuits: Vec&lt;Circuit&gt;,
+<span class="lineNum">      26 </span>            :     /// Additional input information required for measurement.
+<span class="lineNum">      27 </span>            :     pub input: BasisRotationInput,
+<span class="lineNum">      28 </span>            : }
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            : impl Measure for BasisRotation {
+<span class="lineNum">      31 </span>            :     /// Returns the constant Circuit that is executed before each Circuit in circuits.
+<span class="lineNum">      32 </span>            :     ///
+<span class="lineNum">      33 </span>            :     /// # Returns
+<a name="34"><span class="lineNum">      34 </span>            :     ///</a>
+<span class="lineNum">      35 </span>            :     /// * `&amp;Option&lt;Circuit` - The constant Circuit (None if not defined).
+<span class="lineNum">      36 </span><span class="lineCov">          3 :     fn constant_circuit(&amp;self) -&gt; &amp;Option&lt;Circuit&gt; {</span>
+<span class="lineNum">      37 </span><span class="lineCov">          3 :         &amp;self.constant_circuit</span>
+<span class="lineNum">      38 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :     /// Returns iterator over circuits for measurement.
+<span class="lineNum">      41 </span>            :     ///
+<span class="lineNum">      42 </span>            :     /// # Returns
+<a name="43"><span class="lineNum">      43 </span>            :     ///</a>
+<span class="lineNum">      44 </span>            :     /// * `Box&lt;dyn Iterator&lt;Item = &amp;'a Circuit&gt; + 'a&gt;` - The quantum circuits.
+<span class="lineNum">      45 </span><span class="lineCov">          3 :     fn circuits&lt;'a&gt;(&amp;'a self) -&gt; Box&lt;dyn Iterator&lt;Item = &amp;'a Circuit&gt; + 'a&gt; {</span>
+<span class="lineNum">      46 </span><span class="lineCov">          3 :         Box::new(self.circuits.iter())</span>
+<span class="lineNum">      47 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :     /// Returns clone of Measurement with symbolic parameters replaced.
+<span class="lineNum">      50 </span>            :     ///
+<span class="lineNum">      51 </span>            :     /// # Arguments
+<span class="lineNum">      52 </span>            :     ///
+<span class="lineNum">      53 </span>            :     /// * `substituted_parameters` - The HashMap containing the substitutions to use in the Circuit.
+<span class="lineNum">      54 </span>            :     ///
+<span class="lineNum">      55 </span>            :     /// # Returns
+<span class="lineNum">      56 </span>            :     ///
+<span class="lineNum">      57 </span>            :     /// * `Ok(Self)` -  The Circuits with the parameters substituted.
+<a name="58"><span class="lineNum">      58 </span>            :     /// * `Err(RoqoqoError)` - The subsitution failed.</a>
+<span class="lineNum">      59 </span>            :     ///
+<span class="lineNum">      60 </span><span class="lineCov">          3 :     fn substitute_parameters(</span>
+<span class="lineNum">      61 </span><span class="lineCov">          3 :         &amp;self,</span>
+<span class="lineNum">      62 </span><span class="lineCov">          3 :         substituted_parameters: HashMap&lt;String, f64&gt;,</span>
+<span class="lineNum">      63 </span><span class="lineCov">          3 :     ) -&gt; Result&lt;Self, RoqoqoError&gt; {</span>
+<span class="lineNum">      64 </span><span class="lineCov">          3 :         let mut calculator = qoqo_calculator::Calculator::new();</span>
+<span class="lineNum">      65 </span><span class="lineCov">          9 :         for (name, val) in substituted_parameters.iter() {</span>
+<span class="lineNum">      66 </span><span class="lineCov">          6 :             calculator.set_variable(name, *val)</span>
+<span class="lineNum">      67 </span>            :         }
+<span class="lineNum">      68 </span><span class="lineCov">          3 :         let new_constant_circuit = match &amp;self.constant_circuit {</span>
+<span class="lineNum">      69 </span><span class="lineNoCov">          0 :             None =&gt; None,</span>
+<span class="lineNum">      70 </span><span class="lineCov">          3 :             Some(c) =&gt; Some(c.substitute_parameters(&amp;mut calculator)?),</span>
+<span class="lineNum">      71 </span>            :         };
+<span class="lineNum">      72 </span><span class="lineCov">          2 :         let mut new_circuits = Vec::new();</span>
+<span class="lineNum">      73 </span><span class="lineCov">          2 :         for circ in self.circuits.iter() {</span>
+<span class="lineNum">      74 </span><span class="lineCov">          2 :             let mut calculator = qoqo_calculator::Calculator::new();</span>
+<span class="lineNum">      75 </span><span class="lineCov">          6 :             for (name, val) in substituted_parameters.iter() {</span>
+<span class="lineNum">      76 </span><span class="lineCov">          4 :                 calculator.set_variable(name, *val)</span>
+<span class="lineNum">      77 </span>            :             }
+<span class="lineNum">      78 </span><span class="lineCov">          2 :             new_circuits.push(circ.substitute_parameters(&amp;mut calculator)?)</span>
+<span class="lineNum">      79 </span>            :         }
+<span class="lineNum">      80 </span><span class="lineCov">          2 :         Ok(Self {</span>
+<span class="lineNum">      81 </span><span class="lineCov">          2 :             constant_circuit: new_constant_circuit,</span>
+<span class="lineNum">      82 </span><span class="lineCov">          2 :             circuits: new_circuits,</span>
+<span class="lineNum">      83 </span><span class="lineCov">          2 :             input: self.input.clone(),</span>
+<span class="lineNum">      84 </span><span class="lineCov">          2 :         })</span>
+<span class="lineNum">      85 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">      86 </span>            : }
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            : impl MeasureExpectationValues for BasisRotation {
+<span class="lineNum">      89 </span>            :     // TODO add optional device later for use with flipped measurement
+<span class="lineNum">      90 </span>            :     #[allow(unused_variables)]
+<span class="lineNum">      91 </span>            :     /// Executes the basis rotation measurement.
+<span class="lineNum">      92 </span>            :     ///
+<span class="lineNum">      93 </span>            :     /// # Arguments
+<span class="lineNum">      94 </span>            :     ///
+<span class="lineNum">      95 </span>            :     /// * `bit_registers` - The classical bit registers as a HashMap with the register name as key.
+<span class="lineNum">      96 </span>            :     /// * `float_registers` - The classical float registers as a HashMap with the register name as key.
+<span class="lineNum">      97 </span>            :     /// * `complex_registers` - The classical complex registers as a HashMap with the register name as key.
+<span class="lineNum">      98 </span>            :     ///
+<span class="lineNum">      99 </span>            :     /// # Returns
+<span class="lineNum">     100 </span>            :     ///
+<span class="lineNum">     101 </span>            :     /// * `Ok(Some(HashMap&lt;String, f64&gt;))` - The measurement has been evaluated successfully. The HashMap contains the measured expectation values.
+<span class="lineNum">     102 </span>            :     /// * `Ok(None)` - The measurement did not fail but is incomplete. A new round of measurements is needed
+<a name="103"><span class="lineNum">     103 </span>            :     /// * `Err([RoqoqoError::BasisRotationMeasurementError])` - An error occured in basis rotation measurement.</a>
+<span class="lineNum">     104 </span>            :     ///
+<span class="lineNum">     105 </span><span class="lineCov">         10 :     fn evaluate(</span>
+<span class="lineNum">     106 </span><span class="lineCov">         10 :         &amp;self,</span>
+<span class="lineNum">     107 </span><span class="lineCov">         10 :         bit_registers: HashMap&lt;String, BitOutputRegister&gt;,</span>
+<span class="lineNum">     108 </span><span class="lineCov">         10 :         float_registers: HashMap&lt;String, FloatOutputRegister&gt;,</span>
+<span class="lineNum">     109 </span><span class="lineCov">         10 :         complex_registers: HashMap&lt;String, ComplexOutputRegister&gt;,</span>
+<span class="lineNum">     110 </span><span class="lineCov">         10 :     ) -&gt; Result&lt;Option&lt;HashMap&lt;String, f64&gt;&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">     111 </span><span class="lineCov">         10 :         // todo replace with actual input</span>
+<span class="lineNum">     112 </span><span class="lineCov">         10 :         let measurement_fidelities = vec![1.0; self.input.number_qubits];</span>
+<span class="lineNum">     113 </span><span class="lineCov">         10 : </span>
+<span class="lineNum">     114 </span><span class="lineCov">         10 :         // Setting up measurement correction factors for flipped measurement</span>
+<span class="lineNum">     115 </span><span class="lineCov">         10 :         let mut measurement_correction_factors: HashMap&lt;String, Vec&lt;f64&gt;&gt; = HashMap::new();</span>
+<span class="lineNum">     116 </span><span class="lineCov">         10 :         let flipped_and_extension: Vec&lt;(bool, &amp;'static str)&gt;;</span>
+<span class="lineNum">     117 </span><span class="lineCov">         10 :         if self.input.use_flipped_measurement {</span>
+<span class="lineNum">     118 </span>            :             // helper vector to iterate over when evaluating the pauli products
+<span class="lineNum">     119 </span><span class="lineCov">          3 :             flipped_and_extension = vec![(false, &quot;&quot;), (true, &quot;_flipped&quot;)];</span>
+<span class="lineNum">     120 </span><span class="lineCov">          6 :             for (name, pauli_product_mask) in self.input.pauli_product_qubit_masks.iter() {</span>
+<span class="lineNum">     121 </span><span class="lineCov">          3 :                 let mut measurement_correction_factor: Vec&lt;f64&gt; =</span>
+<a name="122"><span class="lineNum">     122 </span><span class="lineCov">          3 :                     (0..self.input.number_pauli_products)</span></a>
+<span class="lineNum">     123 </span><span class="lineCov">          3 :                         .into_iter()</span>
+<span class="lineNum">     124 </span><span class="lineCov">          9 :                         .map(|_| 1.0)</span>
+<span class="lineNum">     125 </span><span class="lineCov">          3 :                         .collect();</span>
+<span class="lineNum">     126 </span><span class="lineCov">         12 :                 for (pp_index, indices) in pauli_product_mask.iter() {</span>
+<span class="lineNum">     127 </span><span class="lineCov">          9 :                     if !indices.is_empty() {</span>
+<span class="lineNum">     128 </span><span class="lineCov">          9 :                         for i in indices {</span>
+<span class="lineNum">     129 </span><span class="lineCov">          9 :                             measurement_correction_factor[*pp_index] *= measurement_fidelities[*i]</span>
+<span class="lineNum">     130 </span>            :                         }
+<span class="lineNum">     131 </span><span class="lineCov">          3 :                     }</span>
+<span class="lineNum">     132 </span>            :                 }
+<span class="lineNum">     133 </span><span class="lineCov">          3 :                 measurement_correction_factors.insert(name.clone(), measurement_correction_factor);</span>
+<span class="lineNum">     134 </span>            :             }
+<span class="lineNum">     135 </span><span class="lineCov">          7 :         } else {</span>
+<span class="lineNum">     136 </span><span class="lineCov">          7 :             flipped_and_extension = vec![(false, &quot;&quot;)];</span>
+<span class="lineNum">     137 </span><span class="lineCov">          7 :         }</span>
+<span class="lineNum">     138 </span><span class="lineCov">         10 :         let mut pauli_product_dict: HashMap&lt;String, Array1&lt;f64&gt;&gt; = HashMap::new();</span>
+<span class="lineNum">     139 </span><span class="lineCov">         25 :         for (register_name, mask) in self.input.pauli_product_qubit_masks.iter() {</span>
+<span class="lineNum">     140 </span><span class="lineCov">         33 :             for (flip_measurement, extension) in flipped_and_extension.iter() {</span>
+<span class="lineNum">     141 </span><span class="lineCov">         18 :                 let register = bit_registers</span>
+<span class="lineNum">     142 </span><span class="lineCov">         18 :                     .get(&amp;format!(&quot;{}{}&quot;, register_name.as_str(), extension))</span>
+<span class="lineNum">     143 </span><span class="lineCov">         18 :                     .ok_or(RoqoqoError::BasisRotationMeasurementError {</span>
+<span class="lineNum">     144 </span><span class="lineCov">         18 :                         msg: format!(</span>
+<span class="lineNum">     145 </span><span class="lineCov">         18 :                             &quot;bit register {}{} not found&quot;,</span>
+<span class="lineNum">     146 </span><span class="lineCov">         18 :                             register_name.as_str(),</span>
+<span class="lineNum">     147 </span><span class="lineCov">         18 :                             extension</span>
+<span class="lineNum">     148 </span><span class="lineCov">         18 :                         ),</span>
+<span class="lineNum">     149 </span><span class="lineCov">         18 :                     })?;</span>
+<span class="lineNum">     150 </span><span class="lineCov">         18 :                 let mut single_shot_pauli_products: Array2&lt;f64&gt; =</span>
+<span class="lineNum">     151 </span><span class="lineCov">         18 :                     Array2::zeros((register.len(), self.input.number_pauli_products));</span>
+<span class="lineNum">     152 </span><span class="lineCov">         60 :                 for (index, mask_val) in mask.iter() {</span>
+<span class="lineNum">     153 </span><span class="lineCov">         42 :                     if mask_val.is_empty() {</span>
+<span class="lineNum">     154 </span><span class="lineCov">         12 :                         single_shot_pauli_products.column_mut(*index).fill(1.0);</span>
+<span class="lineNum">     155 </span><span class="lineCov">         12 :                     } else {</span>
+<span class="lineNum">     156 </span>            :                         // Accessing column of single_shot_pauli_products that corresponds to pauli product designated by index
+<span class="lineNum">     157 </span><span class="lineCov">         30 :                         let mut column = single_shot_pauli_products.column_mut(*index);</span>
+<span class="lineNum">     158 </span>            :                         // Iterate over all single shot readouts for all qubits and construct Pauli Product
+<span class="lineNum">     159 </span><span class="lineCov">         90 :                         for (row_index, values) in register.iter().enumerate() {</span>
+<span class="lineNum">     160 </span>            :                             // Determine the value of the pauli product with the parity of the number of 0 and 1 measurements of the qubits
+<span class="lineNum">     161 </span>            :                             // false is even parity and true is odd parity
+<span class="lineNum">     162 </span><span class="lineCov">         90 :                             let mut parity = false;</span>
+<span class="lineNum">     163 </span><span class="lineCov">        144 :                             for i in mask_val.iter() {</span>
+<span class="lineNum">     164 </span><span class="lineCov">        144 :                                 // For flipped readout a false (0) qubit measurement will flip the parity</span>
+<span class="lineNum">     165 </span><span class="lineCov">        144 :                                 // For a not-flipped measurement a true (1) qubit measurement will flip the parity</span>
+<span class="lineNum">     166 </span><span class="lineCov">        144 :                                 if values[*i] ^ flip_measurement {</span>
+<span class="lineNum">     167 </span><span class="lineCov">         42 :                                     parity = !parity</span>
+<span class="lineNum">     168 </span><span class="lineCov">        102 :                                 }</span>
+<span class="lineNum">     169 </span>            :                             } // Map even parity measurement result to 1 and odd parity result to -1
+<span class="lineNum">     170 </span><span class="lineCov">         90 :                             column[row_index] = match parity {</span>
+<span class="lineNum">     171 </span><span class="lineCov">         72 :                                 false =&gt; 1.0,</span>
+<span class="lineNum">     172 </span><span class="lineCov">         18 :                                 true =&gt; -1.0,</span>
+<span class="lineNum">     173 </span>            :                             };
+<span class="lineNum">     174 </span>            :                         }
+<span class="lineNum">     175 </span>            :                     }
+<span class="lineNum">     176 </span>            :                 }
+<span class="lineNum">     177 </span><span class="lineCov">         18 :                 let mut pauli_products_tmp: Array1&lt;f64&gt; =</span>
+<span class="lineNum">     178 </span><span class="lineCov">         18 :                     Array1::zeros(self.input.number_pauli_products);</span>
+<span class="lineNum">     179 </span><span class="lineCov">         66 :                 for i in 0..self.input.number_pauli_products {</span>
+<span class="lineNum">     180 </span><span class="lineCov">         66 :                     pauli_products_tmp[i] = single_shot_pauli_products.column(i).mean().ok_or(</span>
+<span class="lineNum">     181 </span><span class="lineCov">         66 :                         RoqoqoError::BasisRotationMeasurementError {</span>
+<span class="lineNum">     182 </span><span class="lineCov">         66 :                             msg: format!(</span>
+<span class="lineNum">     183 </span><span class="lineCov">         66 :                                 &quot;Column {} out of index for sinlge_shot_pauli_products&quot;,</span>
+<span class="lineNum">     184 </span><span class="lineCov">         66 :                                 i</span>
+<span class="lineNum">     185 </span><span class="lineCov">         66 :                             ),</span>
+<span class="lineNum">     186 </span><span class="lineCov">         66 :                         },</span>
+<span class="lineNum">     187 </span><span class="lineCov">         66 :                     )?;</span>
+<span class="lineNum">     188 </span>            :                 }
+<span class="lineNum">     189 </span><span class="lineCov">         18 :                 pauli_product_dict.insert(</span>
+<span class="lineNum">     190 </span><span class="lineCov">         18 :                     format!(&quot;{}{}&quot;, register_name.as_str(), extension),</span>
+<span class="lineNum">     191 </span><span class="lineCov">         18 :                     pauli_products_tmp,</span>
+<span class="lineNum">     192 </span><span class="lineCov">         18 :                 );</span>
+<span class="lineNum">     193 </span>            :             }
+<span class="lineNum">     194 </span>            :         }
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span><span class="lineCov">         10 :         let mut pauli_products: Array1&lt;f64&gt; = Array1::zeros(self.input.number_pauli_products);</span>
+<span class="lineNum">     197 </span><span class="lineCov">         25 :         for (register_name, _) in self.input.pauli_product_qubit_masks.iter() {</span>
+<span class="lineNum">     198 </span><span class="lineCov">         15 :             if !register_name.ends_with(&quot;flipped&quot;) {</span>
+<span class="lineNum">     199 </span>            :                 // Create temporary averaged vector of pauli_products
+<span class="lineNum">     200 </span>            :                 // Averaging between normal and flipped readout when flipped measurement is used
+<span class="lineNum">     201 </span><span class="lineCov">         15 :                 if self.input.use_flipped_measurement {</span>
+<span class="lineNum">     202 </span><span class="lineCov">          3 :                     let tmp_pauli_products = (&amp;pauli_product_dict</span>
+<span class="lineNum">     203 </span><span class="lineCov">          3 :                         .get(register_name.as_str())</span>
+<span class="lineNum">     204 </span><span class="lineCov">          3 :                         .ok_or(RoqoqoError::BasisRotationMeasurementError {</span>
+<span class="lineNum">     205 </span><span class="lineCov">          3 :                             msg: format!(&quot;Register name {} not fount&quot;, register_name),</span>
+<span class="lineNum">     206 </span><span class="lineCov">          3 :                         })?</span>
+<span class="lineNum">     207 </span><span class="lineCov">          3 :                         .view()</span>
+<span class="lineNum">     208 </span><span class="lineCov">          3 :                         + &amp;pauli_product_dict</span>
+<span class="lineNum">     209 </span><span class="lineCov">          3 :                             .get(format!(&quot;{}_flipped&quot;, register_name).as_str())</span>
+<span class="lineNum">     210 </span><span class="lineCov">          3 :                             .ok_or(RoqoqoError::BasisRotationMeasurementError {</span>
+<span class="lineNum">     211 </span><span class="lineCov">          3 :                                 msg: format!(&quot;Register name {}_flipped not fount&quot;, register_name),</span>
+<span class="lineNum">     212 </span><span class="lineCov">          3 :                             })?</span>
+<span class="lineNum">     213 </span><span class="lineCov">          3 :                             .view())</span>
+<span class="lineNum">     214 </span><span class="lineCov">          3 :                         / 2.0;</span>
+<span class="lineNum">     215 </span><span class="lineCov">          3 :                     // reinserting in dict of pauli products</span>
+<span class="lineNum">     216 </span><span class="lineCov">          3 :                     pauli_products += &amp;tmp_pauli_products.view();</span>
+<span class="lineNum">     217 </span>            :                 } else {
+<span class="lineNum">     218 </span><span class="lineCov">         12 :                     pauli_products += &amp;pauli_product_dict</span>
+<span class="lineNum">     219 </span><span class="lineCov">         12 :                         .get(register_name.as_str())</span>
+<span class="lineNum">     220 </span><span class="lineCov">         12 :                         .ok_or(RoqoqoError::BasisRotationMeasurementError {</span>
+<span class="lineNum">     221 </span><span class="lineCov">         12 :                             msg: format!(&quot;Register name {} not fount&quot;, register_name),</span>
+<span class="lineNum">     222 </span><span class="lineCov">         12 :                         })?</span>
+<span class="lineNum">     223 </span><span class="lineCov">         12 :                         .view()</span>
+<span class="lineNum">     224 </span>            :                 }
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :             }</span>
+<span class="lineNum">     226 </span>            :         }
+<span class="lineNum">     227 </span>            :         // Evaluating expectation values
+<span class="lineNum">     228 </span><span class="lineCov">         10 :         let mut results: HashMap&lt;String, f64&gt; = HashMap::new();</span>
+<span class="lineNum">     229 </span>            : 
+<span class="lineNum">     230 </span><span class="lineCov">         40 :         for (name, evaluation) in self.input.measured_exp_vals.iter() {</span>
+<span class="lineNum">     231 </span>            :             results.insert(
+<span class="lineNum">     232 </span><span class="lineCov">         30 :                 name.clone(),</span>
+<span class="lineNum">     233 </span><span class="lineCov">         30 :                 match evaluation {</span>
+<span class="lineNum">     234 </span><span class="lineCov">         28 :                     PauliProductsToExpVal::Linear(hm) =&gt; {</span>
+<span class="lineNum">     235 </span><span class="lineCov">         28 :                         let mut value: f64 = 0.0;</span>
+<span class="lineNum">     236 </span><span class="lineCov">         63 :                         for (index, coefficient) in hm {</span>
+<span class="lineNum">     237 </span><span class="lineCov">         35 :                             value += pauli_products[*index] * coefficient;</span>
+<span class="lineNum">     238 </span><span class="lineCov">         35 :                         }</span>
+<span class="lineNum">     239 </span><span class="lineCov">         28 :                         value</span>
+<span class="lineNum">     240 </span>            :                     }
+<span class="lineNum">     241 </span><span class="lineCov">          2 :                     PauliProductsToExpVal::Symbolic(x) =&gt; {</span>
+<span class="lineNum">     242 </span><span class="lineCov">          2 :                         let mut calculator = qoqo_calculator::Calculator::new();</span>
+<span class="lineNum">     243 </span><span class="lineCov">          8 :                         for (ind, p) in pauli_products.iter().enumerate() {</span>
+<span class="lineNum">     244 </span><span class="lineCov">          8 :                             calculator.set_variable(format!(&quot;pauli_product_{}&quot;, ind).as_str(), *p);</span>
+<span class="lineNum">     245 </span><span class="lineCov">          8 :                         }</span>
+<span class="lineNum">     246 </span><span class="lineCov">          2 :                         calculator.parse_get(x.clone())?</span>
+<span class="lineNum">     247 </span>            :                     }
+<span class="lineNum">     248 </span>            :                 },
+<span class="lineNum">     249 </span>            :             );
+<span class="lineNum">     250 </span>            :         }
+<span class="lineNum">     251 </span>            : 
+<span class="lineNum">     252 </span><span class="lineCov">         10 :         Ok(Some(results))</span>
+<span class="lineNum">     253 </span><span class="lineCov">         10 :     }</span>
+<span class="lineNum">     254 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
