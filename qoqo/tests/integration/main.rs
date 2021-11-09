@@ -17,4 +17,7 @@ mod operations;
 mod circuit;
 
 #[cfg(test)]
+mod quantum_program;
+
+#[cfg(test)]
 mod measurements;
