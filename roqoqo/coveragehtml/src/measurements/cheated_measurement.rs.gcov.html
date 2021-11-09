@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.lcov - src/measurements/cheated_measurement.rs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">src/measurements</a> - cheated_measurement.rs<span style="font-size: 80%;"> (source / <a href="cheated_measurement.rs.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.lcov</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">106</td>
+            <td class="headerCovTableEntry">107</td>
+            <td class="headerCovTableEntryHi">99.1 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2021-11-09 13:25:48</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // Copyright © 2021 HQS Quantum Simulations GmbH. All Rights Reserved.</a>
+<span class="lineNum">       2 </span>            : //
+<span class="lineNum">       3 </span>            : // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not use this file except
+<span class="lineNum">       4 </span>            : // in compliance with the License. You may obtain a copy of the License at
+<span class="lineNum">       5 </span>            : //
+<span class="lineNum">       6 </span>            : //     http://www.apache.org/licenses/LICENSE-2.0
+<span class="lineNum">       7 </span>            : //
+<span class="lineNum">       8 </span>            : // Unless required by applicable law or agreed to in writing, software distributed under the
+<span class="lineNum">       9 </span>            : // License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+<span class="lineNum">      10 </span>            : // express or implied. See the License for the specific language governing permissions and
+<span class="lineNum">      11 </span>            : // limitations under the License.
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : use crate::measurements::{CheatedInput, Measure, MeasureExpectationValues};
+<span class="lineNum">      14 </span>            : use crate::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
+<span class="lineNum">      15 </span>            : use crate::Circuit;
+<span class="lineNum">      16 </span>            : use crate::RoqoqoError;
+<span class="lineNum">      17 </span>            : use ndarray::{Array1, ArrayView1, ArrayView2};
+<span class="lineNum">      18 </span>            : //use ndarray::{Array2};
+<span class="lineNum">      19 </span>            : use num_complex::Complex64;
+<span class="lineNum">      20 </span>            : //use sprs::{CsMat, TriMat};
+<span class="lineNum">      21 </span>            : use std::collections::HashMap;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : /// Cheated measurement using state obtained from simulator backend.
+<span class="lineNum">      24 </span>            : ///
+<a name="25"><span class="lineNum">      25 </span>            : /// Cheated measurements are only possible witch simulator backends that can return the state vector or the density matrix of the quantum computer.</a>
+<span class="lineNum">      26 </span>            : /// The expectation values are defined by a matrix representation of the measured observables.
+<span class="lineNum">      27 </span><span class="lineCov">          2 : #[derive(Debug, PartialEq, Clone)]</span>
+<span class="lineNum">      28 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">      29 </span>            : pub struct Cheated {
+<span class="lineNum">      30 </span>            :     /// Constant Circuit that is executed before each Circuit in circuits.
+<span class="lineNum">      31 </span>            :     pub constant_circuit: Option&lt;Circuit&gt;,
+<span class="lineNum">      32 </span>            :     /// Collection of quantum circuits for the separate basis rotations.
+<span class="lineNum">      33 </span>            :     pub circuits: Vec&lt;Circuit&gt;,
+<span class="lineNum">      34 </span>            :     /// Additional input information required for measurement.
+<span class="lineNum">      35 </span>            :     pub input: CheatedInput,
+<span class="lineNum">      36 </span>            : }
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : impl Measure for Cheated {
+<span class="lineNum">      39 </span>            :     /// Returns the constant Circuit that is executed before each Circuit in circuits.
+<span class="lineNum">      40 </span>            :     ///
+<span class="lineNum">      41 </span>            :     /// # Returns
+<a name="42"><span class="lineNum">      42 </span>            :     ///</a>
+<span class="lineNum">      43 </span>            :     /// * `&amp;Option&lt;Circuit` - The constant Circuit (None if not defined).
+<span class="lineNum">      44 </span><span class="lineCov">          3 :     fn constant_circuit(&amp;self) -&gt; &amp;Option&lt;Circuit&gt; {</span>
+<span class="lineNum">      45 </span><span class="lineCov">          3 :         &amp;self.constant_circuit</span>
+<span class="lineNum">      46 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :     /// Returns iterator over circuits for measurement.
+<span class="lineNum">      49 </span>            :     ///
+<span class="lineNum">      50 </span>            :     /// # Returns
+<a name="51"><span class="lineNum">      51 </span>            :     ///</a>
+<span class="lineNum">      52 </span>            :     /// * `Box&lt;dyn Iterator&lt;Item = &amp;'a Circuit&gt; + 'a&gt;` - The quantum circuits.
+<span class="lineNum">      53 </span><span class="lineCov">          3 :     fn circuits&lt;'a&gt;(&amp;'a self) -&gt; Box&lt;dyn Iterator&lt;Item = &amp;'a Circuit&gt; + 'a&gt; {</span>
+<span class="lineNum">      54 </span><span class="lineCov">          3 :         Box::new(self.circuits.iter())</span>
+<span class="lineNum">      55 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :     /// Returns clone of Measurement with symbolic parameters replaced.
+<span class="lineNum">      58 </span>            :     ///
+<span class="lineNum">      59 </span>            :     /// # Arguments
+<span class="lineNum">      60 </span>            :     ///
+<span class="lineNum">      61 </span>            :     /// * `substituted_parameters` - The HashMap containing the substitutions to use in the Circuit.
+<span class="lineNum">      62 </span>            :     ///
+<span class="lineNum">      63 </span>            :     /// # Returns
+<span class="lineNum">      64 </span>            :     ///
+<a name="65"><span class="lineNum">      65 </span>            :     /// * `Ok(Self)` -  The Circuits with the parameters substituted.</a>
+<span class="lineNum">      66 </span>            :     /// * `Err(RoqoqoError)` - The subsitution failed.
+<span class="lineNum">      67 </span><span class="lineCov">          3 :     fn substitute_parameters(</span>
+<span class="lineNum">      68 </span><span class="lineCov">          3 :         &amp;self,</span>
+<span class="lineNum">      69 </span><span class="lineCov">          3 :         substituted_parameters: HashMap&lt;String, f64&gt;,</span>
+<span class="lineNum">      70 </span><span class="lineCov">          3 :     ) -&gt; Result&lt;Self, RoqoqoError&gt; {</span>
+<span class="lineNum">      71 </span><span class="lineCov">          3 :         let mut calculator = qoqo_calculator::Calculator::new();</span>
+<span class="lineNum">      72 </span><span class="lineCov">          9 :         for (name, val) in substituted_parameters.iter() {</span>
+<span class="lineNum">      73 </span><span class="lineCov">          6 :             calculator.set_variable(name, *val)</span>
+<span class="lineNum">      74 </span>            :         }
+<span class="lineNum">      75 </span><span class="lineCov">          3 :         let new_constant_circuit = match &amp;self.constant_circuit {</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :             None =&gt; None,</span>
+<span class="lineNum">      77 </span><span class="lineCov">          3 :             Some(c) =&gt; Some(c.substitute_parameters(&amp;mut calculator)?),</span>
+<span class="lineNum">      78 </span>            :         };
+<span class="lineNum">      79 </span><span class="lineCov">          2 :         let mut new_circuits = Vec::new();</span>
+<span class="lineNum">      80 </span><span class="lineCov">          2 :         for circ in self.circuits.iter() {</span>
+<span class="lineNum">      81 </span><span class="lineCov">          2 :             let mut calculator = qoqo_calculator::Calculator::new();</span>
+<span class="lineNum">      82 </span><span class="lineCov">          6 :             for (name, val) in substituted_parameters.iter() {</span>
+<span class="lineNum">      83 </span><span class="lineCov">          4 :                 calculator.set_variable(name, *val)</span>
+<span class="lineNum">      84 </span>            :             }
+<span class="lineNum">      85 </span><span class="lineCov">          2 :             new_circuits.push(circ.substitute_parameters(&amp;mut calculator)?)</span>
+<span class="lineNum">      86 </span>            :         }
+<span class="lineNum">      87 </span><span class="lineCov">          2 :         Ok(Self {</span>
+<span class="lineNum">      88 </span><span class="lineCov">          2 :             constant_circuit: new_constant_circuit,</span>
+<span class="lineNum">      89 </span><span class="lineCov">          2 :             circuits: new_circuits,</span>
+<span class="lineNum">      90 </span><span class="lineCov">          2 :             input: self.input.clone(),</span>
+<span class="lineNum">      91 </span><span class="lineCov">          2 :         })</span>
+<span class="lineNum">      92 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">      93 </span>            : }
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            : impl MeasureExpectationValues for Cheated {
+<span class="lineNum">      96 </span>            :     /// Executes the cheated measurement.
+<span class="lineNum">      97 </span>            :     ///
+<span class="lineNum">      98 </span>            :     /// # Arguments
+<span class="lineNum">      99 </span>            :     ///
+<span class="lineNum">     100 </span>            :     /// * `bit_registers` - The classical bit registers as a HashMap with the register name as key.
+<span class="lineNum">     101 </span>            :     /// * `float_registers` - The classical float registers as a HashMap with the register name as key.
+<span class="lineNum">     102 </span>            :     /// * `complex_registers` - The classical complex registers as a HashMap with the register name as key.
+<span class="lineNum">     103 </span>            :     ///
+<span class="lineNum">     104 </span>            :     /// # Returns
+<span class="lineNum">     105 </span>            :     ///
+<span class="lineNum">     106 </span>            :     /// * `Ok(Some(HashMap&lt;String, f64&gt;))` - The measurement has been evaluated successfully. The HashMap contains the measured expectation values.
+<span class="lineNum">     107 </span>            :     /// * `Ok(None)` - The measurement did not fail but is incomplete. A new round of measurements is needed.
+<span class="lineNum">     108 </span>            :     /// * `Err([RoqoqoError::MissingRegister])` - The OutputRegister is missing.
+<a name="109"><span class="lineNum">     109 </span>            :     /// * `Err([RoqoqoError::MismatchedRegisterDimension])` - The dimension of register exceeds Hilbert space dimension of qubits.</a>
+<span class="lineNum">     110 </span>            :     #[allow(unused_variables)]
+<span class="lineNum">     111 </span><span class="lineCov">          9 :     fn evaluate(</span>
+<span class="lineNum">     112 </span><span class="lineCov">          9 :         &amp;self,</span>
+<span class="lineNum">     113 </span><span class="lineCov">          9 :         bit_registers: HashMap&lt;String, BitOutputRegister&gt;,</span>
+<span class="lineNum">     114 </span><span class="lineCov">          9 :         float_registers: HashMap&lt;String, FloatOutputRegister&gt;,</span>
+<span class="lineNum">     115 </span><span class="lineCov">          9 :         complex_registers: HashMap&lt;String, ComplexOutputRegister&gt;,</span>
+<span class="lineNum">     116 </span><span class="lineCov">          9 :     ) -&gt; Result&lt;Option&lt;HashMap&lt;String, f64&gt;&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">     117 </span><span class="lineCov">          9 :         let dimension = 2_usize.pow(self.input.number_qubits as u32);</span>
+<span class="lineNum">     118 </span><span class="lineCov">          9 :         // Evaluating expectation values</span>
+<span class="lineNum">     119 </span><span class="lineCov">          9 :         let mut results: HashMap&lt;String, f64&gt; = HashMap::new();</span>
+<span class="lineNum">     120 </span><span class="lineCov">         21 :         for (name, (operator, readout)) in self.input.measured_operators.iter() {</span>
+<span class="lineNum">     121 </span>            :             // let row_inds: Vec&lt;usize&gt; = operator.iter().map(|(row, _, _)| row).cloned().collect();
+<span class="lineNum">     122 </span>            :             // let col_inds: Vec&lt;usize&gt; = operator.iter().map(|(_, col, _)| col).cloned().collect();
+<span class="lineNum">     123 </span>            :             // let data: Vec&lt;Complex64&gt; = operator.iter().map(|(_, _, val)| val).cloned().collect();
+<span class="lineNum">     124 </span>            :             // let tmp_tri = TriMat::from_triplets((dimension, dimension), row_inds, col_inds, data);
+<span class="lineNum">     125 </span>            :             // let matrix: CsMat&lt;Complex64&gt; = tmp_tri.to_csc();
+<span class="lineNum">     126 </span><span class="lineCov">         13 :             let register_vec =</span>
+<a name="127"><span class="lineNum">     127 </span><span class="lineCov">         14 :                 complex_registers</span></a>
+<span class="lineNum">     128 </span><span class="lineCov">         14 :                     .get(readout)</span>
+<span class="lineNum">     129 </span><span class="lineCov">         14 :                     .ok_or_else(|| RoqoqoError::MissingRegister {</span>
+<span class="lineNum">     130 </span><span class="lineCov">          1 :                         name: readout.clone(),</span>
+<span class="lineNum">     131 </span><span class="lineCov">         14 :                     })?;</span>
+<span class="lineNum">     132 </span><span class="lineCov">         13 :             let mut local_results: Array1&lt;f64&gt; = Array1::zeros(register_vec.len());</span>
+<span class="lineNum">     133 </span><span class="lineCov">         17 :             for (index, register) in register_vec.iter().enumerate() {</span>
+<span class="lineNum">     134 </span><span class="lineCov">         17 :                 if register.len() == dimension {</span>
+<span class="lineNum">     135 </span><span class="lineCov">         12 :                     let vector: ArrayView1&lt;Complex64&gt; = ArrayView1::&lt;Complex64&gt;::from(register);</span>
+<span class="lineNum">     136 </span><span class="lineCov">         12 :                     // let complex_conj_vec: Vec&lt;Complex64&gt; =</span>
+<span class="lineNum">     137 </span><span class="lineCov">         12 :                     //     register.iter().map(|x| x.conj()).collect();</span>
+<span class="lineNum">     138 </span><span class="lineCov">         12 :                     // let complex_conj: ArrayView1&lt;Complex64&gt; =</span>
+<span class="lineNum">     139 </span><span class="lineCov">         12 :                     //     ArrayView1::&lt;Complex64&gt;::from(&amp;complex_conj_vec);</span>
+<span class="lineNum">     140 </span><span class="lineCov">         12 :                     // let tmp_val: Complex64 = complex_conj.dot(&amp;(&amp;matrix * &amp;vector));</span>
+<span class="lineNum">     141 </span><span class="lineCov">         12 :                     let tmp_val: Complex64 =</span>
+<span class="lineNum">     142 </span><span class="lineCov">         12 :                         sparse_matrix_vector_expectation_value(operator, &amp;vector);</span>
+<span class="lineNum">     143 </span><span class="lineCov">         12 :                     local_results[index] = tmp_val.re;</span>
+<span class="lineNum">     144 </span><span class="lineCov">         12 :                 } else if register.len() == dimension * dimension {</span>
+<span class="lineNum">     145 </span><span class="lineCov">          4 :                     let vector: ArrayView2&lt;Complex64&gt; =</span>
+<span class="lineNum">     146 </span><span class="lineCov">          4 :                         ArrayView2::&lt;Complex64&gt;::from_shape((dimension, dimension), register)</span>
+<span class="lineNum">     147 </span><span class="lineCov">          4 :                             .expect(&quot;Unexpected error reshaping array&quot;);</span>
+<span class="lineNum">     148 </span><span class="lineCov">          4 :                     // let complex_conj_vec: Vec&lt;Complex64&gt; =</span>
+<span class="lineNum">     149 </span><span class="lineCov">          4 :                     //     register.iter().map(|x| x.conj()).collect();</span>
+<span class="lineNum">     150 </span><span class="lineCov">          4 :                     // let complex_conj: Array2&lt;Complex64&gt; = Array2::&lt;Complex64&gt;::from_shape_vec(</span>
+<span class="lineNum">     151 </span><span class="lineCov">          4 :                     //     (dimension, dimension),</span>
+<span class="lineNum">     152 </span><span class="lineCov">          4 :                     //     complex_conj_vec,</span>
+<span class="lineNum">     153 </span><span class="lineCov">          4 :                     // )</span>
+<span class="lineNum">     154 </span><span class="lineCov">          4 :                     // .expect(&quot;Unexpected error reshaping array&quot;);</span>
+<span class="lineNum">     155 </span><span class="lineCov">          4 :                     // let tmp_val: Complex64 =</span>
+<span class="lineNum">     156 </span><span class="lineCov">          4 :                     //     ((complex_conj.t()).dot(&amp;(&amp;matrix * &amp;vector))).diag().sum();</span>
+<span class="lineNum">     157 </span><span class="lineCov">          4 :                     let tmp_val =</span>
+<span class="lineNum">     158 </span><span class="lineCov">          4 :                         sparse_matrix_matrix_expectation_value(operator, &amp;vector, dimension);</span>
+<span class="lineNum">     159 </span><span class="lineCov">          4 :                     local_results[index] = tmp_val.re;</span>
+<span class="lineNum">     160 </span><span class="lineCov">          4 :                 } else {</span>
+<span class="lineNum">     161 </span><span class="lineCov">          1 :                     return Err(RoqoqoError::MismatchedRegisterDimension {</span>
+<span class="lineNum">     162 </span><span class="lineCov">          1 :                         dim: register.len(),</span>
+<span class="lineNum">     163 </span><span class="lineCov">          1 :                         number_qubits: self.input.number_qubits,</span>
+<span class="lineNum">     164 </span><span class="lineCov">          1 :                     });</span>
+<span class="lineNum">     165 </span>            :                 }
+<span class="lineNum">     166 </span>            :             }
+<span class="lineNum">     167 </span>            : 
+<span class="lineNum">     168 </span><span class="lineCov">         12 :             results.insert(</span>
+<span class="lineNum">     169 </span><span class="lineCov">         12 :                 name.clone(),</span>
+<span class="lineNum">     170 </span><span class="lineCov">         12 :                 local_results.mean().expect(</span>
+<span class="lineNum">     171 </span><span class="lineCov">         12 :                     &quot;Unexpectedly could not calculate mean of expectation values of register&quot;,</span>
+<span class="lineNum">     172 </span><span class="lineCov">         12 :                 ),</span>
+<span class="lineNum">     173 </span><span class="lineCov">         12 :             );</span>
+<span class="lineNum">     174 </span>            :         }
+<span class="lineNum">     175 </span><span class="lineCov">          7 :         Ok(Some(results))</span>
+<span class="lineNum">     176 </span><span class="lineCov">          9 :     }</span>
+<span class="lineNum">     177 </span>            : }
+<a name="178"><span class="lineNum">     178 </span>            : </a>
+<span class="lineNum">     179 </span>            : #[inline]
+<span class="lineNum">     180 </span><span class="lineCov">         12 : fn sparse_matrix_vector_expectation_value(</span>
+<span class="lineNum">     181 </span><span class="lineCov">         12 :     matrix: &amp;[(usize, usize, Complex64)],</span>
+<span class="lineNum">     182 </span><span class="lineCov">         12 :     vector: &amp;ArrayView1&lt;Complex64&gt;,</span>
+<span class="lineNum">     183 </span><span class="lineCov">         12 : ) -&gt; Complex64 {</span>
+<span class="lineNum">     184 </span><span class="lineCov">         12 :     let mut val: Complex64 = Complex64::new(0.0, 0.0);</span>
+<span class="lineNum">     185 </span><span class="lineCov">         60 :     for (index_i, index_j, value) in matrix {</span>
+<span class="lineNum">     186 </span><span class="lineCov">         48 :         val += vector[*index_i].conj() * value * vector[*index_j]</span>
+<span class="lineNum">     187 </span>            :     }
+<span class="lineNum">     188 </span><span class="lineCov">         12 :     val</span>
+<span class="lineNum">     189 </span><span class="lineCov">         12 : }</span>
+<a name="190"><span class="lineNum">     190 </span>            : </a>
+<span class="lineNum">     191 </span>            : #[inline]
+<span class="lineNum">     192 </span><span class="lineCov">          4 : fn sparse_matrix_matrix_expectation_value(</span>
+<span class="lineNum">     193 </span><span class="lineCov">          4 :     matrix: &amp;[(usize, usize, Complex64)],</span>
+<span class="lineNum">     194 </span><span class="lineCov">          4 :     dense_matrix: &amp;ArrayView2&lt;Complex64&gt;,</span>
+<span class="lineNum">     195 </span><span class="lineCov">          4 :     dimension: usize,</span>
+<span class="lineNum">     196 </span><span class="lineCov">          4 : ) -&gt; Complex64 {</span>
+<span class="lineNum">     197 </span><span class="lineCov">          4 :     let mut val: Complex64 = Complex64::new(0.0, 0.0);</span>
+<span class="lineNum">     198 </span><span class="lineCov">         20 :     for (index_j, index_k, value) in matrix {</span>
+<span class="lineNum">     199 </span><span class="lineCov">         32 :         for index_i in 0..dimension {</span>
+<span class="lineNum">     200 </span><span class="lineCov">         32 :             val +=</span>
+<span class="lineNum">     201 </span><span class="lineCov">         32 :                 dense_matrix[(*index_j, index_i)].conj() * value * dense_matrix[(*index_k, index_i)]</span>
+<span class="lineNum">     202 </span>            :         }
+<span class="lineNum">     203 </span>            :     }
+<span class="lineNum">     204 </span><span class="lineCov">          4 :     val</span>
+<span class="lineNum">     205 </span><span class="lineCov">          4 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
