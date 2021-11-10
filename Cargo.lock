@@ -131,24 +131,12 @@ dependencies = [
 
 [[package]]
 name = "inventory"
-version = "0.1.10"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0f0f7efb804ec95e33db9ad49e4252f049e37e8b0a4652e3cd61f7999f2eff7f"
+checksum = "1367fed6750ff2a5bcb967a631528303bb85631f167a75eb1bf7762d57eb7678"
 dependencies = [
  "ctor",
  "ghost",
- "inventory-impl",
-]
-
-[[package]]
-name = "inventory-impl"
-version = "0.1.10"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "75c094e94816723ab936484666968f5b58060492e880f3c8d00489a1e244fa51"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]
@@ -156,12 +144,6 @@ name = "itoa"
 version = "0.4.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b71991ff56294aa922b450139ee08b3bfc70982c6b2c7562771375cf73542dd4"
-
-[[package]]
-name = "lazy_static"
-version = "1.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "libc"
@@ -417,7 +399,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -440,7 +422,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -547,7 +529,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "bincode",
  "dyn-clone",
@@ -570,7 +552,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -579,7 +561,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "nalgebra",
  "ndarray",
@@ -723,22 +705,22 @@ checksum = "b63708a265f51345575b27fe43f9500ad611579e764c79edbc2037b1121959ec"
 
 [[package]]
 name = "typetag"
-version = "0.1.7"
+version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "422619e1a7299befb977a1f6d8932c499f6151dbcafae715193570860cae8f07"
+checksum = "4080564c5b2241b5bff53ab610082234e0c57b0417f4bd10596f183001505b8a"
 dependencies = [
  "erased-serde",
  "inventory",
- "lazy_static",
+ "once_cell",
  "serde",
  "typetag-impl",
 ]
 
 [[package]]
 name = "typetag-impl"
-version = "0.1.7"
+version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "504f9626fe6cc1c376227864781996668e15c1ff251d222f63ef17f310bf1fec"
+checksum = "e60147782cc30833c05fba3bab1d9b5771b2685a2557672ac96fa5d154099c0e"
 dependencies = [
  "proc-macro2",
  "quote",
