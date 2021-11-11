@@ -1,6 +1,6 @@
 [package]
 name = "roqoqo-test"
-version = "0.8.1"
+version = "0.8.2"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
