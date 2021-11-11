@@ -19,6 +19,20 @@ use roqoqo::operations::*;
 use roqoqo::measurements::{BasisRotation, BasisRotationInput, CheatedBasisRotation, CheatedBasisRotationInput, CheatedInput, Cheated, ClassicalRegister};
 use roqoqo::{ROQOQO_VERSION, Circuit, QuantumProgram};
 
+#[pyclass(name = "TestBackend", module = "qoqo")]
+#[derive(Debug, Clone, Copy)]
+struct TestBackend;
+
+#[pymethods]
+impl TestBackend {
+    fn run_measurement(
+        &self,
+        measurement: Py<PyAny>,
+    ) -> PyResult<Py<PyAny>> {
+        return Ok(measurement);
+    }
+}
+
 fn create_measurement(py: Python) -> &PyCell<CheatedBasisRotationWrapper> {
     let input_type = py.get_type::<CheatedBasisRotationInputWrapper>();
     let input = input_type
@@ -71,9 +85,9 @@ fn test_basic_traits() {
     })
 }
 
-/// Test new function of QuantumProgram with all BasisRotation measurement input
+/// Test new and run functions of QuantumProgram with all BasisRotation measurement input
 #[test]
-fn test_new_br() {
+fn test_new_run_br() {
     pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
@@ -118,16 +132,19 @@ fn test_new_br() {
         program_wrapper,
         QuantumProgramWrapper {
             internal: QuantumProgram::BasisRotation {
-                measurement: br,
+                measurement: br.clone(),
                 input_parameter_names: vec!["test".to_string()]
             }
         }
     );
+
+    let measurement = BasisRotationWrapper::extract(program.call_method1("run", (TestBackend, Some(vec![0.0]),),).unwrap()).unwrap();
+    assert_eq!(measurement.internal, br);
 }
 
-/// Test new function of QuantumProgram with all CheatedBasisRotation measurement input
+/// Test new and run functions of QuantumProgram with all CheatedBasisRotation measurement input
 #[test]
-fn test_new_cheated_br() {
+fn test_new_run_cheated_br() {
     pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
@@ -172,16 +189,19 @@ fn test_new_cheated_br() {
         program_wrapper,
         QuantumProgramWrapper {
             internal: QuantumProgram::CheatedBasisRotation {
-                measurement: cbr,
+                measurement: cbr.clone(),
                 input_parameter_names: vec!["test".to_string()]
             }
         }
     );
+
+    let measurement = CheatedBasisRotationWrapper::extract(program.call_method1("run", (TestBackend, Some(vec![0.0]),),).unwrap()).unwrap();
+    assert_eq!(measurement.internal, cbr);
 }
 
-/// Test new function of QuantumProgram with all Cheated measurement input
+/// Test new and run functions of QuantumProgram with all Cheated measurement input
 #[test]
-fn test_new_cheated() {
+fn test_new_run_cheated() {
     pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
@@ -224,16 +244,19 @@ fn test_new_cheated() {
         program_wrapper,
         QuantumProgramWrapper {
             internal: QuantumProgram::Cheated {
-                measurement: cheated,
+                measurement: cheated.clone(),
                 input_parameter_names: vec!["test".to_string()]
             }
         }
     );
+
+    let measurement = CheatedWrapper::extract(program.call_method1("run", (TestBackend, Some(vec![0.0]),),).unwrap()).unwrap();
+    assert_eq!(measurement.internal, cheated);
 }
 
-/// Test new function of QuantumProgram with all ClassicalRegister measurement input
+/// Test new and run_register functions of QuantumProgram with all ClassicalRegister measurement input
 #[test]
-fn test_new_classical_register() {
+fn test_new_run_classical_register() {
     pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
     let py = gil.python();
@@ -267,11 +290,14 @@ fn test_new_classical_register() {
         program_wrapper,
         QuantumProgramWrapper {
             internal: QuantumProgram::ClassicalRegister {
-                measurement: cr,
+                measurement: cr.clone(),
                 input_parameter_names: vec!["test".to_string()]
             }
         }
     );
+
+    let measurement = ClassicalRegisterWrapper::extract(program.call_method1("run_registers", (TestBackend, Some(vec![0.0]),),).unwrap()).unwrap();
+    assert_eq!(measurement.internal, cr);
 }
 
 /// Test new function of QuantumProgram first error
