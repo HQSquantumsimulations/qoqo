@@ -1414,8 +1414,8 @@ impl PyObjectProtocol for PragmaChangeDeviceWrapper {
 
 #[cfg(test)]
 mod tests {
-    use bincode::serialize;
     use crate::operations::*;
+    use bincode::serialize;
     use roqoqo::operations::*;
     use std::collections::HashSet;
 
@@ -1424,7 +1424,7 @@ mod tests {
     fn test_pyo3_involved_qubits_all_change_device() {
         let wrapped: Operation = PragmaActiveReset::new(0).into();
         let input_definition: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
-    
+
         pyo3::prepare_freethreaded_python();
         let gil = pyo3::Python::acquire_gil();
         let py = gil.python();
@@ -1468,7 +1468,7 @@ mod tests {
         let copy_op = operation.call_method0(py, "__copy__").unwrap();
         let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
         let copy_deepcopy_param = operation.clone();
-    
+
         let comparison_copy = bool::extract(
             copy_op
                 .as_ref(py)
@@ -1550,7 +1550,7 @@ mod tests {
             .call_method1(py, "substitute_parameters", (substitution_dict,))
             .unwrap();
         let substitute_param = convert_operation_to_pyobject(second_op).unwrap();
-    
+
         let comparison = bool::extract(
             substitute_op
                 .as_ref(py)
@@ -1571,14 +1571,14 @@ mod tests {
         let gil = pyo3::Python::acquire_gil();
         let py = gil.python();
         let operation = convert_operation_to_pyobject(first_op).unwrap();
-    
+
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(0, 0);
         let remapped_op = operation
             .call_method1(py, "remap_qubits", (qubit_mapping,))
             .unwrap();
         let comparison_op = convert_operation_to_pyobject(second_op).unwrap();
-    
+
         let comparison = bool::extract(
             remapped_op
                 .call_method1(py, "__eq__", (comparison_op,))
@@ -1598,7 +1598,7 @@ mod tests {
         let gil = pyo3::Python::acquire_gil();
         let py = gil.python();
         let operation = convert_operation_to_pyobject(first_op).unwrap();
-    
+
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(0, 2);
         let remapped_op = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
@@ -1611,13 +1611,13 @@ mod tests {
         let definition_1: Operation = PragmaChangeDevice::new(&wrapped_1).unwrap().into();
         let wrapped_2: Operation = PragmaActiveReset::new(1).into();
         let definition_2: Operation = PragmaChangeDevice::new(&wrapped_2).unwrap().into();
-    
+
         pyo3::prepare_freethreaded_python();
         let gil = pyo3::Python::acquire_gil();
         let py = gil.python();
         let operation_one = convert_operation_to_pyobject(definition_1).unwrap();
         let operation_two = convert_operation_to_pyobject(definition_2).unwrap();
-    
+
         let comparison = bool::extract(
             operation_one
                 .as_ref(py)
@@ -1626,7 +1626,7 @@ mod tests {
         )
         .unwrap();
         assert!(!comparison);
-    
+
         let comparison = bool::extract(
             operation_one
                 .as_ref(py)
@@ -1635,12 +1635,11 @@ mod tests {
         )
         .unwrap();
         assert!(comparison);
-    
+
         let comparison = operation_one.call_method1(py, "__eq__", (vec!["fails"],));
         assert!(comparison.is_err());
-    
+
         let comparison = operation_one.call_method1(py, "__ge__", (operation_two,));
         assert!(comparison.is_err());
     }
-
 }
