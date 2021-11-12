@@ -11,13 +11,21 @@
 // limitations under the License.
 
 use pyo3::prelude::*;
-use qoqo::measurements::{BasisRotationInputWrapper, BasisRotationWrapper, CheatedBasisRotationInputWrapper, CheatedBasisRotationWrapper, CheatedInputWrapper, CheatedWrapper, ClassicalRegisterWrapper};
+use qoqo::measurements::{
+    BasisRotationInputWrapper, BasisRotationWrapper, CheatedBasisRotationInputWrapper,
+    CheatedBasisRotationWrapper, CheatedInputWrapper, CheatedWrapper, ClassicalRegisterWrapper,
+};
 use qoqo::operations::convert_operation_to_pyobject;
-use qoqo::{QoqoError, convert_into_quantum_program, CircuitWrapper, QuantumProgramWrapper, QOQO_VERSION};
+use qoqo::{
+    convert_into_quantum_program, CircuitWrapper, QoqoError, QuantumProgramWrapper, QOQO_VERSION,
+};
+use roqoqo::measurements::{
+    BasisRotation, BasisRotationInput, Cheated, CheatedBasisRotation, CheatedBasisRotationInput,
+    CheatedInput, ClassicalRegister,
+};
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
-use roqoqo::measurements::{BasisRotation, BasisRotationInput, CheatedBasisRotation, CheatedBasisRotationInput, CheatedInput, Cheated, ClassicalRegister};
-use roqoqo::{ROQOQO_VERSION, Circuit, QuantumProgram};
+use roqoqo::{Circuit, QuantumProgram, ROQOQO_VERSION};
 
 #[pyclass(name = "TestBackend", module = "qoqo")]
 #[derive(Debug, Clone, Copy)]
@@ -25,10 +33,7 @@ struct TestBackend;
 
 #[pymethods]
 impl TestBackend {
-    fn run_measurement(
-        &self,
-        measurement: Py<PyAny>,
-    ) -> PyResult<Py<PyAny>> {
+    fn run_measurement(&self, measurement: Py<PyAny>) -> PyResult<Py<PyAny>> {
         return Ok(measurement);
     }
 }
@@ -98,7 +103,9 @@ fn test_new_run_br() {
         .unwrap()
         .cast_as::<PyCell<BasisRotationInputWrapper>>()
         .unwrap();
-    let _ = input_instance.call_method1("add_pauli_product", ("ro", vec![0],)).unwrap();
+    let _ = input_instance
+        .call_method1("add_pauli_product", ("ro", vec![0]))
+        .unwrap();
 
     let mut circs: Vec<CircuitWrapper> = Vec::new();
     circs.push(CircuitWrapper::new());
@@ -138,7 +145,12 @@ fn test_new_run_br() {
         }
     );
 
-    let measurement = BasisRotationWrapper::extract(program.call_method1("run", (TestBackend, Some(vec![0.0]),),).unwrap()).unwrap();
+    let measurement = BasisRotationWrapper::extract(
+        program
+            .call_method1("run", (TestBackend, Some(vec![0.0])))
+            .unwrap(),
+    )
+    .unwrap();
     assert_eq!(measurement.internal, br);
 }
 
@@ -155,7 +167,9 @@ fn test_new_run_cheated_br() {
         .unwrap()
         .cast_as::<PyCell<CheatedBasisRotationInputWrapper>>()
         .unwrap();
-    let _ = input_instance.call_method1("add_pauli_product", ("ro",)).unwrap();
+    let _ = input_instance
+        .call_method1("add_pauli_product", ("ro",))
+        .unwrap();
 
     let mut circs: Vec<CircuitWrapper> = Vec::new();
     circs.push(CircuitWrapper::new());
@@ -195,8 +209,15 @@ fn test_new_run_cheated_br() {
         }
     );
 
-    let measurement = CheatedBasisRotationWrapper::extract(program.call_method1("run", (TestBackend, Some(vec![0.0]),),).unwrap()).unwrap();
+    let measurement = CheatedBasisRotationWrapper::extract(
+        program
+            .call_method1("run", (TestBackend, Some(vec![0.0])))
+            .unwrap(),
+    )
+    .unwrap();
     assert_eq!(measurement.internal, cbr);
+    let error = program.call_method1("run_registers", (TestBackend, Some(vec![0.0])));
+    assert!(error.is_err());
 }
 
 /// Test new and run functions of QuantumProgram with all Cheated measurement input
@@ -250,7 +271,12 @@ fn test_new_run_cheated() {
         }
     );
 
-    let measurement = CheatedWrapper::extract(program.call_method1("run", (TestBackend, Some(vec![0.0]),),).unwrap()).unwrap();
+    let measurement = CheatedWrapper::extract(
+        program
+            .call_method1("run", (TestBackend, Some(vec![0.0])))
+            .unwrap(),
+    )
+    .unwrap();
     assert_eq!(measurement.internal, cheated);
 }
 
@@ -296,8 +322,15 @@ fn test_new_run_classical_register() {
         }
     );
 
-    let measurement = ClassicalRegisterWrapper::extract(program.call_method1("run_registers", (TestBackend, Some(vec![0.0]),),).unwrap()).unwrap();
+    let measurement = ClassicalRegisterWrapper::extract(
+        program
+            .call_method1("run_registers", (TestBackend, Some(vec![0.0])))
+            .unwrap(),
+    )
+    .unwrap();
     assert_eq!(measurement.internal, cr);
+    let error = program.call_method1("run", (TestBackend, Some(vec![0.0])));
+    assert!(error.is_err());
 }
 
 /// Test new function of QuantumProgram first error
@@ -561,6 +594,9 @@ fn test_convert_into_program() {
         .unwrap();
     let comparison = program.call_method1("convert_into_quantum_program", (operation.clone(),));
     assert!(comparison.is_err());
-    assert_eq!(convert_into_quantum_program(operation.as_ref(py)), Err(QoqoError::CannotExtractObject));
+    assert_eq!(
+        convert_into_quantum_program(operation.as_ref(py)),
+        Err(QoqoError::CannotExtractObject)
+    );
     // assert_eq!(convert_into_quantum_program(circ), Err(QoqoError::VersionMismatch));
 }

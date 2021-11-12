@@ -12,10 +12,12 @@
 
 //! Integration test for public API of Basis rotation measurement
 
+use bincode::serialize;
 use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::measurements::ClassicalRegisterWrapper;
 use qoqo::CircuitWrapper;
+use roqoqo::{measurements::ClassicalRegister, Circuit};
 use std::collections::HashMap;
 
 #[test]
@@ -115,6 +117,39 @@ fn test_pyo3_debug() {
 
     let debug_string = "RefCell { value: ClassicalRegisterWrapper { internal: ClassicalRegister { constant_circuit: Some(Circuit { definitions: [], operations: [] }), circuits: [Circuit { definitions: [], operations: [] }] } } }";
     assert_eq!(format!("{:?}", br), debug_string);
+}
+
+/// Test _internal_to_bincode function
+#[test]
+fn test_internal_to_bincode() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| -> () {
+        let mut circs: Vec<CircuitWrapper> = Vec::new();
+        circs.push(CircuitWrapper::new());
+
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone()))
+            .unwrap()
+            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .unwrap();
+
+        let mut circs: Vec<Circuit> = Vec::new();
+        circs.push(Circuit::new());
+        let roqoqo_br = ClassicalRegister {
+            constant_circuit: Some(Circuit::new()),
+            circuits: circs.clone(),
+        };
+        let comparison_serialised = serialize(&roqoqo_br).unwrap();
+
+        let serialised: (&str, Vec<u8>) = br
+            .call_method0("_internal_to_bincode")
+            .unwrap()
+            .extract()
+            .unwrap();
+        assert_eq!(serialised.0, "ClassicalRegister");
+        assert_eq!(serialised.1, comparison_serialised);
+    })
 }
 
 /// Test to_json and from_json functions
