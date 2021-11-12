@@ -26,7 +26,6 @@ use roqoqo::operations::*;
 use roqoqo::{Circuit, RoqoqoError};
 use std::collections::HashMap;
 use std::convert::TryInto;
-use std::f64::consts::PI;
 use test_case::test_case;
 
 // helper function to convert CalculatorFloat into a python object
