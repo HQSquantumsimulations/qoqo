@@ -417,7 +417,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -440,7 +440,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -547,7 +547,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "bincode",
  "dyn-clone",
@@ -570,7 +570,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -579,7 +579,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "0.8.1"
+version = "0.8.2"
 dependencies = [
  "nalgebra",
  "ndarray",
@@ -634,9 +634,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.69"
+version = "1.0.70"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e466864e431129c7e0d3476b92f20458e5879919a0596c6472738d9fa2d342f8"
+checksum = "e277c495ac6cd1a01a58d0a0c574568b4d1ddf14f59965c6a58b8d96400b54f3"
 dependencies = [
  "itoa",
  "ryu",
