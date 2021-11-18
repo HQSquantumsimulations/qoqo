@@ -162,6 +162,6 @@ pub fn prepare_monte_carlo_gate_test(
 fn ndarray_to_nalgebra(input: Array2<Complex<f64>>) -> DMatrix<Complex<f64>> {
     let shape = input.shape();
     let matrix: DMatrix<Complex<f64>> =
-        DMatrix::from_iterator(shape[0], shape[1], input.iter().cloned());
+        DMatrix::from_iterator(shape[0], shape[1], input.t().iter().cloned());
     matrix
 }
