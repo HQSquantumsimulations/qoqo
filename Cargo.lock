@@ -460,9 +460,9 @@ dependencies = [
 
 [[package]]
 name = "qoqo_calculator_pyo3"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e43ab27618dbbfba6285d98da4da99fe22ecc9e22138ec20b9449343ebc905b3"
+checksum = "51e15c68d92b0b717efb076696f253ec1861c0ef807edd45b7c2b3d3ac8130fe"
 dependencies = [
  "num-complex",
  "pyo3",
