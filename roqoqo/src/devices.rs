@@ -118,7 +118,7 @@ pub trait Device {
     /// into a sequence of gates that involves a third qubit of the device.
     /// The two-qubit-gate also has to form a universal set together with the available
     /// single qubit gates.
-    /// 
+    ///
     /// The returned vectors is a simple, graph-library independent, representation of
     /// the undirected connectivity graph of the device.
     /// It can be used to construct the connectivity graph in a graph library of the users
