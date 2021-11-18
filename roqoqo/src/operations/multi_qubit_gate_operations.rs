@@ -137,7 +137,6 @@ impl OperateGate for MultiQubitZZ {
                     _ => panic!("Internal division error MuliQubitZZ"),
                 })
                 .product();
-            dbg!(prefactor);
             array[(i, i)] = cos + prefactor * sin;
         }
         Ok(array)
