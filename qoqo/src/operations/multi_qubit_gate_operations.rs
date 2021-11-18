@@ -28,7 +28,22 @@ use std::collections::HashMap;
 #[wrap(Operate, Rotate, OperateMultiQubit, OperateGate, OperateMultiQubitGate)]
 /// The Molmer-Sorensen gate between multiple qubits.
 ///
+/// The gate applies the rotation under the product of Pauli X operators on multiple qubits.
+/// In mathematical terms the gate applies exp(-i * theta/2 * X_i0 * X_i1 * ... * X_in).
 pub struct MultiQubitMS {
+    /// The qubits involved in the multi qubit Molmer-Sorensen gate.
+    qubits: Vec<usize>,
+    /// The angle of the multi qubit Molmer-Sorensen gate.
+    theta: CalculatorFloat,
+}
+
+#[allow(clippy::upper_case_acronyms)]
+#[wrap(Operate, Rotate, OperateMultiQubit, OperateGate, OperateMultiQubitGate)]
+/// The multi qubit Pauli-Z-Product gate.
+///
+/// The gate applies the rotation under the product of Pauli Z operators on multiple qubits.
+/// In mathematical terms the gate applies exp(-i * theta/2 * Z_i0 * Z_i1 * ... * Z_in).
+pub struct MultiQubitZZ {
     /// The qubits involved in the multi qubit Molmer-Sorensen gate.
     qubits: Vec<usize>,
     /// The angle of the multi qubit Molmer-Sorensen gate.
