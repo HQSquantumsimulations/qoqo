@@ -10,6 +10,8 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use std::panic;
+
 use crate::operations;
 use crate::prelude::*;
 use crate::Circuit;
@@ -127,7 +129,15 @@ impl OperateGate for MultiQubitZZ {
         let cos: Complex64 = Complex64::new((self.theta.float()? / 2.0).cos(), 0.0);
         let sin: Complex64 = Complex64::new(0.0, -(self.theta.float()? / 2.0).sin());
         for i in 0..dim {
-            array[(i, i)] = cos + sin;
+            // Fix the signs of the imaginary part due to the ZZZ..ZZ product
+            let prefactor: f64 = (0..self.qubits.len())
+                .map(|q| match i.div_euclid(2usize.pow(q as u32)) % 2 {
+                    0 => 1.0,
+                    1 => -1.0,
+                    _ => panic!("Internal division error MuliQubitZZ"),
+                })
+                .product();
+            array[(i, i)] = cos + prefactor * sin;
         }
         Ok(array)
     }
