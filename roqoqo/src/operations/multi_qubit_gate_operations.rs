@@ -24,6 +24,8 @@ use serde::{Deserialize, Serialize};
 
 /// The Molmer-Sorensen gate between multiple qubits.
 ///
+/// The gate applies the rotation under the product of Pauli X operators on multiple qubits.
+/// In mathematical terms the gate applies exp(-i * theta/2 * X_i0 * X_i1 * ... * X_in).
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
@@ -82,6 +84,66 @@ impl OperateMultiQubitGate for MultiQubitMS {
         }
         for q in self.qubits.iter() {
             circuit += operations::Hadamard::new(*q);
+        }
+        circuit
+    }
+}
+
+/// The multi qubit Pauli-Z-Product gate.
+///
+/// The gate applies the rotation under the product of Pauli Z operators on multiple qubits.
+/// In mathematical terms the gate applies exp(-i * theta/2 * Z_i0 * Z_i1 * ... * Z_in).
+#[allow(clippy::upper_case_acronyms)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateMultiQubit,
+    roqoqo_derive::Rotate,
+)]
+#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+pub struct MultiQubitZZ {
+    /// The qubits involved in the multi qubit Molmer-Sorensen gate.
+    qubits: Vec<usize>,
+    /// The angle of the multi qubit Molmer-Sorensen gate.
+    theta: CalculatorFloat,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_MultiQubitZZ: &[&str; 4] = &[
+    "Operation",
+    "GateOperation",
+    "MultiQubitGateOperation",
+    "MultiQubitZZ",
+];
+
+impl OperateGate for MultiQubitZZ {
+    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
+        let dim = 2_usize.pow(self.qubits.len() as u32);
+        let mut array: Array2<Complex64> = Array2::zeros((dim, dim));
+        let cos: Complex64 = Complex64::new((self.theta.float()? / 2.0).cos(), 0.0);
+        let sin: Complex64 = Complex64::new(0.0, -(self.theta.float()? / 2.0).sin());
+        for i in 0..dim {
+            array[(i, i)] = cos + sin;
+        }
+        Ok(array)
+    }
+}
+
+impl OperateMultiQubitGate for MultiQubitZZ {
+    // Todo fill out circuit
+    fn circuit(&self) -> Circuit {
+        let dim = self.qubits.len();
+        let mut circuit = Circuit::new();
+        for q in self.qubits[1..].iter() {
+            circuit += operations::CNOT::new(*q - 1, *q);
+        }
+        circuit += operations::RotateZ::new(dim - 1, self.theta.clone() / 2);
+        for q in self.qubits[1..].iter() {
+            circuit += operations::CNOT::new(dim - *q - 1, dim - *q);
         }
         circuit
     }
