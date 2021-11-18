@@ -160,7 +160,7 @@ fn test_cheated() {
 
 #[test]
 fn test_registers() {
-    // setting ub BR measurement
+    // setting up BR measurement
     let mut circs: Vec<Circuit> = Vec::new();
     let mut circ1 = Circuit::new();
     let mut circ1_subs = Circuit::new();
