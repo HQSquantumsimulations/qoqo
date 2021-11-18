@@ -3,7 +3,13 @@
 This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
+
+### Added not released
+
+* MultiQubitZZ gate. Rotation under a multi-qubit product of Pauli Z operators.
+
 ## 0.8.1
+
 ### Changed 0.8.1
 
 * Updated to pyo3 0.15.0
