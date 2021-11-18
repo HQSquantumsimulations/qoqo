@@ -1,0 +1,1148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.lcov - src/operations/pragma_operations.rs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">src/operations</a> - pragma_operations.rs<span style="font-size: 80%;"> (source / <a href="pragma_operations.rs.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.lcov</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">283</td>
+            <td class="headerCovTableEntry">312</td>
+            <td class="headerCovTableEntryHi">90.7 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2021-11-09 13:25:48</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">270</td>
+            <td class="headerCovTableEntry">285</td>
+            <td class="headerCovTableEntryHi">94.7 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // Copyright © 2021 HQS Quantum Simulations GmbH. All Rights Reserved.</a>
+<span class="lineNum">       2 </span>            : //
+<span class="lineNum">       3 </span>            : // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not use this file except
+<span class="lineNum">       4 </span>            : // in compliance with the License. You may obtain a copy of the License at
+<span class="lineNum">       5 </span>            : //
+<span class="lineNum">       6 </span>            : //     http://www.apache.org/licenses/LICENSE-2.0
+<span class="lineNum">       7 </span>            : //
+<span class="lineNum">       8 </span>            : // Unless required by applicable law or agreed to in writing, software distributed under the
+<span class="lineNum">       9 </span>            : // License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+<span class="lineNum">      10 </span>            : // express or implied. See the License for the specific language governing permissions and
+<span class="lineNum">      11 </span>            : // limitations under the License.
+<span class="lineNum">      12 </span>            : //
+<span class="lineNum">      13 </span>            : //! Collection of roqoqo PRAGMA operations.
+<span class="lineNum">      14 </span>            : //!
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : use crate::operations::{
+<span class="lineNum">      17 </span>            :     InvolveQubits, InvolvedQubits, Operate, OperateMultiQubit, OperatePragma, OperatePragmaNoise,
+<span class="lineNum">      18 </span>            :     OperatePragmaNoiseProba, OperateSingleQubit, RoqoqoError, Substitute,
+<span class="lineNum">      19 </span>            : };
+<span class="lineNum">      20 </span>            : use crate::Circuit;
+<span class="lineNum">      21 </span>            : #[cfg(feature = &quot;serialize&quot;)]
+<span class="lineNum">      22 </span>            : use bincode::serialize;
+<span class="lineNum">      23 </span>            : use nalgebra::Matrix4;
+<span class="lineNum">      24 </span>            : use ndarray::{array, Array, Array1, Array2};
+<span class="lineNum">      25 </span>            : use num_complex::Complex64;
+<span class="lineNum">      26 </span>            : use qoqo_calculator::{Calculator, CalculatorFloat};
+<span class="lineNum">      27 </span>            : #[cfg(feature = &quot;serialize&quot;)]
+<span class="lineNum">      28 </span>            : use serde::{Deserialize, Serialize};
+<span class="lineNum">      29 </span>            : use std::collections::HashMap;
+<span class="lineNum">      30 </span>            : use std::convert::TryFrom;
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            : /// This PRAGMA Operation sets the number of measurements of the circuit.
+<span class="lineNum">      33 </span>            : ///
+<span class="lineNum">      34 </span>            : /// This is used for backends that allow setting the number of tries. However, setting the number of
+<span class="lineNum">      35 </span>            : /// measurements does not allow access to the underlying wavefunction or density matrix.
+<a name="36"><span class="lineNum">      36 </span>            : ///</a>
+<a name="37"><span class="lineNum">      37 </span>            : #[derive(</a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="39"><span class="lineNum">      39 </span><span class="lineCov">          1 :     Clone,</span></a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">          7 :     PartialEq,</span></a>
+<span class="lineNum">      41 </span><span class="lineCov">         14 :     roqoqo_derive::Operate,</span>
+<span class="lineNum">      42 </span><span class="lineCov">          2 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">      43 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">      44 </span>            : )]
+<span class="lineNum">      45 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(Serialize, Deserialize))]
+<span class="lineNum">      46 </span>            : pub struct PragmaSetNumberOfMeasurements {
+<span class="lineNum">      47 </span>            :     /// The number of measurements.
+<span class="lineNum">      48 </span>            :     number_measurements: usize,
+<span class="lineNum">      49 </span>            :     /// The register for the readout.
+<span class="lineNum">      50 </span>            :     readout: String,
+<span class="lineNum">      51 </span>            : }
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">      54 </span>            : const TAGS_PragmaSetNumberOfMeasurements: &amp;[&amp;str; 3] = &amp;[
+<span class="lineNum">      55 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">      56 </span>            :     &quot;PragmaOperation&quot;,
+<span class="lineNum">      57 </span>            :     &quot;PragmaSetNumberOfMeasurements&quot;,
+<span class="lineNum">      58 </span>            : ];
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            : // Implementing the InvolveQubits trait for PragmaSetNumberOfMeasurements.
+<a name="61"><span class="lineNum">      61 </span>            : impl InvolveQubits for PragmaSetNumberOfMeasurements {</a>
+<span class="lineNum">      62 </span>            :     /// Lists all involved qubits (here, none).
+<span class="lineNum">      63 </span><span class="lineCov">          1 :     fn involved_qubits(&amp;self) -&gt; InvolvedQubits {</span>
+<span class="lineNum">      64 </span><span class="lineCov">          1 :         InvolvedQubits::None</span>
+<span class="lineNum">      65 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">      66 </span>            : }
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            : /// This PRAGMA Operation sets the statevector of a quantum register.
+<span class="lineNum">      69 </span>            : ///
+<span class="lineNum">      70 </span>            : /// The Circuit() module automatically initializes the qubits in the |0&gt; state, so this PRAGMA
+<span class="lineNum">      71 </span>            : /// operation allows you to set the state of the qubits to a state of your choosing.
+<span class="lineNum">      72 </span>            : ///
+<span class="lineNum">      73 </span>            : /// # Example
+<span class="lineNum">      74 </span>            : ///
+<span class="lineNum">      75 </span>            : /// For instance, to initialize the $|\Psi^-&gt;$ Bell state, we pass the following `statevec` to
+<span class="lineNum">      76 </span>            : /// the PragmaSetStateVector operation.
+<span class="lineNum">      77 </span>            : ///
+<span class="lineNum">      78 </span>            : /// ```
+<span class="lineNum">      79 </span>            : /// use ndarray::{array, Array1};
+<span class="lineNum">      80 </span>            : /// use num_complex::Complex64;
+<span class="lineNum">      81 </span>            : /// use roqoqo::operations::PragmaSetStateVector;
+<span class="lineNum">      82 </span>            : ///
+<span class="lineNum">      83 </span>            : /// let statevec: Array1&lt;Complex64&gt; = array![
+<span class="lineNum">      84 </span>            : ///     Complex64::new(0.0, 0.0),
+<span class="lineNum">      85 </span>            : ///     Complex64::new(1.0 / (2.0_f64).sqrt(), 0.0),
+<span class="lineNum">      86 </span>            : ///     Complex64::new(-1.0 / (2.0_f64).sqrt(), 0.0),
+<span class="lineNum">      87 </span>            : ///     Complex64::new(0.0, 0.0)
+<span class="lineNum">      88 </span>            : /// ];
+<span class="lineNum">      89 </span>            : ///
+<span class="lineNum">      90 </span>            : /// let pragma = PragmaSetStateVector::new(statevec.clone());
+<span class="lineNum">      91 </span>            : /// ```
+<a name="92"><span class="lineNum">      92 </span>            : ///</a>
+<a name="93"><span class="lineNum">      93 </span>            : #[derive(</a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="95"><span class="lineNum">      95 </span><span class="lineCov">          1 :     Clone,</span></a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineCov">          7 :     PartialEq,</span></a>
+<span class="lineNum">      97 </span><span class="lineCov">         13 :     roqoqo_derive::Operate,</span>
+<span class="lineNum">      98 </span><span class="lineCov">          2 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">      99 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">     100 </span>            : )]
+<span class="lineNum">     101 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     102 </span>            : pub struct PragmaSetStateVector {
+<span class="lineNum">     103 </span>            :     /// The statevector that is initialized.
+<span class="lineNum">     104 </span>            :     statevector: Array1&lt;Complex64&gt;,
+<span class="lineNum">     105 </span>            : }
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     108 </span>            : const TAGS_PragmaSetStateVector: &amp;[&amp;str; 3] =
+<span class="lineNum">     109 </span>            :     &amp;[&quot;Operation&quot;, &quot;PragmaOperation&quot;, &quot;PragmaSetStateVector&quot;];
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span>            : // Implementing the InvolveQubits trait for PragmaSetStateVector.
+<a name="112"><span class="lineNum">     112 </span>            : impl InvolveQubits for PragmaSetStateVector {</a>
+<span class="lineNum">     113 </span>            :     /// Lists all involved qubits (here, all).
+<span class="lineNum">     114 </span><span class="lineCov">          1 :     fn involved_qubits(&amp;self) -&gt; InvolvedQubits {</span>
+<span class="lineNum">     115 </span><span class="lineCov">          1 :         InvolvedQubits::All</span>
+<span class="lineNum">     116 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     117 </span>            : }
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span>            : /// This PRAGMA Operation sets the density matrix of a quantum register.
+<span class="lineNum">     120 </span>            : ///
+<span class="lineNum">     121 </span>            : /// The Circuit() module automatically initializes the qubits in the |0&gt; state, so this PRAGMA
+<span class="lineNum">     122 </span>            : /// operation allows you to set the state of the qubits by setting a density matrix of your choosing.
+<span class="lineNum">     123 </span>            : ///
+<span class="lineNum">     124 </span>            : /// # Example
+<span class="lineNum">     125 </span>            : ///
+<span class="lineNum">     126 </span>            : /// ```
+<span class="lineNum">     127 </span>            : /// use ndarray::{array, Array2};
+<span class="lineNum">     128 </span>            : /// use num_complex::Complex64;
+<span class="lineNum">     129 </span>            : /// use roqoqo::operations::PragmaSetDensityMatrix;
+<span class="lineNum">     130 </span>            : ///
+<span class="lineNum">     131 </span>            : /// let matrix: Array2&lt;Complex64&gt; = array![
+<span class="lineNum">     132 </span>            : ///    [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],
+<span class="lineNum">     133 </span>            : ///    [Complex64::new(0.0, 0.0), Complex64::new(0.0, 0.0)],
+<span class="lineNum">     134 </span>            : /// ];
+<span class="lineNum">     135 </span>            : ///
+<span class="lineNum">     136 </span>            : /// let pragma = PragmaSetDensityMatrix::new(matrix.clone());
+<span class="lineNum">     137 </span>            : /// ```
+<a name="138"><span class="lineNum">     138 </span>            : ///</a>
+<a name="139"><span class="lineNum">     139 </span>            : #[derive(</a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">          1 :     Clone,</span></a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineCov">          7 :     PartialEq,</span></a>
+<span class="lineNum">     143 </span><span class="lineCov">         13 :     roqoqo_derive::Operate,</span>
+<span class="lineNum">     144 </span><span class="lineCov">          2 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     145 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">     146 </span>            : )]
+<span class="lineNum">     147 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     148 </span>            : pub struct PragmaSetDensityMatrix {
+<span class="lineNum">     149 </span>            :     /// The density matrix that is initialized.
+<span class="lineNum">     150 </span>            :     density_matrix: Array2&lt;Complex64&gt;,
+<span class="lineNum">     151 </span>            : }
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     154 </span>            : const TAGS_PragmaSetDensityMatrix: &amp;[&amp;str; 3] =
+<span class="lineNum">     155 </span>            :     &amp;[&quot;Operation&quot;, &quot;PragmaOperation&quot;, &quot;PragmaSetDensityMatrix&quot;];
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span>            : // Implementing the InvolveQubits trait for PragmaSetDensityMatrix.
+<a name="158"><span class="lineNum">     158 </span>            : impl InvolveQubits for PragmaSetDensityMatrix {</a>
+<span class="lineNum">     159 </span>            :     /// Lists all involved qubits (here, all).
+<span class="lineNum">     160 </span><span class="lineCov">          1 :     fn involved_qubits(&amp;self) -&gt; InvolvedQubits {</span>
+<span class="lineNum">     161 </span><span class="lineCov">          1 :         InvolvedQubits::All</span>
+<span class="lineNum">     162 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     163 </span>            : }
+<span class="lineNum">     164 </span>            : 
+<span class="lineNum">     165 </span>            : /// The repeated gate PRAGMA operation.
+<span class="lineNum">     166 </span>            : ///
+<span class="lineNum">     167 </span>            : /// This PRAGMA Operation repeats the next gate in the circuit the given number of times to increase the rate for error mitigation.
+<a name="168"><span class="lineNum">     168 </span>            : ///</a>
+<a name="169"><span class="lineNum">     169 </span>            : #[derive(</a>
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="171"><span class="lineNum">     171 </span><span class="lineCov">          1 :     Clone,</span></a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">          7 :     PartialEq,</span></a>
+<span class="lineNum">     173 </span><span class="lineCov">         13 :     roqoqo_derive::Operate,</span>
+<span class="lineNum">     174 </span><span class="lineCov">          2 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     175 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">     176 </span>            : )]
+<span class="lineNum">     177 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     178 </span>            : pub struct PragmaRepeatGate {
+<span class="lineNum">     179 </span>            :     /// The number of times the following gate is repeated.
+<span class="lineNum">     180 </span>            :     repetition_coefficient: usize,
+<span class="lineNum">     181 </span>            : }
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     184 </span>            : const TAGS_PragmaRepeatGate: &amp;[&amp;str; 3] = &amp;[&quot;Operation&quot;, &quot;PragmaOperation&quot;, &quot;PragmaRepeatGate&quot;];
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span>            : // Implementing the InvolveQubits trait for PragmaRepeatGate.
+<a name="187"><span class="lineNum">     187 </span>            : impl InvolveQubits for PragmaRepeatGate {</a>
+<span class="lineNum">     188 </span>            :     /// Lists all involved qubits (here, all).
+<span class="lineNum">     189 </span><span class="lineCov">          1 :     fn involved_qubits(&amp;self) -&gt; InvolvedQubits {</span>
+<span class="lineNum">     190 </span><span class="lineCov">          1 :         InvolvedQubits::All</span>
+<span class="lineNum">     191 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     192 </span>            : }
+<span class="lineNum">     193 </span>            : 
+<span class="lineNum">     194 </span>            : /// The statistical overrotation PRAGMA operation.
+<span class="lineNum">     195 </span>            : ///
+<span class="lineNum">     196 </span>            : /// This PRAGMA applies a statistical overrotation to the next rotation gate in the circuit, which
+<span class="lineNum">     197 </span>            : /// matches the hqslang name in the `gate` parameter of PragmaOverrotation and the involved qubits in `qubits`.
+<span class="lineNum">     198 </span>            : ///
+<span class="lineNum">     199 </span>            : /// The applied overrotation corresponds to adding a random number to the rotation angle.
+<span class="lineNum">     200 </span>            : /// The random number is drawn from a normal distribution with mean `0`
+<span class="lineNum">     201 </span>            : /// and standard deviation `variance` and is multiplied by the `amplitude`.
+<a name="202"><span class="lineNum">     202 </span>            : ///</a>
+<a name="203"><span class="lineNum">     203 </span>            : #[derive(</a>
+<a name="204"><span class="lineNum">     204 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineCov">          1 :     Clone,</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineCov">          7 :     PartialEq,</span></a>
+<a name="207"><span class="lineNum">     207 </span><span class="lineCov">         16 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">     208 </span><span class="lineCov">          2 :     roqoqo_derive::Substitute,</span>
+<a name="209"><span class="lineNum">     209 </span><span class="lineCov">          1 :     roqoqo_derive::InvolveQubits,</span></a>
+<span class="lineNum">     210 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">     211 </span><span class="lineCov">          1 :     roqoqo_derive::OperateMultiQubit,</span>
+<span class="lineNum">     212 </span>            : )]
+<span class="lineNum">     213 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     214 </span>            : // #[cfg_attr(feature = &quot;overrotate&quot;)]
+<span class="lineNum">     215 </span>            : pub struct PragmaOverrotation {
+<span class="lineNum">     216 </span>            :     /// The unique hqslang name of the gate to overrotate.
+<span class="lineNum">     217 </span>            :     gate_hqslang: String,
+<span class="lineNum">     218 </span>            :     /// The qubits of the gate to overrotate.
+<span class="lineNum">     219 </span>            :     qubits: Vec&lt;usize&gt;,
+<span class="lineNum">     220 </span>            :     /// The amplitude the random number is multiplied by.
+<span class="lineNum">     221 </span>            :     amplitude: f64,
+<span class="lineNum">     222 </span>            :     /// The standard deviation of the normal distribution the random number is drawn from.
+<span class="lineNum">     223 </span>            :     variance: f64,
+<span class="lineNum">     224 </span>            : }
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     227 </span>            : const TAGS_PragmaOverrotation: &amp;[&amp;str; 4] = &amp;[
+<span class="lineNum">     228 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     229 </span>            :     &quot;MultiQubitOperation&quot;,
+<span class="lineNum">     230 </span>            :     &quot;PragmaOperation&quot;,
+<span class="lineNum">     231 </span>            :     &quot;PragmaOverrotation&quot;,
+<span class="lineNum">     232 </span>            : ];
+<span class="lineNum">     233 </span>            : 
+<span class="lineNum">     234 </span>            : /// This PRAGMA Operation boosts noise and overrotations in the circuit.
+<a name="235"><span class="lineNum">     235 </span>            : ///</a>
+<a name="236"><span class="lineNum">     236 </span>            : #[derive(</a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="238"><span class="lineNum">     238 </span><span class="lineCov">          1 :     Clone,</span></a>
+<a name="239"><span class="lineNum">     239 </span><span class="lineCov">          7 :     PartialEq,</span></a>
+<span class="lineNum">     240 </span><span class="lineCov">         14 :     roqoqo_derive::Operate,</span>
+<span class="lineNum">     241 </span><span class="lineCov">          1 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     242 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">     243 </span>            : )]
+<span class="lineNum">     244 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     245 </span>            : pub struct PragmaBoostNoise {
+<span class="lineNum">     246 </span>            :     /// The coefficient by which the noise is boosted, i.e. the number by which the gate time is multiplied.
+<span class="lineNum">     247 </span>            :     noise_coefficient: CalculatorFloat,
+<span class="lineNum">     248 </span>            : }
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     251 </span>            : const TAGS_PragmaBoostNoise: &amp;[&amp;str; 3] = &amp;[&quot;Operation&quot;, &quot;PragmaOperation&quot;, &quot;PragmaBoostNoise&quot;];
+<span class="lineNum">     252 </span>            : 
+<span class="lineNum">     253 </span>            : // Implementing the InvolveQubits trait for PragmaBoostNoise.
+<a name="254"><span class="lineNum">     254 </span>            : impl InvolveQubits for PragmaBoostNoise {</a>
+<span class="lineNum">     255 </span>            :     /// Lists all involved qubits (here, none).
+<span class="lineNum">     256 </span><span class="lineCov">          2 :     fn involved_qubits(&amp;self) -&gt; InvolvedQubits {</span>
+<span class="lineNum">     257 </span><span class="lineCov">          2 :         InvolvedQubits::None</span>
+<span class="lineNum">     258 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     259 </span>            : }
+<span class="lineNum">     260 </span>            : 
+<span class="lineNum">     261 </span>            : /// This PRAGMA Operation signals the STOP of a parallel execution block.
+<a name="262"><span class="lineNum">     262 </span>            : ///</a>
+<a name="263"><span class="lineNum">     263 </span>            : #[derive(</a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="265"><span class="lineNum">     265 </span><span class="lineCov">          1 :     Clone,</span></a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineCov">          7 :     PartialEq,</span></a>
+<a name="267"><span class="lineNum">     267 </span><span class="lineCov">          1 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="268"><span class="lineNum">     268 </span><span class="lineCov">         14 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">     269 </span><span class="lineCov">          4 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     270 </span><span class="lineCov">          1 :     roqoqo_derive::OperateMultiQubit,</span>
+<span class="lineNum">     271 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">     272 </span>            : )]
+<span class="lineNum">     273 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     274 </span>            : pub struct PragmaStopParallelBlock {
+<span class="lineNum">     275 </span>            :     /// The qubits involved in parallel execution block.
+<span class="lineNum">     276 </span>            :     qubits: Vec&lt;usize&gt;,
+<span class="lineNum">     277 </span>            :     /// The time for the execution of the block in seconds.
+<span class="lineNum">     278 </span>            :     execution_time: CalculatorFloat,
+<span class="lineNum">     279 </span>            : }
+<span class="lineNum">     280 </span>            : 
+<span class="lineNum">     281 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     282 </span>            : const TAGS_PragmaStopParallelBlock: &amp;[&amp;str; 4] = &amp;[
+<span class="lineNum">     283 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     284 </span>            :     &quot;MultiQubitOperation&quot;,
+<span class="lineNum">     285 </span>            :     &quot;PragmaOperation&quot;,
+<span class="lineNum">     286 </span>            :     &quot;PragmaStopParallelBlock&quot;,
+<span class="lineNum">     287 </span>            : ];
+<span class="lineNum">     288 </span>            : 
+<span class="lineNum">     289 </span>            : /// The global phase PRAGMA operation.
+<span class="lineNum">     290 </span>            : ///
+<span class="lineNum">     291 </span>            : /// This PRAGMA Operation signals that the quantum register picks up a global phase,
+<span class="lineNum">     292 </span>            : /// i.e. it provides information that there is a global phase to be considered.
+<a name="293"><span class="lineNum">     293 </span>            : ///</a>
+<a name="294"><span class="lineNum">     294 </span>            : #[derive(</a>
+<a name="295"><span class="lineNum">     295 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="296"><span class="lineNum">     296 </span><span class="lineCov">          1 :     Clone,</span></a>
+<a name="297"><span class="lineNum">     297 </span><span class="lineCov">          7 :     PartialEq,</span></a>
+<span class="lineNum">     298 </span><span class="lineCov">         13 :     roqoqo_derive::Operate,</span>
+<span class="lineNum">     299 </span><span class="lineCov">          1 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     300 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">     301 </span>            : )]
+<span class="lineNum">     302 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     303 </span>            : pub struct PragmaGlobalPhase {
+<span class="lineNum">     304 </span>            :     /// The picked up global phase.
+<span class="lineNum">     305 </span>            :     phase: CalculatorFloat,
+<span class="lineNum">     306 </span>            : }
+<span class="lineNum">     307 </span>            : 
+<span class="lineNum">     308 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     309 </span>            : const TAGS_PragmaGlobalPhase: &amp;[&amp;str; 3] = &amp;[&quot;Operation&quot;, &quot;PragmaOperation&quot;, &quot;PragmaGlobalPhase&quot;];
+<span class="lineNum">     310 </span>            : 
+<span class="lineNum">     311 </span>            : // Implementing the InvolveQubits trait for PragmaGlobalPhase.
+<a name="312"><span class="lineNum">     312 </span>            : impl InvolveQubits for PragmaGlobalPhase {</a>
+<span class="lineNum">     313 </span>            :     /// Lists all involved qubits (here, none).
+<span class="lineNum">     314 </span><span class="lineCov">          1 :     fn involved_qubits(&amp;self) -&gt; InvolvedQubits {</span>
+<span class="lineNum">     315 </span><span class="lineCov">          1 :         InvolvedQubits::None</span>
+<span class="lineNum">     316 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     317 </span>            : }
+<span class="lineNum">     318 </span>            : 
+<span class="lineNum">     319 </span>            : /// This PRAGMA Operation makes the quantum hardware wait a given amount of time.
+<span class="lineNum">     320 </span>            : ///
+<span class="lineNum">     321 </span>            : /// This PRAGMA Operation is used for error mitigation reasons, for instance.
+<span class="lineNum">     322 </span>            : /// It can be used to boost the noise on the qubits since it gets worse with time.
+<a name="323"><span class="lineNum">     323 </span>            : ///</a>
+<a name="324"><span class="lineNum">     324 </span>            : #[derive(</a>
+<a name="325"><span class="lineNum">     325 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="326"><span class="lineNum">     326 </span><span class="lineCov">          1 :     Clone,</span></a>
+<a name="327"><span class="lineNum">     327 </span><span class="lineCov">          7 :     PartialEq,</span></a>
+<a name="328"><span class="lineNum">     328 </span><span class="lineCov">          1 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="329"><span class="lineNum">     329 </span><span class="lineCov">         14 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">     330 </span><span class="lineCov">          4 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     331 </span><span class="lineCov">          1 :     roqoqo_derive::OperateMultiQubit,</span>
+<span class="lineNum">     332 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">     333 </span>            : )]
+<span class="lineNum">     334 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     335 </span>            : pub struct PragmaSleep {
+<span class="lineNum">     336 </span>            :     /// The qubits involved in the sleep block.
+<span class="lineNum">     337 </span>            :     qubits: Vec&lt;usize&gt;,
+<span class="lineNum">     338 </span>            :     /// Time for the execution of the operation in seconds.
+<span class="lineNum">     339 </span>            :     sleep_time: CalculatorFloat,
+<span class="lineNum">     340 </span>            : }
+<span class="lineNum">     341 </span>            : 
+<span class="lineNum">     342 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     343 </span>            : const TAGS_PragmaSleep: &amp;[&amp;str; 4] = &amp;[
+<span class="lineNum">     344 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     345 </span>            :     &quot;MultiQubitOperation&quot;,
+<span class="lineNum">     346 </span>            :     &quot;PragmaOperation&quot;,
+<span class="lineNum">     347 </span>            :     &quot;PragmaSleep&quot;,
+<span class="lineNum">     348 </span>            : ];
+<span class="lineNum">     349 </span>            : 
+<span class="lineNum">     350 </span>            : /// This PRAGMA Operation resets the chosen qubit to the zero state.
+<a name="351"><span class="lineNum">     351 </span>            : ///</a>
+<a name="352"><span class="lineNum">     352 </span>            : #[derive(</a>
+<a name="353"><span class="lineNum">     353 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="354"><span class="lineNum">     354 </span><span class="lineCov">          1 :     Clone,</span></a>
+<a name="355"><span class="lineNum">     355 </span><span class="lineCov">          7 :     PartialEq,</span></a>
+<a name="356"><span class="lineNum">     356 </span><span class="lineCov">          1 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="357"><span class="lineNum">     357 </span><span class="lineCov">         13 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">     358 </span><span class="lineCov">          2 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     359 </span><span class="lineCov">          1 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">     360 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">     361 </span>            : )]
+<span class="lineNum">     362 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     363 </span>            : pub struct PragmaActiveReset {
+<span class="lineNum">     364 </span>            :     /// The qubit to be reset.
+<span class="lineNum">     365 </span>            :     qubit: usize,
+<span class="lineNum">     366 </span>            : }
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     369 </span>            : const TAGS_PragmaActiveReset: &amp;[&amp;str; 4] = &amp;[
+<span class="lineNum">     370 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     371 </span>            :     &quot;SingleQubitOperation&quot;,
+<span class="lineNum">     372 </span>            :     &quot;PragmaOperation&quot;,
+<span class="lineNum">     373 </span>            :     &quot;PragmaActiveReset&quot;,
+<span class="lineNum">     374 </span>            : ];
+<span class="lineNum">     375 </span>            : 
+<span class="lineNum">     376 </span>            : /// This PRAGMA Operation signals the START of a decomposition block.
+<a name="377"><span class="lineNum">     377 </span>            : ///</a>
+<a name="378"><span class="lineNum">     378 </span>            : #[derive(</a>
+<a name="379"><span class="lineNum">     379 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="380"><span class="lineNum">     380 </span><span class="lineCov">          2 :     Clone,</span></a>
+<a name="381"><span class="lineNum">     381 </span><span class="lineCov">          7 :     PartialEq,</span></a>
+<a name="382"><span class="lineNum">     382 </span><span class="lineCov">          1 :     roqoqo_derive::InvolveQubits,</span></a>
+<span class="lineNum">     383 </span><span class="lineCov">         13 :     roqoqo_derive::Operate,</span>
+<span class="lineNum">     384 </span><span class="lineCov">          1 :     roqoqo_derive::OperateMultiQubit,</span>
+<span class="lineNum">     385 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">     386 </span>            : )]
+<span class="lineNum">     387 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     388 </span>            : pub struct PragmaStartDecompositionBlock {
+<span class="lineNum">     389 </span>            :     /// The qubits involved in the decomposition block.
+<span class="lineNum">     390 </span>            :     qubits: Vec&lt;usize&gt;,
+<span class="lineNum">     391 </span>            :     /// The reordering dictionary of the block.
+<span class="lineNum">     392 </span>            :     reordering_dictionary: HashMap&lt;usize, usize&gt;,
+<span class="lineNum">     393 </span>            : }
+<span class="lineNum">     394 </span>            : 
+<span class="lineNum">     395 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     396 </span>            : const TAGS_PragmaStartDecompositionBlock: &amp;[&amp;str; 4] = &amp;[
+<span class="lineNum">     397 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     398 </span>            :     &quot;MultiQubitOperation&quot;,
+<span class="lineNum">     399 </span>            :     &quot;PragmaOperation&quot;,
+<span class="lineNum">     400 </span>            :     &quot;PragmaStartDecompositionBlock&quot;,
+<span class="lineNum">     401 </span>            : ];
+<span class="lineNum">     402 </span>            : 
+<span class="lineNum">     403 </span>            : /// Substitute trait allowing to replace symbolic parameters and to perform qubit mappings.
+<a name="404"><span class="lineNum">     404 </span>            : impl Substitute for PragmaStartDecompositionBlock {</a>
+<span class="lineNum">     405 </span>            :     /// Remaps qubits in clone of the operation.
+<span class="lineNum">     406 </span><span class="lineCov">          1 :     fn remap_qubits(&amp;self, mapping: &amp;HashMap&lt;usize, usize&gt;) -&gt; Result&lt;Self, RoqoqoError&gt; {</span>
+<span class="lineNum">     407 </span><span class="lineCov">          1 :         let mut new_qubits: Vec&lt;usize&gt; = Vec::new();</span>
+<a name="408"><span class="lineNum">     408 </span><span class="lineCov">          2 :         for q in &amp;self.qubits {</span></a>
+<span class="lineNum">     409 </span><span class="lineCov">          2 :             new_qubits.push(*mapping.get(q).ok_or(Err(&quot;&quot;)).map_err(</span>
+<span class="lineNum">     410 </span><span class="lineCov">          2 :                 |_x: std::result::Result&lt;&amp;usize, &amp;str&gt;| RoqoqoError::QubitMappingError {</span>
+<span class="lineNum">     411 </span><span class="lineNoCov">          0 :                     qubit: *q,</span>
+<span class="lineNum">     412 </span><span class="lineCov">          2 :                 },</span>
+<span class="lineNum">     413 </span><span class="lineCov">          2 :             )?)</span>
+<span class="lineNum">     414 </span>            :         }
+<span class="lineNum">     415 </span>            : 
+<span class="lineNum">     416 </span><span class="lineCov">          1 :         let mut mutable_reordering: HashMap&lt;usize, usize&gt; = HashMap::new();</span>
+<a name="417"><span class="lineNum">     417 </span><span class="lineCov">          3 :         for (old_qubit, new_qubit) in self.reordering_dictionary.clone() {</span></a>
+<span class="lineNum">     418 </span><span class="lineCov">          2 :             let old_remapped = *mapping.get(&amp;old_qubit).ok_or(Err(&quot;&quot;)).map_err(</span>
+<span class="lineNum">     419 </span><span class="lineCov">          2 :                 |_x: std::result::Result&lt;&amp;usize, &amp;str&gt;| RoqoqoError::QubitMappingError {</span>
+<span class="lineNum">     420 </span><span class="lineNoCov">          0 :                     qubit: old_qubit,</span>
+<span class="lineNum">     421 </span><span class="lineCov">          2 :                 },</span>
+<a name="422"><span class="lineNum">     422 </span><span class="lineCov">          2 :             )?;</span></a>
+<span class="lineNum">     423 </span><span class="lineCov">          2 :             let new_remapped = *mapping.get(&amp;new_qubit).ok_or(Err(&quot;&quot;)).map_err(</span>
+<span class="lineNum">     424 </span><span class="lineCov">          2 :                 |_x: std::result::Result&lt;&amp;usize, &amp;str&gt;| RoqoqoError::QubitMappingError {</span>
+<span class="lineNum">     425 </span><span class="lineNoCov">          0 :                     qubit: new_qubit,</span>
+<span class="lineNum">     426 </span><span class="lineCov">          2 :                 },</span>
+<span class="lineNum">     427 </span><span class="lineCov">          2 :             )?;</span>
+<span class="lineNum">     428 </span><span class="lineCov">          2 :             mutable_reordering.insert(old_remapped, new_remapped);</span>
+<span class="lineNum">     429 </span>            :         }
+<span class="lineNum">     430 </span>            : 
+<span class="lineNum">     431 </span><span class="lineCov">          1 :         Ok(PragmaStartDecompositionBlock::new(</span>
+<span class="lineNum">     432 </span><span class="lineCov">          1 :             new_qubits,</span>
+<span class="lineNum">     433 </span><span class="lineCov">          1 :             mutable_reordering,</span>
+<span class="lineNum">     434 </span><span class="lineCov">          1 :         ))</span>
+<span class="lineNum">     435 </span><span class="lineCov">          1 :     }</span>
+<a name="436"><span class="lineNum">     436 </span>            : </a>
+<span class="lineNum">     437 </span>            :     /// Substitutes symbolic parameters in clone of the operation.
+<span class="lineNum">     438 </span><span class="lineCov">          1 :     fn substitute_parameters(&amp;self, _calculator: &amp;mut Calculator) -&gt; Result&lt;Self, RoqoqoError&gt; {</span>
+<span class="lineNum">     439 </span><span class="lineCov">          1 :         Ok(self.clone())</span>
+<span class="lineNum">     440 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     441 </span>            : }
+<span class="lineNum">     442 </span>            : 
+<span class="lineNum">     443 </span>            : /// This PRAGMA Operation signals the STOP of a decomposition block.
+<a name="444"><span class="lineNum">     444 </span>            : ///</a>
+<a name="445"><span class="lineNum">     445 </span>            : #[derive(</a>
+<a name="446"><span class="lineNum">     446 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="447"><span class="lineNum">     447 </span><span class="lineCov">          1 :     Clone,</span></a>
+<a name="448"><span class="lineNum">     448 </span><span class="lineCov">          7 :     PartialEq,</span></a>
+<a name="449"><span class="lineNum">     449 </span><span class="lineCov">          1 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="450"><span class="lineNum">     450 </span><span class="lineCov">         13 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">     451 </span><span class="lineCov">          3 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     452 </span><span class="lineCov">          1 :     roqoqo_derive::OperateMultiQubit,</span>
+<span class="lineNum">     453 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">     454 </span>            : )]
+<span class="lineNum">     455 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     456 </span>            : pub struct PragmaStopDecompositionBlock {
+<span class="lineNum">     457 </span>            :     /// The qubits involved in the decomposition block.
+<span class="lineNum">     458 </span>            :     qubits: Vec&lt;usize&gt;,
+<span class="lineNum">     459 </span>            : }
+<span class="lineNum">     460 </span>            : 
+<span class="lineNum">     461 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     462 </span>            : const TAGS_PragmaStopDecompositionBlock: &amp;[&amp;str; 4] = &amp;[
+<span class="lineNum">     463 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     464 </span>            :     &quot;MultiQubitOperation&quot;,
+<span class="lineNum">     465 </span>            :     &quot;PragmaOperation&quot;,
+<span class="lineNum">     466 </span>            :     &quot;PragmaStopDecompositionBlock&quot;,
+<span class="lineNum">     467 </span>            : ];
+<span class="lineNum">     468 </span>            : 
+<span class="lineNum">     469 </span>            : /// The damping PRAGMA noise Operation.
+<span class="lineNum">     470 </span>            : ///
+<span class="lineNum">     471 </span>            : /// This PRAGMA Operation applies a pure damping error corresponding to zero temperature environments.
+<a name="472"><span class="lineNum">     472 </span>            : ///</a>
+<a name="473"><span class="lineNum">     473 </span>            : #[derive(</a>
+<a name="474"><span class="lineNum">     474 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="475"><span class="lineNum">     475 </span><span class="lineCov">          2 :     Clone,</span></a>
+<a name="476"><span class="lineNum">     476 </span><span class="lineCov">          8 :     PartialEq,</span></a>
+<a name="477"><span class="lineNum">     477 </span><span class="lineCov">          1 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="478"><span class="lineNum">     478 </span><span class="lineCov">          1 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">     479 </span><span class="lineCov">          3 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     480 </span><span class="lineCov">          1 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">     481 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">     482 </span>            : )]
+<span class="lineNum">     483 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     484 </span>            : pub struct PragmaDamping {
+<span class="lineNum">     485 </span>            :     /// The qubit on which to apply the damping.
+<span class="lineNum">     486 </span>            :     qubit: usize,
+<span class="lineNum">     487 </span>            :     /// The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+<span class="lineNum">     488 </span>            :     gate_time: CalculatorFloat,
+<span class="lineNum">     489 </span>            :     /// The error rate of the damping (in 1/second).
+<span class="lineNum">     490 </span>            :     rate: CalculatorFloat,
+<span class="lineNum">     491 </span>            : }
+<span class="lineNum">     492 </span>            : 
+<span class="lineNum">     493 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     494 </span>            : const TAGS_PragmaDamping: &amp;[&amp;str; 6] = &amp;[
+<span class="lineNum">     495 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     496 </span>            :     &quot;SingleQubitOperation&quot;,
+<span class="lineNum">     497 </span>            :     &quot;PragmaOperation&quot;,
+<span class="lineNum">     498 </span>            :     &quot;PragmaNoiseOperation&quot;,
+<span class="lineNum">     499 </span>            :     &quot;PragmaNoiseProbaOperation&quot;,
+<span class="lineNum">     500 </span>            :     &quot;PragmaDamping&quot;,
+<span class="lineNum">     501 </span>            : ];
+<span class="lineNum">     502 </span>            : 
+<span class="lineNum">     503 </span>            : /// OperatePragmaNoise trait creating necessary functions for a PRAGMA noise Operation.
+<a name="504"><span class="lineNum">     504 </span>            : impl OperatePragmaNoise for PragmaDamping {</a>
+<span class="lineNum">     505 </span>            :     /// Returns the superoperator matrix of the operation.
+<span class="lineNum">     506 </span><span class="lineCov">          1 :     fn superoperator(&amp;self) -&gt; Result&lt;Array2&lt;f64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">     507 </span><span class="lineCov">          1 :         let prob: f64 = f64::try_from(self.probability())?;</span>
+<span class="lineNum">     508 </span><span class="lineCov">          1 :         let sqrt: f64 = (1.0 - prob).sqrt();</span>
+<span class="lineNum">     509 </span><span class="lineCov">          1 : </span>
+<span class="lineNum">     510 </span><span class="lineCov">          1 :         Ok(array![</span>
+<span class="lineNum">     511 </span><span class="lineCov">          1 :             [1.0, 0.0, 0.0, prob],</span>
+<span class="lineNum">     512 </span><span class="lineCov">          1 :             [0.0, sqrt, 0.0, 0.0],</span>
+<span class="lineNum">     513 </span><span class="lineCov">          1 :             [0.0, 0.0, sqrt, 0.0],</span>
+<span class="lineNum">     514 </span><span class="lineCov">          1 :             [0.0, 0.0, 0.0, 1.0 - prob],</span>
+<span class="lineNum">     515 </span><span class="lineCov">          1 :         ])</span>
+<span class="lineNum">     516 </span><span class="lineCov">          1 :     }</span>
+<a name="517"><span class="lineNum">     517 </span>            : </a>
+<span class="lineNum">     518 </span>            :     /// Returns the gate to the power of `power`.
+<span class="lineNum">     519 </span><span class="lineCov">          1 :     fn powercf(&amp;self, power: CalculatorFloat) -&gt; Self {</span>
+<span class="lineNum">     520 </span><span class="lineCov">          1 :         let mut new = self.clone();</span>
+<span class="lineNum">     521 </span><span class="lineCov">          1 :         new.gate_time = power * self.gate_time.clone();</span>
+<span class="lineNum">     522 </span><span class="lineCov">          1 :         new</span>
+<span class="lineNum">     523 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     524 </span>            : }
+<span class="lineNum">     525 </span>            : 
+<span class="lineNum">     526 </span>            : /// OperatePragmaNoiseProba trait creating necessary functions for a PRAGMA noise Operation.
+<a name="527"><span class="lineNum">     527 </span>            : impl OperatePragmaNoiseProba for PragmaDamping {</a>
+<span class="lineNum">     528 </span>            :     /// Returns the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
+<span class="lineNum">     529 </span><span class="lineCov">          3 :     fn probability(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     530 </span><span class="lineCov">          3 :         let prob: CalculatorFloat =</span>
+<span class="lineNum">     531 </span><span class="lineCov">          3 :             ((self.gate_time.clone() * self.rate.clone() * (-2.0)).exp() * (-1.0) + 1.0) * 0.5;</span>
+<span class="lineNum">     532 </span><span class="lineCov">          3 :         prob</span>
+<span class="lineNum">     533 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">     534 </span>            : }
+<span class="lineNum">     535 </span>            : 
+<span class="lineNum">     536 </span>            : /// The depolarising PRAGMA noise Operation.
+<span class="lineNum">     537 </span>            : ///
+<span class="lineNum">     538 </span>            : /// This PRAGMA Operation applies a depolarising error corresponding to infinite temperature environments.
+<a name="539"><span class="lineNum">     539 </span>            : ///</a>
+<a name="540"><span class="lineNum">     540 </span>            : #[derive(</a>
+<a name="541"><span class="lineNum">     541 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="542"><span class="lineNum">     542 </span><span class="lineCov">          2 :     Clone,</span></a>
+<a name="543"><span class="lineNum">     543 </span><span class="lineCov">          8 :     PartialEq,</span></a>
+<a name="544"><span class="lineNum">     544 </span><span class="lineCov">          1 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="545"><span class="lineNum">     545 </span><span class="lineCov">          1 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">     546 </span><span class="lineCov">          3 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     547 </span><span class="lineCov">          1 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">     548 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">     549 </span>            : )]
+<span class="lineNum">     550 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     551 </span>            : pub struct PragmaDepolarising {
+<span class="lineNum">     552 </span>            :     /// The qubit on which to apply the depolarising.
+<span class="lineNum">     553 </span>            :     qubit: usize,
+<span class="lineNum">     554 </span>            :     /// The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+<span class="lineNum">     555 </span>            :     gate_time: CalculatorFloat,
+<span class="lineNum">     556 </span>            :     /// The error rate of the depolarisation (in 1/second).
+<span class="lineNum">     557 </span>            :     rate: CalculatorFloat,
+<span class="lineNum">     558 </span>            : }
+<span class="lineNum">     559 </span>            : 
+<span class="lineNum">     560 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     561 </span>            : const TAGS_PragmaDepolarising: &amp;[&amp;str; 6] = &amp;[
+<span class="lineNum">     562 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     563 </span>            :     &quot;SingleQubitOperation&quot;,
+<span class="lineNum">     564 </span>            :     &quot;PragmaOperation&quot;,
+<span class="lineNum">     565 </span>            :     &quot;PragmaNoiseOperation&quot;,
+<span class="lineNum">     566 </span>            :     &quot;PragmaNoiseProbaOperation&quot;,
+<span class="lineNum">     567 </span>            :     &quot;PragmaDepolarising&quot;,
+<span class="lineNum">     568 </span>            : ];
+<span class="lineNum">     569 </span>            : 
+<span class="lineNum">     570 </span>            : /// OperatePragmaNoise trait creating necessary functions for a PRAGMA noise Operation.
+<a name="571"><span class="lineNum">     571 </span>            : impl OperatePragmaNoise for PragmaDepolarising {</a>
+<span class="lineNum">     572 </span>            :     /// Returns the superoperator matrix of the operation.
+<span class="lineNum">     573 </span><span class="lineCov">          1 :     fn superoperator(&amp;self) -&gt; Result&lt;Array2&lt;f64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">     574 </span><span class="lineCov">          1 :         let gate_time: f64 = f64::try_from(self.gate_time.clone())?;</span>
+<span class="lineNum">     575 </span><span class="lineCov">          1 :         let rate: f64 = f64::try_from(self.rate.clone())?;</span>
+<span class="lineNum">     576 </span>            : 
+<span class="lineNum">     577 </span><span class="lineCov">          1 :         let pre_exp: f64 = -1.0 * gate_time * rate;</span>
+<span class="lineNum">     578 </span><span class="lineCov">          1 :         let prob: f64 = (3.0 / 4.0) * (1.0 - pre_exp.exp());</span>
+<span class="lineNum">     579 </span><span class="lineCov">          1 :         let proba1: f64 = 1.0 - (2.0 / 3.0) * prob;</span>
+<span class="lineNum">     580 </span><span class="lineCov">          1 :         let proba2: f64 = 1.0 - (4.0 / 3.0) * prob;</span>
+<span class="lineNum">     581 </span><span class="lineCov">          1 :         let proba3: f64 = (2.0 / 3.0) * prob;</span>
+<span class="lineNum">     582 </span><span class="lineCov">          1 : </span>
+<span class="lineNum">     583 </span><span class="lineCov">          1 :         Ok(array![</span>
+<span class="lineNum">     584 </span><span class="lineCov">          1 :             [proba1, 0.0, 0.0, proba3],</span>
+<span class="lineNum">     585 </span><span class="lineCov">          1 :             [0.0, proba2, 0.0, 0.0],</span>
+<span class="lineNum">     586 </span><span class="lineCov">          1 :             [0.0, 0.0, proba2, 0.0],</span>
+<span class="lineNum">     587 </span><span class="lineCov">          1 :             [proba3, 0.0, 0.0, proba1],</span>
+<span class="lineNum">     588 </span><span class="lineCov">          1 :         ])</span>
+<span class="lineNum">     589 </span><span class="lineCov">          1 :     }</span>
+<a name="590"><span class="lineNum">     590 </span>            : </a>
+<span class="lineNum">     591 </span>            :     /// Returns the gate to the power of `power`.
+<span class="lineNum">     592 </span><span class="lineCov">          1 :     fn powercf(&amp;self, power: CalculatorFloat) -&gt; Self {</span>
+<span class="lineNum">     593 </span><span class="lineCov">          1 :         let mut new = self.clone();</span>
+<span class="lineNum">     594 </span><span class="lineCov">          1 :         new.gate_time = power * self.gate_time.clone();</span>
+<span class="lineNum">     595 </span><span class="lineCov">          1 :         new</span>
+<span class="lineNum">     596 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     597 </span>            : }
+<span class="lineNum">     598 </span>            : 
+<span class="lineNum">     599 </span>            : /// OperatePragmaNoiseProba trait creating necessary functions for a PRAGMA noise Operation.
+<a name="600"><span class="lineNum">     600 </span>            : impl OperatePragmaNoiseProba for PragmaDepolarising {</a>
+<span class="lineNum">     601 </span>            :     /// Returns the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
+<span class="lineNum">     602 </span><span class="lineCov">          1 :     fn probability(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     603 </span><span class="lineCov">          1 :         let prob: CalculatorFloat =</span>
+<span class="lineNum">     604 </span><span class="lineCov">          1 :             ((self.gate_time.clone() * self.rate.clone() * (-1.0)).exp() * (-1.0) + 1.0) * 0.75;</span>
+<span class="lineNum">     605 </span><span class="lineCov">          1 :         prob</span>
+<span class="lineNum">     606 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     607 </span>            : }
+<span class="lineNum">     608 </span>            : 
+<span class="lineNum">     609 </span>            : /// The dephasing PRAGMA noise Operation.
+<span class="lineNum">     610 </span>            : ///
+<span class="lineNum">     611 </span>            : /// This PRAGMA Operation applies a pure dephasing error.
+<a name="612"><span class="lineNum">     612 </span>            : ///</a>
+<a name="613"><span class="lineNum">     613 </span>            : #[derive(</a>
+<a name="614"><span class="lineNum">     614 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="615"><span class="lineNum">     615 </span><span class="lineCov">          2 :     Clone,</span></a>
+<a name="616"><span class="lineNum">     616 </span><span class="lineCov">          8 :     PartialEq,</span></a>
+<a name="617"><span class="lineNum">     617 </span><span class="lineCov">          1 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="618"><span class="lineNum">     618 </span><span class="lineCov">          1 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">     619 </span><span class="lineCov">          3 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     620 </span><span class="lineCov">          1 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">     621 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">     622 </span>            : )]
+<span class="lineNum">     623 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     624 </span>            : pub struct PragmaDephasing {
+<span class="lineNum">     625 </span>            :     /// The qubit on which to apply the dephasing.
+<span class="lineNum">     626 </span>            :     qubit: usize,
+<span class="lineNum">     627 </span>            :     /// The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+<span class="lineNum">     628 </span>            :     gate_time: CalculatorFloat,
+<span class="lineNum">     629 </span>            :     /// The error rate of the dephasing (in 1/second).
+<span class="lineNum">     630 </span>            :     rate: CalculatorFloat,
+<span class="lineNum">     631 </span>            : }
+<span class="lineNum">     632 </span>            : 
+<span class="lineNum">     633 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     634 </span>            : const TAGS_PragmaDephasing: &amp;[&amp;str; 6] = &amp;[
+<span class="lineNum">     635 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     636 </span>            :     &quot;SingleQubitOperation&quot;,
+<span class="lineNum">     637 </span>            :     &quot;PragmaOperation&quot;,
+<span class="lineNum">     638 </span>            :     &quot;PragmaNoiseOperation&quot;,
+<span class="lineNum">     639 </span>            :     &quot;PragmaNoiseProbaOperation&quot;,
+<span class="lineNum">     640 </span>            :     &quot;PragmaDephasing&quot;,
+<span class="lineNum">     641 </span>            : ];
+<span class="lineNum">     642 </span>            : 
+<span class="lineNum">     643 </span>            : /// OperatePragmaNoise trait creating necessary functions for a PRAGMA noise Operation.
+<a name="644"><span class="lineNum">     644 </span>            : impl OperatePragmaNoise for PragmaDephasing {</a>
+<span class="lineNum">     645 </span>            :     /// Returns the superoperator matrix of the operation.
+<span class="lineNum">     646 </span><span class="lineCov">          1 :     fn superoperator(&amp;self) -&gt; Result&lt;Array2&lt;f64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">     647 </span><span class="lineCov">          1 :         let gate_time: f64 = f64::try_from(self.gate_time.clone())?;</span>
+<span class="lineNum">     648 </span><span class="lineCov">          1 :         let rate: f64 = f64::try_from(self.rate.clone())?;</span>
+<span class="lineNum">     649 </span>            : 
+<span class="lineNum">     650 </span><span class="lineCov">          1 :         let pre_exp: f64 = -2.0 * gate_time * rate;</span>
+<span class="lineNum">     651 </span><span class="lineCov">          1 :         let prob: f64 = (1.0 / 2.0) * (1.0 - pre_exp.exp());</span>
+<span class="lineNum">     652 </span><span class="lineCov">          1 : </span>
+<span class="lineNum">     653 </span><span class="lineCov">          1 :         Ok(array![</span>
+<span class="lineNum">     654 </span><span class="lineCov">          1 :             [1.0, 0.0, 0.0, 0.0],</span>
+<span class="lineNum">     655 </span><span class="lineCov">          1 :             [0.0, 1.0 - 2.0 * prob, 0.0, 0.0],</span>
+<span class="lineNum">     656 </span><span class="lineCov">          1 :             [0.0, 0.0, 1.0 - 2.0 * prob, 0.0],</span>
+<span class="lineNum">     657 </span><span class="lineCov">          1 :             [0.0, 0.0, 0.0, 1.0],</span>
+<span class="lineNum">     658 </span><span class="lineCov">          1 :         ])</span>
+<span class="lineNum">     659 </span><span class="lineCov">          1 :     }</span>
+<a name="660"><span class="lineNum">     660 </span>            : </a>
+<span class="lineNum">     661 </span>            :     /// Returns the gate to the power of `power`.
+<span class="lineNum">     662 </span><span class="lineCov">          1 :     fn powercf(&amp;self, power: CalculatorFloat) -&gt; Self {</span>
+<span class="lineNum">     663 </span><span class="lineCov">          1 :         let mut new = self.clone();</span>
+<span class="lineNum">     664 </span><span class="lineCov">          1 :         new.gate_time = power * self.gate_time.clone();</span>
+<span class="lineNum">     665 </span><span class="lineCov">          1 :         new</span>
+<span class="lineNum">     666 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     667 </span>            : }
+<span class="lineNum">     668 </span>            : 
+<span class="lineNum">     669 </span>            : /// OperatePragmaNoiseProba trait creating necessary functions for a PRAGMA noise Operation.
+<a name="670"><span class="lineNum">     670 </span>            : impl OperatePragmaNoiseProba for PragmaDephasing {</a>
+<span class="lineNum">     671 </span>            :     /// Returns the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
+<span class="lineNum">     672 </span><span class="lineCov">          1 :     fn probability(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     673 </span><span class="lineCov">          1 :         let prob: CalculatorFloat =</span>
+<span class="lineNum">     674 </span><span class="lineCov">          1 :             ((self.gate_time.clone() * self.rate.clone() * (-2.0)).exp() * (-1.0) + 1.0) * 0.5;</span>
+<span class="lineNum">     675 </span><span class="lineCov">          1 :         prob</span>
+<span class="lineNum">     676 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     677 </span>            : }
+<span class="lineNum">     678 </span>            : 
+<span class="lineNum">     679 </span>            : /// The random noise PRAGMA operation.
+<span class="lineNum">     680 </span>            : ///
+<span class="lineNum">     681 </span>            : /// This PRAGMA Operation applies a stochastically unravelled combination of dephasing and depolarising.
+<a name="682"><span class="lineNum">     682 </span>            : ///</a>
+<a name="683"><span class="lineNum">     683 </span>            : #[derive(</a>
+<a name="684"><span class="lineNum">     684 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="685"><span class="lineNum">     685 </span><span class="lineCov">          2 :     Clone,</span></a>
+<a name="686"><span class="lineNum">     686 </span><span class="lineCov">          8 :     PartialEq,</span></a>
+<a name="687"><span class="lineNum">     687 </span><span class="lineCov">          1 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="688"><span class="lineNum">     688 </span><span class="lineCov">          1 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">     689 </span><span class="lineCov">          3 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     690 </span><span class="lineCov">          1 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">     691 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">     692 </span>            : )]
+<span class="lineNum">     693 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     694 </span>            : pub struct PragmaRandomNoise {
+<span class="lineNum">     695 </span>            :     /// The qubit the PRAGMA Operation is applied to.
+<span class="lineNum">     696 </span>            :     qubit: usize,
+<span class="lineNum">     697 </span>            :     /// The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+<span class="lineNum">     698 </span>            :     gate_time: CalculatorFloat,
+<span class="lineNum">     699 </span>            :     /// The error rate of the depolarisation (in 1/second).
+<span class="lineNum">     700 </span>            :     depolarising_rate: CalculatorFloat,
+<span class="lineNum">     701 </span>            :     /// The error rate of the dephasing (in 1/second).
+<span class="lineNum">     702 </span>            :     dephasing_rate: CalculatorFloat,
+<span class="lineNum">     703 </span>            : }
+<span class="lineNum">     704 </span>            : 
+<span class="lineNum">     705 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     706 </span>            : const TAGS_PragmaRandomNoise: &amp;[&amp;str; 6] = &amp;[
+<span class="lineNum">     707 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     708 </span>            :     &quot;SingleQubitOperation&quot;,
+<span class="lineNum">     709 </span>            :     &quot;PragmaOperation&quot;,
+<span class="lineNum">     710 </span>            :     &quot;PragmaNoiseOperation&quot;,
+<span class="lineNum">     711 </span>            :     &quot;PragmaNoiseProbaOperation&quot;,
+<span class="lineNum">     712 </span>            :     &quot;PragmaRandomNoise&quot;,
+<span class="lineNum">     713 </span>            : ];
+<span class="lineNum">     714 </span>            : 
+<span class="lineNum">     715 </span>            : /// OperatePragmaNoise trait creating necessary functions for a PRAGMA noise Operation.
+<span class="lineNum">     716 </span>            : impl OperatePragmaNoise for PragmaRandomNoise {
+<a name="717"><span class="lineNum">     717 </span>            :     /// Returns the superoperator matrix of the operation. For the RandomNoise pragma, the superoperator</a>
+<span class="lineNum">     718 </span>            :     /// is the effective superoperator after averaging over many trajectories: the dephasing superoperator.
+<span class="lineNum">     719 </span><span class="lineCov">          1 :     fn superoperator(&amp;self) -&gt; Result&lt;Array2&lt;f64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">     720 </span><span class="lineCov">          1 :         let gate_time: f64 = f64::try_from(self.gate_time.clone())?;</span>
+<span class="lineNum">     721 </span><span class="lineCov">          1 :         let rate: f64 = f64::try_from(self.dephasing_rate.clone())?;</span>
+<span class="lineNum">     722 </span>            : 
+<span class="lineNum">     723 </span><span class="lineCov">          1 :         let pre_exp: f64 = -2.0 * gate_time * rate;</span>
+<span class="lineNum">     724 </span><span class="lineCov">          1 :         let prob: f64 = (1.0 / 2.0) * (1.0 - pre_exp.exp());</span>
+<span class="lineNum">     725 </span><span class="lineCov">          1 : </span>
+<span class="lineNum">     726 </span><span class="lineCov">          1 :         Ok(array![</span>
+<span class="lineNum">     727 </span><span class="lineCov">          1 :             [1.0, 0.0, 0.0, 0.0],</span>
+<span class="lineNum">     728 </span><span class="lineCov">          1 :             [0.0, 1.0 - 2.0 * prob, 0.0, 0.0],</span>
+<span class="lineNum">     729 </span><span class="lineCov">          1 :             [0.0, 0.0, 1.0 - 2.0 * prob, 0.0],</span>
+<span class="lineNum">     730 </span><span class="lineCov">          1 :             [0.0, 0.0, 0.0, 1.0],</span>
+<span class="lineNum">     731 </span><span class="lineCov">          1 :         ])</span>
+<span class="lineNum">     732 </span><span class="lineCov">          1 :     }</span>
+<a name="733"><span class="lineNum">     733 </span>            : </a>
+<span class="lineNum">     734 </span>            :     /// Returns the gate to the power of `power`.
+<span class="lineNum">     735 </span><span class="lineCov">          1 :     fn powercf(&amp;self, power: CalculatorFloat) -&gt; Self {</span>
+<span class="lineNum">     736 </span><span class="lineCov">          1 :         let mut new = self.clone();</span>
+<span class="lineNum">     737 </span><span class="lineCov">          1 :         new.gate_time = power * self.gate_time.clone();</span>
+<span class="lineNum">     738 </span><span class="lineCov">          1 :         new</span>
+<span class="lineNum">     739 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     740 </span>            : }
+<span class="lineNum">     741 </span>            : 
+<span class="lineNum">     742 </span>            : /// OperatePragmaNoiseProba trait creating necessary functions for a PRAGMA noise Operation.
+<a name="743"><span class="lineNum">     743 </span>            : impl OperatePragmaNoiseProba for PragmaRandomNoise {</a>
+<span class="lineNum">     744 </span>            :     /// Returns the probability of the noise gate affecting the qubit, based on its `gate_time`, `depolarising_rate` and `dephasing_rate`.
+<span class="lineNum">     745 </span><span class="lineCov">          1 :     fn probability(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     746 </span><span class="lineCov">          1 :         let rates = [</span>
+<span class="lineNum">     747 </span><span class="lineCov">          1 :             self.depolarising_rate.clone() / 4.0,</span>
+<span class="lineNum">     748 </span><span class="lineCov">          1 :             self.depolarising_rate.clone() / 4.0,</span>
+<span class="lineNum">     749 </span><span class="lineCov">          1 :             (self.depolarising_rate.clone() / 4.0) + self.dephasing_rate.clone(),</span>
+<span class="lineNum">     750 </span><span class="lineCov">          1 :         ];</span>
+<span class="lineNum">     751 </span><span class="lineCov">          1 :         (rates[0].clone() + &amp;rates[1] + &amp;rates[2]) * &amp;self.gate_time</span>
+<span class="lineNum">     752 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     753 </span>            : }
+<span class="lineNum">     754 </span>            : 
+<span class="lineNum">     755 </span>            : /// The general noise PRAGMA operation.
+<span class="lineNum">     756 </span>            : ///
+<span class="lineNum">     757 </span>            : /// This PRAGMA operation applies a noise term according to the given rates.
+<span class="lineNum">     758 </span>            : /// The rates are represented by a 3x3 matrix:
+<span class="lineNum">     759 </span>            : /// $$ M = \begin{pmatrix}
+<span class="lineNum">     760 </span>            : /// a &amp; b &amp; c \\\\
+<span class="lineNum">     761 </span>            : /// d &amp; e &amp; f \\\\
+<span class="lineNum">     762 </span>            : /// g &amp; h &amp; j \\\\
+<span class="lineNum">     763 </span>            : /// \end{pmatrix} $$
+<span class="lineNum">     764 </span>            : /// where the coefficients correspond to the following summands
+<span class="lineNum">     765 </span>            : /// expanded from the first term of the non-coherent part of the Lindblad equation:
+<span class="lineNum">     766 </span>            : ///     $$ \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
+<span class="lineNum">     767 </span>            : ///         L_0 = \sigma^{+} \\\\
+<span class="lineNum">     768 </span>            : ///         L_1 = \sigma^{-} \\\\
+<span class="lineNum">     769 </span>            : ///         L_3 = \sigma^{z}
+<span class="lineNum">     770 </span>            : ///     $$
+<span class="lineNum">     771 </span>            : /// result{sigma_z, sigma_minus} = sigma_z (x) sigma_minus.T - 1/2 * (sigma_minus.T * sigma_z) (x) 1 - 1/2 * 1 (x) (sigma_minus.T * sigma_z).T
+<span class="lineNum">     772 </span>            : ///
+<span class="lineNum">     773 </span>            : /// Applying the Pragma with a given `gate_time` corresponds to applying the full time-evolution under the Lindblad equation for `gate_time` time.
+<span class="lineNum">     774 </span>            : ///
+<span class="lineNum">     775 </span>            : /// # Example
+<span class="lineNum">     776 </span>            : ///
+<span class="lineNum">     777 </span>            : /// ```
+<span class="lineNum">     778 </span>            : /// use ndarray::{array, Array2};
+<span class="lineNum">     779 </span>            : /// use roqoqo::operations::PragmaGeneralNoise;
+<span class="lineNum">     780 </span>            : /// use qoqo_calculator::CalculatorFloat;
+<span class="lineNum">     781 </span>            : ///
+<span class="lineNum">     782 </span>            : /// let rates: Array2&lt;f64&gt; = array![
+<span class="lineNum">     783 </span>            : ///    [
+<span class="lineNum">     784 </span>            : ///         1.0,
+<span class="lineNum">     785 </span>            : ///         0.0,
+<span class="lineNum">     786 </span>            : ///         0.0
+<span class="lineNum">     787 </span>            : ///     ],
+<span class="lineNum">     788 </span>            : ///     [
+<span class="lineNum">     789 </span>            : ///         0.0,
+<span class="lineNum">     790 </span>            : ///         1.0,
+<span class="lineNum">     791 </span>            : ///         0.0
+<span class="lineNum">     792 </span>            : ///     ],
+<span class="lineNum">     793 </span>            : ///     [
+<span class="lineNum">     794 </span>            : ///         0.0,
+<span class="lineNum">     795 </span>            : ///         0.0,
+<span class="lineNum">     796 </span>            : ///         1.0
+<span class="lineNum">     797 </span>            : ///     ],
+<span class="lineNum">     798 </span>            : /// ];
+<span class="lineNum">     799 </span>            : /// let pragma = PragmaGeneralNoise::new(
+<span class="lineNum">     800 </span>            : ///     0,
+<span class="lineNum">     801 </span>            : ///     CalculatorFloat::from(0.005),
+<span class="lineNum">     802 </span>            : ///     rates.clone(),
+<span class="lineNum">     803 </span>            : /// );
+<span class="lineNum">     804 </span>            : /// ```
+<span class="lineNum">     805 </span>            : /// That will result into $.
+<a name="806"><span class="lineNum">     806 </span>            : ///</a>
+<a name="807"><span class="lineNum">     807 </span>            : #[derive(</a>
+<a name="808"><span class="lineNum">     808 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="809"><span class="lineNum">     809 </span><span class="lineCov">          1 :     Clone,</span></a>
+<a name="810"><span class="lineNum">     810 </span><span class="lineCov">          7 :     PartialEq,</span></a>
+<a name="811"><span class="lineNum">     811 </span><span class="lineCov">          1 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="812"><span class="lineNum">     812 </span><span class="lineCov">         16 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">     813 </span><span class="lineCov">          3 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     814 </span><span class="lineCov">          1 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">     815 </span>            :     roqoqo_derive::OperatePragma,
+<span class="lineNum">     816 </span>            : )]
+<span class="lineNum">     817 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     818 </span>            : pub struct PragmaGeneralNoise {
+<span class="lineNum">     819 </span>            :     /// The qubit the PRAGMA Operation is applied to.
+<span class="lineNum">     820 </span>            :     qubit: usize,
+<span class="lineNum">     821 </span>            :     /// The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+<span class="lineNum">     822 </span>            :     gate_time: CalculatorFloat,
+<span class="lineNum">     823 </span>            :     /// The rates representing the general noise matrix M (a 3x3 matrix).
+<span class="lineNum">     824 </span>            :     rates: Array2&lt;f64&gt;,
+<span class="lineNum">     825 </span>            : }
+<span class="lineNum">     826 </span>            : 
+<span class="lineNum">     827 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     828 </span>            : const TAGS_PragmaGeneralNoise: &amp;[&amp;str; 5] = &amp;[
+<span class="lineNum">     829 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     830 </span>            :     &quot;SingleQubitOperation&quot;,
+<span class="lineNum">     831 </span>            :     &quot;PragmaOperation&quot;,
+<span class="lineNum">     832 </span>            :     &quot;PragmaNoiseOperation&quot;,
+<span class="lineNum">     833 </span>            :     &quot;PragmaGeneralNoise&quot;,
+<span class="lineNum">     834 </span>            : ];
+<span class="lineNum">     835 </span>            : 
+<span class="lineNum">     836 </span>            : // Collection of superoperators that appear in the Lindblad equation for a single qubit/spin with
+<span class="lineNum">     837 </span>            : // a basis of the form 0: sigma+ 1:sigma- 2: sigmaz
+<span class="lineNum">     838 </span>            : const PGN_SUPEROP: [[[[f64; 4]; 4]; 3]; 3] = [
+<span class="lineNum">     839 </span>            :     [
+<span class="lineNum">     840 </span>            :         // sigma+ sigma+
+<span class="lineNum">     841 </span>            :         [
+<span class="lineNum">     842 </span>            :             [0., 0., 0., 4.],
+<span class="lineNum">     843 </span>            :             [0., -2., 0., 0.],
+<span class="lineNum">     844 </span>            :             [0., 0., -2., 0.],
+<span class="lineNum">     845 </span>            :             [0., 0., 0., -4.],
+<span class="lineNum">     846 </span>            :         ],
+<span class="lineNum">     847 </span>            :         // sigma+ sigma-
+<span class="lineNum">     848 </span>            :         [
+<span class="lineNum">     849 </span>            :             [0., 0., 0., 0.],
+<span class="lineNum">     850 </span>            :             [0., 0., 4., 0.],
+<span class="lineNum">     851 </span>            :             [0., 0., 0., 0.],
+<span class="lineNum">     852 </span>            :             [0., 0., 0., 0.],
+<span class="lineNum">     853 </span>            :         ],
+<span class="lineNum">     854 </span>            :         // sigma+ sigmaz
+<span class="lineNum">     855 </span>            :         [
+<span class="lineNum">     856 </span>            :             [0., 0., 1., 0.],
+<span class="lineNum">     857 </span>            :             [-1., 0., 0., -3.],
+<span class="lineNum">     858 </span>            :             [0., 0., 0., 0.],
+<span class="lineNum">     859 </span>            :             [0., 0., 0., -1.],
+<span class="lineNum">     860 </span>            :         ],
+<span class="lineNum">     861 </span>            :     ],
+<span class="lineNum">     862 </span>            :     [
+<span class="lineNum">     863 </span>            :         // sigma- sigma+
+<span class="lineNum">     864 </span>            :         [
+<span class="lineNum">     865 </span>            :             [0., 0., 0., 0.],
+<span class="lineNum">     866 </span>            :             [0., 0., 0., 0.],
+<span class="lineNum">     867 </span>            :             [0., 4., 0., 0.],
+<span class="lineNum">     868 </span>            :             [0., 0., 0., 0.],
+<span class="lineNum">     869 </span>            :         ],
+<span class="lineNum">     870 </span>            :         // sigma- sigma-
+<span class="lineNum">     871 </span>            :         [
+<span class="lineNum">     872 </span>            :             [-4., 0., 0., 0.],
+<span class="lineNum">     873 </span>            :             [0., -2., 0., 0.],
+<span class="lineNum">     874 </span>            :             [0., 0., -2., 0.],
+<span class="lineNum">     875 </span>            :             [4., 0., 0., 0.],
+<span class="lineNum">     876 </span>            :         ],
+<span class="lineNum">     877 </span>            :         // sigma- sigmaz
+<span class="lineNum">     878 </span>            :         [
+<span class="lineNum">     879 </span>            :             [0., 1., 0., 0.],
+<span class="lineNum">     880 </span>            :             [0., 0., 0., 0.],
+<span class="lineNum">     881 </span>            :             [3., 0., 0., 1.],
+<span class="lineNum">     882 </span>            :             [0., -1., 0., 0.],
+<span class="lineNum">     883 </span>            :         ],
+<span class="lineNum">     884 </span>            :     ],
+<span class="lineNum">     885 </span>            :     [
+<span class="lineNum">     886 </span>            :         //  sigmaz sigma+
+<span class="lineNum">     887 </span>            :         [
+<span class="lineNum">     888 </span>            :             [0., 1., 0., 0.],
+<span class="lineNum">     889 </span>            :             [0., 0., 0., 0.],
+<span class="lineNum">     890 </span>            :             [-1., 0., 0., -3.],
+<span class="lineNum">     891 </span>            :             [0., -1., 0., 0.],
+<span class="lineNum">     892 </span>            :         ],
+<span class="lineNum">     893 </span>            :         // sigmaz sigma-
+<span class="lineNum">     894 </span>            :         [
+<span class="lineNum">     895 </span>            :             [0., 0., 1., 0.],
+<span class="lineNum">     896 </span>            :             [3., 0., 0., 1.],
+<span class="lineNum">     897 </span>            :             [0., 0., 0., 0.],
+<span class="lineNum">     898 </span>            :             [0., 0., -1., 0.],
+<span class="lineNum">     899 </span>            :         ],
+<span class="lineNum">     900 </span>            :         // sigmaz sigmaz
+<span class="lineNum">     901 </span>            :         [
+<span class="lineNum">     902 </span>            :             [0., 0., 0., 0.],
+<span class="lineNum">     903 </span>            :             [0., -2., 0., 0.],
+<span class="lineNum">     904 </span>            :             [0., 0., 0., 0.],
+<span class="lineNum">     905 </span>            :             [0., 0., 0., -2.],
+<span class="lineNum">     906 </span>            :         ],
+<span class="lineNum">     907 </span>            :     ],
+<span class="lineNum">     908 </span>            : ];
+<span class="lineNum">     909 </span>            : 
+<a name="910"><span class="lineNum">     910 </span>            : /// OperatePragmaNoise trait creating necessary functions for a PRAGMA noise Operation.</a>
+<span class="lineNum">     911 </span>            : impl OperatePragmaNoise for PragmaGeneralNoise {
+<span class="lineNum">     912 </span><span class="lineCov">          1 :     fn superoperator(&amp;self) -&gt; Result&lt;Array2&lt;f64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">     913 </span><span class="lineCov">          1 :         let gate_time: f64 = f64::try_from(self.gate_time.clone())?;</span>
+<span class="lineNum">     914 </span>            :         // Creating the superoperator that propagates the density matrix in vector form scaled by rate and time
+<span class="lineNum">     915 </span><span class="lineCov">          1 :         let mut superop = Matrix4::&lt;f64&gt;::default();</span>
+<span class="lineNum">     916 </span><span class="lineCov">          3 :         for (i, row) in PGN_SUPEROP.iter().enumerate() {</span>
+<span class="lineNum">     917 </span><span class="lineCov">          9 :             for (j, op) in row.iter().clone().enumerate() {</span>
+<span class="lineNum">     918 </span><span class="lineCov">          9 :                 let tmp_superop: Matrix4&lt;f64&gt; = (*op).into();</span>
+<span class="lineNum">     919 </span><span class="lineCov">          9 :                 superop += gate_time * self.rates[(i, j)] * tmp_superop;</span>
+<span class="lineNum">     920 </span><span class="lineCov">          9 :             }</span>
+<span class="lineNum">     921 </span>            :         }
+<span class="lineNum">     922 </span>            :         // Integrate superoperator for infinitesimal time to get superoperator for given rate and gate-time
+<span class="lineNum">     923 </span>            :         // Use exponential
+<span class="lineNum">     924 </span><span class="lineCov">          1 :         let mut exp_superop: Matrix4&lt;f64&gt; = superop.exp();</span>
+<span class="lineNum">     925 </span><span class="lineCov">          1 :         // transpose because NAlgebra matrix iter is column major</span>
+<span class="lineNum">     926 </span><span class="lineCov">          1 :         exp_superop.transpose_mut();</span>
+<a name="927"><span class="lineNum">     927 </span><span class="lineCov">          1 :         let mut tmp_iter = exp_superop.iter();</span></a>
+<span class="lineNum">     928 </span><span class="lineCov">          1 :         // convert to ndarray.</span>
+<span class="lineNum">     929 </span><span class="lineCov">         16 :         let array: Array2&lt;f64&gt; = Array::from_shape_simple_fn((4, 4), || *tmp_iter.next().unwrap());</span>
+<span class="lineNum">     930 </span><span class="lineCov">          1 : </span>
+<span class="lineNum">     931 </span><span class="lineCov">          1 :         Ok(array)</span>
+<span class="lineNum">     932 </span><span class="lineCov">          1 :     }</span>
+<a name="933"><span class="lineNum">     933 </span>            : </a>
+<span class="lineNum">     934 </span>            :     /// Returns the gate to the power of `power`.
+<span class="lineNum">     935 </span><span class="lineNoCov">          0 :     fn powercf(&amp;self, power: CalculatorFloat) -&gt; Self {</span>
+<span class="lineNum">     936 </span><span class="lineNoCov">          0 :         let mut new = self.clone();</span>
+<span class="lineNum">     937 </span><span class="lineNoCov">          0 :         new.gate_time = power * self.gate_time.clone();</span>
+<span class="lineNum">     938 </span><span class="lineNoCov">          0 :         new</span>
+<span class="lineNum">     939 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">     940 </span>            : }
+<span class="lineNum">     941 </span>            : 
+<span class="lineNum">     942 </span>            : /// The conditional PRAGMA operation.
+<span class="lineNum">     943 </span>            : ///
+<a name="944"><span class="lineNum">     944 </span>            : /// This PRAGMA executes a circuit when the condition bit/bool stored in a [crate::registers::BitRegister] is true.</a>
+<span class="lineNum">     945 </span>            : ///
+<span class="lineNum">     946 </span><span class="lineCov">         18 : #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]</span>
+<span class="lineNum">     947 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     948 </span>            : pub struct PragmaConditional {
+<span class="lineNum">     949 </span>            :     /// The name of the [crate::registers::BitRegister] containting the condition bool value.
+<span class="lineNum">     950 </span>            :     condition_register: String,
+<span class="lineNum">     951 </span>            :     /// The index in the [crate::registers::BitRegister] containting the condition bool value.
+<span class="lineNum">     952 </span>            :     condition_index: usize,
+<span class="lineNum">     953 </span>            :     /// The circuit executed if the condition is met.
+<span class="lineNum">     954 </span>            :     circuit: Circuit,
+<span class="lineNum">     955 </span>            : }
+<span class="lineNum">     956 </span>            : 
+<span class="lineNum">     957 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     958 </span>            : const TAGS_PragmaConditional: &amp;[&amp;str; 3] = &amp;[&quot;Operation&quot;, &quot;PragmaOperation&quot;, &quot;PragmaConditional&quot;];
+<span class="lineNum">     959 </span>            : 
+<span class="lineNum">     960 </span>            : // Implementing the InvolveQubits trait for PragmaConditional.
+<a name="961"><span class="lineNum">     961 </span>            : impl InvolveQubits for PragmaConditional {</a>
+<span class="lineNum">     962 </span>            :     /// Lists all involved qubits.
+<span class="lineNum">     963 </span><span class="lineCov">          1 :     fn involved_qubits(&amp;self) -&gt; InvolvedQubits {</span>
+<span class="lineNum">     964 </span><span class="lineCov">          1 :         self.circuit.involved_qubits()</span>
+<span class="lineNum">     965 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     966 </span>            : }
+<span class="lineNum">     967 </span>            : 
+<span class="lineNum">     968 </span>            : /// Substitute trait allowing to replace symbolic parameters and to perform qubit mappings.
+<a name="969"><span class="lineNum">     969 </span>            : impl Substitute for PragmaConditional {</a>
+<span class="lineNum">     970 </span>            :     /// Remaps qubits in clone of the operation.
+<span class="lineNum">     971 </span><span class="lineCov">          2 :     fn remap_qubits(&amp;self, mapping: &amp;HashMap&lt;usize, usize&gt;) -&gt; Result&lt;Self, RoqoqoError&gt; {</span>
+<span class="lineNum">     972 </span><span class="lineCov">          2 :         let new_circuit = self.circuit.remap_qubits(mapping).unwrap();</span>
+<span class="lineNum">     973 </span><span class="lineCov">          2 :         Ok(PragmaConditional::new(</span>
+<span class="lineNum">     974 </span><span class="lineCov">          2 :             self.condition_register.clone(),</span>
+<span class="lineNum">     975 </span><span class="lineCov">          2 :             self.condition_index,</span>
+<span class="lineNum">     976 </span><span class="lineCov">          2 :             new_circuit,</span>
+<span class="lineNum">     977 </span><span class="lineCov">          2 :         ))</span>
+<span class="lineNum">     978 </span><span class="lineCov">          2 :     }</span>
+<a name="979"><span class="lineNum">     979 </span>            : </a>
+<span class="lineNum">     980 </span>            :     /// Substitutes symbolic parameters in clone of the operation.
+<span class="lineNum">     981 </span><span class="lineCov">          1 :     fn substitute_parameters(&amp;self, calculator: &amp;mut Calculator) -&gt; Result&lt;Self, RoqoqoError&gt; {</span>
+<span class="lineNum">     982 </span><span class="lineCov">          1 :         let new_circuit = self.circuit.substitute_parameters(calculator).unwrap();</span>
+<span class="lineNum">     983 </span><span class="lineCov">          1 :         Ok(PragmaConditional::new(</span>
+<span class="lineNum">     984 </span><span class="lineCov">          1 :             self.condition_register.clone(),</span>
+<span class="lineNum">     985 </span><span class="lineCov">          1 :             self.condition_index,</span>
+<span class="lineNum">     986 </span><span class="lineCov">          1 :             new_circuit,</span>
+<span class="lineNum">     987 </span><span class="lineCov">          1 :         ))</span>
+<span class="lineNum">     988 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     989 </span>            : }
+<span class="lineNum">     990 </span>            : 
+<span class="lineNum">     991 </span>            : /// A wrapper around backend specific PRAGMA operations capable of changing a device.
+<span class="lineNum">     992 </span>            : ///
+<span class="lineNum">     993 </span>            : /// This PRAGMA is a thin wrapper around device specific operations that can change
+<span class="lineNum">     994 </span>            : /// device properties.
+<span class="lineNum">     995 </span>            : ///
+<span class="lineNum">     996 </span>            : /// # NOTE
+<span class="lineNum">     997 </span>            : ///
+<a name="998"><span class="lineNum">     998 </span>            : /// Since this PRAGMA uses serde and bincode to store a representation of the wrapped</a>
+<span class="lineNum">     999 </span>            : /// operation internally it is only available when roqoqo is built with the `serialize` feature
+<span class="lineNum">    1000 </span><span class="lineNoCov">          0 : #[derive(Debug, Clone, PartialEq, roqoqo_derive::OperatePragma)]</span>
+<span class="lineNum">    1001 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">    1002 </span>            : pub struct PragmaChangeDevice {
+<span class="lineNum">    1003 </span>            :     /// The tags of the wrapped operation.
+<span class="lineNum">    1004 </span>            :     pub wrapped_tags: Vec&lt;String&gt;,
+<span class="lineNum">    1005 </span>            :     /// The hqslang name of the wrapped operation.
+<span class="lineNum">    1006 </span>            :     pub wrapped_hqslang: String,
+<span class="lineNum">    1007 </span>            :     /// Binary representation of the wrapped operation using serde and bincode.
+<span class="lineNum">    1008 </span>            :     pub wrapped_operation: Vec&lt;u8&gt;,
+<span class="lineNum">    1009 </span>            : }
+<a name="1010"><span class="lineNum">    1010 </span>            : #[cfg_attr(feature = &quot;dynamic&quot;, typetag::serde)]</a>
+<span class="lineNum">    1011 </span>            : impl Operate for PragmaChangeDevice {
+<span class="lineNum">    1012 </span><span class="lineNoCov">          0 :     fn tags(&amp;self) -&gt; &amp;'static [&amp;'static str] {</span>
+<a name="1013"><span class="lineNum">    1013 </span><span class="lineNoCov">          0 :         TAGS_PragmaChangeDevice</span></a>
+<span class="lineNum">    1014 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">    1015 </span><span class="lineNoCov">          0 :     fn hqslang(&amp;self) -&gt; &amp;'static str {</span>
+<a name="1016"><span class="lineNum">    1016 </span><span class="lineNoCov">          0 :         &quot;PragmaChangeDevice&quot;</span></a>
+<span class="lineNum">    1017 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">    1018 </span><span class="lineNoCov">          0 :     fn is_parametrized(&amp;self) -&gt; bool {</span>
+<span class="lineNum">    1019 </span><span class="lineNoCov">          0 :         false</span>
+<span class="lineNum">    1020 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">    1021 </span>            : }
+<span class="lineNum">    1022 </span>            : impl PragmaChangeDevice {
+<span class="lineNum">    1023 </span>            :     #[cfg(feature = &quot;serialize&quot;)]
+<span class="lineNum">    1024 </span>            :     pub fn new&lt;T&gt;(wrapped_pragma: &amp;T) -&gt; Result&lt;Self, RoqoqoError&gt;
+<span class="lineNum">    1025 </span>            :     where
+<span class="lineNum">    1026 </span>            :         T: Operate,
+<span class="lineNum">    1027 </span>            :         T: Serialize,
+<span class="lineNum">    1028 </span>            :     {
+<span class="lineNum">    1029 </span>            :         Ok(Self {
+<span class="lineNum">    1030 </span>            :             wrapped_tags: wrapped_pragma
+<span class="lineNum">    1031 </span>            :                 .tags()
+<span class="lineNum">    1032 </span>            :                 .iter()
+<span class="lineNum">    1033 </span>            :                 .map(|x| x.to_string())
+<span class="lineNum">    1034 </span>            :                 .collect(),
+<span class="lineNum">    1035 </span>            :             wrapped_hqslang: wrapped_pragma.hqslang().to_string(),
+<span class="lineNum">    1036 </span>            :             wrapped_operation: serialize(wrapped_pragma).map_err(|err| {
+<span class="lineNum">    1037 </span>            :                 RoqoqoError::SerializationError {
+<span class="lineNum">    1038 </span>            :                     msg: format!(&quot;{:?}&quot;, err),
+<span class="lineNum">    1039 </span>            :                 }
+<span class="lineNum">    1040 </span>            :             })?,
+<span class="lineNum">    1041 </span>            :         })
+<span class="lineNum">    1042 </span>            :     }
+<span class="lineNum">    1043 </span>            : }
+<span class="lineNum">    1044 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">    1045 </span>            : const TAGS_PragmaChangeDevice: &amp;[&amp;str; 3] = &amp;[&quot;Operation&quot;, &quot;PragmaOperation&quot;, &quot;PragmaChangeDevice&quot;];
+<span class="lineNum">    1046 </span>            : 
+<span class="lineNum">    1047 </span>            : // Implementing the InvolveQubits trait for PragmaConditional.
+<a name="1048"><span class="lineNum">    1048 </span>            : impl InvolveQubits for PragmaChangeDevice {</a>
+<span class="lineNum">    1049 </span>            :     /// Lists all involved qubits.
+<span class="lineNum">    1050 </span><span class="lineNoCov">          0 :     fn involved_qubits(&amp;self) -&gt; InvolvedQubits {</span>
+<span class="lineNum">    1051 </span><span class="lineNoCov">          0 :         InvolvedQubits::All</span>
+<span class="lineNum">    1052 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">    1053 </span>            : }
+<span class="lineNum">    1054 </span>            : 
+<span class="lineNum">    1055 </span>            : /// Substitute trait allowing to replace symbolic parameters and to perform qubit mappings.
+<span class="lineNum">    1056 </span>            : impl Substitute for PragmaChangeDevice {
+<span class="lineNum">    1057 </span>            :     /// Remaps qubits in clone of the operation.
+<a name="1058"><span class="lineNum">    1058 </span>            :     /// This is not supported  for PragmaChangeDevice and should throw and error when a non-trivial remapping</a>
+<a name="1059"><span class="lineNum">    1059 </span>            :     /// is used</a>
+<span class="lineNum">    1060 </span><span class="lineNoCov">          0 :     fn remap_qubits(&amp;self, mapping: &amp;HashMap&lt;usize, usize&gt;) -&gt; Result&lt;Self, RoqoqoError&gt; {</span>
+<span class="lineNum">    1061 </span><span class="lineNoCov">          0 :         match mapping.iter().find(|(x, y)| x != y) {</span>
+<span class="lineNum">    1062 </span><span class="lineNoCov">          0 :             Some((x, _)) =&gt; Err(RoqoqoError::QubitMappingError { qubit: *x }),</span>
+<span class="lineNum">    1063 </span><span class="lineNoCov">          0 :             None =&gt; Ok(self.clone()),</span>
+<span class="lineNum">    1064 </span>            :         }
+<span class="lineNum">    1065 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">    1066 </span>            : 
+<a name="1067"><span class="lineNum">    1067 </span>            :     #[allow(unused_variables)]</a>
+<span class="lineNum">    1068 </span>            :     /// Substitutes symbolic parameters in clone of the operation.
+<span class="lineNum">    1069 </span><span class="lineNoCov">          0 :     fn substitute_parameters(&amp;self, calculator: &amp;mut Calculator) -&gt; Result&lt;Self, RoqoqoError&gt; {</span>
+<span class="lineNum">    1070 </span><span class="lineNoCov">          0 :         Ok(self.clone())</span>
+<span class="lineNum">    1071 </span><span class="lineNoCov">          0 :     }</span>
+<span class="lineNum">    1072 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

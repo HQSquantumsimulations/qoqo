@@ -26,47 +26,15 @@ use std::convert::TryInto;
 use std::f64::consts::PI;
 use test_case::test_case;
 
-// helper function to convert a two-dimensional ndarray to a 2x2 matrix
-// output can be used to be converted into a nalebra matrix with `na::Matrix2::from()`
-fn convert_array2_matrix2(customarray: Array2<Complex64>) -> [[Complex64; 2]; 2] {
-    let mut overall_vec: Vec<[Complex64; 2]> = Vec::new();
-    for i in 0..2 {
-        let mut this_vec: Vec<Complex64> = Vec::new();
-        for j in 0..2 {
-            // CAUTION! indices are: "column, row" as required for the naalgebra Matrix in the post-processing
-            this_vec.push(customarray[[j, i]]);
-        }
-        let this_vec_to_array: [Complex64; 2] = this_vec.try_into().unwrap();
-        overall_vec.push(this_vec_to_array);
-    }
-    let overall_array: [[Complex64; 2]; 2] = [overall_vec[0], overall_vec[1]];
-    overall_array
-}
-
 // helper function to convert a two-dimensional ndarray to a 4x4 matrix
-// output can be used to be converted into a nalebra matrix with `na::Matrix4::from()`
-fn convert_array2_matrix4(customarray: Array2<Complex64>) -> [[Complex64; 4]; 4] {
-    let mut overall_vec: Vec<[Complex64; 4]> = Vec::new();
-    for i in 0..4 {
-        let mut this_vec: Vec<Complex64> = Vec::new();
-        for j in 0..4 {
-            // CAUTION! indices are: "column, row" as required for the naalgebra Matrix in the post-processing
-            this_vec.push(customarray[[j, i]]);
-        }
-        let this_vec_to_array: [Complex64; 4] = this_vec.try_into().unwrap();
-        overall_vec.push(this_vec_to_array);
-    }
-    let overall_array: [[Complex64; 4]; 4] = [
-        overall_vec[0],
-        overall_vec[1],
-        overall_vec[2],
-        overall_vec[3],
-    ];
-    overall_array
+// output can be used to be converted into a nalgebra matrix with `na::Matrix4::from()`
+fn convert_matrix(customarray: Array2<Complex64>) -> na::DMatrix<Complex64> {
+    let dim = customarray.dim();
+    na::DMatrix::<Complex64>::from_iterator(dim.0, dim.1, customarray.t().iter().cloned())
 }
 
 // helper function to convert a complex matrix to a matrix with real absolute values
-fn convert_normsqr(customarray: na::Matrix4<Complex64>) -> [[f64; 4]; 4] {
+fn convert_normsqr(customarray: na::DMatrix<Complex64>) -> [[f64; 4]; 4] {
     let mut overall_vec: Vec<[f64; 4]> = Vec::new();
     for i in [0, 4, 8, 12].iter() {
         let mut this_vec: Vec<f64> = Vec::new();
@@ -163,12 +131,11 @@ fn kak_sigma_matrix(
 fn test_kakdecomposition(gate: TwoQubitGateOperation) {
     // k vector
     let k = gate.kak_decomposition().k_vector;
-    let sigma_matrix: na::Matrix4<Complex64> =
-        na::Matrix4::<Complex64>::from(convert_array2_matrix4(kak_sigma_matrix(
-            k[0].clone() * (-1.0),
-            k[1].clone() * (-1.0),
-            k[2].clone() * (-1.0),
-        )));
+    let sigma_matrix: na::DMatrix<Complex64> = convert_matrix(kak_sigma_matrix(
+        k[0].clone() * (-1.0),
+        k[1].clone() * (-1.0),
+        k[2].clone() * (-1.0),
+    ));
 
     // global phase
     let g = gate.kak_decomposition().global_phase;
@@ -209,13 +176,11 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
         }
     }
 
-    let target_before_matrix: na::Matrix2<Complex64> = na::Matrix2::from(convert_array2_matrix2(
-        target_before.unitary_matrix().unwrap(),
-    ));
-    let control_before_matrix: na::Matrix2<Complex64> = na::Matrix2::from(convert_array2_matrix2(
-        control_before.unitary_matrix().unwrap(),
-    ));
-    let matrix_before: na::Matrix4<Complex64> =
+    let target_before_matrix: na::DMatrix<Complex64> =
+        convert_matrix(target_before.unitary_matrix().unwrap());
+    let control_before_matrix: na::DMatrix<Complex64> =
+        convert_matrix(control_before.unitary_matrix().unwrap());
+    let matrix_before: na::DMatrix<Complex64> =
         control_before_matrix.kronecker(&target_before_matrix);
 
     // determine matrix after entanglement
@@ -249,17 +214,14 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
         }
     }
 
-    let target_after_matrix: na::Matrix2<Complex64> = na::Matrix2::from(convert_array2_matrix2(
-        target_after.unitary_matrix().unwrap(),
-    ));
-    let control_after_matrix: na::Matrix2<Complex64> = na::Matrix2::from(convert_array2_matrix2(
-        control_after.unitary_matrix().unwrap(),
-    ));
-    let matrix_after: na::Matrix4<Complex64> = control_after_matrix.kronecker(&target_after_matrix);
+    let target_after_matrix: na::DMatrix<Complex64> =
+        convert_matrix(target_after.unitary_matrix().unwrap());
+    let control_after_matrix: na::DMatrix<Complex64> =
+        convert_matrix(control_after.unitary_matrix().unwrap());
+    let matrix_after: na::DMatrix<Complex64> = control_after_matrix.kronecker(&target_after_matrix);
 
     let decomposed_matrix = matrix_after * sigma_matrix * matrix_before * phase;
-    let test_matrix: na::Matrix4<Complex64> =
-        na::Matrix4::from(convert_array2_matrix4(gate.unitary_matrix().unwrap()));
+    let test_matrix: na::DMatrix<Complex64> = convert_matrix(gate.unitary_matrix().unwrap());
 
     let epsilon = 1e-12;
     for i in 0..16 {
@@ -303,9 +265,9 @@ fn test_twoqubitgates_unitarity(gate: GateOperation) {
     let result_array: Array2<Complex64> = result.unwrap();
     // check unitarity with nalgebra
     // convert ndarray into nalgebra matrix
-    let result_matrix = na::Matrix4::from(convert_array2_matrix4(result_array));
+    let result_matrix: na::DMatrix<Complex64> = convert_matrix(result_array);
     // calculate matrix product A*A_dagger
-    let product = result_matrix * result_matrix.adjoint();
+    let product = result_matrix.clone() * result_matrix.adjoint();
     // convert complex matrix product into real matrix by taking the absolute value of the complex number, which should be sufficient if the matrix is unitary.
     let matrix_norm: na::Matrix4<f64> = na::Matrix4::from(convert_normsqr(product));
     let epsilon = 1e-12;

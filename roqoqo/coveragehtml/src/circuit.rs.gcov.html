@@ -1,0 +1,875 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.lcov - src/circuit.rs</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">src</a> - circuit.rs<span style="font-size: 80%;"> (source / <a href="circuit.rs.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.lcov</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">241</td>
+            <td class="headerCovTableEntry">245</td>
+            <td class="headerCovTableEntryHi">98.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2021-11-09 13:25:48</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">55</td>
+            <td class="headerCovTableEntry">59</td>
+            <td class="headerCovTableEntryHi">93.2 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // Copyright © 2021 HQS Quantum Simulations GmbH. All Rights Reserved.</a>
+<span class="lineNum">       2 </span>            : //
+<span class="lineNum">       3 </span>            : // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not use this file except
+<span class="lineNum">       4 </span>            : // in compliance with the License. You may obtain a copy of the License at
+<span class="lineNum">       5 </span>            : //
+<span class="lineNum">       6 </span>            : //     http://www.apache.org/licenses/LICENSE-2.0
+<span class="lineNum">       7 </span>            : //
+<span class="lineNum">       8 </span>            : // Unless required by applicable law or agreed to in writing, software distributed under the
+<span class="lineNum">       9 </span>            : // License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+<span class="lineNum">      10 </span>            : // express or implied. See the License for the specific language governing permissions and
+<span class="lineNum">      11 </span>            : // limitations under the License.
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : use crate::operations::{Define, InvolveQubits, InvolvedQubits, Operate, Operation, Substitute};
+<span class="lineNum">      14 </span>            : #[cfg(feature = &quot;overrotate&quot;)]
+<span class="lineNum">      15 </span>            : use crate::operations::{Rotate, Rotation};
+<span class="lineNum">      16 </span>            : use crate::RoqoqoError;
+<span class="lineNum">      17 </span>            : use qoqo_calculator::Calculator;
+<span class="lineNum">      18 </span>            : #[cfg(feature = &quot;overrotate&quot;)]
+<span class="lineNum">      19 </span>            : use std::convert::TryFrom;
+<span class="lineNum">      20 </span>            : use std::ops;
+<span class="lineNum">      21 </span>            : use std::{
+<span class="lineNum">      22 </span>            :     collections::{HashMap, HashSet},
+<span class="lineNum">      23 </span>            :     usize,
+<span class="lineNum">      24 </span>            : };
+<span class="lineNum">      25 </span>            : use std::{
+<span class="lineNum">      26 </span>            :     fmt::{Display, Formatter},
+<span class="lineNum">      27 </span>            :     iter::{FromIterator, IntoIterator},
+<span class="lineNum">      28 </span>            : };
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            : /// Represents a quantum circuit in roqoqo.
+<span class="lineNum">      31 </span>            : ///
+<span class="lineNum">      32 </span>            : /// In roqoqo, single operations are collected in a circuit to build up a quantum program.
+<span class="lineNum">      33 </span>            : /// Roqoqo circuits are strictly linear sequences of operations.
+<span class="lineNum">      34 </span>            : /// The circuit struct behaves similar to a list and provides several standard
+<span class="lineNum">      35 </span>            : /// functions of a Vec&lt;Operation&gt;, such as len(), is_empty(), get(), iter() and into_iter().
+<span class="lineNum">      36 </span>            : ///
+<span class="lineNum">      37 </span>            : /// # Example
+<span class="lineNum">      38 </span>            : ///
+<span class="lineNum">      39 </span>            : /// ```
+<span class="lineNum">      40 </span>            : /// use roqoqo::Circuit;
+<span class="lineNum">      41 </span>            : /// use roqoqo::operations::{Operation, RotateX};
+<span class="lineNum">      42 </span>            : /// use qoqo_calculator::CalculatorFloat;
+<span class="lineNum">      43 </span>            : /// // creating circuit
+<span class="lineNum">      44 </span>            : /// let mut circuit = Circuit::new();
+<span class="lineNum">      45 </span>            : /// // adding operation to circuit
+<span class="lineNum">      46 </span>            : /// circuit.add_operation(RotateX::new(0,CalculatorFloat::from(0)));
+<span class="lineNum">      47 </span>            : /// assert_eq!(circuit.len(), 1);
+<span class="lineNum">      48 </span>            : /// // iterating over circuit I
+<span class="lineNum">      49 </span>            : /// let operation_vector: Vec&lt;&amp;Operation&gt;= circuit.iter().collect();
+<span class="lineNum">      50 </span>            : /// // iterating over circuit II
+<span class="lineNum">      51 </span>            : /// for op in circuit{
+<span class="lineNum">      52 </span>            : ///    println!(&quot;{:?}&quot;, op);
+<span class="lineNum">      53 </span>            : /// }
+<span class="lineNum">      54 </span>            : /// // collecting operations into circuit
+<span class="lineNum">      55 </span>            : /// let vector = vec![Operation::from(RotateX::new(0,CalculatorFloat::from(0))), Operation::from(RotateX::new(0,CalculatorFloat::from(0)))];
+<span class="lineNum">      56 </span>            : /// let new_circuit: Circuit = vector.into_iter().collect();
+<span class="lineNum">      57 </span>            : /// ```
+<span class="lineNum">      58 </span>            : ///
+<span class="lineNum">      59 </span>            : /// Similarly to single Operations, Circuits can be translated to other frameworks via interfaces.
+<span class="lineNum">      60 </span>            : ///
+<span class="lineNum">      61 </span>            : /// For Circuits the following functions are defined:
+<span class="lineNum">      62 </span>            : /// * `new()`: creates an empty Circuit
+<span class="lineNum">      63 </span>            : /// * `add_operation(operation)`: adds the specified operation to the Circuit
+<span class="lineNum">      64 </span>            : /// * `get(index)`: returns the operation at the specified index in the Circuit
+<span class="lineNum">      65 </span>            : /// * `get_mut(index)`: returns mutable reference to the operation at the specified index in the Circuit
+<span class="lineNum">      66 </span>            : /// * `iter()`: creates an iterator of the Circuit
+<span class="lineNum">      67 </span>            : /// * `len()`: returns the length of the Circuit
+<span class="lineNum">      68 </span>            : /// * `is_empty()`: returns a boolean of whether the Circuit contains any definitions and operations or not
+<span class="lineNum">      69 </span>            : /// * `involved_qubits()`: returns the qubits invovlved in the whole Circuit
+<span class="lineNum">      70 </span>            : /// * `definitions()`: returns the definitions in the Circuit
+<span class="lineNum">      71 </span>            : /// * `operations()`: returns the operations in the Circuit
+<span class="lineNum">      72 </span>            : /// * `substitute_parameters(calculator)`: substitutes any symbolic parameters in (a copy of) the Circuit according to the specified Calculator
+<span class="lineNum">      73 </span>            : /// * `remap_qubits(mapping)`: remaps the qubits in (a copy of) the Circuit according to the specified mapping
+<span class="lineNum">      74 </span>            : /// * `count_occurences(operations)`: returns the number of operations in the Circuit with the specified operation tags
+<span class="lineNum">      75 </span>            : /// * `get_operation_types()`: returns a list of all of the operations in the Circuit (in hqslang)
+<span class="lineNum">      76 </span>            : /// * `from_iter(iterator)`: creates a Circuit from the items in the specified iterator
+<span class="lineNum">      77 </span>            : /// * `extend(iterator)`: adds the operations in the specified iterator to the Circuit
+<span class="lineNum">      78 </span>            : /// * `default()`: creates an empty Circuit
+<span class="lineNum">      79 </span>            : /// * `[...]`: gets a slice of the Circuit (returned as a vector)
+<a name="80"><span class="lineNum">      80 </span>            : /// * `+` and `+=`: add two circuits or an operation to the Circuit</a>
+<span class="lineNum">      81 </span>            : ///
+<span class="lineNum">      82 </span><span class="lineCov">         79 : #[derive(Debug, Clone, PartialEq)]</span>
+<span class="lineNum">      83 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">      84 </span>            : pub struct Circuit {
+<span class="lineNum">      85 </span>            :     /// Definitions in the quantum circuit, must be unique.
+<span class="lineNum">      86 </span>            :     definitions: Vec&lt;Operation&gt;,
+<span class="lineNum">      87 </span>            :     /// Operations of the quantum circuit, do not have to be unique.
+<span class="lineNum">      88 </span>            :     operations: Vec&lt;Operation&gt;,
+<span class="lineNum">      89 </span>            : }
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span>            : impl Circuit {
+<span class="lineNum">      92 </span>            :     /// Creates an empty quantum Circuit.
+<span class="lineNum">      93 </span>            :     ///
+<span class="lineNum">      94 </span>            :     /// # Returns
+<a name="95"><span class="lineNum">      95 </span>            :     ///</a>
+<span class="lineNum">      96 </span>            :     /// * `Self` - The empty Circuit.
+<span class="lineNum">      97 </span><span class="lineCov">        266 :     pub fn new() -&gt; Self {</span>
+<span class="lineNum">      98 </span><span class="lineCov">        266 :         Circuit {</span>
+<span class="lineNum">      99 </span><span class="lineCov">        266 :             definitions: Vec::new(),</span>
+<span class="lineNum">     100 </span><span class="lineCov">        266 :             operations: Vec::new(),</span>
+<span class="lineNum">     101 </span><span class="lineCov">        266 :         }</span>
+<span class="lineNum">     102 </span><span class="lineCov">        266 :     }</span>
+<span class="lineNum">     103 </span>            :     /// Adds an Operation to Circuit (self).
+<span class="lineNum">     104 </span>            :     ///
+<span class="lineNum">     105 </span>            :     /// # Arguments
+<a name="106"><span class="lineNum">     106 </span>            :     ///</a>
+<span class="lineNum">     107 </span>            :     /// * `op` - The Operation to add to the Circuit.
+<span class="lineNum">     108 </span><span class="lineCov">        354 :     pub fn add_operation&lt;T&gt;(&amp;mut self, op: T)</span>
+<span class="lineNum">     109 </span><span class="lineCov">        354 :     where</span>
+<span class="lineNum">     110 </span><span class="lineCov">        354 :         T: Into&lt;Operation&gt;,</span>
+<span class="lineNum">     111 </span><span class="lineCov">        354 :     {</span>
+<span class="lineNum">     112 </span><span class="lineCov">        354 :         let input: Operation = op.into();</span>
+<span class="lineNum">     113 </span><span class="lineCov">        354 :         match &amp;input {</span>
+<span class="lineNum">     114 </span><span class="lineCov">          5 :             Operation::DefinitionBit(_) =&gt; self.definitions.push(input),</span>
+<span class="lineNum">     115 </span><span class="lineCov">         10 :             Operation::DefinitionFloat(_) =&gt; {</span>
+<span class="lineNum">     116 </span><span class="lineCov">         10 :                 self.definitions.push(input);</span>
+<span class="lineNum">     117 </span><span class="lineCov">         10 :             }</span>
+<span class="lineNum">     118 </span><span class="lineCov">          1 :             Operation::DefinitionComplex(_) =&gt; {</span>
+<span class="lineNum">     119 </span><span class="lineCov">          1 :                 self.definitions.push(input);</span>
+<span class="lineNum">     120 </span><span class="lineCov">          1 :             }</span>
+<span class="lineNum">     121 </span><span class="lineCov">          1 :             Operation::DefinitionUsize(_) =&gt; {</span>
+<span class="lineNum">     122 </span><span class="lineCov">          1 :                 self.definitions.push(input);</span>
+<span class="lineNum">     123 </span><span class="lineCov">          1 :             }</span>
+<span class="lineNum">     124 </span><span class="lineCov">          3 :             Operation::InputSymbolic(_) =&gt; {</span>
+<span class="lineNum">     125 </span><span class="lineCov">          3 :                 self.definitions.push(input);</span>
+<span class="lineNum">     126 </span><span class="lineCov">          3 :             }</span>
+<span class="lineNum">     127 </span><span class="lineCov">        334 :             _ =&gt; self.operations.push(input),</span>
+<span class="lineNum">     128 </span>            :         }
+<span class="lineNum">     129 </span><span class="lineCov">        354 :     }</span>
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span>            :     /// Returns a reference to the element at index similar to std::Vec get function.
+<span class="lineNum">     132 </span>            :     ///
+<span class="lineNum">     133 </span>            :     /// Contrary to std::Vec get function not implemented for slices  .
+<span class="lineNum">     134 </span>            :     ///
+<span class="lineNum">     135 </span>            :     /// # Arguments
+<span class="lineNum">     136 </span>            :     ///
+<span class="lineNum">     137 </span>            :     /// * `index` - The index of the Operation to get in the Circuit.
+<span class="lineNum">     138 </span>            :     ///
+<span class="lineNum">     139 </span>            :     /// # Returns
+<a name="140"><span class="lineNum">     140 </span>            :     ///</a>
+<span class="lineNum">     141 </span>            :     /// * `Option&lt;&amp;Operation&gt;` - The operation at the given index (if it exists).
+<span class="lineNum">     142 </span><span class="lineCov">         19 :     pub fn get(&amp;self, index: usize) -&gt; Option&lt;&amp;Operation&gt; {</span>
+<span class="lineNum">     143 </span><span class="lineCov">         19 :         let def_len = self.definitions.len();</span>
+<span class="lineNum">     144 </span><span class="lineCov">         19 :         if index &gt;= self.definitions.len() {</span>
+<span class="lineNum">     145 </span><span class="lineCov">         11 :             self.operations.get(index - def_len)</span>
+<span class="lineNum">     146 </span>            :         } else {
+<span class="lineNum">     147 </span><span class="lineCov">          8 :             self.definitions.get(index)</span>
+<span class="lineNum">     148 </span>            :         }
+<span class="lineNum">     149 </span><span class="lineCov">         19 :     }</span>
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span>            :     /// Returns a mutable reference to the element at index similar to std::Vec get function.
+<span class="lineNum">     152 </span>            :     ///
+<span class="lineNum">     153 </span>            :     /// Contrary to std::Vec get function not implemented for slices.
+<span class="lineNum">     154 </span>            :     ///
+<span class="lineNum">     155 </span>            :     /// # Arguments
+<span class="lineNum">     156 </span>            :     ///
+<span class="lineNum">     157 </span>            :     /// * `index` - The index of the Operation to get in the Circuit.
+<span class="lineNum">     158 </span>            :     ///
+<span class="lineNum">     159 </span>            :     /// # Returns
+<a name="160"><span class="lineNum">     160 </span>            :     ///</a>
+<span class="lineNum">     161 </span>            :     /// * `Option&lt;mut &amp;Operation&gt;` - A mutable reference to the operation at the given index (if it exists).
+<span class="lineNum">     162 </span><span class="lineCov">          2 :     pub fn get_mut(&amp;mut self, index: usize) -&gt; Option&lt;&amp;mut Operation&gt; {</span>
+<span class="lineNum">     163 </span><span class="lineCov">          2 :         let def_len = self.definitions.len();</span>
+<span class="lineNum">     164 </span><span class="lineCov">          2 :         if index &gt;= self.definitions.len() {</span>
+<span class="lineNum">     165 </span><span class="lineCov">          1 :             self.operations.get_mut(index - def_len)</span>
+<span class="lineNum">     166 </span>            :         } else {
+<span class="lineNum">     167 </span><span class="lineCov">          1 :             self.definitions.get_mut(index)</span>
+<span class="lineNum">     168 </span>            :         }
+<span class="lineNum">     169 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span>            :     /// Creates an iterator of the Circuit.
+<span class="lineNum">     172 </span>            :     ///
+<span class="lineNum">     173 </span>            :     /// # Returns
+<a name="174"><span class="lineNum">     174 </span>            :     ///</a>
+<span class="lineNum">     175 </span>            :     /// `Iterator&lt;Item = &amp;Operation&gt;` - The Circuit in iterator form.
+<span class="lineNum">     176 </span><span class="lineCov">         20 :     pub fn iter(&amp;self) -&gt; impl Iterator&lt;Item = &amp;Operation&gt; {</span>
+<span class="lineNum">     177 </span><span class="lineCov">         20 :         self.definitions.iter().chain(self.operations.iter())</span>
+<span class="lineNum">     178 </span><span class="lineCov">         20 :     }</span>
+<span class="lineNum">     179 </span>            : 
+<span class="lineNum">     180 </span>            :     /// Returns true if the Circuit contains symbolic variables.
+<span class="lineNum">     181 </span>            :     ///
+<span class="lineNum">     182 </span>            :     /// # Returns
+<a name="183"><span class="lineNum">     183 </span>            :     ///</a>
+<a name="184"><span class="lineNum">     184 </span>            :     /// * `bool` - True if the Circuit contains symbolic values, false if it does not.</a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineCov">          4 :     pub fn is_parametrized(&amp;self) -&gt; bool {</span></a>
+<span class="lineNum">     186 </span><span class="lineCov">          4 :         self.operations.iter().any(|o| o.is_parametrized())</span>
+<span class="lineNum">     187 </span><span class="lineCov">          3 :             || self.definitions.iter().any(|o| o.is_parametrized())</span>
+<span class="lineNum">     188 </span><span class="lineCov">          4 :     }</span>
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            :     /// Returns the length of the Circuit.
+<span class="lineNum">     191 </span>            :     ///
+<span class="lineNum">     192 </span>            :     /// # Returns
+<a name="193"><span class="lineNum">     193 </span>            :     ///</a>
+<span class="lineNum">     194 </span>            :     /// * `usize` - The length of the Circuit.
+<span class="lineNum">     195 </span><span class="lineCov">          4 :     pub fn len(&amp;self) -&gt; usize {</span>
+<span class="lineNum">     196 </span><span class="lineCov">          4 :         self.definitions.len() + self.operations.len()</span>
+<span class="lineNum">     197 </span><span class="lineCov">          4 :     }</span>
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span>            :     /// Returns true if the Circuit does not contain any operations and definitions.
+<span class="lineNum">     200 </span>            :     ///
+<span class="lineNum">     201 </span>            :     /// # Returns
+<a name="202"><span class="lineNum">     202 </span>            :     ///</a>
+<span class="lineNum">     203 </span>            :     /// * `bool` - True if the Circuit is empty, false if it is not.
+<span class="lineNum">     204 </span><span class="lineCov">          3 :     pub fn is_empty(&amp;self) -&gt; bool {</span>
+<span class="lineNum">     205 </span><span class="lineCov">          3 :         self.definitions.is_empty() &amp;&amp; self.operations.is_empty()</span>
+<span class="lineNum">     206 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span>            :     /// Returns qubits the Circuit acts on.
+<span class="lineNum">     209 </span>            :     ///
+<span class="lineNum">     210 </span>            :     /// # Returns
+<a name="211"><span class="lineNum">     211 </span>            :     ///</a>
+<span class="lineNum">     212 </span>            :     /// * `InvolvedQubits` - The qubits involved in the Circuit.
+<span class="lineNum">     213 </span><span class="lineCov">          5 :     pub fn involved_qubits(&amp;self) -&gt; InvolvedQubits {</span>
+<span class="lineNum">     214 </span><span class="lineCov">          5 :         let mut temp_involved: HashSet&lt;usize&gt; = HashSet::new();</span>
+<span class="lineNum">     215 </span><span class="lineCov">          5 :         for op in self.operations.iter() {</span>
+<span class="lineNum">     216 </span><span class="lineCov">          5 :             match &amp;op.involved_qubits() {</span>
+<span class="lineNum">     217 </span>            :                 InvolvedQubits::All =&gt; {
+<span class="lineNum">     218 </span><span class="lineCov">          1 :                     return InvolvedQubits::All;</span>
+<span class="lineNum">     219 </span>            :                 }
+<span class="lineNum">     220 </span><span class="lineCov">          1 :                 InvolvedQubits::None =&gt; (),</span>
+<span class="lineNum">     221 </span><span class="lineCov">          3 :                 InvolvedQubits::Set(x) =&gt; temp_involved = temp_involved.union(x).cloned().collect(),</span>
+<span class="lineNum">     222 </span>            :             }
+<span class="lineNum">     223 </span>            :         }
+<span class="lineNum">     224 </span><span class="lineCov">          4 :         match temp_involved.is_empty() {</span>
+<span class="lineNum">     225 </span><span class="lineCov">          1 :             true =&gt; InvolvedQubits::None,</span>
+<span class="lineNum">     226 </span><span class="lineCov">          3 :             false =&gt; InvolvedQubits::Set(temp_involved),</span>
+<span class="lineNum">     227 </span>            :         }
+<span class="lineNum">     228 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     229 </span>            : 
+<span class="lineNum">     230 </span>            :     /// Returns reference to the vector of definitions in Circuit.
+<span class="lineNum">     231 </span>            :     ///
+<span class="lineNum">     232 </span>            :     /// Definitions need to be unique.
+<span class="lineNum">     233 </span>            :     ///
+<span class="lineNum">     234 </span>            :     /// # Returns
+<a name="235"><span class="lineNum">     235 </span>            :     ///</a>
+<span class="lineNum">     236 </span>            :     /// * `&amp;Vec&lt;Operation&gt;` - A vector of the definitions in the Circuit.
+<span class="lineNum">     237 </span><span class="lineCov">          2 :     pub fn definitions(&amp;self) -&gt; &amp;Vec&lt;Operation&gt; {</span>
+<span class="lineNum">     238 </span><span class="lineCov">          2 :         &amp;self.definitions</span>
+<span class="lineNum">     239 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span>            :     /// Returns reference to the vector of quantum operations in Circuit.
+<span class="lineNum">     242 </span>            :     ///
+<span class="lineNum">     243 </span>            :     /// Operations do not need to be unique.
+<span class="lineNum">     244 </span>            :     ///
+<span class="lineNum">     245 </span>            :     /// # Returns
+<a name="246"><span class="lineNum">     246 </span>            :     ///</a>
+<span class="lineNum">     247 </span>            :     /// * `&amp;Vec&lt;Operation&gt;` - A vector of the operations in the Circuit.
+<span class="lineNum">     248 </span><span class="lineCov">         25 :     pub fn operations(&amp;self) -&gt; &amp;Vec&lt;Operation&gt; {</span>
+<span class="lineNum">     249 </span><span class="lineCov">         25 :         &amp;self.operations</span>
+<span class="lineNum">     250 </span><span class="lineCov">         25 :     }</span>
+<span class="lineNum">     251 </span>            : 
+<span class="lineNum">     252 </span>            :     /// Substitutes the symbolic parameters in a clone of Circuit according to the calculator input.
+<span class="lineNum">     253 </span>            :     ///
+<span class="lineNum">     254 </span>            :     /// # Arguments
+<span class="lineNum">     255 </span>            :     ///
+<span class="lineNum">     256 </span>            :     /// * ``calculator` - The Calculator containing the substitutions to use in the Circuit.
+<span class="lineNum">     257 </span>            :     ///
+<span class="lineNum">     258 </span>            :     /// # Returns
+<span class="lineNum">     259 </span>            :     ///
+<a name="260"><span class="lineNum">     260 </span>            :     /// * `Ok(Self)` -  The Circuit with the parameters substituted.</a>
+<span class="lineNum">     261 </span>            :     /// * `Err(RoqoqoError)` - The subsitution failed.
+<span class="lineNum">     262 </span><span class="lineCov">         24 :     pub fn substitute_parameters(&amp;self, calculator: &amp;mut Calculator) -&gt; Result&lt;Self, RoqoqoError&gt; {</span>
+<span class="lineNum">     263 </span><span class="lineCov">         24 :         let mut tmp_def: Vec&lt;Operation&gt; = Vec::new();</span>
+<span class="lineNum">     264 </span><span class="lineCov">          1 :         for def in self.definitions.iter() {</span>
+<span class="lineNum">     265 </span><span class="lineCov">          1 :             let tmp_op = def.substitute_parameters(calculator)?;</span>
+<span class="lineNum">     266 </span><span class="lineCov">          1 :             if let Operation::InputSymbolic(x) = &amp;tmp_op {</span>
+<span class="lineNum">     267 </span><span class="lineCov">          1 :                 calculator.set_variable(x.name(), *x.input())</span>
+<span class="lineNum">     268 </span><span class="lineNoCov">          0 :             }</span>
+<span class="lineNum">     269 </span><span class="lineCov">          1 :             tmp_def.push(tmp_op);</span>
+<span class="lineNum">     270 </span>            :         }
+<span class="lineNum">     271 </span><span class="lineCov">         24 :         let mut tmp_op: Vec&lt;Operation&gt; = Vec::new();</span>
+<span class="lineNum">     272 </span><span class="lineCov">         22 :         for op in self.operations.iter() {</span>
+<span class="lineNum">     273 </span><span class="lineCov">         22 :             tmp_op.push(op.substitute_parameters(calculator)?);</span>
+<span class="lineNum">     274 </span>            :         }
+<span class="lineNum">     275 </span><span class="lineCov">         20 :         Ok(Self {</span>
+<span class="lineNum">     276 </span><span class="lineCov">         20 :             definitions: tmp_def,</span>
+<span class="lineNum">     277 </span><span class="lineCov">         20 :             operations: tmp_op,</span>
+<span class="lineNum">     278 </span><span class="lineCov">         20 :         })</span>
+<span class="lineNum">     279 </span><span class="lineCov">         24 :     }</span>
+<span class="lineNum">     280 </span>            :     /// Remaps the qubits in operations in clone of Circuit.
+<span class="lineNum">     281 </span>            :     ///
+<span class="lineNum">     282 </span>            :     /// # Arguments
+<span class="lineNum">     283 </span>            :     ///
+<span class="lineNum">     284 </span>            :     /// * ``mapping` - The HashMap containing the {qubit: qubit} mapping to use in the Circuit.
+<span class="lineNum">     285 </span>            :     ///
+<span class="lineNum">     286 </span>            :     /// # Returns
+<span class="lineNum">     287 </span>            :     ///
+<a name="288"><span class="lineNum">     288 </span>            :     /// * `Ok(Self)` -  The Circuit with the qubits remapped.</a>
+<span class="lineNum">     289 </span>            :     /// * `Err(RoqoqoError)` - The remapping failed.
+<span class="lineNum">     290 </span><span class="lineCov">          8 :     pub fn remap_qubits(&amp;self, mapping: &amp;HashMap&lt;usize, usize&gt;) -&gt; Result&lt;Self, RoqoqoError&gt; {</span>
+<span class="lineNum">     291 </span><span class="lineCov">          8 :         let mut tmp_op: Vec&lt;Operation&gt; = Vec::new();</span>
+<span class="lineNum">     292 </span><span class="lineCov">          6 :         for op in self.operations.iter() {</span>
+<span class="lineNum">     293 </span><span class="lineCov">          6 :             tmp_op.push(op.remap_qubits(mapping)?);</span>
+<span class="lineNum">     294 </span>            :         }
+<span class="lineNum">     295 </span><span class="lineCov">          8 :         Ok(Self {</span>
+<span class="lineNum">     296 </span><span class="lineCov">          8 :             definitions: self.definitions.clone(),</span>
+<span class="lineNum">     297 </span><span class="lineCov">          8 :             operations: tmp_op,</span>
+<span class="lineNum">     298 </span><span class="lineCov">          8 :         })</span>
+<span class="lineNum">     299 </span><span class="lineCov">          8 :     }</span>
+<span class="lineNum">     300 </span>            : 
+<span class="lineNum">     301 </span>            :     /// Counts the number of occurences of a set of operation tags in the circuit.
+<span class="lineNum">     302 </span>            :     ///
+<span class="lineNum">     303 </span>            :     /// # Arguments
+<span class="lineNum">     304 </span>            :     ///
+<span class="lineNum">     305 </span>            :     /// `operations` - The list of operation tags that should be counted.
+<span class="lineNum">     306 </span>            :     ///
+<span class="lineNum">     307 </span>            :     /// # Returns
+<a name="308"><span class="lineNum">     308 </span>            :     ///</a>
+<span class="lineNum">     309 </span>            :     /// * `usize` - The number of occurences of these operation tags.
+<span class="lineNum">     310 </span><span class="lineCov">          4 :     pub fn count_occurences(&amp;self, operations: &amp;[&amp;str]) -&gt; usize {</span>
+<a name="311"><span class="lineNum">     311 </span><span class="lineCov">          4 :         let mut counter: usize = 0;</span></a>
+<span class="lineNum">     312 </span><span class="lineCov">         24 :         for op in self.iter() {</span>
+<span class="lineNum">     313 </span><span class="lineCov">         24 :             if operations.iter().any(|x| op.tags().contains(x)) {</span>
+<span class="lineNum">     314 </span><span class="lineCov">         12 :                 counter += 1</span>
+<span class="lineNum">     315 </span><span class="lineCov">         12 :             }</span>
+<span class="lineNum">     316 </span>            :         }
+<span class="lineNum">     317 </span><span class="lineCov">          4 :         counter</span>
+<span class="lineNum">     318 </span><span class="lineCov">          4 :     }</span>
+<span class="lineNum">     319 </span>            : 
+<span class="lineNum">     320 </span>            :     /// Returns a list of the hqslang names of all operations occuring in the circuit.
+<span class="lineNum">     321 </span>            :     ///
+<span class="lineNum">     322 </span>            :     /// # Returns
+<a name="323"><span class="lineNum">     323 </span>            :     ///</a>
+<span class="lineNum">     324 </span>            :     /// * `HashSet&lt;&amp;str&gt;` - The operation types in the Circuit.
+<span class="lineNum">     325 </span><span class="lineCov">          2 :     pub fn get_operation_types(&amp;self) -&gt; HashSet&lt;&amp;str&gt; {</span>
+<span class="lineNum">     326 </span><span class="lineCov">          2 :         let mut operations: HashSet&lt;&amp;str&gt; = HashSet::new();</span>
+<span class="lineNum">     327 </span><span class="lineCov">         11 :         for op in self.iter() {</span>
+<span class="lineNum">     328 </span><span class="lineCov">         11 :             let _ = operations.insert(op.hqslang());</span>
+<span class="lineNum">     329 </span><span class="lineCov">         11 :         }</span>
+<span class="lineNum">     330 </span><span class="lineCov">          2 :         operations</span>
+<span class="lineNum">     331 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     332 </span>            : 
+<span class="lineNum">     333 </span>            :     /// Returns clone of the circuit with all Overrotation Pragmas applied.
+<span class="lineNum">     334 </span>            :     ///
+<span class="lineNum">     335 </span>            :     /// # Returns
+<span class="lineNum">     336 </span>            :     ///
+<span class="lineNum">     337 </span>            :     /// * `Ok(Circuit)` - The Circuit with overrotations applied.
+<span class="lineNum">     338 </span>            :     /// * `Err(RoqoqoError::OverrotationError)` - Applying overrotations failed.
+<span class="lineNum">     339 </span>            :     ///
+<span class="lineNum">     340 </span>            :     /// # Example
+<span class="lineNum">     341 </span>            :     ///
+<span class="lineNum">     342 </span>            :     /// ```
+<span class="lineNum">     343 </span>            :     /// use roqoqo::Circuit;
+<span class="lineNum">     344 </span>            :     /// use roqoqo::operations::{PragmaOverrotation, RotateX, RotateY};
+<span class="lineNum">     345 </span>            :     /// let mut circuit = Circuit::new();
+<span class="lineNum">     346 </span>            :     /// // Adding Overrotation of next RotateY operation acting on qubit 1
+<span class="lineNum">     347 </span>            :     /// // overrotating parameter theta with a statistical value
+<span class="lineNum">     348 </span>            :     /// // value is drawn from normal distribution with standard deviation 30.0
+<span class="lineNum">     349 </span>            :     /// // and multiplied by amplitude 20.0
+<span class="lineNum">     350 </span>            :     /// circuit += PragmaOverrotation::new(&quot;RotateY&quot;.to_string(), vec![1], 20.0, 30.0);
+<span class="lineNum">     351 </span>            :     /// circuit += RotateX::new(0, 0.0.into());
+<span class="lineNum">     352 </span>            :     /// circuit += RotateY::new(0, 1.0.into());
+<span class="lineNum">     353 </span>            :     /// circuit += RotateY::new(1, 2.0.into());
+<span class="lineNum">     354 </span>            :     /// circuit += RotateY::new(1, 3.0.into());
+<span class="lineNum">     355 </span>            :     ///
+<span class="lineNum">     356 </span>            :     /// let circuit_overrotated = circuit.overrotate().unwrap();
+<span class="lineNum">     357 </span>            :     ///
+<span class="lineNum">     358 </span>            :     /// println!(&quot;{}&quot;, circuit);
+<span class="lineNum">     359 </span>            :     /// println!(&quot;{}&quot;, circuit_overrotated);
+<span class="lineNum">     360 </span>            :     /// ```
+<span class="lineNum">     361 </span>            :     ///
+<span class="lineNum">     362 </span>            :     #[cfg(feature = &quot;overrotate&quot;)]
+<span class="lineNum">     363 </span>            :     pub fn overrotate(&amp;self) -&gt; Result&lt;Self, RoqoqoError&gt; {
+<span class="lineNum">     364 </span>            :         let mut tmp_vec = self.operations.clone();
+<span class="lineNum">     365 </span>            :         let mut return_circuit = Circuit {
+<span class="lineNum">     366 </span>            :             definitions: self.definitions.clone(),
+<span class="lineNum">     367 </span>            :             operations: Vec::new(),
+<span class="lineNum">     368 </span>            :         };
+<span class="lineNum">     369 </span>            :         let mut length = tmp_vec.len();
+<span class="lineNum">     370 </span>            :         while length &gt; 0 {
+<span class="lineNum">     371 </span>            :             match tmp_vec
+<span class="lineNum">     372 </span>            :                 .iter()
+<span class="lineNum">     373 </span>            :                 .enumerate()
+<span class="lineNum">     374 </span>            :                 .find(|(_, op)| op.hqslang() == &quot;PragmaOverrotation&quot;)
+<span class="lineNum">     375 </span>            :                 .map(|(i, op)| (i, op.clone()))
+<span class="lineNum">     376 </span>            :             {
+<span class="lineNum">     377 </span>            :                 Some((index, Operation::PragmaOverrotation(overrotation))) =&gt; {
+<span class="lineNum">     378 </span>            :                     // for op in tmp_vec[..index].iter() {
+<span class="lineNum">     379 </span>            :                     //     return_circuit.operations.push(op.clone())
+<span class="lineNum">     380 </span>            :                     // }
+<span class="lineNum">     381 </span>            :                     let hqslang = overrotation.gate_hqslang();
+<span class="lineNum">     382 </span>            :                     match tmp_vec[index..].iter().enumerate().find(|(_, op)| {
+<span class="lineNum">     383 </span>            :                         hqslang == op.hqslang()
+<span class="lineNum">     384 </span>            :                             &amp;&amp; overrotation.involved_qubits() == op.involved_qubits()
+<span class="lineNum">     385 </span>            :                     }) {
+<span class="lineNum">     386 </span>            :                         Some((ind, _)) =&gt; {
+<span class="lineNum">     387 </span>            :                             let mut tmp_tmp_vec: Vec&lt;Operation&gt; = Vec::new();
+<span class="lineNum">     388 </span>            :                             for (mov_ind, op) in tmp_vec.into_iter().enumerate() {
+<span class="lineNum">     389 </span>            :                                 if mov_ind == index + ind {
+<span class="lineNum">     390 </span>            :                                     println!(&quot;index: {}. op: {:?}&quot;, mov_ind, op.clone());
+<span class="lineNum">     391 </span>            :                                     tmp_tmp_vec.push(
+<span class="lineNum">     392 </span>            :                                         Rotation::try_from(op)?
+<span class="lineNum">     393 </span>            :                                             .overrotate(
+<span class="lineNum">     394 </span>            :                                                 overrotation.amplitude(),
+<span class="lineNum">     395 </span>            :                                                 overrotation.variance(),
+<span class="lineNum">     396 </span>            :                                             )
+<span class="lineNum">     397 </span>            :                                             .into(),
+<span class="lineNum">     398 </span>            :                                     )
+<span class="lineNum">     399 </span>            :                                 } else if index != mov_ind {
+<span class="lineNum">     400 </span>            :                                     tmp_tmp_vec.push(op)
+<span class="lineNum">     401 </span>            :                                 }
+<span class="lineNum">     402 </span>            :                             }
+<span class="lineNum">     403 </span>            :                             tmp_vec = tmp_tmp_vec
+<span class="lineNum">     404 </span>            :                         }
+<span class="lineNum">     405 </span>            :                         None =&gt; {
+<span class="lineNum">     406 </span>            :                             let mut tmp_tmp_vec: Vec&lt;Operation&gt; = Vec::new();
+<span class="lineNum">     407 </span>            :                             for (mov_ind, op) in tmp_vec.into_iter().enumerate() {
+<span class="lineNum">     408 </span>            :                                 if index != mov_ind {
+<span class="lineNum">     409 </span>            :                                     tmp_tmp_vec.push(op)
+<span class="lineNum">     410 </span>            :                                 }
+<span class="lineNum">     411 </span>            :                             }
+<span class="lineNum">     412 </span>            :                             tmp_vec = tmp_tmp_vec
+<span class="lineNum">     413 </span>            :                         }
+<span class="lineNum">     414 </span>            :                     }
+<span class="lineNum">     415 </span>            :                 }
+<span class="lineNum">     416 </span>            :                 _ =&gt; {
+<span class="lineNum">     417 </span>            :                     for op in tmp_vec {
+<span class="lineNum">     418 </span>            :                         return_circuit.operations.push(op)
+<span class="lineNum">     419 </span>            :                     }
+<span class="lineNum">     420 </span>            :                     tmp_vec = Vec::new();
+<span class="lineNum">     421 </span>            :                 }
+<span class="lineNum">     422 </span>            :             }
+<span class="lineNum">     423 </span>            :             length = tmp_vec.len();
+<span class="lineNum">     424 </span>            :         }
+<span class="lineNum">     425 </span>            :         Ok(return_circuit)
+<span class="lineNum">     426 </span>            :     }
+<span class="lineNum">     427 </span>            : }
+<span class="lineNum">     428 </span>            : 
+<span class="lineNum">     429 </span>            : /// Implements Index Access for Circuit.
+<span class="lineNum">     430 </span>            : ///
+<span class="lineNum">     431 </span>            : /// # Panics
+<span class="lineNum">     432 </span>            : ///
+<span class="lineNum">     433 </span>            : /// Panics when index is out of range of operations in circuit.
+<span class="lineNum">     434 </span>            : /// This is consistent with standard Vec behaviour
+<span class="lineNum">     435 </span>            : /// and returning Option or Result enums instead would conflict with definition of Output type.
+<span class="lineNum">     436 </span>            : impl ops::Index&lt;usize&gt; for Circuit {
+<span class="lineNum">     437 </span>            :     type Output = Operation;
+<span class="lineNum">     438 </span>            : 
+<span class="lineNum">     439 </span>            :     /// Returns reference to Operation at index.
+<span class="lineNum">     440 </span>            :     ///
+<span class="lineNum">     441 </span>            :     /// # Arguments
+<span class="lineNum">     442 </span>            :     ///
+<span class="lineNum">     443 </span>            :     /// * `index` - The index of the operation.
+<span class="lineNum">     444 </span>            :     ///
+<span class="lineNum">     445 </span>            :     /// # Panics
+<a name="446"><span class="lineNum">     446 </span>            :     ///</a>
+<span class="lineNum">     447 </span>            :     /// Panics when index is out of range of operations in circuit.
+<span class="lineNum">     448 </span><span class="lineCov">          4 :     fn index(&amp;self, index: usize) -&gt; &amp;Self::Output {</span>
+<span class="lineNum">     449 </span><span class="lineCov">          4 :         let def_len = self.definitions.len();</span>
+<span class="lineNum">     450 </span><span class="lineCov">          4 :         if index &gt;= def_len {</span>
+<span class="lineNum">     451 </span><span class="lineCov">          2 :             &amp;self.operations[index - def_len]</span>
+<span class="lineNum">     452 </span>            :         } else {
+<span class="lineNum">     453 </span><span class="lineCov">          2 :             &amp;self.definitions[index]</span>
+<span class="lineNum">     454 </span>            :         }
+<span class="lineNum">     455 </span><span class="lineCov">          4 :     }</span>
+<span class="lineNum">     456 </span>            : }
+<span class="lineNum">     457 </span>            : 
+<span class="lineNum">     458 </span>            : impl ops::IndexMut&lt;usize&gt; for Circuit {
+<span class="lineNum">     459 </span>            :     /// Returns reference to Operation at index.
+<span class="lineNum">     460 </span>            :     ///
+<span class="lineNum">     461 </span>            :     /// # Arguments
+<span class="lineNum">     462 </span>            :     ///
+<span class="lineNum">     463 </span>            :     /// * `index` - The index of the operation.
+<span class="lineNum">     464 </span>            :     ///
+<span class="lineNum">     465 </span>            :     /// # Panics
+<a name="466"><span class="lineNum">     466 </span>            :     ///</a>
+<span class="lineNum">     467 </span>            :     /// Panics when index is out of range of operations in circuit.
+<span class="lineNum">     468 </span><span class="lineCov">          2 :     fn index_mut(&amp;mut self, index: usize) -&gt; &amp;mut Self::Output {</span>
+<span class="lineNum">     469 </span><span class="lineCov">          2 :         let def_len = self.definitions.len();</span>
+<span class="lineNum">     470 </span><span class="lineCov">          2 :         if index &gt;= def_len {</span>
+<span class="lineNum">     471 </span><span class="lineCov">          1 :             &amp;mut self.operations[index - def_len]</span>
+<span class="lineNum">     472 </span>            :         } else {
+<span class="lineNum">     473 </span><span class="lineCov">          1 :             &amp;mut self.definitions[index]</span>
+<span class="lineNum">     474 </span>            :         }
+<span class="lineNum">     475 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     476 </span>            : }
+<span class="lineNum">     477 </span>            : 
+<span class="lineNum">     478 </span>            : impl IntoIterator for Circuit {
+<span class="lineNum">     479 </span>            :     type Item = Operation;
+<span class="lineNum">     480 </span>            :     type IntoIter = OperationIterator;
+<span class="lineNum">     481 </span>            :     /// Returns the Circuit in Iterator form.
+<span class="lineNum">     482 </span>            :     ///
+<span class="lineNum">     483 </span>            :     /// # Returns
+<a name="484"><span class="lineNum">     484 </span>            :     ///</a>
+<span class="lineNum">     485 </span>            :     /// * `Self::IntoIter` - The Circuit in Iterator form.
+<span class="lineNum">     486 </span><span class="lineCov">          2 :     fn into_iter(self) -&gt; Self::IntoIter {</span>
+<span class="lineNum">     487 </span><span class="lineCov">          2 :         Self::IntoIter {</span>
+<span class="lineNum">     488 </span><span class="lineCov">          2 :             definition_iter: self.definitions.into_iter(),</span>
+<span class="lineNum">     489 </span><span class="lineCov">          2 :             operation_iter: self.operations.into_iter(),</span>
+<span class="lineNum">     490 </span><span class="lineCov">          2 :         }</span>
+<span class="lineNum">     491 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     492 </span>            : }
+<span class="lineNum">     493 </span>            : 
+<span class="lineNum">     494 </span>            : impl&lt;T&gt; FromIterator&lt;T&gt; for Circuit
+<span class="lineNum">     495 </span>            : where
+<span class="lineNum">     496 </span>            :     T: Into&lt;Operation&gt;,
+<span class="lineNum">     497 </span>            : {
+<span class="lineNum">     498 </span>            :     /// Returns the circuit in Circuit form, from an Iterator form of the circuit.
+<span class="lineNum">     499 </span>            :     ///
+<span class="lineNum">     500 </span>            :     /// # Returns
+<a name="501"><span class="lineNum">     501 </span>            :     ///</a>
+<span class="lineNum">     502 </span>            :     /// * `Self::IntoIter` - The Circuit in Circuit form.
+<span class="lineNum">     503 </span><span class="lineCov">          1 :     fn from_iter&lt;I: IntoIterator&lt;Item = T&gt;&gt;(iter: I) -&gt; Self {</span>
+<span class="lineNum">     504 </span><span class="lineCov">          1 :         let mut circuit = Circuit::new();</span>
+<span class="lineNum">     505 </span><span class="lineCov">          2 :         for op in iter {</span>
+<span class="lineNum">     506 </span><span class="lineCov">          2 :             circuit.add_operation(op.into());</span>
+<span class="lineNum">     507 </span><span class="lineCov">          2 :         }</span>
+<span class="lineNum">     508 </span><span class="lineCov">          1 :         circuit</span>
+<span class="lineNum">     509 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     510 </span>            : }
+<span class="lineNum">     511 </span>            : 
+<span class="lineNum">     512 </span>            : impl&lt;T&gt; Extend&lt;T&gt; for Circuit
+<span class="lineNum">     513 </span>            : where
+<span class="lineNum">     514 </span>            :     T: Into&lt;Operation&gt;,
+<span class="lineNum">     515 </span>            : {
+<span class="lineNum">     516 </span>            :     /// Extends the Circuit by the specified operations (in Iterator form).
+<span class="lineNum">     517 </span>            :     ///
+<span class="lineNum">     518 </span>            :     /// # Arguments
+<a name="519"><span class="lineNum">     519 </span>            :     ///</a>
+<span class="lineNum">     520 </span>            :     /// * `iter` - The iterator containing the operations by which to extend the Circuit.
+<span class="lineNum">     521 </span><span class="lineCov">          1 :     fn extend&lt;I: IntoIterator&lt;Item = T&gt;&gt;(&amp;mut self, iter: I) {</span>
+<span class="lineNum">     522 </span><span class="lineCov">          2 :         for op in iter {</span>
+<span class="lineNum">     523 </span><span class="lineCov">          2 :             self.add_operation(op.into());</span>
+<span class="lineNum">     524 </span><span class="lineCov">          2 :         }</span>
+<span class="lineNum">     525 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     526 </span>            : }
+<span class="lineNum">     527 </span>            : 
+<span class="lineNum">     528 </span>            : impl Default for Circuit {
+<span class="lineNum">     529 </span>            :     /// Creates a default implementation of the Circuit, which is an empty Circuit.
+<span class="lineNum">     530 </span>            :     ///
+<span class="lineNum">     531 </span>            :     /// # Returns
+<a name="532"><span class="lineNum">     532 </span>            :     ///</a>
+<span class="lineNum">     533 </span>            :     /// * `Self` - The default Circuit (empty).
+<span class="lineNum">     534 </span><span class="lineCov">         14 :     fn default() -&gt; Self {</span>
+<span class="lineNum">     535 </span><span class="lineCov">         14 :         Self::new()</span>
+<span class="lineNum">     536 </span><span class="lineCov">         14 :     }</span>
+<span class="lineNum">     537 </span>            : }
+<span class="lineNum">     538 </span>            : 
+<span class="lineNum">     539 </span>            : /// Trait for returning Vectors based on Range structs usually used for Index&lt;&gt; trait and slice access.
+<span class="lineNum">     540 </span>            : ///
+<span class="lineNum">     541 </span>            : /// Required because Circuit does not have a continuous internal vector representation of the values.
+<span class="lineNum">     542 </span>            : /// Returns a Vec instead of slices.
+<span class="lineNum">     543 </span>            : ///
+<span class="lineNum">     544 </span>            : /// # Example
+<span class="lineNum">     545 </span>            : ///
+<span class="lineNum">     546 </span>            : /// ```
+<span class="lineNum">     547 </span>            : /// use roqoqo::{Circuit, AsVec};
+<span class="lineNum">     548 </span>            : /// use roqoqo::operations::{DefinitionFloat, Operation, RotateZ};
+<span class="lineNum">     549 </span>            : /// use qoqo_calculator::CalculatorFloat;
+<span class="lineNum">     550 </span>            : ///
+<span class="lineNum">     551 </span>            : /// let mut circuit = Circuit::new();
+<span class="lineNum">     552 </span>            : /// let definition = DefinitionFloat::new(String::from(&quot;ro&quot;), 1, false);
+<span class="lineNum">     553 </span>            : /// let rotatez0 = RotateZ::new(0, CalculatorFloat::from(0.0));
+<span class="lineNum">     554 </span>            : /// circuit.add_operation(definition.clone());
+<span class="lineNum">     555 </span>            : /// circuit.add_operation(rotatez0.clone());
+<span class="lineNum">     556 </span>            : ///
+<span class="lineNum">     557 </span>            : /// let vec_ops = vec![
+<span class="lineNum">     558 </span>            : ///     Operation::from(definition.clone()),
+<span class="lineNum">     559 </span>            : ///     Operation::from(rotatez0.clone()),
+<span class="lineNum">     560 </span>            : /// ];
+<span class="lineNum">     561 </span>            : ///
+<span class="lineNum">     562 </span>            : /// assert_eq!(circuit.as_vec(0..1).clone(), Some(vec![vec_ops[0].clone()])); // Range
+<span class="lineNum">     563 </span>            : /// assert_eq!(circuit.as_vec(0..).clone(), Some(vec_ops.clone())); // RangeTo
+<span class="lineNum">     564 </span>            : /// assert_eq!(circuit.as_vec(..1).clone(), Some(vec![vec_ops[0].clone()])); // RangeFrom
+<span class="lineNum">     565 </span>            : /// ```
+<span class="lineNum">     566 </span>            : ///
+<span class="lineNum">     567 </span>            : pub trait AsVec&lt;T&gt; {
+<span class="lineNum">     568 </span>            :     /// Returns slice of Circuit as Vec&lt;Operations&gt;.
+<span class="lineNum">     569 </span>            :     ///
+<span class="lineNum">     570 </span>            :     /// # Arguments
+<span class="lineNum">     571 </span>            :     ///
+<span class="lineNum">     572 </span>            :     /// * `range` - The indices of the slice of the Circuit to be returned.
+<span class="lineNum">     573 </span>            :     ///
+<span class="lineNum">     574 </span>            :     /// # Returns
+<span class="lineNum">     575 </span>            :     ///
+<span class="lineNum">     576 </span>            :     /// * `Option&lt;Vec&lt;Operation&gt;&gt;` - A vector of the operations in the Circuit with the specified indices.
+<span class="lineNum">     577 </span>            :     fn as_vec(&amp;self, range: T) -&gt; Option&lt;Vec&lt;Operation&gt;&gt;;
+<span class="lineNum">     578 </span>            : }
+<span class="lineNum">     579 </span>            : 
+<span class="lineNum">     580 </span>            : impl AsVec&lt;std::ops::Range&lt;usize&gt;&gt; for Circuit {
+<span class="lineNum">     581 </span>            :     /// Returns slice of Circuit as Vec&lt;Operations&gt;.
+<span class="lineNum">     582 </span>            :     ///
+<span class="lineNum">     583 </span>            :     /// # Arguments
+<span class="lineNum">     584 </span>            :     ///
+<span class="lineNum">     585 </span>            :     /// * `range` - The indices of the slice of the Circuit to be returned.
+<span class="lineNum">     586 </span>            :     ///
+<span class="lineNum">     587 </span>            :     /// # Returns
+<a name="588"><span class="lineNum">     588 </span>            :     ///</a>
+<span class="lineNum">     589 </span>            :     /// * `Option&lt;Vec&lt;Operation&gt;&gt;` - A vector of the operations in the Circuit with the specified indices.
+<span class="lineNum">     590 </span><span class="lineCov">          4 :     fn as_vec(&amp;self, range: std::ops::Range&lt;usize&gt;) -&gt; Option&lt;Vec&lt;Operation&gt;&gt; {</span>
+<span class="lineNum">     591 </span><span class="lineCov">          4 :         let mut return_vec: Vec&lt;Operation&gt;;</span>
+<span class="lineNum">     592 </span><span class="lineCov">          4 :         let def_len = self.definitions.len();</span>
+<span class="lineNum">     593 </span><span class="lineCov">          4 :         if range.end - def_len &gt;= self.operations.len() {</span>
+<span class="lineNum">     594 </span><span class="lineCov">          1 :             return None;</span>
+<span class="lineNum">     595 </span><span class="lineCov">          3 :         }</span>
+<span class="lineNum">     596 </span><span class="lineCov">          3 :         if range.start &lt; def_len {</span>
+<span class="lineNum">     597 </span><span class="lineCov">          2 :             if range.end &lt; def_len {</span>
+<span class="lineNum">     598 </span><span class="lineNoCov">          0 :                 return_vec = self.definitions[range].to_vec();</span>
+<span class="lineNum">     599 </span><span class="lineCov">          2 :             } else {</span>
+<span class="lineNum">     600 </span><span class="lineCov">          2 :                 return_vec = self.definitions[range.start..].to_vec();</span>
+<span class="lineNum">     601 </span><span class="lineCov">          2 :                 let mut tmp_vec = self.operations[..range.end - def_len].to_vec();</span>
+<span class="lineNum">     602 </span><span class="lineCov">          2 :                 return_vec.append(&amp;mut tmp_vec);</span>
+<span class="lineNum">     603 </span><span class="lineCov">          2 :             }</span>
+<span class="lineNum">     604 </span><span class="lineCov">          1 :         } else {</span>
+<span class="lineNum">     605 </span><span class="lineCov">          1 :             return_vec = self.operations[range.start - def_len..range.end - def_len].to_vec();</span>
+<span class="lineNum">     606 </span><span class="lineCov">          1 :         }</span>
+<span class="lineNum">     607 </span><span class="lineCov">          3 :         Some(return_vec)</span>
+<span class="lineNum">     608 </span><span class="lineCov">          4 :     }</span>
+<span class="lineNum">     609 </span>            : }
+<span class="lineNum">     610 </span>            : 
+<span class="lineNum">     611 </span>            : impl AsVec&lt;std::ops::RangeTo&lt;usize&gt;&gt; for Circuit {
+<span class="lineNum">     612 </span>            :     /// Returns slice of Circuit as Vec&lt;Operations&gt;.
+<span class="lineNum">     613 </span>            :     ///
+<span class="lineNum">     614 </span>            :     /// # Arguments
+<span class="lineNum">     615 </span>            :     ///
+<span class="lineNum">     616 </span>            :     /// * `range` - The indices of the slice of the Circuit to be returned.
+<span class="lineNum">     617 </span>            :     ///
+<span class="lineNum">     618 </span>            :     /// # Returns
+<a name="619"><span class="lineNum">     619 </span>            :     ///</a>
+<span class="lineNum">     620 </span>            :     /// * `Option&lt;Vec&lt;Operation&gt;&gt;` - A vector of the operations in the Circuit with the specified indices.
+<span class="lineNum">     621 </span><span class="lineCov">          3 :     fn as_vec(&amp;self, range: std::ops::RangeTo&lt;usize&gt;) -&gt; Option&lt;Vec&lt;Operation&gt;&gt; {</span>
+<span class="lineNum">     622 </span><span class="lineCov">          3 :         let mut return_vec: Vec&lt;Operation&gt;;</span>
+<span class="lineNum">     623 </span><span class="lineCov">          3 :         let def_len = self.definitions.len();</span>
+<span class="lineNum">     624 </span><span class="lineCov">          3 :         if range.end - def_len &gt;= self.operations.len() {</span>
+<span class="lineNum">     625 </span><span class="lineCov">          1 :             return None;</span>
+<span class="lineNum">     626 </span><span class="lineCov">          2 :         }</span>
+<span class="lineNum">     627 </span><span class="lineCov">          2 :         if range.end &lt; def_len {</span>
+<span class="lineNum">     628 </span><span class="lineNoCov">          0 :             return_vec = self.definitions[range].to_vec();</span>
+<span class="lineNum">     629 </span><span class="lineCov">          2 :         } else {</span>
+<span class="lineNum">     630 </span><span class="lineCov">          2 :             return_vec = self.definitions.clone();</span>
+<span class="lineNum">     631 </span><span class="lineCov">          2 :             let mut tmp_vec = self.operations[..range.end - def_len].to_vec();</span>
+<span class="lineNum">     632 </span><span class="lineCov">          2 :             return_vec.append(&amp;mut tmp_vec);</span>
+<span class="lineNum">     633 </span><span class="lineCov">          2 :         }</span>
+<span class="lineNum">     634 </span><span class="lineCov">          2 :         Some(return_vec)</span>
+<span class="lineNum">     635 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">     636 </span>            : }
+<span class="lineNum">     637 </span>            : 
+<span class="lineNum">     638 </span>            : impl AsVec&lt;std::ops::RangeFrom&lt;usize&gt;&gt; for Circuit {
+<span class="lineNum">     639 </span>            :     /// Returns slice of Circuit as Vec&lt;Operations&gt;.
+<span class="lineNum">     640 </span>            :     ///
+<span class="lineNum">     641 </span>            :     /// # Arguments
+<span class="lineNum">     642 </span>            :     ///
+<span class="lineNum">     643 </span>            :     /// * `range` - The indices of the slice of the Circuit to be returned.
+<span class="lineNum">     644 </span>            :     ///
+<span class="lineNum">     645 </span>            :     /// # Returns
+<a name="646"><span class="lineNum">     646 </span>            :     ///</a>
+<span class="lineNum">     647 </span>            :     /// * `Option&lt;Vec&lt;Operation&gt;&gt;` - A vector of the operations in the Circuit with the specified indices.
+<span class="lineNum">     648 </span><span class="lineCov">          2 :     fn as_vec(&amp;self, range: std::ops::RangeFrom&lt;usize&gt;) -&gt; Option&lt;Vec&lt;Operation&gt;&gt; {</span>
+<span class="lineNum">     649 </span><span class="lineCov">          2 :         let mut return_vec: Vec&lt;Operation&gt;;</span>
+<span class="lineNum">     650 </span><span class="lineCov">          2 :         let def_len = self.definitions.len();</span>
+<span class="lineNum">     651 </span><span class="lineCov">          2 :         if range.start &lt; def_len {</span>
+<span class="lineNum">     652 </span><span class="lineCov">          1 :             return_vec = self.definitions[range.start..].to_vec();</span>
+<span class="lineNum">     653 </span><span class="lineCov">          1 :             let mut tmp_vec = self.operations.clone();</span>
+<span class="lineNum">     654 </span><span class="lineCov">          1 :             return_vec.append(&amp;mut tmp_vec);</span>
+<span class="lineNum">     655 </span><span class="lineCov">          1 :         } else {</span>
+<span class="lineNum">     656 </span><span class="lineCov">          1 :             return_vec = self.operations[range.start - def_len..].to_vec();</span>
+<span class="lineNum">     657 </span><span class="lineCov">          1 :         }</span>
+<span class="lineNum">     658 </span><span class="lineCov">          2 :         Some(return_vec)</span>
+<span class="lineNum">     659 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     660 </span>            : }
+<span class="lineNum">     661 </span>            : 
+<span class="lineNum">     662 </span>            : /// Implements `+` (add) for Circuit and generic type `T`.
+<span class="lineNum">     663 </span>            : ///
+<span class="lineNum">     664 </span>            : /// # Arguments
+<span class="lineNum">     665 </span>            : ///
+<span class="lineNum">     666 </span>            : /// * `other` - Any type T that implements Into&lt;Operation&gt; trait.
+<span class="lineNum">     667 </span>            : impl&lt;T&gt; ops::Add&lt;T&gt; for Circuit
+<span class="lineNum">     668 </span>            : where
+<span class="lineNum">     669 </span>            :     T: Into&lt;Operation&gt;,
+<a name="670"><span class="lineNum">     670 </span>            : {</a>
+<span class="lineNum">     671 </span>            :     type Output = Self;
+<span class="lineNum">     672 </span><span class="lineCov">          1 :     fn add(self, other: T) -&gt; Self {</span>
+<span class="lineNum">     673 </span><span class="lineCov">          1 :         let mut return_circuit = self;</span>
+<span class="lineNum">     674 </span><span class="lineCov">          1 :         return_circuit.add_operation(other);</span>
+<span class="lineNum">     675 </span><span class="lineCov">          1 :         return_circuit</span>
+<span class="lineNum">     676 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     677 </span>            : }
+<span class="lineNum">     678 </span>            : 
+<span class="lineNum">     679 </span>            : /// Implements `+` (add) for two Circuits.
+<span class="lineNum">     680 </span>            : ///
+<span class="lineNum">     681 </span>            : /// # Arguments
+<span class="lineNum">     682 </span>            : ///
+<span class="lineNum">     683 </span>            : /// * `other` - The Circuit to be added.
+<a name="684"><span class="lineNum">     684 </span>            : impl ops::Add&lt;Circuit&gt; for Circuit {</a>
+<span class="lineNum">     685 </span>            :     type Output = Self;
+<span class="lineNum">     686 </span><span class="lineCov">          1 :     fn add(self, other: Circuit) -&gt; Self {</span>
+<span class="lineNum">     687 </span><span class="lineCov">          1 :         Self {</span>
+<span class="lineNum">     688 </span><span class="lineCov">          1 :             definitions: self</span>
+<span class="lineNum">     689 </span><span class="lineCov">          1 :                 .definitions</span>
+<span class="lineNum">     690 </span><span class="lineCov">          1 :                 .into_iter()</span>
+<span class="lineNum">     691 </span><span class="lineCov">          1 :                 .chain(other.definitions.into_iter())</span>
+<span class="lineNum">     692 </span><span class="lineCov">          1 :                 .collect(),</span>
+<span class="lineNum">     693 </span><span class="lineCov">          1 :             operations: self</span>
+<span class="lineNum">     694 </span><span class="lineCov">          1 :                 .operations</span>
+<span class="lineNum">     695 </span><span class="lineCov">          1 :                 .into_iter()</span>
+<span class="lineNum">     696 </span><span class="lineCov">          1 :                 .chain(other.operations.into_iter())</span>
+<span class="lineNum">     697 </span><span class="lineCov">          1 :                 .collect(),</span>
+<span class="lineNum">     698 </span><span class="lineCov">          1 :         }</span>
+<span class="lineNum">     699 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     700 </span>            : }
+<span class="lineNum">     701 </span>            : 
+<span class="lineNum">     702 </span>            : /// Implements `+` (add) for Circuit and Circuit reference.
+<span class="lineNum">     703 </span>            : ///
+<span class="lineNum">     704 </span>            : /// # Arguments
+<span class="lineNum">     705 </span>            : ///
+<span class="lineNum">     706 </span>            : /// * `other` - The Circuit reference to be added.
+<a name="707"><span class="lineNum">     707 </span>            : impl ops::Add&lt;&amp;Circuit&gt; for Circuit {</a>
+<span class="lineNum">     708 </span>            :     type Output = Self;
+<span class="lineNum">     709 </span><span class="lineCov">          1 :     fn add(self, other: &amp;Circuit) -&gt; Self {</span>
+<span class="lineNum">     710 </span><span class="lineCov">          1 :         Self {</span>
+<span class="lineNum">     711 </span><span class="lineCov">          1 :             definitions: self</span>
+<span class="lineNum">     712 </span><span class="lineCov">          1 :                 .definitions</span>
+<span class="lineNum">     713 </span><span class="lineCov">          1 :                 .into_iter()</span>
+<span class="lineNum">     714 </span><span class="lineCov">          1 :                 .chain(other.definitions.iter().cloned())</span>
+<span class="lineNum">     715 </span><span class="lineCov">          1 :                 .collect(),</span>
+<span class="lineNum">     716 </span><span class="lineCov">          1 :             operations: self</span>
+<span class="lineNum">     717 </span><span class="lineCov">          1 :                 .operations</span>
+<span class="lineNum">     718 </span><span class="lineCov">          1 :                 .into_iter()</span>
+<span class="lineNum">     719 </span><span class="lineCov">          1 :                 .chain(other.operations.iter().cloned())</span>
+<span class="lineNum">     720 </span><span class="lineCov">          1 :                 .collect(),</span>
+<span class="lineNum">     721 </span><span class="lineCov">          1 :         }</span>
+<span class="lineNum">     722 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     723 </span>            : }
+<span class="lineNum">     724 </span>            : 
+<span class="lineNum">     725 </span>            : /// Implements `+=` (add) for Circuit and generic type `T`.
+<span class="lineNum">     726 </span>            : ///
+<span class="lineNum">     727 </span>            : /// # Arguments
+<span class="lineNum">     728 </span>            : ///
+<span class="lineNum">     729 </span>            : /// * `other` - Any type T that implements Into&lt;Operation&gt; trait.
+<span class="lineNum">     730 </span>            : impl&lt;T&gt; ops::AddAssign&lt;T&gt; for Circuit
+<span class="lineNum">     731 </span>            : where
+<a name="732"><span class="lineNum">     732 </span>            :     T: Into&lt;Operation&gt;,</a>
+<span class="lineNum">     733 </span>            : {
+<span class="lineNum">     734 </span><span class="lineCov">        260 :     fn add_assign(&amp;mut self, other: T) {</span>
+<span class="lineNum">     735 </span><span class="lineCov">        260 :         self.add_operation(other);</span>
+<span class="lineNum">     736 </span><span class="lineCov">        260 :     }</span>
+<span class="lineNum">     737 </span>            : }
+<span class="lineNum">     738 </span>            : 
+<span class="lineNum">     739 </span>            : /// Implements `+=` (add) for two Circuits.
+<span class="lineNum">     740 </span>            : ///
+<span class="lineNum">     741 </span>            : /// # Arguments
+<span class="lineNum">     742 </span>            : ///
+<a name="743"><span class="lineNum">     743 </span>            : /// * `other` - The Circuit to be appended.</a>
+<span class="lineNum">     744 </span>            : impl ops::AddAssign&lt;Circuit&gt; for Circuit {
+<span class="lineNum">     745 </span><span class="lineCov">          1 :     fn add_assign(&amp;mut self, other: Circuit) {</span>
+<span class="lineNum">     746 </span><span class="lineCov">          1 :         self.definitions.extend(other.definitions.into_iter());</span>
+<span class="lineNum">     747 </span><span class="lineCov">          1 :         self.operations.extend(other.operations.into_iter())</span>
+<span class="lineNum">     748 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     749 </span>            : }
+<span class="lineNum">     750 </span>            : 
+<span class="lineNum">     751 </span>            : /// Implements `+=` (add) for Circuits and Circuit reference.
+<span class="lineNum">     752 </span>            : ///
+<span class="lineNum">     753 </span>            : /// # Arguments
+<span class="lineNum">     754 </span>            : ///
+<a name="755"><span class="lineNum">     755 </span>            : /// * `other` - The Circuit to be appended.</a>
+<span class="lineNum">     756 </span>            : impl ops::AddAssign&lt;&amp;Circuit&gt; for Circuit {
+<span class="lineNum">     757 </span><span class="lineCov">          1 :     fn add_assign(&amp;mut self, other: &amp;Circuit) {</span>
+<span class="lineNum">     758 </span><span class="lineCov">          1 :         self.definitions.extend(other.definitions.iter().cloned());</span>
+<span class="lineNum">     759 </span><span class="lineCov">          1 :         self.operations.extend(other.operations.iter().cloned())</span>
+<span class="lineNum">     760 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     761 </span>            : }
+<span class="lineNum">     762 </span>            : 
+<a name="763"><span class="lineNum">     763 </span>            : /// Implements the Display trait for Circuit.</a>
+<span class="lineNum">     764 </span>            : impl Display for Circuit {
+<span class="lineNum">     765 </span><span class="lineCov">          1 :     fn fmt(&amp;self, f: &amp;mut Formatter&lt;'_&gt;) -&gt; std::fmt::Result {</span>
+<span class="lineNum">     766 </span><span class="lineCov">          1 :         let mut s: String = String::new();</span>
+<span class="lineNum">     767 </span><span class="lineCov">          2 :         for op in self.iter() {</span>
+<span class="lineNum">     768 </span><span class="lineCov">          2 :             s.push_str(&amp;format!(&quot;{:?}\n&quot;, op))</span>
+<span class="lineNum">     769 </span>            :         }
+<span class="lineNum">     770 </span><span class="lineCov">          1 :         write!(f, &quot;{}&quot;, s)</span>
+<span class="lineNum">     771 </span><span class="lineCov">          1 :     }</span>
+<span class="lineNum">     772 </span>            : }
+<a name="773"><span class="lineNum">     773 </span>            : </a>
+<span class="lineNum">     774 </span>            : /// Iterator over roqoqo operations.
+<span class="lineNum">     775 </span><span class="lineCov">          4 : #[derive(Debug, Clone)]</span>
+<span class="lineNum">     776 </span>            : pub struct OperationIterator {
+<span class="lineNum">     777 </span>            :     /// Definitions in the quantum circuit in Iterator form, must be unique.
+<span class="lineNum">     778 </span>            :     definition_iter: std::vec::IntoIter&lt;Operation&gt;,
+<span class="lineNum">     779 </span>            :     /// Operations in the quantum circuit in Iterator form, must not be unique.
+<span class="lineNum">     780 </span>            :     operation_iter: std::vec::IntoIter&lt;Operation&gt;,
+<span class="lineNum">     781 </span>            : }
+<span class="lineNum">     782 </span>            : 
+<span class="lineNum">     783 </span>            : impl Iterator for OperationIterator {
+<span class="lineNum">     784 </span>            :     type Item = Operation;
+<span class="lineNum">     785 </span>            :     /// Advances the iterator and returns the next value.
+<span class="lineNum">     786 </span>            :     ///
+<span class="lineNum">     787 </span>            :     /// Returns None when iteration is finished. Individual iterator implementations may choose to resume iteration,
+<span class="lineNum">     788 </span>            :     /// and so calling next() again may or may not eventually start returning Some(Operation) again at some point.
+<span class="lineNum">     789 </span>            :     ///
+<span class="lineNum">     790 </span>            :     /// # Returns
+<a name="791"><span class="lineNum">     791 </span>            :     ///</a>
+<span class="lineNum">     792 </span>            :     /// * `Option&lt;Self::Item&gt;` - The Operation that is next in the Iterator.
+<span class="lineNum">     793 </span><span class="lineCov">         12 :     fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {</span>
+<span class="lineNum">     794 </span><span class="lineCov">         12 :         match self.definition_iter.next() {</span>
+<span class="lineNum">     795 </span><span class="lineNoCov">          0 :             Some(x) =&gt; Some(x),</span>
+<span class="lineNum">     796 </span><span class="lineCov">         12 :             None =&gt; self.operation_iter.next(),</span>
+<span class="lineNum">     797 </span>            :         }
+<span class="lineNum">     798 </span><span class="lineCov">         12 :     }</span>
+<span class="lineNum">     799 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
