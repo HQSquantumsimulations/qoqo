@@ -4,7 +4,7 @@ target/*
 *.mypy_cache*
 *.egg-info*
 *.coverage
-*coveragehtml/*
+*coveragehtml*
 */docs/_build*
 */docs/generated*
 *.DS_Store
