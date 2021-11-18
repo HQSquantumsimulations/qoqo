@@ -42,10 +42,6 @@ impl TestDevice {
 }
 
 impl Device for TestDevice {
-    fn number_qubits(&self) -> usize {
-        self.number_qubits
-    }
-
     fn single_qubit_gate_time(&self, hqslang: &str, qubit: &usize) -> Option<f64> {
         match self.single_qubit_gates.get(&hqslang.to_string()) {
             Some(x) => x.get(&qubit).map(|x| *x),
@@ -66,6 +62,20 @@ impl Device for TestDevice {
 
     fn qubit_decoherence_rates(&self, qubit: &usize) -> Option<Array2<f64>> {
         self.rates.get(&qubit).map(|x| x.to_owned())
+    }
+
+    fn number_qubits(&self) -> usize {
+        self.number_qubits
+    }
+
+    fn two_qubit_edges(&self) -> Vec<(usize, usize)> {
+        let mut edges: Vec<(usize, usize)> = Vec::new();
+        for row in 0..self.number_qubits {
+            for column in row + 1..self.number_qubits {
+                edges.push((row, column));
+            }
+        }
+        edges
     }
 }
 
@@ -128,6 +138,13 @@ fn it_works() {
         Some(0.8f64)
     );
     assert_eq!(device.multi_qubit_gate_time("Other", &[0, 1, 2]), None);
+
+    let test_edges = vec![(0, 1), (0, 2), (1, 2)];
+    let edges = device.two_qubit_edges();
+    assert_eq!(test_edges.len(), edges.len());
+    for edge in edges {
+        assert!(test_edges.contains(&edge));
+    }
 }
 
 /// Basic functional test

@@ -111,6 +111,20 @@ pub trait Device {
     /// Returns the number of qubits the device supports.
     fn number_qubits(&self) -> usize;
 
+    /// Returns the list of pairs of qubits linked with a native two-qubit-gate in the device.
+    ///
+    /// A pair of qubits is considered linked by a native two-qubit-gate if the device
+    /// can implement a two-qubit-gate btween the two qubits without decomposing it
+    /// into a sequence of gates that involves a third qubit of the device.
+    /// The two-qubit-gate also has to form a universal set together with the available
+    /// single qubit gates.
+    ///
+    /// The returned vectors is a simple, graph-library independent, representation of
+    /// the undirected connectivity graph of the device.
+    /// It can be used to construct the connectivity graph in a graph library of the users
+    /// choice from a list of edges and can be used for applications like routing in quantum algorithms.
+    fn two_qubit_edges(&self) -> Vec<(usize, usize)>;
+
     /// Changes the device topology based on a Pragma operation.
     ///
     /// Specific devices and backends can allow changes to the device topology.
