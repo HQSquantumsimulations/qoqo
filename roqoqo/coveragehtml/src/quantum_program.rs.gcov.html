@@ -1,0 +1,241 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.lcov - src/quantum_program.rs</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">src</a> - quantum_program.rs<span style="font-size: 80%;"> (source / <a href="quantum_program.rs.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.lcov</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">46</td>
+            <td class="headerCovTableEntry">46</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2021-11-09 13:25:48</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // Copyright © 2021 HQS Quantum Simulations GmbH. All Rights Reserved.</a>
+<span class="lineNum">       2 </span>            : //
+<span class="lineNum">       3 </span>            : // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not use this file except
+<span class="lineNum">       4 </span>            : // in compliance with the License. You may obtain a copy of the License at
+<span class="lineNum">       5 </span>            : //
+<span class="lineNum">       6 </span>            : //     http://www.apache.org/licenses/LICENSE-2.0
+<span class="lineNum">       7 </span>            : //
+<span class="lineNum">       8 </span>            : // Unless required by applicable law or agreed to in writing, software distributed under the
+<span class="lineNum">       9 </span>            : // License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+<span class="lineNum">      10 </span>            : // express or implied. See the License for the specific language governing permissions and
+<span class="lineNum">      11 </span>            : // limitations under the License.
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : use std::collections::HashMap;
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            : use crate::backends::{EvaluatingBackend, RegisterResult};
+<span class="lineNum">      16 </span>            : use crate::measurements;
+<span class="lineNum">      17 </span>            : use crate::measurements::Measure;
+<span class="lineNum">      18 </span>            : use crate::RoqoqoBackendError;
+<span class="lineNum">      19 </span>            : use std::fmt::{Display, Formatter};
+<span class="lineNum">      20 </span>            : /// Represents a quantum program evaluating measurements based on a one or more free float parameters.
+<span class="lineNum">      21 </span>            : ///
+<span class="lineNum">      22 </span>            : /// The main use of QuantumProgram is to contain a Measurements implementing [crate::measurements::Measure]
+<span class="lineNum">      23 </span>            : /// that measures expectation values or output registers of [crate::Circuit] quantum circuits that contain
+<span class="lineNum">      24 </span>            : /// symbolic parameters. Circuit with symbolic parameters can not be simulated or executed on real hardware.
+<span class="lineNum">      25 </span>            : /// The symbolic parameters need to be replaced with real floating point numbers first.
+<span class="lineNum">      26 </span>            : /// A QuantumProgram contains a list of the free parameters (`input_parameter_names`) and can automatically
+<span class="lineNum">      27 </span>            : /// replace the parameters with its `run` methods and return the result.
+<span class="lineNum">      28 </span>            : ///
+<span class="lineNum">      29 </span>            : /// The QuantumProgram should correspond as closely as possible to a normal mulit-parameter function
+<span class="lineNum">      30 </span>            : /// in classical computing that can be called with a set of parameters and returns a result.
+<span class="lineNum">      31 </span>            : /// It is the intended way to interface between normal program code and roqoqo based quantum programs.
+<span class="lineNum">      32 </span>            : ///
+<span class="lineNum">      33 </span>            : #[derive(Debug, PartialEq, Clone)]
+<span class="lineNum">      34 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">      35 </span>            : pub enum QuantumProgram {
+<span class="lineNum">      36 </span>            :     /// Variant for basis rotation measurement based quantum programs
+<span class="lineNum">      37 </span>            :     BasisRotation {
+<span class="lineNum">      38 </span>            :         /// The measurement that is performed
+<span class="lineNum">      39 </span>            :         measurement: measurements::BasisRotation,
+<span class="lineNum">      40 </span>            :         /// List of free input parameters that can be set when the QuantumProgram is executed
+<span class="lineNum">      41 </span>            :         input_parameter_names: Vec&lt;String&gt;,
+<span class="lineNum">      42 </span>            :     },
+<span class="lineNum">      43 </span>            :     /// Variant for cheated basis rotation measurement based quantum programs
+<span class="lineNum">      44 </span>            :     CheatedBasisRotation {
+<span class="lineNum">      45 </span>            :         /// The measurement that is performed
+<span class="lineNum">      46 </span>            :         measurement: measurements::CheatedBasisRotation,
+<span class="lineNum">      47 </span>            :         /// List of free input parameters that can be set when the QuantumProgram is executed
+<span class="lineNum">      48 </span>            :         input_parameter_names: Vec&lt;String&gt;,
+<span class="lineNum">      49 </span>            :     },
+<span class="lineNum">      50 </span>            :     /// Variant for statevector/density matrix based measurements
+<span class="lineNum">      51 </span>            :     Cheated {
+<span class="lineNum">      52 </span>            :         /// The measurement that is performed
+<span class="lineNum">      53 </span>            :         measurement: measurements::Cheated,
+<span class="lineNum">      54 </span>            :         /// List of free input parameters that can be set when the QuantumProgram is executed
+<span class="lineNum">      55 </span>            :         input_parameter_names: Vec&lt;String&gt;,
+<span class="lineNum">      56 </span>            :     },
+<span class="lineNum">      57 </span>            :     /// Variant quantum programs returning full classical registers
+<span class="lineNum">      58 </span>            :     ClassicalRegister {
+<span class="lineNum">      59 </span>            :         /// The measurement that is performed
+<span class="lineNum">      60 </span>            :         measurement: measurements::ClassicalRegister,
+<span class="lineNum">      61 </span>            :         /// List of free input parameters that can be set when the QuantumProgram is executed
+<span class="lineNum">      62 </span>            :         input_parameter_names: Vec&lt;String&gt;,
+<span class="lineNum">      63 </span>            :     },
+<span class="lineNum">      64 </span>            : }
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span>            : impl QuantumProgram {
+<span class="lineNum">      67 </span>            :     /// Runs the QuantumProgram and returns expectation values.
+<span class="lineNum">      68 </span>            :     ///
+<span class="lineNum">      69 </span>            :     /// Runs the quantum programm for a given set of parameters passed in the same order as the parameters
+<span class="lineNum">      70 </span>            :     /// listed in `input_parameter_names` and returns expectation values.
+<span class="lineNum">      71 </span>            :     ///
+<span class="lineNum">      72 </span>            :     /// Arguments:
+<span class="lineNum">      73 </span>            :     ///
+<a name="74"><span class="lineNum">      74 </span>            :     /// * `backend` - The backend the program is executed on.</a>
+<span class="lineNum">      75 </span>            :     /// * `parameters` - List of float ([f64]) parameters of the function call in order of `input_parameter_names`
+<span class="lineNum">      76 </span><span class="lineCov">         10 :     pub fn run&lt;T&gt;(</span>
+<span class="lineNum">      77 </span><span class="lineCov">         10 :         &amp;self,</span>
+<span class="lineNum">      78 </span><span class="lineCov">         10 :         backend: T,</span>
+<span class="lineNum">      79 </span><span class="lineCov">         10 :         parameters: &amp;[f64],</span>
+<span class="lineNum">      80 </span><span class="lineCov">         10 :     ) -&gt; Result&lt;Option&lt;HashMap&lt;String, f64&gt;&gt;, RoqoqoBackendError&gt;</span>
+<span class="lineNum">      81 </span><span class="lineCov">         10 :     where</span>
+<span class="lineNum">      82 </span><span class="lineCov">         10 :         T: EvaluatingBackend,</span>
+<span class="lineNum">      83 </span><span class="lineCov">         10 :     {</span>
+<span class="lineNum">      84 </span><span class="lineCov">         10 :         match self{</span>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">          3 :             QuantumProgram::BasisRotation{measurement, input_parameter_names } =&gt; {</span></a>
+<span class="lineNum">      86 </span><span class="lineCov">          3 :                 if parameters.len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!(&quot;Wrong number of parameters {} parameters expected {} parameters given&quot;, input_parameter_names.len(), parameters.len())})};</span>
+<span class="lineNum">      87 </span><span class="lineCov">          2 :                 let substituted_parameters: HashMap&lt;String, f64&gt; = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();</span>
+<span class="lineNum">      88 </span><span class="lineCov">          1 :                 let substituted_measurement = measurement.substitute_parameters(</span>
+<span class="lineNum">      89 </span><span class="lineCov">          1 :                     substituted_parameters</span>
+<span class="lineNum">      90 </span><span class="lineCov">          1 :                 )?;</span>
+<span class="lineNum">      91 </span><span class="lineCov">          1 :                 backend.run_measurement(&amp;substituted_measurement)</span>
+<span class="lineNum">      92 </span>            :             }
+<a name="93"><span class="lineNum">      93 </span><span class="lineCov">          3 :             QuantumProgram::CheatedBasisRotation{measurement, input_parameter_names } =&gt; {</span></a>
+<span class="lineNum">      94 </span><span class="lineCov">          3 :                 if parameters.len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!(&quot;Wrong number of parameters {} parameters expected {} parameters given&quot;, input_parameter_names.len(), parameters.len())})};</span>
+<span class="lineNum">      95 </span><span class="lineCov">          2 :                 let substituted_parameters: HashMap&lt;String, f64&gt; = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();</span>
+<span class="lineNum">      96 </span><span class="lineCov">          1 :                 let substituted_measurement = measurement.substitute_parameters(</span>
+<span class="lineNum">      97 </span><span class="lineCov">          1 :                     substituted_parameters</span>
+<span class="lineNum">      98 </span><span class="lineCov">          1 :                 )?;</span>
+<span class="lineNum">      99 </span><span class="lineCov">          1 :                 backend.run_measurement(&amp;substituted_measurement)</span>
+<span class="lineNum">     100 </span>            :             }
+<a name="101"><span class="lineNum">     101 </span><span class="lineCov">          3 :             QuantumProgram::Cheated{measurement, input_parameter_names } =&gt; {</span></a>
+<span class="lineNum">     102 </span><span class="lineCov">          3 :                 if parameters.len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!(&quot;Wrong number of parameters {} parameters expected {} parameters given&quot;, input_parameter_names.len(), parameters.len())})};</span>
+<span class="lineNum">     103 </span><span class="lineCov">          2 :                 let substituted_parameters: HashMap&lt;String, f64&gt; = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();</span>
+<span class="lineNum">     104 </span><span class="lineCov">          1 :                 let substituted_measurement = measurement.substitute_parameters(</span>
+<span class="lineNum">     105 </span><span class="lineCov">          1 :                     substituted_parameters</span>
+<span class="lineNum">     106 </span><span class="lineCov">          1 :                 )?;</span>
+<span class="lineNum">     107 </span><span class="lineCov">          1 :                 backend.run_measurement(&amp;substituted_measurement)</span>
+<span class="lineNum">     108 </span>            :             }
+<span class="lineNum">     109 </span><span class="lineCov">          1 :             _ =&gt; Err(RoqoqoBackendError::GenericError{msg: &quot;A quantum programm returning classical registeres cannot be executed by `run` use `run_registers` instead&quot;.to_string()})</span>
+<span class="lineNum">     110 </span>            :         }
+<span class="lineNum">     111 </span><span class="lineCov">         10 :     }</span>
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span>            :     /// Runs the QuantumProgram and returns the classical registers of the quantum program.
+<span class="lineNum">     114 </span>            :     ///
+<span class="lineNum">     115 </span>            :     /// Runs the quantum programm for a given set of parameters passed in the same order as the parameters
+<span class="lineNum">     116 </span>            :     /// listed in `input_parameter_names` and returns the classical register output.  
+<span class="lineNum">     117 </span>            :     /// The classical registers usually contain a record of measurement values for the repeated execution
+<span class="lineNum">     118 </span>            :     /// of a [crate::Circuit] quantum circuit for real quantum hardware
+<span class="lineNum">     119 </span>            :     /// or the readout of the statevector or the density matrix for simulators.
+<span class="lineNum">     120 </span>            :     ///
+<span class="lineNum">     121 </span>            :     /// Arguments:
+<span class="lineNum">     122 </span>            :     ///
+<a name="123"><span class="lineNum">     123 </span>            :     /// * `backend` - The backend the program is executed on.</a>
+<span class="lineNum">     124 </span>            :     /// * `parameters` - List of float ([f64]) parameters of the function call in order of `input_parameter_names`
+<span class="lineNum">     125 </span><span class="lineCov">          6 :     pub fn run_registers&lt;T&gt;(&amp;self, backend: T, parameters: &amp;[f64]) -&gt; RegisterResult</span>
+<span class="lineNum">     126 </span><span class="lineCov">          6 :     where</span>
+<span class="lineNum">     127 </span><span class="lineCov">          6 :         T: EvaluatingBackend,</span>
+<span class="lineNum">     128 </span><span class="lineCov">          6 :     {</span>
+<span class="lineNum">     129 </span><span class="lineCov">          6 :         match self{</span>
+<a name="130"><span class="lineNum">     130 </span><span class="lineCov">          3 :             QuantumProgram::ClassicalRegister{measurement, input_parameter_names } =&gt; {</span></a>
+<span class="lineNum">     131 </span><span class="lineCov">          3 :                 if parameters.len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!(&quot;Wrong number of parameters {} parameters expected {} parameters given&quot;, input_parameter_names.len(), parameters.len())})};</span>
+<span class="lineNum">     132 </span><span class="lineCov">          2 :                 let substituted_parameters: HashMap&lt;String, f64&gt; = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();</span>
+<span class="lineNum">     133 </span><span class="lineCov">          1 :                 let substituted_measurement = measurement.substitute_parameters(</span>
+<span class="lineNum">     134 </span><span class="lineCov">          1 :                     substituted_parameters</span>
+<span class="lineNum">     135 </span><span class="lineCov">          1 :                 )?;</span>
+<span class="lineNum">     136 </span><span class="lineCov">          1 :                 backend.run_measurement_registers(&amp;substituted_measurement)</span>
+<span class="lineNum">     137 </span>            :             }
+<span class="lineNum">     138 </span><span class="lineCov">          3 :             _ =&gt; Err(RoqoqoBackendError::GenericError{msg: &quot;A quantum programm returning expectation values cannot be executed by `run_registers` use `run` instead&quot;.to_string()})</span>
+<span class="lineNum">     139 </span>            :         }
+<span class="lineNum">     140 </span><span class="lineCov">          6 :     }</span>
+<span class="lineNum">     141 </span>            : }
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span>            : /// Implements the Display trait for QuantumProgram.
+<span class="lineNum">     144 </span>            : impl Display for QuantumProgram {
+<span class="lineNum">     145 </span>            :     fn fmt(&amp;self, f: &amp;mut Formatter&lt;'_&gt;) -&gt; std::fmt::Result {
+<span class="lineNum">     146 </span>            :         let mut s: String = String::new();
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span>            :         match self {
+<span class="lineNum">     149 </span>            :             QuantumProgram::BasisRotation { .. } =&gt; {
+<span class="lineNum">     150 </span>            :                 s.push_str(&amp;&quot;QuantumProgram::BasisRotation&quot;.to_string());
+<span class="lineNum">     151 </span>            :             }
+<span class="lineNum">     152 </span>            :             QuantumProgram::CheatedBasisRotation { .. } =&gt; {
+<span class="lineNum">     153 </span>            :                 s.push_str(&amp;&quot;QuantumProgram::CheatedBasisRotation&quot;.to_string());
+<span class="lineNum">     154 </span>            :             }
+<span class="lineNum">     155 </span>            :             QuantumProgram::Cheated { .. } =&gt; {
+<span class="lineNum">     156 </span>            :                 s.push_str(&amp;&quot;QuantumProgram::Cheated&quot;.to_string());
+<span class="lineNum">     157 </span>            :             }
+<span class="lineNum">     158 </span>            :             QuantumProgram::ClassicalRegister { .. } =&gt; {
+<span class="lineNum">     159 </span>            :                 s.push_str(&amp;&quot;QuantumProgram::ClassicalRegister&quot;.to_string());
+<span class="lineNum">     160 </span>            :             }
+<span class="lineNum">     161 </span>            :         }
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span>            :         write!(f, &quot;{}&quot;, s)
+<span class="lineNum">     164 </span>            :     }
+<span class="lineNum">     165 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

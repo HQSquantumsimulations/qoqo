@@ -174,9 +174,8 @@ impl CheatedWrapper {
     /// Raises:
     ///     ValueError: Cannot serialize Measurement to bytes.
     pub fn _internal_to_bincode(&self) -> PyResult<(&'static str, Py<PyByteArray>)> {
-        let serialized = serialize(&self.internal).map_err(|_| {
-            PyValueError::new_err("Cannot serialize BasisRoationMeasurement to bytes")
-        })?;
+        let serialized = serialize(&self.internal)
+            .map_err(|_| PyValueError::new_err("Cannot serialize CheatedMeasurement to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });

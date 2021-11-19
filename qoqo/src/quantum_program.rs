@@ -98,7 +98,7 @@ impl QuantumProgramWrapper {
         let (name, encoded) = get_measurement_internal
             .extract::<(&str, &[u8])>()
             .map_err(|_| PyTypeError::new_err("measurement is not of type Measurement. Are you using different versions of roqoqo?"))?;
-        match name{
+        match name {
             "BasisRotation" => {
                 let measure: measurements::BasisRotation = deserialize(encoded).map_err(|_| PyTypeError::new_err("measurement is not of type Measurement. Are you using different versions of roqoqo?"))?;
                 Ok( Self{internal: QuantumProgram::BasisRotation{measurement: measure, input_parameter_names}})

@@ -4,6 +4,17 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
 
+### Added not released
+
+* MultiQubitZZ gate. Rotation under a multi-qubit product of Pauli Z operators.
+* `two_qubit_edges` function in Device trait. Used to create a simple graph-library-agnostic representation of the connectivity graph of a device.
+
+## 0.8.1
+
+### Changed 0.8.1
+
+* Updated to pyo3 0.15.0
+
 ## 0.8.0
 
 ### Added 0.8.0

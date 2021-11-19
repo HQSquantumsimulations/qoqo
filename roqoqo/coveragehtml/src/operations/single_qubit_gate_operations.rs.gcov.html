@@ -1,0 +1,1623 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.lcov - src/operations/single_qubit_gate_operations.rs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">src/operations</a> - single_qubit_gate_operations.rs<span style="font-size: 80%;"> (source / <a href="single_qubit_gate_operations.rs.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.lcov</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">496</td>
+            <td class="headerCovTableEntry">496</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2021-11-09 13:25:48</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">314</td>
+            <td class="headerCovTableEntry">314</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : // Copyright © 2021 HQS Quantum Simulations GmbH. All Rights Reserved.</a>
+<span class="lineNum">       2 </span>            : //
+<span class="lineNum">       3 </span>            : // Licensed under the Apache License, Version 2.0 (the &quot;License&quot;); you may not use this file except
+<span class="lineNum">       4 </span>            : // in compliance with the License. You may obtain a copy of the License at
+<span class="lineNum">       5 </span>            : //
+<span class="lineNum">       6 </span>            : //     http://www.apache.org/licenses/LICENSE-2.0
+<span class="lineNum">       7 </span>            : //
+<span class="lineNum">       8 </span>            : // Unless required by applicable law or agreed to in writing, software distributed under the
+<span class="lineNum">       9 </span>            : // License is distributed on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+<span class="lineNum">      10 </span>            : // express or implied. See the License for the specific language governing permissions and
+<span class="lineNum">      11 </span>            : // limitations under the License.
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : use ndarray::{array, Array2};
+<span class="lineNum">      14 </span>            : use num_complex::Complex64;
+<span class="lineNum">      15 </span>            : use qoqo_calculator::CalculatorFloat;
+<span class="lineNum">      16 </span>            : use std::convert::TryFrom;
+<span class="lineNum">      17 </span>            : use std::f64::consts::PI;
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : use crate::operations::{
+<span class="lineNum">      20 </span>            :     InvolveQubits, InvolvedQubits, Operate, OperateGate, OperateSingleQubit,
+<span class="lineNum">      21 </span>            :     OperateSingleQubitGate, Rotate, Substitute,
+<span class="lineNum">      22 </span>            : };
+<span class="lineNum">      23 </span>            : use crate::RoqoqoError;
+<span class="lineNum">      24 </span>            : #[cfg(feature = &quot;overrotate&quot;)]
+<span class="lineNum">      25 </span>            : use rand_distr::{Distribution, Normal};
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : /// The most general unitary operation acting on one qubit.
+<span class="lineNum">      28 </span>            : ///
+<span class="lineNum">      29 </span>            : /// $$ U =e^{i \phi}\begin{pmatrix}
+<span class="lineNum">      30 </span>            : /// \alpha_r+i \alpha_i &amp; -\beta_r+i \beta_i \\\\
+<span class="lineNum">      31 </span>            : /// \beta_r+i \beta_i &amp; \alpha_r-i\alpha_i
+<span class="lineNum">      32 </span>            : /// \end{pmatrix} $$
+<span class="lineNum">      33 </span>            : ///
+<span class="lineNum">      34 </span>            : /// # Warning
+<span class="lineNum">      35 </span>            : ///
+<span class="lineNum">      36 </span>            : /// Due to the support of parameterized values it cannot be guaranteed that the unitary matrix of the gate
+<span class="lineNum">      37 </span>            : /// is always normalized to one.
+<a name="38"><span class="lineNum">      38 </span>            : ///</a>
+<a name="39"><span class="lineNum">      39 </span>            : #[derive(</a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineCov">         45 :     Clone,</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineCov">         12 :     PartialEq,</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineCov">          9 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="44"><span class="lineNum">      44 </span><span class="lineCov">          2 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">      45 </span><span class="lineCov">          9 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">      46 </span><span class="lineCov">         78 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">      47 </span>            : )]
+<span class="lineNum">      48 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">      49 </span>            : pub struct SingleQubitGate {
+<span class="lineNum">      50 </span>            :     /// The qubit the unitary gate is applied to.
+<span class="lineNum">      51 </span>            :     qubit: usize,
+<span class="lineNum">      52 </span>            :     /// The real part $ \alpha_r $ of the on-diagonal elements of the single-qubit unitary.
+<span class="lineNum">      53 </span>            :     alpha_r: CalculatorFloat,
+<span class="lineNum">      54 </span>            :     /// The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary.
+<span class="lineNum">      55 </span>            :     alpha_i: CalculatorFloat,
+<span class="lineNum">      56 </span>            :     /// The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary.
+<span class="lineNum">      57 </span>            :     beta_r: CalculatorFloat,
+<span class="lineNum">      58 </span>            :     /// The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary.
+<span class="lineNum">      59 </span>            :     beta_i: CalculatorFloat,
+<span class="lineNum">      60 </span>            :     /// The global phase $ \phi $ of the single-qubit unitary.
+<span class="lineNum">      61 </span>            :     global_phase: CalculatorFloat,
+<span class="lineNum">      62 </span>            : }
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">      65 </span>            : const TAGS_SingleQubitGate: &amp;[&amp;str; 4] = &amp;[
+<span class="lineNum">      66 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">      67 </span>            :     &quot;GateOperation&quot;,
+<span class="lineNum">      68 </span>            :     &quot;SingleQubitGateOperation&quot;,
+<span class="lineNum">      69 </span>            :     &quot;SingleQubitGate&quot;,
+<span class="lineNum">      70 </span>            : ];
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span>            : /// Trait for all operations acting with a unitary gate on a set of qubits.
+<span class="lineNum">      73 </span>            : impl OperateGate for SingleQubitGate {
+<span class="lineNum">      74 </span>            :     /// Returns unitary matrix of the gate.
+<span class="lineNum">      75 </span>            :     ///
+<span class="lineNum">      76 </span>            :     /// # Returns
+<span class="lineNum">      77 </span>            :     ///
+<a name="78"><span class="lineNum">      78 </span>            :     /// * `Ok(Array2&lt;Complex64&gt;)` - The unitary matrix representation of the gate.</a>
+<span class="lineNum">      79 </span>            :     /// * `Err(RoqoqoError)` - The conversion of parameters to f64 failed or matrix normalization failed.
+<span class="lineNum">      80 </span><span class="lineCov">        118 :     fn unitary_matrix(&amp;self) -&gt; Result&lt;Array2&lt;Complex64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">      81 </span><span class="lineCov">        118 :         let alpha_r: f64 = f64::try_from(self.alpha_r())?;</span>
+<span class="lineNum">      82 </span><span class="lineCov">        117 :         let alpha_i: f64 = f64::try_from(self.alpha_i())?;</span>
+<span class="lineNum">      83 </span><span class="lineCov">        117 :         let beta_r: f64 = f64::try_from(self.beta_r())?;</span>
+<span class="lineNum">      84 </span><span class="lineCov">        117 :         let beta_i: f64 = f64::try_from(self.beta_i())?;</span>
+<span class="lineNum">      85 </span><span class="lineCov">        117 :         let global_phase: f64 = f64::try_from(self.global_phase())?;</span>
+<span class="lineNum">      86 </span>            :         // before building the unitary matrix, check values of alpha and beta for the matrix to be normalized.
+<span class="lineNum">      87 </span><span class="lineCov">        117 :         if alpha_r == 0.0 &amp;&amp; alpha_i == 0.0 &amp;&amp; beta_r == 0.0 &amp;&amp; beta_i == 0.0</span>
+<span class="lineNum">      88 </span><span class="lineCov">        116 :             || (alpha_r.powf(2.0) + alpha_i.powf(2.0) + beta_r.powf(2.0) + beta_i.powf(2.0) - 1.0)</span>
+<span class="lineNum">      89 </span><span class="lineCov">        116 :                 .abs()</span>
+<span class="lineNum">      90 </span><span class="lineCov">        116 :                 &gt; f64::EPSILON</span>
+<span class="lineNum">      91 </span>            :         {
+<span class="lineNum">      92 </span><span class="lineCov">          2 :             let norm: f64 =</span>
+<span class="lineNum">      93 </span><span class="lineCov">          2 :                 alpha_r.powf(2.0) + alpha_i.powf(2.0) + beta_r.powf(2.0) + beta_i.powf(2.0);</span>
+<span class="lineNum">      94 </span><span class="lineCov">          2 :             Err(RoqoqoError::UnitaryMatrixErrror {</span>
+<span class="lineNum">      95 </span><span class="lineCov">          2 :                 alpha_r,</span>
+<span class="lineNum">      96 </span><span class="lineCov">          2 :                 alpha_i,</span>
+<span class="lineNum">      97 </span><span class="lineCov">          2 :                 beta_r,</span>
+<span class="lineNum">      98 </span><span class="lineCov">          2 :                 beta_i,</span>
+<span class="lineNum">      99 </span><span class="lineCov">          2 :                 norm,</span>
+<span class="lineNum">     100 </span><span class="lineCov">          2 :             })</span>
+<span class="lineNum">     101 </span>            :         } else {
+<span class="lineNum">     102 </span><span class="lineCov">        116 :             let pref = Complex64::new(0.0, global_phase).exp();</span>
+<span class="lineNum">     103 </span><span class="lineCov">        116 :             Ok(array![</span>
+<span class="lineNum">     104 </span><span class="lineCov">        116 :                 [</span>
+<span class="lineNum">     105 </span><span class="lineCov">        116 :                     pref * Complex64::new(alpha_r, alpha_i),</span>
+<span class="lineNum">     106 </span><span class="lineCov">        116 :                     pref * Complex64::new(-1.0 * beta_r, beta_i)</span>
+<span class="lineNum">     107 </span><span class="lineCov">        116 :                 ],</span>
+<span class="lineNum">     108 </span><span class="lineCov">        116 :                 [</span>
+<span class="lineNum">     109 </span><span class="lineCov">        116 :                     pref * Complex64::new(beta_r, beta_i),</span>
+<span class="lineNum">     110 </span><span class="lineCov">        116 :                     pref * Complex64::new(alpha_r, -1.0 * alpha_i)</span>
+<span class="lineNum">     111 </span><span class="lineCov">        116 :                 ]</span>
+<span class="lineNum">     112 </span><span class="lineCov">        116 :             ])</span>
+<span class="lineNum">     113 </span>            :         }
+<span class="lineNum">     114 </span><span class="lineCov">        119 :     }</span>
+<span class="lineNum">     115 </span>            : }
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span>            : /// Trait for unitary operations acting on exactly one qubit.
+<span class="lineNum">     118 </span>            : impl OperateSingleQubitGate for SingleQubitGate {
+<span class="lineNum">     119 </span>            :     /// Returns the alpha_r parameter of the operation.
+<span class="lineNum">     120 </span>            :     ///
+<span class="lineNum">     121 </span>            :     /// # Returns
+<a name="122"><span class="lineNum">     122 </span>            :     ///</a>
+<span class="lineNum">     123 </span>            :     /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     124 </span><span class="lineCov">        168 :     fn alpha_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     125 </span><span class="lineCov">        168 :         self.alpha_r.clone()</span>
+<span class="lineNum">     126 </span><span class="lineCov">        168 :     }</span>
+<span class="lineNum">     127 </span>            :     /// Returns the alpha_i parameter of the operation.
+<span class="lineNum">     128 </span>            :     ///
+<span class="lineNum">     129 </span>            :     /// # Returns
+<a name="130"><span class="lineNum">     130 </span>            :     ///</a>
+<span class="lineNum">     131 </span>            :     /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     132 </span><span class="lineCov">        166 :     fn alpha_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     133 </span><span class="lineCov">        166 :         self.alpha_i.clone()</span>
+<span class="lineNum">     134 </span><span class="lineCov">        166 :     }</span>
+<span class="lineNum">     135 </span>            :     /// Returns the beta_r parameter of the operation.
+<span class="lineNum">     136 </span>            :     ///
+<span class="lineNum">     137 </span>            :     /// # Returns
+<a name="138"><span class="lineNum">     138 </span>            :     ///</a>
+<span class="lineNum">     139 </span>            :     /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     140 </span><span class="lineCov">        168 :     fn beta_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     141 </span><span class="lineCov">        168 :         self.beta_r.clone()</span>
+<span class="lineNum">     142 </span><span class="lineCov">        168 :     }</span>
+<span class="lineNum">     143 </span>            :     /// Returns the beta_i parameter of the operation.
+<span class="lineNum">     144 </span>            :     ///
+<span class="lineNum">     145 </span>            :     /// # Returns
+<a name="146"><span class="lineNum">     146 </span>            :     ///</a>
+<span class="lineNum">     147 </span>            :     /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     148 </span><span class="lineCov">        167 :     fn beta_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     149 </span><span class="lineCov">        167 :         self.beta_i.clone()</span>
+<span class="lineNum">     150 </span><span class="lineCov">        167 :     }</span>
+<span class="lineNum">     151 </span>            :     /// Returns global_phase parameter of the operation.
+<span class="lineNum">     152 </span>            :     ///
+<span class="lineNum">     153 </span>            :     /// # Returns
+<a name="154"><span class="lineNum">     154 </span>            :     ///</a>
+<span class="lineNum">     155 </span>            :     /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+<span class="lineNum">     156 </span><span class="lineCov">        164 :     fn global_phase(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     157 </span><span class="lineCov">        164 :         self.global_phase.clone()</span>
+<span class="lineNum">     158 </span><span class="lineCov">        164 :     }</span>
+<span class="lineNum">     159 </span>            : }
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span>            : /// The ZPower gate $e^{-i \frac{\theta}{2} \sigma^z}$.
+<span class="lineNum">     162 </span>            : ///
+<span class="lineNum">     163 </span>            : /// $$
+<span class="lineNum">     164 </span>            : /// U = \begin{pmatrix}
+<span class="lineNum">     165 </span>            : /// \cos(\frac{\theta}{2}) &amp; 0\\\\
+<span class="lineNum">     166 </span>            : /// 0 &amp; \cos(\frac{\theta}{2})
+<span class="lineNum">     167 </span>            : /// \end{pmatrix}
+<span class="lineNum">     168 </span>            : ///  + \begin{pmatrix}
+<span class="lineNum">     169 </span>            : ///  -i \sin(\frac{\theta}{2}) &amp; 0\\\\
+<span class="lineNum">     170 </span>            : /// 0 &amp; i \sin(\frac{\theta}{2})
+<span class="lineNum">     171 </span>            : /// \end{pmatrix}
+<span class="lineNum">     172 </span>            : /// $$
+<a name="173"><span class="lineNum">     173 </span>            : ///</a>
+<a name="174"><span class="lineNum">     174 </span>            : #[derive(</a>
+<a name="175"><span class="lineNum">     175 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="176"><span class="lineNum">     176 </span><span class="lineCov">        180 :     Clone,</span></a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">         55 :     PartialEq,</span></a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineCov">          9 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">        267 :     roqoqo_derive::Operate,</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">         21 :     roqoqo_derive::Substitute,</span></a>
+<span class="lineNum">     181 </span><span class="lineCov">         70 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">     182 </span><span class="lineCov">         14 :     roqoqo_derive::Rotate,</span>
+<span class="lineNum">     183 </span>            : )]
+<span class="lineNum">     184 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     185 </span>            : pub struct RotateZ {
+<span class="lineNum">     186 </span>            :     /// The qubit the unitary gate is applied to.
+<span class="lineNum">     187 </span>            :     qubit: usize,
+<span class="lineNum">     188 </span>            :     /// The angle $\theta$ of the rotation, in the interval from 0 to $2^* 2 \pi$.
+<span class="lineNum">     189 </span>            :     theta: CalculatorFloat,
+<span class="lineNum">     190 </span>            : }
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     193 </span>            : const TAGS_RotateZ: &amp;[&amp;str; 5] = &amp;[
+<span class="lineNum">     194 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     195 </span>            :     &quot;GateOperation&quot;,
+<span class="lineNum">     196 </span>            :     &quot;SingleQubitGateOperation&quot;,
+<span class="lineNum">     197 </span>            :     &quot;Rotation&quot;,
+<span class="lineNum">     198 </span>            :     &quot;RotateZ&quot;,
+<span class="lineNum">     199 </span>            : ];
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span>            : /// Trait for all operations acting with a unitary gate on a set of qubits.
+<span class="lineNum">     202 </span>            : impl OperateGate for RotateZ {
+<span class="lineNum">     203 </span>            :     /// Returns unitary matrix of the gate.
+<span class="lineNum">     204 </span>            :     ///
+<span class="lineNum">     205 </span>            :     /// # Returns
+<span class="lineNum">     206 </span>            :     ///
+<a name="207"><span class="lineNum">     207 </span>            :     /// * `Ok(Array2&lt;Complex64&gt;)` - The unitary matrix representation of the gate.</a>
+<span class="lineNum">     208 </span>            :     /// * `Err(RoqoqoError)` - The conversion of theta to f64 failed.
+<span class="lineNum">     209 </span><span class="lineCov">          2 :     fn unitary_matrix(&amp;self) -&gt; Result&lt;Array2&lt;Complex64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">     210 </span><span class="lineCov">          2 :         let c: f64 = (f64::try_from(self.theta.clone())? / 2.0).cos();</span>
+<span class="lineNum">     211 </span><span class="lineCov">          2 :         let s: f64 = (f64::try_from(self.theta.clone())? / 2.0).sin();</span>
+<span class="lineNum">     212 </span><span class="lineCov">          2 :         Ok(array![</span>
+<span class="lineNum">     213 </span><span class="lineCov">          2 :             [Complex64::new(c, -1.0 * s), Complex64::new(0.0, 0.0)],</span>
+<span class="lineNum">     214 </span><span class="lineCov">          2 :             [Complex64::new(0.0, 0.0), Complex64::new(c, s)]</span>
+<span class="lineNum">     215 </span><span class="lineCov">          2 :         ])</span>
+<span class="lineNum">     216 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     217 </span>            : }
+<span class="lineNum">     218 </span>            : 
+<span class="lineNum">     219 </span>            : /// Trait for unitary operations acting on exactly one qubit.
+<span class="lineNum">     220 </span>            : impl OperateSingleQubitGate for RotateZ {
+<span class="lineNum">     221 </span>            :     /// Returns the alpha_r parameter of the operation.
+<span class="lineNum">     222 </span>            :     ///
+<span class="lineNum">     223 </span>            :     /// # Returns
+<a name="224"><span class="lineNum">     224 </span>            :     ///</a>
+<span class="lineNum">     225 </span>            :     /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     226 </span><span class="lineCov">         43 :     fn alpha_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     227 </span><span class="lineCov">         43 :         (self.theta.clone() / 2.0).cos()</span>
+<span class="lineNum">     228 </span><span class="lineCov">         43 :     }</span>
+<span class="lineNum">     229 </span>            : 
+<span class="lineNum">     230 </span>            :     /// Returns the alpha_i parameter of the operation.
+<span class="lineNum">     231 </span>            :     ///
+<span class="lineNum">     232 </span>            :     /// # Returns
+<a name="233"><span class="lineNum">     233 </span>            :     ///</a>
+<span class="lineNum">     234 </span>            :     /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     235 </span><span class="lineCov">         43 :     fn alpha_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     236 </span><span class="lineCov">         43 :         (self.theta.clone() / 2.0).sin() * (-1.0)</span>
+<span class="lineNum">     237 </span><span class="lineCov">         43 :     }</span>
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span>            :     /// Returns the beta_r parameter of the operation.
+<span class="lineNum">     240 </span>            :     ///
+<span class="lineNum">     241 </span>            :     /// # Returns
+<a name="242"><span class="lineNum">     242 </span>            :     ///</a>
+<span class="lineNum">     243 </span>            :     /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     244 </span><span class="lineCov">         40 :     fn beta_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     245 </span><span class="lineCov">         40 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     246 </span><span class="lineCov">         40 :     }</span>
+<span class="lineNum">     247 </span>            : 
+<span class="lineNum">     248 </span>            :     /// Returns the beta_i parameter of the operation.
+<span class="lineNum">     249 </span>            :     ///
+<span class="lineNum">     250 </span>            :     /// # Returns
+<a name="251"><span class="lineNum">     251 </span>            :     ///</a>
+<span class="lineNum">     252 </span>            :     /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     253 </span><span class="lineCov">         40 :     fn beta_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     254 </span><span class="lineCov">         40 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     255 </span><span class="lineCov">         40 :     }</span>
+<span class="lineNum">     256 </span>            : 
+<span class="lineNum">     257 </span>            :     /// Returns global_phase parameter of the operation.
+<span class="lineNum">     258 </span>            :     ///
+<span class="lineNum">     259 </span>            :     /// # Returns
+<a name="260"><span class="lineNum">     260 </span>            :     ///</a>
+<span class="lineNum">     261 </span>            :     /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+<span class="lineNum">     262 </span><span class="lineCov">         39 :     fn global_phase(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     263 </span><span class="lineCov">         39 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     264 </span><span class="lineCov">         39 :     }</span>
+<span class="lineNum">     265 </span>            : }
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span>            : /// The XPower gate $e^{-i \frac{\theta}{2} \sigma^x}$.
+<span class="lineNum">     268 </span>            : ///
+<span class="lineNum">     269 </span>            : /// $$
+<span class="lineNum">     270 </span>            : /// U = \begin{pmatrix}
+<span class="lineNum">     271 </span>            : /// \cos(\frac{\theta}{2}) &amp; 0\\\\
+<span class="lineNum">     272 </span>            : /// 0 &amp; \cos(\frac{\theta}{2})
+<span class="lineNum">     273 </span>            : /// \end{pmatrix}
+<span class="lineNum">     274 </span>            : /// + \begin{pmatrix}
+<span class="lineNum">     275 </span>            : /// 0  &amp;  -i \sin(\frac{\theta}{2})   \\\\
+<span class="lineNum">     276 </span>            : /// -i \sin(\frac{\theta}{2})  &amp; 0
+<span class="lineNum">     277 </span>            : /// \end{pmatrix}
+<span class="lineNum">     278 </span>            : ///  $$
+<a name="279"><span class="lineNum">     279 </span>            : ///</a>
+<a name="280"><span class="lineNum">     280 </span>            : #[derive(</a>
+<a name="281"><span class="lineNum">     281 </span><span class="lineCov">          5 :     Debug,</span></a>
+<a name="282"><span class="lineNum">     282 </span><span class="lineCov">         74 :     Clone,</span></a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineCov">         41 :     PartialEq,</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineCov">         10 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineCov">        164 :     roqoqo_derive::Operate,</span></a>
+<a name="286"><span class="lineNum">     286 </span><span class="lineCov">         19 :     roqoqo_derive::Substitute,</span></a>
+<span class="lineNum">     287 </span><span class="lineCov">         23 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">     288 </span><span class="lineCov">         26 :     roqoqo_derive::Rotate,</span>
+<span class="lineNum">     289 </span>            : )]
+<span class="lineNum">     290 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     291 </span>            : pub struct RotateX {
+<span class="lineNum">     292 </span>            :     /// The qubit the unitary gate is applied to.
+<span class="lineNum">     293 </span>            :     qubit: usize,
+<span class="lineNum">     294 </span>            :     /// The angle $\theta$ of the rotation, in the interval from 0 to $2^* 2 \pi$.
+<span class="lineNum">     295 </span>            :     theta: CalculatorFloat,
+<span class="lineNum">     296 </span>            : }
+<span class="lineNum">     297 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     298 </span>            : const TAGS_RotateX: &amp;[&amp;str; 5] = &amp;[
+<span class="lineNum">     299 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     300 </span>            :     &quot;GateOperation&quot;,
+<span class="lineNum">     301 </span>            :     &quot;SingleQubitGateOperation&quot;,
+<span class="lineNum">     302 </span>            :     &quot;Rotation&quot;,
+<span class="lineNum">     303 </span>            :     &quot;RotateX&quot;,
+<span class="lineNum">     304 </span>            : ];
+<span class="lineNum">     305 </span>            : 
+<span class="lineNum">     306 </span>            : /// Trait for all operations acting with a unitary gate on a set of qubits.
+<span class="lineNum">     307 </span>            : impl OperateGate for RotateX {
+<span class="lineNum">     308 </span>            :     /// Returns unitary matrix of the gate.
+<span class="lineNum">     309 </span>            :     ///
+<span class="lineNum">     310 </span>            :     /// # Returns
+<span class="lineNum">     311 </span>            :     ///
+<a name="312"><span class="lineNum">     312 </span>            :     /// * `Ok(Array2&lt;Complex64&gt;)` - The unitary matrix representation of the gate.</a>
+<span class="lineNum">     313 </span>            :     /// * `Err(RoqoqoError)` - The conversion of theta to f64 failed.
+<span class="lineNum">     314 </span><span class="lineCov">          2 :     fn unitary_matrix(&amp;self) -&gt; Result&lt;Array2&lt;Complex64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">     315 </span><span class="lineCov">          2 :         let c: f64 = (f64::try_from(self.theta.clone())? / 2.0).cos();</span>
+<span class="lineNum">     316 </span><span class="lineCov">          2 :         let s: f64 = (f64::try_from(self.theta.clone())? / 2.0).sin();</span>
+<span class="lineNum">     317 </span><span class="lineCov">          2 :         Ok(array![</span>
+<span class="lineNum">     318 </span><span class="lineCov">          2 :             [Complex64::new(c, 0.0), Complex64::new(0.0, -1.0 * s)],</span>
+<span class="lineNum">     319 </span><span class="lineCov">          2 :             [Complex64::new(0.0, -1.0 * s), Complex64::new(c, 0.0)]</span>
+<span class="lineNum">     320 </span><span class="lineCov">          2 :         ])</span>
+<span class="lineNum">     321 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     322 </span>            : }
+<span class="lineNum">     323 </span>            : 
+<span class="lineNum">     324 </span>            : /// Trait for unitary operations acting on exactly one qubit.
+<span class="lineNum">     325 </span>            : impl OperateSingleQubitGate for RotateX {
+<span class="lineNum">     326 </span>            :     /// Returns the alpha_r parameter of the operation.
+<span class="lineNum">     327 </span>            :     ///
+<span class="lineNum">     328 </span>            :     /// # Returns
+<a name="329"><span class="lineNum">     329 </span>            :     ///</a>
+<span class="lineNum">     330 </span>            :     /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     331 </span><span class="lineCov">         29 :     fn alpha_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     332 </span><span class="lineCov">         29 :         (self.theta.clone() / 2.0).cos()</span>
+<span class="lineNum">     333 </span><span class="lineCov">         29 :     }</span>
+<span class="lineNum">     334 </span>            :     /// Returns the alpha_i parameter of the operation.
+<span class="lineNum">     335 </span>            :     ///
+<span class="lineNum">     336 </span>            :     /// # Returns
+<a name="337"><span class="lineNum">     337 </span>            :     ///</a>
+<span class="lineNum">     338 </span>            :     /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     339 </span><span class="lineCov">         26 :     fn alpha_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     340 </span><span class="lineCov">         26 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     341 </span><span class="lineCov">         26 :     }</span>
+<span class="lineNum">     342 </span>            :     /// Returns the beta_r parameter of the operation.
+<span class="lineNum">     343 </span>            :     ///
+<span class="lineNum">     344 </span>            :     /// # Returns
+<a name="345"><span class="lineNum">     345 </span>            :     ///</a>
+<span class="lineNum">     346 </span>            :     /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     347 </span><span class="lineCov">         26 :     fn beta_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     348 </span><span class="lineCov">         26 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     349 </span><span class="lineCov">         26 :     }</span>
+<span class="lineNum">     350 </span>            :     /// Returns the beta_i parameter of the operation.
+<span class="lineNum">     351 </span>            :     ///
+<span class="lineNum">     352 </span>            :     /// # Returns
+<a name="353"><span class="lineNum">     353 </span>            :     ///</a>
+<span class="lineNum">     354 </span>            :     /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     355 </span><span class="lineCov">         29 :     fn beta_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     356 </span><span class="lineCov">         29 :         (self.theta.clone() / 2.0).sin() * (-1.0)</span>
+<span class="lineNum">     357 </span><span class="lineCov">         29 :     }</span>
+<span class="lineNum">     358 </span>            :     /// Returns global_phase parameter of the operation.
+<span class="lineNum">     359 </span>            :     ///
+<span class="lineNum">     360 </span>            :     /// # Returns
+<a name="361"><span class="lineNum">     361 </span>            :     ///</a>
+<span class="lineNum">     362 </span>            :     /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+<span class="lineNum">     363 </span><span class="lineCov">         26 :     fn global_phase(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     364 </span><span class="lineCov">         26 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     365 </span><span class="lineCov">         26 :     }</span>
+<span class="lineNum">     366 </span>            : }
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span>            : /// The YPower gate $e^{-i \frac{\theta}{2} \sigma^y}$.
+<span class="lineNum">     369 </span>            : ///
+<span class="lineNum">     370 </span>            : /// $$
+<span class="lineNum">     371 </span>            : /// U = \begin{pmatrix}
+<span class="lineNum">     372 </span>            : /// \cos(\frac{\theta}{2}) &amp; 0\\\\
+<span class="lineNum">     373 </span>            : /// 0 &amp; \cos(\frac{\theta}{2})
+<span class="lineNum">     374 </span>            : /// \end{pmatrix}
+<span class="lineNum">     375 </span>            : /// + \begin{pmatrix}
+<span class="lineNum">     376 </span>            : /// 0 &amp; - \sin(\frac{\theta}{2})\\\\
+<span class="lineNum">     377 </span>            : /// \sin(\frac{\theta}{2}) &amp; 0
+<span class="lineNum">     378 </span>            : /// \end{pmatrix}
+<span class="lineNum">     379 </span>            : ///  $$
+<a name="380"><span class="lineNum">     380 </span>            : ///</a>
+<a name="381"><span class="lineNum">     381 </span>            : #[derive(</a>
+<a name="382"><span class="lineNum">     382 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="383"><span class="lineNum">     383 </span><span class="lineCov">         33 :     Clone,</span></a>
+<a name="384"><span class="lineNum">     384 </span><span class="lineCov">         18 :     PartialEq,</span></a>
+<a name="385"><span class="lineNum">     385 </span><span class="lineCov">          9 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="386"><span class="lineNum">     386 </span><span class="lineCov">         64 :     roqoqo_derive::Operate,</span></a>
+<a name="387"><span class="lineNum">     387 </span><span class="lineCov">          9 :     roqoqo_derive::Substitute,</span></a>
+<span class="lineNum">     388 </span><span class="lineCov">         19 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">     389 </span><span class="lineCov">         14 :     roqoqo_derive::Rotate,</span>
+<span class="lineNum">     390 </span>            : )]
+<span class="lineNum">     391 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     392 </span>            : pub struct RotateY {
+<span class="lineNum">     393 </span>            :     /// The qubit the unitary gate is applied to.
+<span class="lineNum">     394 </span>            :     qubit: usize,
+<span class="lineNum">     395 </span>            :     /// The angle $\theta$ of the rotation, in the interval from 0 to $2^* 2 \pi$.
+<span class="lineNum">     396 </span>            :     theta: CalculatorFloat,
+<span class="lineNum">     397 </span>            : }
+<span class="lineNum">     398 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     399 </span>            : const TAGS_RotateY: &amp;[&amp;str; 5] = &amp;[
+<span class="lineNum">     400 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     401 </span>            :     &quot;GateOperation&quot;,
+<span class="lineNum">     402 </span>            :     &quot;SingleQubitGateOperation&quot;,
+<span class="lineNum">     403 </span>            :     &quot;Rotation&quot;,
+<span class="lineNum">     404 </span>            :     &quot;RotateY&quot;,
+<span class="lineNum">     405 </span>            : ];
+<span class="lineNum">     406 </span>            : 
+<span class="lineNum">     407 </span>            : /// Trait for all operations acting with a unitary gate on a set of qubits.
+<span class="lineNum">     408 </span>            : impl OperateGate for RotateY {
+<span class="lineNum">     409 </span>            :     /// Returns unitary matrix of the gate.
+<span class="lineNum">     410 </span>            :     ///
+<span class="lineNum">     411 </span>            :     /// # Returns
+<span class="lineNum">     412 </span>            :     ///
+<a name="413"><span class="lineNum">     413 </span>            :     /// * `Ok(Array2&lt;Complex64&gt;)` - The unitary matrix representation of the gate.</a>
+<span class="lineNum">     414 </span>            :     /// * `Err(RoqoqoError)` - The conversion of theta to f64 failed.
+<span class="lineNum">     415 </span><span class="lineCov">          2 :     fn unitary_matrix(&amp;self) -&gt; Result&lt;Array2&lt;Complex64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">     416 </span><span class="lineCov">          2 :         let c: f64 = (f64::try_from(self.theta.clone())? / 2.0).cos();</span>
+<span class="lineNum">     417 </span><span class="lineCov">          2 :         let s: f64 = (f64::try_from(self.theta.clone())? / 2.0).sin();</span>
+<span class="lineNum">     418 </span><span class="lineCov">          2 :         Ok(array![</span>
+<span class="lineNum">     419 </span><span class="lineCov">          2 :             [Complex64::new(c, 0.0), Complex64::new(-1.0 * s, 0.0)],</span>
+<span class="lineNum">     420 </span><span class="lineCov">          2 :             [Complex64::new(s, 0.0), Complex64::new(c, 0.0)]</span>
+<span class="lineNum">     421 </span><span class="lineCov">          2 :         ])</span>
+<span class="lineNum">     422 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     423 </span>            : }
+<span class="lineNum">     424 </span>            : 
+<span class="lineNum">     425 </span>            : /// Trait for unitary operations acting on exactly one qubit.
+<span class="lineNum">     426 </span>            : impl OperateSingleQubitGate for RotateY {
+<span class="lineNum">     427 </span>            :     /// Returns the alpha_r parameter of the operation.
+<span class="lineNum">     428 </span>            :     ///
+<span class="lineNum">     429 </span>            :     /// # Returns
+<a name="430"><span class="lineNum">     430 </span>            :     ///</a>
+<span class="lineNum">     431 </span>            :     /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     432 </span><span class="lineCov">         14 :     fn alpha_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     433 </span><span class="lineCov">         14 :         (self.theta.clone() / 2.0).cos()</span>
+<span class="lineNum">     434 </span><span class="lineCov">         14 :     }</span>
+<span class="lineNum">     435 </span>            :     /// Returns the alpha_i parameter of the operation.
+<span class="lineNum">     436 </span>            :     ///
+<span class="lineNum">     437 </span>            :     /// # Returns
+<a name="438"><span class="lineNum">     438 </span>            :     ///</a>
+<span class="lineNum">     439 </span>            :     /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     440 </span><span class="lineCov">         11 :     fn alpha_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     441 </span><span class="lineCov">         11 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     442 </span><span class="lineCov">         11 :     }</span>
+<span class="lineNum">     443 </span>            :     /// Returns the beta_r parameter of the operation.
+<span class="lineNum">     444 </span>            :     ///
+<span class="lineNum">     445 </span>            :     /// # Returns
+<a name="446"><span class="lineNum">     446 </span>            :     ///</a>
+<span class="lineNum">     447 </span>            :     /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     448 </span><span class="lineCov">         14 :     fn beta_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     449 </span><span class="lineCov">         14 :         (self.theta.clone() / 2.0).sin()</span>
+<span class="lineNum">     450 </span><span class="lineCov">         14 :     }</span>
+<span class="lineNum">     451 </span>            :     /// Returns the beta_i parameter of the operation.
+<span class="lineNum">     452 </span>            :     ///
+<span class="lineNum">     453 </span>            :     /// # Returns
+<a name="454"><span class="lineNum">     454 </span>            :     ///</a>
+<span class="lineNum">     455 </span>            :     /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     456 </span><span class="lineCov">         11 :     fn beta_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     457 </span><span class="lineCov">         11 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     458 </span><span class="lineCov">         11 :     }</span>
+<span class="lineNum">     459 </span>            :     /// Returns global_phase parameter of the operation.
+<span class="lineNum">     460 </span>            :     ///
+<span class="lineNum">     461 </span>            :     /// # Returns
+<a name="462"><span class="lineNum">     462 </span>            :     ///</a>
+<span class="lineNum">     463 </span>            :     /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+<span class="lineNum">     464 </span><span class="lineCov">         11 :     fn global_phase(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     465 </span><span class="lineCov">         11 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     466 </span><span class="lineCov">         11 :     }</span>
+<span class="lineNum">     467 </span>            : }
+<span class="lineNum">     468 </span>            : 
+<span class="lineNum">     469 </span>            : /// The Pauli X gate.
+<span class="lineNum">     470 </span>            : ///
+<span class="lineNum">     471 </span>            : /// $$
+<span class="lineNum">     472 </span>            : /// U = \begin{pmatrix}
+<span class="lineNum">     473 </span>            : /// 0 &amp; 1\\\\
+<span class="lineNum">     474 </span>            : /// 1 &amp; 0
+<span class="lineNum">     475 </span>            : /// \end{pmatrix}
+<span class="lineNum">     476 </span>            : /// $$
+<a name="477"><span class="lineNum">     477 </span>            : ///</a>
+<a name="478"><span class="lineNum">     478 </span>            : #[derive(</a>
+<a name="479"><span class="lineNum">     479 </span><span class="lineCov">          2 :     Debug,</span></a>
+<a name="480"><span class="lineNum">     480 </span><span class="lineCov">         24 :     Clone,</span></a>
+<a name="481"><span class="lineNum">     481 </span><span class="lineCov">         22 :     PartialEq,</span></a>
+<a name="482"><span class="lineNum">     482 </span><span class="lineCov">          5 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="483"><span class="lineNum">     483 </span><span class="lineCov">         53 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">     484 </span><span class="lineCov">          9 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     485 </span><span class="lineCov">         11 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">     486 </span>            : )]
+<span class="lineNum">     487 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     488 </span>            : pub struct PauliX {
+<span class="lineNum">     489 </span>            :     /// The qubit the unitary gate is applied to.
+<span class="lineNum">     490 </span>            :     qubit: usize,
+<span class="lineNum">     491 </span>            : }
+<span class="lineNum">     492 </span>            : 
+<span class="lineNum">     493 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     494 </span>            : const TAGS_PauliX: &amp;[&amp;str; 4] = &amp;[
+<span class="lineNum">     495 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     496 </span>            :     &quot;GateOperation&quot;,
+<span class="lineNum">     497 </span>            :     &quot;SingleQubitGateOperation&quot;,
+<span class="lineNum">     498 </span>            :     &quot;PauliX&quot;,
+<span class="lineNum">     499 </span>            : ];
+<span class="lineNum">     500 </span>            : 
+<span class="lineNum">     501 </span>            : /// Trait for all operations acting with a unitary gate on a set of qubits.
+<span class="lineNum">     502 </span>            : impl OperateGate for PauliX {
+<span class="lineNum">     503 </span>            :     /// Returns unitary matrix of the gate.
+<span class="lineNum">     504 </span>            :     ///
+<span class="lineNum">     505 </span>            :     /// # Returns
+<span class="lineNum">     506 </span>            :     ///
+<a name="507"><span class="lineNum">     507 </span>            :     /// * `Ok(Array2&lt;Complex64&gt;)` - The unitary matrix representation of the gate.</a>
+<span class="lineNum">     508 </span>            :     /// * `Err(RoqoqoError)` - The parameter conversion to f64 failed (here, not possible).
+<span class="lineNum">     509 </span><span class="lineCov">          2 :     fn unitary_matrix(&amp;self) -&gt; Result&lt;Array2&lt;Complex64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">     510 </span><span class="lineCov">          2 :         Ok(array![</span>
+<span class="lineNum">     511 </span><span class="lineCov">          2 :             [Complex64::new(0.0, 0.0), Complex64::new(1.0, 0.0)],</span>
+<span class="lineNum">     512 </span><span class="lineCov">          2 :             [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)]</span>
+<span class="lineNum">     513 </span><span class="lineCov">          2 :         ])</span>
+<span class="lineNum">     514 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     515 </span>            : }
+<span class="lineNum">     516 </span>            : 
+<span class="lineNum">     517 </span>            : /// Trait for unitary operations acting on exactly one qubit.
+<span class="lineNum">     518 </span>            : impl OperateSingleQubitGate for PauliX {
+<span class="lineNum">     519 </span>            :     /// Returns the alpha_r parameter of the operation.
+<span class="lineNum">     520 </span>            :     ///
+<span class="lineNum">     521 </span>            :     /// # Returns
+<a name="522"><span class="lineNum">     522 </span>            :     ///</a>
+<span class="lineNum">     523 </span>            :     /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     524 </span><span class="lineCov">          5 :     fn alpha_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     525 </span><span class="lineCov">          5 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     526 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     527 </span>            :     /// Returns the alpha_i parameter of the operation.
+<span class="lineNum">     528 </span>            :     ///
+<span class="lineNum">     529 </span>            :     /// # Returns
+<a name="530"><span class="lineNum">     530 </span>            :     ///</a>
+<span class="lineNum">     531 </span>            :     /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     532 </span><span class="lineCov">          5 :     fn alpha_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     533 </span><span class="lineCov">          5 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     534 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     535 </span>            :     /// Returns the beta_r parameter of the operation.
+<span class="lineNum">     536 </span>            :     ///
+<span class="lineNum">     537 </span>            :     /// # Returns
+<a name="538"><span class="lineNum">     538 </span>            :     ///</a>
+<span class="lineNum">     539 </span>            :     /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     540 </span><span class="lineCov">          5 :     fn beta_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     541 </span><span class="lineCov">          5 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     542 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     543 </span>            :     /// Returns the beta_i parameter of the operation.
+<span class="lineNum">     544 </span>            :     ///
+<span class="lineNum">     545 </span>            :     /// # Returns
+<a name="546"><span class="lineNum">     546 </span>            :     ///</a>
+<span class="lineNum">     547 </span>            :     /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     548 </span><span class="lineCov">          5 :     fn beta_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     549 </span><span class="lineCov">          5 :         CalculatorFloat::from(-1.0)</span>
+<span class="lineNum">     550 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     551 </span>            :     /// Returns global_phase parameter of the operation.
+<span class="lineNum">     552 </span>            :     ///
+<span class="lineNum">     553 </span>            :     /// # Returns
+<a name="554"><span class="lineNum">     554 </span>            :     ///</a>
+<span class="lineNum">     555 </span>            :     /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+<span class="lineNum">     556 </span><span class="lineCov">          5 :     fn global_phase(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     557 </span><span class="lineCov">          5 :         CalculatorFloat::from((PI) / 2.0)</span>
+<span class="lineNum">     558 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     559 </span>            : }
+<span class="lineNum">     560 </span>            : 
+<span class="lineNum">     561 </span>            : /// The Pauli Y gate.
+<span class="lineNum">     562 </span>            : ///
+<span class="lineNum">     563 </span>            : /// $$
+<span class="lineNum">     564 </span>            : /// U = \begin{pmatrix}
+<span class="lineNum">     565 </span>            : /// 0 &amp; -i\\\\
+<span class="lineNum">     566 </span>            : /// i &amp; 0
+<span class="lineNum">     567 </span>            : /// \end{pmatrix}
+<span class="lineNum">     568 </span>            : /// $$
+<a name="569"><span class="lineNum">     569 </span>            : ///</a>
+<a name="570"><span class="lineNum">     570 </span>            : #[derive(</a>
+<a name="571"><span class="lineNum">     571 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="572"><span class="lineNum">     572 </span><span class="lineCov">          8 :     Clone,</span></a>
+<a name="573"><span class="lineNum">     573 </span><span class="lineCov">          8 :     PartialEq,</span></a>
+<a name="574"><span class="lineNum">     574 </span><span class="lineCov">          3 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="575"><span class="lineNum">     575 </span><span class="lineCov">         29 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">     576 </span><span class="lineCov">          3 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     577 </span><span class="lineCov">         11 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">     578 </span>            : )]
+<span class="lineNum">     579 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     580 </span>            : pub struct PauliY {
+<span class="lineNum">     581 </span>            :     /// The qubit the unitary gate is applied to.
+<span class="lineNum">     582 </span>            :     qubit: usize,
+<span class="lineNum">     583 </span>            : }
+<span class="lineNum">     584 </span>            : 
+<span class="lineNum">     585 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     586 </span>            : const TAGS_PauliY: &amp;[&amp;str; 4] = &amp;[
+<span class="lineNum">     587 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     588 </span>            :     &quot;GateOperation&quot;,
+<span class="lineNum">     589 </span>            :     &quot;SingleQubitGateOperation&quot;,
+<span class="lineNum">     590 </span>            :     &quot;PauliY&quot;,
+<span class="lineNum">     591 </span>            : ];
+<span class="lineNum">     592 </span>            : 
+<span class="lineNum">     593 </span>            : /// Trait for all operations acting with a unitary gate on a set of qubits.
+<span class="lineNum">     594 </span>            : impl OperateGate for PauliY {
+<span class="lineNum">     595 </span>            :     /// Returns unitary matrix of the gate.
+<span class="lineNum">     596 </span>            :     ///
+<span class="lineNum">     597 </span>            :     /// # Returns
+<span class="lineNum">     598 </span>            :     ///
+<a name="599"><span class="lineNum">     599 </span>            :     /// * `Ok(Array2&lt;Complex64&gt;)` - The unitary matrix representation of the gate.</a>
+<span class="lineNum">     600 </span>            :     /// * `Err(RoqoqoError)` - The parameter conversion to f64 failed (here, not possible).
+<span class="lineNum">     601 </span><span class="lineCov">          2 :     fn unitary_matrix(&amp;self) -&gt; Result&lt;Array2&lt;Complex64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">     602 </span><span class="lineCov">          2 :         Ok(array![</span>
+<span class="lineNum">     603 </span><span class="lineCov">          2 :             [Complex64::new(0.0, 0.0), Complex64::new(0.0, -1.0)],</span>
+<span class="lineNum">     604 </span><span class="lineCov">          2 :             [Complex64::new(0.0, 1.0), Complex64::new(0.0, 0.0)]</span>
+<span class="lineNum">     605 </span><span class="lineCov">          2 :         ])</span>
+<span class="lineNum">     606 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     607 </span>            : }
+<span class="lineNum">     608 </span>            : 
+<span class="lineNum">     609 </span>            : /// Trait for unitary operations acting on exactly one qubit.
+<span class="lineNum">     610 </span>            : impl OperateSingleQubitGate for PauliY {
+<span class="lineNum">     611 </span>            :     /// Returns the alpha_r parameter of the operation.
+<span class="lineNum">     612 </span>            :     ///
+<span class="lineNum">     613 </span>            :     /// # Returns
+<a name="614"><span class="lineNum">     614 </span>            :     ///</a>
+<span class="lineNum">     615 </span>            :     /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     616 </span><span class="lineCov">          5 :     fn alpha_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     617 </span><span class="lineCov">          5 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     618 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     619 </span>            :     /// Returns the alpha_i parameter of the operation.
+<span class="lineNum">     620 </span>            :     ///
+<span class="lineNum">     621 </span>            :     /// # Returns
+<a name="622"><span class="lineNum">     622 </span>            :     ///</a>
+<span class="lineNum">     623 </span>            :     /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     624 </span><span class="lineCov">          5 :     fn alpha_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     625 </span><span class="lineCov">          5 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     626 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     627 </span>            :     /// Returns the beta_r parameter of the operation.
+<span class="lineNum">     628 </span>            :     ///
+<span class="lineNum">     629 </span>            :     /// # Returns
+<a name="630"><span class="lineNum">     630 </span>            :     ///</a>
+<span class="lineNum">     631 </span>            :     /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     632 </span><span class="lineCov">          5 :     fn beta_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     633 </span><span class="lineCov">          5 :         CalculatorFloat::from(1.0)</span>
+<span class="lineNum">     634 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     635 </span>            :     /// Returns the beta_i parameter of the operation.
+<span class="lineNum">     636 </span>            :     ///
+<span class="lineNum">     637 </span>            :     /// # Returns
+<a name="638"><span class="lineNum">     638 </span>            :     ///</a>
+<span class="lineNum">     639 </span>            :     /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     640 </span><span class="lineCov">          5 :     fn beta_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     641 </span><span class="lineCov">          5 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     642 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     643 </span>            :     /// Returns global_phase parameter of the operation.
+<span class="lineNum">     644 </span>            :     ///
+<span class="lineNum">     645 </span>            :     /// # Returns
+<a name="646"><span class="lineNum">     646 </span>            :     ///</a>
+<span class="lineNum">     647 </span>            :     /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+<span class="lineNum">     648 </span><span class="lineCov">          5 :     fn global_phase(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     649 </span><span class="lineCov">          5 :         CalculatorFloat::from(PI / 2.0)</span>
+<span class="lineNum">     650 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     651 </span>            : }
+<span class="lineNum">     652 </span>            : 
+<span class="lineNum">     653 </span>            : /// The Pauli Z gate.
+<span class="lineNum">     654 </span>            : ///
+<span class="lineNum">     655 </span>            : /// $$
+<span class="lineNum">     656 </span>            : /// U = \begin{pmatrix}
+<span class="lineNum">     657 </span>            : /// 1 &amp; 0 \\\\
+<span class="lineNum">     658 </span>            : /// 0 &amp; -1
+<span class="lineNum">     659 </span>            : /// \end{pmatrix}
+<span class="lineNum">     660 </span>            : /// $$
+<a name="661"><span class="lineNum">     661 </span>            : ///</a>
+<a name="662"><span class="lineNum">     662 </span>            : #[derive(</a>
+<a name="663"><span class="lineNum">     663 </span><span class="lineCov">          4 :     Debug,</span></a>
+<a name="664"><span class="lineNum">     664 </span><span class="lineCov">         21 :     Clone,</span></a>
+<a name="665"><span class="lineNum">     665 </span><span class="lineCov">         18 :     PartialEq,</span></a>
+<a name="666"><span class="lineNum">     666 </span><span class="lineCov">          3 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="667"><span class="lineNum">     667 </span><span class="lineCov">         34 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">     668 </span><span class="lineCov">          3 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     669 </span><span class="lineCov">          8 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">     670 </span>            : )]
+<span class="lineNum">     671 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     672 </span>            : pub struct PauliZ {
+<span class="lineNum">     673 </span>            :     /// The qubit the unitary gate is applied to.
+<span class="lineNum">     674 </span>            :     qubit: usize,
+<span class="lineNum">     675 </span>            : }
+<span class="lineNum">     676 </span>            : 
+<span class="lineNum">     677 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     678 </span>            : const TAGS_PauliZ: &amp;[&amp;str; 4] = &amp;[
+<span class="lineNum">     679 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     680 </span>            :     &quot;GateOperation&quot;,
+<span class="lineNum">     681 </span>            :     &quot;SingleQubitGateOperation&quot;,
+<span class="lineNum">     682 </span>            :     &quot;PauliZ&quot;,
+<span class="lineNum">     683 </span>            : ];
+<span class="lineNum">     684 </span>            : 
+<span class="lineNum">     685 </span>            : /// Trait for all operations acting with a unitary gate on a set of qubits.
+<span class="lineNum">     686 </span>            : impl OperateGate for PauliZ {
+<span class="lineNum">     687 </span>            :     /// Returns unitary matrix of the gate.
+<span class="lineNum">     688 </span>            :     ///
+<span class="lineNum">     689 </span>            :     /// # Returns
+<span class="lineNum">     690 </span>            :     ///
+<a name="691"><span class="lineNum">     691 </span>            :     /// * `Ok(Array2&lt;Complex64&gt;)` - The unitary matrix representation of the gate.</a>
+<span class="lineNum">     692 </span>            :     /// * `Err(RoqoqoError)` - The parameter conversion to f64 failed (here, not possible).
+<span class="lineNum">     693 </span><span class="lineCov">          2 :     fn unitary_matrix(&amp;self) -&gt; Result&lt;Array2&lt;Complex64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">     694 </span><span class="lineCov">          2 :         Ok(array![</span>
+<span class="lineNum">     695 </span><span class="lineCov">          2 :             [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],</span>
+<span class="lineNum">     696 </span><span class="lineCov">          2 :             [Complex64::new(0.0, 0.0), Complex64::new(-1.0, 0.0)]</span>
+<span class="lineNum">     697 </span><span class="lineCov">          2 :         ])</span>
+<span class="lineNum">     698 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     699 </span>            : }
+<span class="lineNum">     700 </span>            : 
+<span class="lineNum">     701 </span>            : /// Trait for unitary operations acting on exactly one qubit.
+<span class="lineNum">     702 </span>            : impl OperateSingleQubitGate for PauliZ {
+<span class="lineNum">     703 </span>            :     /// Returns the alpha_r parameter of the operation.
+<span class="lineNum">     704 </span>            :     ///
+<span class="lineNum">     705 </span>            :     /// # Returns
+<a name="706"><span class="lineNum">     706 </span>            :     ///</a>
+<span class="lineNum">     707 </span>            :     /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     708 </span><span class="lineCov">          5 :     fn alpha_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     709 </span><span class="lineCov">          5 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     710 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     711 </span>            :     /// Returns the alpha_i parameter of the operation.
+<span class="lineNum">     712 </span>            :     ///
+<span class="lineNum">     713 </span>            :     /// # Returns
+<a name="714"><span class="lineNum">     714 </span>            :     ///</a>
+<span class="lineNum">     715 </span>            :     /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     716 </span><span class="lineCov">          5 :     fn alpha_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     717 </span><span class="lineCov">          5 :         CalculatorFloat::from(-1.0)</span>
+<span class="lineNum">     718 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     719 </span>            :     /// Returns the beta_r parameter of the operation.
+<span class="lineNum">     720 </span>            :     ///
+<span class="lineNum">     721 </span>            :     /// # Returns
+<a name="722"><span class="lineNum">     722 </span>            :     ///</a>
+<span class="lineNum">     723 </span>            :     /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     724 </span><span class="lineCov">          5 :     fn beta_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     725 </span><span class="lineCov">          5 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     726 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     727 </span>            :     /// Returns the beta_i parameter of the operation.
+<span class="lineNum">     728 </span>            :     ///
+<span class="lineNum">     729 </span>            :     /// # Returns
+<a name="730"><span class="lineNum">     730 </span>            :     ///</a>
+<span class="lineNum">     731 </span>            :     /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     732 </span><span class="lineCov">          5 :     fn beta_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     733 </span><span class="lineCov">          5 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     734 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     735 </span>            :     /// Returns global_phase parameter of the operation.
+<span class="lineNum">     736 </span>            :     ///
+<span class="lineNum">     737 </span>            :     /// # Returns
+<a name="738"><span class="lineNum">     738 </span>            :     ///</a>
+<span class="lineNum">     739 </span>            :     /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+<span class="lineNum">     740 </span><span class="lineCov">          5 :     fn global_phase(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     741 </span><span class="lineCov">          5 :         CalculatorFloat::from(PI / 2.0)</span>
+<span class="lineNum">     742 </span><span class="lineCov">          5 :     }</span>
+<span class="lineNum">     743 </span>            : }
+<span class="lineNum">     744 </span>            : 
+<span class="lineNum">     745 </span>            : /// The square root of the XPower gate: $e^{-i \frac{\pi}{4} \sigma^x}$.
+<span class="lineNum">     746 </span>            : ///
+<span class="lineNum">     747 </span>            : /// $$
+<span class="lineNum">     748 </span>            : /// U = \frac{1}{\sqrt(2)}\begin{pmatrix}
+<span class="lineNum">     749 </span>            : /// 1 &amp; -i \\\\
+<span class="lineNum">     750 </span>            : /// -i &amp; 1
+<span class="lineNum">     751 </span>            : /// \end{pmatrix}
+<span class="lineNum">     752 </span>            : /// $$
+<a name="753"><span class="lineNum">     753 </span>            : ///</a>
+<a name="754"><span class="lineNum">     754 </span>            : #[derive(</a>
+<a name="755"><span class="lineNum">     755 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="756"><span class="lineNum">     756 </span><span class="lineCov">          8 :     Clone,</span></a>
+<a name="757"><span class="lineNum">     757 </span><span class="lineCov">          8 :     PartialEq,</span></a>
+<a name="758"><span class="lineNum">     758 </span><span class="lineCov">          3 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="759"><span class="lineNum">     759 </span><span class="lineCov">         25 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">     760 </span><span class="lineCov">          3 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     761 </span><span class="lineCov">          3 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">     762 </span>            : )]
+<span class="lineNum">     763 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     764 </span>            : pub struct SqrtPauliX {
+<span class="lineNum">     765 </span>            :     /// The qubit the unitary gate is applied to.
+<span class="lineNum">     766 </span>            :     qubit: usize,
+<span class="lineNum">     767 </span>            : }
+<span class="lineNum">     768 </span>            : 
+<span class="lineNum">     769 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     770 </span>            : const TAGS_SqrtPauliX: &amp;[&amp;str; 4] = &amp;[
+<span class="lineNum">     771 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     772 </span>            :     &quot;GateOperation&quot;,
+<span class="lineNum">     773 </span>            :     &quot;SingleQubitGateOperation&quot;,
+<span class="lineNum">     774 </span>            :     &quot;SqrtPauliX&quot;,
+<span class="lineNum">     775 </span>            : ];
+<span class="lineNum">     776 </span>            : 
+<span class="lineNum">     777 </span>            : /// Trait for all operations acting with a unitary gate on a set of qubits.
+<span class="lineNum">     778 </span>            : impl OperateGate for SqrtPauliX {
+<span class="lineNum">     779 </span>            :     /// Returns unitary matrix of the gate.
+<span class="lineNum">     780 </span>            :     ///
+<span class="lineNum">     781 </span>            :     /// # Returns
+<span class="lineNum">     782 </span>            :     ///
+<a name="783"><span class="lineNum">     783 </span>            :     /// * `Ok(Array2&lt;Complex64&gt;)` - The unitary matrix representation of the gate.</a>
+<span class="lineNum">     784 </span>            :     /// * `Err(RoqoqoError)` - The parameter conversion to f64 failed (here, not possible).
+<span class="lineNum">     785 </span><span class="lineCov">          2 :     fn unitary_matrix(&amp;self) -&gt; Result&lt;Array2&lt;Complex64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">     786 </span><span class="lineCov">          2 :         let theta: f64 = PI / 2.0;</span>
+<span class="lineNum">     787 </span><span class="lineCov">          2 :         let c: f64 = (theta / 2.0).cos();</span>
+<span class="lineNum">     788 </span><span class="lineCov">          2 :         let s: f64 = (theta / 2.0).sin();</span>
+<span class="lineNum">     789 </span><span class="lineCov">          2 :         Ok(array![</span>
+<span class="lineNum">     790 </span><span class="lineCov">          2 :             [Complex64::new(c, 0.0), Complex64::new(0.0, -1.0 * s)],</span>
+<span class="lineNum">     791 </span><span class="lineCov">          2 :             [Complex64::new(0.0, -1.0 * s), Complex64::new(c, 0.0)]</span>
+<span class="lineNum">     792 </span><span class="lineCov">          2 :         ])</span>
+<span class="lineNum">     793 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     794 </span>            : }
+<span class="lineNum">     795 </span>            : 
+<span class="lineNum">     796 </span>            : /// Trait for unitary operations acting on exactly one qubit.
+<span class="lineNum">     797 </span>            : impl OperateSingleQubitGate for SqrtPauliX {
+<span class="lineNum">     798 </span>            :     /// Returns the alpha_r parameter of the operation.
+<span class="lineNum">     799 </span>            :     ///
+<span class="lineNum">     800 </span>            :     /// # Returns
+<a name="801"><span class="lineNum">     801 </span>            :     ///</a>
+<span class="lineNum">     802 </span>            :     /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     803 </span><span class="lineCov">          2 :     fn alpha_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     804 </span><span class="lineCov">          2 :         CalculatorFloat::from((PI / 4.0).cos())</span>
+<span class="lineNum">     805 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     806 </span>            :     /// Returns the alpha_i parameter of the operation.
+<span class="lineNum">     807 </span>            :     ///
+<span class="lineNum">     808 </span>            :     /// # Returns
+<a name="809"><span class="lineNum">     809 </span>            :     ///</a>
+<span class="lineNum">     810 </span>            :     /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     811 </span><span class="lineCov">          2 :     fn alpha_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     812 </span><span class="lineCov">          2 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     813 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     814 </span>            :     /// Returns the beta_r parameter of the operation.
+<span class="lineNum">     815 </span>            :     ///
+<span class="lineNum">     816 </span>            :     /// # Returns
+<a name="817"><span class="lineNum">     817 </span>            :     ///</a>
+<span class="lineNum">     818 </span>            :     /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     819 </span><span class="lineCov">          2 :     fn beta_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     820 </span><span class="lineCov">          2 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     821 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     822 </span>            :     /// Returns the beta_i parameter of the operation.
+<span class="lineNum">     823 </span>            :     ///
+<span class="lineNum">     824 </span>            :     /// # Returns
+<a name="825"><span class="lineNum">     825 </span>            :     ///</a>
+<span class="lineNum">     826 </span>            :     /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     827 </span><span class="lineCov">          2 :     fn beta_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     828 </span><span class="lineCov">          2 :         CalculatorFloat::from((PI / 4.0).sin() * (-1.0))</span>
+<span class="lineNum">     829 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     830 </span>            :     /// Returns global_phase parameter of the operation.
+<span class="lineNum">     831 </span>            :     ///
+<span class="lineNum">     832 </span>            :     /// # Returns
+<a name="833"><span class="lineNum">     833 </span>            :     ///</a>
+<span class="lineNum">     834 </span>            :     /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+<span class="lineNum">     835 </span><span class="lineCov">          2 :     fn global_phase(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     836 </span><span class="lineCov">          2 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     837 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     838 </span>            : }
+<span class="lineNum">     839 </span>            : 
+<span class="lineNum">     840 </span>            : /// The inverse square root of the XPower gate: $e^{i \frac{\pi}{2} \sigma^x}$.
+<span class="lineNum">     841 </span>            : ///
+<span class="lineNum">     842 </span>            : /// $$
+<span class="lineNum">     843 </span>            : /// U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+<span class="lineNum">     844 </span>            : /// 1 &amp; i \\\\
+<span class="lineNum">     845 </span>            : ///  i &amp; 1
+<span class="lineNum">     846 </span>            : /// \end{pmatrix}
+<span class="lineNum">     847 </span>            : /// $$
+<a name="848"><span class="lineNum">     848 </span>            : ///</a>
+<a name="849"><span class="lineNum">     849 </span>            : #[derive(</a>
+<a name="850"><span class="lineNum">     850 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="851"><span class="lineNum">     851 </span><span class="lineCov">          8 :     Clone,</span></a>
+<a name="852"><span class="lineNum">     852 </span><span class="lineCov">          8 :     PartialEq,</span></a>
+<a name="853"><span class="lineNum">     853 </span><span class="lineCov">          3 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="854"><span class="lineNum">     854 </span><span class="lineCov">         25 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">     855 </span><span class="lineCov">          3 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     856 </span><span class="lineCov">          3 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">     857 </span>            : )]
+<span class="lineNum">     858 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     859 </span>            : pub struct InvSqrtPauliX {
+<span class="lineNum">     860 </span>            :     /// The qubit the unitary gate is applied to.
+<span class="lineNum">     861 </span>            :     qubit: usize,
+<span class="lineNum">     862 </span>            : }
+<span class="lineNum">     863 </span>            : 
+<span class="lineNum">     864 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     865 </span>            : const TAGS_InvSqrtPauliX: &amp;[&amp;str; 4] = &amp;[
+<span class="lineNum">     866 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     867 </span>            :     &quot;GateOperation&quot;,
+<span class="lineNum">     868 </span>            :     &quot;SingleQubitGateOperation&quot;,
+<span class="lineNum">     869 </span>            :     &quot;InvSqrtPauliX&quot;,
+<span class="lineNum">     870 </span>            : ];
+<span class="lineNum">     871 </span>            : 
+<span class="lineNum">     872 </span>            : /// Trait for all operations acting with a unitary gate on a set of qubits.
+<span class="lineNum">     873 </span>            : impl OperateGate for InvSqrtPauliX {
+<span class="lineNum">     874 </span>            :     /// Returns unitary matrix of the gate.
+<span class="lineNum">     875 </span>            :     ///
+<span class="lineNum">     876 </span>            :     /// # Returns
+<span class="lineNum">     877 </span>            :     ///
+<a name="878"><span class="lineNum">     878 </span>            :     /// * `Ok(Array2&lt;Complex64&gt;)` - The unitary matrix representation of the gate.</a>
+<span class="lineNum">     879 </span>            :     /// * `Err(RoqoqoError)` - The parameter conversion to f64 failed (here, not possible).
+<span class="lineNum">     880 </span><span class="lineCov">          2 :     fn unitary_matrix(&amp;self) -&gt; Result&lt;Array2&lt;Complex64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">     881 </span><span class="lineCov">          2 :         let theta: f64 = PI / 2.0;</span>
+<span class="lineNum">     882 </span><span class="lineCov">          2 :         let c: f64 = (theta / 2.0).cos();</span>
+<span class="lineNum">     883 </span><span class="lineCov">          2 :         let s: f64 = (theta / 2.0).sin();</span>
+<span class="lineNum">     884 </span><span class="lineCov">          2 :         Ok(array![</span>
+<span class="lineNum">     885 </span><span class="lineCov">          2 :             [Complex64::new(c, 0.0), Complex64::new(0.0, 1.0 * s)],</span>
+<span class="lineNum">     886 </span><span class="lineCov">          2 :             [Complex64::new(0.0, 1.0 * s), Complex64::new(c, 0.0)]</span>
+<span class="lineNum">     887 </span><span class="lineCov">          2 :         ])</span>
+<span class="lineNum">     888 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     889 </span>            : }
+<span class="lineNum">     890 </span>            : 
+<span class="lineNum">     891 </span>            : /// Trait for unitary operations acting on exactly one qubit.
+<span class="lineNum">     892 </span>            : impl OperateSingleQubitGate for InvSqrtPauliX {
+<span class="lineNum">     893 </span>            :     /// Returns the alpha_r parameter of the operation.
+<span class="lineNum">     894 </span>            :     ///
+<span class="lineNum">     895 </span>            :     /// # Returns
+<a name="896"><span class="lineNum">     896 </span>            :     ///</a>
+<span class="lineNum">     897 </span>            :     /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     898 </span><span class="lineCov">          2 :     fn alpha_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     899 </span><span class="lineCov">          2 :         CalculatorFloat::from((PI / 4.0).cos())</span>
+<span class="lineNum">     900 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     901 </span>            :     /// Returns the alpha_i parameter of the operation.
+<span class="lineNum">     902 </span>            :     ///
+<span class="lineNum">     903 </span>            :     /// # Returns
+<a name="904"><span class="lineNum">     904 </span>            :     ///</a>
+<span class="lineNum">     905 </span>            :     /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     906 </span><span class="lineCov">          2 :     fn alpha_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     907 </span><span class="lineCov">          2 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     908 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     909 </span>            :     /// Returns the beta_r parameter of the operation.
+<span class="lineNum">     910 </span>            :     ///
+<span class="lineNum">     911 </span>            :     /// # Returns
+<a name="912"><span class="lineNum">     912 </span>            :     ///</a>
+<span class="lineNum">     913 </span>            :     /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     914 </span><span class="lineCov">          2 :     fn beta_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     915 </span><span class="lineCov">          2 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     916 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     917 </span>            :     /// Returns the beta_i parameter of the operation.
+<span class="lineNum">     918 </span>            :     ///
+<span class="lineNum">     919 </span>            :     /// # Returns
+<a name="920"><span class="lineNum">     920 </span>            :     ///</a>
+<span class="lineNum">     921 </span>            :     /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     922 </span><span class="lineCov">          2 :     fn beta_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     923 </span><span class="lineCov">          2 :         CalculatorFloat::from((PI / 4.0).sin())</span>
+<span class="lineNum">     924 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     925 </span>            :     /// Returns global_phase parameter of the operation.
+<span class="lineNum">     926 </span>            :     ///
+<span class="lineNum">     927 </span>            :     /// # Returns
+<a name="928"><span class="lineNum">     928 </span>            :     ///</a>
+<span class="lineNum">     929 </span>            :     /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+<span class="lineNum">     930 </span><span class="lineCov">          2 :     fn global_phase(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     931 </span><span class="lineCov">          2 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     932 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     933 </span>            : }
+<span class="lineNum">     934 </span>            : 
+<span class="lineNum">     935 </span>            : /// The Hadamard gate.
+<span class="lineNum">     936 </span>            : ///
+<span class="lineNum">     937 </span>            : /// $$
+<span class="lineNum">     938 </span>            : /// U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+<span class="lineNum">     939 </span>            : /// 1 &amp; 1\\\\
+<span class="lineNum">     940 </span>            : ///  1 &amp; -1
+<span class="lineNum">     941 </span>            : /// \end{pmatrix}
+<span class="lineNum">     942 </span>            : /// $$
+<a name="943"><span class="lineNum">     943 </span>            : ///</a>
+<a name="944"><span class="lineNum">     944 </span>            : #[derive(</a>
+<a name="945"><span class="lineNum">     945 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="946"><span class="lineNum">     946 </span><span class="lineCov">          8 :     Clone,</span></a>
+<a name="947"><span class="lineNum">     947 </span><span class="lineCov">         18 :     PartialEq,</span></a>
+<a name="948"><span class="lineNum">     948 </span><span class="lineCov">          3 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="949"><span class="lineNum">     949 </span><span class="lineCov">         46 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">     950 </span><span class="lineCov">          3 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">     951 </span><span class="lineCov">          3 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">     952 </span>            : )]
+<span class="lineNum">     953 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">     954 </span>            : pub struct Hadamard {
+<span class="lineNum">     955 </span>            :     /// The qubit the unitary gate is applied to.
+<span class="lineNum">     956 </span>            :     qubit: usize,
+<span class="lineNum">     957 </span>            : }
+<span class="lineNum">     958 </span>            : 
+<span class="lineNum">     959 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">     960 </span>            : const TAGS_Hadamard: &amp;[&amp;str; 4] = &amp;[
+<span class="lineNum">     961 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">     962 </span>            :     &quot;GateOperation&quot;,
+<span class="lineNum">     963 </span>            :     &quot;SingleQubitGateOperation&quot;,
+<span class="lineNum">     964 </span>            :     &quot;Hadamard&quot;,
+<span class="lineNum">     965 </span>            : ];
+<span class="lineNum">     966 </span>            : 
+<span class="lineNum">     967 </span>            : /// Trait for all operations acting with a unitary gate on a set of qubits.
+<span class="lineNum">     968 </span>            : impl OperateGate for Hadamard {
+<span class="lineNum">     969 </span>            :     /// Returns unitary matrix of the gate.
+<span class="lineNum">     970 </span>            :     ///
+<span class="lineNum">     971 </span>            :     /// # Returns
+<span class="lineNum">     972 </span>            :     ///
+<a name="973"><span class="lineNum">     973 </span>            :     /// * `Ok(Array2&lt;Complex64&gt;)` - The unitary matrix representation of the gate.</a>
+<span class="lineNum">     974 </span>            :     /// * `Err(RoqoqoError)` - The parameter conversion to f64 failed (here, not possible).
+<span class="lineNum">     975 </span><span class="lineCov">          2 :     fn unitary_matrix(&amp;self) -&gt; Result&lt;Array2&lt;Complex64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">     976 </span><span class="lineCov">          2 :         let f: f64 = 1.0 / ((2.0_f64).sqrt());</span>
+<span class="lineNum">     977 </span><span class="lineCov">          2 :         Ok(array![</span>
+<span class="lineNum">     978 </span><span class="lineCov">          2 :             [Complex64::new(f, 0.0), Complex64::new(f, 0.0)],</span>
+<span class="lineNum">     979 </span><span class="lineCov">          2 :             [Complex64::new(f, 0.0), Complex64::new(-1.0 * f, 0.0)]</span>
+<span class="lineNum">     980 </span><span class="lineCov">          2 :         ])</span>
+<span class="lineNum">     981 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">     982 </span>            : }
+<span class="lineNum">     983 </span>            : 
+<span class="lineNum">     984 </span>            : /// Trait for unitary operations acting on exactly one qubit.
+<span class="lineNum">     985 </span>            : impl OperateSingleQubitGate for Hadamard {
+<span class="lineNum">     986 </span>            :     /// Returns the alpha_r parameter of the operation.
+<span class="lineNum">     987 </span>            :     ///
+<span class="lineNum">     988 </span>            :     /// # Returns
+<a name="989"><span class="lineNum">     989 </span>            :     ///</a>
+<span class="lineNum">     990 </span>            :     /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     991 </span><span class="lineCov">          3 :     fn alpha_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">     992 </span><span class="lineCov">          3 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">     993 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">     994 </span>            :     /// Returns the alpha_i parameter of the operation.
+<span class="lineNum">     995 </span>            :     ///
+<span class="lineNum">     996 </span>            :     /// # Returns
+<a name="997"><span class="lineNum">     997 </span>            :     ///</a>
+<span class="lineNum">     998 </span>            :     /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">     999 </span><span class="lineCov">          3 :     fn alpha_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1000 </span><span class="lineCov">          3 :         CalculatorFloat::from(-1.0 / ((2.0_f64).sqrt()))</span>
+<span class="lineNum">    1001 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">    1002 </span>            :     /// Returns the beta_r parameter of the operation.
+<span class="lineNum">    1003 </span>            :     ///
+<span class="lineNum">    1004 </span>            :     /// # Returns
+<a name="1005"><span class="lineNum">    1005 </span>            :     ///</a>
+<span class="lineNum">    1006 </span>            :     /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1007 </span><span class="lineCov">          3 :     fn beta_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1008 </span><span class="lineCov">          3 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">    1009 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">    1010 </span>            :     /// Returns the beta_i parameter of the operation.
+<span class="lineNum">    1011 </span>            :     ///
+<span class="lineNum">    1012 </span>            :     /// # Returns
+<a name="1013"><span class="lineNum">    1013 </span>            :     ///</a>
+<span class="lineNum">    1014 </span>            :     /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1015 </span><span class="lineCov">          3 :     fn beta_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1016 </span><span class="lineCov">          3 :         CalculatorFloat::from(-1.0 / ((2.0_f64).sqrt()))</span>
+<span class="lineNum">    1017 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">    1018 </span>            :     /// Returns global_phase parameter of the operation.
+<span class="lineNum">    1019 </span>            :     ///
+<span class="lineNum">    1020 </span>            :     /// # Returns
+<a name="1021"><span class="lineNum">    1021 </span>            :     ///</a>
+<span class="lineNum">    1022 </span>            :     /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+<span class="lineNum">    1023 </span><span class="lineCov">          2 :     fn global_phase(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1024 </span><span class="lineCov">          2 :         CalculatorFloat::from(PI / 2.0)</span>
+<span class="lineNum">    1025 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">    1026 </span>            : }
+<span class="lineNum">    1027 </span>            : 
+<span class="lineNum">    1028 </span>            : /// The S gate.
+<span class="lineNum">    1029 </span>            : ///
+<span class="lineNum">    1030 </span>            : /// $$
+<span class="lineNum">    1031 </span>            : /// U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+<span class="lineNum">    1032 </span>            : /// 1 &amp; 0\\\\
+<span class="lineNum">    1033 </span>            : ///  0 &amp; i
+<span class="lineNum">    1034 </span>            : /// \end{pmatrix}
+<span class="lineNum">    1035 </span>            : /// $$
+<a name="1036"><span class="lineNum">    1036 </span>            : ///</a>
+<a name="1037"><span class="lineNum">    1037 </span>            : #[derive(</a>
+<a name="1038"><span class="lineNum">    1038 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="1039"><span class="lineNum">    1039 </span><span class="lineCov">          8 :     Clone,</span></a>
+<a name="1040"><span class="lineNum">    1040 </span><span class="lineCov">          8 :     PartialEq,</span></a>
+<a name="1041"><span class="lineNum">    1041 </span><span class="lineCov">          3 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="1042"><span class="lineNum">    1042 </span><span class="lineCov">         25 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">    1043 </span><span class="lineCov">          3 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">    1044 </span><span class="lineCov">          3 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">    1045 </span>            : )]
+<span class="lineNum">    1046 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">    1047 </span>            : pub struct SGate {
+<span class="lineNum">    1048 </span>            :     /// The qubit the unitary gate is applied to.
+<span class="lineNum">    1049 </span>            :     qubit: usize,
+<span class="lineNum">    1050 </span>            : }
+<span class="lineNum">    1051 </span>            : 
+<span class="lineNum">    1052 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">    1053 </span>            : const TAGS_SGate: &amp;[&amp;str; 4] = &amp;[
+<span class="lineNum">    1054 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">    1055 </span>            :     &quot;GateOperation&quot;,
+<span class="lineNum">    1056 </span>            :     &quot;SingleQubitGateOperation&quot;,
+<span class="lineNum">    1057 </span>            :     &quot;SGate&quot;,
+<span class="lineNum">    1058 </span>            : ];
+<span class="lineNum">    1059 </span>            : 
+<span class="lineNum">    1060 </span>            : /// Trait for all operations acting with a unitary gate on a set of qubits.
+<span class="lineNum">    1061 </span>            : impl OperateGate for SGate {
+<span class="lineNum">    1062 </span>            :     /// Returns unitary matrix of the gate.
+<span class="lineNum">    1063 </span>            :     ///
+<span class="lineNum">    1064 </span>            :     /// # Returns
+<span class="lineNum">    1065 </span>            :     ///
+<a name="1066"><span class="lineNum">    1066 </span>            :     /// * `Ok(Array2&lt;Complex64&gt;)` - The unitary matrix representation of the gate.</a>
+<span class="lineNum">    1067 </span>            :     /// * `Err(RoqoqoError)` - The parameter conversion to f64 failed (here, not possible).
+<span class="lineNum">    1068 </span><span class="lineCov">          2 :     fn unitary_matrix(&amp;self) -&gt; Result&lt;Array2&lt;Complex64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">    1069 </span><span class="lineCov">          2 :         Ok(array![</span>
+<span class="lineNum">    1070 </span><span class="lineCov">          2 :             [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],</span>
+<span class="lineNum">    1071 </span><span class="lineCov">          2 :             [Complex64::new(0.0, 0.0), Complex64::new(0.0, 1.0)]</span>
+<span class="lineNum">    1072 </span><span class="lineCov">          2 :         ])</span>
+<span class="lineNum">    1073 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">    1074 </span>            : }
+<span class="lineNum">    1075 </span>            : 
+<span class="lineNum">    1076 </span>            : /// Trait for unitary operations acting on exactly one qubit.
+<span class="lineNum">    1077 </span>            : impl OperateSingleQubitGate for SGate {
+<span class="lineNum">    1078 </span>            :     /// Returns the alpha_r parameter of the operation.
+<span class="lineNum">    1079 </span>            :     ///
+<span class="lineNum">    1080 </span>            :     /// # Returns
+<a name="1081"><span class="lineNum">    1081 </span>            :     ///</a>
+<span class="lineNum">    1082 </span>            :     /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1083 </span><span class="lineCov">          2 :     fn alpha_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1084 </span><span class="lineCov">          2 :         CalculatorFloat::from(1.0 / ((2.0_f64).sqrt()))</span>
+<span class="lineNum">    1085 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">    1086 </span>            :     /// Returns the alpha_i parameter of the operation.
+<span class="lineNum">    1087 </span>            :     ///
+<span class="lineNum">    1088 </span>            :     /// # Returns
+<a name="1089"><span class="lineNum">    1089 </span>            :     ///</a>
+<span class="lineNum">    1090 </span>            :     /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1091 </span><span class="lineCov">          2 :     fn alpha_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1092 </span><span class="lineCov">          2 :         CalculatorFloat::from(-1.0 / ((2.0_f64).sqrt()))</span>
+<span class="lineNum">    1093 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">    1094 </span>            :     /// Returns the beta_r parameter of the operation.
+<span class="lineNum">    1095 </span>            :     ///
+<span class="lineNum">    1096 </span>            :     /// # Returns
+<a name="1097"><span class="lineNum">    1097 </span>            :     ///</a>
+<span class="lineNum">    1098 </span>            :     /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1099 </span><span class="lineCov">          2 :     fn beta_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1100 </span><span class="lineCov">          2 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">    1101 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">    1102 </span>            :     /// Returns the beta_i parameter of the operation.
+<span class="lineNum">    1103 </span>            :     ///
+<span class="lineNum">    1104 </span>            :     /// # Returns
+<a name="1105"><span class="lineNum">    1105 </span>            :     ///</a>
+<span class="lineNum">    1106 </span>            :     /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1107 </span><span class="lineCov">          2 :     fn beta_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1108 </span><span class="lineCov">          2 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">    1109 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">    1110 </span>            :     /// Returns global_phase parameter of the operation.
+<span class="lineNum">    1111 </span>            :     ///
+<span class="lineNum">    1112 </span>            :     /// # Returns
+<a name="1113"><span class="lineNum">    1113 </span>            :     ///</a>
+<span class="lineNum">    1114 </span>            :     /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+<span class="lineNum">    1115 </span><span class="lineCov">          2 :     fn global_phase(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1116 </span><span class="lineCov">          2 :         CalculatorFloat::from(PI / 4.0)</span>
+<span class="lineNum">    1117 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">    1118 </span>            : }
+<span class="lineNum">    1119 </span>            : 
+<span class="lineNum">    1120 </span>            : /// The T gate.
+<span class="lineNum">    1121 </span>            : ///
+<span class="lineNum">    1122 </span>            : /// $$
+<span class="lineNum">    1123 </span>            : /// U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+<span class="lineNum">    1124 </span>            : /// 1 &amp; 0\\\\
+<span class="lineNum">    1125 </span>            : ///  0 &amp; e^{i \frac{\pi}{4}}
+<span class="lineNum">    1126 </span>            : /// \end{pmatrix}
+<span class="lineNum">    1127 </span>            : /// $$
+<a name="1128"><span class="lineNum">    1128 </span>            : ///</a>
+<a name="1129"><span class="lineNum">    1129 </span>            : #[derive(</a>
+<a name="1130"><span class="lineNum">    1130 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="1131"><span class="lineNum">    1131 </span><span class="lineCov">          8 :     Clone,</span></a>
+<a name="1132"><span class="lineNum">    1132 </span><span class="lineCov">          8 :     PartialEq,</span></a>
+<a name="1133"><span class="lineNum">    1133 </span><span class="lineCov">          3 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="1134"><span class="lineNum">    1134 </span><span class="lineCov">         25 :     roqoqo_derive::Operate,</span></a>
+<span class="lineNum">    1135 </span><span class="lineCov">          3 :     roqoqo_derive::Substitute,</span>
+<span class="lineNum">    1136 </span><span class="lineCov">          3 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">    1137 </span>            : )]
+<span class="lineNum">    1138 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">    1139 </span>            : pub struct TGate {
+<span class="lineNum">    1140 </span>            :     /// The qubit the unitary gate is applied to.
+<span class="lineNum">    1141 </span>            :     qubit: usize,
+<span class="lineNum">    1142 </span>            : }
+<span class="lineNum">    1143 </span>            : 
+<span class="lineNum">    1144 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">    1145 </span>            : const TAGS_TGate: &amp;[&amp;str; 4] = &amp;[
+<span class="lineNum">    1146 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">    1147 </span>            :     &quot;GateOperation&quot;,
+<span class="lineNum">    1148 </span>            :     &quot;SingleQubitGateOperation&quot;,
+<span class="lineNum">    1149 </span>            :     &quot;TGate&quot;,
+<span class="lineNum">    1150 </span>            : ];
+<span class="lineNum">    1151 </span>            : 
+<span class="lineNum">    1152 </span>            : /// Trait for all operations acting with a unitary gate on a set of qubits.
+<span class="lineNum">    1153 </span>            : impl OperateGate for TGate {
+<span class="lineNum">    1154 </span>            :     /// Returns unitary matrix of the gate.
+<span class="lineNum">    1155 </span>            :     ///
+<span class="lineNum">    1156 </span>            :     /// # Returns
+<span class="lineNum">    1157 </span>            :     ///
+<a name="1158"><span class="lineNum">    1158 </span>            :     /// * `Ok(Array2&lt;Complex64&gt;)` - The unitary matrix representation of the gate.</a>
+<span class="lineNum">    1159 </span>            :     /// * `Err(RoqoqoError)` - The parameter conversion to f64 failed (here, not possible).
+<span class="lineNum">    1160 </span><span class="lineCov">          2 :     fn unitary_matrix(&amp;self) -&gt; Result&lt;Array2&lt;Complex64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">    1161 </span><span class="lineCov">          2 :         Ok(array![</span>
+<span class="lineNum">    1162 </span><span class="lineCov">          2 :             [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],</span>
+<span class="lineNum">    1163 </span><span class="lineCov">          2 :             [</span>
+<span class="lineNum">    1164 </span><span class="lineCov">          2 :                 Complex64::new(0.0, 0.0),</span>
+<span class="lineNum">    1165 </span><span class="lineCov">          2 :                 Complex64::new((PI / 4.0).cos(), (PI / 4.0).sin())</span>
+<span class="lineNum">    1166 </span><span class="lineCov">          2 :             ] //exp(i*pi/4) = cos(pi/4) + i*sin(pi/4)</span>
+<span class="lineNum">    1167 </span><span class="lineCov">          2 :         ])</span>
+<span class="lineNum">    1168 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">    1169 </span>            : }
+<span class="lineNum">    1170 </span>            : 
+<span class="lineNum">    1171 </span>            : /// Trait for unitary operations acting on exactly one qubit.
+<span class="lineNum">    1172 </span>            : impl OperateSingleQubitGate for TGate {
+<span class="lineNum">    1173 </span>            :     /// Returns the alpha_r parameter of the operation.
+<span class="lineNum">    1174 </span>            :     ///
+<span class="lineNum">    1175 </span>            :     /// # Returns
+<a name="1176"><span class="lineNum">    1176 </span>            :     ///</a>
+<span class="lineNum">    1177 </span>            :     /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1178 </span><span class="lineCov">          2 :     fn alpha_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1179 </span><span class="lineCov">          2 :         CalculatorFloat::from((PI / 8.0).cos())</span>
+<span class="lineNum">    1180 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">    1181 </span>            :     /// Returns the alpha_i parameter of the operation.
+<span class="lineNum">    1182 </span>            :     ///
+<span class="lineNum">    1183 </span>            :     /// # Returns
+<a name="1184"><span class="lineNum">    1184 </span>            :     ///</a>
+<span class="lineNum">    1185 </span>            :     /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1186 </span><span class="lineCov">          2 :     fn alpha_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1187 </span><span class="lineCov">          2 :         CalculatorFloat::from((-1.0) * (PI / 8.0).sin())</span>
+<span class="lineNum">    1188 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">    1189 </span>            :     /// Returns the beta_r parameter of the operation.
+<span class="lineNum">    1190 </span>            :     ///
+<span class="lineNum">    1191 </span>            :     /// # Returns
+<a name="1192"><span class="lineNum">    1192 </span>            :     ///</a>
+<span class="lineNum">    1193 </span>            :     /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1194 </span><span class="lineCov">          2 :     fn beta_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1195 </span><span class="lineCov">          2 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">    1196 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">    1197 </span>            :     /// Returns the beta_i parameter of the operation.
+<span class="lineNum">    1198 </span>            :     ///
+<span class="lineNum">    1199 </span>            :     /// # Returns
+<a name="1200"><span class="lineNum">    1200 </span>            :     ///</a>
+<span class="lineNum">    1201 </span>            :     /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1202 </span><span class="lineCov">          2 :     fn beta_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1203 </span><span class="lineCov">          2 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">    1204 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">    1205 </span>            :     /// Returns global_phase parameter of the operation.
+<span class="lineNum">    1206 </span>            :     ///
+<span class="lineNum">    1207 </span>            :     /// # Returns
+<a name="1208"><span class="lineNum">    1208 </span>            :     ///</a>
+<span class="lineNum">    1209 </span>            :     /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+<span class="lineNum">    1210 </span><span class="lineCov">          2 :     fn global_phase(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1211 </span><span class="lineCov">          2 :         CalculatorFloat::from(PI / 8.0)</span>
+<span class="lineNum">    1212 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">    1213 </span>            : }
+<span class="lineNum">    1214 </span>            : 
+<span class="lineNum">    1215 </span>            : /// The phase shift gate applied on state |1&gt;.
+<span class="lineNum">    1216 </span>            : ///
+<span class="lineNum">    1217 </span>            : /// Rotation around Z-axis by an arbitrary angle $\theta$ (AC Stark shift of the state |1&gt;).
+<span class="lineNum">    1218 </span>            : ///
+<span class="lineNum">    1219 </span>            : /// $$
+<span class="lineNum">    1220 </span>            : /// U = \begin{pmatrix}
+<span class="lineNum">    1221 </span>            : /// 1 &amp; 0\\\\
+<span class="lineNum">    1222 </span>            : ///  0 &amp; e^{i \theta}
+<span class="lineNum">    1223 </span>            : /// \end{pmatrix}
+<span class="lineNum">    1224 </span>            : /// $$
+<a name="1225"><span class="lineNum">    1225 </span>            : ///</a>
+<a name="1226"><span class="lineNum">    1226 </span>            : #[derive(</a>
+<a name="1227"><span class="lineNum">    1227 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="1228"><span class="lineNum">    1228 </span><span class="lineCov">          9 :     Clone,</span></a>
+<a name="1229"><span class="lineNum">    1229 </span><span class="lineCov">         10 :     PartialEq,</span></a>
+<a name="1230"><span class="lineNum">    1230 </span><span class="lineCov">          3 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="1231"><span class="lineNum">    1231 </span><span class="lineCov">         35 :     roqoqo_derive::Operate,</span></a>
+<a name="1232"><span class="lineNum">    1232 </span><span class="lineCov">          5 :     roqoqo_derive::Substitute,</span></a>
+<span class="lineNum">    1233 </span><span class="lineCov">          3 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">    1234 </span><span class="lineCov">         19 :     roqoqo_derive::Rotate,</span>
+<span class="lineNum">    1235 </span>            : )]
+<span class="lineNum">    1236 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">    1237 </span>            : pub struct PhaseShiftState1 {
+<span class="lineNum">    1238 </span>            :     /// The qubit the unitary gate is applied to.
+<span class="lineNum">    1239 </span>            :     qubit: usize,
+<span class="lineNum">    1240 </span>            :     /// The angle $\theta$ of the rotation, in the interval from 0 to $2 \pi$.
+<span class="lineNum">    1241 </span>            :     theta: CalculatorFloat,
+<span class="lineNum">    1242 </span>            : }
+<span class="lineNum">    1243 </span>            : 
+<span class="lineNum">    1244 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">    1245 </span>            : const TAGS_PhaseShiftState1: &amp;[&amp;str; 5] = &amp;[
+<span class="lineNum">    1246 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">    1247 </span>            :     &quot;GateOperation&quot;,
+<span class="lineNum">    1248 </span>            :     &quot;SingleQubitGateOperation&quot;,
+<span class="lineNum">    1249 </span>            :     &quot;Rotation&quot;,
+<span class="lineNum">    1250 </span>            :     &quot;PhaseShiftState1&quot;,
+<span class="lineNum">    1251 </span>            : ];
+<span class="lineNum">    1252 </span>            : 
+<span class="lineNum">    1253 </span>            : /// Trait for all operations acting with a unitary gate on a set of qubits.
+<span class="lineNum">    1254 </span>            : impl OperateGate for PhaseShiftState1 {
+<span class="lineNum">    1255 </span>            :     /// Returns unitary matrix of the gate.
+<span class="lineNum">    1256 </span>            :     ///
+<span class="lineNum">    1257 </span>            :     /// # Returns
+<span class="lineNum">    1258 </span>            :     ///
+<a name="1259"><span class="lineNum">    1259 </span>            :     /// * `Ok(Array2&lt;Complex64&gt;)` - The unitary matrix representation of the gate.</a>
+<span class="lineNum">    1260 </span>            :     /// * `Err(RoqoqoError)` - The parameter conversion to f64 failed (here, not possible).
+<span class="lineNum">    1261 </span><span class="lineCov">          2 :     fn unitary_matrix(&amp;self) -&gt; Result&lt;Array2&lt;Complex64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">    1262 </span><span class="lineCov">          2 :         let theta: f64 = f64::try_from(self.theta().clone())?;</span>
+<span class="lineNum">    1263 </span><span class="lineCov">          2 :         Ok(array![</span>
+<span class="lineNum">    1264 </span><span class="lineCov">          2 :             [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],</span>
+<span class="lineNum">    1265 </span><span class="lineCov">          2 :             [</span>
+<span class="lineNum">    1266 </span><span class="lineCov">          2 :                 Complex64::new(0.0, 0.0),</span>
+<span class="lineNum">    1267 </span><span class="lineCov">          2 :                 Complex64::new(theta.cos(), theta.sin())</span>
+<span class="lineNum">    1268 </span><span class="lineCov">          2 :             ]</span>
+<span class="lineNum">    1269 </span><span class="lineCov">          2 :         ])</span>
+<span class="lineNum">    1270 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">    1271 </span>            : }
+<span class="lineNum">    1272 </span>            : 
+<span class="lineNum">    1273 </span>            : /// Trait for unitary operations acting on exactly one qubit.
+<span class="lineNum">    1274 </span>            : impl OperateSingleQubitGate for PhaseShiftState1 {
+<span class="lineNum">    1275 </span>            :     /// Returns the alpha_r parameter of the operation.
+<span class="lineNum">    1276 </span>            :     ///
+<span class="lineNum">    1277 </span>            :     /// # Returns
+<a name="1278"><span class="lineNum">    1278 </span>            :     ///</a>
+<span class="lineNum">    1279 </span>            :     /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1280 </span><span class="lineCov">          3 :     fn alpha_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1281 </span><span class="lineCov">          3 :         (self.theta().clone() / 2.0).cos()</span>
+<span class="lineNum">    1282 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">    1283 </span>            :     /// Returns the alpha_i parameter of the operation.
+<span class="lineNum">    1284 </span>            :     ///
+<span class="lineNum">    1285 </span>            :     /// # Returns
+<a name="1286"><span class="lineNum">    1286 </span>            :     ///</a>
+<span class="lineNum">    1287 </span>            :     /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1288 </span><span class="lineCov">          3 :     fn alpha_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1289 </span><span class="lineCov">          3 :         (self.theta().clone() / 2.0).sin() * (-1.0)</span>
+<span class="lineNum">    1290 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">    1291 </span>            :     /// Returns the beta_r parameter of the operation.
+<span class="lineNum">    1292 </span>            :     ///
+<span class="lineNum">    1293 </span>            :     /// # Returns
+<a name="1294"><span class="lineNum">    1294 </span>            :     ///</a>
+<span class="lineNum">    1295 </span>            :     /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1296 </span><span class="lineCov">          3 :     fn beta_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1297 </span><span class="lineCov">          3 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">    1298 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">    1299 </span>            :     /// Returns the beta_i parameter of the operation.
+<span class="lineNum">    1300 </span>            :     ///
+<span class="lineNum">    1301 </span>            :     /// # Returns
+<a name="1302"><span class="lineNum">    1302 </span>            :     ///</a>
+<span class="lineNum">    1303 </span>            :     /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1304 </span><span class="lineCov">          3 :     fn beta_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1305 </span><span class="lineCov">          3 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">    1306 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">    1307 </span>            :     /// Returns global_phase parameter of the operation.
+<span class="lineNum">    1308 </span>            :     ///
+<span class="lineNum">    1309 </span>            :     /// # Returns
+<a name="1310"><span class="lineNum">    1310 </span>            :     ///</a>
+<span class="lineNum">    1311 </span>            :     /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+<span class="lineNum">    1312 </span><span class="lineCov">          3 :     fn global_phase(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1313 </span><span class="lineCov">          3 :         self.theta().clone() / 2.0</span>
+<span class="lineNum">    1314 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">    1315 </span>            : }
+<span class="lineNum">    1316 </span>            : 
+<span class="lineNum">    1317 </span>            : /// The phase shift gate applied on state |0&gt;.
+<span class="lineNum">    1318 </span>            : ///
+<span class="lineNum">    1319 </span>            : /// Rotation around Z-axis by an arbitrary angle $\theta$ (AC Stark shift of the state |0&gt;).
+<span class="lineNum">    1320 </span>            : ///
+<span class="lineNum">    1321 </span>            : /// $$
+<span class="lineNum">    1322 </span>            : /// U = \begin{pmatrix}
+<span class="lineNum">    1323 </span>            : /// e^{i \theta} &amp; 0\\\\
+<span class="lineNum">    1324 </span>            : ///  0 &amp; 1
+<span class="lineNum">    1325 </span>            : /// \end{pmatrix}
+<span class="lineNum">    1326 </span>            : /// $$
+<a name="1327"><span class="lineNum">    1327 </span>            : ///</a>
+<a name="1328"><span class="lineNum">    1328 </span>            : #[derive(</a>
+<a name="1329"><span class="lineNum">    1329 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="1330"><span class="lineNum">    1330 </span><span class="lineCov">          9 :     Clone,</span></a>
+<a name="1331"><span class="lineNum">    1331 </span><span class="lineCov">         10 :     PartialEq,</span></a>
+<a name="1332"><span class="lineNum">    1332 </span><span class="lineCov">          3 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="1333"><span class="lineNum">    1333 </span><span class="lineCov">         35 :     roqoqo_derive::Operate,</span></a>
+<a name="1334"><span class="lineNum">    1334 </span><span class="lineCov">          5 :     roqoqo_derive::Substitute,</span></a>
+<span class="lineNum">    1335 </span><span class="lineCov">          3 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">    1336 </span><span class="lineCov">         19 :     roqoqo_derive::Rotate,</span>
+<span class="lineNum">    1337 </span>            : )]
+<span class="lineNum">    1338 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">    1339 </span>            : pub struct PhaseShiftState0 {
+<span class="lineNum">    1340 </span>            :     /// The qubit the unitary gate is applied to.
+<span class="lineNum">    1341 </span>            :     qubit: usize,
+<span class="lineNum">    1342 </span>            :     /// The angle $\theta$ of the rotation, in the interval from 0 to $2 \pi$.
+<span class="lineNum">    1343 </span>            :     theta: CalculatorFloat,
+<span class="lineNum">    1344 </span>            : }
+<span class="lineNum">    1345 </span>            : 
+<span class="lineNum">    1346 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">    1347 </span>            : const TAGS_PhaseShiftState0: &amp;[&amp;str; 5] = &amp;[
+<span class="lineNum">    1348 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">    1349 </span>            :     &quot;GateOperation&quot;,
+<span class="lineNum">    1350 </span>            :     &quot;SingleQubitGateOperation&quot;,
+<span class="lineNum">    1351 </span>            :     &quot;Rotation&quot;,
+<span class="lineNum">    1352 </span>            :     &quot;PhaseShiftState0&quot;,
+<span class="lineNum">    1353 </span>            : ];
+<span class="lineNum">    1354 </span>            : 
+<span class="lineNum">    1355 </span>            : /// Trait for all operations acting with a unitary gate on a set of qubits.
+<span class="lineNum">    1356 </span>            : impl OperateGate for PhaseShiftState0 {
+<span class="lineNum">    1357 </span>            :     /// Returns unitary matrix of the gate.
+<span class="lineNum">    1358 </span>            :     ///
+<span class="lineNum">    1359 </span>            :     /// # Returns
+<span class="lineNum">    1360 </span>            :     ///
+<a name="1361"><span class="lineNum">    1361 </span>            :     /// * `Ok(Array2&lt;Complex64&gt;)` - The unitary matrix representation of the gate.</a>
+<span class="lineNum">    1362 </span>            :     /// * `Err(RoqoqoError)` - The parameter conversion to f64 failed (here, not possible).
+<span class="lineNum">    1363 </span><span class="lineCov">          2 :     fn unitary_matrix(&amp;self) -&gt; Result&lt;Array2&lt;Complex64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">    1364 </span><span class="lineCov">          2 :         let theta: f64 = f64::try_from(self.theta().clone())?;</span>
+<span class="lineNum">    1365 </span><span class="lineCov">          2 :         Ok(array![</span>
+<span class="lineNum">    1366 </span><span class="lineCov">          2 :             [</span>
+<span class="lineNum">    1367 </span><span class="lineCov">          2 :                 Complex64::new(theta.cos(), theta.sin()),</span>
+<span class="lineNum">    1368 </span><span class="lineCov">          2 :                 Complex64::new(0.0, 0.0)</span>
+<span class="lineNum">    1369 </span><span class="lineCov">          2 :             ],</span>
+<span class="lineNum">    1370 </span><span class="lineCov">          2 :             [Complex64::new(0.0, 0.0), Complex64::new(1.0, 0.0)]</span>
+<span class="lineNum">    1371 </span><span class="lineCov">          2 :         ])</span>
+<span class="lineNum">    1372 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">    1373 </span>            : }
+<span class="lineNum">    1374 </span>            : 
+<span class="lineNum">    1375 </span>            : /// Trait for unitary operations acting on exactly one qubit.
+<span class="lineNum">    1376 </span>            : impl OperateSingleQubitGate for PhaseShiftState0 {
+<span class="lineNum">    1377 </span>            :     /// Returns the alpha_r parameter of the operation.
+<span class="lineNum">    1378 </span>            :     ///
+<span class="lineNum">    1379 </span>            :     /// # Returns
+<a name="1380"><span class="lineNum">    1380 </span>            :     ///</a>
+<span class="lineNum">    1381 </span>            :     /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1382 </span><span class="lineCov">          3 :     fn alpha_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1383 </span><span class="lineCov">          3 :         (self.theta().clone() / 2.0).cos()</span>
+<span class="lineNum">    1384 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">    1385 </span>            :     /// Returns the alpha_i parameter of the operation.
+<span class="lineNum">    1386 </span>            :     ///
+<span class="lineNum">    1387 </span>            :     /// # Returns
+<a name="1388"><span class="lineNum">    1388 </span>            :     ///</a>
+<span class="lineNum">    1389 </span>            :     /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1390 </span><span class="lineCov">          3 :     fn alpha_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1391 </span><span class="lineCov">          3 :         (self.theta().clone() / 2.0).sin()</span>
+<span class="lineNum">    1392 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">    1393 </span>            :     /// Returns the beta_r parameter of the operation.
+<span class="lineNum">    1394 </span>            :     ///
+<span class="lineNum">    1395 </span>            :     /// # Returns
+<a name="1396"><span class="lineNum">    1396 </span>            :     ///</a>
+<span class="lineNum">    1397 </span>            :     /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1398 </span><span class="lineCov">          3 :     fn beta_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1399 </span><span class="lineCov">          3 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">    1400 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">    1401 </span>            :     /// Returns the beta_i parameter of the operation.
+<span class="lineNum">    1402 </span>            :     ///
+<span class="lineNum">    1403 </span>            :     /// # Returns
+<a name="1404"><span class="lineNum">    1404 </span>            :     ///</a>
+<span class="lineNum">    1405 </span>            :     /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1406 </span><span class="lineCov">          3 :     fn beta_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1407 </span><span class="lineCov">          3 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">    1408 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">    1409 </span>            :     /// Returns global_phase parameter of the operation.
+<span class="lineNum">    1410 </span>            :     ///
+<span class="lineNum">    1411 </span>            :     /// # Returns
+<a name="1412"><span class="lineNum">    1412 </span>            :     ///</a>
+<span class="lineNum">    1413 </span>            :     /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+<span class="lineNum">    1414 </span><span class="lineCov">          3 :     fn global_phase(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1415 </span><span class="lineCov">          3 :         self.theta().clone() / 2.0</span>
+<span class="lineNum">    1416 </span><span class="lineCov">          3 :     }</span>
+<span class="lineNum">    1417 </span>            : }
+<span class="lineNum">    1418 </span>            : 
+<span class="lineNum">    1419 </span>            : /// Implements a rotation around an axis in the x-y plane in spherical coordinates.
+<span class="lineNum">    1420 </span>            : ///
+<span class="lineNum">    1421 </span>            : /// $$
+<span class="lineNum">    1422 </span>            : /// U = \begin{pmatrix}
+<span class="lineNum">    1423 </span>            : /// \cos(\frac{\theta}{2}) &amp; 0\\\\
+<span class="lineNum">    1424 </span>            : /// 0 &amp; \cos(\frac{\theta}{2})
+<span class="lineNum">    1425 </span>            : /// \end{pmatrix}
+<span class="lineNum">    1426 </span>            : /// \+ \begin{pmatrix}
+<span class="lineNum">    1427 </span>            : /// -i \sin(\frac{\theta}{2}) v_z  &amp;  \sin(\frac{\theta}{2}) \left(-i v_x - v_y \right)\\\\
+<span class="lineNum">    1428 </span>            : /// \sin(\frac{\theta}{2}) \left(-i v_x + v_y \right) &amp; i \sin(\frac{\theta}{2}) v_z
+<span class="lineNum">    1429 </span>            : /// \end{pmatrix}
+<span class="lineNum">    1430 </span>            : ///  $$
+<span class="lineNum">    1431 </span>            : ///
+<span class="lineNum">    1432 </span>            : /// with
+<span class="lineNum">    1433 </span>            : /// $ v_x = \sin(\theta_{sph}) \cos(\phi_{sph}) $,
+<span class="lineNum">    1434 </span>            : /// $ v_y = \sin(\theta_{sph}) \sin(\phi_{sph}) $,
+<span class="lineNum">    1435 </span>            : /// $ v_z = \cos(\theta_{sph})$.
+<a name="1436"><span class="lineNum">    1436 </span>            : ///</a>
+<a name="1437"><span class="lineNum">    1437 </span>            : #[derive(</a>
+<a name="1438"><span class="lineNum">    1438 </span><span class="lineCov">          1 :     Debug,</span></a>
+<a name="1439"><span class="lineNum">    1439 </span><span class="lineCov">         11 :     Clone,</span></a>
+<a name="1440"><span class="lineNum">    1440 </span><span class="lineCov">         10 :     PartialEq,</span></a>
+<a name="1441"><span class="lineNum">    1441 </span><span class="lineCov">          3 :     roqoqo_derive::InvolveQubits,</span></a>
+<a name="1442"><span class="lineNum">    1442 </span><span class="lineCov">          3 :     roqoqo_derive::Operate,</span></a>
+<a name="1443"><span class="lineNum">    1443 </span><span class="lineCov">          5 :     roqoqo_derive::Substitute,</span></a>
+<span class="lineNum">    1444 </span><span class="lineCov">          5 :     roqoqo_derive::OperateSingleQubit,</span>
+<span class="lineNum">    1445 </span><span class="lineCov">         12 :     roqoqo_derive::Rotate,</span>
+<span class="lineNum">    1446 </span>            : )]
+<span class="lineNum">    1447 </span>            : #[cfg_attr(feature = &quot;serialize&quot;, derive(serde::Serialize, serde::Deserialize))]
+<span class="lineNum">    1448 </span>            : pub struct RotateAroundSphericalAxis {
+<span class="lineNum">    1449 </span>            :     /// The qubit the unitary gate is applied to.
+<span class="lineNum">    1450 </span>            :     qubit: usize,
+<span class="lineNum">    1451 </span>            :     /// The angle $\theta$ of the rotation, in the interval from 0 to $2^* 2 \pi$.
+<span class="lineNum">    1452 </span>            :     theta: CalculatorFloat,
+<span class="lineNum">    1453 </span>            :     /// The rotation axis, unit-vector spherical coordinates $\theta_{sph}$.
+<span class="lineNum">    1454 </span>            :     spherical_theta: CalculatorFloat,
+<span class="lineNum">    1455 </span>            :     /// The rotation axis, unit-vector spherical coordinates $\phi_{sph}$  gives the angle in the x-y plane.
+<span class="lineNum">    1456 </span>            :     spherical_phi: CalculatorFloat,
+<span class="lineNum">    1457 </span>            : }
+<span class="lineNum">    1458 </span>            : 
+<span class="lineNum">    1459 </span>            : #[allow(non_upper_case_globals)]
+<span class="lineNum">    1460 </span>            : const TAGS_RotateAroundSphericalAxis: &amp;[&amp;str; 5] = &amp;[
+<span class="lineNum">    1461 </span>            :     &quot;Operation&quot;,
+<span class="lineNum">    1462 </span>            :     &quot;GateOperation&quot;,
+<span class="lineNum">    1463 </span>            :     &quot;SingleQubitGateOperation&quot;,
+<span class="lineNum">    1464 </span>            :     &quot;Rotation&quot;,
+<span class="lineNum">    1465 </span>            :     &quot;RotateAroundSphericalAxis&quot;,
+<span class="lineNum">    1466 </span>            : ];
+<span class="lineNum">    1467 </span>            : 
+<span class="lineNum">    1468 </span>            : /// Trait for all operations acting with a unitary gate on a set of qubits.
+<span class="lineNum">    1469 </span>            : impl OperateGate for RotateAroundSphericalAxis {
+<span class="lineNum">    1470 </span>            :     /// Returns unitary matrix of the gate.
+<span class="lineNum">    1471 </span>            :     ///
+<span class="lineNum">    1472 </span>            :     /// # Returns
+<span class="lineNum">    1473 </span>            :     ///
+<a name="1474"><span class="lineNum">    1474 </span>            :     /// * `Ok(Array2&lt;Complex64&gt;)` - The unitary matrix representation of the gate.</a>
+<span class="lineNum">    1475 </span>            :     /// * `Err(RoqoqoError)` - The conversion of parameters to f64 failed.
+<span class="lineNum">    1476 </span><span class="lineCov">          2 :     fn unitary_matrix(&amp;self) -&gt; Result&lt;Array2&lt;Complex64&gt;, RoqoqoError&gt; {</span>
+<span class="lineNum">    1477 </span><span class="lineCov">          2 :         let c: f64 = (f64::try_from(self.theta.clone())? / 2.0).cos();</span>
+<span class="lineNum">    1478 </span><span class="lineCov">          2 :         let s: f64 = (f64::try_from(self.theta.clone())? / 2.0).sin();</span>
+<span class="lineNum">    1479 </span><span class="lineCov">          2 :         let vx: f64 = ((f64::try_from(self.spherical_theta.clone())?).sin())</span>
+<span class="lineNum">    1480 </span><span class="lineCov">          2 :             * ((f64::try_from(self.spherical_phi.clone())?).cos());</span>
+<span class="lineNum">    1481 </span><span class="lineCov">          2 :         let vy: f64 = ((f64::try_from(self.spherical_theta.clone())?).sin())</span>
+<span class="lineNum">    1482 </span><span class="lineCov">          2 :             * ((f64::try_from(self.spherical_phi.clone())?).sin());</span>
+<span class="lineNum">    1483 </span><span class="lineCov">          2 :         let vz: f64 = (f64::try_from(self.spherical_theta.clone())?).cos();</span>
+<span class="lineNum">    1484 </span><span class="lineCov">          2 :         Ok(array![</span>
+<span class="lineNum">    1485 </span><span class="lineCov">          2 :             [</span>
+<span class="lineNum">    1486 </span><span class="lineCov">          2 :                 Complex64::new(c, -1.0 * s * vz),</span>
+<span class="lineNum">    1487 </span><span class="lineCov">          2 :                 Complex64::new(-1.0 * s * vy, -1.0 * s * vx)</span>
+<span class="lineNum">    1488 </span><span class="lineCov">          2 :             ],</span>
+<span class="lineNum">    1489 </span><span class="lineCov">          2 :             [</span>
+<span class="lineNum">    1490 </span><span class="lineCov">          2 :                 Complex64::new(s * vy, -1.0 * s * vx),</span>
+<span class="lineNum">    1491 </span><span class="lineCov">          2 :                 Complex64::new(c, s * vz)</span>
+<span class="lineNum">    1492 </span><span class="lineCov">          2 :             ]</span>
+<span class="lineNum">    1493 </span><span class="lineCov">          2 :         ])</span>
+<span class="lineNum">    1494 </span><span class="lineCov">          2 :     }</span>
+<span class="lineNum">    1495 </span>            : }
+<span class="lineNum">    1496 </span>            : 
+<span class="lineNum">    1497 </span>            : /// Trait for unitary operations acting on exactly one qubit.
+<span class="lineNum">    1498 </span>            : impl OperateSingleQubitGate for RotateAroundSphericalAxis {
+<span class="lineNum">    1499 </span>            :     /// Returns the alpha_r parameter of the operation.
+<span class="lineNum">    1500 </span>            :     ///
+<span class="lineNum">    1501 </span>            :     /// # Returns
+<a name="1502"><span class="lineNum">    1502 </span>            :     ///</a>
+<span class="lineNum">    1503 </span>            :     /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1504 </span><span class="lineCov">         11 :     fn alpha_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1505 </span><span class="lineCov">         11 :         (self.theta.clone() / 2.0).cos()</span>
+<span class="lineNum">    1506 </span><span class="lineCov">         11 :     }</span>
+<span class="lineNum">    1507 </span>            :     /// Returns the alpha_i parameter of the operation.
+<span class="lineNum">    1508 </span>            :     ///
+<span class="lineNum">    1509 </span>            :     /// # Returns
+<a name="1510"><span class="lineNum">    1510 </span>            :     ///</a>
+<span class="lineNum">    1511 </span>            :     /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1512 </span><span class="lineCov">         11 :     fn alpha_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1513 </span><span class="lineCov">         11 :         let s = (self.theta.clone() / 2.0).sin();</span>
+<span class="lineNum">    1514 </span><span class="lineCov">         11 :         let vz = (self.spherical_theta.clone()).cos();</span>
+<span class="lineNum">    1515 </span><span class="lineCov">         11 :         s * vz * (-1.0) // CHECK sign (?)</span>
+<span class="lineNum">    1516 </span><span class="lineCov">         11 :     }</span>
+<span class="lineNum">    1517 </span>            :     /// Returns the beta_r parameter of the operation.
+<span class="lineNum">    1518 </span>            :     ///
+<span class="lineNum">    1519 </span>            :     /// # Returns
+<a name="1520"><span class="lineNum">    1520 </span>            :     ///</a>
+<span class="lineNum">    1521 </span>            :     /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1522 </span><span class="lineCov">         11 :     fn beta_r(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1523 </span><span class="lineCov">         11 :         let s = (self.theta.clone() / 2.0).sin();</span>
+<span class="lineNum">    1524 </span><span class="lineCov">         11 :         let vy = (self.spherical_phi.clone()).sin();</span>
+<span class="lineNum">    1525 </span><span class="lineCov">         11 :         let st = (self.spherical_theta.clone()).sin();</span>
+<span class="lineNum">    1526 </span><span class="lineCov">         11 :         s * vy * st</span>
+<span class="lineNum">    1527 </span><span class="lineCov">         11 :     }</span>
+<span class="lineNum">    1528 </span>            :     /// Returns the beta_i parameter of the operation.
+<span class="lineNum">    1529 </span>            :     ///
+<span class="lineNum">    1530 </span>            :     /// # Returns
+<a name="1531"><span class="lineNum">    1531 </span>            :     ///</a>
+<span class="lineNum">    1532 </span>            :     /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+<span class="lineNum">    1533 </span><span class="lineCov">         11 :     fn beta_i(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1534 </span><span class="lineCov">         11 :         let s = (self.theta.clone() / 2.0).sin();</span>
+<span class="lineNum">    1535 </span><span class="lineCov">         11 :         let vx = (self.spherical_phi.clone()).cos();</span>
+<span class="lineNum">    1536 </span><span class="lineCov">         11 :         let st = (self.spherical_theta.clone()).sin();</span>
+<span class="lineNum">    1537 </span><span class="lineCov">         11 :         s * vx * st * (-1.0)</span>
+<span class="lineNum">    1538 </span><span class="lineCov">         11 :     }</span>
+<span class="lineNum">    1539 </span>            :     /// Returns global_phase parameter of the operation.
+<span class="lineNum">    1540 </span>            :     ///
+<span class="lineNum">    1541 </span>            :     /// # Returns
+<a name="1542"><span class="lineNum">    1542 </span>            :     ///</a>
+<span class="lineNum">    1543 </span>            :     /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+<span class="lineNum">    1544 </span><span class="lineCov">         11 :     fn global_phase(&amp;self) -&gt; CalculatorFloat {</span>
+<span class="lineNum">    1545 </span><span class="lineCov">         11 :         CalculatorFloat::from(0.0)</span>
+<span class="lineNum">    1546 </span><span class="lineCov">         11 :     }</span>
+<span class="lineNum">    1547 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
