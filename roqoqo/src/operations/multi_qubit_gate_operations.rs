@@ -193,7 +193,7 @@ impl OperateGate for QFT {
         let dim = self.qubits.len();
         if !self.swaps && dim > 1 {
             return Err(RoqoqoError::GenericError {
-                msg: "Unitary matrix output is only supported QFT with swapping.".into(),
+                msg: "Unitary matrix output is only supported for QFT with swapping.".into(),
             });
         }
         let n = 2_usize.pow(dim as u32);
