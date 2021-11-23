@@ -331,8 +331,8 @@ pub trait OperatePragmaNoise:
 /// let pragma = PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
 ///
 /// // The probability of the noise Pragma
-/// let proba_pre_exp: f64 = -2.0 * 0.005 * 0.02;
-/// let proba = CalculatorFloat::from(0.5 * (1.0 - proba_pre_exp.exp()));
+/// let proba_pre_exp: f64 = -1.0 * 0.005 * 0.02;
+/// let proba = CalculatorFloat::from(1.0 - proba_pre_exp.exp());
 /// assert_eq!(proba, pragma.probability());
 /// ```
 ///
