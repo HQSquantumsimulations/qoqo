@@ -1832,8 +1832,8 @@ fn pragma_damping_pragmanoise_trait() {
     assert_eq!(superop, pragma.superoperator().unwrap());
 
     // (2) Probability function
-    let proba_pre_exp: f64 = -2.0 * 0.005 * 0.02;
-    let proba = CalculatorFloat::from(0.5 * (1.0 - proba_pre_exp.exp()));
+    let proba_pre_exp: f64 = -1.0 * 0.005 * 0.02;
+    let proba = CalculatorFloat::from(1.0 - proba_pre_exp.exp());
     assert_eq!(proba, pragma.probability());
 
     // (3) PowerCF function

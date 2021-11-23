@@ -4,6 +4,10 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
 
+### Fixed not released
+
+* Bug in the probability function of the PragmaDamping gate
+
 ### Added not released
 
 * MultiQubitZZ gate. Rotation under a multi-qubit product of Pauli Z operators.
