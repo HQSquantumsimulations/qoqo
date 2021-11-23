@@ -13,7 +13,6 @@
 //! Integration test for public API of multi qubit gate operations
 
 use std::collections::{HashMap, HashSet};
-
 use ndarray::array;
 use num_complex::Complex64;
 use qoqo_calculator::Calculator;
@@ -21,6 +20,7 @@ use qoqo_calculator::CalculatorFloat;
 use roqoqo::operations::*;
 use roqoqo::Circuit;
 use test_case::test_case;
+
 /// Test circuit function of MultiQubitMolmerSorensen
 #[test_case(vec![0,1]; "two_qubit")]
 #[test_case(vec![0,1,2]; "three_qubit")]
