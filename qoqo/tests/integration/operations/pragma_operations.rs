@@ -1364,7 +1364,7 @@ fn test_pyo3_noise_superoperator_randomnoise() {
 }
 
 /// Test probability function of Noise Pragmas
-#[test_case(Operation::from(PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))), 0.00009999000066662767; "PragmaDamping")]
+#[test_case(Operation::from(PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))), 0.00009999500016666385; "PragmaDamping")]
 #[test_case(Operation::from(PragmaDepolarising::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))), 0.00007499625012499789; "PragmaDepolarising")]
 #[test_case(Operation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))), 0.00009999000066662767; "PragmaDephasing")]
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))), 0.000125; "PragmaRandomNoise")]
