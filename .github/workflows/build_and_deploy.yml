@@ -20,15 +20,15 @@ jobs:
     - name: setup cargo
       run: |
         cargo login ${{ secrets.CRATES_IO_API_TOKEN }}
-        cargo publish --manifest-path=roqoqo-derive/Cargo.toml
-        sleep 30
-        cargo publish --manifest-path=roqoqo/Cargo.toml
-        sleep 30
-        cargo publish --manifest-path=qoqo-macros/Cargo.toml
-        sleep 30
-        cargo publish --manifest-path=qoqo/Cargo.toml
-        sleep 30
-        cargo publish --manifest-path=roqoqo-test/Cargo.toml
+        # cargo publish --manifest-path=roqoqo-derive/Cargo.toml
+        # sleep 30
+        # cargo publish --manifest-path=roqoqo/Cargo.toml
+        # sleep 30
+        # cargo publish --manifest-path=qoqo-macros/Cargo.toml
+        # sleep 30
+        # cargo publish --manifest-path=qoqo/Cargo.toml
+        # sleep 30
+        # cargo publish --manifest-path=roqoqo-test/Cargo.toml
 
   build_maturin_builds_linux:
     needs: deploy_cratesio
