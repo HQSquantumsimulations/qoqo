@@ -40,11 +40,11 @@ jobs:
           { runs_on: 'ubuntu-latest',  rust: "x86_64-unknown-linux-gnu" },
         ]
         python: [
-            {py: 3.6, interpreter: "python3.6"},
-            {py: 3.7, interpreter: "python3.7"},
-            {py: 3.8, interpreter: "python3.8"},
-            {py: 3.9, interpreter: "python3.9"},
-            # {py: 3.10, interpreter: "python3.10"}
+            {py: '3.6', interpreter: "python3.6"},
+            {py: '3.7', interpreter: "python3.7"},
+            {py: '3.8', interpreter: "python3.8"},
+            {py: '3.9', interpreter: "python3.9"},
+            {py: '3.10', interpreter: "python3.10"}
         ]
     steps:
       - uses: actions/checkout@v2
@@ -63,7 +63,45 @@ jobs:
           maturin-version: latest
           command: build
           manylinux: 2010
-          args: -i python${{ matrix.python.py }} --out wheels --no-sdist -m qoqo/Cargo.toml --release
+          args: -i python${{ matrix.python.py }} --out wheels --no-sdist -m qoqo/Cargo.toml --release --cargo-extra-args="--locked"
+      - name: test install
+        run: |
+          pip install wheels/* --force-reinstall
+      - name: store artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: py_wheels
+          path: wheels
+
+  build_maturin_builds_linux_src:
+    needs: deploy_cratesio
+    name: maturin_build-${{ matrix.combinations.runs_on }}
+    runs-on: ${{ matrix.combinations.runs_on }}
+    strategy:
+      matrix:
+        combinations: [
+          { runs_on: 'ubuntu-latest',  rust: "x86_64-unknown-linux-gnu" },
+        ]
+        python: [
+            {py: '3.10', interpreter: "python3.10"}
+        ]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          target: ${{ matrix.combinations.rust }}
+          default: true
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python.py }}
+      - name: linux wheels
+        uses: messense/maturin-action@v1
+        with:
+          maturin-version: latest
+          command: sdist
+          args:  --out wheels  -m qoqo/Cargo.toml 
       - name: test install
         run: |
           pip install wheels/* --force-reinstall
@@ -83,11 +121,11 @@ jobs:
           { runs_on: 'windows-latest', rust: "x86_64-pc-windows-msvc" },
         ]
         python: [
-            {py: 3.6, interpreter: "python3.6"},
-            {py: 3.7, interpreter: "python3.7"},
-            {py: 3.8, interpreter: "python3.8"},
-            {py: 3.9, interpreter: "python3.9"},
-            # {py: 3.10, interpreter: "python3.10"}  
+            {py: '3.6', interpreter: "python3.6"},
+            {py: '3.7', interpreter: "python3.7"},
+            {py: '3.8', interpreter: "python3.8"},
+            {py: '3.9', interpreter: "python3.9"},
+            {py: '3.10', interpreter: "python3.10"}  
         ]
     steps:
       - uses: actions/checkout@v2
@@ -105,7 +143,7 @@ jobs:
         with:
           maturin-version: latest
           command: build
-          args: -i python --out wheels --no-sdist -m qoqo/Cargo.toml --release
+          args: -i python --out wheels --no-sdist -m qoqo/Cargo.toml --release --cargo-extra-args="--locked"
       - name: store artifact
         uses: actions/upload-artifact@v2
         with:
@@ -122,11 +160,11 @@ jobs:
           { runs_on: 'macOS-latest', rust: "aarch64-apple-darwin" },
         ]
         python: [
-            {py: 3.6, interpreter: "python3.6"},
-            {py: 3.7, interpreter: "python3.7"},
-            {py: 3.8, interpreter: "python3.8"},
-            {py: 3.9, interpreter: "python3.9"},
-            # {py: 3.10, interpreter: "python3.10"}
+            {py: '3.6', interpreter: "python3.6"},
+            {py: '3.7', interpreter: "python3.7"},
+            {py: '3.8', interpreter: "python3.8"},
+            {py: '3.9', interpreter: "python3.9"},
+            {py: '3.10', interpreter: "python3.10"}
         ]
     steps:
       - uses: actions/checkout@v2
@@ -145,11 +183,11 @@ jobs:
       - name: macos wheels
         if: ${{ matrix.combinations.runs_on == 'macOS-latest' && matrix.python-version < '3.8'}}
         run: |
-          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --out wheels --no-sdist -m qoqo/Cargo.toml --release
+          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --out wheels --no-sdist -m qoqo/Cargo.toml --release --cargo-extra-args="--locked"
       - name: universal wheels
         if: ${{ matrix.combinations.runs_on == 'macOS-latest' && matrix.python-version >= '3.8' }}
         run: |
-          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --universal2 --out wheels --no-sdist -m qoqo/Cargo.toml --release
+          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --universal2 --out wheels --no-sdist -m qoqo/Cargo.toml --release --cargo-extra-args="--locked"
       - name: test install
         run: |
           pip install wheels/* --force-reinstall
@@ -160,7 +198,7 @@ jobs:
           path: wheels
 
   deploy:
-      needs: [deploy_cratesio, build_maturin_builds_macos, build_maturin_builds_linux, build_maturin_builds_windows]
+      needs: [deploy_cratesio, build_maturin_builds_macos, build_maturin_builds_linux, build_maturin_builds_linux_src, build_maturin_builds_windows]
       runs-on: ubuntu-latest
       steps:
       - uses: actions/setup-python@v2

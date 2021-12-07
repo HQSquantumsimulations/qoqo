@@ -504,14 +504,16 @@ const TAGS_PragmaDamping: &[&str; 6] = &[
 impl OperatePragmaNoise for PragmaDamping {
     /// Returns the superoperator matrix of the operation.
     fn superoperator(&self) -> Result<Array2<f64>, RoqoqoError> {
-        let prob: f64 = f64::try_from(self.probability())?;
-        let sqrt: f64 = (1.0 - prob).sqrt();
+        // let prob: f64 = f64::try_from(self.probability())?;
+        let t1_decay: f64 = f64::try_from(-self.gate_time.clone() * self.rate.clone())?.exp();
+        let t2_decay: f64 = f64::try_from(-self.gate_time.clone() * self.rate.clone() * 0.5)?.exp();
+        // let sqrt: f64 = (1.0 - prob).sqrt();
 
         Ok(array![
-            [1.0, 0.0, 0.0, prob],
-            [0.0, sqrt, 0.0, 0.0],
-            [0.0, 0.0, sqrt, 0.0],
-            [0.0, 0.0, 0.0, 1.0 - prob],
+            [1.0, 0.0, 0.0, 1.0 - t1_decay],
+            [0.0, t2_decay, 0.0, 0.0],
+            [0.0, 0.0, t2_decay, 0.0],
+            [0.0, 0.0, 0.0, t1_decay],
         ])
     }
 
@@ -528,7 +530,7 @@ impl OperatePragmaNoiseProba for PragmaDamping {
     /// Returns the probability of the noise gate affecting the qubit, based on its `gate_time` and `rate`.
     fn probability(&self) -> CalculatorFloat {
         let prob: CalculatorFloat =
-            ((self.gate_time.clone() * self.rate.clone() * (-2.0)).exp() * (-1.0) + 1.0) * 0.5;
+            (self.gate_time.clone() * self.rate.clone() * (-1.0)).exp() * (-1.0) + 1.0;
         prob
     }
 }
@@ -571,20 +573,13 @@ const TAGS_PragmaDepolarising: &[&str; 6] = &[
 impl OperatePragmaNoise for PragmaDepolarising {
     /// Returns the superoperator matrix of the operation.
     fn superoperator(&self) -> Result<Array2<f64>, RoqoqoError> {
-        let gate_time: f64 = f64::try_from(self.gate_time.clone())?;
-        let rate: f64 = f64::try_from(self.rate.clone())?;
-
-        let pre_exp: f64 = -1.0 * gate_time * rate;
-        let prob: f64 = (3.0 / 4.0) * (1.0 - pre_exp.exp());
-        let proba1: f64 = 1.0 - (2.0 / 3.0) * prob;
-        let proba2: f64 = 1.0 - (4.0 / 3.0) * prob;
-        let proba3: f64 = (2.0 / 3.0) * prob;
-
+        let t1_decay: f64 = f64::try_from(-self.gate_time.clone() * self.rate.clone() * 1.0)?.exp();
+        let t2_decay: f64 = f64::try_from(-self.gate_time.clone() * self.rate.clone() * 1.0)?.exp();
         Ok(array![
-            [proba1, 0.0, 0.0, proba3],
-            [0.0, proba2, 0.0, 0.0],
-            [0.0, 0.0, proba2, 0.0],
-            [proba3, 0.0, 0.0, proba1],
+            [0.5 + 0.5 * t1_decay, 0.0, 0.0, 0.5 - 0.5 * t1_decay],
+            [0.0, t2_decay, 0.0, 0.0],
+            [0.0, 0.0, t2_decay, 0.0],
+            [0.5 - 0.5 * t1_decay, 0.0, 0.0, 0.5 + 0.5 * t1_decay],
         ])
     }
 
