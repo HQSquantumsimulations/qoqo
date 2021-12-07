@@ -400,7 +400,7 @@ fn simple_traits() {
     // Test Debug trait
     assert_eq!(
         format!("{:?}", circuit),
-        "Circuit { definitions: [DefinitionFloat(DefinitionFloat { name: \"ro\", length: 1, is_output: false })], operations: [PauliZ(PauliZ { qubit: 0 })] }"
+        "Circuit { definitions: [DefinitionFloat(DefinitionFloat { name: \"ro\", length: 1, is_output: false })], operations: [PauliZ(PauliZ { qubit: 0 })], _roqoqo_version: RoqoqoVersion }"
     );
 
     // Test Display trait

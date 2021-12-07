@@ -65,7 +65,7 @@ fn test_default() {
 
         assert_eq!(
             format!("{:?}", CircuitWrapper::new()),
-            "CircuitWrapper { internal: Circuit { definitions: [], operations: [] } }"
+            "CircuitWrapper { internal: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"
         );
     })
 }

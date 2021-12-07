@@ -4,6 +4,10 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
 
+### Added
+
+* Semver-style version checking for Circuit serialization. In beta mode (0.y.z) minor version must match (y_library == y_data) in release mode (x.y.z) major version must match (x_library == x_data) and minor version of library must exceed minor version of data (y_library >= y_data).
+
 ## 0.9.0
 
 ### Fixed 0.9.0

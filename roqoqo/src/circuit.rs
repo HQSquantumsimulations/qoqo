@@ -14,6 +14,7 @@ use crate::operations::{Define, InvolveQubits, InvolvedQubits, Operate, Operatio
 #[cfg(feature = "overrotate")]
 use crate::operations::{Rotate, Rotation};
 use crate::RoqoqoError;
+use crate::RoqoqoVersion;
 use qoqo_calculator::Calculator;
 #[cfg(feature = "overrotate")]
 use std::convert::TryFrom;
@@ -86,6 +87,8 @@ pub struct Circuit {
     definitions: Vec<Operation>,
     /// Operations of the quantum circuit, do not have to be unique.
     operations: Vec<Operation>,
+    /// The roqoqo version
+    _roqoqo_version: RoqoqoVersion,
 }
 
 impl Circuit {
@@ -98,6 +101,7 @@ impl Circuit {
         Circuit {
             definitions: Vec::new(),
             operations: Vec::new(),
+            _roqoqo_version: RoqoqoVersion,
         }
     }
     /// Adds an Operation to Circuit (self).
@@ -275,6 +279,7 @@ impl Circuit {
         Ok(Self {
             definitions: tmp_def,
             operations: tmp_op,
+            _roqoqo_version: RoqoqoVersion,
         })
     }
     /// Remaps the qubits in operations in clone of Circuit.
@@ -295,6 +300,7 @@ impl Circuit {
         Ok(Self {
             definitions: self.definitions.clone(),
             operations: tmp_op,
+            _roqoqo_version: RoqoqoVersion,
         })
     }
 
@@ -365,6 +371,7 @@ impl Circuit {
         let mut return_circuit = Circuit {
             definitions: self.definitions.clone(),
             operations: Vec::new(),
+            _roqoqo_version: RoqoqoVersion,
         };
         let mut length = tmp_vec.len();
         while length > 0 {
@@ -695,6 +702,7 @@ impl ops::Add<Circuit> for Circuit {
                 .into_iter()
                 .chain(other.operations.into_iter())
                 .collect(),
+            _roqoqo_version: RoqoqoVersion,
         }
     }
 }
@@ -718,6 +726,7 @@ impl ops::Add<&Circuit> for Circuit {
                 .into_iter()
                 .chain(other.operations.iter().cloned())
                 .collect(),
+            _roqoqo_version: RoqoqoVersion,
         }
     }
 }

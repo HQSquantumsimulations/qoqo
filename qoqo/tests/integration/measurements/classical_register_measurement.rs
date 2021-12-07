@@ -115,7 +115,7 @@ fn test_pyo3_debug() {
     let br_clone = br_wrapper.clone();
     assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
 
-    let debug_string = "RefCell { value: ClassicalRegisterWrapper { internal: ClassicalRegister { constant_circuit: Some(Circuit { definitions: [], operations: [] }), circuits: [Circuit { definitions: [], operations: [] }] } } }";
+    let debug_string = "RefCell { value: ClassicalRegisterWrapper { internal: ClassicalRegister { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }] } } }";
     assert_eq!(format!("{:?}", br), debug_string);
 }
 

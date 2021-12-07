@@ -317,7 +317,7 @@ fn test_pyo3_debug() {
     let br_clone = br_wrapper.clone();
     assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
 
-    let debug_string = "RefCell { value: CheatedBasisRotationWrapper { internal: CheatedBasisRotation { constant_circuit: Some(Circuit { definitions: [], operations: [] }), circuits: [Circuit { definitions: [], operations: [] }], input: CheatedBasisRotationInput { measured_exp_vals: {}, pauli_product_keys: {\"ro\": 0} } } } }";
+    let debug_string = "RefCell { value: CheatedBasisRotationWrapper { internal: CheatedBasisRotation { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: CheatedBasisRotationInput { measured_exp_vals: {}, pauli_product_keys: {\"ro\": 0} } } } }";
     assert_eq!(format!("{:?}", br), debug_string);
 
     let debug_input = input.clone();
