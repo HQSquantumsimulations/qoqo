@@ -2312,7 +2312,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-libc 0.2.108
+libc 0.2.109
 https://github.com/rust-lang/libc
 by The Rust Project Developers
 Raw FFI bindings to platform libraries like libc.
@@ -6669,7 +6669,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-proc-macro2 1.0.32
+proc-macro2 1.0.33
 https://github.com/dtolnay/proc-macro2
 by David Tolnay <dtolnay@gmail.com>, Alex Crichton <alex@alexcrichton.com>
 A substitute implementation of the compiler's `proc_macro` API to decouple
@@ -10912,7 +10912,7 @@ LICENSE:
 
 
 ====================================================
-ryu 1.0.5
+ryu 1.0.6
 https://github.com/dtolnay/ryu
 by David Tolnay <dtolnay@gmail.com>
 Fast floating point to string conversion
@@ -11897,7 +11897,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-serde_json 1.0.71
+serde_json 1.0.72
 https://github.com/serde-rs/json
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A JSON serialization file format
@@ -12828,7 +12828,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-syn 1.0.81
+syn 1.0.82
 https://github.com/dtolnay/syn
 by David Tolnay <dtolnay@gmail.com>
 Parser for Rust source code
