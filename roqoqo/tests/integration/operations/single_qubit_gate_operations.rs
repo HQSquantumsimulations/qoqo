@@ -19,7 +19,7 @@ use num_complex::Complex64;
 use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorError::FloatSymbolicNotConvertable;
 use qoqo_calculator::CalculatorFloat;
-use rand::distributions::{Standard};
+use rand::distributions::Standard;
 use rand::prelude::*;
 use rand::rngs::StdRng;
 use roqoqo::operations::*;
@@ -427,7 +427,7 @@ fn test_alpha_beta_singlequbitgates(gate: SingleQubitGateOperation) {
         global_phase,
     );
     let test_matrix = singlequbitgate.unitary_matrix().unwrap();
-    
+
     let epsilon = 1e-12;
     for i in 0..2 {
         assert!((matrix[[0, i]] - test_matrix[[0, i]]).norm() < epsilon);
@@ -1414,8 +1414,8 @@ fn test_general_multiplication(seed: u64) {
 
     let new_matrix = new_gate.unitary_matrix().unwrap();
 
-    for (direct_val, new_val) in direct_matrix.iter().zip(new_matrix.iter()){
-        if (direct_val- new_val).norm() > 1e-9{
+    for (direct_val, new_val) in direct_matrix.iter().zip(new_matrix.iter()) {
+        if (direct_val - new_val).norm() > 1e-9 {
             panic!()
         }
     }
