@@ -32,8 +32,8 @@ pub const ROQOQO_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Default)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[serde(try_from = "RoqoqoVersionSerializable")]
-#[serde(into = "RoqoqoVersionSerializable")]
+#[cfg_attr(feature = "serialize", serde(try_from = "RoqoqoVersionSerializable"))]
+#[cfg_attr(feature = "serialize", serde(into = "RoqoqoVersionSerializable"))]
 struct RoqoqoVersion;
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Default)]
