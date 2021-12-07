@@ -30,14 +30,12 @@ use thiserror::Error;
 /// roqoqo version information, used for roqoqo import/export checks
 pub const ROQOQO_VERSION: &str = env!("CARGO_PKG_VERSION");
 
-#[cfg(feature = "serialize")]
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Default)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[serde(try_from = "RoqoqoVersionSerializable")]
 #[serde(into = "RoqoqoVersionSerializable")]
 struct RoqoqoVersion;
 
-#[cfg(feature = "serialize")]
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Default)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 struct RoqoqoVersionSerializable {
