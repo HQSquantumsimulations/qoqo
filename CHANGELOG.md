@@ -4,6 +4,12 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
 
+## 0.9.1
+
+### Changed 0.9.1
+
+* Increased tolerance for unitary violation when construction unitary matrix for SingleQubitGate from `f64::EPSILON` to `1e-6`.
+
 ## 0.9.0
 
 ### Fixed 0.9.0
