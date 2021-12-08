@@ -85,7 +85,7 @@ fn test_basic_traits() {
 
         assert_eq!(
             format!("{:?}", QuantumProgramWrapper::new(input, vec!["test".into()]).unwrap()),
-            "QuantumProgramWrapper { internal: CheatedBasisRotation { measurement: CheatedBasisRotation { constant_circuit: Some(Circuit { definitions: [], operations: [] }), circuits: [Circuit { definitions: [], operations: [] }, Circuit { definitions: [], operations: [RotateX(RotateX { qubit: 0, theta: Float(0.0) })] }], input: CheatedBasisRotationInput { measured_exp_vals: {}, pauli_product_keys: {\"ro\": 0} } }, input_parameter_names: [\"test\"] } }"
+            "QuantumProgramWrapper { internal: CheatedBasisRotation { measurement: CheatedBasisRotation { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }, Circuit { definitions: [], operations: [RotateX(RotateX { qubit: 0, theta: Float(0.0) })], _roqoqo_version: RoqoqoVersion }], input: CheatedBasisRotationInput { measured_exp_vals: {}, pauli_product_keys: {\"ro\": 0} } }, input_parameter_names: [\"test\"] } }"
         );
     })
 }

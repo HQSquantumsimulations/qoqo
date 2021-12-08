@@ -627,7 +627,7 @@ fn test_pyo3_involved_qubits_qubit_overrotation(input_definition: Operation) {
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators())),
             "PragmaGeneralNoise { qubit: 0, gate_time: Float(0.005), rates: [[1.0, 0.0, 0.0],\n [0.0, 1.0, 0.0],\n [0.0, 0.0, 1.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2 }"; "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, Circuit::default())),
-            "PragmaConditional { condition_register: \"ro\", condition_index: 1, circuit: Circuit { definitions: [], operations: [] } }"; "PragmaConditional")]
+            "PragmaConditional { condition_register: \"ro\", condition_index: 1, circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"; "PragmaConditional")]
 fn test_pyo3_format_repr(input_measurement: Operation, format_repr: &str) {
     pyo3::prepare_freethreaded_python();
     let gil = pyo3::Python::acquire_gil();
@@ -2495,7 +2495,7 @@ fn test_pyo3_new_conditional() {
 
     assert_eq!(
         format!("{:?}", pragma_wrapper),
-        "PragmaConditionalWrapper { internal: PragmaConditional { condition_register: \"ro\", condition_index: 0, circuit: Circuit { definitions: [], operations: [] } } }"
+        "PragmaConditionalWrapper { internal: PragmaConditional { condition_register: \"ro\", condition_index: 0, circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } } }"
     );
 }
 

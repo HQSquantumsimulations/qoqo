@@ -304,7 +304,7 @@ fn test_pyo3_debug() {
     let br_clone = br_wrapper.clone();
     assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
 
-    let debug_string = "RefCell { value: CheatedWrapper { internal: Cheated { constant_circuit: Some(Circuit { definitions: [], operations: [] }), circuits: [Circuit { definitions: [], operations: [] }], input: CheatedInput { measured_operators: {\"test_diagonal\": ([(0, 0, Complex { re: 1.0, im: 0.0 }), (0, 1, Complex { re: 0.0, im: 0.0 }), (1, 0, Complex { re: 0.0, im: 0.0 }), (1, 1, Complex { re: -1.0, im: 0.0 })], \"ro\")}, number_qubits: 3 } } } }";
+    let debug_string = "RefCell { value: CheatedWrapper { internal: Cheated { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: CheatedInput { measured_operators: {\"test_diagonal\": ([(0, 0, Complex { re: 1.0, im: 0.0 }), (0, 1, Complex { re: 0.0, im: 0.0 }), (1, 0, Complex { re: 0.0, im: 0.0 }), (1, 1, Complex { re: -1.0, im: 0.0 })], \"ro\")}, number_qubits: 3 } } } }";
     assert_eq!(format!("{:?}", br), debug_string);
 
     let debug_input_string = "RefCell { value: CheatedInputWrapper { internal: CheatedInput { measured_operators: {\"test_diagonal\": ([(0, 0, Complex { re: 1.0, im: 0.0 }), (0, 1, Complex { re: 0.0, im: 0.0 }), (1, 0, Complex { re: 0.0, im: 0.0 }), (1, 1, Complex { re: -1.0, im: 0.0 })], \"ro\")}, number_qubits: 3 } } }";
