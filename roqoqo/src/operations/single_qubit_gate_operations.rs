@@ -87,7 +87,7 @@ impl OperateGate for SingleQubitGate {
         if alpha_r == 0.0 && alpha_i == 0.0 && beta_r == 0.0 && beta_i == 0.0
             || (alpha_r.powf(2.0) + alpha_i.powf(2.0) + beta_r.powf(2.0) + beta_i.powf(2.0) - 1.0)
                 .abs()
-                > f64::EPSILON
+                > 1e-6
         {
             let norm: f64 =
                 alpha_r.powf(2.0) + alpha_i.powf(2.0) + beta_r.powf(2.0) + beta_i.powf(2.0);
