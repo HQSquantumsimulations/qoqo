@@ -110,6 +110,7 @@ use pyo3::prelude::*;
 ///    PMInteraction
 ///    ComplexPMInteraction
 ///    MultiQubitMS
+///    QFT
 #[pymodule]
 pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<SingleQubitGateWrapper>()?;
@@ -180,5 +181,6 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<PhaseShiftState1Wrapper>()?;
     m.add_class::<MultiQubitMSWrapper>()?;
     m.add_class::<MultiQubitZZWrapper>()?;
+    m.add_class::<QFTWrapper>()?;
     Ok(())
 }

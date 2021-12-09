@@ -49,3 +49,12 @@ pub struct MultiQubitZZ {
     /// The angle of the multi qubit Molmer-Sorensen gate.
     theta: CalculatorFloat,
 }
+
+#[allow(clippy::upper_case_acronyms)]
+/// The quantum Fourier transformation.
+pub struct QFT {
+    /// The qubits involved in the QFT.
+    qubits: Vec<usize>,
+    /// Include qubit swaps at the end.
+    swaps: bool,
+}
