@@ -19,6 +19,9 @@ use num_complex::Complex64;
 use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorError::FloatSymbolicNotConvertable;
 use qoqo_calculator::CalculatorFloat;
+use rand::distributions::Standard;
+use rand::prelude::*;
+use rand::rngs::StdRng;
 use roqoqo::operations::*;
 use roqoqo::RoqoqoError;
 use roqoqo::RoqoqoError::{CalculatorError, QubitMappingError, UnitaryMatrixErrror};
@@ -1365,6 +1368,64 @@ fn test_singlequbitgates_partialeq(
     assert!(gate1 == gate1.clone());
     assert!(gate2 != gate1);
     assert!(gate1 != gate2);
+}
+
+/// Test SingleQubitGate multiplication for RotateXYZ
+#[test_case(0_u64; "seed0")]
+#[test_case(1_u64; "seed1")]
+#[test_case(2_u64; "seed2")]
+#[test_case(3_u64; "seed3")]
+#[test_case(4_u64; "seed4")]
+#[test_case(5_u64; "seed5")]
+#[test_case(6_u64; "seed6")]
+#[test_case(7_u64; "seed7")]
+#[test_case(8_u64; "seed8")]
+#[test_case(9_u64; "seed9")]
+fn test_general_multiplication(seed: u64) {
+    let mut rng = StdRng::seed_from_u64(seed);
+
+    let angle_phi_alpha_left: f64 = rng.sample(Standard);
+    let angle_phi_beta_left: f64 = rng.sample(Standard);
+    let angle_theta_left: f64 = rng.sample(Standard);
+    let pahse_left: f64 = rng.sample(Standard);
+
+    let angle_phi_alpha_right: f64 = rng.sample(Standard);
+    let angle_phi_beta_right: f64 = rng.sample(Standard);
+    let angle_theta_right: f64 = rng.sample(Standard);
+    let pahse_right: f64 = rng.sample(Standard);
+
+    let left_gate = SingleQubitGate::new(
+        0,
+        (angle_theta_left.cos() * angle_phi_alpha_left.cos()).into(),
+        (angle_theta_left.cos() * angle_phi_alpha_left.sin()).into(),
+        (angle_theta_left.sin() * angle_phi_beta_left.cos()).into(),
+        (angle_theta_left.sin() * angle_phi_beta_left.sin()).into(),
+        pahse_left.into(),
+    );
+
+    let right_gate = SingleQubitGate::new(
+        0,
+        (angle_theta_right.cos() * angle_phi_alpha_right.cos()).into(),
+        (angle_theta_right.cos() * angle_phi_alpha_right.sin()).into(),
+        (angle_theta_right.sin() * angle_phi_beta_right.cos()).into(),
+        (angle_theta_right.sin() * angle_phi_beta_right.sin()).into(),
+        pahse_right.into(),
+    );
+
+    let left_matrix = left_gate.unitary_matrix().unwrap();
+    let right_matrix = right_gate.unitary_matrix().unwrap();
+
+    let direct_matrix = left_matrix.dot(&right_matrix);
+
+    let new_gate = left_gate.mul(&right_gate).unwrap();
+
+    let new_matrix = new_gate.unitary_matrix().unwrap();
+
+    for (direct_val, new_val) in direct_matrix.iter().zip(new_matrix.iter()) {
+        if (direct_val - new_val).norm() > 1e-9 {
+            panic!()
+        }
+    }
 }
 
 /// Test SingleQubitGate multiplication for RotateXYZ

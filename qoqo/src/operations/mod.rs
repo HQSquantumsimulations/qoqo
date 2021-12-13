@@ -24,6 +24,8 @@ mod measurement_operations;
 pub use measurement_operations::*;
 mod two_qubit_gate_operations;
 pub use two_qubit_gate_operations::*;
+mod multi_qubit_gate_operations;
+pub use multi_qubit_gate_operations::*;
 include!(concat!(
     env!("OUT_DIR"),
     "/_auto_generated_operation_conversion.rs"
@@ -107,7 +109,7 @@ use pyo3::prelude::*;
 ///    Bogoliubov
 ///    PMInteraction
 ///    ComplexPMInteraction
-
+///    MultiQubitMS
 #[pymodule]
 pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<SingleQubitGateWrapper>()?;
@@ -152,6 +154,7 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<PragmaRandomNoiseWrapper>()?;
     m.add_class::<PragmaGeneralNoiseWrapper>()?;
     m.add_class::<PragmaConditionalWrapper>()?;
+    m.add_class::<PragmaChangeDeviceWrapper>()?;
     m.add_class::<CNOTWrapper>()?;
     m.add_class::<SWAPWrapper>()?;
     m.add_class::<FSwapWrapper>()?;
@@ -175,6 +178,7 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<PhaseShiftedControlledZWrapper>()?;
     m.add_class::<PhaseShiftState0Wrapper>()?;
     m.add_class::<PhaseShiftState1Wrapper>()?;
-
+    m.add_class::<MultiQubitMSWrapper>()?;
+    m.add_class::<MultiQubitZZWrapper>()?;
     Ok(())
 }

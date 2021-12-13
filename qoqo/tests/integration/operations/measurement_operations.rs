@@ -210,7 +210,7 @@ fn test_pyo3_involved_qubits_0(input_definition: Operation) {
 #[test_case(Operation::from(PragmaGetStateVector::new(String::from("ro"), None)), "PragmaGetStateVector { readout: \"ro\", circuit: None }"; "PragmaGetStateVector")]
 #[test_case(Operation::from(PragmaGetDensityMatrix::new(String::from("ro"), None)), "PragmaGetDensityMatrix { readout: \"ro\", circuit: None }"; "PragmaGetDensityMatrix")]
 #[test_case(Operation::from(PragmaGetOccupationProbability::new(String::from("ro"), None)), "PragmaGetOccupationProbability { readout: \"ro\", circuit: None }"; "PragmaGetOccupationProbability")]
-#[test_case(Operation::from(PragmaGetPauliProduct::new(create_qubit_mapping(), String::from("ro"), Circuit::default())), "PragmaGetPauliProduct { qubit_paulis: {0: 1}, readout: \"ro\", circuit: Circuit { definitions: [], operations: [] } }"; "PragmaGetPauliProduct")]
+#[test_case(Operation::from(PragmaGetPauliProduct::new(create_qubit_mapping(), String::from("ro"), Circuit::default())), "PragmaGetPauliProduct { qubit_paulis: {0: 1}, readout: \"ro\", circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"; "PragmaGetPauliProduct")]
 #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(create_qubit_mapping()))), "PragmaRepeatedMeasurement { readout: \"ro\", number_measurements: 2, qubit_mapping: Some({0: 1}) }"; "PragmaRepeatedMeasurement")]
 fn test_pyo3_format_repr(input_measurement: Operation, format_repr: &str) {
     pyo3::prepare_freethreaded_python();
@@ -722,7 +722,7 @@ fn test_pyo3_new_get_pauli_product() {
 
     assert_eq!(
         format!("{:?}", meas_wrapper),
-        "PragmaGetPauliProductWrapper { internal: PragmaGetPauliProduct { qubit_paulis: {0: 1}, readout: \"ro\", circuit: Circuit { definitions: [], operations: [] } } }"
+        "PragmaGetPauliProductWrapper { internal: PragmaGetPauliProduct { qubit_paulis: {0: 1}, readout: \"ro\", circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } } }"
     );
 }
 

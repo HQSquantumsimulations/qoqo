@@ -12,11 +12,16 @@
 
 //! Integration test for public API of Basis rotation measurement
 
+use bincode::serialize;
 use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::measurements::{CheatedBasisRotationInputWrapper, CheatedBasisRotationWrapper};
 use qoqo::CircuitWrapper;
 use roqoqo::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
+use roqoqo::{
+    measurements::{CheatedBasisRotation, CheatedBasisRotationInput},
+    Circuit,
+};
 use std::collections::HashMap;
 
 #[test]
@@ -312,7 +317,7 @@ fn test_pyo3_debug() {
     let br_clone = br_wrapper.clone();
     assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
 
-    let debug_string = "RefCell { value: CheatedBasisRotationWrapper { internal: CheatedBasisRotation { constant_circuit: Some(Circuit { definitions: [], operations: [] }), circuits: [Circuit { definitions: [], operations: [] }], input: CheatedBasisRotationInput { measured_exp_vals: {}, pauli_product_keys: {\"ro\": 0} } } } }";
+    let debug_string = "RefCell { value: CheatedBasisRotationWrapper { internal: CheatedBasisRotation { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: CheatedBasisRotationInput { measured_exp_vals: {}, pauli_product_keys: {\"ro\": 0} } } } }";
     assert_eq!(format!("{:?}", br), debug_string);
 
     let debug_input = input.clone();
@@ -336,6 +341,50 @@ fn test_pyo3_debug() {
     let error =
         debug_input.call_method1("add_symbolic_exp_val", ("single_pp_val", symbolic_pystring));
     assert!(error.is_err());
+}
+
+/// Test _internal_to_bincode function
+#[test]
+fn test_internal_to_bincode() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| -> () {
+        let input_type = py.get_type::<CheatedBasisRotationInputWrapper>();
+        let input = input_type
+            .call0()
+            .unwrap()
+            .cast_as::<PyCell<CheatedBasisRotationInputWrapper>>()
+            .unwrap();
+        let _ = input.call_method1("add_pauli_product", ("ro",)).unwrap();
+
+        let mut circs: Vec<CircuitWrapper> = Vec::new();
+        circs.push(CircuitWrapper::new());
+
+        let br_type = py.get_type::<CheatedBasisRotationWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .unwrap()
+            .cast_as::<PyCell<CheatedBasisRotationWrapper>>()
+            .unwrap();
+
+        let mut roqoqo_bri = CheatedBasisRotationInput::new();
+        roqoqo_bri.add_pauli_product("ro".to_string());
+        let mut circs: Vec<Circuit> = Vec::new();
+        circs.push(Circuit::new());
+        let roqoqo_br = CheatedBasisRotation {
+            constant_circuit: Some(Circuit::new()),
+            circuits: circs.clone(),
+            input: roqoqo_bri,
+        };
+        let comparison_serialised = serialize(&roqoqo_br).unwrap();
+
+        let serialised: (&str, Vec<u8>) = br
+            .call_method0("_internal_to_bincode")
+            .unwrap()
+            .extract()
+            .unwrap();
+        assert_eq!(serialised.0, "CheatedBasisRotation");
+        assert_eq!(serialised.1, comparison_serialised);
+    })
 }
 
 /// Test to_json and from_json functions

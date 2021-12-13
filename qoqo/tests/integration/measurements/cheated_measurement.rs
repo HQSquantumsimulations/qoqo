@@ -12,12 +12,17 @@
 
 //! Integration test for public API of Basis rotation measurement
 
+use bincode::serialize;
 use num_complex::Complex64;
 use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::measurements::{CheatedInputWrapper, CheatedWrapper};
 use qoqo::CircuitWrapper;
 use roqoqo::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
+use roqoqo::{
+    measurements::{Cheated, CheatedInput},
+    Circuit,
+};
 use std::collections::HashMap;
 use test_case::test_case;
 
@@ -299,7 +304,7 @@ fn test_pyo3_debug() {
     let br_clone = br_wrapper.clone();
     assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
 
-    let debug_string = "RefCell { value: CheatedWrapper { internal: Cheated { constant_circuit: Some(Circuit { definitions: [], operations: [] }), circuits: [Circuit { definitions: [], operations: [] }], input: CheatedInput { measured_operators: {\"test_diagonal\": ([(0, 0, Complex { re: 1.0, im: 0.0 }), (0, 1, Complex { re: 0.0, im: 0.0 }), (1, 0, Complex { re: 0.0, im: 0.0 }), (1, 1, Complex { re: -1.0, im: 0.0 })], \"ro\")}, number_qubits: 3 } } } }";
+    let debug_string = "RefCell { value: CheatedWrapper { internal: Cheated { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: CheatedInput { measured_operators: {\"test_diagonal\": ([(0, 0, Complex { re: 1.0, im: 0.0 }), (0, 1, Complex { re: 0.0, im: 0.0 }), (1, 0, Complex { re: 0.0, im: 0.0 }), (1, 1, Complex { re: -1.0, im: 0.0 })], \"ro\")}, number_qubits: 3 } } } }";
     assert_eq!(format!("{:?}", br), debug_string);
 
     let debug_input_string = "RefCell { value: CheatedInputWrapper { internal: CheatedInput { measured_operators: {\"test_diagonal\": ([(0, 0, Complex { re: 1.0, im: 0.0 }), (0, 1, Complex { re: 0.0, im: 0.0 }), (1, 0, Complex { re: 0.0, im: 0.0 }), (1, 1, Complex { re: -1.0, im: 0.0 })], \"ro\")}, number_qubits: 3 } } }";
@@ -315,6 +320,63 @@ fn test_pyo3_debug() {
         ),
     );
     assert!(error.is_err());
+}
+
+/// Test _internal_to_bincode function
+#[test]
+fn test_internal_to_bincode() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| -> () {
+        let input_type = py.get_type::<CheatedInputWrapper>();
+        let input = input_type
+            .call1((3,))
+            .unwrap()
+            .cast_as::<PyCell<CheatedInputWrapper>>()
+            .unwrap();
+        let test_matrix = vec![
+            (0, 0, Complex64::new(1.0, 0.0)),
+            (0, 1, Complex64::new(0.0, 0.0)),
+            (1, 0, Complex64::new(0.0, 0.0)),
+            (1, 1, Complex64::new(-1.0, 0.0)),
+        ];
+        let _ = input
+            .call_method1(
+                "add_operator_exp_val",
+                ("test_diagonal", test_matrix.clone(), "ro"),
+            )
+            .unwrap();
+
+        let mut circs: Vec<CircuitWrapper> = Vec::new();
+        circs.push(CircuitWrapper::new());
+
+        let br_type = py.get_type::<CheatedWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .unwrap()
+            .cast_as::<PyCell<CheatedWrapper>>()
+            .unwrap();
+
+        let mut roqoqo_bri = CheatedInput::new(3);
+        roqoqo_bri
+            .add_operator_exp_val("test_diagonal".to_string(), test_matrix, "ro".to_string())
+            .unwrap();
+        let mut circs: Vec<Circuit> = Vec::new();
+        circs.push(Circuit::new());
+        let roqoqo_br = Cheated {
+            constant_circuit: Some(Circuit::new()),
+            circuits: circs.clone(),
+            input: roqoqo_bri,
+        };
+        let comparison_serialised = serialize(&roqoqo_br).unwrap();
+
+        let serialised: (&str, Vec<u8>) = br
+            .call_method0("_internal_to_bincode")
+            .unwrap()
+            .extract()
+            .unwrap();
+        assert_eq!(serialised.0, "Cheated");
+        assert_eq!(serialised.1, comparison_serialised);
+    })
 }
 
 /// Test to_json and from_json functions

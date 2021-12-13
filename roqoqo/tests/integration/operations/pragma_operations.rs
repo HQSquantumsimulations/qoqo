@@ -12,6 +12,8 @@
 //
 //! Integration test for public API of Measurement operations
 
+#[cfg(feature = "serialize")]
+use bincode::serialize;
 use ndarray::{array, Array1, Array2};
 use num_complex::Complex64;
 use qoqo_calculator::{Calculator, CalculatorFloat};
@@ -928,10 +930,12 @@ fn pragma_stop_simple_traits() {
     let pragma = PragmaStopParallelBlock::new(vec![0, 1], CalculatorFloat::from(0.0000001));
 
     // Test Debug trait
-    assert_eq!(
-        format!("{:?}", pragma),
-        "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(0.0000001) }"
-    );
+    let string_comparison = (format!("{:?}", pragma)
+        == "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(0.0000001) }")
+        || (format!("{:?}", pragma)
+            == "PragmaStopParallelBlock { qubits: [0, 1], execution_time: Float(1e-7) }");
+
+    assert!(string_comparison);
 
     // Test Clone trait
     assert_eq!(pragma.clone(), pragma);
@@ -1184,10 +1188,11 @@ fn pragma_sleep_simple_traits() {
     let pragma = PragmaSleep::new(vec![0, 1], CalculatorFloat::from(0.0000001));
 
     // Test Debug trait
-    assert_eq!(
-        format!("{:?}", pragma),
-        "PragmaSleep { qubits: [0, 1], sleep_time: Float(0.0000001) }"
-    );
+    let string_comparison = (format!("{:?}", pragma)
+        == "PragmaSleep { qubits: [0, 1], sleep_time: Float(0.0000001) }")
+        || (format!("{:?}", pragma) == "PragmaSleep { qubits: [0, 1], sleep_time: Float(1e-7) }");
+
+    assert!(string_comparison);
 
     // Test Clone trait
     assert_eq!(pragma.clone(), pragma);
@@ -1816,8 +1821,7 @@ fn pragma_damping_pragmanoise_trait() {
     let pragma = PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
 
     // (1) Superoperator function
-    let superop_pre_exp: f64 = -1.0 * 0.005 * 0.02;
-    let superop_prob: f64 = 1.0 - superop_pre_exp.exp();
+    let superop_prob: f64 = f64::try_from(pragma.probability()).unwrap();
     let superop_sqrt: f64 = (1.0 - superop_prob).sqrt();
     let superop: Array2<f64> = array![
         [1.0, 0.0, 0.0, superop_prob],
@@ -1828,8 +1832,8 @@ fn pragma_damping_pragmanoise_trait() {
     assert_eq!(superop, pragma.superoperator().unwrap());
 
     // (2) Probability function
-    let proba_pre_exp: f64 = -2.0 * 0.005 * 0.02;
-    let proba = CalculatorFloat::from(0.5 * (1.0 - proba_pre_exp.exp()));
+    let proba_pre_exp: f64 = -1.0 * 0.005 * 0.02;
+    let proba = CalculatorFloat::from(1.0 - proba_pre_exp.exp());
     assert_eq!(proba, pragma.probability());
 
     // (3) PowerCF function
@@ -2597,6 +2601,46 @@ fn pragma_general_noise_substitute_trait() {
     assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
 }
 
+/// Test PragmaGeneralNoise Operate trait
+#[test]
+fn pragma_general_noise_pragmanoise_trait() {
+    let rates: Array2<f64> = array![[0.3, 0.0, 0.1], [0.7, 0.0, 0.0], [0.0, 0.8, 0.2]]; // add check for >= eigenvalues
+    let pragma = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), rates.clone());
+
+    // matrix exponential using numpy:
+    let test_exponential = array![
+        [
+            1.00000004e+00,
+            3.13603590e-05,
+            4.48130265e-03,
+            5.97459826e-03
+        ],
+        [
+            1.14712981e-02,
+            9.95012493e-01,
+            2.86751104e-06,
+            2.49363597e-03
+        ],
+        [
+            2.44347666e-05,
+            1.39441142e-02,
+            9.97004509e-01,
+            1.74528238e-05
+        ],
+        [
+            -3.25322253e-08,
+            -2.78464407e-05,
+            -3.97707102e-03,
+            9.91536000e-01
+        ]
+    ];
+
+    let result: Array2<f64> = test_exponential - pragma.superoperator().unwrap().t();
+    for item in result.iter() {
+        assert!(item.abs() <= 0.0001);
+    }
+}
+
 /// Test PragmaGeneralNoise Serialization and Deserialization traits (readable)
 #[cfg(feature = "serialize")]
 #[test]
@@ -2723,7 +2767,7 @@ fn pragma_conditional_simple_traits() {
     // Test Debug trait
     assert_eq!(
         format!("{:?}", pragma),
-        "PragmaConditional { condition_register: \"ro\", condition_index: 1, circuit: Circuit { definitions: [], operations: [] } }"
+        "PragmaConditional { condition_register: \"ro\", condition_index: 1, circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"
     );
 
     // Test Clone trait
@@ -2744,12 +2788,7 @@ fn pragma_conditional_operate_trait() {
     let pragma = PragmaConditional::new(String::from("ro"), 1, Circuit::default());
 
     // (1) Test tags function
-    let tags: &[&str; 4] = &[
-        "Operation",
-        "SingleQubitOperation",
-        "PragmaOperation",
-        "PragmaConditional",
-    ];
+    let tags: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaConditional"];
     assert_eq!(pragma.tags(), tags);
 
     // (2) Test hqslang function
@@ -2797,6 +2836,21 @@ fn pragma_conditional_substitute_trait() {
 #[test]
 fn pragma_conditional_serde_readable() {
     let pragma_serialization = PragmaConditional::new(String::from("ro"), 1, Circuit::default());
+    use roqoqo::ROQOQO_VERSION;
+    use std::str::FromStr;
+    let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+    let major_version = u32::from_str(
+        rsplit
+            .next()
+            .expect("Internal error: Version not conforming to semver"),
+    )
+    .expect("Internal error: Major version is not unsigned integer.");
+    let minor_version = u32::from_str(
+        rsplit
+            .next()
+            .expect("Internal error: Version not conforming to semver"),
+    )
+    .expect("Internal error: Minor version is not unsigned integer.");
     assert_tokens(
         &pragma_serialization.readable(),
         &[
@@ -2811,7 +2865,7 @@ fn pragma_conditional_serde_readable() {
             Token::Str("circuit"),
             Token::Struct {
                 name: "Circuit",
-                len: 2,
+                len: 3,
             },
             Token::Str("definitions"),
             Token::Seq { len: Some(0) },
@@ -2819,6 +2873,16 @@ fn pragma_conditional_serde_readable() {
             Token::Str("operations"),
             Token::Seq { len: Some(0) },
             Token::SeqEnd,
+            Token::Str("_roqoqo_version"),
+            Token::Struct {
+                name: "RoqoqoVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(major_version),
+            Token::Str("minor_version"),
+            Token::U32(minor_version),
+            Token::StructEnd,
             Token::StructEnd,
             Token::StructEnd,
         ],
@@ -2830,6 +2894,21 @@ fn pragma_conditional_serde_readable() {
 #[test]
 fn pragma_conditional_serde_compact() {
     let pragma_serialization = PragmaConditional::new(String::from("ro"), 1, Circuit::default());
+    use roqoqo::ROQOQO_VERSION;
+    use std::str::FromStr;
+    let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+    let major_version = u32::from_str(
+        rsplit
+            .next()
+            .expect("Internal error: Version not conforming to semver"),
+    )
+    .expect("Internal error: Major version is not unsigned integer.");
+    let minor_version = u32::from_str(
+        rsplit
+            .next()
+            .expect("Internal error: Version not conforming to semver"),
+    )
+    .expect("Internal error: Minor version is not unsigned integer.");
     assert_tokens(
         &pragma_serialization.readable(),
         &[
@@ -2844,7 +2923,7 @@ fn pragma_conditional_serde_compact() {
             Token::Str("circuit"),
             Token::Struct {
                 name: "Circuit",
-                len: 2,
+                len: 3,
             },
             Token::Str("definitions"),
             Token::Seq { len: Some(0) },
@@ -2852,8 +2931,105 @@ fn pragma_conditional_serde_compact() {
             Token::Str("operations"),
             Token::Seq { len: Some(0) },
             Token::SeqEnd,
+            Token::Str("_roqoqo_version"),
+            Token::Struct {
+                name: "RoqoqoVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(major_version),
+            Token::Str("minor_version"),
+            Token::U32(minor_version),
+            Token::StructEnd,
             Token::StructEnd,
             Token::StructEnd,
         ],
     );
+}
+
+/// Test PragmaChangeDevice inputs and involved qubits
+#[test]
+#[cfg(feature = "serialize")]
+fn pragma_change_device_inputs_qubits() {
+    // This is not a change device pragma, but for testing purposes it can be used
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
+
+    // Test inputs are correct
+    assert_eq!(pragma.wrapped_hqslang, String::from("PragmaActiveReset"));
+    let tags: &[&str; 4] = &[
+        "Operation",
+        "SingleQubitOperation",
+        "PragmaOperation",
+        "PragmaActiveReset",
+    ];
+    assert_eq!(pragma.wrapped_tags, tags);
+    assert_eq!(pragma.wrapped_operation, serialize(&wrapped).unwrap());
+
+    // Test InvolveQubits trait
+    assert_eq!(pragma.involved_qubits(), InvolvedQubits::All);
+}
+
+/// Test PragmaConditional standard derived traits (Debug, Clone, PartialEq)
+#[test]
+#[cfg(feature = "serialize")]
+fn pragma_change_device_simple_traits() {
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
+    let wrapped_0: Operation = PragmaActiveReset::new(0).into();
+    let pragma_0 = PragmaChangeDevice::new(&wrapped_0).unwrap();
+
+    let wrapped_1: Operation = PragmaActiveReset::new(1).into();
+    let pragma_1 = PragmaChangeDevice::new(&wrapped_1).unwrap();
+    // Test Clone trait
+    assert_eq!(pragma.clone(), pragma);
+
+    // Test PartialEq trait
+    assert!(pragma_0 == pragma);
+    assert!(pragma == pragma_0);
+    assert!(pragma_1 != pragma);
+    assert!(pragma != pragma_1);
+}
+
+/// Test PragmaConditional Operate trait
+#[test]
+#[cfg(feature = "serialize")]
+fn pragma_change_device_operate_trait() {
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
+
+    // (1) Test tags function
+    let tags: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaChangeDevice"];
+    assert_eq!(pragma.tags(), tags);
+
+    // (2) Test hqslang function
+    assert_eq!(pragma.hqslang(), String::from("PragmaChangeDevice"));
+
+    // (3) Test is_parametrized function
+    assert_eq!(pragma.is_parametrized(), false);
+}
+
+/// Test PragmaConditional Substitute trait
+#[test]
+#[cfg(feature = "serialize")]
+fn pragma_change_device_substitute_trait() {
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let pragma = PragmaChangeDevice::new(&wrapped).unwrap();
+    let pragma_test = PragmaChangeDevice::new(&wrapped).unwrap();
+    // (1) Substitute parameters function
+    let mut substitution_dict: Calculator = Calculator::new();
+    substitution_dict.set_variable("ro", 0.0);
+    let result = pragma_test
+        .substitute_parameters(&mut substitution_dict)
+        .unwrap();
+    assert_eq!(pragma, result);
+
+    // (2) Remap qubits with a remapping
+    // This is not supported yet and should throw an error
+    let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping_test.insert(0, 2);
+    let mut new_qubit_paulis: HashMap<usize, usize> = HashMap::new();
+    new_qubit_paulis.insert(2, 1);
+    let result = pragma_test.remap_qubits(&qubit_mapping_test).is_err();
+    assert!(result);
 }

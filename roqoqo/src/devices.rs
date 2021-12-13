@@ -25,8 +25,8 @@
 //!
 //!     $$
 //!     \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
-//!         L_0 = \sigma^{-} \\\\
-//!         L_1 = \sigma^{+} \\\\
+//!         L_0 = \sigma^{+} \\\\
+//!         L_1 = \sigma^{-} \\\\
 //!         L_3 = \sigma^{z}
 //!     $$
 //!     Note that as long as gate times and decoherence rates are scaled inversely any kind of units can be used,
@@ -39,10 +39,12 @@
 
 use ndarray::Array2;
 
+use crate::RoqoqoBackendError;
+
 /// Trait for roqoqo devices.
 ///
 /// Defines standard functions available for roqoqo devices.
-pub trait Device: Sized {
+pub trait Device {
     /// Returns the gate time of a single qubit operation if the single qubit operation is available on device.
     ///
     /// The base assumption
@@ -56,7 +58,7 @@ pub trait Device: Sized {
     ///
     /// * `Some<f64>` - The gate time.
     /// * `None` - The gate is not available on the device.
-    fn single_qubit_gate_time(&self, hqslang: &str, qubit: usize) -> Option<&f64>;
+    fn single_qubit_gate_time(&self, hqslang: &str, qubit: &usize) -> Option<f64>;
 
     /// Returns the gate time of a two qubit operation if the two qubit operation is available on device-.
     ///
@@ -71,7 +73,7 @@ pub trait Device: Sized {
     ///
     /// * `Some<f64>` - The gate time.
     /// * `None` - The gate is not available on the device.
-    fn two_qubit_gate_time(&self, hqslang: &str, control: usize, target: usize) -> Option<&f64>;
+    fn two_qubit_gate_time(&self, hqslang: &str, control: &usize, target: &usize) -> Option<f64>;
 
     /// Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
     ///
@@ -85,7 +87,7 @@ pub trait Device: Sized {
     ///
     /// * `Some<f64>` - The gate time.
     /// * `None` - The gate is not available on the device.
-    fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<&f64>;
+    fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64>;
 
     /// Returns the matrix of the decoherence rates of the Lindblad equation.
     ///
@@ -102,10 +104,51 @@ pub trait Device: Sized {
     ///
     /// # Returns
     ///
-    /// * `Some<&Array2<f64>>` - The decoherence rates.
+    /// * `Some<Array2<f64>>` - The decoherence rates.
     /// * `None` - The qubit is not part of the device.
-    fn qubit_decoherence_rates(&self, qubit: usize) -> Option<&Array2<f64>>;
+    fn qubit_decoherence_rates(&self, qubit: &usize) -> Option<Array2<f64>>;
 
     /// Returns the number of qubits the device supports.
     fn number_qubits(&self) -> usize;
+
+    /// Returns the list of pairs of qubits linked with a native two-qubit-gate in the device.
+    ///
+    /// A pair of qubits is considered linked by a native two-qubit-gate if the device
+    /// can implement a two-qubit-gate btween the two qubits without decomposing it
+    /// into a sequence of gates that involves a third qubit of the device.
+    /// The two-qubit-gate also has to form a universal set together with the available
+    /// single qubit gates.
+    ///
+    /// The returned vectors is a simple, graph-library independent, representation of
+    /// the undirected connectivity graph of the device.
+    /// It can be used to construct the connectivity graph in a graph library of the users
+    /// choice from a list of edges and can be used for applications like routing in quantum algorithms.
+    fn two_qubit_edges(&self) -> Vec<(usize, usize)>;
+
+    /// Changes the device topology based on a Pragma operation.
+    ///
+    /// Specific devices and backends can allow changes to the device topology.
+    /// These changes are represented by Pragma operations that are only available for
+    /// the corresponding backend.
+    /// This function provides a generic interface for changing the devices with the help of
+    /// these Pragma operations.
+    /// In normal operation the backend specific Pragma operations are wrapped in a [crate::operations::PragmaChangeDevice]
+    /// wrapper operation and encoded in binary form with the [bincode] crate.
+    /// This function takes the encoded binary representation, tries to deserialize it internally
+    ///  and applies the corresponding changes.
+    ///
+    /// For most devices the default behaviour is that the device cannot be changed
+    /// and the function returns a corresponding RoqoqoBackendError
+    ///
+    /// # Arguments
+    ///
+    /// * `hqslang` - The hqslang name of the wrapped operation
+    /// * `operation` - The Pragma operation encoded in binary form using the [bincode] crate
+    #[allow(unused_variables)]
+    #[allow(unused_mut)]
+    fn change_device(&mut self, hqslang: &str, operation: &[u8]) -> Result<(), RoqoqoBackendError> {
+        Err(RoqoqoBackendError::GenericError {
+            msg: "The device ".to_string(),
+        })
+    }
 }
