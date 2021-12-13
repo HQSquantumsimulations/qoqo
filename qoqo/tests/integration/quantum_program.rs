@@ -63,6 +63,7 @@ fn create_measurement(py: Python) -> &PyCell<CheatedBasisRotationWrapper> {
 /// Test basic traits of QuantumProgramWrapper
 #[test]
 fn test_basic_traits() {
+    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> () {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
@@ -93,6 +94,7 @@ fn test_basic_traits() {
 /// Test new and run functions of QuantumProgram with all BasisRotation measurement input
 #[test]
 fn test_new_run_br() {
+    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> () {
         let input_type = py.get_type::<BasisRotationInputWrapper>();
         let input_instance = input_type
@@ -155,6 +157,7 @@ fn test_new_run_br() {
 /// Test new and run functions of QuantumProgram with all CheatedBasisRotation measurement input
 #[test]
 fn test_new_run_cheated_br() {
+    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> () {
         let input_type = py.get_type::<CheatedBasisRotationInputWrapper>();
         let input_instance = input_type
@@ -219,6 +222,7 @@ fn test_new_run_cheated_br() {
 /// Test new and run functions of QuantumProgram with all Cheated measurement input
 #[test]
 fn test_new_run_cheated() {
+    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> () {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let input_instance = input_type
@@ -277,6 +281,7 @@ fn test_new_run_cheated() {
 /// Test new and run_register functions of QuantumProgram with all ClassicalRegister measurement input
 #[test]
 fn test_new_run_classical_register() {
+    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> () {
         let mut circs: Vec<CircuitWrapper> = Vec::new();
         circs.push(CircuitWrapper::new());
@@ -328,6 +333,7 @@ fn test_new_run_classical_register() {
 /// Test new function of QuantumProgram first error
 #[test]
 fn test_new_error_1() {
+    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> () {
         let circs: Vec<CircuitWrapper> = Vec::new();
         let program_type = py.get_type::<QuantumProgramWrapper>();
@@ -339,6 +345,7 @@ fn test_new_error_1() {
 /// Test copy and deepcopy functions of QuantumProgram
 #[test]
 fn test_copy_deepcopy() {
+    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> () {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
@@ -372,6 +379,7 @@ fn test_copy_deepcopy() {
 /// Test qoqo_versions function of QuantumProgram
 #[test]
 fn test_qoqo_versions() {
+    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> () {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
@@ -403,6 +411,7 @@ fn test_qoqo_versions() {
 /// Test to_ and from_bincode functions of QuantumProgram
 #[test]
 fn test_to_from_bincode() {
+    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> () {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
@@ -442,6 +451,7 @@ fn test_to_from_bincode() {
 
 #[test]
 fn test_value_error_bincode() {
+    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> () {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
@@ -472,6 +482,7 @@ fn test_value_error_bincode() {
 /// Test to_ and from_json functions of QuantumProgram
 #[test]
 fn test_to_from_json() {
+    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> () {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
@@ -512,6 +523,7 @@ fn test_to_from_json() {
 /// Test the __richcmp__ function
 #[test]
 fn test_richcmp() {
+    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> () {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
@@ -557,6 +569,7 @@ fn test_richcmp() {
 
 #[test]
 fn test_convert_into_program() {
+    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> () {
         let added_op = Operation::from(PauliX::new(0));
         let operation = convert_operation_to_pyobject(added_op).unwrap();
