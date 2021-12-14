@@ -1647,848 +1647,839 @@ fn test_pyo3_new_set_statevector() {
 #[test]
 fn test_pyo3_new_set_densitymatrix() {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = py.get_type::<PragmaSetDensityMatrixWrapper>();
-    let to_get_densmat_0 = Operation::from(PragmaSetDensityMatrix::new(densitymatrix()));
-    let convert_to_get_densmat_0 = convert_operation_to_pyobject(to_get_densmat_0)
-        .unwrap()
-        .clone();
-    let densmat_op_0 = convert_to_get_densmat_0
-        .call_method0(py, "density_matrix")
-        .unwrap();
-    let new_op = operation
-        .call1((densmat_op_0,))
-        .unwrap()
-        .cast_as::<PyCell<PragmaSetDensityMatrixWrapper>>()
-        .unwrap();
+    Python::with_gil(|py| -> () {
+        let operation = py.get_type::<PragmaSetDensityMatrixWrapper>();
+        let to_get_densmat_0 = Operation::from(PragmaSetDensityMatrix::new(densitymatrix()));
+        let convert_to_get_densmat_0 = convert_operation_to_pyobject(to_get_densmat_0)
+            .unwrap()
+            .clone();
+        let densmat_op_0 = convert_to_get_densmat_0
+            .call_method0(py, "density_matrix")
+            .unwrap();
+        let new_op = operation
+            .call1((densmat_op_0,))
+            .unwrap()
+            .cast_as::<PyCell<PragmaSetDensityMatrixWrapper>>()
+            .unwrap();
 
-    let comparison_copy = bool::extract(
-        new_op
-            .call_method1("__eq__", (convert_to_get_densmat_0.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_copy);
-
-    let to_get_densmat_1 = Operation::from(PragmaSetDensityMatrix::new(densitymatrix() + 1.0));
-    let convert_to_get_densmat_1 = convert_operation_to_pyobject(to_get_densmat_1)
-        .unwrap()
-        .clone();
-    let densmat_op_1 = convert_to_get_densmat_1
-        .call_method0(py, "density_matrix")
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (convert_to_get_densmat_0.clone(),))
+                .unwrap(),
+        )
         .unwrap();
+        assert!(comparison_copy);
 
-    let pragma_wrapper = new_op.extract::<PragmaSetDensityMatrixWrapper>().unwrap();
-    let new_op_diff = operation
-        .call1((densmat_op_1,))
-        .unwrap()
-        .cast_as::<PyCell<PragmaSetDensityMatrixWrapper>>()
-        .unwrap();
-    let pragma_wrapper_diff = new_op_diff
-        .extract::<PragmaSetDensityMatrixWrapper>()
-        .unwrap();
-    let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
-    assert!(helper_eq);
+        let to_get_densmat_1 = Operation::from(PragmaSetDensityMatrix::new(densitymatrix() + 1.0));
+        let convert_to_get_densmat_1 = convert_operation_to_pyobject(to_get_densmat_1)
+            .unwrap()
+            .clone();
+        let densmat_op_1 = convert_to_get_densmat_1
+            .call_method0(py, "density_matrix")
+            .unwrap();
 
-    assert_eq!(
-        format!("{:?}", pragma_wrapper),
-        "PragmaSetDensityMatrixWrapper { internal: PragmaSetDensityMatrix { density_matrix: [[Complex { re: 1.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }],\n [Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }]], shape=[2, 2], strides=[2, 1], layout=Cc (0x5), const ndim=2 } }"
-    );
+        let pragma_wrapper = new_op.extract::<PragmaSetDensityMatrixWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1((densmat_op_1,))
+            .unwrap()
+            .cast_as::<PyCell<PragmaSetDensityMatrixWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff
+            .extract::<PragmaSetDensityMatrixWrapper>()
+            .unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", pragma_wrapper),
+            "PragmaSetDensityMatrixWrapper { internal: PragmaSetDensityMatrix { density_matrix: [[Complex { re: 1.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }],\n [Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }]], shape=[2, 2], strides=[2, 1], layout=Cc (0x5), const ndim=2 } }"
+        );
+    })
 }
 
 /// Test PragmaRepeatGate new() function
 #[test]
 fn test_pyo3_new_repeated_gate() {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = py.get_type::<PragmaRepeatGateWrapper>();
-    let new_op = operation
-        .call1((2,))
-        .unwrap()
-        .cast_as::<PyCell<PragmaRepeatGateWrapper>>()
+    Python::with_gil(|py| -> () {
+        let operation = py.get_type::<PragmaRepeatGateWrapper>();
+        let new_op = operation
+            .call1((2,))
+            .unwrap()
+            .cast_as::<PyCell<PragmaRepeatGateWrapper>>()
+            .unwrap();
+
+        let input_definition = Operation::from(PragmaRepeatGate::new(2));
+        let copy_param = convert_operation_to_pyobject(input_definition)
+            .unwrap()
+            .clone();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param.clone(),))
+                .unwrap(),
+        )
         .unwrap();
+        assert!(comparison_copy);
 
-    let input_definition = Operation::from(PragmaRepeatGate::new(2));
-    let copy_param = convert_operation_to_pyobject(input_definition)
-        .unwrap()
-        .clone();
-    let comparison_copy = bool::extract(
-        new_op
-            .call_method1("__eq__", (copy_param.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_copy);
+        let pragma_wrapper = new_op.extract::<PragmaRepeatGateWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1((3,))
+            .unwrap()
+            .cast_as::<PyCell<PragmaRepeatGateWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff.extract::<PragmaRepeatGateWrapper>().unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
 
-    let pragma_wrapper = new_op.extract::<PragmaRepeatGateWrapper>().unwrap();
-    let new_op_diff = operation
-        .call1((3,))
-        .unwrap()
-        .cast_as::<PyCell<PragmaRepeatGateWrapper>>()
-        .unwrap();
-    let pragma_wrapper_diff = new_op_diff.extract::<PragmaRepeatGateWrapper>().unwrap();
-    let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
-    assert!(helper_eq);
-
-    assert_eq!(
-        format!("{:?}", pragma_wrapper),
-        "PragmaRepeatGateWrapper { internal: PragmaRepeatGate { repetition_coefficient: 2 } }"
-    );
+        assert_eq!(
+            format!("{:?}", pragma_wrapper),
+            "PragmaRepeatGateWrapper { internal: PragmaRepeatGate { repetition_coefficient: 2 } }"
+        );
+    })
 }
 
 /// Test PragmaOverrotation new() function
 #[test]
 fn test_pyo3_new_overrotation() {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation = py.get_type::<PragmaOverrotationWrapper>();
-    let new_op = operation
-        .call1(("RotateX", vec![0], 0.03, 0.001))
-        .unwrap()
-        .cast_as::<PyCell<PragmaOverrotationWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation = py.get_type::<PragmaOverrotationWrapper>();
+        let new_op = operation
+            .call1(("RotateX", vec![0], 0.03, 0.001))
+            .unwrap()
+            .cast_as::<PyCell<PragmaOverrotationWrapper>>()
+            .unwrap();
+        let input_definition = Operation::from(PragmaOverrotation::new(
+            "RotateX".to_string(),
+            vec![0],
+            0.03,
+            0.001,
+        ));
+        let copy_param = convert_operation_to_pyobject(input_definition)
+            .unwrap()
+            .clone();
+        let extracted: PragmaOverrotationWrapper =
+            PragmaOverrotationWrapper::extract(new_op.as_ref()).unwrap();
+        assert_eq!(
+            extracted.internal,
+            PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)
+        );
+        let comparison = bool::extract(
+            new_op
+                .as_ref()
+                .call_method1("__eq__", (copy_param.clone(),))
+                .unwrap(),
+        )
         .unwrap();
-    let input_definition = Operation::from(PragmaOverrotation::new(
-        "RotateX".to_string(),
-        vec![0],
-        0.03,
-        0.001,
-    ));
-    let copy_param = convert_operation_to_pyobject(input_definition)
-        .unwrap()
-        .clone();
-    let extracted: PragmaOverrotationWrapper =
-        PragmaOverrotationWrapper::extract(new_op.as_ref()).unwrap();
-    assert_eq!(
-        extracted.internal,
-        PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)
-    );
-    let comparison = bool::extract(
-        new_op
-            .as_ref()
-            .call_method1("__eq__", (copy_param.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        assert!(comparison);
 
-    // Testing PartialEq, Clone and Debug
-    let pragma_wrapper = new_op.extract::<PragmaOverrotationWrapper>().unwrap();
-    let new_op_diff = operation
-        .call1(("RotateX", vec![1], 0.03, 0.001))
-        .unwrap()
-        .cast_as::<PyCell<PragmaOverrotationWrapper>>()
-        .unwrap();
-    let pragma_wrapper_diff = new_op_diff.extract::<PragmaOverrotationWrapper>().unwrap();
-    let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let pragma_wrapper = new_op.extract::<PragmaOverrotationWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1(("RotateX", vec![1], 0.03, 0.001))
+            .unwrap()
+            .cast_as::<PyCell<PragmaOverrotationWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff.extract::<PragmaOverrotationWrapper>().unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", pragma_wrapper),
-        "PragmaOverrotationWrapper { internal: PragmaOverrotation { gate_hqslang: \"RotateX\", qubits: [0], amplitude: 0.03, variance: 0.001 } }"
-    );
+        assert_eq!(
+            format!("{:?}", pragma_wrapper),
+            "PragmaOverrotationWrapper { internal: PragmaOverrotation { gate_hqslang: \"RotateX\", qubits: [0], amplitude: 0.03, variance: 0.001 } }"
+        );
+    })
 }
 
 /// Test PragmaBoostNoise new() function
 #[test]
 fn test_pyo3_new_boost_noise() {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation = py.get_type::<PragmaBoostNoiseWrapper>();
-    let new_op = operation
-        .call1((0.003,))
-        .unwrap()
-        .cast_as::<PyCell<PragmaBoostNoiseWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation = py.get_type::<PragmaBoostNoiseWrapper>();
+        let new_op = operation
+            .call1((0.003,))
+            .unwrap()
+            .cast_as::<PyCell<PragmaBoostNoiseWrapper>>()
+            .unwrap();
+        let input_definition = Operation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.003)));
+        let copy_param = convert_operation_to_pyobject(input_definition)
+            .unwrap()
+            .clone();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param.clone(),))
+                .unwrap(),
+        )
         .unwrap();
-    let input_definition = Operation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.003)));
-    let copy_param = convert_operation_to_pyobject(input_definition)
-        .unwrap()
-        .clone();
-    let comparison_copy = bool::extract(
-        new_op
-            .call_method1("__eq__", (copy_param.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_copy);
+        assert!(comparison_copy);
 
-    // Error initialisation
-    let result = operation.call1((vec!["fails"],));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation.call1((vec!["fails"],));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let pragma_wrapper = new_op.extract::<PragmaBoostNoiseWrapper>().unwrap();
-    let new_op_diff = operation
-        .call1((0.001,))
-        .unwrap()
-        .cast_as::<PyCell<PragmaBoostNoiseWrapper>>()
-        .unwrap();
-    let pragma_wrapper_diff = new_op_diff.extract::<PragmaBoostNoiseWrapper>().unwrap();
-    let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let pragma_wrapper = new_op.extract::<PragmaBoostNoiseWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1((0.001,))
+            .unwrap()
+            .cast_as::<PyCell<PragmaBoostNoiseWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff.extract::<PragmaBoostNoiseWrapper>().unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", pragma_wrapper),
-        "PragmaBoostNoiseWrapper { internal: PragmaBoostNoise { noise_coefficient: Float(0.003) } }"
-    );
+        assert_eq!(
+            format!("{:?}", pragma_wrapper),
+            "PragmaBoostNoiseWrapper { internal: PragmaBoostNoise { noise_coefficient: Float(0.003) } }"
+        );
+    })
 }
 
 /// Test PragmaStopParallelBlock new() function
 #[test]
 fn test_pyo3_new_stop() {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation = py.get_type::<PragmaStopParallelBlockWrapper>();
-    let new_op = operation
-        .call1((vec![0], 0.0000001))
-        .unwrap()
-        .cast_as::<PyCell<PragmaStopParallelBlockWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation = py.get_type::<PragmaStopParallelBlockWrapper>();
+        let new_op = operation
+            .call1((vec![0], 0.0000001))
+            .unwrap()
+            .cast_as::<PyCell<PragmaStopParallelBlockWrapper>>()
+            .unwrap();
+        let input_definition = Operation::from(PragmaStopParallelBlock::new(
+            vec![0],
+            CalculatorFloat::from(0.0000001),
+        ));
+        let copy_param = convert_operation_to_pyobject(input_definition)
+            .unwrap()
+            .clone();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param.clone(),))
+                .unwrap(),
+        )
         .unwrap();
-    let input_definition = Operation::from(PragmaStopParallelBlock::new(
-        vec![0],
-        CalculatorFloat::from(0.0000001),
-    ));
-    let copy_param = convert_operation_to_pyobject(input_definition)
-        .unwrap()
-        .clone();
-    let comparison_copy = bool::extract(
-        new_op
-            .call_method1("__eq__", (copy_param.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_copy);
+        assert!(comparison_copy);
 
-    // Error initialisation
-    let result = operation.call1((vec![0], vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation.call1((vec![0], vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let pragma_wrapper = new_op.extract::<PragmaStopParallelBlockWrapper>().unwrap();
-    let new_op_diff = operation
-        .call1((vec![1], 0.0000001))
-        .unwrap()
-        .cast_as::<PyCell<PragmaStopParallelBlockWrapper>>()
-        .unwrap();
-    let pragma_wrapper_diff = new_op_diff
-        .extract::<PragmaStopParallelBlockWrapper>()
-        .unwrap();
-    let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let pragma_wrapper = new_op.extract::<PragmaStopParallelBlockWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1((vec![1], 0.0000001))
+            .unwrap()
+            .cast_as::<PyCell<PragmaStopParallelBlockWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff
+            .extract::<PragmaStopParallelBlockWrapper>()
+            .unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
 
-    let string_comparison = (
-        format!("{:?}", pragma_wrapper) == 
-        "PragmaStopParallelBlockWrapper { internal: PragmaStopParallelBlock { qubits: [0], execution_time: Float(0.0000001) } }"
-    ) || (
-        format!("{:?}", pragma_wrapper) == 
-        "PragmaStopParallelBlockWrapper { internal: PragmaStopParallelBlock { qubits: [0], execution_time: Float(1e-7) } }"
-    );
+        let string_comparison = (
+            format!("{:?}", pragma_wrapper) == 
+            "PragmaStopParallelBlockWrapper { internal: PragmaStopParallelBlock { qubits: [0], execution_time: Float(0.0000001) } }"
+        ) || (
+            format!("{:?}", pragma_wrapper) == 
+            "PragmaStopParallelBlockWrapper { internal: PragmaStopParallelBlock { qubits: [0], execution_time: Float(1e-7) } }"
+        );
 
-    assert!(string_comparison)
+        assert!(string_comparison)
+    })
 }
 
 /// Test PragmaGlobalPhase new() function
 #[test]
 fn test_pyo3_new_global_phase() {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation = py.get_type::<PragmaGlobalPhaseWrapper>();
-    let new_op = operation
-        .call1((0.003,))
-        .unwrap()
-        .cast_as::<PyCell<PragmaGlobalPhaseWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation = py.get_type::<PragmaGlobalPhaseWrapper>();
+        let new_op = operation
+            .call1((0.003,))
+            .unwrap()
+            .cast_as::<PyCell<PragmaGlobalPhaseWrapper>>()
+            .unwrap();
+        let input_definition =
+            Operation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.003)));
+        let copy_param = convert_operation_to_pyobject(input_definition)
+            .unwrap()
+            .clone();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param.clone(),))
+                .unwrap(),
+        )
         .unwrap();
-    let input_definition = Operation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.003)));
-    let copy_param = convert_operation_to_pyobject(input_definition)
-        .unwrap()
-        .clone();
-    let comparison_copy = bool::extract(
-        new_op
-            .call_method1("__eq__", (copy_param.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_copy);
+        assert!(comparison_copy);
 
-    // Error initialisation
-    let result = operation.call1((vec!["fails"],));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation.call1((vec!["fails"],));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let pragma_wrapper = new_op.extract::<PragmaGlobalPhaseWrapper>().unwrap();
-    let new_op_diff = operation
-        .call1((0.001,))
-        .unwrap()
-        .cast_as::<PyCell<PragmaGlobalPhaseWrapper>>()
-        .unwrap();
-    let pragma_wrapper_diff = new_op_diff.extract::<PragmaGlobalPhaseWrapper>().unwrap();
-    let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let pragma_wrapper = new_op.extract::<PragmaGlobalPhaseWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1((0.001,))
+            .unwrap()
+            .cast_as::<PyCell<PragmaGlobalPhaseWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff.extract::<PragmaGlobalPhaseWrapper>().unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", pragma_wrapper),
-        "PragmaGlobalPhaseWrapper { internal: PragmaGlobalPhase { phase: Float(0.003) } }"
-    );
+        assert_eq!(
+            format!("{:?}", pragma_wrapper),
+            "PragmaGlobalPhaseWrapper { internal: PragmaGlobalPhase { phase: Float(0.003) } }"
+        );
+    })
 }
 
 /// Test PragmaSleep new() function
 #[test]
 fn test_pyo3_new_sleep() {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation = py.get_type::<PragmaSleepWrapper>();
+        let new_op = operation
+            .call1((vec![0], 0.0000001))
+            .unwrap()
+            .cast_as::<PyCell<PragmaSleepWrapper>>()
+            .unwrap();
 
-    // Basic initialisation, no errors
-    let operation = py.get_type::<PragmaSleepWrapper>();
-    let new_op = operation
-        .call1((vec![0], 0.0000001))
-        .unwrap()
-        .cast_as::<PyCell<PragmaSleepWrapper>>()
+        let input_definition =
+            Operation::from(PragmaSleep::new(vec![0], CalculatorFloat::from(0.0000001)));
+        let copy_param = convert_operation_to_pyobject(input_definition)
+            .unwrap()
+            .clone();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param.clone(),))
+                .unwrap(),
+        )
         .unwrap();
+        assert!(comparison_copy);
 
-    let input_definition =
-        Operation::from(PragmaSleep::new(vec![0], CalculatorFloat::from(0.0000001)));
-    let copy_param = convert_operation_to_pyobject(input_definition)
-        .unwrap()
-        .clone();
-    let comparison_copy = bool::extract(
-        new_op
-            .call_method1("__eq__", (copy_param.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_copy);
+        // Error initialisation
+        let result = operation.call1((vec![0], vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Error initialisation
-    let result = operation.call1((vec![0], vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Testing PartialEq, Clone and Debug
+        let pragma_wrapper = new_op.extract::<PragmaSleepWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1((vec![1], 0.0000001))
+            .unwrap()
+            .cast_as::<PyCell<PragmaSleepWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff.extract::<PragmaSleepWrapper>().unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
 
-    // Testing PartialEq, Clone and Debug
-    let pragma_wrapper = new_op.extract::<PragmaSleepWrapper>().unwrap();
-    let new_op_diff = operation
-        .call1((vec![1], 0.0000001))
-        .unwrap()
-        .cast_as::<PyCell<PragmaSleepWrapper>>()
-        .unwrap();
-    let pragma_wrapper_diff = new_op_diff.extract::<PragmaSleepWrapper>().unwrap();
-    let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
-    assert!(helper_eq);
+        let string_comparison = (
+            format!("{:?}", pragma_wrapper) == 
+            "PragmaSleepWrapper { internal: PragmaSleep { qubits: [0], sleep_time: Float(0.0000001) } }"
+        ) || (
+            format!("{:?}", pragma_wrapper) == 
+            "PragmaSleepWrapper { internal: PragmaSleep { qubits: [0], sleep_time: Float(1e-7) } }"
+        );
 
-    let string_comparison = (
-        format!("{:?}", pragma_wrapper) == 
-        "PragmaSleepWrapper { internal: PragmaSleep { qubits: [0], sleep_time: Float(0.0000001) } }"
-    ) || (
-        format!("{:?}", pragma_wrapper) == 
-        "PragmaSleepWrapper { internal: PragmaSleep { qubits: [0], sleep_time: Float(1e-7) } }"
-    );
-
-    assert!(string_comparison)
+        assert!(string_comparison)
+    })
 }
 
 /// Test PragmaActiveReset new() function
 #[test]
 fn test_pyo3_new_active_reset() {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = py.get_type::<PragmaActiveResetWrapper>();
-    let new_op = operation
-        .call1((0,))
-        .unwrap()
-        .cast_as::<PyCell<PragmaActiveResetWrapper>>()
+    Python::with_gil(|py| -> () {
+        let operation = py.get_type::<PragmaActiveResetWrapper>();
+        let new_op = operation
+            .call1((0,))
+            .unwrap()
+            .cast_as::<PyCell<PragmaActiveResetWrapper>>()
+            .unwrap();
+
+        let input_definition = Operation::from(PragmaActiveReset::new(0));
+        let copy_param = convert_operation_to_pyobject(input_definition)
+            .unwrap()
+            .clone();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param.clone(),))
+                .unwrap(),
+        )
         .unwrap();
+        assert!(comparison_copy);
 
-    let input_definition = Operation::from(PragmaActiveReset::new(0));
-    let copy_param = convert_operation_to_pyobject(input_definition)
-        .unwrap()
-        .clone();
-    let comparison_copy = bool::extract(
-        new_op
-            .call_method1("__eq__", (copy_param.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_copy);
+        let pragma_wrapper = new_op.extract::<PragmaActiveResetWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1((1,))
+            .unwrap()
+            .cast_as::<PyCell<PragmaActiveResetWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff.extract::<PragmaActiveResetWrapper>().unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
 
-    let pragma_wrapper = new_op.extract::<PragmaActiveResetWrapper>().unwrap();
-    let new_op_diff = operation
-        .call1((1,))
-        .unwrap()
-        .cast_as::<PyCell<PragmaActiveResetWrapper>>()
-        .unwrap();
-    let pragma_wrapper_diff = new_op_diff.extract::<PragmaActiveResetWrapper>().unwrap();
-    let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
-    assert!(helper_eq);
-
-    assert_eq!(
-        format!("{:?}", pragma_wrapper),
-        "PragmaActiveResetWrapper { internal: PragmaActiveReset { qubit: 0 } }"
-    );
+        assert_eq!(
+            format!("{:?}", pragma_wrapper),
+            "PragmaActiveResetWrapper { internal: PragmaActiveReset { qubit: 0 } }"
+        );
+    })
 }
 
 /// Test PragmaStartDecompositionBlock new() function
 #[test]
 fn test_pyo3_new_start_decomposition_block() {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = py.get_type::<PragmaStartDecompositionBlockWrapper>();
-    let new_op = operation
-        .call1((vec![0], reordering()))
-        .unwrap()
-        .cast_as::<PyCell<PragmaStartDecompositionBlockWrapper>>()
-        .unwrap();
+    Python::with_gil(|py| -> () {
+        let operation = py.get_type::<PragmaStartDecompositionBlockWrapper>();
+        let new_op = operation
+            .call1((vec![0], reordering()))
+            .unwrap()
+            .cast_as::<PyCell<PragmaStartDecompositionBlockWrapper>>()
+            .unwrap();
 
-    let input_definition =
-        Operation::from(PragmaStartDecompositionBlock::new(vec![0], reordering()));
-    let copy_param = convert_operation_to_pyobject(input_definition)
-        .unwrap()
-        .clone();
-    let comparison_copy = bool::extract(
-        new_op
-            .call_method1("__eq__", (copy_param.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_copy);
+        let input_definition =
+            Operation::from(PragmaStartDecompositionBlock::new(vec![0], reordering()));
+        let copy_param = convert_operation_to_pyobject(input_definition)
+            .unwrap()
+            .clone();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_copy);
 
-    let pragma_wrapper = new_op
-        .extract::<PragmaStartDecompositionBlockWrapper>()
-        .unwrap();
-    let new_op_diff = operation
-        .call1((vec![1], reordering()))
-        .unwrap()
-        .cast_as::<PyCell<PragmaStartDecompositionBlockWrapper>>()
-        .unwrap();
-    let pragma_wrapper_diff = new_op_diff
-        .extract::<PragmaStartDecompositionBlockWrapper>()
-        .unwrap();
-    let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
-    assert!(helper_eq);
+        let pragma_wrapper = new_op
+            .extract::<PragmaStartDecompositionBlockWrapper>()
+            .unwrap();
+        let new_op_diff = operation
+            .call1((vec![1], reordering()))
+            .unwrap()
+            .cast_as::<PyCell<PragmaStartDecompositionBlockWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff
+            .extract::<PragmaStartDecompositionBlockWrapper>()
+            .unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", pragma_wrapper),
-        "PragmaStartDecompositionBlockWrapper { internal: PragmaStartDecompositionBlock { qubits: [0], reordering_dictionary: {0: 0} } }"
-    );
+        assert_eq!(
+            format!("{:?}", pragma_wrapper),
+            "PragmaStartDecompositionBlockWrapper { internal: PragmaStartDecompositionBlock { qubits: [0], reordering_dictionary: {0: 0} } }"
+        );
+    })
 }
 
 /// Test PragmaStopDecompositionBlock new() function
 #[test]
 fn test_pyo3_new_stop_decomposition_block() {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = py.get_type::<PragmaStopDecompositionBlockWrapper>();
-    let new_op = operation
-        .call1((vec![0],))
-        .unwrap()
-        .cast_as::<PyCell<PragmaStopDecompositionBlockWrapper>>()
-        .unwrap();
+    Python::with_gil(|py| -> () {
+        let operation = py.get_type::<PragmaStopDecompositionBlockWrapper>();
+        let new_op = operation
+            .call1((vec![0],))
+            .unwrap()
+            .cast_as::<PyCell<PragmaStopDecompositionBlockWrapper>>()
+            .unwrap();
 
-    let input_definition = Operation::from(PragmaStopDecompositionBlock::new(vec![0]));
-    let copy_param = convert_operation_to_pyobject(input_definition)
-        .unwrap()
-        .clone();
-    let comparison_copy = bool::extract(
-        new_op
-            .call_method1("__eq__", (copy_param.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_copy);
+        let input_definition = Operation::from(PragmaStopDecompositionBlock::new(vec![0]));
+        let copy_param = convert_operation_to_pyobject(input_definition)
+            .unwrap()
+            .clone();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_copy);
 
-    let pragma_wrapper = new_op
-        .extract::<PragmaStopDecompositionBlockWrapper>()
-        .unwrap();
-    let new_op_diff = operation
-        .call1((vec![1],))
-        .unwrap()
-        .cast_as::<PyCell<PragmaStopDecompositionBlockWrapper>>()
-        .unwrap();
-    let pragma_wrapper_diff = new_op_diff
-        .extract::<PragmaStopDecompositionBlockWrapper>()
-        .unwrap();
-    let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
-    assert!(helper_eq);
+        let pragma_wrapper = new_op
+            .extract::<PragmaStopDecompositionBlockWrapper>()
+            .unwrap();
+        let new_op_diff = operation
+            .call1((vec![1],))
+            .unwrap()
+            .cast_as::<PyCell<PragmaStopDecompositionBlockWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff
+            .extract::<PragmaStopDecompositionBlockWrapper>()
+            .unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", pragma_wrapper),
-        "PragmaStopDecompositionBlockWrapper { internal: PragmaStopDecompositionBlock { qubits: [0] } }"
-    );
+        assert_eq!(
+            format!("{:?}", pragma_wrapper),
+            "PragmaStopDecompositionBlockWrapper { internal: PragmaStopDecompositionBlock { qubits: [0] } }"
+        );
+    })
 }
 
 /// Test PragmaDamping new() function
 #[test]
 fn test_pyo3_new_damping() {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation = py.get_type::<PragmaDampingWrapper>();
-    let new_op = operation
-        .call1((0, 0.005, 0.02))
-        .unwrap()
-        .cast_as::<PyCell<PragmaDampingWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation = py.get_type::<PragmaDampingWrapper>();
+        let new_op = operation
+            .call1((0, 0.005, 0.02))
+            .unwrap()
+            .cast_as::<PyCell<PragmaDampingWrapper>>()
+            .unwrap();
+        let input_definition = Operation::from(PragmaDamping::new(
+            0,
+            CalculatorFloat::from(0.005),
+            CalculatorFloat::from(0.02),
+        ));
+        let copy_param = convert_operation_to_pyobject(input_definition)
+            .unwrap()
+            .clone();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param.clone(),))
+                .unwrap(),
+        )
         .unwrap();
-    let input_definition = Operation::from(PragmaDamping::new(
-        0,
-        CalculatorFloat::from(0.005),
-        CalculatorFloat::from(0.02),
-    ));
-    let copy_param = convert_operation_to_pyobject(input_definition)
-        .unwrap()
-        .clone();
-    let comparison_copy = bool::extract(
-        new_op
-            .call_method1("__eq__", (copy_param.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_copy);
+        assert!(comparison_copy);
 
-    // Error initialisation
-    let result = operation.call1((0, vec!["fails"], 0.0));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
-    let result = operation.call1((0, 0.0, vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation.call1((0, vec!["fails"], 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+        let result = operation.call1((0, 0.0, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let pragma_wrapper = new_op.extract::<PragmaDampingWrapper>().unwrap();
-    let new_op_diff = operation
-        .call1((1, 0.005, 0.02))
-        .unwrap()
-        .cast_as::<PyCell<PragmaDampingWrapper>>()
-        .unwrap();
-    let pragma_wrapper_diff = new_op_diff.extract::<PragmaDampingWrapper>().unwrap();
-    let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let pragma_wrapper = new_op.extract::<PragmaDampingWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1((1, 0.005, 0.02))
+            .unwrap()
+            .cast_as::<PyCell<PragmaDampingWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff.extract::<PragmaDampingWrapper>().unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", pragma_wrapper),
-        "PragmaDampingWrapper { internal: PragmaDamping { qubit: 0, gate_time: Float(0.005), rate: Float(0.02) } }"
-    );
+        assert_eq!(
+            format!("{:?}", pragma_wrapper),
+            "PragmaDampingWrapper { internal: PragmaDamping { qubit: 0, gate_time: Float(0.005), rate: Float(0.02) } }"
+        );
+    })
 }
 
 /// Test PragmaDepolarising new() function
 #[test]
 fn test_pyo3_new_depolarising() {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation = py.get_type::<PragmaDepolarisingWrapper>();
-    let new_op = operation
-        .call1((0, 0.005, 0.02))
-        .unwrap()
-        .cast_as::<PyCell<PragmaDepolarisingWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation = py.get_type::<PragmaDepolarisingWrapper>();
+        let new_op = operation
+            .call1((0, 0.005, 0.02))
+            .unwrap()
+            .cast_as::<PyCell<PragmaDepolarisingWrapper>>()
+            .unwrap();
+        let input_definition = Operation::from(PragmaDepolarising::new(
+            0,
+            CalculatorFloat::from(0.005),
+            CalculatorFloat::from(0.02),
+        ));
+        let copy_param = convert_operation_to_pyobject(input_definition)
+            .unwrap()
+            .clone();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param.clone(),))
+                .unwrap(),
+        )
         .unwrap();
-    let input_definition = Operation::from(PragmaDepolarising::new(
-        0,
-        CalculatorFloat::from(0.005),
-        CalculatorFloat::from(0.02),
-    ));
-    let copy_param = convert_operation_to_pyobject(input_definition)
-        .unwrap()
-        .clone();
-    let comparison_copy = bool::extract(
-        new_op
-            .call_method1("__eq__", (copy_param.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_copy);
+        assert!(comparison_copy);
 
-    // Error initialisation
-    let result = operation.call1((0, vec!["fails"], 0.0));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
-    let result = operation.call1((0, 0.0, vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation.call1((0, vec!["fails"], 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+        let result = operation.call1((0, 0.0, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let pragma_wrapper = new_op.extract::<PragmaDepolarisingWrapper>().unwrap();
-    let new_op_diff = operation
-        .call1((1, 0.005, 0.02))
-        .unwrap()
-        .cast_as::<PyCell<PragmaDepolarisingWrapper>>()
-        .unwrap();
-    let pragma_wrapper_diff = new_op_diff.extract::<PragmaDepolarisingWrapper>().unwrap();
-    let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let pragma_wrapper = new_op.extract::<PragmaDepolarisingWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1((1, 0.005, 0.02))
+            .unwrap()
+            .cast_as::<PyCell<PragmaDepolarisingWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff.extract::<PragmaDepolarisingWrapper>().unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", pragma_wrapper),
-        "PragmaDepolarisingWrapper { internal: PragmaDepolarising { qubit: 0, gate_time: Float(0.005), rate: Float(0.02) } }"
-    );
+        assert_eq!(
+            format!("{:?}", pragma_wrapper),
+            "PragmaDepolarisingWrapper { internal: PragmaDepolarising { qubit: 0, gate_time: Float(0.005), rate: Float(0.02) } }"
+        );
+    })
 }
 
 /// Test PragmaDephasing new() function
 #[test]
 fn test_pyo3_new_dephasing() {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation = py.get_type::<PragmaDephasingWrapper>();
-    let new_op = operation
-        .call1((0, 0.005, 0.02))
-        .unwrap()
-        .cast_as::<PyCell<PragmaDephasingWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation = py.get_type::<PragmaDephasingWrapper>();
+        let new_op = operation
+            .call1((0, 0.005, 0.02))
+            .unwrap()
+            .cast_as::<PyCell<PragmaDephasingWrapper>>()
+            .unwrap();
+        let input_definition = Operation::from(PragmaDephasing::new(
+            0,
+            CalculatorFloat::from(0.005),
+            CalculatorFloat::from(0.02),
+        ));
+        let copy_param = convert_operation_to_pyobject(input_definition)
+            .unwrap()
+            .clone();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param.clone(),))
+                .unwrap(),
+        )
         .unwrap();
-    let input_definition = Operation::from(PragmaDephasing::new(
-        0,
-        CalculatorFloat::from(0.005),
-        CalculatorFloat::from(0.02),
-    ));
-    let copy_param = convert_operation_to_pyobject(input_definition)
-        .unwrap()
-        .clone();
-    let comparison_copy = bool::extract(
-        new_op
-            .call_method1("__eq__", (copy_param.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_copy);
+        assert!(comparison_copy);
 
-    // Error initialisation
-    let result = operation.call1((0, vec!["fails"], 0.0));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
-    let result = operation.call1((0, 0.0, vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation.call1((0, vec!["fails"], 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+        let result = operation.call1((0, 0.0, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let pragma_wrapper = new_op.extract::<PragmaDephasingWrapper>().unwrap();
-    let new_op_diff = operation
-        .call1((1, 0.005, 0.02))
-        .unwrap()
-        .cast_as::<PyCell<PragmaDephasingWrapper>>()
-        .unwrap();
-    let pragma_wrapper_diff = new_op_diff.extract::<PragmaDephasingWrapper>().unwrap();
-    let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let pragma_wrapper = new_op.extract::<PragmaDephasingWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1((1, 0.005, 0.02))
+            .unwrap()
+            .cast_as::<PyCell<PragmaDephasingWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff.extract::<PragmaDephasingWrapper>().unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", pragma_wrapper),
-        "PragmaDephasingWrapper { internal: PragmaDephasing { qubit: 0, gate_time: Float(0.005), rate: Float(0.02) } }"
-    );
+        assert_eq!(
+            format!("{:?}", pragma_wrapper),
+            "PragmaDephasingWrapper { internal: PragmaDephasing { qubit: 0, gate_time: Float(0.005), rate: Float(0.02) } }"
+        );
+    })
 }
 
 /// Test PragmaRandomNoise new() function
 #[test]
 fn test_pyo3_new_randomnoise() {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation = py.get_type::<PragmaRandomNoiseWrapper>();
-    let new_op = operation
-        .call1((0, 0.005, 0.02, 0.01))
-        .unwrap()
-        .cast_as::<PyCell<PragmaRandomNoiseWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation = py.get_type::<PragmaRandomNoiseWrapper>();
+        let new_op = operation
+            .call1((0, 0.005, 0.02, 0.01))
+            .unwrap()
+            .cast_as::<PyCell<PragmaRandomNoiseWrapper>>()
+            .unwrap();
+        let input_definition = Operation::from(PragmaRandomNoise::new(
+            0,
+            CalculatorFloat::from(0.005),
+            CalculatorFloat::from(0.02),
+            CalculatorFloat::from(0.01),
+        ));
+        let copy_param = convert_operation_to_pyobject(input_definition)
+            .unwrap()
+            .clone();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param.clone(),))
+                .unwrap(),
+        )
         .unwrap();
-    let input_definition = Operation::from(PragmaRandomNoise::new(
-        0,
-        CalculatorFloat::from(0.005),
-        CalculatorFloat::from(0.02),
-        CalculatorFloat::from(0.01),
-    ));
-    let copy_param = convert_operation_to_pyobject(input_definition)
-        .unwrap()
-        .clone();
-    let comparison_copy = bool::extract(
-        new_op
-            .call_method1("__eq__", (copy_param.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_copy);
+        assert!(comparison_copy);
 
-    // Error initialisation
-    let result = operation.call1((0, vec!["fails"], 0.0, 0.0));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
-    let result = operation.call1((0, 0.0, vec!["fails"], 0.0));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
-    let result = operation.call1((0, 0.0, 0.0, vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation.call1((0, vec!["fails"], 0.0, 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+        let result = operation.call1((0, 0.0, vec!["fails"], 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+        let result = operation.call1((0, 0.0, 0.0, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let pragma_wrapper = new_op.extract::<PragmaRandomNoiseWrapper>().unwrap();
-    let new_op_diff = operation
-        .call1((1, 0.005, 0.02, 0.01))
-        .unwrap()
-        .cast_as::<PyCell<PragmaRandomNoiseWrapper>>()
-        .unwrap();
-    let pragma_wrapper_diff = new_op_diff.extract::<PragmaRandomNoiseWrapper>().unwrap();
-    let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let pragma_wrapper = new_op.extract::<PragmaRandomNoiseWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1((1, 0.005, 0.02, 0.01))
+            .unwrap()
+            .cast_as::<PyCell<PragmaRandomNoiseWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff.extract::<PragmaRandomNoiseWrapper>().unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", pragma_wrapper),
-        "PragmaRandomNoiseWrapper { internal: PragmaRandomNoise { qubit: 0, gate_time: Float(0.005), depolarising_rate: Float(0.02), dephasing_rate: Float(0.01) } }"
-    );
+        assert_eq!(
+            format!("{:?}", pragma_wrapper),
+            "PragmaRandomNoiseWrapper { internal: PragmaRandomNoise { qubit: 0, gate_time: Float(0.005), depolarising_rate: Float(0.02), dephasing_rate: Float(0.01) } }"
+        );
+    })
 }
 
 /// Test PragmaGeneralNoise new() function
 #[test]
 fn test_pyo3_new_general_noise() {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation = py.get_type::<PragmaGeneralNoiseWrapper>();
+        let to_get_operators = Operation::from(PragmaGeneralNoise::new(
+            0,
+            CalculatorFloat::from(0.005),
+            operators(),
+        ));
+        let convert_to_get_operators = convert_operation_to_pyobject(to_get_operators)
+            .unwrap()
+            .clone();
+        let operators_op = convert_to_get_operators.call_method0(py, "rates").unwrap();
 
-    // Basic initialisation, no errors
-    let operation = py.get_type::<PragmaGeneralNoiseWrapper>();
-    let to_get_operators = Operation::from(PragmaGeneralNoise::new(
-        0,
-        CalculatorFloat::from(0.005),
-        operators(),
-    ));
-    let convert_to_get_operators = convert_operation_to_pyobject(to_get_operators)
-        .unwrap()
-        .clone();
-    let operators_op = convert_to_get_operators.call_method0(py, "rates").unwrap();
+        let new_op = operation
+            .call1((0, 0.005, operators_op.clone()))
+            .unwrap()
+            .cast_as::<PyCell<PragmaGeneralNoiseWrapper>>()
+            .unwrap();
 
-    let new_op = operation
-        .call1((0, 0.005, operators_op.clone()))
-        .unwrap()
-        .cast_as::<PyCell<PragmaGeneralNoiseWrapper>>()
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (convert_to_get_operators.clone(),))
+                .unwrap(),
+        )
         .unwrap();
+        assert!(comparison_copy);
 
-    let comparison_copy = bool::extract(
-        new_op
-            .call_method1("__eq__", (convert_to_get_operators.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_copy);
+        // Error initialisation
+        let result = operation.call1((0, vec!["fails"], 0.0, operators_op.clone()));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Error initialisation
-    let result = operation.call1((0, vec!["fails"], 0.0, operators_op.clone()));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        let result = operation.call1((0, 0.0, vec!["fails"], operators_op.clone()));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    let result = operation.call1((0, 0.0, vec!["fails"], operators_op.clone()));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Testing PartialEq, Clone and Debug
+        let pragma_wrapper = new_op.extract::<PragmaGeneralNoiseWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1((1, 0.005, operators_op))
+            .unwrap()
+            .cast_as::<PyCell<PragmaGeneralNoiseWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff.extract::<PragmaGeneralNoiseWrapper>().unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
 
-    // Testing PartialEq, Clone and Debug
-    let pragma_wrapper = new_op.extract::<PragmaGeneralNoiseWrapper>().unwrap();
-    let new_op_diff = operation
-        .call1((1, 0.005, operators_op))
-        .unwrap()
-        .cast_as::<PyCell<PragmaGeneralNoiseWrapper>>()
-        .unwrap();
-    let pragma_wrapper_diff = new_op_diff.extract::<PragmaGeneralNoiseWrapper>().unwrap();
-    let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
-    assert!(helper_eq);
-
-    assert_eq!(
-        format!("{:?}", pragma_wrapper),
-        "PragmaGeneralNoiseWrapper { internal: PragmaGeneralNoise { qubit: 0, gate_time: Float(0.005), rates: [[1.0, 0.0, 0.0],\n [0.0, 1.0, 0.0],\n [0.0, 0.0, 1.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2 } }"
-    );
+        assert_eq!(
+            format!("{:?}", pragma_wrapper),
+            "PragmaGeneralNoiseWrapper { internal: PragmaGeneralNoise { qubit: 0, gate_time: Float(0.005), rates: [[1.0, 0.0, 0.0],\n [0.0, 1.0, 0.0],\n [0.0, 0.0, 1.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2 } }"
+        );
+    })
 }
 
 /// Test PragmaConditional new() function
 #[test]
 fn test_pyo3_new_conditional() {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = py.get_type::<PragmaConditionalWrapper>();
-    let new_op = operation
-        .call1(("ro".to_string(), 0, new_circuit(py)))
-        .unwrap()
-        .cast_as::<PyCell<PragmaConditionalWrapper>>()
+    Python::with_gil(|py| -> () {
+        let operation = py.get_type::<PragmaConditionalWrapper>();
+        let new_op = operation
+            .call1(("ro".to_string(), 0, new_circuit(py)))
+            .unwrap()
+            .cast_as::<PyCell<PragmaConditionalWrapper>>()
+            .unwrap();
+
+        let input_definition =
+            Operation::from(PragmaConditional::new("ro".to_string(), 0, Circuit::new()));
+        let copy_param = convert_operation_to_pyobject(input_definition)
+            .unwrap()
+            .clone();
+        let comparison_copy = bool::extract(
+            new_op
+                .call_method1("__eq__", (copy_param.clone(),))
+                .unwrap(),
+        )
         .unwrap();
+        assert!(comparison_copy);
 
-    let input_definition =
-        Operation::from(PragmaConditional::new("ro".to_string(), 0, Circuit::new()));
-    let copy_param = convert_operation_to_pyobject(input_definition)
-        .unwrap()
-        .clone();
-    let comparison_copy = bool::extract(
-        new_op
-            .call_method1("__eq__", (copy_param.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_copy);
+        let pragma_wrapper = new_op.extract::<PragmaConditionalWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1(("ro".to_string(), 2, new_circuit(py)))
+            .unwrap()
+            .cast_as::<PyCell<PragmaConditionalWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff.extract::<PragmaConditionalWrapper>().unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
 
-    let pragma_wrapper = new_op.extract::<PragmaConditionalWrapper>().unwrap();
-    let new_op_diff = operation
-        .call1(("ro".to_string(), 2, new_circuit(py)))
-        .unwrap()
-        .cast_as::<PyCell<PragmaConditionalWrapper>>()
-        .unwrap();
-    let pragma_wrapper_diff = new_op_diff.extract::<PragmaConditionalWrapper>().unwrap();
-    let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
-    assert!(helper_eq);
-
-    assert_eq!(
-        format!("{:?}", pragma_wrapper),
-        "PragmaConditionalWrapper { internal: PragmaConditional { condition_register: \"ro\", condition_index: 0, circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } } }"
-    );
+        assert_eq!(
+            format!("{:?}", pragma_wrapper),
+            "PragmaConditionalWrapper { internal: PragmaConditional { condition_register: \"ro\", condition_index: 0, circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } } }"
+        );
+    })
 }
 
 // test remap_qubits() function returning an error.
@@ -2505,12 +2496,12 @@ fn test_pyo3_new_conditional() {
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
-    // remap qubits
-    let qubit_mapping: HashMap<usize, usize> = HashMap::new();
-    let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+    Python::with_gil(|py| -> () {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        // remap qubits
+        let qubit_mapping: HashMap<usize, usize> = HashMap::new();
+        let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+    })
 }
