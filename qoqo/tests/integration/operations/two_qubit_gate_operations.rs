@@ -14,6 +14,7 @@ use ndarray::Array2;
 use num_complex::Complex64;
 use numpy::PyArray2;
 use pyo3::prelude::*;
+use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
     BogoliubovWrapper, CNOTWrapper, ComplexPMInteractionWrapper, ControlledPauliYWrapper,
@@ -76,16 +77,16 @@ fn convert_cf_to_pyobject(
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
-    assert!(!bool::extract(
-        operation
-            .call_method0(py, "is_parametrized")
-            .unwrap()
-            .as_ref(py)
-    )
-    .unwrap());
+    Python::with_gil(|py| -> () {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        assert!(!bool::extract(
+            operation
+                .call_method0(py, "is_parametrized")
+                .unwrap()
+                .as_ref(py)
+        )
+        .unwrap());
+    })
 }
 
 /// Test tags() function for TwoQubitGate Operations
@@ -264,15 +265,15 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
 fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
-    let tags_op: Vec<String> =
-        Vec::<String>::extract(operation.call_method0(py, "tags").unwrap().as_ref(py)).unwrap();
-    assert_eq!(tags_op.len(), tags.len());
-    for i in 0..tags.len() {
-        assert_eq!(tags_op[i], tags[i]);
-    }
+    Python::with_gil(|py| -> () {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let tags_op: Vec<String> =
+            Vec::<String>::extract(operation.call_method0(py, "tags").unwrap().as_ref(py)).unwrap();
+        assert_eq!(tags_op.len(), tags.len());
+        for i in 0..tags.len() {
+            assert_eq!(tags_op[i], tags[i]);
+        }
+    })
 }
 
 /// Test hqslang() function for TwoQubitGate Operations
@@ -302,12 +303,12 @@ fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
 #[test_case("PhaseShiftedControlledZ", Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
-    let name_op: String =
-        String::extract(operation.call_method0(py, "hqslang").unwrap().as_ref(py)).unwrap();
-    assert_eq!(name_op, name.to_string());
+    Python::with_gil(|py| -> () {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let name_op: String =
+            String::extract(operation.call_method0(py, "hqslang").unwrap().as_ref(py)).unwrap();
+        assert_eq!(name_op, name.to_string());
+    })
 }
 
 /// Test remap_qubits() function for TwoQubitGate Operations
@@ -334,37 +335,37 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_pyo3_remapqubits(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    Python::with_gil(|py| -> () {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
 
-    // test initial qubits
-    let control: usize =
-        usize::extract(operation.call_method0(py, "control").unwrap().as_ref(py)).unwrap();
-    assert_eq!(control.clone(), 0);
-    let target: usize =
-        usize::extract(operation.call_method0(py, "target").unwrap().as_ref(py)).unwrap();
-    assert_eq!(target.clone(), 1);
+        // test initial qubits
+        let control: usize =
+            usize::extract(operation.call_method0(py, "control").unwrap().as_ref(py)).unwrap();
+        assert_eq!(control.clone(), 0);
+        let target: usize =
+            usize::extract(operation.call_method0(py, "target").unwrap().as_ref(py)).unwrap();
+        assert_eq!(target.clone(), 1);
 
-    // remap qubits
-    let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
-    qubit_mapping.insert(0, 2);
-    qubit_mapping.insert(1, 3);
-    let result = operation
-        .call_method1(py, "remap_qubits", (qubit_mapping,))
-        .unwrap();
+        // remap qubits
+        let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
+        qubit_mapping.insert(0, 2);
+        qubit_mapping.insert(1, 3);
+        let result = operation
+            .call_method1(py, "remap_qubits", (qubit_mapping,))
+            .unwrap();
 
-    // test re-mapped qubit
-    let control_new: usize =
-        usize::extract(result.call_method0(py, "control").unwrap().as_ref(py)).unwrap();
-    assert_eq!(control_new.clone(), 2);
-    let target_new: usize =
-        usize::extract(result.call_method0(py, "target").unwrap().as_ref(py)).unwrap();
-    assert_eq!(target_new.clone(), 3);
+        // test re-mapped qubit
+        let control_new: usize =
+            usize::extract(result.call_method0(py, "control").unwrap().as_ref(py)).unwrap();
+        assert_eq!(control_new.clone(), 2);
+        let target_new: usize =
+            usize::extract(result.call_method0(py, "target").unwrap().as_ref(py)).unwrap();
+        assert_eq!(target_new.clone(), 3);
 
-    // test that initial and rempapped qubits are different
-    assert_ne!(control, control_new);
-    assert_ne!(target, target_new);
+        // test that initial and rempapped qubits are different
+        assert_ne!(control, control_new);
+        assert_ne!(target, target_new);
+    })
 }
 
 // test remap_qubits() function returning an error.
@@ -392,14 +393,14 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
-    // remap qubits
-    let qubit_mapping: HashMap<usize, usize> = HashMap::new();
-    let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+    Python::with_gil(|py| -> () {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        // remap qubits
+        let qubit_mapping: HashMap<usize, usize> = HashMap::new();
+        let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+    })
 }
 
 /// Test unitary_matrix() function for TwoQubitGate Operations for the error case
@@ -417,12 +418,12 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from("test"))); "PhaseShiftedControlledZ")]
 fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
-    let py_result = operation.call_method0(py, "unitary_matrix");
-    let result_ref = py_result.as_ref();
-    assert!(result_ref.is_err());
+    Python::with_gil(|py| -> () {
+        let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
+        let py_result = operation.call_method0(py, "unitary_matrix");
+        let result_ref = py_result.as_ref();
+        assert!(result_ref.is_err());
+    })
 }
 
 /// Test unitary_matrix() function for TwoQubitGate Operations
@@ -449,21 +450,21 @@ fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_pyo3_unitarymatrix(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
-    let py_result = operation.call_method0(py, "unitary_matrix").unwrap();
-    let result_matrix = py_result
-        .cast_as::<PyArray2<Complex64>>(py)
-        .unwrap()
-        .to_owned_array();
+    Python::with_gil(|py| -> () {
+        let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
+        let py_result = operation.call_method0(py, "unitary_matrix").unwrap();
+        let result_matrix = py_result
+            .cast_as::<PyArray2<Complex64>>(py)
+            .unwrap()
+            .to_owned_array();
 
-    // compare to reference matrix obtained in Rust directly (without passing to Python)
-    let gate: GateOperation = input_operation.try_into().unwrap();
-    let rust_matrix: Result<Array2<Complex64>, RoqoqoError> = gate.unitary_matrix();
-    let test_matrix: Array2<Complex64> = rust_matrix.unwrap();
+        // compare to reference matrix obtained in Rust directly (without passing to Python)
+        let gate: GateOperation = input_operation.try_into().unwrap();
+        let rust_matrix: Result<Array2<Complex64>, RoqoqoError> = gate.unitary_matrix();
+        let test_matrix: Array2<Complex64> = rust_matrix.unwrap();
 
-    assert_eq!(result_matrix, test_matrix);
+        assert_eq!(result_matrix, test_matrix);
+    })
 }
 
 /// Test format and repr functions
@@ -533,15 +534,15 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
     Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
-    let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-    let format_op: &str = <&str>::extract(to_format.as_ref(py)).unwrap();
-    let to_repr = operation.call_method0(py, "__repr__").unwrap();
-    let repr_op: &str = <&str>::extract(to_repr.as_ref(py)).unwrap();
-    assert_eq!(format_op, format_repr);
-    assert_eq!(repr_op, format_repr);
+    Python::with_gil(|py| -> () {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
+        let format_op: &str = <&str>::extract(to_format.as_ref(py)).unwrap();
+        let to_repr = operation.call_method0(py, "__repr__").unwrap();
+        let repr_op: &str = <&str>::extract(to_repr.as_ref(py)).unwrap();
+        assert_eq!(format_op, format_repr);
+        assert_eq!(repr_op, format_repr);
+    })
 }
 
 /// Test copy and deepcopy functions
@@ -568,29 +569,29 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
-    let copy_op = operation.call_method0(py, "__copy__").unwrap();
-    let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
-    let copy_deepcopy_param = operation.clone();
+    Python::with_gil(|py| -> () {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let copy_op = operation.call_method0(py, "__copy__").unwrap();
+        let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
+        let copy_deepcopy_param = operation.clone();
 
-    let comparison_copy = bool::extract(
-        copy_op
-            .as_ref(py)
-            .call_method1("__eq__", (copy_deepcopy_param.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_copy);
-    let comparison_deepcopy = bool::extract(
-        deepcopy_op
-            .as_ref(py)
-            .call_method1("__eq__", (copy_deepcopy_param,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison_deepcopy);
+        let comparison_copy = bool::extract(
+            copy_op
+                .as_ref(py)
+                .call_method1("__eq__", (copy_deepcopy_param.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_copy);
+        let comparison_deepcopy = bool::extract(
+            deepcopy_op
+                .as_ref(py)
+                .call_method1("__eq__", (copy_deepcopy_param,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_deepcopy);
+    })
 }
 
 /// Test substitute_parameters function
@@ -659,24 +660,24 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
             "PhaseShiftedControlledZ")]
 fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = convert_operation_to_pyobject(first_op).unwrap();
-    let mut substitution_dict: HashMap<&str, f64> = HashMap::new();
-    substitution_dict.insert("test", 1.0);
-    let substitute_op = operation
-        .call_method1(py, "substitute_parameters", (substitution_dict,))
-        .unwrap();
-    let substitute_param = convert_operation_to_pyobject(second_op).unwrap();
+    Python::with_gil(|py| -> () {
+        let operation = convert_operation_to_pyobject(first_op).unwrap();
+        let mut substitution_dict: HashMap<&str, f64> = HashMap::new();
+        substitution_dict.insert("test", 1.0);
+        let substitute_op = operation
+            .call_method1(py, "substitute_parameters", (substitution_dict,))
+            .unwrap();
+        let substitute_param = convert_operation_to_pyobject(second_op).unwrap();
 
-    let comparison = bool::extract(
-        substitute_op
-            .as_ref(py)
-            .call_method1("__eq__", (substitute_param.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        let comparison = bool::extract(
+            substitute_op
+                .as_ref(py)
+                .call_method1("__eq__", (substitute_param.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+    })
 }
 
 /// Test substitute_parameters returning an error
@@ -705,13 +706,13 @@ fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
             "PhaseShiftedControlledZ")]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = convert_operation_to_pyobject(input_operation).unwrap();
-    let substitution_dict: HashMap<&str, f64> = HashMap::new();
-    let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+    Python::with_gil(|py| -> () {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let substitution_dict: HashMap<&str, f64> = HashMap::new();
+        let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+    })
 }
 
 /// Test powercf function of TwoQubitGate Operations
@@ -732,22 +733,22 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
             "GivensRotationLittleEndian")]
 fn test_pyo3_powercf(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation = convert_operation_to_pyobject(first_op).unwrap();
+    Python::with_gil(|py| -> () {
+        let operation = convert_operation_to_pyobject(first_op).unwrap();
 
-    let power = convert_cf_to_pyobject(py, CalculatorFloat::from(1.5));
-    let comparison_op = convert_operation_to_pyobject(second_op).unwrap();
+        let power = convert_cf_to_pyobject(py, CalculatorFloat::from(1.5));
+        let comparison_op = convert_operation_to_pyobject(second_op).unwrap();
 
-    let remapped_op = operation.call_method1(py, "powercf", (power,)).unwrap();
-    let comparison = bool::extract(
-        remapped_op
-            .call_method1(py, "__eq__", (comparison_op,))
-            .unwrap()
-            .as_ref(py),
-    )
-    .unwrap();
-    assert!(comparison);
+        let remapped_op = operation.call_method1(py, "powercf", (power,)).unwrap();
+        let comparison = bool::extract(
+            remapped_op
+                .call_method1(py, "__eq__", (comparison_op,))
+                .unwrap()
+                .as_ref(py),
+        )
+        .unwrap();
+        assert!(comparison);
+    })
 }
 
 /// Test new() function for CNOT
@@ -756,40 +757,40 @@ fn test_pyo3_powercf(first_op: Operation, second_op: Operation) {
 fn test_new_cnot(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation_type = py.get_type::<CNOTWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<CNOTWrapper>>()
+    Python::with_gil(|py| -> () {
+        let operation_type = py.get_type::<CNOTWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<CNOTWrapper>>()
+            .unwrap();
+
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
+        assert!(comparison);
 
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        let def_wrapper = operation_py.extract::<CNOTWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2))
+            .unwrap()
+            .cast_as::<PyCell<CNOTWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<CNOTWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    let def_wrapper = operation_py.extract::<CNOTWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2))
-        .unwrap()
-        .cast_as::<PyCell<CNOTWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<CNOTWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
-
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "CNOTWrapper { internal: CNOT { control: 1, target: 2 } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "CNOTWrapper { internal: CNOT { control: 1, target: 2 } }"
+        );
+    })
 }
 
 /// Test new() function for SWAP
@@ -798,40 +799,40 @@ fn test_new_cnot(input_operation: Operation, arguments: (u32, u32), method: &str
 fn test_new_swap(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation_type = py.get_type::<SWAPWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<SWAPWrapper>>()
+    Python::with_gil(|py| -> () {
+        let operation_type = py.get_type::<SWAPWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<SWAPWrapper>>()
+            .unwrap();
+
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
+        assert!(comparison);
 
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        let def_wrapper = operation_py.extract::<SWAPWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2))
+            .unwrap()
+            .cast_as::<PyCell<SWAPWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<SWAPWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    let def_wrapper = operation_py.extract::<SWAPWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2))
-        .unwrap()
-        .cast_as::<PyCell<SWAPWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<SWAPWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
-
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "SWAPWrapper { internal: SWAP { control: 1, target: 2 } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "SWAPWrapper { internal: SWAP { control: 1, target: 2 } }"
+        );
+    })
 }
 
 /// Test new() function for ISwap
@@ -840,40 +841,40 @@ fn test_new_swap(input_operation: Operation, arguments: (u32, u32), method: &str
 fn test_new_iswap(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation_type = py.get_type::<ISwapWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<ISwapWrapper>>()
+    Python::with_gil(|py| -> () {
+        let operation_type = py.get_type::<ISwapWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<ISwapWrapper>>()
+            .unwrap();
+
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
+        assert!(comparison);
 
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        let def_wrapper = operation_py.extract::<ISwapWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2))
+            .unwrap()
+            .cast_as::<PyCell<ISwapWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<ISwapWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    let def_wrapper = operation_py.extract::<ISwapWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2))
-        .unwrap()
-        .cast_as::<PyCell<ISwapWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<ISwapWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
-
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "ISwapWrapper { internal: ISwap { control: 1, target: 2 } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "ISwapWrapper { internal: ISwap { control: 1, target: 2 } }"
+        );
+    })
 }
 
 /// Test new() function for FSwap
@@ -882,40 +883,40 @@ fn test_new_iswap(input_operation: Operation, arguments: (u32, u32), method: &st
 fn test_new_fswap(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation_type = py.get_type::<FSwapWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<FSwapWrapper>>()
+    Python::with_gil(|py| -> () {
+        let operation_type = py.get_type::<FSwapWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<FSwapWrapper>>()
+            .unwrap();
+
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
+        assert!(comparison);
 
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        let def_wrapper = operation_py.extract::<FSwapWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2))
+            .unwrap()
+            .cast_as::<PyCell<FSwapWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<FSwapWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    let def_wrapper = operation_py.extract::<FSwapWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2))
-        .unwrap()
-        .cast_as::<PyCell<FSwapWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<FSwapWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
-
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "FSwapWrapper { internal: FSwap { control: 1, target: 2 } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "FSwapWrapper { internal: FSwap { control: 1, target: 2 } }"
+        );
+    })
 }
 
 /// Test new() function for SqrtISwap
@@ -924,40 +925,40 @@ fn test_new_fswap(input_operation: Operation, arguments: (u32, u32), method: &st
 fn test_new_sqrtiswap(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation_type = py.get_type::<SqrtISwapWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<SqrtISwapWrapper>>()
+    Python::with_gil(|py| -> () {
+        let operation_type = py.get_type::<SqrtISwapWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<SqrtISwapWrapper>>()
+            .unwrap();
+
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
+        assert!(comparison);
 
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        let def_wrapper = operation_py.extract::<SqrtISwapWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2))
+            .unwrap()
+            .cast_as::<PyCell<SqrtISwapWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<SqrtISwapWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    let def_wrapper = operation_py.extract::<SqrtISwapWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2))
-        .unwrap()
-        .cast_as::<PyCell<SqrtISwapWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<SqrtISwapWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
-
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "SqrtISwapWrapper { internal: SqrtISwap { control: 1, target: 2 } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "SqrtISwapWrapper { internal: SqrtISwap { control: 1, target: 2 } }"
+        );
+    })
 }
 
 /// Test new() function for InvSqrtISwap
@@ -966,40 +967,40 @@ fn test_new_sqrtiswap(input_operation: Operation, arguments: (u32, u32), method:
 fn test_new_invsqrtiswap(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation_type = py.get_type::<InvSqrtISwapWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<InvSqrtISwapWrapper>>()
+    Python::with_gil(|py| -> () {
+        let operation_type = py.get_type::<InvSqrtISwapWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<InvSqrtISwapWrapper>>()
+            .unwrap();
+
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
+        assert!(comparison);
 
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        let def_wrapper = operation_py.extract::<InvSqrtISwapWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2))
+            .unwrap()
+            .cast_as::<PyCell<InvSqrtISwapWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<InvSqrtISwapWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    let def_wrapper = operation_py.extract::<InvSqrtISwapWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2))
-        .unwrap()
-        .cast_as::<PyCell<InvSqrtISwapWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<InvSqrtISwapWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
-
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "InvSqrtISwapWrapper { internal: InvSqrtISwap { control: 1, target: 2 } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "InvSqrtISwapWrapper { internal: InvSqrtISwap { control: 1, target: 2 } }"
+        );
+    })
 }
 
 /// Test new() function for ControlledPauliY
@@ -1008,40 +1009,40 @@ fn test_new_invsqrtiswap(input_operation: Operation, arguments: (u32, u32), meth
 fn test_new_controlledpauliy(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation_type = py.get_type::<ControlledPauliYWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<ControlledPauliYWrapper>>()
+    Python::with_gil(|py| -> () {
+        let operation_type = py.get_type::<ControlledPauliYWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<ControlledPauliYWrapper>>()
+            .unwrap();
+
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
+        assert!(comparison);
 
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        let def_wrapper = operation_py.extract::<ControlledPauliYWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2))
+            .unwrap()
+            .cast_as::<PyCell<ControlledPauliYWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<ControlledPauliYWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    let def_wrapper = operation_py.extract::<ControlledPauliYWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2))
-        .unwrap()
-        .cast_as::<PyCell<ControlledPauliYWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<ControlledPauliYWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
-
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "ControlledPauliYWrapper { internal: ControlledPauliY { control: 1, target: 2 } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "ControlledPauliYWrapper { internal: ControlledPauliY { control: 1, target: 2 } }"
+        );
+    })
 }
 
 /// Test new() function for ControlledPauliZ
@@ -1050,40 +1051,40 @@ fn test_new_controlledpauliy(input_operation: Operation, arguments: (u32, u32), 
 fn test_new_controlledpauliz(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation_type = py.get_type::<ControlledPauliZWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<ControlledPauliZWrapper>>()
+    Python::with_gil(|py| -> () {
+        let operation_type = py.get_type::<ControlledPauliZWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<ControlledPauliZWrapper>>()
+            .unwrap();
+
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
+        assert!(comparison);
 
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        let def_wrapper = operation_py.extract::<ControlledPauliZWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2))
+            .unwrap()
+            .cast_as::<PyCell<ControlledPauliZWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<ControlledPauliZWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    let def_wrapper = operation_py.extract::<ControlledPauliZWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2))
-        .unwrap()
-        .cast_as::<PyCell<ControlledPauliZWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<ControlledPauliZWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
-
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "ControlledPauliZWrapper { internal: ControlledPauliZ { control: 1, target: 2 } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "ControlledPauliZWrapper { internal: ControlledPauliZ { control: 1, target: 2 } }"
+        );
+    })
 }
 
 /// Test new() function for MolmerSorensenXX
@@ -1092,40 +1093,40 @@ fn test_new_controlledpauliz(input_operation: Operation, arguments: (u32, u32), 
 fn test_new_molmersorensenxx(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation_type = py.get_type::<MolmerSorensenXXWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<MolmerSorensenXXWrapper>>()
+    Python::with_gil(|py| -> () {
+        let operation_type = py.get_type::<MolmerSorensenXXWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<MolmerSorensenXXWrapper>>()
+            .unwrap();
+
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
+        assert!(comparison);
 
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        let def_wrapper = operation_py.extract::<MolmerSorensenXXWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2))
+            .unwrap()
+            .cast_as::<PyCell<MolmerSorensenXXWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<MolmerSorensenXXWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    let def_wrapper = operation_py.extract::<MolmerSorensenXXWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2))
-        .unwrap()
-        .cast_as::<PyCell<MolmerSorensenXXWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<MolmerSorensenXXWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
-
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "MolmerSorensenXXWrapper { internal: MolmerSorensenXX { control: 1, target: 2 } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "MolmerSorensenXXWrapper { internal: MolmerSorensenXX { control: 1, target: 2 } }"
+        );
+    })
 }
 
 /// Test new() function for XY
@@ -1134,47 +1135,46 @@ fn test_new_molmersorensenxx(input_operation: Operation, arguments: (u32, u32), 
 fn test_new_xy(input_operation: Operation, arguments: (u32, u32, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation_type = py.get_type::<XYWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<XYWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<XYWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<XYWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        assert!(comparison);
 
-    // Error initialisation
-    let result = operation_type.call1((0, 1, vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation_type.call1((0, 1, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let def_wrapper = operation_py.extract::<XYWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2, 0.0))
-        .unwrap()
-        .cast_as::<PyCell<XYWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<XYWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py.extract::<XYWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2, 0.0))
+            .unwrap()
+            .cast_as::<PyCell<XYWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<XYWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "XYWrapper { internal: XY { control: 1, target: 2, theta: Float(0.0) } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "XYWrapper { internal: XY { control: 1, target: 2, theta: Float(0.0) } }"
+        );
+    })
 }
 
 /// Test new() function for ControlledPhaseShift
@@ -1187,51 +1187,50 @@ fn test_new_controlledphaseshift(
 ) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation_type = py.get_type::<ControlledPhaseShiftWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<ControlledPhaseShiftWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<ControlledPhaseShiftWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<ControlledPhaseShiftWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        assert!(comparison);
 
-    // Error initialisation
-    let result = operation_type.call1((0, 1, vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation_type.call1((0, 1, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let def_wrapper = operation_py
-        .extract::<ControlledPhaseShiftWrapper>()
-        .unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2, 0.0))
-        .unwrap()
-        .cast_as::<PyCell<ControlledPhaseShiftWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff
-        .extract::<ControlledPhaseShiftWrapper>()
-        .unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py
+            .extract::<ControlledPhaseShiftWrapper>()
+            .unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2, 0.0))
+            .unwrap()
+            .cast_as::<PyCell<ControlledPhaseShiftWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff
+            .extract::<ControlledPhaseShiftWrapper>()
+            .unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "ControlledPhaseShiftWrapper { internal: ControlledPhaseShift { control: 1, target: 2, theta: Float(0.0) } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "ControlledPhaseShiftWrapper { internal: ControlledPhaseShift { control: 1, target: 2, theta: Float(0.0) } }"
+        );
+    })
 }
 
 /// Test new() function for VariableMSXX
@@ -1240,47 +1239,46 @@ fn test_new_controlledphaseshift(
 fn test_new_variablemsxx(input_operation: Operation, arguments: (u32, u32, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation_type = py.get_type::<VariableMSXXWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<VariableMSXXWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<VariableMSXXWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<VariableMSXXWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        assert!(comparison);
 
-    // Error initialisation
-    let result = operation_type.call1((0, 1, vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation_type.call1((0, 1, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let def_wrapper = operation_py.extract::<VariableMSXXWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2, 0.0))
-        .unwrap()
-        .cast_as::<PyCell<VariableMSXXWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<VariableMSXXWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py.extract::<VariableMSXXWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2, 0.0))
+            .unwrap()
+            .cast_as::<PyCell<VariableMSXXWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<VariableMSXXWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "VariableMSXXWrapper { internal: VariableMSXX { control: 1, target: 2, theta: Float(0.0) } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "VariableMSXXWrapper { internal: VariableMSXX { control: 1, target: 2, theta: Float(0.0) } }"
+        );
+    })
 }
 
 /// Test new() function for PMInteraction
@@ -1289,47 +1287,46 @@ fn test_new_variablemsxx(input_operation: Operation, arguments: (u32, u32, f64),
 fn test_new_pminteraction(input_operation: Operation, arguments: (u32, u32, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation_type = py.get_type::<PMInteractionWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<PMInteractionWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<PMInteractionWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<PMInteractionWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        assert!(comparison);
 
-    // Error initialisation
-    let result = operation_type.call1((0, 1, vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation_type.call1((0, 1, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let def_wrapper = operation_py.extract::<PMInteractionWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2, 0.0))
-        .unwrap()
-        .cast_as::<PyCell<PMInteractionWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<PMInteractionWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py.extract::<PMInteractionWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2, 0.0))
+            .unwrap()
+            .cast_as::<PyCell<PMInteractionWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<PMInteractionWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "PMInteractionWrapper { internal: PMInteraction { control: 1, target: 2, t: Float(0.0) } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "PMInteractionWrapper { internal: PMInteraction { control: 1, target: 2, t: Float(0.0) } }"
+        );
+    })
 }
 
 /// Test new() function for GivensRotation
@@ -1342,51 +1339,50 @@ fn test_new_givensrotation(
 ) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation_type = py.get_type::<GivensRotationWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<GivensRotationWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<GivensRotationWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<GivensRotationWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        assert!(comparison);
 
-    // Error initialisation
-    let result = operation_type.call1((0, 1, vec!["fails"], 0.0));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation_type.call1((0, 1, vec!["fails"], 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    let result = operation_type.call1((0, 1, 0.0, vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        let result = operation_type.call1((0, 1, 0.0, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let def_wrapper = operation_py.extract::<GivensRotationWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2, 0.0, 0.0))
-        .unwrap()
-        .cast_as::<PyCell<GivensRotationWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<GivensRotationWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py.extract::<GivensRotationWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2, 0.0, 0.0))
+            .unwrap()
+            .cast_as::<PyCell<GivensRotationWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<GivensRotationWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "GivensRotationWrapper { internal: GivensRotation { control: 1, target: 2, theta: Float(0.0), phi: Float(0.0) } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "GivensRotationWrapper { internal: GivensRotation { control: 1, target: 2, theta: Float(0.0), phi: Float(0.0) } }"
+        );
+    })
 }
 
 /// Test new() function for GivensRotationLittleEndian
@@ -1399,55 +1395,54 @@ fn test_new_givensrotationlittleendian(
 ) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation_type = py.get_type::<GivensRotationLittleEndianWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<GivensRotationLittleEndianWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<GivensRotationLittleEndianWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<GivensRotationLittleEndianWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        assert!(comparison);
 
-    // Error initialisation
-    let result = operation_type.call1((0, 1, vec!["fails"], 0.0));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation_type.call1((0, 1, vec!["fails"], 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    let result = operation_type.call1((0, 1, 0.0, vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        let result = operation_type.call1((0, 1, 0.0, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let def_wrapper = operation_py
-        .extract::<GivensRotationLittleEndianWrapper>()
-        .unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2, 0.0, 0.0))
-        .unwrap()
-        .cast_as::<PyCell<GivensRotationLittleEndianWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff
-        .extract::<GivensRotationLittleEndianWrapper>()
-        .unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py
+            .extract::<GivensRotationLittleEndianWrapper>()
+            .unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2, 0.0, 0.0))
+            .unwrap()
+            .cast_as::<PyCell<GivensRotationLittleEndianWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff
+            .extract::<GivensRotationLittleEndianWrapper>()
+            .unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "GivensRotationLittleEndianWrapper { internal: GivensRotationLittleEndian { control: 1, target: 2, theta: Float(0.0), phi: Float(0.0) } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "GivensRotationLittleEndianWrapper { internal: GivensRotationLittleEndian { control: 1, target: 2, theta: Float(0.0), phi: Float(0.0) } }"
+        );
+    })
 }
 
 /// Test new() function for Bogoliubov
@@ -1456,51 +1451,50 @@ fn test_new_givensrotationlittleendian(
 fn test_new_bogoliubov(input_operation: Operation, arguments: (u32, u32, f64, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation_type = py.get_type::<BogoliubovWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<BogoliubovWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<BogoliubovWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<BogoliubovWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        assert!(comparison);
 
-    // Error initialisation
-    let result = operation_type.call1((0, 1, vec!["fails"], 0.0));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation_type.call1((0, 1, vec!["fails"], 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    let result = operation_type.call1((0, 1, 0.0, vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        let result = operation_type.call1((0, 1, 0.0, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let def_wrapper = operation_py.extract::<BogoliubovWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2, 0.0, 0.0))
-        .unwrap()
-        .cast_as::<PyCell<BogoliubovWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<BogoliubovWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py.extract::<BogoliubovWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2, 0.0, 0.0))
+            .unwrap()
+            .cast_as::<PyCell<BogoliubovWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<BogoliubovWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "BogoliubovWrapper { internal: Bogoliubov { control: 1, target: 2, delta_real: Float(0.0), delta_imag: Float(0.0) } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "BogoliubovWrapper { internal: Bogoliubov { control: 1, target: 2, delta_real: Float(0.0), delta_imag: Float(0.0) } }"
+        );
+    })
 }
 
 /// Test new() function for ComplexPMInteraction
@@ -1513,55 +1507,54 @@ fn test_new_complexpminteraction(
 ) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation_type = py.get_type::<ComplexPMInteractionWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<ComplexPMInteractionWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<ComplexPMInteractionWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<ComplexPMInteractionWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        assert!(comparison);
 
-    // Error initialisation
-    let result = operation_type.call1((0, 1, vec!["fails"], 0.0));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation_type.call1((0, 1, vec!["fails"], 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    let result = operation_type.call1((0, 1, 0.0, vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        let result = operation_type.call1((0, 1, 0.0, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let def_wrapper = operation_py
-        .extract::<ComplexPMInteractionWrapper>()
-        .unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2, 0.0, 0.0))
-        .unwrap()
-        .cast_as::<PyCell<ComplexPMInteractionWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff
-        .extract::<ComplexPMInteractionWrapper>()
-        .unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py
+            .extract::<ComplexPMInteractionWrapper>()
+            .unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2, 0.0, 0.0))
+            .unwrap()
+            .cast_as::<PyCell<ComplexPMInteractionWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff
+            .extract::<ComplexPMInteractionWrapper>()
+            .unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "ComplexPMInteractionWrapper { internal: ComplexPMInteraction { control: 1, target: 2, t_real: Float(0.0), t_imag: Float(0.0) } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "ComplexPMInteractionWrapper { internal: ComplexPMInteraction { control: 1, target: 2, t_real: Float(0.0), t_imag: Float(0.0) } }"
+        );
+    })
 }
 
 /// Test new() function for Qsim
@@ -1570,55 +1563,54 @@ fn test_new_complexpminteraction(
 fn test_new_qsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation_type = py.get_type::<QsimWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<QsimWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<QsimWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<QsimWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        assert!(comparison);
 
-    // Error initialisation
-    let result = operation_type.call1((0, 1, vec!["fails"], 0.0, 0.0));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation_type.call1((0, 1, vec!["fails"], 0.0, 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    let result = operation_type.call1((0, 1, 0.0, vec!["fails"], 0.0));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        let result = operation_type.call1((0, 1, 0.0, vec!["fails"], 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    let result = operation_type.call1((0, 1, 0.0, 0.0, vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        let result = operation_type.call1((0, 1, 0.0, 0.0, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let def_wrapper = operation_py.extract::<QsimWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2, 0.0, 0.0, 0.0))
-        .unwrap()
-        .cast_as::<PyCell<QsimWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<QsimWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py.extract::<QsimWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2, 0.0, 0.0, 0.0))
+            .unwrap()
+            .cast_as::<PyCell<QsimWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<QsimWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "QsimWrapper { internal: Qsim { control: 1, target: 2, x: Float(0.0), y: Float(0.0), z: Float(0.0) } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "QsimWrapper { internal: Qsim { control: 1, target: 2, x: Float(0.0), y: Float(0.0), z: Float(0.0) } }"
+        );
+    })
 }
 
 /// Test new() function for Fsim
@@ -1627,55 +1619,54 @@ fn test_new_qsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64
 fn test_new_fsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation_type = py.get_type::<FsimWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<FsimWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<FsimWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<FsimWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        assert!(comparison);
 
-    // Error initialisation
-    let result = operation_type.call1((0, 1, vec!["fails"], 0.0, 0.0));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation_type.call1((0, 1, vec!["fails"], 0.0, 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    let result = operation_type.call1((0, 1, 0.0, vec!["fails"], 0.0));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        let result = operation_type.call1((0, 1, 0.0, vec!["fails"], 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    let result = operation_type.call1((0, 1, 0.0, 0.0, vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        let result = operation_type.call1((0, 1, 0.0, 0.0, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let def_wrapper = operation_py.extract::<FsimWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2, 0.0, 0.0, 0.0))
-        .unwrap()
-        .cast_as::<PyCell<FsimWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<FsimWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py.extract::<FsimWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2, 0.0, 0.0, 0.0))
+            .unwrap()
+            .cast_as::<PyCell<FsimWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<FsimWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "FsimWrapper { internal: Fsim { control: 1, target: 2, t: Float(0.0), u: Float(0.0), delta: Float(0.0) } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "FsimWrapper { internal: Fsim { control: 1, target: 2, t: Float(0.0), u: Float(0.0), delta: Float(0.0) } }"
+        );
+    })
 }
 
 /// Test new() function for SpinInteraction
@@ -1688,56 +1679,55 @@ fn test_new_spininteraction(
 ) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<SpinInteractionWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<SpinInteractionWrapper>>()
+            .unwrap();
 
-    // Basic initialisation, no errors
-    let operation_type = py.get_type::<SpinInteractionWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<SpinInteractionWrapper>>()
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
+        assert!(comparison);
 
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        // Error initialisation
+        let result = operation_type.call1((0, 1, vec!["fails"], 0.0, 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Error initialisation
-    let result = operation_type.call1((0, 1, vec!["fails"], 0.0, 0.0));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        let result = operation_type.call1((0, 1, 0.0, vec!["fails"], 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    let result = operation_type.call1((0, 1, 0.0, vec!["fails"], 0.0));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        let result = operation_type.call1((0, 1, 0.0, 0.0, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    let result = operation_type.call1((0, 1, 0.0, 0.0, vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py.extract::<SpinInteractionWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2, 0.0, 0.0, 0.0))
+            .unwrap()
+            .cast_as::<PyCell<SpinInteractionWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<SpinInteractionWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    // Testing PartialEq, Clone and Debug
-    let def_wrapper = operation_py.extract::<SpinInteractionWrapper>().unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2, 0.0, 0.0, 0.0))
-        .unwrap()
-        .cast_as::<PyCell<SpinInteractionWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff.extract::<SpinInteractionWrapper>().unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
-
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "SpinInteractionWrapper { internal: SpinInteraction { control: 1, target: 2, x: Float(0.0), y: Float(0.0), z: Float(0.0) } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "SpinInteractionWrapper { internal: SpinInteraction { control: 1, target: 2, x: Float(0.0), y: Float(0.0), z: Float(0.0) } }"
+        );
+    })
 }
 
 /// Test new() function for PhaseShiftedControlledZ
@@ -1750,51 +1740,50 @@ fn test_new_phaseshiftedcontrolledz(
 ) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-
-    // Basic initialisation, no errors
-    let operation_type = py.get_type::<PhaseShiftedControlledZWrapper>();
-    let operation_py = operation_type
-        .call1(arguments)
-        .unwrap()
-        .cast_as::<PyCell<PhaseShiftedControlledZWrapper>>()
+    Python::with_gil(|py| -> () {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<PhaseShiftedControlledZWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<PhaseShiftedControlledZWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
         .unwrap();
-    let comparison = bool::extract(
-        operation
-            .as_ref(py)
-            .call_method1(method, (operation_py,))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        assert!(comparison);
 
-    // Error initialisation
-    let result = operation_type.call1((0, 1, vec!["fails"]));
-    let result_ref = result.as_ref();
-    assert!(result_ref.is_err());
+        // Error initialisation
+        let result = operation_type.call1((0, 1, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
 
-    // Testing PartialEq, Clone and Debug
-    let def_wrapper = operation_py
-        .extract::<PhaseShiftedControlledZWrapper>()
-        .unwrap();
-    let new_op_diff = operation_type
-        .call1((1, 2, 0.0))
-        .unwrap()
-        .cast_as::<PyCell<PhaseShiftedControlledZWrapper>>()
-        .unwrap();
-    let def_wrapper_diff = new_op_diff
-        .extract::<PhaseShiftedControlledZWrapper>()
-        .unwrap();
-    let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
-    assert!(helper_ne);
-    let helper_eq: bool = def_wrapper == def_wrapper.clone();
-    assert!(helper_eq);
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py
+            .extract::<PhaseShiftedControlledZWrapper>()
+            .unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2, 0.0))
+            .unwrap()
+            .cast_as::<PyCell<PhaseShiftedControlledZWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff
+            .extract::<PhaseShiftedControlledZWrapper>()
+            .unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper.clone();
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-    assert_eq!(
-        format!("{:?}", def_wrapper_diff),
-        "PhaseShiftedControlledZWrapper { internal: PhaseShiftedControlledZ { control: 1, target: 2, phi: Float(0.0) } }"
-    );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "PhaseShiftedControlledZWrapper { internal: PhaseShiftedControlledZ { control: 1, target: 2, phi: Float(0.0) } }"
+        );
+    })
 }
 
 /// Test the __richcmp__ function
@@ -1863,32 +1852,32 @@ fn test_new_phaseshiftedcontrolledz(
     Operation::from(PhaseShiftedControlledZ::new(1, 0, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     pyo3::prepare_freethreaded_python();
-    let gil = pyo3::Python::acquire_gil();
-    let py = gil.python();
-    let operation_one = convert_operation_to_pyobject(definition_1).unwrap();
-    let operation_two = convert_operation_to_pyobject(definition_2).unwrap();
+    Python::with_gil(|py| -> () {
+        let operation_one = convert_operation_to_pyobject(definition_1).unwrap();
+        let operation_two = convert_operation_to_pyobject(definition_2).unwrap();
 
-    let comparison = bool::extract(
-        operation_one
-            .as_ref(py)
-            .call_method1("__eq__", (operation_two.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(!comparison);
+        let comparison = bool::extract(
+            operation_one
+                .as_ref(py)
+                .call_method1("__eq__", (operation_two.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(!comparison);
 
-    let comparison = bool::extract(
-        operation_one
-            .as_ref(py)
-            .call_method1("__ne__", (operation_two.clone(),))
-            .unwrap(),
-    )
-    .unwrap();
-    assert!(comparison);
+        let comparison = bool::extract(
+            operation_one
+                .as_ref(py)
+                .call_method1("__ne__", (operation_two.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
 
-    let comparison = operation_one.call_method1(py, "__eq__", (vec!["fails"],));
-    assert!(comparison.is_err());
+        let comparison = operation_one.call_method1(py, "__eq__", (vec!["fails"],));
+        assert!(comparison.is_err());
 
-    let comparison = operation_one.call_method1(py, "__ge__", (operation_two,));
-    assert!(comparison.is_err());
+        let comparison = operation_one.call_method1(py, "__ge__", (operation_two,));
+        assert!(comparison.is_err());
+    })
 }

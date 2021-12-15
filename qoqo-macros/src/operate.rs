@@ -244,31 +244,30 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         /// Returns:
         ///     Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         fn involved_qubits(&self) -> PyObject {
-            let gil = Python::acquire_gil();
-            let py = gil.python();
-
-            let involved = self.internal.involved_qubits();
-            match involved {
-                InvolvedQubits::All => {
-                    let pyref: &PySet = PySet::new(py, &["All"]).unwrap();
-                    let pyobject: PyObject = pyref.to_object(py);
-                    pyobject
-                },
-                InvolvedQubits::None => {
-                    let pyref: &PySet = PySet::empty(py).unwrap();
-                    let pyobject: PyObject = pyref.to_object(py);
-                    pyobject
-                },
-                InvolvedQubits::Set(x) => {
-                    let mut vector: Vec<usize> = Vec::new();
-                    for qubit in x {
-                        vector.push(qubit)
-                    }
-                    let pyref: &PySet = PySet::new(py, &vector[..]).unwrap();
-                    let pyobject: PyObject = pyref.to_object(py);
-                    pyobject
-                },
-            }
+            Python::with_gil(|py| -> PyObject {
+                let involved = self.internal.involved_qubits();
+                match involved {
+                    InvolvedQubits::All => {
+                        let pyref: &PySet = PySet::new(py, &["All"]).unwrap();
+                        let pyobject: PyObject = pyref.to_object(py);
+                        pyobject
+                    },
+                    InvolvedQubits::None => {
+                        let pyref: &PySet = PySet::empty(py).unwrap();
+                        let pyobject: PyObject = pyref.to_object(py);
+                        pyobject
+                    },
+                    InvolvedQubits::Set(x) => {
+                        let mut vector: Vec<usize> = Vec::new();
+                        for qubit in x {
+                            vector.push(qubit)
+                        }
+                        let pyref: &PySet = PySet::new(py, &vector[..]).unwrap();
+                        let pyobject: PyObject = pyref.to_object(py);
+                        pyobject
+                    },
+                }
+            })
         }
 
         /// Copies Operation
