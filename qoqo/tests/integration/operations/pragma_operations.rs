@@ -1,4 +1,4 @@
-// Copyright © 2021 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021 HQS Quantum Simulations GmbH. All Rights Reserved
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -164,16 +164,14 @@ fn test_pyo3_inputs_setdensitymatrix() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> () {
         let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let to_operators_py = operation.call_method0(py, "density_matrix").unwrap();
+        let to_operators_op = to_operators_py
+            .as_ref(py)
+            .cast_as::<PyArray2<Complex64>>()
+            .unwrap();
+        let densmat_array = to_operators_op.readonly().as_array().to_owned();
 
-        let to_operators_op: Vec<Complex64> = Vec::extract(
-            operation
-                .call_method0(py, "density_matrix")
-                .unwrap()
-                .as_ref(py),
-        )
-        .unwrap();
-        let operators_op = Array::from_shape_vec((2, 2), to_operators_op).unwrap();
-        assert_eq!(operators_op, densitymatrix());
+        assert_eq!(densmat_array, densitymatrix());
     })
 }
 
