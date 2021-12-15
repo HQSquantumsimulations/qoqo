@@ -172,16 +172,6 @@ fn test_pyo3_inputs_setdensitymatrix() {
         let densmat_array = to_operators_op.readonly().as_array().to_owned();
 
         assert_eq!(densmat_array, densitymatrix());
-
-        let to_operators_op: Vec<Complex64> = Vec::extract(
-            operation
-                .call_method0(py, "density_matrix")
-                .unwrap()
-                .as_ref(py),
-        )
-        .unwrap();
-        let operators_op = Array::from_shape_vec((2, 2), to_operators_op).unwrap();
-        assert_eq!(operators_op, densitymatrix());
     })
 }
 
