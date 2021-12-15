@@ -15,6 +15,7 @@ use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyIndexError, PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
+use pyo3::types::PyType;
 use pyo3::{PyIterProtocol, PyMappingProtocol, PyNumberProtocol, PyObjectProtocol};
 use roqoqo::prelude::*;
 use roqoqo::{Circuit, OperationIterator, ROQOQO_VERSION};
@@ -216,6 +217,8 @@ impl CircuitWrapper {
         Ok(b)
     }
 
+    #[allow(unused_variables)]
+    #[classmethod]
     /// Convert the bincode representation of the Circuit to a Circuit using the [bincode] crate.
     ///
     /// Args:
@@ -227,12 +230,12 @@ impl CircuitWrapper {
     /// Raises:
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to Circuit.
-    pub fn from_bincode(&self, input: &PyAny) -> PyResult<CircuitWrapper> {
+    pub fn from_bincode(cls: &PyType, input: &PyAny) -> PyResult<Self> {
         let bytes = input
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
-        Ok(CircuitWrapper {
+        Ok(Self {
             internal: deserialize(&bytes[..])
                 .map_err(|_| PyValueError::new_err("Input cannot be deserialized to Circuit"))?,
         })
@@ -251,6 +254,8 @@ impl CircuitWrapper {
         Ok(serialized)
     }
 
+    #[allow(unused_variables)]
+    #[classmethod]
     /// Convert the json representation of a Circuit to a Circuit.
     ///
     /// Args:
@@ -261,9 +266,9 @@ impl CircuitWrapper {
     ///
     /// Raises:
     ///     ValueError: Input cannot be deserialized to Circuit.
-    fn from_json(&self, input: &str) -> PyResult<CircuitWrapper> {
-        Ok(CircuitWrapper {
-            internal: serde_json::from_str(input)
+    pub fn from_json(cls: &PyType, json_string: &str) -> PyResult<Self> {
+        Ok(Self {
+            internal: serde_json::from_str(json_string)
                 .map_err(|_| PyValueError::new_err("Input cannot be deserialized to Circuit"))?,
         })
     }
