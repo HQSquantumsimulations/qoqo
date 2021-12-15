@@ -10,7 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ndarray::{arr2, array, Array, Array1, Array2};
+use ndarray::{arr2, array, Array1, Array2};
 use num_complex::Complex64;
 use numpy::PyArray2;
 use pyo3::prelude::*;
@@ -475,9 +475,13 @@ fn test_pyo3_inputs_generalnoise() {
             CalculatorFloat::from(0.005),
         );
 
-        let to_operators_op: Vec<f64> =
-            Vec::extract(operation.call_method0(py, "rates").unwrap().as_ref(py)).unwrap();
-        let operators_op = Array::from_shape_vec((3, 3), to_operators_op).unwrap();
+        let to_operators_py = operation.call_method0(py, "rates").unwrap();
+        let to_operators_op = to_operators_py
+            .as_ref(py)
+            .cast_as::<PyArray2<f64>>()
+            .unwrap();
+        let operators_op = to_operators_op.readonly().as_array().to_owned();
+
         assert_eq!(operators_op, operators());
     })
 }

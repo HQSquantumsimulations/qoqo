@@ -232,7 +232,7 @@ fn main() {
         use pyo3::conversion::ToPyObject;
         use roqoqo::operations::*;
         use std::collections::HashMap;
-        use ndarray::{Array1, Array};
+        use ndarray::Array1;
         use num_complex::Complex64;
         use numpy::PyArray2;
 
