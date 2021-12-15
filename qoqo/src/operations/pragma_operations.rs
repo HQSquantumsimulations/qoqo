@@ -13,7 +13,7 @@
 use crate::{convert_into_circuit, CircuitWrapper};
 use ndarray::{Array, Array1};
 use num_complex::Complex64;
-use numpy::{PyArray1, PyArray2, ToPyArray};
+use numpy::{PyArray1, PyArray2, PyReadonlyArray2, ToPyArray};
 use pyo3::exceptions::{PyRuntimeError, PyTypeError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
@@ -294,12 +294,12 @@ pub struct PragmaSetDensityMatrixWrapper {
 
 insert_pyany_to_operation!(
     "PragmaSetDensityMatrix" =>{
-        let array = op.call_method0("density_matrix")
-                      .map_err(|_| QoqoError::ConversionError)?;
-        let densmat_casted: Vec<Complex64> = Vec::extract(array).unwrap();
-        let length: usize = densmat_casted.len();
-        let dim: usize = (length as f64).sqrt() as usize;
-        let densmat_array = Array::from_shape_vec((dim, dim), densmat_casted).unwrap();
+        let density_matrix = op.call_method0("density_matrix")
+                      .map_err(|_| QoqoError::ConversionError)?;                    
+        let density_matrix_rust: Vec<Vec<Complex64>> =
+            density_matrix.iter().unwrap().map(|density_matrix| Vec::extract(density_matrix.unwrap()).unwrap()).collect::<Vec<_>>();
+        let length: usize = density_matrix_rust.len();
+        let densmat_array = Array::from_shape_vec((length, length), density_matrix_rust.into_iter().flatten().collect()).unwrap();
         Ok(PragmaSetDensityMatrix::new(densmat_array).into())
     }
 );
@@ -324,19 +324,10 @@ impl PragmaSetDensityMatrixWrapper {
     /// Returns:
     ///     self: The new PragmaSetDensityMatrix.
     #[new]
-    fn new(density_matrix: Py<PyAny>) -> PyResult<Self> {
-        let densmat_casted: Vec<Complex64> = Python::with_gil(|py| -> PyResult<Vec<Complex64>> {
-            Vec::extract(density_matrix.as_ref(py)).map_err(|_| {
-                PyTypeError::new_err(
-                    "density_matrix input cannot be converted to list of complex numbers",
-                )
-            })
-        })?;
-        let length: usize = densmat_casted.len();
-        let dim: usize = (length as f64).sqrt() as usize;
-        let densmat_array = Array::from_shape_vec((dim, dim), densmat_casted).unwrap();
+    fn new(density_matrix: PyReadonlyArray2<Complex64>) -> PyResult<Self> {
+        let density_matrix_for_initialisation = density_matrix.as_array().to_owned();
         Ok(Self {
-            internal: PragmaSetDensityMatrix::new(densmat_array),
+            internal: PragmaSetDensityMatrix::new(density_matrix_for_initialisation),
         })
     }
 
@@ -344,9 +335,9 @@ impl PragmaSetDensityMatrixWrapper {
     ///
     /// Returns:
     ///     np.ndarray: The density matrix representing the qubit register.
-    fn density_matrix(&self) -> Py<PyArray1<Complex64>> {
-        let array: Vec<Complex64> = self.internal.density_matrix().iter().cloned().collect();
-        Python::with_gil(|py| -> Py<PyArray1<Complex64>> { array.to_pyarray(py).to_owned() })
+
+    fn density_matrix(&self) -> Py<PyArray2<Complex64>> {
+        Python::with_gil(|py| -> Py<PyArray2<Complex64>> { self.internal.density_matrix().to_pyarray(py).to_owned() })
     }
 
     /// List all involved qubits (here, all).
