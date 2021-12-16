@@ -1424,16 +1424,16 @@ mod tests {
         let input_definition: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
 
         pyo3::prepare_freethreaded_python();
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let operation = convert_operation_to_pyobject(input_definition).unwrap();
-        let to_involved = operation.call_method0(py, "involved_qubits").unwrap();
-        let involved_op: HashSet<&str> = HashSet::extract(to_involved.as_ref(py)).unwrap();
-        let mut involved_param: HashSet<&str> = HashSet::new();
-        involved_param.insert("All");
-        assert_eq!(involved_op, involved_param);
+        Python::with_gil(|py| -> () {
+            let operation = convert_operation_to_pyobject(input_definition).unwrap();
+            let to_involved = operation.call_method0(py, "involved_qubits").unwrap();
+            let involved_op: HashSet<&str> = HashSet::extract(to_involved.as_ref(py)).unwrap();
+            let mut involved_param: HashSet<&str> = HashSet::new();
+            involved_param.insert("All");
+            assert_eq!(involved_op, involved_param);
 
-        assert!(PragmaChangeDeviceWrapper::new().is_err());
+            assert!(PragmaChangeDeviceWrapper::new().is_err());
+        })
     }
 
     #[test]
@@ -1443,15 +1443,15 @@ mod tests {
         let format_repr = format!("PragmaChangeDevice {{ wrapped_tags: {:?}, wrapped_hqslang: {:?}, wrapped_operation: {:?} }}", wrapped.tags(), wrapped.hqslang(), serialize(&wrapped).unwrap());
 
         pyo3::prepare_freethreaded_python();
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: &str = <&str>::extract(to_format.as_ref(py)).unwrap();
-        let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: &str = <&str>::extract(to_repr.as_ref(py)).unwrap();
-        assert_eq!(format_op, format_repr);
-        assert_eq!(repr_op, format_repr);
+        Python::with_gil(|py| -> () {
+            let operation = convert_operation_to_pyobject(input_measurement).unwrap();
+            let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
+            let format_op: &str = <&str>::extract(to_format.as_ref(py)).unwrap();
+            let to_repr = operation.call_method0(py, "__repr__").unwrap();
+            let repr_op: &str = <&str>::extract(to_repr.as_ref(py)).unwrap();
+            assert_eq!(format_op, format_repr);
+            assert_eq!(repr_op, format_repr);
+        })
     }
 
     #[test]
@@ -1460,29 +1460,29 @@ mod tests {
         let input_measurement: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
 
         pyo3::prepare_freethreaded_python();
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let copy_op = operation.call_method0(py, "__copy__").unwrap();
-        let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
-        let copy_deepcopy_param = operation.clone();
+        Python::with_gil(|py| -> () {
+            let operation = convert_operation_to_pyobject(input_measurement).unwrap();
+            let copy_op = operation.call_method0(py, "__copy__").unwrap();
+            let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
+            let copy_deepcopy_param = operation.clone();
 
-        let comparison_copy = bool::extract(
-            copy_op
-                .as_ref(py)
-                .call_method1("__eq__", (copy_deepcopy_param.clone(),))
-                .unwrap(),
-        )
-        .unwrap();
-        assert!(comparison_copy);
-        let comparison_deepcopy = bool::extract(
-            deepcopy_op
-                .as_ref(py)
-                .call_method1("__eq__", (copy_deepcopy_param,))
-                .unwrap(),
-        )
-        .unwrap();
-        assert!(comparison_deepcopy);
+            let comparison_copy = bool::extract(
+                copy_op
+                    .as_ref(py)
+                    .call_method1("__eq__", (copy_deepcopy_param.clone(),))
+                    .unwrap(),
+            )
+            .unwrap();
+            assert!(comparison_copy);
+            let comparison_deepcopy = bool::extract(
+                deepcopy_op
+                    .as_ref(py)
+                    .call_method1("__eq__", (copy_deepcopy_param,))
+                    .unwrap(),
+            )
+            .unwrap();
+            assert!(comparison_deepcopy);
+        })
     }
 
     #[test]
@@ -1491,13 +1491,13 @@ mod tests {
         let input_measurement: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
 
         pyo3::prepare_freethreaded_python();
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let to_tag = operation.call_method0(py, "tags").unwrap();
-        let tags_op: &Vec<&str> = &Vec::extract(to_tag.as_ref(py)).unwrap();
-        let tags_param: &[&str] = &["Operation", "PragmaOperation", "PragmaChangeDevice"];
-        assert_eq!(tags_op, tags_param);
+        Python::with_gil(|py| -> () {
+            let operation = convert_operation_to_pyobject(input_measurement).unwrap();
+            let to_tag = operation.call_method0(py, "tags").unwrap();
+            let tags_op: &Vec<&str> = &Vec::extract(to_tag.as_ref(py)).unwrap();
+            let tags_param: &[&str] = &["Operation", "PragmaOperation", "PragmaChangeDevice"];
+            assert_eq!(tags_op, tags_param);
+        })
     }
 
     #[test]
@@ -1506,12 +1506,12 @@ mod tests {
         let input_measurement: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
 
         pyo3::prepare_freethreaded_python();
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let hqslang_op: String =
-            String::extract(operation.call_method0(py, "hqslang").unwrap().as_ref(py)).unwrap();
-        assert_eq!(hqslang_op, "PragmaChangeDevice".to_string());
+        Python::with_gil(|py| -> () {
+            let operation = convert_operation_to_pyobject(input_measurement).unwrap();
+            let hqslang_op: String =
+                String::extract(operation.call_method0(py, "hqslang").unwrap().as_ref(py)).unwrap();
+            assert_eq!(hqslang_op, "PragmaChangeDevice".to_string());
+        })
     }
 
     #[test]
@@ -1520,16 +1520,16 @@ mod tests {
         let input_measurement: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
 
         pyo3::prepare_freethreaded_python();
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        assert!(!bool::extract(
-            operation
-                .call_method0(py, "is_parametrized")
-                .unwrap()
-                .as_ref(py)
-        )
-        .unwrap());
+        Python::with_gil(|py| -> () {
+            let operation = convert_operation_to_pyobject(input_measurement).unwrap();
+            assert!(!bool::extract(
+                operation
+                    .call_method0(py, "is_parametrized")
+                    .unwrap()
+                    .as_ref(py)
+            )
+            .unwrap());
+        })
     }
 
     #[test]
@@ -1539,24 +1539,24 @@ mod tests {
         let second_op: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
 
         pyo3::prepare_freethreaded_python();
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let operation = convert_operation_to_pyobject(first_op).unwrap();
-        let mut substitution_dict: HashMap<&str, f64> = HashMap::new();
-        substitution_dict.insert("test", 1.0);
-        let substitute_op = operation
-            .call_method1(py, "substitute_parameters", (substitution_dict,))
-            .unwrap();
-        let substitute_param = convert_operation_to_pyobject(second_op).unwrap();
+        Python::with_gil(|py| -> () {
+            let operation = convert_operation_to_pyobject(first_op).unwrap();
+            let mut substitution_dict: HashMap<&str, f64> = HashMap::new();
+            substitution_dict.insert("test", 1.0);
+            let substitute_op = operation
+                .call_method1(py, "substitute_parameters", (substitution_dict,))
+                .unwrap();
+            let substitute_param = convert_operation_to_pyobject(second_op).unwrap();
 
-        let comparison = bool::extract(
-            substitute_op
-                .as_ref(py)
-                .call_method1("__eq__", (substitute_param.clone(),))
-                .unwrap(),
-        )
-        .unwrap();
-        assert!(comparison);
+            let comparison = bool::extract(
+                substitute_op
+                    .as_ref(py)
+                    .call_method1("__eq__", (substitute_param.clone(),))
+                    .unwrap(),
+            )
+            .unwrap();
+            assert!(comparison);
+        })
     }
 
     #[test]
@@ -1566,25 +1566,25 @@ mod tests {
         let second_op: Operation = PragmaChangeDevice::new(&wrapped).unwrap().into();
 
         pyo3::prepare_freethreaded_python();
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let operation = convert_operation_to_pyobject(first_op).unwrap();
+        Python::with_gil(|py| -> () {
+            let operation = convert_operation_to_pyobject(first_op).unwrap();
 
-        let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
-        qubit_mapping.insert(0, 0);
-        let remapped_op = operation
-            .call_method1(py, "remap_qubits", (qubit_mapping,))
+            let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
+            qubit_mapping.insert(0, 0);
+            let remapped_op = operation
+                .call_method1(py, "remap_qubits", (qubit_mapping,))
+                .unwrap();
+            let comparison_op = convert_operation_to_pyobject(second_op).unwrap();
+
+            let comparison = bool::extract(
+                remapped_op
+                    .call_method1(py, "__eq__", (comparison_op,))
+                    .unwrap()
+                    .as_ref(py),
+            )
             .unwrap();
-        let comparison_op = convert_operation_to_pyobject(second_op).unwrap();
-
-        let comparison = bool::extract(
-            remapped_op
-                .call_method1(py, "__eq__", (comparison_op,))
-                .unwrap()
-                .as_ref(py),
-        )
-        .unwrap();
-        assert!(comparison);
+            assert!(comparison);
+        })
     }
 
     #[test]
@@ -1593,14 +1593,14 @@ mod tests {
         let first_op: Operation = PragmaChangeDevice::new(&wrapped.clone()).unwrap().into();
 
         pyo3::prepare_freethreaded_python();
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let operation = convert_operation_to_pyobject(first_op).unwrap();
+        Python::with_gil(|py| -> () {
+            let operation = convert_operation_to_pyobject(first_op).unwrap();
 
-        let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
-        qubit_mapping.insert(0, 2);
-        let remapped_op = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
-        assert!(remapped_op.is_err());
+            let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
+            qubit_mapping.insert(0, 2);
+            let remapped_op = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
+            assert!(remapped_op.is_err());
+        })
     }
 
     #[test]
@@ -1611,33 +1611,33 @@ mod tests {
         let definition_2: Operation = PragmaChangeDevice::new(&wrapped_2).unwrap().into();
 
         pyo3::prepare_freethreaded_python();
-        let gil = pyo3::Python::acquire_gil();
-        let py = gil.python();
-        let operation_one = convert_operation_to_pyobject(definition_1).unwrap();
-        let operation_two = convert_operation_to_pyobject(definition_2).unwrap();
+        Python::with_gil(|py| -> () {
+            let operation_one = convert_operation_to_pyobject(definition_1).unwrap();
+            let operation_two = convert_operation_to_pyobject(definition_2).unwrap();
 
-        let comparison = bool::extract(
-            operation_one
-                .as_ref(py)
-                .call_method1("__eq__", (operation_two.clone(),))
-                .unwrap(),
-        )
-        .unwrap();
-        assert!(!comparison);
+            let comparison = bool::extract(
+                operation_one
+                    .as_ref(py)
+                    .call_method1("__eq__", (operation_two.clone(),))
+                    .unwrap(),
+            )
+            .unwrap();
+            assert!(!comparison);
 
-        let comparison = bool::extract(
-            operation_one
-                .as_ref(py)
-                .call_method1("__ne__", (operation_two.clone(),))
-                .unwrap(),
-        )
-        .unwrap();
-        assert!(comparison);
+            let comparison = bool::extract(
+                operation_one
+                    .as_ref(py)
+                    .call_method1("__ne__", (operation_two.clone(),))
+                    .unwrap(),
+            )
+            .unwrap();
+            assert!(comparison);
 
-        let comparison = operation_one.call_method1(py, "__eq__", (vec!["fails"],));
-        assert!(comparison.is_err());
+            let comparison = operation_one.call_method1(py, "__eq__", (vec!["fails"],));
+            assert!(comparison.is_err());
 
-        let comparison = operation_one.call_method1(py, "__ge__", (operation_two,));
-        assert!(comparison.is_err());
+            let comparison = operation_one.call_method1(py, "__ge__", (operation_two,));
+            assert!(comparison.is_err());
+        })
     }
 }
