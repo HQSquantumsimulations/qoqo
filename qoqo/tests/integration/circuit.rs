@@ -282,9 +282,13 @@ fn test_to_from_bincode() {
         let circuit = new_circuit(py);
         populate_circuit_rotatex(py, circuit, 0, 3);
 
+        // testing 'to_bincode' and 'from_bincode' functions
         let serialised = circuit.call_method0("to_bincode").unwrap();
         let new = new_circuit(py);
         let deserialised = new.call_method1("from_bincode", (serialised,)).unwrap();
+        let comparison =
+            bool::extract(deserialised.call_method1("__eq__", (circuit,)).unwrap()).unwrap();
+        assert!(comparison);
 
         let deserialised_error =
             new.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));
@@ -300,9 +304,15 @@ fn test_to_from_bincode() {
         let serialised_error = serialised.call_method0("to_bincode");
         assert!(serialised_error.is_err());
 
+        // testing that 'from_bincode' can be called directly on a circuit (python classmethod)
+        let circuit_type = py.get_type::<CircuitWrapper>();
+        let deserialised_py = circuit_type
+            .call_method1("from_bincode", (serialised,))
+            .unwrap();
+
         let comparison =
-            bool::extract(deserialised.call_method1("__eq__", (circuit,)).unwrap()).unwrap();
-        assert!(comparison)
+            bool::extract(deserialised_py.call_method1("__eq__", (circuit,)).unwrap()).unwrap();
+        assert!(comparison);
     })
 }
 
@@ -353,9 +363,14 @@ fn test_to_from_json() {
         let circuit = new_circuit(py);
         populate_circuit_rotatex(py, circuit, 0, 3);
 
+        // testing 'from_json' and 'to_json' functions
         let serialised = circuit.call_method0("to_json").unwrap();
         let new = new_circuit(py);
         let deserialised = new.call_method1("from_json", (serialised,)).unwrap();
+
+        let comparison =
+            bool::extract(deserialised.call_method1("__eq__", (circuit,)).unwrap()).unwrap();
+        assert!(comparison);
 
         let deserialised_error =
             new.call_method1("from_json", (serde_json::to_string("fails").unwrap(),));
@@ -371,9 +386,15 @@ fn test_to_from_json() {
         let deserialised_error = deserialised.call_method0("from_json");
         assert!(deserialised_error.is_err());
 
+        // testing that 'from_json' can be called directly on a circuit (python classmethod)
+        let circuit_type = py.get_type::<CircuitWrapper>();
+        let deserialised_py = circuit_type
+            .call_method1("from_json", (serialised,))
+            .unwrap();
+
         let comparison =
-            bool::extract(deserialised.call_method1("__eq__", (circuit,)).unwrap()).unwrap();
-        assert!(comparison)
+            bool::extract(deserialised_py.call_method1("__eq__", (circuit,)).unwrap()).unwrap();
+        assert!(comparison);
     })
 }
 
