@@ -1,4 +1,4 @@
-// Copyright © 2021 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021 HQS Quantum Simulations GmbH. All Rights Reserved
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -10,7 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ndarray::{arr2, array, Array, Array1, Array2};
+use ndarray::{arr2, array, Array1, Array2};
 use num_complex::Complex64;
 use numpy::PyArray2;
 use pyo3::prelude::*;
@@ -164,16 +164,14 @@ fn test_pyo3_inputs_setdensitymatrix() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> () {
         let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        let to_operators_py = operation.call_method0(py, "density_matrix").unwrap();
+        let to_operators_op = to_operators_py
+            .as_ref(py)
+            .cast_as::<PyArray2<Complex64>>()
+            .unwrap();
+        let densmat_array = to_operators_op.readonly().as_array().to_owned();
 
-        let to_operators_op: Vec<Complex64> = Vec::extract(
-            operation
-                .call_method0(py, "density_matrix")
-                .unwrap()
-                .as_ref(py),
-        )
-        .unwrap();
-        let operators_op = Array::from_shape_vec((2, 2), to_operators_op).unwrap();
-        assert_eq!(operators_op, densitymatrix());
+        assert_eq!(densmat_array, densitymatrix());
     })
 }
 
@@ -477,9 +475,12 @@ fn test_pyo3_inputs_generalnoise() {
             CalculatorFloat::from(0.005),
         );
 
-        let to_operators_op: Vec<f64> =
-            Vec::extract(operation.call_method0(py, "rates").unwrap().as_ref(py)).unwrap();
-        let operators_op = Array::from_shape_vec((3, 3), to_operators_op).unwrap();
+        let to_operators_py = operation.call_method0(py, "rates").unwrap();
+        let to_operators_op = to_operators_py
+            .as_ref(py)
+            .cast_as::<PyArray2<f64>>()
+            .unwrap();
+        let operators_op = to_operators_op.readonly().as_array().to_owned();
         assert_eq!(operators_op, operators());
     })
 }
