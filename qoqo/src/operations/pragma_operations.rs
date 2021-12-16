@@ -11,9 +11,9 @@
 // limitations under the License.
 
 use crate::{convert_into_circuit, CircuitWrapper};
-use ndarray::{Array, Array1};
+use ndarray::Array1;
 use num_complex::Complex64;
-use numpy::{PyArray1, PyArray2, ToPyArray};
+use numpy::{PyArray1, PyArray2, PyReadonlyArray2, ToPyArray};
 use pyo3::exceptions::{PyRuntimeError, PyTypeError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
@@ -284,8 +284,7 @@ fn pragma_set_density_matrix(_py: Python, module: &PyModule) -> PyResult<()> {
 /// operation allows you to set the state of the qubits by setting a density matrix of your choosing.
 ///
 /// Args:
-///     density_matrix (array of complex numbers): The density matrix that is initialized.
-///                                                The array needs to be flattened before input, using np.flatten.
+///     density_matrix (a 2d array of complex numbers): The density matrix that is initialized.
 ///
 pub struct PragmaSetDensityMatrixWrapper {
     /// PragmaSetDensityMatrix to be wrapped and converted to Python.
@@ -294,12 +293,11 @@ pub struct PragmaSetDensityMatrixWrapper {
 
 insert_pyany_to_operation!(
     "PragmaSetDensityMatrix" =>{
-        let array = op.call_method0("density_matrix")
+        let density_matrix = op.call_method0("density_matrix")
                       .map_err(|_| QoqoError::ConversionError)?;
-        let densmat_casted: Vec<Complex64> = Vec::extract(array).unwrap();
-        let length: usize = densmat_casted.len();
-        let dim: usize = (length as f64).sqrt() as usize;
-        let densmat_array = Array::from_shape_vec((dim, dim), densmat_casted).unwrap();
+
+        let density_matrix_op = density_matrix.cast_as::<PyArray2<Complex64>>().unwrap();
+        let densmat_array = density_matrix_op.readonly().as_array().to_owned();
         Ok(PragmaSetDensityMatrix::new(densmat_array).into())
     }
 );
@@ -319,34 +317,27 @@ impl PragmaSetDensityMatrixWrapper {
     /// Create a PragmaSetDensityMatrix.
     ///
     /// Args:
-    ///     density_matrix (list[complex]): The density matrix representing the qubit register.
+    ///     density_matrix (Array2[complex]): The density matrix representing the qubit register.
     ///
     /// Returns:
     ///     self: The new PragmaSetDensityMatrix.
     #[new]
-    fn new(density_matrix: Py<PyAny>) -> PyResult<Self> {
-        let densmat_casted: Vec<Complex64> = Python::with_gil(|py| -> PyResult<Vec<Complex64>> {
-            Vec::extract(density_matrix.as_ref(py)).map_err(|_| {
-                PyTypeError::new_err(
-                    "density_matrix input cannot be converted to list of complex numbers",
-                )
-            })
-        })?;
-        let length: usize = densmat_casted.len();
-        let dim: usize = (length as f64).sqrt() as usize;
-        let densmat_array = Array::from_shape_vec((dim, dim), densmat_casted).unwrap();
+    fn new(density_matrix: PyReadonlyArray2<Complex64>) -> PyResult<Self> {
+        let density_matrix_for_initialisation = density_matrix.as_array().to_owned();
         Ok(Self {
-            internal: PragmaSetDensityMatrix::new(densmat_array),
+            internal: PragmaSetDensityMatrix::new(density_matrix_for_initialisation),
         })
     }
 
     /// Return the set density matrix.
     ///
     /// Returns:
-    ///     np.ndarray: The density matrix representing the qubit register.
-    fn density_matrix(&self) -> Py<PyArray1<Complex64>> {
-        let array: Vec<Complex64> = self.internal.density_matrix().iter().cloned().collect();
-        Python::with_gil(|py| -> Py<PyArray1<Complex64>> { array.to_pyarray(py).to_owned() })
+    ///     np.ndarray: The density matrix (2d array) representing the qubit register.
+
+    fn density_matrix(&self) -> Py<PyArray2<Complex64>> {
+        Python::with_gil(|py| -> Py<PyArray2<Complex64>> {
+            self.internal.density_matrix().to_pyarray(py).to_owned()
+        })
     }
 
     /// List all involved qubits (here, all).
@@ -868,7 +859,7 @@ fn pragma_general_noise(_py: Python, module: &PyModule) -> PyResult<()> {
 /// Args:
 ///     qubit (int): The qubit the PRAGMA operation is applied to.
 ///     gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
-///     Rates: The rates representing the general noise matrix M (a 3x3 matrix as 1d array).
+///     Rates: The rates representing the general noise matrix M (a 3x3 matrix as 2d array).
 ///
 pub struct PragmaGeneralNoiseWrapper {
     /// PragmaGeneralNoise to be wrapped and converted to Python.
@@ -887,13 +878,12 @@ insert_pyany_to_operation!(
         let gate_time: CalculatorFloat = convert_into_calculator_float(gatetm).map_err(|_| {
             QoqoError::ConversionError
         })?;
+
         let array = op.call_method0("rates")
                       .map_err(|_| QoqoError::ConversionError)?;
+        let rates_array = array.cast_as::<PyArray2<f64>>().unwrap();
+        let rates = rates_array.readonly().as_array().to_owned();
 
-        let densmat_casted: Vec<f64> = Vec::extract(array).unwrap();
-        let length: usize = densmat_casted.len();
-        let dim: usize = (length as f64).sqrt() as usize;
-        let rates = Array::from_shape_vec((dim, dim), densmat_casted).unwrap();
         Ok(PragmaGeneralNoise::new(qubit, gate_time, rates).into())
     }
 );
@@ -936,15 +926,13 @@ impl PragmaGeneralNoiseWrapper {
     /// Args:
     ///     qubit (int): The qubit the PRAGMA operation is applied to.
     ///     gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
-    ///     rates (list[complex]): The rate matrix M.
+    ///     rates (Array2[float]): The rate matrix M.
     ///
     /// Returns:
     ///     self: The new PragmaGeneralNoise.
     #[new]
-    fn new(qubit: usize, gate_time: Py<PyAny>, rates: Py<PyAny>) -> PyResult<Self> {
-        let rates_casted: Vec<f64> =
-            Python::with_gil(|py| -> Vec<f64> { Vec::extract(rates.as_ref(py)).unwrap() });
-        let rates_array = Array::from_shape_vec((3, 3), rates_casted).unwrap();
+    fn new(qubit: usize, gate_time: Py<PyAny>, rates: PyReadonlyArray2<f64>) -> PyResult<Self> {
+        let rates_array = rates.as_array().to_owned();
         let gate_time_cf = Python::with_gil(|py| -> PyResult<CalculatorFloat> {
             convert_into_calculator_float(gate_time.as_ref(py)).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
@@ -980,22 +968,16 @@ impl PragmaGeneralNoiseWrapper {
     ///
     /// Returns:
     ///     np.ndarray: The rates of the PRAGMA operation.
-    fn rates(&self) -> Py<PyArray1<f64>> {
-        Python::with_gil(|py| -> Py<PyArray1<f64>> {
-            self.internal
-                .rates()
-                .iter()
-                .cloned()
-                .collect::<Vec<f64>>()
-                .to_pyarray(py)
-                .to_owned()
+    fn rates(&self) -> Py<PyArray2<f64>> {
+        Python::with_gil(|py| -> Py<PyArray2<f64>> {
+            self.internal.rates().to_pyarray(py).to_owned()
         })
     }
 
-    /// Return the rates of the PRAGMA operation.
+    /// Return the superoperator of the PRAGMA operation.
     ///
     /// Returns:
-    ///     np.ndarray: The rates of the PRAGMA operation.
+    ///     np.ndarray: The matrix form of the superoperator of the PRAGMA operation.
     fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
         Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
             match self.internal.superoperator() {
