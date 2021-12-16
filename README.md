@@ -17,7 +17,7 @@ What roqoqo/qoqo is:
 * A toolkit to represent quantum operations and circuits
 * A thin runtime to run quantum measurements
 * A way to serialize quantum circuits and measurement information
-* A set of optional interfaces to devices, simulators and toolkits (e.g. [qoqo_pyqest](https://github.com/HQSquantumsimulations/qoqo_pyquest), [qoqo_mock](https://github.com/HQSquantumsimulations/qoqo_mock), [qoqo_qasm](https://github.com/HQSquantumsimulations/qoqo_qasm))
+* A set of optional interfaces to devices, simulators and toolkits (e.g. [qoqo_qest](https://github.com/HQSquantumsimulations/qoqo-quest), [qoqo_mock](https://github.com/HQSquantumsimulations/qoqo_mock), [qoqo_qasm](https://github.com/HQSquantumsimulations/qoqo_qasm))
 
 What roqoqo/qoqo is **not**:
 
@@ -108,7 +108,7 @@ to the `[dependencies]` section of the project Cargo.toml.
 
 ### Examples
 
-For an expanded collection of Examples see the jupyter notebooks in qoqo/examples. The examples require the qoqo_pyquest and qoqo_mock interfaces.
+For an expanded collection of Examples see the jupyter notebooks in qoqo/examples. The examples require the qoqo_quest and qoqo_mock interfaces.
 
 * [Intro example](https://nbviewer.jupyter.org/github/HQSquantumsimulations/qoqo/blob/main/qoqo/examples/Intro_to_qoqo.ipynb)
 

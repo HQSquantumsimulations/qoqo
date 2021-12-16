@@ -108,7 +108,7 @@ to the `[dependencies]` section of the project Cargo.toml.
 
 ### Examples
 
-For an expanded collection of Examples see the jupyter notebooks in qoqo/examples. The examples require the qoqo_pyquest and qoqo_mock interfaces.
+For an expanded collection of Examples see the jupyter notebooks in qoqo/examples. The examples require the qoqo_quest and qoqo_mock interfaces.
 
 * [Intro example](https://nbviewer.jupyter.org/github/HQSquantumsimulations/qoqo/blob/main/qoqo/examples/Intro_to_qoqo.ipynb)
 
