@@ -2767,7 +2767,7 @@ fn pragma_conditional_simple_traits() {
     // Test Debug trait
     assert_eq!(
         format!("{:?}", pragma),
-        "PragmaConditional { condition_register: \"ro\", condition_index: 1, circuit: Circuit { definitions: [], operations: [] } }"
+        "PragmaConditional { condition_register: \"ro\", condition_index: 1, circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"
     );
 
     // Test Clone trait
@@ -2836,6 +2836,21 @@ fn pragma_conditional_substitute_trait() {
 #[test]
 fn pragma_conditional_serde_readable() {
     let pragma_serialization = PragmaConditional::new(String::from("ro"), 1, Circuit::default());
+    use roqoqo::ROQOQO_VERSION;
+    use std::str::FromStr;
+    let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+    let major_version = u32::from_str(
+        rsplit
+            .next()
+            .expect("Internal error: Version not conforming to semver"),
+    )
+    .expect("Internal error: Major version is not unsigned integer.");
+    let minor_version = u32::from_str(
+        rsplit
+            .next()
+            .expect("Internal error: Version not conforming to semver"),
+    )
+    .expect("Internal error: Minor version is not unsigned integer.");
     assert_tokens(
         &pragma_serialization.readable(),
         &[
@@ -2850,7 +2865,7 @@ fn pragma_conditional_serde_readable() {
             Token::Str("circuit"),
             Token::Struct {
                 name: "Circuit",
-                len: 2,
+                len: 3,
             },
             Token::Str("definitions"),
             Token::Seq { len: Some(0) },
@@ -2858,6 +2873,16 @@ fn pragma_conditional_serde_readable() {
             Token::Str("operations"),
             Token::Seq { len: Some(0) },
             Token::SeqEnd,
+            Token::Str("_roqoqo_version"),
+            Token::Struct {
+                name: "RoqoqoVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(major_version),
+            Token::Str("minor_version"),
+            Token::U32(minor_version),
+            Token::StructEnd,
             Token::StructEnd,
             Token::StructEnd,
         ],
@@ -2869,6 +2894,21 @@ fn pragma_conditional_serde_readable() {
 #[test]
 fn pragma_conditional_serde_compact() {
     let pragma_serialization = PragmaConditional::new(String::from("ro"), 1, Circuit::default());
+    use roqoqo::ROQOQO_VERSION;
+    use std::str::FromStr;
+    let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+    let major_version = u32::from_str(
+        rsplit
+            .next()
+            .expect("Internal error: Version not conforming to semver"),
+    )
+    .expect("Internal error: Major version is not unsigned integer.");
+    let minor_version = u32::from_str(
+        rsplit
+            .next()
+            .expect("Internal error: Version not conforming to semver"),
+    )
+    .expect("Internal error: Minor version is not unsigned integer.");
     assert_tokens(
         &pragma_serialization.readable(),
         &[
@@ -2883,7 +2923,7 @@ fn pragma_conditional_serde_compact() {
             Token::Str("circuit"),
             Token::Struct {
                 name: "Circuit",
-                len: 2,
+                len: 3,
             },
             Token::Str("definitions"),
             Token::Seq { len: Some(0) },
@@ -2891,6 +2931,16 @@ fn pragma_conditional_serde_compact() {
             Token::Str("operations"),
             Token::Seq { len: Some(0) },
             Token::SeqEnd,
+            Token::Str("_roqoqo_version"),
+            Token::Struct {
+                name: "RoqoqoVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(major_version),
+            Token::Str("minor_version"),
+            Token::U32(minor_version),
+            Token::StructEnd,
             Token::StructEnd,
             Token::StructEnd,
         ],
