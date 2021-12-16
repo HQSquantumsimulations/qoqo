@@ -45,7 +45,7 @@ nalgebra = "0.29"
 [build-dependencies]
 quote = "1.0"
 syn = { version = "1.0", features = ["full", "visit"] }
-proc-macro2 = "1.0"
+proc-macro2 = {version="=1.0.29"}
 
 [package.metadata.docs.rs]
 no-default-features = true
