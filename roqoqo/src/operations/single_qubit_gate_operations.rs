@@ -156,6 +156,40 @@ impl OperateSingleQubitGate for SingleQubitGate {
     fn global_phase(&self) -> CalculatorFloat {
         self.global_phase.clone()
     }
+    // NEW: ported
+    /// Function to normalize any SingleQubitGate operation.
+    ///
+    /// # Returns
+    ///
+    /// * SingleQubitGate with normalized alpha, beta values.
+    fn normalize_operation(&self) -> SingleQubitGate {
+        let operation: SingleQubitGate = self.clone();
+        if self.alpha_r().is_float()
+            && self.alpha_i().is_float()
+            && self.beta_r().is_float()
+            && self.beta_i().is_float()
+        {
+            let norm = (self.alpha_r().float().unwrap().powf(2.0)
+                + self.alpha_i().float().unwrap().powf(2.0)
+                + self.beta_r().float().unwrap().powf(2.0)
+                + self.beta_i().float().unwrap().powf(2.0))
+            .sqrt();
+            if (norm - 1.0).abs() > f64::EPSILON {
+                SingleQubitGate::new(
+                    *self.qubit(),
+                    self.alpha_r() / norm,
+                    self.alpha_i() / norm,
+                    self.beta_r() / norm,
+                    self.beta_i() / norm,
+                    self.global_phase(),
+                )
+            } else {
+                operation
+            }
+        } else {
+            operation
+        }
+    }
 }
 
 /// The ZPower gate $e^{-i \frac{\theta}{2} \sigma^z}$.

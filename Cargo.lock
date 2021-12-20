@@ -399,7 +399,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "0.9.0"
+version = "0.10.0"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -529,7 +529,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "0.9.0"
+version = "0.10.0"
 dependencies = [
  "bincode",
  "dyn-clone",
@@ -561,7 +561,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "0.9.0"
+version = "0.10.0"
 dependencies = [
  "nalgebra",
  "ndarray",

@@ -224,6 +224,21 @@ fn test_singlequbitgate_unitarity_err() {
     );
 }
 
+/// Test 'normalize_operation()' for SingleQubitGate
+#[test]
+fn test_normalize_operation() {
+    let gate = SingleQubitGate::new(
+        0,
+        CalculatorFloat::from(1.0),
+        CalculatorFloat::from(0.0),
+        CalculatorFloat::from(0.0),
+        CalculatorFloat::from(0.0),
+        CalculatorFloat::from(0.0),
+    );
+    let gate_norm = gate.normalize_operation();
+    assert_eq!(gate, gate_norm);
+}
+
 /// Test 'qubit()' for SingleQubitGate
 #[test]
 fn test_singlequbitgate_operatesinglequbit() {

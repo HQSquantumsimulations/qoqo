@@ -574,6 +574,48 @@ pub trait OperateSingleQubitGate:
             self.global_phase() + other.global_phase(),
         ))
     }
+    // NEW: ported
+    /// Function to normalize any SingleQubitGate operation.
+    ///
+    /// # Returns
+    ///
+    /// * SingleQubitGate with normalized alpha, beta values.
+    fn normalize_operation(&self) -> SingleQubitGate {
+        // QUESTION: is there a better syntax for this block, with try_from() or something similar?
+        let operation: SingleQubitGate = SingleQubitGate::new(
+            *self.qubit(),
+            self.alpha_r(),
+            self.alpha_i(),
+            self.beta_r(),
+            self.beta_i(),
+            self.global_phase(),
+        );
+        if self.alpha_r().is_float()
+            && self.alpha_i().is_float()
+            && self.beta_r().is_float()
+            && self.beta_i().is_float()
+        {
+            let norm = (self.alpha_r().float().unwrap().powf(2.0)
+                + self.alpha_i().float().unwrap().powf(2.0)
+                + self.beta_r().float().unwrap().powf(2.0)
+                + self.beta_i().float().unwrap().powf(2.0))
+            .sqrt();
+            if (norm - 1.0).abs() > f64::EPSILON {
+                SingleQubitGate::new(
+                    *self.qubit(),
+                    self.alpha_r() / norm,
+                    self.alpha_i() / norm,
+                    self.beta_r() / norm,
+                    self.beta_i() / norm,
+                    self.global_phase(),
+                )
+            } else {
+                operation
+            }
+        } else {
+            operation
+        }
+    }
 }
 
 /// Trait for all Operations operating on or affecting exactly two qubits.
