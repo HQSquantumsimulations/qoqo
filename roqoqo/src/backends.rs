@@ -21,9 +21,9 @@
 //! Note: The following backends are implemented in roqoqo and supported by HQS Quantum Simulations GmbH.
 //!
 //! Evaluated backends:
-//! * `aqt`,
-//! * `MockedBackend` ( <https://github.com/HQSquantumsimulations/qoqo_mock> ),
-//! * `PyQuestBackend` ( <https://github.com/HQSquantumsimulations/qoqo_pyquest> ).
+//! * `aqt`, ( <https://github.com/HQSquantumsimulations/qoqo_aqt> ),
+//! * `mock` ( <https://github.com/HQSquantumsimulations/qoqo_mock> ),
+//! * `quest` ( <https://github.com/HQSquantumsimulations/qoqo-quest> ).
 //!
 //! Other backends:
 //! * `qasm` ( <https://github.com/HQSquantumsimulations/qoqo_qasm> ).
