@@ -192,7 +192,7 @@ impl OperateSingleQubitGate for SingleQubitGate {
     }
     // NEW: newly ported
     /// Converts OperateSingleQubitGate into SingleQubitGate
-    fn into_single_qubit_gate(&self) -> SingleQubitGate {
+    fn from_single_qubit_operation(&self) -> SingleQubitGate {
         SingleQubitGate::new(
             *self.qubit(),
             self.alpha_r(),

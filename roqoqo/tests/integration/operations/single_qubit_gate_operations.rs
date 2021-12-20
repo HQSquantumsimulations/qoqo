@@ -239,10 +239,9 @@ fn test_normalize_operation() {
     assert_eq!(gate, gate_norm);
 }
 
-/// Test 'into_single_qubit_gate()` for SingleQubitGate
-// Question: is this a reasonable unit test?
+/// Test 'from_single_qubit_operation()` for SingleQubitGate
 #[test]
-fn test_into_single_qubit_gate() {
+fn test_from_single_qubit_operation() {
     let gate = SingleQubitGate::new(
         0,
         CalculatorFloat::from(1.0),
@@ -252,7 +251,7 @@ fn test_into_single_qubit_gate() {
         CalculatorFloat::from(0.0),
     );
     let rotatez: RotateZ = RotateZ::new(0, 0.into());
-    let rotatez_gate: SingleQubitGate = rotatez.into_single_qubit_gate();
+    let rotatez_gate: SingleQubitGate = rotatez.from_single_qubit_operation();
     assert_eq!(gate, rotatez_gate);
 }
 
