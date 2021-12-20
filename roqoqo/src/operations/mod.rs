@@ -616,6 +616,18 @@ pub trait OperateSingleQubitGate:
             operation
         }
     }
+    // NEW: newly ported
+    /// Converts OperateSingleQubitGate into SingleQubitGate
+    fn into_single_qubit_gate(&self) -> SingleQubitGate {
+        SingleQubitGate::new(
+            *self.qubit(),
+            self.alpha_r(),
+            self.alpha_i(),
+            self.beta_r(),
+            self.beta_i(),
+            self.global_phase(),
+        )
+    }
 }
 
 /// Trait for all Operations operating on or affecting exactly two qubits.

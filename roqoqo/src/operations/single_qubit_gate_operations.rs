@@ -190,6 +190,18 @@ impl OperateSingleQubitGate for SingleQubitGate {
             operation
         }
     }
+    // NEW: newly ported
+    /// Converts OperateSingleQubitGate into SingleQubitGate
+    fn into_single_qubit_gate(&self) -> SingleQubitGate {
+        SingleQubitGate::new(
+            *self.qubit(),
+            self.alpha_r(),
+            self.alpha_i(),
+            self.beta_r(),
+            self.beta_i(),
+            self.global_phase(),
+        )
+    }
 }
 
 /// The ZPower gate $e^{-i \frac{\theta}{2} \sigma^z}$.
