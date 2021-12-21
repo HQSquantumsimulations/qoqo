@@ -199,7 +199,7 @@ pub fn add_random_operation(circuit: &mut Circuit, number_qubits: usize, seed: u
     let mut rng = StdRng::seed_from_u64(seed);
     let qubits_dist = Uniform::from(0..number_qubits);
     let two_qubits_dist = Uniform::from(0..number_qubits - 1);
-    let gate_type_dist = Uniform::from(0..16);
+    let gate_type_dist = Uniform::from(0..35);
     let new_op: Operation = match gate_type_dist.sample(&mut rng) {
         0 => PauliX::new(qubits_dist.sample(&mut rng)).into(),
         1 => PauliY::new(qubits_dist.sample(&mut rng)).into(),
@@ -249,12 +249,107 @@ pub fn add_random_operation(circuit: &mut Circuit, number_qubits: usize, seed: u
             let qubit = two_qubits_dist.sample(&mut rng);
             ControlledPhaseShift::new(qubit, qubit + 1, theta.into()).into()
         }
-        17 => MeasureQubit::new(
-            qubits_dist.sample(&mut rng),
-            "ro".to_string(),
-            qubits_dist.sample(&mut rng),
-        )
-        .into(),
+        17 => {
+            let qubit = two_qubits_dist.sample(&mut rng);
+            let delta_real: f64 = rng.sample(Standard);
+            let delta_imag: f64 = rng.sample(Standard);
+            Bogoliubov::new(qubit, qubit + 1, delta_real.into(), delta_imag.into()).into()
+        }
+        18 => {
+            let qubit = two_qubits_dist.sample(&mut rng);
+            let t_real: f64 = rng.sample(Standard);
+            let t_imag: f64 = rng.sample(Standard);
+            ComplexPMInteraction::new(qubit, qubit + 1, t_real.into(), t_imag.into()).into()
+        }
+        19 => {
+            let qubit = two_qubits_dist.sample(&mut rng);
+            FSwap::new(qubit, qubit + 1).into()
+        }
+        20 => {
+            let qubit = two_qubits_dist.sample(&mut rng);
+            let t: f64 = rng.sample(Standard);
+            let u: f64 = rng.sample(Standard);
+            let delta: f64 = rng.sample(Standard);
+            Fsim::new(qubit, qubit + 1, t.into(), u.into(), delta.into()).into()
+        }
+        21 => {
+            let qubit = two_qubits_dist.sample(&mut rng);
+            let theta: f64 = rng.sample(Standard);
+            let phi: f64 = rng.sample(Standard);
+            GivensRotation::new(qubit, qubit + 1, theta.into(), phi.into()).into()
+        }
+        22 => {
+            let qubit = two_qubits_dist.sample(&mut rng);
+            let theta: f64 = rng.sample(Standard);
+            let phi: f64 = rng.sample(Standard);
+            GivensRotationLittleEndian::new(qubit, qubit + 1, theta.into(), phi.into()).into()
+        }
+        23 => {
+            let qubit = two_qubits_dist.sample(&mut rng);
+            ISwap::new(qubit, qubit + 1).into()
+        }
+        24 => {
+            let qubit = two_qubits_dist.sample(&mut rng);
+            InvSqrtISwap::new(qubit, qubit + 1).into()
+        }
+        25 => {
+            let t: f64 = rng.sample(Standard);
+            let qubit = two_qubits_dist.sample(&mut rng);
+            PMInteraction::new(qubit, qubit + 1, t.into()).into()
+        }
+        26 => {
+            let theta: f64 = rng.sample(Standard);
+            let qubit = qubits_dist.sample(&mut rng);
+            PhaseShiftState0::new(qubit, theta.into()).into()
+        }
+        27 => {
+            let theta: f64 = rng.sample(Standard);
+            let qubit = qubits_dist.sample(&mut rng);
+            PhaseShiftState1::new(qubit, theta.into()).into()
+        }
+        28 => {
+            let phi: f64 = rng.sample(Standard);
+            let qubit = two_qubits_dist.sample(&mut rng);
+            PhaseShiftedControlledZ::new(qubit, qubit + 1, phi.into()).into()
+        }
+        29 => {
+            let qubit = two_qubits_dist.sample(&mut rng);
+            let x: f64 = rng.sample(Standard);
+            let y: f64 = rng.sample(Standard);
+            let z: f64 = rng.sample(Standard);
+            Qsim::new(qubit, qubit + 1, x.into(), y.into(), z.into()).into()
+        }
+        30 => {
+            let qubit = qubits_dist.sample(&mut rng);
+            let theta: f64 = rng.sample(Standard);
+            let spherical_theta: f64 = rng.sample(Standard);
+            let spherical_phi: f64 = rng.sample(Standard);
+            RotateAroundSphericalAxis::new(
+                qubit,
+                theta.into(),
+                spherical_theta.into(),
+                spherical_phi.into(),
+            )
+            .into()
+        }
+        31 => SGate::new(qubits_dist.sample(&mut rng)).into(),
+        32 => TGate::new(qubits_dist.sample(&mut rng)).into(),
+        33 => {
+            let qubit = two_qubits_dist.sample(&mut rng);
+            SWAP::new(qubit, qubit + 1).into()
+        }
+        34 => {
+            let qubit = two_qubits_dist.sample(&mut rng);
+            let x: f64 = rng.sample(Standard);
+            let y: f64 = rng.sample(Standard);
+            let z: f64 = rng.sample(Standard);
+            SpinInteraction::new(qubit, qubit + 1, x.into(), y.into(), z.into()).into()
+        }
+        35 => {
+            let theta: f64 = rng.sample(Standard);
+            let qubit = two_qubits_dist.sample(&mut rng);
+            XY::new(qubit, qubit + 1, theta.into()).into()
+        }
         _ => {
             let theta: f64 = rng.sample(Standard);
             RotateZ::new(qubits_dist.sample(&mut rng), theta.into()).into()
