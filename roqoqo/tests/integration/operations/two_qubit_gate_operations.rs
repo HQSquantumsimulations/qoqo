@@ -163,8 +163,7 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
     );
 
     if circuit_before != None {
-        let operations_before: Vec<Operation> =
-            circuit_before.unwrap().operations().clone();
+        let operations_before: Vec<Operation> = circuit_before.unwrap().operations().clone();
         let range = 0..operations_before.len();
         for i in range {
             let element: SingleQubitGateOperation =

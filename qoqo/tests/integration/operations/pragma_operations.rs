@@ -1554,14 +1554,9 @@ fn test_pyo3_new_set_number_of_measurements() {
 
         let input_definition =
             Operation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro")));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let pragma_wrapper = new_op
@@ -1594,8 +1589,7 @@ fn test_pyo3_new_set_statevector() {
     Python::with_gil(|py| {
         let operation = py.get_type::<PragmaSetStateVectorWrapper>();
         let to_get_statevec_0 = Operation::from(PragmaSetStateVector::new(statevector()));
-        let convert_to_get_statevec_0 = convert_operation_to_pyobject(to_get_statevec_0)
-            .unwrap();
+        let convert_to_get_statevec_0 = convert_operation_to_pyobject(to_get_statevec_0).unwrap();
         let statevector_op_0 = convert_to_get_statevec_0
             .call_method0(py, "statevector")
             .unwrap();
@@ -1614,8 +1608,7 @@ fn test_pyo3_new_set_statevector() {
         assert!(comparison_copy);
 
         let to_get_statevec_1 = Operation::from(PragmaSetStateVector::new(statevector() + 1.0));
-        let convert_to_get_statevec_1 = convert_operation_to_pyobject(to_get_statevec_1)
-            .unwrap();
+        let convert_to_get_statevec_1 = convert_operation_to_pyobject(to_get_statevec_1).unwrap();
         let statevector_op_1 = convert_to_get_statevec_1
             .call_method0(py, "statevector")
             .unwrap();
@@ -1648,8 +1641,7 @@ fn test_pyo3_new_set_densitymatrix() {
     Python::with_gil(|py| {
         let operation = py.get_type::<PragmaSetDensityMatrixWrapper>();
         let to_get_densmat_0 = Operation::from(PragmaSetDensityMatrix::new(densitymatrix()));
-        let convert_to_get_densmat_0 = convert_operation_to_pyobject(to_get_densmat_0)
-            .unwrap();
+        let convert_to_get_densmat_0 = convert_operation_to_pyobject(to_get_densmat_0).unwrap();
         let densmat_op_0 = convert_to_get_densmat_0
             .call_method0(py, "density_matrix")
             .unwrap();
@@ -1668,8 +1660,7 @@ fn test_pyo3_new_set_densitymatrix() {
         assert!(comparison_copy);
 
         let to_get_densmat_1 = Operation::from(PragmaSetDensityMatrix::new(densitymatrix() + 1.0));
-        let convert_to_get_densmat_1 = convert_operation_to_pyobject(to_get_densmat_1)
-            .unwrap();
+        let convert_to_get_densmat_1 = convert_operation_to_pyobject(to_get_densmat_1).unwrap();
         let densmat_op_1 = convert_to_get_densmat_1
             .call_method0(py, "density_matrix")
             .unwrap();
@@ -1708,14 +1699,9 @@ fn test_pyo3_new_repeated_gate() {
             .unwrap();
 
         let input_definition = Operation::from(PragmaRepeatGate::new(2));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let pragma_wrapper = new_op.extract::<PragmaRepeatGateWrapper>().unwrap();
@@ -1755,8 +1741,7 @@ fn test_pyo3_new_overrotation() {
             0.03,
             0.001,
         ));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
         let extracted: PragmaOverrotationWrapper =
             PragmaOverrotationWrapper::extract(new_op.as_ref()).unwrap();
         assert_eq!(
@@ -1805,14 +1790,9 @@ fn test_pyo3_new_boost_noise() {
             .cast_as::<PyCell<PragmaBoostNoiseWrapper>>()
             .unwrap();
         let input_definition = Operation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.003)));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         // Error initialisation
@@ -1856,14 +1836,9 @@ fn test_pyo3_new_stop() {
             vec![0],
             CalculatorFloat::from(0.0000001),
         ));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         // Error initialisation
@@ -1912,14 +1887,9 @@ fn test_pyo3_new_global_phase() {
             .unwrap();
         let input_definition =
             Operation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.003)));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         // Error initialisation
@@ -1962,14 +1932,9 @@ fn test_pyo3_new_sleep() {
 
         let input_definition =
             Operation::from(PragmaSleep::new(vec![0], CalculatorFloat::from(0.0000001)));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         // Error initialisation
@@ -2015,14 +1980,9 @@ fn test_pyo3_new_active_reset() {
             .unwrap();
 
         let input_definition = Operation::from(PragmaActiveReset::new(0));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let pragma_wrapper = new_op.extract::<PragmaActiveResetWrapper>().unwrap();
@@ -2058,14 +2018,9 @@ fn test_pyo3_new_start_decomposition_block() {
 
         let input_definition =
             Operation::from(PragmaStartDecompositionBlock::new(vec![0], reordering()));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let pragma_wrapper = new_op
@@ -2104,14 +2059,9 @@ fn test_pyo3_new_stop_decomposition_block() {
             .unwrap();
 
         let input_definition = Operation::from(PragmaStopDecompositionBlock::new(vec![0]));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let pragma_wrapper = new_op
@@ -2154,14 +2104,9 @@ fn test_pyo3_new_damping() {
             CalculatorFloat::from(0.005),
             CalculatorFloat::from(0.02),
         ));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         // Error initialisation
@@ -2209,14 +2154,9 @@ fn test_pyo3_new_depolarising() {
             CalculatorFloat::from(0.005),
             CalculatorFloat::from(0.02),
         ));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         // Error initialisation
@@ -2264,14 +2204,9 @@ fn test_pyo3_new_dephasing() {
             CalculatorFloat::from(0.005),
             CalculatorFloat::from(0.02),
         ));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         // Error initialisation
@@ -2320,14 +2255,9 @@ fn test_pyo3_new_randomnoise() {
             CalculatorFloat::from(0.02),
             CalculatorFloat::from(0.01),
         ));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         // Error initialisation
@@ -2373,8 +2303,7 @@ fn test_pyo3_new_general_noise() {
             CalculatorFloat::from(0.005),
             operators(),
         ));
-        let convert_to_get_operators = convert_operation_to_pyobject(to_get_operators)
-            .unwrap();
+        let convert_to_get_operators = convert_operation_to_pyobject(to_get_operators).unwrap();
         let operators_op = convert_to_get_operators.call_method0(py, "rates").unwrap();
 
         let new_op = operation
@@ -2434,14 +2363,9 @@ fn test_pyo3_new_conditional() {
 
         let input_definition =
             Operation::from(PragmaConditional::new("ro".to_string(), 0, Circuit::new()));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let pragma_wrapper = new_op.extract::<PragmaConditionalWrapper>().unwrap();

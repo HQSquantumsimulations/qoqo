@@ -428,12 +428,8 @@ fn test_single_index_access_get() {
             .unwrap();
 
         let comp_op = circuit.call_method1("get", (1,)).unwrap();
-        let comparison = bool::extract(
-            comp_op
-                .call_method1("__eq__", (operation2,))
-                .unwrap(),
-        )
-        .unwrap();
+        let comparison =
+            bool::extract(comp_op.call_method1("__eq__", (operation2,)).unwrap()).unwrap();
         assert!(comparison);
 
         let comparison = circuit.call_method1("get", (20,));

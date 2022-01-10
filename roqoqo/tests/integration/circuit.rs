@@ -38,9 +38,7 @@ fn add_definitions(definition: Operation) {
     circuit.add_operation(RotateZ::new(0, CalculatorFloat::from(0.0)));
     circuit.add_operation(definition.clone());
     assert!(*circuit.get(0).unwrap() == definition);
-    assert!(
-        *circuit.get(1).unwrap() == RotateZ::new(0, CalculatorFloat::from(0.0)).into()
-    );
+    assert!(*circuit.get(1).unwrap() == RotateZ::new(0, CalculatorFloat::from(0.0)).into());
 }
 
 /// Test get function

@@ -503,14 +503,9 @@ fn test_pyo3_new_set_number_of_measurements() {
             .unwrap();
 
         let input_definition = Operation::from(MeasureQubit::new(0, String::from("ro"), 1));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let meas_wrapper = new_op.extract::<MeasureQubitWrapper>().unwrap();
@@ -545,14 +540,9 @@ fn test_pyo3_new_get_statevector() {
             .unwrap();
 
         let input_definition = Operation::from(PragmaGetStateVector::new(String::from("ro"), None));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let meas_wrapper = new_op.extract::<PragmaGetStateVectorWrapper>().unwrap();
@@ -590,14 +580,9 @@ fn test_pyo3_new_get_density_matrix() {
 
         let input_definition =
             Operation::from(PragmaGetDensityMatrix::new(String::from("ro"), None));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let meas_wrapper = new_op.extract::<PragmaGetDensityMatrixWrapper>().unwrap();
@@ -637,14 +622,9 @@ fn test_pyo3_new_get_occupation_proba() {
             String::from("ro"),
             None,
         ));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let meas_wrapper = new_op
@@ -687,14 +667,9 @@ fn test_pyo3_new_get_pauli_product() {
             String::from("ro"),
             Circuit::default(),
         ));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let meas_wrapper = new_op.extract::<PragmaGetPauliProductWrapper>().unwrap();
@@ -735,14 +710,9 @@ fn test_pyo3_new_repeated_measurement() {
             1,
             Some(create_qubit_mapping()),
         ));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let meas_wrapper = new_op

@@ -29,14 +29,9 @@ fn test_pyo3_new_definition_float() {
             .unwrap();
 
         let input_definition = Operation::from(DefinitionFloat::new(String::from("ro"), 1, false));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let def_wrapper = new_op.extract::<DefinitionFloatWrapper>().unwrap();
@@ -72,14 +67,9 @@ fn test_pyo3_new_definition_complex() {
 
         let input_definition =
             Operation::from(DefinitionComplex::new(String::from("ro"), 1, false));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let def_wrapper = new_op.extract::<DefinitionComplexWrapper>().unwrap();
@@ -114,14 +104,9 @@ fn test_pyo3_new_definition_usize() {
             .unwrap();
 
         let input_definition = Operation::from(DefinitionUsize::new(String::from("ro"), 1, false));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let def_wrapper = new_op.extract::<DefinitionUsizeWrapper>().unwrap();
@@ -156,14 +141,9 @@ fn test_pyo3_new_definition_bit() {
             .unwrap();
 
         let input_definition = Operation::from(DefinitionBit::new(String::from("ro"), 1, false));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let def_wrapper = new_op.extract::<DefinitionBitWrapper>().unwrap();
@@ -198,14 +178,9 @@ fn test_pyo3_new_input_symbolic() {
             .unwrap();
 
         let input_definition = Operation::from(InputSymbolic::new(String::from("ro"), 1.0));
-        let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap();
-        let comparison_copy = bool::extract(
-            new_op
-                .call_method1("__eq__", (copy_param,))
-                .unwrap(),
-        )
-        .unwrap();
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let def_wrapper = new_op.extract::<InputSymbolicWrapper>().unwrap();

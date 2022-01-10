@@ -144,12 +144,8 @@ fn test_evaluate(register: Vec<Vec<Complex64>>, value_diagonal: f64, value_off_d
         (1, 0, Complex64::new(0.0, 0.0)),
         (1, 1, Complex64::new(-1.0, 0.0)),
     ];
-    bri.add_operator_exp_val(
-        "test_diagonal".to_string(),
-        test_matrix,
-        "ro".to_string(),
-    )
-    .unwrap();
+    bri.add_operator_exp_val("test_diagonal".to_string(), test_matrix, "ro".to_string())
+        .unwrap();
     let test_matrix = vec![
         (0, 0, Complex64::new(0.0, 0.0)),
         (0, 1, Complex64::new(0.0, -1.0)),
@@ -194,12 +190,8 @@ fn test_evaluate_error() {
         (1, 0, Complex64::new(0.0, 0.0)),
         (1, 1, Complex64::new(-1.0, 0.0)),
     ];
-    bri.add_operator_exp_val(
-        "test_diagonal".to_string(),
-        test_matrix,
-        "ro".to_string(),
-    )
-    .unwrap();
+    bri.add_operator_exp_val("test_diagonal".to_string(), test_matrix, "ro".to_string())
+        .unwrap();
     let test_matrix = vec![
         (0, 0, Complex64::new(0.0, 0.0)),
         (0, 1, Complex64::new(0.0, -1.0)),

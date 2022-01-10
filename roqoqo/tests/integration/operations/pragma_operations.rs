@@ -2646,8 +2646,7 @@ fn pragma_general_noise_pragmanoise_trait() {
 #[test]
 fn pragma_general_noise_serde_readable() {
     let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],];
-    let pragma_serialization =
-        PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators);
+    let pragma_serialization = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators);
     assert_tokens(
         &pragma_serialization.readable(),
         &[
@@ -2694,8 +2693,7 @@ fn pragma_general_noise_serde_readable() {
 #[test]
 fn pragma_general_noise_serde_compact() {
     let operators: Array2<f64> = array![[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0],];
-    let pragma_serialization =
-        PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators);
+    let pragma_serialization = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators);
     assert_tokens(
         &pragma_serialization.compact(),
         &[

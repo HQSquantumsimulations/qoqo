@@ -108,14 +108,7 @@ fn test_singlequbitgate_unitarity_ok(
     beta_i: CalculatorFloat,
     global_phase: CalculatorFloat,
 ) {
-    let gate = SingleQubitGate::new(
-        qubit,
-        alpha_r,
-        alpha_i,
-        beta_r,
-        beta_i,
-        global_phase,
-    );
+    let gate = SingleQubitGate::new(qubit, alpha_r, alpha_i, beta_r, beta_i, global_phase);
     let result: Result<Array2<Complex64>, RoqoqoError> = gate.unitary_matrix();
     assert!(result.is_ok());
     let result_matrix: Array2<Complex64> = result.unwrap();
@@ -305,10 +298,7 @@ fn test_singlequbitgate_substitute_parameters() {
     assert_eq!(gate.alpha_i(), CalculatorFloat::from("alpha_i"));
     assert_eq!(gate.beta_r(), CalculatorFloat::from("beta_r"));
     assert_eq!(gate.beta_i(), CalculatorFloat::from("beta_i"));
-    assert_eq!(
-        gate.global_phase(),
-        CalculatorFloat::from("global_phase")
-    );
+    assert_eq!(gate.global_phase(), CalculatorFloat::from("global_phase"));
     assert!(gate.is_parametrized());
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("alpha_r", 0.0);
@@ -418,14 +408,8 @@ fn test_alpha_beta_singlequbitgates(gate: SingleQubitGateOperation) {
     let qubit = gate.qubit();
     let matrix = gate.unitary_matrix().unwrap();
 
-    let singlequbitgate = SingleQubitGate::new(
-        *qubit,
-        alpha_r,
-        alpha_i,
-        beta_r,
-        beta_i,
-        global_phase,
-    );
+    let singlequbitgate =
+        SingleQubitGate::new(*qubit, alpha_r, alpha_i, beta_r, beta_i, global_phase);
     let test_matrix = singlequbitgate.unitary_matrix().unwrap();
 
     let epsilon = 1e-12;
@@ -1156,10 +1140,7 @@ fn test_singlequbitgates_remap_qubits(
     let mut qubits: HashSet<usize> = HashSet::new();
     qubits.insert(newqubit);
     let test_qubits: InvolvedQubits = InvolvedQubits::Set(qubits);
-    assert_eq!(
-        result.involved_qubits(),
-        test_operation.involved_qubits()
-    );
+    assert_eq!(result.involved_qubits(), test_operation.involved_qubits());
     //testing involved_qubits() function
     assert_eq!(result.involved_qubits(), test_qubits);
 
@@ -1697,12 +1678,8 @@ fn test_rotatearoundsphericalaxis_powerfc(
     );
     let power_gate = gate.powercf(power.clone());
     let test_theta = power * gate.theta().clone();
-    let test_gate = RotateAroundSphericalAxis::new(
-        qubit,
-        test_theta,
-        spherical_theta,
-        spherical_phi,
-    );
+    let test_gate =
+        RotateAroundSphericalAxis::new(qubit, test_theta, spherical_theta, spherical_phi);
     assert_eq!(power_gate.alpha_r(), test_gate.alpha_r());
     assert_eq!(power_gate.alpha_i(), test_gate.alpha_i());
     assert_eq!(power_gate.beta_r(), test_gate.beta_r());

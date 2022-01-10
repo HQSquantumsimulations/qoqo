@@ -73,11 +73,11 @@ fn test_basic_traits() {
             .unwrap();
         let program_wrapper = program.extract::<QuantumProgramWrapper>().unwrap();
 
-        let helper_ne: bool = QuantumProgramWrapper::new(input, vec!["error".into()]).unwrap()
-            != program_wrapper;
+        let helper_ne: bool =
+            QuantumProgramWrapper::new(input, vec!["error".into()]).unwrap() != program_wrapper;
         assert!(helper_ne);
-        let helper_eq: bool = QuantumProgramWrapper::new(input, vec!["test".into()]).unwrap()
-            == program_wrapper;
+        let helper_eq: bool =
+            QuantumProgramWrapper::new(input, vec!["test".into()]).unwrap() == program_wrapper;
         assert!(helper_eq);
 
         let helper_eq: bool = program_wrapper.clone() == program_wrapper;
