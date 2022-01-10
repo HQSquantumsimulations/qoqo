@@ -4707,7 +4707,7 @@ limitations under the License.
 
 
 ====================================================
-numpy 0.15.0
+numpy 0.15.1
 https://github.com/PyO3/rust-numpy
 by Toshiki Teramura <toshiki.teramura@gmail.com>, Yuji Kanagawa <yuji.kngw.80s.revive@gmail.com>
 Rust binding of NumPy C-API
@@ -6187,7 +6187,7 @@ limitations under the License.
 
 
 ====================================================
-ppv-lite86 0.2.15
+ppv-lite86 0.2.16
 https://github.com/cryptocorrosion/cryptocorrosion
 by The CryptoCorrosion Contributors
 Implementation of the crypto-simd API for x86
@@ -6669,9 +6669,9 @@ limitations under the License.
 
 
 ====================================================
-proc-macro2 1.0.29
-https://github.com/alexcrichton/proc-macro2
-by Alex Crichton <alex@alexcrichton.com>, David Tolnay <dtolnay@gmail.com>
+proc-macro2 1.0.36
+https://github.com/dtolnay/proc-macro2
+by David Tolnay <dtolnay@gmail.com>, Alex Crichton <alex@alexcrichton.com>
 A substitute implementation of the compiler's `proc_macro` API to decouple
 token-based libraries from the procedural macro use case.
 
@@ -8559,7 +8559,7 @@ LICENSE:
 
 
 ====================================================
-quote 1.0.10
+quote 1.0.14
 https://github.com/dtolnay/quote
 by David Tolnay <dtolnay@gmail.com>
 Quasi-quoting macro quote!(...)
@@ -11419,7 +11419,7 @@ limitations under the License.
 
 
 ====================================================
-serde 1.0.132
+serde 1.0.133
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A generic serialization/deserialization framework
@@ -11658,7 +11658,7 @@ limitations under the License.
 
 
 ====================================================
-serde_derive 1.0.132
+serde_derive 1.0.133
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Macros 1.1 implementation of #[derive(Serialize, Deserialize)]
@@ -11897,7 +11897,7 @@ limitations under the License.
 
 
 ====================================================
-serde_json 1.0.73
+serde_json 1.0.74
 https://github.com/serde-rs/json
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A JSON serialization file format
@@ -12136,7 +12136,7 @@ limitations under the License.
 
 
 ====================================================
-serde_test 1.0.132
+serde_test 1.0.133
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Token De/Serializer for testing De/Serialize implementations
@@ -12828,7 +12828,7 @@ limitations under the License.
 
 
 ====================================================
-syn 1.0.80
+syn 1.0.85
 https://github.com/dtolnay/syn
 by David Tolnay <dtolnay@gmail.com>
 Parser for Rust source code
@@ -13577,7 +13577,7 @@ limitations under the License.
 
 
 ====================================================
-typenum 1.14.0
+typenum 1.15.0
 https://github.com/paholg/typenum
 by Paho Lurie-Gregg <paho@paholg.com>, Andre Bogus <bogusandre@gmail.com>
 Typenum is a Rust library for type-level numbers evaluated at
@@ -14303,7 +14303,7 @@ limitations under the License.
 
 
 ====================================================
-version_check 0.9.3
+version_check 0.9.4
 https://github.com/SergioBenitez/version_check
 by Sergio Benitez <sb@sergio.bz>
 Tiny crate to check the version of the installed/running rustc.
