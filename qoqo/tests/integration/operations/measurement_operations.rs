@@ -66,7 +66,7 @@ fn new_circuit(py: Python) -> &PyCell<CircuitWrapper> {
 #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(create_qubit_mapping()))); "PragmaRepeatedMeasurement")]
 fn test_pyo3_readout(input_measurement: Operation) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_measurement).unwrap();
         let readout_op: &String =
             &String::extract(operation.call_method0(py, "readout").unwrap().as_ref(py)).unwrap();
@@ -80,7 +80,7 @@ fn test_pyo3_readout(input_measurement: Operation) {
 #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(create_qubit_mapping()))), "qubit_mapping"; "PragmaRepeatedMeasurement")]
 fn test_pyo3_qubit_mapping(input_measurement: Operation, operation_name: &str) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_measurement).unwrap();
         let readout_op: &HashMap<usize, usize> = &HashMap::extract(
             operation
@@ -100,14 +100,14 @@ fn test_pyo3_qubit_mapping(input_measurement: Operation, operation_name: &str) {
 #[test_case(Operation::from(PragmaGetPauliProduct::new(create_qubit_mapping(), String::from("ro"), create_circuit())); "PragmaGetPauliProduct")]
 fn test_pyo3_circuit(input_measurement: Operation) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_measurement).unwrap();
         let to_circuit = operation.call_method0(py, "circuit").unwrap();
         let circuit_op = to_circuit.as_ref(py);
 
         let circuit = new_circuit(py);
         let paulix = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
-        circuit.call_method1("add", (paulix.clone(),)).unwrap();
+        circuit.call_method1("add", (paulix,)).unwrap();
 
         let comparison_circuit =
             bool::extract(circuit_op.call_method1("__eq__", (circuit,)).unwrap()).unwrap();
@@ -119,7 +119,7 @@ fn test_pyo3_circuit(input_measurement: Operation) {
 #[test]
 fn test_pyo3_input_measurequbit_input() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(Operation::from(MeasureQubit::new(
             0,
             String::from("ro"),
@@ -148,7 +148,7 @@ fn test_pyo3_input_measurequbit_input() {
 #[test]
 fn test_pyo3_input_pragmarepeatedmeasurements_input() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(Operation::from(
             PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(create_qubit_mapping())),
         ))
@@ -173,7 +173,7 @@ fn test_pyo3_input_pragmarepeatedmeasurements_input() {
 #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(create_qubit_mapping()))); "PragmaRepeatedMeasurement")]
 fn test_pyo3_involved_qubits_all(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let to_involved = operation.call_method0(py, "involved_qubits").unwrap();
         let involved_op: HashSet<&str> = HashSet::extract(to_involved.as_ref(py)).unwrap();
@@ -188,7 +188,7 @@ fn test_pyo3_involved_qubits_all(input_definition: Operation) {
 #[test_case(Operation::from(PragmaGetPauliProduct::new(create_qubit_mapping(), String::from("ro"), create_circuit())); "PragmaGetPauliProduct")]
 fn test_pyo3_involved_qubits_0(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let to_involved = operation.call_method0(py, "involved_qubits").unwrap();
         let involved_op: HashSet<usize> = HashSet::extract(to_involved.as_ref(py)).unwrap();
@@ -207,7 +207,7 @@ fn test_pyo3_involved_qubits_0(input_definition: Operation) {
 #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(create_qubit_mapping()))), "PragmaRepeatedMeasurement { readout: \"ro\", number_measurements: 2, qubit_mapping: Some({0: 1}) }"; "PragmaRepeatedMeasurement")]
 fn test_pyo3_format_repr(input_measurement: Operation, format_repr: &str) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_measurement).unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
         let format_op: &str = <&str>::extract(to_format.as_ref(py)).unwrap();
@@ -227,11 +227,11 @@ fn test_pyo3_format_repr(input_measurement: Operation, format_repr: &str) {
 #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(create_qubit_mapping()))); "PragmaRepeatedMeasurement")]
 fn test_pyo3_copy_deepcopy(input_measurement: Operation) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_measurement).unwrap();
         let copy_op = operation.call_method0(py, "__copy__").unwrap();
         let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
-        let copy_deepcopy_param = operation.clone();
+        let copy_deepcopy_param = operation;
 
         let comparison_copy = bool::extract(
             copy_op
@@ -260,7 +260,7 @@ fn test_pyo3_copy_deepcopy(input_measurement: Operation) {
 #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(create_qubit_mapping()))), "PragmaRepeatedMeasurement"; "PragmaRepeatedMeasurement")]
 fn test_pyo3_tags(input_measurement: Operation, tag_name: &str) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_measurement).unwrap();
         let to_tag = operation.call_method0(py, "tags").unwrap();
         let tags_op: &Vec<&str> = &Vec::extract(to_tag.as_ref(py)).unwrap();
@@ -273,7 +273,7 @@ fn test_pyo3_tags(input_measurement: Operation, tag_name: &str) {
 #[test]
 fn test_pyo3_tags() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(Operation::from(MeasureQubit::new(
             0,
             String::from("ro"),
@@ -296,7 +296,7 @@ fn test_pyo3_tags() {
 #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(create_qubit_mapping()))), String::from("PragmaRepeatedMeasurement"); "PragmaRepeatedMeasurement")]
 fn test_pyo3_hqslang(input_measurement: Operation, hqslang_param: String) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_measurement).unwrap();
         let hqslang_op: String =
             String::extract(operation.call_method0(py, "hqslang").unwrap().as_ref(py)).unwrap();
@@ -313,7 +313,7 @@ fn test_pyo3_hqslang(input_measurement: Operation, hqslang_param: String) {
 #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(create_qubit_mapping()))); "PragmaRepeatedMeasurement")]
 fn test_pyo3_is_parametrized(input_measurement: Operation) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_measurement).unwrap();
         assert!(!bool::extract(
             operation
@@ -334,19 +334,19 @@ fn test_pyo3_is_parametrized(input_measurement: Operation) {
 #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(create_qubit_mapping()))); "PragmaRepeatedMeasurement")]
 fn test_pyo3_substitute_parameters(input_measurement: Operation) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_measurement).unwrap();
         let mut substitution_dict: HashMap<&str, f64> = HashMap::new();
         substitution_dict.insert("ro", 1.0);
         let substitute_op = operation
             .call_method1(py, "substitute_parameters", (substitution_dict,))
             .unwrap();
-        let substitute_param = operation.clone();
+        let substitute_param = operation;
 
         let comparison_copy = bool::extract(
             substitute_op
                 .as_ref(py)
-                .call_method1("__eq__", (substitute_param.clone(),))
+                .call_method1("__eq__", (substitute_param,))
                 .unwrap(),
         )
         .unwrap();
@@ -369,7 +369,7 @@ fn test_pyo3_substitute_parameters(input_measurement: Operation) {
 #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(create_qubit_mapping()))); "PragmaRepeatedMeasurement")]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let mut substitution_dict: HashMap<&str, &str> = HashMap::new();
         substitution_dict.insert("ro", "test");
@@ -400,7 +400,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
             "PragmaRepeatedMeasurement")]
 fn test_pyo3_remap_qubits(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(first_op).unwrap();
 
         let remapped_op = operation
@@ -429,7 +429,7 @@ fn test_pyo3_remap_qubits(first_op: Operation, second_op: Operation) {
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // remap qubits
         let qubit_mapping: HashMap<usize, usize> = HashMap::new();
@@ -460,7 +460,7 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
             "PragmaRepeatedMeasurement")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation_one = convert_operation_to_pyobject(definition_1).unwrap();
         let operation_two = convert_operation_to_pyobject(definition_2).unwrap();
 
@@ -494,7 +494,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 #[test]
 fn test_pyo3_new_set_number_of_measurements() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = py.get_type::<MeasureQubitWrapper>();
         let new_op = operation
             .call1((0, "ro".to_string(), 1))
@@ -504,11 +504,10 @@ fn test_pyo3_new_set_number_of_measurements() {
 
         let input_definition = Operation::from(MeasureQubit::new(0, String::from("ro"), 1));
         let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap()
-            .clone();
+            .unwrap();
         let comparison_copy = bool::extract(
             new_op
-                .call_method1("__eq__", (copy_param.clone(),))
+                .call_method1("__eq__", (copy_param,))
                 .unwrap(),
         )
         .unwrap();
@@ -521,7 +520,7 @@ fn test_pyo3_new_set_number_of_measurements() {
             .cast_as::<PyCell<MeasureQubitWrapper>>()
             .unwrap();
         let meas_wrapper_diff = new_op_diff.extract::<MeasureQubitWrapper>().unwrap();
-        let helper_ne: bool = meas_wrapper_diff != meas_wrapper.clone();
+        let helper_ne: bool = meas_wrapper_diff != meas_wrapper;
         assert!(helper_ne);
         let helper_eq: bool = meas_wrapper == meas_wrapper.clone();
         assert!(helper_eq);
@@ -537,7 +536,7 @@ fn test_pyo3_new_set_number_of_measurements() {
 #[test]
 fn test_pyo3_new_get_statevector() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = py.get_type::<PragmaGetStateVectorWrapper>();
         let new_op = operation
             .call1(("ro".to_string(), Option::<CircuitWrapper>::None))
@@ -547,11 +546,10 @@ fn test_pyo3_new_get_statevector() {
 
         let input_definition = Operation::from(PragmaGetStateVector::new(String::from("ro"), None));
         let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap()
-            .clone();
+            .unwrap();
         let comparison_copy = bool::extract(
             new_op
-                .call_method1("__eq__", (copy_param.clone(),))
+                .call_method1("__eq__", (copy_param,))
                 .unwrap(),
         )
         .unwrap();
@@ -566,7 +564,7 @@ fn test_pyo3_new_get_statevector() {
         let meas_wrapper_diff = new_op_diff
             .extract::<PragmaGetStateVectorWrapper>()
             .unwrap();
-        let helper_ne: bool = meas_wrapper_diff != meas_wrapper.clone();
+        let helper_ne: bool = meas_wrapper_diff != meas_wrapper;
         assert!(helper_ne);
         let helper_eq: bool = meas_wrapper == meas_wrapper.clone();
         assert!(helper_eq);
@@ -582,7 +580,7 @@ fn test_pyo3_new_get_statevector() {
 #[test]
 fn test_pyo3_new_get_density_matrix() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = py.get_type::<PragmaGetDensityMatrixWrapper>();
         let new_op = operation
             .call1(("ro".to_string(), Option::<CircuitWrapper>::None))
@@ -593,11 +591,10 @@ fn test_pyo3_new_get_density_matrix() {
         let input_definition =
             Operation::from(PragmaGetDensityMatrix::new(String::from("ro"), None));
         let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap()
-            .clone();
+            .unwrap();
         let comparison_copy = bool::extract(
             new_op
-                .call_method1("__eq__", (copy_param.clone(),))
+                .call_method1("__eq__", (copy_param,))
                 .unwrap(),
         )
         .unwrap();
@@ -612,7 +609,7 @@ fn test_pyo3_new_get_density_matrix() {
         let meas_wrapper_diff = new_op_diff
             .extract::<PragmaGetDensityMatrixWrapper>()
             .unwrap();
-        let helper_ne: bool = meas_wrapper_diff != meas_wrapper.clone();
+        let helper_ne: bool = meas_wrapper_diff != meas_wrapper;
         assert!(helper_ne);
         let helper_eq: bool = meas_wrapper == meas_wrapper.clone();
         assert!(helper_eq);
@@ -628,7 +625,7 @@ fn test_pyo3_new_get_density_matrix() {
 #[test]
 fn test_pyo3_new_get_occupation_proba() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = py.get_type::<PragmaGetOccupationProbabilityWrapper>();
         let new_op = operation
             .call1(("ro".to_string(), Option::<CircuitWrapper>::None))
@@ -641,11 +638,10 @@ fn test_pyo3_new_get_occupation_proba() {
             None,
         ));
         let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap()
-            .clone();
+            .unwrap();
         let comparison_copy = bool::extract(
             new_op
-                .call_method1("__eq__", (copy_param.clone(),))
+                .call_method1("__eq__", (copy_param,))
                 .unwrap(),
         )
         .unwrap();
@@ -662,7 +658,7 @@ fn test_pyo3_new_get_occupation_proba() {
         let meas_wrapper_diff = new_op_diff
             .extract::<PragmaGetOccupationProbabilityWrapper>()
             .unwrap();
-        let helper_ne: bool = meas_wrapper_diff != meas_wrapper.clone();
+        let helper_ne: bool = meas_wrapper_diff != meas_wrapper;
         assert!(helper_ne);
         let helper_eq: bool = meas_wrapper == meas_wrapper.clone();
         assert!(helper_eq);
@@ -678,7 +674,7 @@ fn test_pyo3_new_get_occupation_proba() {
 #[test]
 fn test_pyo3_new_get_pauli_product() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = py.get_type::<PragmaGetPauliProductWrapper>();
         let new_op = operation
             .call1((create_qubit_mapping(), "ro".to_string(), new_circuit(py)))
@@ -692,11 +688,10 @@ fn test_pyo3_new_get_pauli_product() {
             Circuit::default(),
         ));
         let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap()
-            .clone();
+            .unwrap();
         let comparison_copy = bool::extract(
             new_op
-                .call_method1("__eq__", (copy_param.clone(),))
+                .call_method1("__eq__", (copy_param,))
                 .unwrap(),
         )
         .unwrap();
@@ -711,7 +706,7 @@ fn test_pyo3_new_get_pauli_product() {
         let meas_wrapper_diff = new_op_diff
             .extract::<PragmaGetPauliProductWrapper>()
             .unwrap();
-        let helper_ne: bool = meas_wrapper_diff != meas_wrapper.clone();
+        let helper_ne: bool = meas_wrapper_diff != meas_wrapper;
         assert!(helper_ne);
         let helper_eq: bool = meas_wrapper == meas_wrapper.clone();
         assert!(helper_eq);
@@ -727,7 +722,7 @@ fn test_pyo3_new_get_pauli_product() {
 #[test]
 fn test_pyo3_new_repeated_measurement() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = py.get_type::<PragmaRepeatedMeasurementWrapper>();
         let new_op = operation
             .call1(("ro".to_string(), 1, Some(create_qubit_mapping())))
@@ -741,11 +736,10 @@ fn test_pyo3_new_repeated_measurement() {
             Some(create_qubit_mapping()),
         ));
         let copy_param = convert_operation_to_pyobject(input_definition)
-            .unwrap()
-            .clone();
+            .unwrap();
         let comparison_copy = bool::extract(
             new_op
-                .call_method1("__eq__", (copy_param.clone(),))
+                .call_method1("__eq__", (copy_param,))
                 .unwrap(),
         )
         .unwrap();
@@ -762,7 +756,7 @@ fn test_pyo3_new_repeated_measurement() {
         let meas_wrapper_diff = new_op_diff
             .extract::<PragmaRepeatedMeasurementWrapper>()
             .unwrap();
-        let helper_ne: bool = meas_wrapper_diff != meas_wrapper.clone();
+        let helper_ne: bool = meas_wrapper_diff != meas_wrapper;
         assert!(helper_ne);
         let helper_eq: bool = meas_wrapper == meas_wrapper.clone();
         assert!(helper_eq);

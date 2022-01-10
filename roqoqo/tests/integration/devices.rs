@@ -44,24 +44,24 @@ impl TestDevice {
 impl Device for TestDevice {
     fn single_qubit_gate_time(&self, hqslang: &str, qubit: &usize) -> Option<f64> {
         match self.single_qubit_gates.get(&hqslang.to_string()) {
-            Some(x) => x.get(&qubit).map(|x| *x),
+            Some(x) => x.get(qubit).copied(),
             None => None,
         }
     }
 
     fn two_qubit_gate_time(&self, hqslang: &str, control: &usize, target: &usize) -> Option<f64> {
         match self.two_qubit_gates.get(&hqslang.to_string()) {
-            Some(x) => x.get(&(*control, *target)).map(|x| *x),
+            Some(x) => x.get(&(*control, *target)).copied(),
             None => None,
         }
     }
 
     fn multi_qubit_gate_time(&self, hqslang: &str, _qubits: &[usize]) -> Option<f64> {
-        self.multi_qubit_gates.get(&hqslang.to_string()).map(|x| *x)
+        self.multi_qubit_gates.get(&hqslang.to_string()).copied()
     }
 
     fn qubit_decoherence_rates(&self, qubit: &usize) -> Option<Array2<f64>> {
-        self.rates.get(&qubit).map(|x| x.to_owned())
+        self.rates.get(qubit).map(|x| x.to_owned())
     }
 
     fn number_qubits(&self) -> usize {

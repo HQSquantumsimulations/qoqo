@@ -26,8 +26,7 @@ use test_case::test_case;
 #[test]
 fn test_returning_circuits() {
     let bri = CheatedInput::new(2);
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
+    let mut circs: Vec<Circuit> = vec![Circuit::new()];
     let mut circ1 = Circuit::new();
     circ1 += operations::RotateX::new(0, 0.0.into());
     circs.push(circ1);
@@ -147,7 +146,7 @@ fn test_evaluate(register: Vec<Vec<Complex64>>, value_diagonal: f64, value_off_d
     ];
     bri.add_operator_exp_val(
         "test_diagonal".to_string(),
-        test_matrix.clone(),
+        test_matrix,
         "ro".to_string(),
     )
     .unwrap();
@@ -159,13 +158,12 @@ fn test_evaluate(register: Vec<Vec<Complex64>>, value_diagonal: f64, value_off_d
     ];
     bri.add_operator_exp_val(
         "test_off_diagonal".to_string(),
-        test_matrix.clone(),
+        test_matrix,
         "ro".to_string(),
     )
     .unwrap();
 
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
+    let circs: Vec<Circuit> = vec![Circuit::new()];
     let br = Cheated {
         constant_circuit: None,
         circuits: circs,
@@ -198,7 +196,7 @@ fn test_evaluate_error() {
     ];
     bri.add_operator_exp_val(
         "test_diagonal".to_string(),
-        test_matrix.clone(),
+        test_matrix,
         "ro".to_string(),
     )
     .unwrap();
@@ -210,13 +208,12 @@ fn test_evaluate_error() {
     ];
     bri.add_operator_exp_val(
         "test_off_diagonal".to_string(),
-        test_matrix.clone(),
+        test_matrix,
         "ro".to_string(),
     )
     .unwrap();
 
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
+    let circs: Vec<Circuit> = vec![Circuit::new()];
     let br = Cheated {
         constant_circuit: None,
         circuits: circs,

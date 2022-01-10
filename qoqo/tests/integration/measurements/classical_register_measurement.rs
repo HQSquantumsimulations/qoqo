@@ -23,9 +23,8 @@ use std::collections::HashMap;
 #[test]
 fn test_returning_circuits() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+    Python::with_gil(|py| {
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, 0.0.into());
         circs.push(circ1);
@@ -53,9 +52,8 @@ fn test_returning_circuits() {
 #[test]
 fn test_pyo3_copy() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+    Python::with_gil(|py| {
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, 0.0.into());
         circs.push(circ1);
@@ -65,7 +63,7 @@ fn test_pyo3_copy() {
             .unwrap()
             .cast_as::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
-        let br_clone = br.clone();
+        let br_clone = &(*br);
 
         let circuits: Vec<CircuitWrapper> = br.call_method0("circuits").unwrap().extract().unwrap();
         let circuits_clone: Vec<CircuitWrapper> = br_clone
@@ -93,13 +91,12 @@ fn test_pyo3_copy() {
 #[test]
 fn test_pyo3_debug() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+    Python::with_gil(|py| {
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
         let br_type = py.get_type::<ClassicalRegisterWrapper>();
         let br = br_type
-            .call1((Some(CircuitWrapper::new()), circs.clone()))
+            .call1((Some(CircuitWrapper::new()), circs))
             .unwrap()
             .cast_as::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
@@ -117,22 +114,20 @@ fn test_pyo3_debug() {
 #[test]
 fn test_internal_to_bincode() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+    Python::with_gil(|py| {
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
         let br_type = py.get_type::<ClassicalRegisterWrapper>();
         let br = br_type
-            .call1((Some(CircuitWrapper::new()), circs.clone()))
+            .call1((Some(CircuitWrapper::new()), circs))
             .unwrap()
             .cast_as::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
 
-        let mut circs: Vec<Circuit> = Vec::new();
-        circs.push(Circuit::new());
+        let circs: Vec<Circuit> = vec![Circuit::new()];
         let roqoqo_br = ClassicalRegister {
             constant_circuit: Some(Circuit::new()),
-            circuits: circs.clone(),
+            circuits: circs,
         };
         let comparison_serialised = serialize(&roqoqo_br).unwrap();
 
@@ -150,18 +145,17 @@ fn test_internal_to_bincode() {
 #[test]
 fn test_to_from_json() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+    Python::with_gil(|py| {
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
         let br_type = py.get_type::<ClassicalRegisterWrapper>();
         let br = br_type
-            .call1((Some(CircuitWrapper::new()), circs.clone()))
+            .call1((Some(CircuitWrapper::new()), circs))
             .unwrap()
             .cast_as::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
 
-        let new_br = br.clone();
+        let new_br = &(*br);
         let serialised = br.call_method0("to_json").unwrap();
         let deserialised = new_br
             .call_method1("from_json", (serialised,))
@@ -186,9 +180,8 @@ fn test_to_from_json() {
 /// Test substitute_parameters
 #[test]
 fn test_substitute_parameters() {
-    Python::with_gil(|py| -> () {
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+    Python::with_gil(|py| {
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
         circs.push(circ1);
@@ -217,9 +210,8 @@ fn test_substitute_parameters() {
 #[test]
 fn test_substitute_parameters_error() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+    Python::with_gil(|py| {
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
         circs.push(circ1);
