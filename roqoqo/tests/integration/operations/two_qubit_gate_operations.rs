@@ -59,9 +59,9 @@ fn kak_sigma_matrix(
     y: CalculatorFloat,
     z: CalculatorFloat,
 ) -> Array2<Complex64> {
-    let x: f64 = f64::try_from(x.clone()).unwrap();
-    let y: f64 = f64::try_from(y.clone()).unwrap();
-    let z: f64 = f64::try_from(z.clone()).unwrap();
+    let x: f64 = f64::try_from(x).unwrap();
+    let y: f64 = f64::try_from(y).unwrap();
+    let z: f64 = f64::try_from(z).unwrap();
 
     let cm: f64 = (x - y).cos();
     let cp: f64 = (x + y).cos();
@@ -146,7 +146,7 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
     let circuit_before = gate.kak_decomposition().circuit_before;
 
     let mut target_before: SingleQubitGate = SingleQubitGate::new(
-        gate.target().clone(),
+        *gate.target(),
         CalculatorFloat::from(1.0),
         CalculatorFloat::ZERO,
         CalculatorFloat::ZERO,
@@ -154,7 +154,7 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
         CalculatorFloat::ZERO,
     );
     let mut control_before: SingleQubitGate = SingleQubitGate::new(
-        gate.control().clone(),
+        *gate.control(),
         CalculatorFloat::from(1.0),
         CalculatorFloat::ZERO,
         CalculatorFloat::ZERO,
@@ -163,12 +163,12 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
     );
 
     if circuit_before != None {
-        let operations_before: Vec<Operation> =
-            circuit_before.clone().unwrap().operations().clone();
-        for i in 0..operations_before.len() {
+        let operations_before: Vec<Operation> = circuit_before.unwrap().operations().clone();
+        let range = 0..operations_before.len();
+        for i in range {
             let element: SingleQubitGateOperation =
                 operations_before[i].clone().try_into().unwrap();
-            if element.qubit().clone() == gate.target().clone() {
+            if element.qubit() == gate.target() {
                 target_before = element.clone().mul(&target_before.clone()).unwrap()
             } else {
                 control_before = element.clone().mul(&control_before.clone()).unwrap()
@@ -186,7 +186,7 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
     // determine matrix after entanglement
     let circuit_after = gate.kak_decomposition().circuit_after;
     let mut target_after: SingleQubitGate = SingleQubitGate::new(
-        gate.target().clone(),
+        *gate.target(),
         CalculatorFloat::from(1.0),
         CalculatorFloat::ZERO,
         CalculatorFloat::ZERO,
@@ -194,7 +194,7 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
         CalculatorFloat::ZERO,
     );
     let mut control_after: SingleQubitGate = SingleQubitGate::new(
-        gate.control().clone(),
+        *gate.control(),
         CalculatorFloat::from(1.0),
         CalculatorFloat::ZERO,
         CalculatorFloat::ZERO,
@@ -203,10 +203,11 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
     );
 
     if circuit_after != None {
-        let operations_after: Vec<Operation> = circuit_after.clone().unwrap().operations().clone();
-        for i in 0..operations_after.len() {
+        let operations_after: Vec<Operation> = circuit_after.unwrap().operations().clone();
+        let range = 0..operations_after.len();
+        for i in range {
             let element: SingleQubitGateOperation = operations_after[i].clone().try_into().unwrap();
-            if element.qubit().clone() == gate.target().clone() {
+            if element.qubit() == gate.target() {
                 target_after = element.clone().mul(&target_after.clone()).unwrap()
             } else {
                 control_after = element.clone().mul(&control_after.clone()).unwrap()
@@ -327,9 +328,9 @@ fn test_twoqubitgates_clone(gate1: Operation) {
 #[test_case(TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
 fn test_qubits_twoqubitgates(gate: TwoQubitGateOperation) {
-    let control: &usize = &gate.control();
+    let control: &usize = gate.control();
     assert_eq!(control, &0);
-    let target: &usize = &gate.target();
+    let target: &usize = gate.target();
     assert_eq!(target, &1);
     let mut qubits: HashSet<usize> = HashSet::new();
     qubits.insert(0);
@@ -710,7 +711,8 @@ fn remap_qubits_error1(gate: GateOperation) {
         ],
     Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
 pub fn test_tags(tags: Vec<&str>, gate: Operation) {
-    for i in 0..tags.len() {
+    let range = 0..tags.len();
+    for i in range {
         assert_eq!(gate.tags()[i], tags[i]);
     }
 }
@@ -1058,7 +1060,7 @@ fn test_kakdecomposition_partialeq() {
         circuit_after: None,
     };
 
-    // comparision
+    // comparison
     assert!(gate1.clone() == gate1);
     assert!(gate1 == gate1.clone());
     assert!(gate2 != gate1);
