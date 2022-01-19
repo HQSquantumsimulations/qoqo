@@ -28,7 +28,7 @@ fn test_pp_to_exp_val() {
     let lin2 = lin.clone();
     let helper = lin == lin2;
     assert!(helper);
-    let string = format!("{:?}", lin.clone());
+    let string = format!("{:?}", lin);
     assert!(string.contains("3.0"));
     let sym = PauliProductsToExpVal::Symbolic("theta".into());
     let helper = sym != lin;
@@ -73,7 +73,7 @@ fn test_clone_cheated() {
 fn test_format_br() {
     let bri = BasisRotationInput::new(3, false);
     let string = format!("{:?}", bri);
-    assert!(string.contains("3"));
+    assert!(string.contains('3'));
     assert!(string.contains("false"));
 }
 
@@ -83,7 +83,7 @@ fn test_format_cbr() {
     let _ = bri.add_pauli_product("test".to_string());
     let string = format!("{:?}", bri);
     assert!(string.contains("test"));
-    assert!(string.contains("0"));
+    assert!(string.contains('0'));
 }
 
 #[test]
