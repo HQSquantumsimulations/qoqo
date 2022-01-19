@@ -94,7 +94,7 @@ fn substitute_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             _ => quote!{(self).#fid.clone()},
         }
         });
-    for (fid, _, _) in fields_with_type.clone() {
+    for (fid, _, _) in fields_with_type {
         if fid.to_string().as_str() == "qubits" {
             contains_qubits = true
         }
