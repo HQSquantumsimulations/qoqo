@@ -68,7 +68,7 @@ fn definition_float_operate_trait() {
     assert_eq!(def.hqslang(), String::from("DefinitionFloat"));
 
     // (3) Test is_parametrized function
-    assert_eq!(def.is_parametrized(), false);
+    assert!(!def.is_parametrized());
 }
 
 /// Test DefinitionFloat Substitute trait
@@ -191,7 +191,7 @@ fn definition_complex_operate_trait() {
     assert_eq!(def.hqslang(), String::from("DefinitionComplex"));
 
     // (3) Test is_parametrized function
-    assert_eq!(def.is_parametrized(), false);
+    assert!(!def.is_parametrized());
 }
 
 /// Test DefinitionComplex Substitute trait
@@ -314,7 +314,7 @@ fn definition_usize_operate_trait() {
     assert_eq!(def.hqslang(), String::from("DefinitionUsize"));
 
     // (3) Test is_parametrized function
-    assert_eq!(def.is_parametrized(), false);
+    assert!(!def.is_parametrized());
 }
 
 /// Test DefinitionUsize Substitute trait
@@ -437,7 +437,7 @@ fn definition_bit_operate_trait() {
     assert_eq!(def.hqslang(), String::from("DefinitionBit"));
 
     // (3) Test is_parametrized function
-    assert_eq!(def.is_parametrized(), false);
+    assert!(!def.is_parametrized());
 }
 
 /// Test DefinitionBit Substitute trait
@@ -559,7 +559,7 @@ fn input_symbolic_operate_trait() {
     assert_eq!(def.hqslang(), String::from("InputSymbolic"));
 
     // (3) Test is_parametrized function
-    assert_eq!(def.is_parametrized(), false);
+    assert!(!def.is_parametrized());
 }
 
 /// Test InputSymbolic Substitute trait

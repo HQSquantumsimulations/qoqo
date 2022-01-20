@@ -26,8 +26,7 @@ use roqoqo::{
 #[test]
 fn test_returning_circuits() {
     let bri = CheatedBasisRotationInput::new();
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
+    let mut circs: Vec<Circuit> = vec![Circuit::new()];
     let mut circ1 = Circuit::new();
     circ1 += operations::RotateX::new(0, 0.0.into());
     circs.push(circ1);
@@ -150,8 +149,7 @@ fn test_evaluate_linear() {
     bri.add_linear_exp_val("multi_pp_val".to_string(), linear_map)
         .unwrap();
 
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
+    let circs: Vec<Circuit> = vec![Circuit::new()];
     let br = CheatedBasisRotation {
         constant_circuit: None,
         circuits: circs,
@@ -181,8 +179,7 @@ fn test_evaluate_symbolic() {
     bri.add_symbolic_exp_val("single_pp_val".to_string(), symbolic)
         .unwrap();
 
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
+    let circs: Vec<Circuit> = vec![Circuit::new()];
     let br = CheatedBasisRotation {
         constant_circuit: None,
         circuits: circs,

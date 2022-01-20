@@ -26,8 +26,7 @@ use test_case::test_case;
 #[test]
 fn test_returning_circuits() {
     let bri = CheatedInput::new(2);
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
+    let mut circs: Vec<Circuit> = vec![Circuit::new()];
     let mut circ1 = Circuit::new();
     circ1 += operations::RotateX::new(0, 0.0.into());
     circs.push(circ1);
@@ -145,12 +144,8 @@ fn test_evaluate(register: Vec<Vec<Complex64>>, value_diagonal: f64, value_off_d
         (1, 0, Complex64::new(0.0, 0.0)),
         (1, 1, Complex64::new(-1.0, 0.0)),
     ];
-    bri.add_operator_exp_val(
-        "test_diagonal".to_string(),
-        test_matrix.clone(),
-        "ro".to_string(),
-    )
-    .unwrap();
+    bri.add_operator_exp_val("test_diagonal".to_string(), test_matrix, "ro".to_string())
+        .unwrap();
     let test_matrix = vec![
         (0, 0, Complex64::new(0.0, 0.0)),
         (0, 1, Complex64::new(0.0, -1.0)),
@@ -159,13 +154,12 @@ fn test_evaluate(register: Vec<Vec<Complex64>>, value_diagonal: f64, value_off_d
     ];
     bri.add_operator_exp_val(
         "test_off_diagonal".to_string(),
-        test_matrix.clone(),
+        test_matrix,
         "ro".to_string(),
     )
     .unwrap();
 
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
+    let circs: Vec<Circuit> = vec![Circuit::new()];
     let br = Cheated {
         constant_circuit: None,
         circuits: circs,
@@ -196,12 +190,8 @@ fn test_evaluate_error() {
         (1, 0, Complex64::new(0.0, 0.0)),
         (1, 1, Complex64::new(-1.0, 0.0)),
     ];
-    bri.add_operator_exp_val(
-        "test_diagonal".to_string(),
-        test_matrix.clone(),
-        "ro".to_string(),
-    )
-    .unwrap();
+    bri.add_operator_exp_val("test_diagonal".to_string(), test_matrix, "ro".to_string())
+        .unwrap();
     let test_matrix = vec![
         (0, 0, Complex64::new(0.0, 0.0)),
         (0, 1, Complex64::new(0.0, -1.0)),
@@ -210,13 +200,12 @@ fn test_evaluate_error() {
     ];
     bri.add_operator_exp_val(
         "test_off_diagonal".to_string(),
-        test_matrix.clone(),
+        test_matrix,
         "ro".to_string(),
     )
     .unwrap();
 
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
+    let circs: Vec<Circuit> = vec![Circuit::new()];
     let br = Cheated {
         constant_circuit: None,
         circuits: circs,
