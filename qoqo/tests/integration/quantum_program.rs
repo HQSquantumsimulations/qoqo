@@ -416,6 +416,7 @@ fn test_to_from_bincode() {
             .cast_as::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
+        // testing 'to_bincode' and 'from_bincode' functions
         let serialised = program.call_method0("to_bincode").unwrap();
         let new = program_type
             .call1((input, vec!["new".to_string()]))
@@ -423,6 +424,9 @@ fn test_to_from_bincode() {
             .cast_as::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
         let deserialised = new.call_method1("from_bincode", (serialised,)).unwrap();
+        let comparison =
+            bool::extract(deserialised.call_method1("__eq__", (program,)).unwrap()).unwrap();
+        assert!(comparison);
 
         let deserialised_error =
             new.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));
@@ -438,9 +442,14 @@ fn test_to_from_bincode() {
         let serialised_error = serialised.call_method0("to_bincode");
         assert!(serialised_error.is_err());
 
+        // testing that 'from_bincode' can be called directly on a QuantumProgram (python classmethod)
+        let deserialised_py = program_type
+            .call_method1("from_bincode", (serialised,))
+            .unwrap();
+
         let comparison =
-            bool::extract(deserialised.call_method1("__eq__", (program,)).unwrap()).unwrap();
-        assert!(comparison)
+            bool::extract(deserialised_py.call_method1("__eq__", (program,)).unwrap()).unwrap();
+        assert!(comparison);
     })
 }
 
@@ -487,6 +496,7 @@ fn test_to_from_json() {
             .cast_as::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
+        // testing 'from_json' and 'to_json' functions
         let serialised = program.call_method0("to_json").unwrap();
         let new = program_type
             .call1((input, vec!["new".to_string()]))
@@ -494,6 +504,9 @@ fn test_to_from_json() {
             .cast_as::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
         let deserialised = new.call_method1("from_json", (serialised,)).unwrap();
+        let comparison =
+            bool::extract(deserialised.call_method1("__eq__", (program,)).unwrap()).unwrap();
+        assert!(comparison);
 
         let deserialised_error =
             new.call_method1("from_json", (serde_json::to_string("fails").unwrap(),));
@@ -509,9 +522,14 @@ fn test_to_from_json() {
         let deserialised_error = deserialised.call_method0("from_json");
         assert!(deserialised_error.is_err());
 
+        // testing that 'from_json' can be called directly on a QuantumProgram (python classmethod)
+        let deserialised_py = program_type
+            .call_method1("from_json", (serialised,))
+            .unwrap();
+
         let comparison =
-            bool::extract(deserialised.call_method1("__eq__", (program,)).unwrap()).unwrap();
-        assert!(comparison)
+            bool::extract(deserialised_py.call_method1("__eq__", (program,)).unwrap()).unwrap();
+        assert!(comparison);
     })
 }
 
