@@ -496,8 +496,7 @@ fn test_to_from_json() {
             .cast_as::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
-        
-         // testing 'from_json' and 'to_json' functions
+        // testing 'from_json' and 'to_json' functions
         let serialised = program.call_method0("to_json").unwrap();
         let new = program_type
             .call1((input, vec!["new".to_string()]))
@@ -505,7 +504,7 @@ fn test_to_from_json() {
             .cast_as::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
         let deserialised = new.call_method1("from_json", (serialised,)).unwrap();
-        let comparison = 
+        let comparison =
             bool::extract(deserialised.call_method1("__eq__", (program,)).unwrap()).unwrap();
         assert!(comparison);
 
