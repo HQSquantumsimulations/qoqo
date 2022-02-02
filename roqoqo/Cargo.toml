@@ -31,6 +31,7 @@ qoqo_calculator = { version="0.6" }
 roqoqo-derive = {version="0.10", path="../roqoqo-derive"}
 typetag = {version="0.1", optional=true}
 nalgebra = "0.30"
+schemars = { git = "https://github.com/nfwvogt/schemars.git", branch="qoqo", features = ["num-complex", "ndarray"], optional=true }
 bincode = {version="1.3", optional=true}
 rand_distr = {version="0.4", optional=true}
 rand = { version = "0.8.4"}
@@ -53,4 +54,5 @@ default = ["serialize"]
 dynamic = ["typetag", "dyn-clone"]
 serialize = ["serde", "ndarray/serde", "num-complex/serde", "bincode"]
 overrotate = [ "rand_distr", "roqoqo-derive/overrotate"]
+json_schema=["schemars", "serialize"]
 

@@ -34,10 +34,12 @@ pub const ROQOQO_VERSION: &str = env!("CARGO_PKG_VERSION");
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "serialize", serde(try_from = "RoqoqoVersionSerializable"))]
 #[cfg_attr(feature = "serialize", serde(into = "RoqoqoVersionSerializable"))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 struct RoqoqoVersion;
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Default)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 struct RoqoqoVersionSerializable {
     /// The semver major version of roqoqo
     major_version: u32,
