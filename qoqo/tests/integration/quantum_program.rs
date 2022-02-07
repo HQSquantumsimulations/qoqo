@@ -34,7 +34,7 @@ struct TestBackend;
 #[pymethods]
 impl TestBackend {
     fn run_measurement(&self, measurement: Py<PyAny>) -> PyResult<Py<PyAny>> {
-        return Ok(measurement);
+        Ok(measurement)
     }
 }
 
@@ -47,8 +47,7 @@ fn create_measurement(py: Python) -> &PyCell<CheatedBasisRotationWrapper> {
         .unwrap();
     let _ = input.call_method1("add_pauli_product", ("ro",)).unwrap();
 
-    let mut circs: Vec<CircuitWrapper> = Vec::new();
-    circs.push(CircuitWrapper::new());
+    let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
     let mut circ1 = CircuitWrapper::new();
     circ1.internal += roqoqo::operations::RotateX::new(0, 0.0.into());
     circs.push(circ1);
@@ -64,7 +63,7 @@ fn create_measurement(py: Python) -> &PyCell<CheatedBasisRotationWrapper> {
 #[test]
 fn test_basic_traits() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type
@@ -74,11 +73,11 @@ fn test_basic_traits() {
             .unwrap();
         let program_wrapper = program.extract::<QuantumProgramWrapper>().unwrap();
 
-        let helper_ne: bool = QuantumProgramWrapper::new(input, vec!["error".into()]).unwrap()
-            != program_wrapper.clone();
+        let helper_ne: bool =
+            QuantumProgramWrapper::new(input, vec!["error".into()]).unwrap() != program_wrapper;
         assert!(helper_ne);
-        let helper_eq: bool = QuantumProgramWrapper::new(input, vec!["test".into()]).unwrap()
-            == program_wrapper.clone();
+        let helper_eq: bool =
+            QuantumProgramWrapper::new(input, vec!["test".into()]).unwrap() == program_wrapper;
         assert!(helper_eq);
 
         let helper_eq: bool = program_wrapper.clone() == program_wrapper;
@@ -95,7 +94,7 @@ fn test_basic_traits() {
 #[test]
 fn test_new_run_br() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input_type = py.get_type::<BasisRotationInputWrapper>();
         let input_instance = input_type
             .call1((3, false))
@@ -106,8 +105,7 @@ fn test_new_run_br() {
             .call_method1("add_pauli_product", ("ro", vec![0]))
             .unwrap();
 
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += RotateX::new(0, 0.0.into());
         circs.push(circ1.clone());
@@ -158,7 +156,7 @@ fn test_new_run_br() {
 #[test]
 fn test_new_run_cheated_br() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input_type = py.get_type::<CheatedBasisRotationInputWrapper>();
         let input_instance = input_type
             .call0()
@@ -169,8 +167,7 @@ fn test_new_run_cheated_br() {
             .call_method1("add_pauli_product", ("ro",))
             .unwrap();
 
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += RotateX::new(0, 0.0.into());
         circs.push(circ1.clone());
@@ -223,7 +220,7 @@ fn test_new_run_cheated_br() {
 #[test]
 fn test_new_run_cheated() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input_type = py.get_type::<CheatedInputWrapper>();
         let input_instance = input_type
             .call1((2,))
@@ -231,8 +228,7 @@ fn test_new_run_cheated() {
             .cast_as::<PyCell<CheatedInputWrapper>>()
             .unwrap();
 
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += RotateX::new(0, 0.0.into());
         circs.push(circ1.clone());
@@ -282,9 +278,8 @@ fn test_new_run_cheated() {
 #[test]
 fn test_new_run_classical_register() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+    Python::with_gil(|py| {
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += RotateX::new(0, 0.0.into());
         circs.push(circ1.clone());
@@ -334,7 +329,7 @@ fn test_new_run_classical_register() {
 #[test]
 fn test_new_error_1() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let circs: Vec<CircuitWrapper> = Vec::new();
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type.call1((circs, vec!["test".to_string()]));
@@ -346,7 +341,7 @@ fn test_new_error_1() {
 #[test]
 fn test_copy_deepcopy() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type
@@ -357,11 +352,11 @@ fn test_copy_deepcopy() {
 
         let copy_circ = program.call_method0("__copy__").unwrap();
         let deepcopy_circ = program.call_method1("__deepcopy__", ("",)).unwrap();
-        let copy_deepcopy_param = program.clone();
+        let copy_deepcopy_param = program;
 
         let comparison_copy = bool::extract(
             copy_circ
-                .call_method1("__eq__", (copy_deepcopy_param.clone(),))
+                .call_method1("__eq__", (&(*copy_deepcopy_param),))
                 .unwrap(),
         )
         .unwrap();
@@ -380,7 +375,7 @@ fn test_copy_deepcopy() {
 #[test]
 fn test_qoqo_versions() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type
@@ -412,7 +407,7 @@ fn test_qoqo_versions() {
 #[test]
 fn test_to_from_bincode() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type
@@ -421,6 +416,7 @@ fn test_to_from_bincode() {
             .cast_as::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
+        // testing 'to_bincode' and 'from_bincode' functions
         let serialised = program.call_method0("to_bincode").unwrap();
         let new = program_type
             .call1((input, vec!["new".to_string()]))
@@ -428,6 +424,9 @@ fn test_to_from_bincode() {
             .cast_as::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
         let deserialised = new.call_method1("from_bincode", (serialised,)).unwrap();
+        let comparison =
+            bool::extract(deserialised.call_method1("__eq__", (program,)).unwrap()).unwrap();
+        assert!(comparison);
 
         let deserialised_error =
             new.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));
@@ -443,16 +442,21 @@ fn test_to_from_bincode() {
         let serialised_error = serialised.call_method0("to_bincode");
         assert!(serialised_error.is_err());
 
+        // testing that 'from_bincode' can be called directly on a QuantumProgram (python classmethod)
+        let deserialised_py = program_type
+            .call_method1("from_bincode", (serialised,))
+            .unwrap();
+
         let comparison =
-            bool::extract(deserialised.call_method1("__eq__", (program,)).unwrap()).unwrap();
-        assert!(comparison)
+            bool::extract(deserialised_py.call_method1("__eq__", (program,)).unwrap()).unwrap();
+        assert!(comparison);
     })
 }
 
 #[test]
 fn test_value_error_bincode() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type
@@ -461,7 +465,7 @@ fn test_value_error_bincode() {
             .cast_as::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
-        let program_clone = program.clone();
+        let program_clone = &(*program);
         let serialised = program.call_method0("to_bincode").unwrap();
         let deserialised = program_clone
             .call_method1("from_bincode", (serialised,))
@@ -483,7 +487,7 @@ fn test_value_error_bincode() {
 #[test]
 fn test_to_from_json() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type
@@ -492,6 +496,7 @@ fn test_to_from_json() {
             .cast_as::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
+        // testing 'from_json' and 'to_json' functions
         let serialised = program.call_method0("to_json").unwrap();
         let new = program_type
             .call1((input, vec!["new".to_string()]))
@@ -499,6 +504,9 @@ fn test_to_from_json() {
             .cast_as::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
         let deserialised = new.call_method1("from_json", (serialised,)).unwrap();
+        let comparison =
+            bool::extract(deserialised.call_method1("__eq__", (program,)).unwrap()).unwrap();
+        assert!(comparison);
 
         let deserialised_error =
             new.call_method1("from_json", (serde_json::to_string("fails").unwrap(),));
@@ -514,9 +522,14 @@ fn test_to_from_json() {
         let deserialised_error = deserialised.call_method0("from_json");
         assert!(deserialised_error.is_err());
 
+        // testing that 'from_json' can be called directly on a QuantumProgram (python classmethod)
+        let deserialised_py = program_type
+            .call_method1("from_json", (serialised,))
+            .unwrap();
+
         let comparison =
-            bool::extract(deserialised.call_method1("__eq__", (program,)).unwrap()).unwrap();
-        assert!(comparison)
+            bool::extract(deserialised_py.call_method1("__eq__", (program,)).unwrap()).unwrap();
+        assert!(comparison);
     })
 }
 
@@ -524,7 +537,7 @@ fn test_to_from_json() {
 #[test]
 fn test_richcmp() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input = create_measurement(py);
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program_one = program_type
@@ -570,7 +583,7 @@ fn test_richcmp() {
 #[test]
 fn test_convert_into_program() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let added_op = Operation::from(PauliX::new(0));
         let operation = convert_operation_to_pyobject(added_op).unwrap();
         let input = create_measurement(py);

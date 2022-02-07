@@ -30,8 +30,7 @@ fn test_returning_circuits() {
     let _ = bri.add_pauli_product("ro".to_string(), vec![]);
     let _ = bri.add_pauli_product("ro".to_string(), vec![0]);
     let _ = bri.add_pauli_product("ro".to_string(), vec![0, 1]);
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
+    let mut circs: Vec<Circuit> = vec![Circuit::new()];
     let mut circ1 = Circuit::new();
     circ1 += operations::RotateX::new(0, 0.0.into());
     circs.push(circ1);
@@ -190,8 +189,7 @@ fn test_evaluate_linear(
     bri.add_linear_exp_val("two_pp_exp_val".to_string(), linear_map)
         .unwrap();
 
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
+    let circs: Vec<Circuit> = vec![Circuit::new()];
     let br = BasisRotation {
         constant_circuit: None,
         circuits: circs,
@@ -284,8 +282,7 @@ fn test_evaluate_linear_flipped(
     bri.add_linear_exp_val("two_pp_exp_val".to_string(), linear_map)
         .unwrap();
 
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
+    let circs: Vec<Circuit> = vec![Circuit::new()];
     let br = BasisRotation {
         constant_circuit: None,
         circuits: circs,
@@ -335,8 +332,7 @@ fn test_evaluate_symbolic(register: Vec<Vec<bool>>, constant: f64) {
     bri.add_symbolic_exp_val("constant".to_string(), symbolic)
         .unwrap();
 
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
+    let circs: Vec<Circuit> = vec![Circuit::new()];
     let br = BasisRotation {
         constant_circuit: None,
         circuits: circs,

@@ -75,7 +75,7 @@ fn measure_qubit_operate_trait() {
     assert_eq!(measure.hqslang(), String::from("MeasureQubit"));
 
     // (3) Test is_parametrized function
-    assert_eq!(measure.is_parametrized(), false);
+    assert!(!measure.is_parametrized());
 }
 
 /// Test MeasureQubit Substitute trait
@@ -204,7 +204,7 @@ fn pragma_get_statevector_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaGetStateVector"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaGetStateVector Substitute trait
@@ -232,7 +232,7 @@ fn pragma_get_statevector_substitute_trait() {
     // (2) Remap qubits function with an empty circuit
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
-    let result = pragma.clone().remap_qubits(&qubit_mapping_test).unwrap();
+    let result = pragma.remap_qubits(&qubit_mapping_test).unwrap();
     let test_gate = PragmaGetStateVector::new(String::from("ro"), None);
     assert_eq!(result, test_gate);
 
@@ -365,7 +365,7 @@ fn pragma_get_density_matrix_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaGetDensityMatrix"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaGetDensityMatrix Substitute trait
@@ -530,7 +530,7 @@ fn pragma_get_occupation_probability_operate_trait() {
     );
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaGetOccupationProbability Substitute trait
@@ -709,7 +709,7 @@ fn pragma_get_pauli_product_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaGetPauliProduct"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaGetPauliProduct Substitute trait
@@ -948,7 +948,7 @@ fn pragma_repeated_measurement_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaRepeatedMeasurement"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaRepeatedMeasurement Substitute trait
@@ -989,7 +989,7 @@ fn pragma_repeated_measurement_serde_readable() {
         PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(qubit_mapping.clone()));
 
     assert_tokens(
-        &pragma_serialization.clone().readable(),
+        &pragma_serialization.readable(),
         &[
             Token::Struct {
                 name: "PragmaRepeatedMeasurement",

@@ -21,11 +21,11 @@ crate-type = ["rlib"]
 qoqo_calculator = { version="0.5" }
 roqoqo = {version="0.9", path="../roqoqo", features=["serialize"]}
 rand = "0.8"
-nalgebra = "0.29"
+nalgebra = "0.30"
 ndarray = { version = "0.15" }
 #roqoqo-derive = {version="0.1", path="../roqoqo-derive"}
 
 [build-dependencies]
 quote = "1.0"
 syn = { version = "1.0", features = ["full", "visit"] }
-proc-macro2 = {version="=1.0.29"}
+proc-macro2 = "1.0"
