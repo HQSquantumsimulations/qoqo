@@ -145,7 +145,7 @@ impl BasisRotationWrapper {
             .map(|c| CircuitWrapper { internal: c })
     }
 
-    /// Return the measurement input data defining how to construct expectation values from measurements.
+    /// Returns the measurement input data defining how to construct expectation values from measurements.
     ///
     /// Returns:
     ///     BasisRotationInput: The measurment input of BasisRotation.

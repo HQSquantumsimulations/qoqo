@@ -142,6 +142,15 @@ impl CheatedWrapper {
             .map(|c| CircuitWrapper { internal: c })
     }
 
+    /// Returns the measurement input data defining how to construct expectation values from measurements.
+    ///
+    /// Returns:
+    ///     CheatedInput: The input of Cheated measurement
+    pub fn input(&self) -> CheatedInputWrapper {
+        let input = self.internal.input.clone();
+        CheatedInputWrapper { internal: input }
+    }
+
     /// Return copy of Measurement with symbolic parameters replaced.
     ///
     /// Arguments:

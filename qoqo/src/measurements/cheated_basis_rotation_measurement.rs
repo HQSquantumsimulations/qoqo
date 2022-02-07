@@ -145,6 +145,15 @@ impl CheatedBasisRotationWrapper {
             .map(|c| CircuitWrapper { internal: c })
     }
 
+    /// Returns the measurement input data defining how to construct expectation values from measurements.
+    ///
+    /// Returns:
+    ///     CheatedBasisRotationInput: The measurment input of CheatedBasisRotation.
+    pub fn input(&self) -> CheatedBasisRotationInputWrapper {
+        let input = self.internal.input.clone();
+        CheatedBasisRotationInputWrapper { internal: input }
+    }
+
     /// Returns clone of Measurement with symbolic parameters replaced
     ///
     /// Args:
