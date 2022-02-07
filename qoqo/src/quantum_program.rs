@@ -182,6 +182,31 @@ impl QuantumProgramWrapper {
         }
     }
 
+    /// Returns the input_parameter_names attribute of the qoqo QuantumProgram.
+    ///
+    /// Returns:
+    ///     List of input parameter names.
+    pub fn input_parameter_names(&self) -> Vec<String> {
+        match self.internal.clone() {
+            QuantumProgram::BasisRotation {
+                measurement: _,
+                input_parameter_names,
+            } => input_parameter_names,
+            QuantumProgram::CheatedBasisRotation {
+                measurement: _,
+                input_parameter_names,
+            } => input_parameter_names,
+            QuantumProgram::Cheated {
+                measurement: _,
+                input_parameter_names,
+            } => input_parameter_names,
+            QuantumProgram::ClassicalRegister {
+                measurement: _,
+                input_parameter_names,
+            } => input_parameter_names,
+        }
+    }
+
     /// Runs the QuantumProgram and returns expectation values.
     ///
     /// Runs the quantum programm for a given set of parameters passed in the same order as the parameters
