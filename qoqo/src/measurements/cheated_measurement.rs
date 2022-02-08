@@ -151,6 +151,14 @@ impl CheatedWrapper {
         CheatedInputWrapper { internal: input }
     }
 
+    /// Returns the type of the measurement in string form.
+    ///
+    /// Returns:
+    ///    str: The type of the measurement.
+    pub fn measurement_type(&self) -> &'static str {
+        "Cheated"
+    }
+
     /// Return copy of Measurement with symbolic parameters replaced.
     ///
     /// Arguments:

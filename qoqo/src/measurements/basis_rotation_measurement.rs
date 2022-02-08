@@ -154,6 +154,14 @@ impl BasisRotationWrapper {
         BasisRotationInputWrapper { internal: input }
     }
 
+    /// Returns the type of the measurement in string form.
+    ///
+    /// Returns:
+    ///    str: The type of the measurement.
+    pub fn measurement_type(&self) -> &'static str {
+        "BasisRotation"
+    }
+
     /// Return clone of Measurement with symbolic parameters replaced.
     ///
     /// Args:
