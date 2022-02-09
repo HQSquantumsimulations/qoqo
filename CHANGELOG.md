@@ -8,6 +8,10 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ### Added
 
+### Fixed
+
+* Bug in running register measurements from a qoqo QuantumProgram (`.run_registers()`)
+
 ## 0.9.1
 
 ### Changed 0.9.1

@@ -20,6 +20,7 @@ use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
+use pyo3::types::PyType;
 use pyo3::PyObjectProtocol;
 use roqoqo::measurements;
 use roqoqo::measurements::Measure;
@@ -187,7 +188,7 @@ impl QuantumProgramWrapper {
                     substituted_parameters
                 ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
                 Python::with_gil(|py| -> PyResult<Py<PyAny>> {
-                    backend.call_method1(py, "run_measurement", (ClassicalRegisterWrapper{internal: substituted_measurement}, ))
+                    backend.call_method1(py, "run_measurement_registers", (ClassicalRegisterWrapper{internal: substituted_measurement}, ))
                 })           },
             _ => Err(PyTypeError::new_err("A quantum programm returning expectation values cannot be executed by `run_registers` use `run` instead".to_string()))
         }
@@ -245,6 +246,8 @@ impl QuantumProgramWrapper {
         Ok(b)
     }
 
+    #[allow(unused_variables)]
+    #[classmethod]
     /// Convert the bincode representation of the QuantumProgram to a QuantumProgram using the [bincode] crate.
     ///
     /// Args:
@@ -256,12 +259,12 @@ impl QuantumProgramWrapper {
     /// Raises:
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to QuantumProgram.
-    pub fn from_bincode(&self, input: &PyAny) -> PyResult<QuantumProgramWrapper> {
+    pub fn from_bincode(cls: &PyType, input: &PyAny) -> PyResult<Self> {
         let bytes = input
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
-        Ok(QuantumProgramWrapper {
+        Ok(Self {
             internal: deserialize(&bytes[..]).map_err(|_| {
                 PyValueError::new_err("Input cannot be deserialized to QuantumProgram")
             })?,
@@ -291,8 +294,10 @@ impl QuantumProgramWrapper {
     ///
     /// Raises:
     ///     ValueError: Input cannot be deserialized to QuantumProgram.
-    fn from_json(&self, input: &str) -> PyResult<QuantumProgramWrapper> {
-        Ok(QuantumProgramWrapper {
+    #[allow(unused_variables)]
+    #[classmethod]
+    fn from_json(cls: &PyType, input: &str) -> PyResult<Self> {
+        Ok(Self {
             internal: serde_json::from_str(input).map_err(|_| {
                 PyValueError::new_err("Input cannot be deserialized to QuantumProgram")
             })?,
