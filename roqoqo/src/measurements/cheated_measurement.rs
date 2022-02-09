@@ -25,8 +25,8 @@ use std::collections::HashMap;
 /// Cheated measurements are only possible witch simulator backends that can return the state vector or the density matrix of the quantum computer.
 /// The expectation values are defined by a matrix representation of the measured observables.
 #[derive(Debug, PartialEq, Clone)]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct Cheated {
     /// Constant Circuit that is executed before each Circuit in circuits.
     pub constant_circuit: Option<Circuit>,

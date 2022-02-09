@@ -51,16 +51,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "chrono"
-version = "0.4.19"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "670ad68c9088c2a963aaa298cb369688cf3f9465ce5e2d4ca10e6e0098a1ce73"
-dependencies = [
- "num-integer",
- "num-traits",
-]
-
-[[package]]
 name = "ctor"
 version = "0.1.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -197,23 +187,7 @@ dependencies = [
  "num-complex",
  "num-rational",
  "num-traits",
- "simba 0.6.0",
- "typenum",
-]
-
-[[package]]
-name = "nalgebra"
-version = "0.30.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4fb2d0de08694bed883320212c18ee3008576bfe8c306f4c3c4a58b4876998be"
-dependencies = [
- "approx",
- "matrixmultiply",
- "nalgebra-macros",
- "num-complex",
- "num-rational",
- "num-traits",
- "simba 0.7.1",
+ "simba",
  "typenum",
 ]
 
@@ -428,7 +402,7 @@ name = "qoqo"
 version = "0.10.0"
 dependencies = [
  "bincode",
- "nalgebra 0.29.0",
+ "nalgebra",
  "ndarray",
  "num-complex",
  "numpy",
@@ -462,6 +436,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1fe22bd1a2cae52ef3cc6864e1fad3998774425e74a5e4e854c8182c2eab9a37"
 dependencies = [
  "num-complex",
+ "schemars 0.8.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde",
  "thiserror",
 ]
@@ -549,7 +524,7 @@ version = "0.10.0"
 dependencies = [
  "bincode",
  "dyn-clone",
- "nalgebra 0.30.1",
+ "nalgebra",
  "ndarray",
  "num-complex",
  "proc-macro2",
@@ -558,7 +533,7 @@ dependencies = [
  "rand",
  "rand_distr",
  "roqoqo-derive",
- "schemars",
+ "schemars 0.8.8 (git+https://github.com/nfwvogt/schemars.git?branch=qoqo)",
  "serde",
  "serde_test",
  "syn",
@@ -580,7 +555,7 @@ dependencies = [
 name = "roqoqo-test"
 version = "0.10.0"
 dependencies = [
- "nalgebra 0.29.0",
+ "nalgebra",
  "ndarray",
  "proc-macro2",
  "qoqo_calculator",
@@ -611,9 +586,21 @@ version = "0.8.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c6b5a3c80cea1ab61f4260238409510e814e38b4b563c06044edf91e7dc070e3"
 dependencies = [
- "chrono",
  "dyn-clone",
- "schemars_derive",
+ "schemars_derive 0.8.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "schemars"
+version = "0.8.8"
+source = "git+https://github.com/nfwvogt/schemars.git?branch=qoqo#9c6d799e7ff510bf5361c603684994463d10a3e0"
+dependencies = [
+ "dyn-clone",
+ "ndarray",
+ "num-complex",
+ "schemars_derive 0.8.8 (git+https://github.com/nfwvogt/schemars.git?branch=qoqo)",
  "serde",
  "serde_json",
 ]
@@ -623,6 +610,17 @@ name = "schemars_derive"
 version = "0.8.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "41ae4dce13e8614c46ac3c38ef1c0d668b101df6ac39817aebdaa26642ddae9b"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "serde_derive_internals",
+ "syn",
+]
+
+[[package]]
+name = "schemars_derive"
+version = "0.8.8"
+source = "git+https://github.com/nfwvogt/schemars.git?branch=qoqo#9c6d799e7ff510bf5361c603684994463d10a3e0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -685,19 +683,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "21675ba6f9d97711cc00eee79d8dd7d0a31e571c350fb4d8a7c78f70c0e7b0e9"
 dependencies = [
  "serde",
-]
-
-[[package]]
-name = "simba"
-version = "0.7.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13a2609e876d4f77f6ab7ff5254fc39b4f1927ba8e6db3d18be7c32534d3725e"
-dependencies = [
- "approx",
- "num-complex",
- "num-traits",
- "paste 1.0.6",
- "wide",
 ]
 
 [[package]]

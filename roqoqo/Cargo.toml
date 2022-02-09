@@ -54,5 +54,5 @@ default = ["serialize"]
 dynamic = ["typetag", "dyn-clone"]
 serialize = ["serde", "ndarray/serde", "num-complex/serde", "bincode"]
 overrotate = [ "rand_distr", "roqoqo-derive/overrotate"]
-json_schema=["schemars", "serialize"]
+json_schema=["schemars", "serialize", "qoqo_calculator/json_schema"]
 

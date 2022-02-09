@@ -43,6 +43,7 @@ use std::convert::TryFrom;
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaSetNumberOfMeasurements {
     /// The number of measurements.
     number_measurements: usize,

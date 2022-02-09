@@ -187,7 +187,7 @@ where
     Self: Sized,
 {
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError>;
+    fn substitute_parameters(&self, calculator: &mut qoqo_calculator::Calculator) -> Result<Self, RoqoqoError>;
     /// Remaps the qubits in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError>;
 }
@@ -215,7 +215,7 @@ where
     /// Substitute symbolic parameters in boxed clone of operation.
     fn substitute_parameters_dyn(
         &self,
-        calculator: &mut Calculator,
+        calculator: &mut qoqo_calculator::Calculator,
     ) -> Result<Box<dyn Operate>, RoqoqoError> {
         Ok(Box::new(Substitute::substitute_parameters(
             self, calculator,
