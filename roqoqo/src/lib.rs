@@ -24,10 +24,94 @@
 pub use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorError;
 pub use qoqo_calculator::CalculatorFloat;
+use std::str::FromStr;
 use thiserror::Error;
 
 /// roqoqo version information, used for roqoqo import/export checks
 pub const ROQOQO_VERSION: &str = env!("CARGO_PKG_VERSION");
+
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Default)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serialize", serde(try_from = "RoqoqoVersionSerializable"))]
+#[cfg_attr(feature = "serialize", serde(into = "RoqoqoVersionSerializable"))]
+struct RoqoqoVersion;
+
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Default)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+struct RoqoqoVersionSerializable {
+    /// The semver major version of roqoqo
+    major_version: u32,
+    /// The semver minor version of roqoqo
+    minor_version: u32,
+}
+
+impl TryFrom<RoqoqoVersionSerializable> for RoqoqoVersion {
+    type Error = RoqoqoError;
+
+    fn try_from(value: RoqoqoVersionSerializable) -> Result<Self, Self::Error> {
+        let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+        let major_version = u32::from_str(
+            rsplit
+                .next()
+                .expect("Internal error: Version not conforming to semver"),
+        )
+        .expect("Internal error: Major version is not unsigned integer.");
+        let minor_version = u32::from_str(
+            rsplit
+                .next()
+                .expect("Internal error: Version not conforming to semver"),
+        )
+        .expect("Internal error: Minor version is not unsigned integer.");
+        if major_version != value.major_version {
+            return Err(RoqoqoError::VersionMissmatch {
+                library_major_version: major_version,
+                library_minor_version: minor_version,
+                data_major_version: value.major_version,
+                data_minor_version: value.minor_version,
+            });
+        }
+        if major_version == 0 {
+            if minor_version != value.minor_version {
+                return Err(RoqoqoError::VersionMissmatch {
+                    library_major_version: major_version,
+                    library_minor_version: minor_version,
+                    data_major_version: value.major_version,
+                    data_minor_version: value.minor_version,
+                });
+            }
+        } else if minor_version < value.minor_version {
+            return Err(RoqoqoError::VersionMissmatch {
+                library_major_version: major_version,
+                library_minor_version: minor_version,
+                data_major_version: value.major_version,
+                data_minor_version: value.minor_version,
+            });
+        }
+        Ok(RoqoqoVersion)
+    }
+}
+
+impl From<RoqoqoVersion> for RoqoqoVersionSerializable {
+    fn from(_: RoqoqoVersion) -> Self {
+        let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+        let major_version = u32::from_str(
+            rsplit
+                .next()
+                .expect("Internal error: Version not conforming to semver"),
+        )
+        .expect("Internal error: Major version is not unsigned integer.");
+        let minor_version = u32::from_str(
+            rsplit
+                .next()
+                .expect("Internal error: Version not conforming to semver"),
+        )
+        .expect("Internal error: Minor version is not unsigned integer.");
+        RoqoqoVersionSerializable {
+            major_version,
+            minor_version,
+        }
+    }
+}
 
 /// Errors that can occur in roqoqo.
 #[derive(Error, Debug, PartialEq)]
@@ -128,6 +212,18 @@ pub enum RoqoqoError {
     GenericError {
         /// Generic error message
         msg: String,
+    },
+    /// Error when trying to deserialize roqoqo data created with an incompatible version of roqoqo
+    #[error("Trying to deserialize data created with incompatible version of roqoqo Library version: {library_major_version}.{library_minor_version} Data version: {data_major_version}.{data_minor_version}. Try to convert data with roqoqo data conversion tool.")]
+    VersionMissmatch {
+        /// Major version of the library
+        library_major_version: u32,
+        /// Minor version of the library
+        library_minor_version: u32,
+        /// Major version of the data
+        data_major_version: u32,
+        /// Minor version of the data
+        data_minor_version: u32,
     },
     // /// Rates matrix has negative eigenvalues, when they should be positive semi-definite.
     // #[error("Rates matrix has a negative eigenvalue: {value}")]

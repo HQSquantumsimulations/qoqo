@@ -2154,7 +2154,7 @@ impl OperateTwoQubitGate for ComplexPMInteraction {
 
 /// Implements the phased-shifted controlled-Z gate.
 ///
-/// Modified, i.e. phase-shifted ControlledPauliZ two-qubit gate (https://arxiv.org/pdf/1908.06101.pdf eq.(1)).
+/// Modified, i.e. phase-shifted ControlledPauliZ two-qubit gate (`<https://arxiv.org/pdf/1908.06101.pdf eq.(1)>`).
 /// The unitary matrix representation is:
 ///
 /// $$

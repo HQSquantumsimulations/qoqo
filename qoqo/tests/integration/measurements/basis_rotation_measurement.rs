@@ -28,7 +28,7 @@ use test_case::test_case;
 #[test]
 fn test_returning_circuits() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input_type = py.get_type::<BasisRotationInputWrapper>();
         let input = input_type
             .call1((3, false))
@@ -46,8 +46,7 @@ fn test_returning_circuits() {
             .call_method1("add_pauli_product", ("ro", vec![0, 1]))
             .unwrap();
 
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, 0.0.into());
         circs.push(circ1);
@@ -103,7 +102,7 @@ fn test_py03_evaluate_bool(
 ) {
     pyo3::prepare_freethreaded_python();
 
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input_type = py.get_type::<BasisRotationInputWrapper>();
         let input = input_type
             .call1((3, false))
@@ -158,12 +157,11 @@ fn test_py03_evaluate_bool(
             )
             .unwrap();
 
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
         let br_type = py.get_type::<BasisRotationWrapper>();
         let br = br_type
-            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
             .cast_as::<PyCell<BasisRotationWrapper>>()
             .unwrap();
@@ -218,7 +216,7 @@ fn test_py03_evaluate_usize(
 ) {
     pyo3::prepare_freethreaded_python();
 
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input_type = py.get_type::<BasisRotationInputWrapper>();
         let input = input_type
             .call1((3, false))
@@ -273,12 +271,11 @@ fn test_py03_evaluate_usize(
             )
             .unwrap();
 
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
         let br_type = py.get_type::<BasisRotationWrapper>();
         let br = br_type
-            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
             .cast_as::<PyCell<BasisRotationWrapper>>()
             .unwrap();
@@ -326,7 +323,7 @@ fn test_py03_evaluate_usize(
 fn test_evaluate_symbolic(register: Vec<Vec<bool>>, constant: f64) {
     pyo3::prepare_freethreaded_python();
 
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input_type = py.get_type::<BasisRotationInputWrapper>();
         let input = input_type
             .call1((3, false))
@@ -356,12 +353,11 @@ fn test_evaluate_symbolic(register: Vec<Vec<bool>>, constant: f64) {
             )
             .unwrap();
 
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
         let br_type = py.get_type::<BasisRotationWrapper>();
         let br = br_type
-            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
             .cast_as::<PyCell<BasisRotationWrapper>>()
             .unwrap();
@@ -396,7 +392,7 @@ fn test_evaluate_symbolic(register: Vec<Vec<bool>>, constant: f64) {
 fn test_py03_evaluate_error0() {
     pyo3::prepare_freethreaded_python();
 
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input_type = py.get_type::<BasisRotationInputWrapper>();
         let input = input_type
             .call1((3, false))
@@ -417,12 +413,11 @@ fn test_py03_evaluate_error0() {
             .call_method1("add_pauli_product", ("rx", vec![1, 2]))
             .unwrap();
 
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
         let br_type = py.get_type::<BasisRotationWrapper>();
         let br = br_type
-            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
             .cast_as::<PyCell<BasisRotationWrapper>>()
             .unwrap();
@@ -450,7 +445,7 @@ fn test_py03_evaluate_error0() {
 fn test_pyo3_copy() {
     pyo3::prepare_freethreaded_python();
 
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input_type = py.get_type::<BasisRotationInputWrapper>();
         let input = input_type
             .call1((3, false))
@@ -468,8 +463,7 @@ fn test_pyo3_copy() {
             .call_method1("add_pauli_product", ("ro", vec![0, 1]))
             .unwrap();
 
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, 0.0.into());
         circs.push(circ1);
@@ -479,7 +473,7 @@ fn test_pyo3_copy() {
             .unwrap()
             .cast_as::<PyCell<BasisRotationWrapper>>()
             .unwrap();
-        let br_clone = br.clone();
+        let br_clone = &(*br);
 
         let circuits: Vec<CircuitWrapper> = br.call_method0("circuits").unwrap().extract().unwrap();
         let circuits_clone: Vec<CircuitWrapper> = br_clone
@@ -508,7 +502,7 @@ fn test_pyo3_copy() {
 fn test_pyo3_debug() {
     pyo3::prepare_freethreaded_python();
 
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input_type = py.get_type::<BasisRotationInputWrapper>();
         let input = input_type
             .call1((3, false))
@@ -520,12 +514,11 @@ fn test_pyo3_debug() {
             .call_method1("add_pauli_product", ("ro", tmp_vec))
             .unwrap();
 
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
         let br_type = py.get_type::<BasisRotationWrapper>();
         let br = br_type
-            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
             .cast_as::<PyCell<BasisRotationWrapper>>()
             .unwrap();
@@ -534,13 +527,13 @@ fn test_pyo3_debug() {
         let br_clone = br_wrapper.clone();
         assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
 
-        let debug_string = "RefCell { value: BasisRotationWrapper { internal: BasisRotation { constant_circuit: Some(Circuit { definitions: [], operations: [] }), circuits: [Circuit { definitions: [], operations: [] }], input: BasisRotationInput { pauli_product_qubit_masks: {\"ro\": {0: []}}, number_qubits: 3, number_pauli_products: 1, measured_exp_vals: {}, use_flipped_measurement: false } } } }";
+        let debug_string = "RefCell { value: BasisRotationWrapper { internal: BasisRotation { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: BasisRotationInput { pauli_product_qubit_masks: {\"ro\": {0: []}}, number_qubits: 3, number_pauli_products: 1, measured_exp_vals: {}, use_flipped_measurement: false } } } }";
         assert_eq!(format!("{:?}", br), debug_string);
 
         let debug_input_string = "RefCell { value: BasisRotationInputWrapper { internal: BasisRotationInput { pauli_product_qubit_masks: {\"ro\": {0: []}}, number_qubits: 3, number_pauli_products: 1, measured_exp_vals: {}, use_flipped_measurement: false } } }";
         assert_eq!(format!("{:?}", input), debug_input_string);
 
-        let debug_input = input.clone();
+        let debug_input = &(*input);
         let mut linear_map: HashMap<usize, f64> = HashMap::new();
         linear_map.insert(0, 3.0);
         let _ = debug_input
@@ -565,7 +558,7 @@ fn test_pyo3_debug() {
 #[test]
 fn test_internal_to_bincode() {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input_type = py.get_type::<BasisRotationInputWrapper>();
         let input = input_type
             .call1((3, false))
@@ -577,12 +570,11 @@ fn test_internal_to_bincode() {
             .call_method1("add_pauli_product", ("ro", tmp_vec.clone()))
             .unwrap();
 
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
         let br_type = py.get_type::<BasisRotationWrapper>();
         let br = br_type
-            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
             .cast_as::<PyCell<BasisRotationWrapper>>()
             .unwrap();
@@ -591,11 +583,10 @@ fn test_internal_to_bincode() {
         roqoqo_bri
             .add_pauli_product("ro".to_string(), tmp_vec)
             .unwrap();
-        let mut circs: Vec<Circuit> = Vec::new();
-        circs.push(Circuit::new());
+        let circs: Vec<Circuit> = vec![Circuit::new()];
         let roqoqo_br = BasisRotation {
             constant_circuit: Some(Circuit::new()),
-            circuits: circs.clone(),
+            circuits: circs,
             input: roqoqo_bri,
         };
         let comparison_serialised = serialize(&roqoqo_br).unwrap();
@@ -615,7 +606,7 @@ fn test_internal_to_bincode() {
 fn test_to_from_json() {
     pyo3::prepare_freethreaded_python();
 
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input_type = py.get_type::<BasisRotationInputWrapper>();
         let input = input_type
             .call1((3, false))
@@ -627,17 +618,16 @@ fn test_to_from_json() {
             .call_method1("add_pauli_product", ("ro", tmp_vec))
             .unwrap();
 
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
         let br_type = py.get_type::<BasisRotationWrapper>();
         let br = br_type
-            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
             .cast_as::<PyCell<BasisRotationWrapper>>()
             .unwrap();
 
-        let new_br = br.clone();
+        let new_br = &(*br);
         let serialised = br.call_method0("to_json").unwrap();
         let deserialised = new_br
             .call_method1("from_json", (serialised,))
@@ -664,7 +654,7 @@ fn test_to_from_json() {
 fn test_substitute_parameters() {
     pyo3::prepare_freethreaded_python();
 
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input_type = py.get_type::<BasisRotationInputWrapper>();
         let input = input_type
             .call1((3, false))
@@ -682,8 +672,7 @@ fn test_substitute_parameters() {
             .call_method1("add_pauli_product", ("ro", vec![0, 1]))
             .unwrap();
 
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
         circs.push(circ1);
@@ -713,7 +702,7 @@ fn test_substitute_parameters() {
 fn test_substitute_parameters_error() {
     pyo3::prepare_freethreaded_python();
 
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let input_type = py.get_type::<BasisRotationInputWrapper>();
         let input = input_type
             .call1((3, false))
@@ -731,8 +720,7 @@ fn test_substitute_parameters_error() {
             .call_method1("add_pauli_product", ("ro", vec![0, 1]))
             .unwrap();
 
-        let mut circs: Vec<CircuitWrapper> = Vec::new();
-        circs.push(CircuitWrapper::new());
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
         circs.push(circ1);

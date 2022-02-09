@@ -121,9 +121,9 @@ pub fn wrap(
             /// Returns:
             ///     np.ndarray
             pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>>{
-                let gil = Python::acquire_gil();
-                let py = gil.python();
-                Ok(self.internal.superoperator().unwrap().to_pyarray(py).to_owned())
+                Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
+                    Ok(self.internal.superoperator().unwrap().to_pyarray(py).to_owned())
+                })
             }
             /// Return the power of the noise gate
             ///
@@ -281,9 +281,9 @@ pub fn wrap(
             /// Raises:
             ///     ValueError: Error symbolic operation cannot return float unitary matrix
             pub fn unitary_matrix(&self) -> PyResult<Py<PyArray2<Complex64>>>{
-                let gil = Python::acquire_gil();
-                let py = gil.python();
-                Ok(self.internal.unitary_matrix().map_err(|x| PyValueError::new_err(format!("Error symbolic operation cannot return float unitary matrix {:?}",x)))?.to_pyarray(py).to_owned())
+                Python::with_gil(|py| -> PyResult<Py<PyArray2<Complex64>>> {
+                    Ok(self.internal.unitary_matrix().map_err(|x| PyValueError::new_err(format!("Error symbolic operation cannot return float unitary matrix {:?}",x)))?.to_pyarray(py).to_owned())
+                })
             }
         }
     } else {
@@ -380,34 +380,34 @@ pub fn wrap(
 
 
 
-        /// Returns the __richcmp__ magic method to perform rich comparison
-        /// operations on Operation.
-        ///
-        /// # Arguments
-        ///
-        /// * `&self` - the OperationWrapper object
-        /// * `other` - the object to compare self to
-        /// * `op` - equal or not equal
-        ///
-        /// # Returns
-        ///
-        /// `PyResult<bool>` - whether the two operations compared evaluated to True or False
-        ///
-        fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
-            let gil = pyo3::Python::acquire_gil();
-            let py = gil.python();
-            let other_ref = other.as_ref(py);
-            let other: Operation = crate::operations::convert_pyany_to_operation(other_ref).map_err(|x| {
-                pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
-            })?;
-            match op {
-                pyo3::class::basic::CompareOp::Eq => Ok(Operation::from(self.internal.clone()) == other),
-                pyo3::class::basic::CompareOp::Ne => Ok(Operation::from(self.internal.clone()) != other),
-                _ => Err(pyo3::exceptions::PyNotImplementedError::new_err(
-                    "Other comparison not implemented.",
-                )),
+            /// Returns the __richcmp__ magic method to perform rich comparison
+            /// operations on Operation.
+            ///
+            /// # Arguments
+            ///
+            /// * `&self` - the OperationWrapper object
+            /// * `other` - the object to compare self to
+            /// * `op` - equal or not equal
+            ///
+            /// # Returns
+            ///
+            /// `PyResult<bool>` - whether the two operations compared evaluated to True or False
+            ///
+            fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
+                Python::with_gil(|py| -> PyResult<bool> {
+                    let other_ref = other.as_ref(py);
+                    let other: Operation = crate::operations::convert_pyany_to_operation(other_ref).map_err(|x| {
+                        pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
+                    })?;
+                    match op {
+                        pyo3::class::basic::CompareOp::Eq => Ok(Operation::from(self.internal.clone()) == other),
+                        pyo3::class::basic::CompareOp::Ne => Ok(Operation::from(self.internal.clone()) != other),
+                        _ => Err(pyo3::exceptions::PyNotImplementedError::new_err(
+                            "Other comparison not implemented.",
+                        )),
+                    }
+                })
             }
-        }
 
         }
     };
