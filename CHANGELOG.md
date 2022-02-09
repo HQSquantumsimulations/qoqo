@@ -4,6 +4,8 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
 
+* qoqo can now be built using a source distribution
+
 ### Added
 
 ## 0.9.1

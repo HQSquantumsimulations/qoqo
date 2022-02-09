@@ -7,7 +7,8 @@ edition = "2021"
 rust-version = "1.56"
 categories = ["science", "simulation"]
 readme = "../README.md"
-description = "Maros for the roqoqo crate"
+description = "Macros for the roqoqo crate"
+include = ["src*", "LICENSE"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]

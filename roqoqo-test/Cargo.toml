@@ -9,7 +9,7 @@ categories = ["science", "simulation"]
 readme = "../README.md"
 repository = "https://github.com/HQSquantumsimulations/qoqo"
 description = "Testing helper functions for roqoqo toolkit"
-exclude = ["tests*", "examples*", "docs*", "*.code-workspace"]
+include = ["src*", "LICENSE"]
 
 [lib]
 name = "roqoqo_test"
