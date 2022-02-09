@@ -36,6 +36,10 @@ impl TestBackend {
     fn run_measurement(&self, measurement: Py<PyAny>) -> PyResult<Py<PyAny>> {
         Ok(measurement)
     }
+
+    fn run_measurement_registers(&self, measurement: Py<PyAny>) -> PyResult<Py<PyAny>> {
+        return Ok(measurement);
+    }
 }
 
 fn create_measurement(py: Python) -> &PyCell<CheatedBasisRotationWrapper> {

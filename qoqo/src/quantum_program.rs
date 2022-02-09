@@ -188,7 +188,7 @@ impl QuantumProgramWrapper {
                     substituted_parameters
                 ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
                 Python::with_gil(|py| -> PyResult<Py<PyAny>> {
-                    backend.call_method1(py, "run_measurement", (ClassicalRegisterWrapper{internal: substituted_measurement}, ))
+                    backend.call_method1(py, "run_measurement_registers", (ClassicalRegisterWrapper{internal: substituted_measurement}, ))
                 })           },
             _ => Err(PyTypeError::new_err("A quantum programm returning expectation values cannot be executed by `run_registers` use `run` instead".to_string()))
         }
