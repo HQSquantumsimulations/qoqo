@@ -10,6 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use num_complex::Complex64;
 use pyo3::prelude::*;
 use qoqo::measurements::{
     BasisRotationInputWrapper, BasisRotationWrapper, CheatedBasisRotationInputWrapper,
@@ -604,5 +605,224 @@ fn test_convert_into_program() {
             Err(QoqoError::CannotExtractObject)
         );
         // assert_eq!(convert_into_quantum_program(circ), Err(QoqoError::VersionMismatch));
+    })
+}
+
+/// Test measurement() for CheatedBasisRotation
+#[test]
+fn test_return_measurement_cheatedbasisrotation() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        // Create measurement
+        let input_type = py.get_type::<CheatedBasisRotationInputWrapper>();
+        let input = input_type
+            .call0()
+            .unwrap()
+            .cast_as::<PyCell<CheatedBasisRotationInputWrapper>>()
+            .unwrap();
+        let _ = input.call_method1("add_pauli_product", ("ro",)).unwrap();
+
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+        let mut circ1 = CircuitWrapper::new();
+        circ1.internal += roqoqo::operations::RotateX::new(0, 0.0.into());
+        circs.push(circ1);
+        let br_type = py.get_type::<CheatedBasisRotationWrapper>();
+        let measurement_input = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .unwrap()
+            .cast_as::<PyCell<CheatedBasisRotationWrapper>>()
+            .unwrap();
+
+        let program_type = py.get_type::<QuantumProgramWrapper>();
+        let program = program_type
+            .call1((measurement_input, vec!["test".to_string()]))
+            .unwrap()
+            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .unwrap();
+
+        let measurement_returned = program
+            .call_method0("measurement")
+            .unwrap()
+            .cast_as::<PyCell<CheatedBasisRotationWrapper>>()
+            .unwrap();
+
+        assert_eq!(
+            format!("{:?}", measurement_returned),
+            format!("{:?}", measurement_input),
+        );
+    })
+}
+
+/// Test measurement() for BasisRotation
+#[test]
+fn test_return_measurement_basisrotation() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        // Create measurement
+        let input_type = py.get_type::<BasisRotationInputWrapper>();
+        let input = input_type
+            .call1((3, false))
+            .unwrap()
+            .cast_as::<PyCell<BasisRotationInputWrapper>>()
+            .unwrap();
+        let tmp_vec: Vec<usize> = Vec::new();
+        let _ = input
+            .call_method1("add_pauli_product", ("ro", tmp_vec.clone()))
+            .unwrap();
+
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+
+        let br_type = py.get_type::<BasisRotationWrapper>();
+        let measurement_input = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .unwrap()
+            .cast_as::<PyCell<BasisRotationWrapper>>()
+            .unwrap();
+
+        let program_type = py.get_type::<QuantumProgramWrapper>();
+        let program = program_type
+            .call1((measurement_input, vec!["test".to_string()]))
+            .unwrap()
+            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .unwrap();
+
+        let measurement_returned = program
+            .call_method0("measurement")
+            .unwrap()
+            .cast_as::<PyCell<BasisRotationWrapper>>()
+            .unwrap();
+
+        assert_eq!(
+            format!("{:?}", measurement_returned),
+            format!("{:?}", measurement_input),
+        );
+    })
+}
+
+/// Test measurement() for Cheated
+#[test]
+fn test_return_measurement_cheated() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        // Create measurement
+        let input_type = py.get_type::<CheatedInputWrapper>();
+        let input = input_type
+            .call1((3,))
+            .unwrap()
+            .cast_as::<PyCell<CheatedInputWrapper>>()
+            .unwrap();
+        let test_matrix = vec![
+            (0, 0, Complex64::new(1.0, 0.0)),
+            (0, 1, Complex64::new(0.0, 0.0)),
+            (1, 0, Complex64::new(0.0, 0.0)),
+            (1, 1, Complex64::new(-1.0, 0.0)),
+        ];
+        let _ = input
+            .call_method1("add_operator_exp_val", ("test_diagonal", test_matrix, "ro"))
+            .unwrap();
+
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+        let mut circ1 = CircuitWrapper::new();
+        circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
+        circs.push(circ1);
+        let br_type = py.get_type::<CheatedWrapper>();
+        let measurement_input = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .unwrap()
+            .cast_as::<PyCell<CheatedWrapper>>()
+            .unwrap();
+
+        let program_type = py.get_type::<QuantumProgramWrapper>();
+        let program = program_type
+            .call1((measurement_input, vec!["test".to_string()]))
+            .unwrap()
+            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .unwrap();
+
+        let measurement_returned = program
+            .call_method0("measurement")
+            .unwrap()
+            .cast_as::<PyCell<CheatedWrapper>>()
+            .unwrap();
+
+        assert_eq!(
+            format!("{:?}", measurement_returned),
+            format!("{:?}", measurement_input),
+        );
+    })
+}
+
+/// Test measurement() for ClassicalRegister
+#[test]
+fn test_return_measurement_classicalreg() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        // Create measurement
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+        let mut circ1 = CircuitWrapper::new();
+        circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
+        circs.push(circ1);
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
+        let measurement_input = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone()))
+            .unwrap()
+            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .unwrap();
+
+        let program_type = py.get_type::<QuantumProgramWrapper>();
+        let program = program_type
+            .call1((measurement_input, vec!["test".to_string()]))
+            .unwrap()
+            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .unwrap();
+
+        let measurement_returned = program
+            .call_method0("measurement")
+            .unwrap()
+            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .unwrap();
+
+        assert_eq!(
+            format!("{:?}", measurement_returned),
+            format!("{:?}", measurement_input),
+        );
+    })
+}
+
+/// Test input_parameter_names()
+#[test]
+fn test_input_parameter_names() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        // Create measurement
+        let input_type = py.get_type::<CheatedBasisRotationInputWrapper>();
+        let input = input_type
+            .call0()
+            .unwrap()
+            .cast_as::<PyCell<CheatedBasisRotationInputWrapper>>()
+            .unwrap();
+        let _ = input.call_method1("add_pauli_product", ("ro",)).unwrap();
+
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+        let mut circ1 = CircuitWrapper::new();
+        circ1.internal += roqoqo::operations::RotateX::new(0, "test".into());
+        circs.push(circ1);
+        let br_type = py.get_type::<CheatedBasisRotationWrapper>();
+        let measurement_input = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .unwrap()
+            .cast_as::<PyCell<CheatedBasisRotationWrapper>>()
+            .unwrap();
+
+        let program_type = py.get_type::<QuantumProgramWrapper>();
+        let program = program_type
+            .call1((measurement_input, vec!["test".to_string()]))
+            .unwrap()
+            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .unwrap();
+
+        let params_returned = program.call_method0("input_parameter_names").unwrap();
+
+        assert_eq!(params_returned.to_string(), "['test']".to_string());
     })
 }

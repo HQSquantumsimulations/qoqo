@@ -145,6 +145,23 @@ impl BasisRotationWrapper {
             .map(|c| CircuitWrapper { internal: c })
     }
 
+    /// Returns the measurement input data defining how to construct expectation values from measurements.
+    ///
+    /// Returns:
+    ///     BasisRotationInput: The measurment input of BasisRotation.
+    pub fn input(&self) -> BasisRotationInputWrapper {
+        let input = self.internal.input.clone();
+        BasisRotationInputWrapper { internal: input }
+    }
+
+    /// Returns the type of the measurement in string form.
+    ///
+    /// Returns:
+    ///    str: The type of the measurement.
+    pub fn measurement_type(&self) -> &'static str {
+        "BasisRotation"
+    }
+
     /// Return clone of Measurement with symbolic parameters replaced.
     ///
     /// Args:

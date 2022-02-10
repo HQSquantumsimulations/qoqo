@@ -227,3 +227,23 @@ fn test_substitute_parameters_error() {
         assert!(br_sub.is_err());
     })
 }
+
+/// Test measurement_type()
+#[test]
+fn test_measurement_type() {
+    Python::with_gil(|py| {
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+        let mut circ1 = CircuitWrapper::new();
+        circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
+        circs.push(circ1);
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone()))
+            .unwrap()
+            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .unwrap();
+
+        let measurement_type = br.call_method0("measurement_type").unwrap();
+        assert_eq!(measurement_type.to_string(), "ClassicalRegister");
+    })
+}

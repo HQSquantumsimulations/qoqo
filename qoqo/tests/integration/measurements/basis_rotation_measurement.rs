@@ -736,3 +736,66 @@ fn test_substitute_parameters_error() {
         assert!(br_sub.is_err());
     })
 }
+
+/// Test measurement_type()
+#[test]
+fn test_measurement_type() {
+    Python::with_gil(|py| {
+        let input_type = py.get_type::<BasisRotationInputWrapper>();
+        let input = input_type
+            .call1((3, false))
+            .unwrap()
+            .cast_as::<PyCell<BasisRotationInputWrapper>>()
+            .unwrap();
+        let tmp_vec: Vec<usize> = Vec::new();
+        let _ = input
+            .call_method1("add_pauli_product", ("ro", tmp_vec.clone()))
+            .unwrap();
+
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+
+        let br_type = py.get_type::<BasisRotationWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs, input))
+            .unwrap()
+            .cast_as::<PyCell<BasisRotationWrapper>>()
+            .unwrap();
+
+        let measurement_type = br.call_method0("measurement_type").unwrap();
+        assert_eq!(measurement_type.to_string(), "BasisRotation");
+    })
+}
+
+/// Test input()
+#[test]
+fn test_return_input() {
+    Python::with_gil(|py| {
+        let input_type = py.get_type::<BasisRotationInputWrapper>();
+        let input = input_type
+            .call1((3, false))
+            .unwrap()
+            .cast_as::<PyCell<BasisRotationInputWrapper>>()
+            .unwrap();
+        let tmp_vec: Vec<usize> = Vec::new();
+        let _ = input
+            .call_method1("add_pauli_product", ("ro", tmp_vec.clone()))
+            .unwrap();
+
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+
+        let br_type = py.get_type::<BasisRotationWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs, input))
+            .unwrap()
+            .cast_as::<PyCell<BasisRotationWrapper>>()
+            .unwrap();
+
+        let input_returned = br
+            .call_method0("input")
+            .unwrap()
+            .cast_as::<PyCell<BasisRotationInputWrapper>>()
+            .unwrap();
+
+        assert_eq!(format!("{:?}", input_returned), format!("{:?}", input));
+    })
+}
