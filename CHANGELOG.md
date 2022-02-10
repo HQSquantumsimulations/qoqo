@@ -6,13 +6,13 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ### Added
 
-### Fixed
+## 0.10.0
+
+### Fixed 0.10.0
 
 * Bug in running register measurements from a qoqo QuantumProgram (`.run_registers()`)
 
-## 0.9.1
-
-### Changed 0.9.1
+### Changed 0.10.0
 
 * Increased tolerance for unitary violation when construction unitary matrix for SingleQubitGate from `f64::EPSILON` to `1e-6`.
 * Semver-style version checking for Circuit serialization. In beta mode (0.y.z) minor version must match (y_library == y_data) in release mode (x.y.z) major version must match (x_library == x_data) and minor version of library must exceed minor version of data (y_library >= y_data).
