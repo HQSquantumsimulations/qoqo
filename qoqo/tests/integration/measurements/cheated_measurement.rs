@@ -500,3 +500,80 @@ fn test_substitute_parameters_error() {
         assert!(br_sub.is_err());
     })
 }
+
+/// Test measurement_type()
+#[test]
+fn test_measurement_type() {
+    Python::with_gil(|py| {
+        let input_type = py.get_type::<CheatedInputWrapper>();
+        let input = input_type
+            .call1((3,))
+            .unwrap()
+            .cast_as::<PyCell<CheatedInputWrapper>>()
+            .unwrap();
+        let test_matrix = vec![
+            (0, 0, Complex64::new(1.0, 0.0)),
+            (0, 1, Complex64::new(0.0, 0.0)),
+            (1, 0, Complex64::new(0.0, 0.0)),
+            (1, 1, Complex64::new(-1.0, 0.0)),
+        ];
+        let _ = input
+            .call_method1("add_operator_exp_val", ("test_diagonal", test_matrix, "ro"))
+            .unwrap();
+
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+        let mut circ1 = CircuitWrapper::new();
+        circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
+        circs.push(circ1);
+        let br_type = py.get_type::<CheatedWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .unwrap()
+            .cast_as::<PyCell<CheatedWrapper>>()
+            .unwrap();
+
+        let measurement_type = br.call_method0("measurement_type").unwrap();
+        assert_eq!(measurement_type.to_string(), "Cheated");
+    })
+}
+
+/// Test input()
+#[test]
+fn test_return_input() {
+    Python::with_gil(|py| {
+        let input_type = py.get_type::<CheatedInputWrapper>();
+        let input = input_type
+            .call1((3,))
+            .unwrap()
+            .cast_as::<PyCell<CheatedInputWrapper>>()
+            .unwrap();
+        let test_matrix = vec![
+            (0, 0, Complex64::new(1.0, 0.0)),
+            (0, 1, Complex64::new(0.0, 0.0)),
+            (1, 0, Complex64::new(0.0, 0.0)),
+            (1, 1, Complex64::new(-1.0, 0.0)),
+        ];
+        let _ = input
+            .call_method1("add_operator_exp_val", ("test_diagonal", test_matrix, "ro"))
+            .unwrap();
+
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+        let mut circ1 = CircuitWrapper::new();
+        circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
+        circs.push(circ1);
+        let br_type = py.get_type::<CheatedWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .unwrap()
+            .cast_as::<PyCell<CheatedWrapper>>()
+            .unwrap();
+
+        let input_returned = br
+            .call_method0("input")
+            .unwrap()
+            .cast_as::<PyCell<CheatedInputWrapper>>()
+            .unwrap();
+
+        assert_eq!(format!("{:?}", input_returned), format!("{:?}", input));
+    })
+}
