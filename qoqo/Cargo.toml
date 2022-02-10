@@ -1,10 +1,6 @@
 [package]
 name = "qoqo"
-<<<<<<< HEAD
 version = "0.10.0"
-=======
-version = "0.9.2"
->>>>>>> 6ddb24b (Prepared v0.10 release)
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 homepage = "https://github.com/HQSquantumsimulations/qoqo"
