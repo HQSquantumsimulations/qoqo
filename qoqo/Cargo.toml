@@ -11,7 +11,7 @@ edition = "2021"
 rust-version = "1.56"
 categories = ["science", "simulation","ffi"]
 description = "Quantum computing circuit toolkit. Python interface of roqoqo"
-include = ["src*", "build.rs", "backends*", "circuit*", "devices*", "do_unitary*", "measurements*", "operations*", "qoqo*", "registers*", "LICENSE", "README.md", "pyproject.toml"]
+include = ["src*", "build.rs", "qoqo*", "LICENSE", "README.md", "pyproject.toml"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
