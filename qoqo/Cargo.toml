@@ -56,7 +56,7 @@ extension-module = ["pyo3/extension-module"]#, "qoqo_calculator_pyo3/extension-m
 default = ["extension-module"]
 
 [package.metadata.maturin]
-requires-dist = ["numpy", "qoqo_calculator_pyo3>=0.5"]
+requires-dist = ["numpy", "qoqo_calculator_pyo3>=0.6"]
 maintainer = "HQS Quantum Simulations GmbH"
 maintainer-email = "info@quantumsimulations.de"
 requires-python = ">=3.6"
