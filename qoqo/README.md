@@ -106,6 +106,7 @@ qoqo = {version="0.9", default-features=false}
 
 to the `[dependencies]` section of the project Cargo.toml.
 
+A source distribution now exists but requires a Rust install with a rust version > 1.47 and a maturin version { >= 0.12, <0.13 } in order to be built.
 ### Examples
 
 For an expanded collection of Examples see the jupyter notebooks in qoqo/examples. The examples require the qoqo_quest and qoqo_mock interfaces.
