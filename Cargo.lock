@@ -431,9 +431,9 @@ dependencies = [
 
 [[package]]
 name = "qoqo_calculator"
-version = "0.6.0"
+version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4d1ffeecff4c39cf429bd828c999eba01ca5e0cecef7fd91cf30331c1f6c7b93"
+checksum = "1fe22bd1a2cae52ef3cc6864e1fad3998774425e74a5e4e854c8182c2eab9a37"
 dependencies = [
  "num-complex",
  "serde",
@@ -442,9 +442,9 @@ dependencies = [
 
 [[package]]
 name = "qoqo_calculator_pyo3"
-version = "0.6.0"
+version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "628280a811534bfebdfd013c5750c077595642718ea4c04ff06d1a3c1d689be2"
+checksum = "45a060f4fa7fda777787075f661c64e42b459c0d74d3cd530aef08836b35e383"
 dependencies = [
  "num-complex",
  "pyo3",
@@ -616,9 +616,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.78"
+version = "1.0.79"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d23c1ba4cf0efd44be32017709280b32d1cea5c3f1275c3b6d9e8bc54f758085"
+checksum = "8e8d9fa5c3b304765ce1fd9c4c8a3de2c8db365a5b91be52f186efc675681d95"
 dependencies = [
  "itoa",
  "ryu",
