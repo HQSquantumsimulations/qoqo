@@ -156,19 +156,6 @@ impl OperateSingleQubitGate for SingleQubitGate {
     fn global_phase(&self) -> CalculatorFloat {
         self.global_phase.clone()
     }
-    /// Returns equivalent SingleQubitGate.
-    ///
-    /// Converts Operation implementing OperateSingleQubitGate Trait into SingleQubitGate.
-    fn to_single_qubit_gate(&self) -> SingleQubitGate {
-        SingleQubitGate::new(
-            *self.qubit(),
-            self.alpha_r(),
-            self.alpha_i(),
-            self.beta_r(),
-            self.beta_i(),
-            self.global_phase(),
-        )
-    }
 }
 
 /// The ZPower gate $e^{-i \frac{\theta}{2} \sigma^z}$.

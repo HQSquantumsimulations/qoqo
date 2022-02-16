@@ -217,24 +217,9 @@ fn test_singlequbitgate_unitarity_err() {
     );
 }
 
-/// Test 'normalize_operation()' for SingleQubitGate
+/// Test 'to_single_qubit_gate()` for RotateZ
 #[test]
-fn test_normalize_operation() {
-    let gate = SingleQubitGate::new(
-        0,
-        CalculatorFloat::from(1.0),
-        CalculatorFloat::from(0.0),
-        CalculatorFloat::from(0.0),
-        CalculatorFloat::from(0.0),
-        CalculatorFloat::from(0.0),
-    );
-    let gate_norm = gate.normalize_operation();
-    assert_eq!(gate, gate_norm);
-}
-
-/// Test 'from_single_qubit_operation()` for SingleQubitGate
-#[test]
-fn test_from_single_qubit_operation() {
+fn test_to_single_qubit_gate_rotatez() {
     let gate = SingleQubitGate::new(
         0,
         CalculatorFloat::from(1.0),
@@ -244,8 +229,63 @@ fn test_from_single_qubit_operation() {
         CalculatorFloat::from(0.0),
     );
     let rotatez: RotateZ = RotateZ::new(0, 0.into());
-    let rotatez_gate: SingleQubitGate = rotatez.from_single_qubit_operation();
+    let rotatez_gate: SingleQubitGate = rotatez.to_single_qubit_gate();
     assert_eq!(gate, rotatez_gate);
+}
+
+/// Test 'to_single_qubit_gate()` for SingleQubitGate (nothing to convert)
+#[test]
+fn test_to_single_qubit_gate() {
+    let gate = SingleQubitGate::new(
+        0,
+        CalculatorFloat::from(1.0),
+        CalculatorFloat::from(0.0),
+        CalculatorFloat::from(0.0),
+        CalculatorFloat::from(0.0),
+        CalculatorFloat::from(0.0),
+    );
+    let gate1 = SingleQubitGate::new(
+        0,
+        CalculatorFloat::from(1.0),
+        CalculatorFloat::from(0.0),
+        CalculatorFloat::from(0.0),
+        CalculatorFloat::from(0.0),
+        CalculatorFloat::from(0.0),
+    );
+    let gate1_test: SingleQubitGate = gate1.to_single_qubit_gate();
+    assert_eq!(gate, gate1_test);
+}
+
+/// Test 'to_single_qubit_gate()` for all SingleQubitGateOperations
+#[test_case(SingleQubitGateOperation::from(RotateZ::new(0, CalculatorFloat::from("theta"))); "RotateZ")]
+#[test_case(SingleQubitGateOperation::from(RotateX::new(0, CalculatorFloat::from("theta"))); "RotateX")]
+#[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from("theta"))); "RotateY")]
+#[test_case(SingleQubitGateOperation::from(PauliX::new(0)); "PauliX")]
+#[test_case(SingleQubitGateOperation::from(PauliY::new(0)); "PauliY")]
+#[test_case( SingleQubitGateOperation::from(PauliZ::new(0)); "PauliZ")]
+#[test_case(SingleQubitGateOperation::from(SqrtPauliX::new(0)); "SqrtPauliX")]
+#[test_case(SingleQubitGateOperation::from(InvSqrtPauliX::new(0)); "InvSqrtPauliX")]
+#[test_case(SingleQubitGateOperation::from(SGate::new(0)); "SGate")]
+#[test_case(SingleQubitGateOperation::from(TGate::new(0)); "TGate")]
+#[test_case(SingleQubitGateOperation::from(Hadamard::new(0)); "Hadamard")]
+#[test_case(SingleQubitGateOperation::from(RotateAroundSphericalAxis::new(
+    0,
+    CalculatorFloat::from("theta"),
+    CalculatorFloat::from("spherical_theta"),
+    CalculatorFloat::from("spherical_phi"))); "Rotation")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate0")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState1::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate1")]
+fn test_to_single_qubit_gate_all(operation: SingleQubitGateOperation) {
+    let gate = SingleQubitGate::new(
+        0,
+        operation.alpha_r(),
+        operation.alpha_i(),
+        operation.beta_r(),
+        operation.beta_i(),
+        operation.global_phase(),
+    );
+    let gate_test: SingleQubitGate = operation.to_single_qubit_gate();
+    assert_eq!(gate, gate_test);
 }
 
 /// Test 'qubit()' for SingleQubitGate
