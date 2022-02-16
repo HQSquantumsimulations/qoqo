@@ -565,60 +565,36 @@ pub trait OperateSingleQubitGate:
         let obeta = CalculatorComplex::new(other.beta_r(), other.beta_i());
         let new_alpha = alpha.clone() * &oalpha - beta.conj() * &obeta;
         let new_beta = beta * oalpha + obeta * alpha.conj();
-        Ok(SingleQubitGate::new(
-            *other.qubit(),
-            new_alpha.re,
-            new_alpha.im,
-            new_beta.re,
-            new_beta.im,
-            self.global_phase() + other.global_phase(),
-        ))
-    }
-    // NEW: ported
-    /// Function to normalize any SingleQubitGate operation.
-    ///
-    /// # Returns
-    ///
-    /// * SingleQubitGate with normalized alpha, beta values.
-    fn normalize_operation(&self) -> SingleQubitGate {
-        // QUESTION: is there a better syntax for this block, with try_from() or something similar?
-        let operation: SingleQubitGate = SingleQubitGate::new(
-            *self.qubit(),
-            self.alpha_r(),
-            self.alpha_i(),
-            self.beta_r(),
-            self.beta_i(),
-            self.global_phase(),
-        );
-        if self.alpha_r().is_float()
-            && self.alpha_i().is_float()
-            && self.beta_r().is_float()
-            && self.beta_i().is_float()
-        {
-            let norm = (self.alpha_r().float().unwrap().powf(2.0)
-                + self.alpha_i().float().unwrap().powf(2.0)
-                + self.beta_r().float().unwrap().powf(2.0)
-                + self.beta_i().float().unwrap().powf(2.0))
-            .sqrt();
-            if (norm - 1.0).abs() > f64::EPSILON {
-                SingleQubitGate::new(
-                    *self.qubit(),
-                    self.alpha_r() / norm,
-                    self.alpha_i() / norm,
-                    self.beta_r() / norm,
-                    self.beta_i() / norm,
-                    self.global_phase(),
-                )
-            } else {
-                operation
-            }
+
+        let norm = (new_alpha.re.float().unwrap().powf(2.0)
+            + new_alpha.im.float().unwrap().powf(2.0)
+            + new_beta.re.float().unwrap().powf(2.0)
+            + new_beta.im.float().unwrap().powf(2.0))
+        .sqrt();
+        if (norm - 1.0).abs() > f64::EPSILON {
+            Ok(SingleQubitGate::new(
+                *other.qubit(),
+                new_alpha.re / norm,
+                new_alpha.im / norm,
+                new_beta.re / norm,
+                new_beta.im / norm,
+                self.global_phase() + other.global_phase(),
+            ))
         } else {
-            operation
+            Ok(SingleQubitGate::new(
+                *other.qubit(),
+                new_alpha.re,
+                new_alpha.im,
+                new_beta.re,
+                new_beta.im,
+                self.global_phase() + other.global_phase(),
+            ))
         }
     }
-    // NEW: newly ported
-    /// Converts OperateSingleQubitGate into SingleQubitGate
-    fn from_single_qubit_operation(&self) -> SingleQubitGate {
+    /// Returns equivalent SingleQubitGate.
+    ///
+    /// Converts Operation implementing OperateSingleQubitGate Trait into SingleQubitGate.
+    fn to_single_qubit_gate(&self) -> SingleQubitGate {
         SingleQubitGate::new(
             *self.qubit(),
             self.alpha_r(),
