@@ -1422,7 +1422,7 @@ fn test_singlequbitgates_partialeq(
     assert!(gate1 != gate2);
 }
 
-/// Test SingleQubitGate multiplication for RotateXYZ
+/// Test SingleQubitGate multiplication for SingleQubitGate
 #[test_case(0_u64; "seed0")]
 #[test_case(1_u64; "seed1")]
 #[test_case(2_u64; "seed2")]
@@ -1509,6 +1509,40 @@ fn test_rotatexyz_multiplication(
         assert_eq!(multiplied.beta_i(), gate3.beta_i());
         assert_eq!(multiplied.global_phase(), gate3.global_phase());
     }
+}
+
+/// Test that multiplication of two SingleQubitGateOperations returns a normalized SingleQubitGate
+#[test]
+fn test_singlequbitgate_mul_norm() {
+    let gate1 = SingleQubitGate::new(
+        0,
+        1.0.into(),
+        0.5.into(),
+        2.0.into(),
+        0.75.into(),
+        0.0.into(),
+    );
+    let gate2 = SingleQubitGate::new(
+        0,
+        1.0.into(),
+        0.0.into(),
+        0.0.into(),
+        0.0.into(),
+        0.0.into(),
+    );
+    let result = gate1.mul(&gate2);
+    let multiplied = result.unwrap();
+    let alpha_r: f64 = f64::try_from(gate1.alpha_r()).unwrap();
+    let alpha_i: f64 = f64::try_from(gate1.alpha_i()).unwrap();
+    let beta_r: f64 = f64::try_from(gate1.beta_r()).unwrap();
+    let beta_i: f64 = f64::try_from(gate1.beta_i()).unwrap();
+    let norm: f64 =
+        (alpha_r.powf(2.0) + alpha_i.powf(2.0) + beta_r.powf(2.0) + beta_i.powf(2.0)).sqrt();
+    assert_eq!(multiplied.alpha_r(), gate1.alpha_r() / norm);
+    assert_eq!(multiplied.alpha_i(), gate1.alpha_i() / norm);
+    assert_eq!(multiplied.beta_r(), gate1.beta_r() / norm);
+    assert_eq!(multiplied.beta_i(), gate1.beta_i() / norm);
+    assert_eq!(multiplied.global_phase(), gate1.global_phase());
 }
 
 /// Test SingleQubitGate multiplication for Hadamard gate

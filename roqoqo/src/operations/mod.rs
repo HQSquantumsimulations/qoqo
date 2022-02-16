@@ -566,20 +566,36 @@ pub trait OperateSingleQubitGate:
         let new_alpha = alpha.clone() * &oalpha - beta.conj() * &obeta;
         let new_beta = beta * oalpha + obeta * alpha.conj();
 
-        let norm = (new_alpha.re.float().unwrap().powf(2.0)
-            + new_alpha.im.float().unwrap().powf(2.0)
-            + new_beta.re.float().unwrap().powf(2.0)
-            + new_beta.im.float().unwrap().powf(2.0))
-        .sqrt();
-        if (norm - 1.0).abs() > f64::EPSILON {
-            Ok(SingleQubitGate::new(
-                *other.qubit(),
-                new_alpha.re / norm,
-                new_alpha.im / norm,
-                new_beta.re / norm,
-                new_beta.im / norm,
-                self.global_phase() + other.global_phase(),
-            ))
+        if new_alpha.re.is_float()
+            && new_alpha.im.is_float()
+            && new_beta.re.is_float()
+            && new_beta.im.is_float()
+        {
+            let norm = (new_alpha.re.float().unwrap().powf(2.0)
+                + new_alpha.im.float().unwrap().powf(2.0)
+                + new_beta.re.float().unwrap().powf(2.0)
+                + new_beta.im.float().unwrap().powf(2.0))
+            .sqrt();
+
+            if (norm - 1.0).abs() > f64::EPSILON {
+                Ok(SingleQubitGate::new(
+                    *other.qubit(),
+                    new_alpha.re / norm,
+                    new_alpha.im / norm,
+                    new_beta.re / norm,
+                    new_beta.im / norm,
+                    self.global_phase() + other.global_phase(),
+                ))
+            } else {
+                Ok(SingleQubitGate::new(
+                    *other.qubit(),
+                    new_alpha.re,
+                    new_alpha.im,
+                    new_beta.re,
+                    new_beta.im,
+                    self.global_phase() + other.global_phase(),
+                ))
+            }
         } else {
             Ok(SingleQubitGate::new(
                 *other.qubit(),
