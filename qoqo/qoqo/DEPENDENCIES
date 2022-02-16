@@ -1,5 +1,5 @@
 ====================================================
-approx 0.5.0
+approx 0.5.1
 https://github.com/brendanzab/approx
 by Brendan Zabarauskas <bjzaba@yahoo.com.au>
 Approximate floating point equality comparisons and assertions.
@@ -212,7 +212,7 @@ LICENSE:
 
 
 ====================================================
-autocfg 1.0.1
+autocfg 1.1.0
 https://github.com/cuviper/autocfg
 by Josh Stone <cuviper@gmail.com>
 Automatic cfg for Rust compiler features
@@ -1315,7 +1315,7 @@ limitations under the License.
 
 
 ====================================================
-getrandom 0.2.3
+getrandom 0.2.4
 https://github.com/rust-random/getrandom
 by The Rand Project Developers
 A small cross-platform library for retrieving random data from system source
@@ -2312,7 +2312,7 @@ limitations under the License.
 
 
 ====================================================
-libc 0.2.112
+libc 0.2.117
 https://github.com/rust-lang/libc
 by The Rust Project Developers
 Raw FFI bindings to platform libraries like libc.
@@ -2527,34 +2527,9 @@ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
 END OF TERMS AND CONDITIONS
 
-APPENDIX: How to apply the Apache License to your work.
-
-   To apply the Apache License to your work, attach the following
-   boilerplate notice, with the fields enclosed by brackets "[]"
-   replaced with your own identifying information. (Don't include
-   the brackets!)  The text should be enclosed in the appropriate
-   comment syntax for the file format. We also recommend that a
-   file or class name and description of purpose be included on the
-   same "printed page" as the copyright notice for easier
-   identification within third-party archives.
-
-Copyright [yyyy] [name of copyright owner]
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-	http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
 
 ====================================================
-libm 0.2.1
+libm 0.2.2
 https://github.com/rust-lang/libm
 by Jorge Aparicio <jorge@japaric.io>
 libm in pure Rust
@@ -2795,7 +2770,7 @@ limitations under the License.
 
 
 ====================================================
-lock_api 0.4.5
+lock_api 0.4.6
 https://github.com/Amanieu/parking_lot
 by Amanieu d'Antras <amanieu@gmail.com>
 Wrappers to create fully-featured Mutex and RwLock types. Compatible with no_std.
@@ -3281,7 +3256,7 @@ limitations under the License.
 
 
 ====================================================
-nalgebra 0.29.0
+nalgebra 0.30.1
 https://nalgebra.org
 by Sébastien Crozet <developer@crozet.re>
 General-purpose linear algebra library with transformations and statically-sized or dynamically-sized matrices.
@@ -4707,7 +4682,7 @@ limitations under the License.
 
 
 ====================================================
-numpy 0.15.0
+numpy 0.15.1
 https://github.com/PyO3/rust-numpy
 by Toshiki Teramura <toshiki.teramura@gmail.com>, Yuji Kanagawa <yuji.kngw.80s.revive@gmail.com>
 Rust binding of NumPy C-API
@@ -6187,7 +6162,7 @@ limitations under the License.
 
 
 ====================================================
-ppv-lite86 0.2.15
+ppv-lite86 0.2.16
 https://github.com/cryptocorrosion/cryptocorrosion
 by The CryptoCorrosion Contributors
 Implementation of the crypto-simd API for x86
@@ -6669,9 +6644,9 @@ limitations under the License.
 
 
 ====================================================
-proc-macro2 1.0.29
-https://github.com/alexcrichton/proc-macro2
-by Alex Crichton <alex@alexcrichton.com>, David Tolnay <dtolnay@gmail.com>
+proc-macro2 1.0.36
+https://github.com/dtolnay/proc-macro2
+by David Tolnay <dtolnay@gmail.com>, Alex Crichton <alex@alexcrichton.com>
 A substitute implementation of the compiler's `proc_macro` API to decouple
 token-based libraries from the procedural macro use case.
 
@@ -7712,7 +7687,7 @@ LICENSE:
 
 
 ====================================================
-qoqo 0.9.0
+qoqo 0.10.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoqo
@@ -7924,7 +7899,7 @@ LICENSE:
 
 
 ====================================================
-qoqo-macros 0.9.0
+qoqo-macros 0.10.0
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -8135,7 +8110,7 @@ LICENSE:
 
 
 ====================================================
-qoqo_calculator 0.5.5
+qoqo_calculator 0.6.1
 https://github.com/HQSquantumsimulations/qoqo_calculator
 by HQS Quantum Simulations <info@quantumsimulations.de>
 qoqo-calculator is the calculator backend of the qoqo quantum computing toolkit by HQS Quantum Simulations
@@ -8347,7 +8322,7 @@ LICENSE:
 
 
 ====================================================
-qoqo_calculator_pyo3 0.5.5
+qoqo_calculator_pyo3 0.6.1
 https://github.com/HQSquantumsimulations/qoqo_calculator_pyo3
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Python interface to qoqo calculator, the calculator backend of the qoqo quantum computing toolkit by HQS Quantum Simulations
@@ -8559,7 +8534,7 @@ LICENSE:
 
 
 ====================================================
-quote 1.0.10
+quote 1.0.15
 https://github.com/dtolnay/quote
 by David Tolnay <dtolnay@gmail.com>
 Quasi-quoting macro quote!(...)
@@ -9529,7 +9504,7 @@ limitations under the License.
 
 
 ====================================================
-rand_distr 0.4.2
+rand_distr 0.4.3
 https://rust-random.github.io/book
 by The Rand Project Developers
 Sampling from random number distributions
@@ -10277,7 +10252,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-roqoqo 0.9.0
+roqoqo 0.10.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
@@ -10489,9 +10464,9 @@ LICENSE:
 
 
 ====================================================
-roqoqo-derive 0.9.0
+roqoqo-derive 0.10.0
 by HQS Quantum Simulations <info@quantumsimulations.de>
-Maros for the roqoqo crate
+Macros for the roqoqo crate
 License: Apache-2.0
 ----------------------------------------------------
 LICENSE:
@@ -10700,7 +10675,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-test 0.9.0
+roqoqo-test 0.10.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
@@ -11419,7 +11394,7 @@ limitations under the License.
 
 
 ====================================================
-serde 1.0.132
+serde 1.0.136
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A generic serialization/deserialization framework
@@ -11658,7 +11633,7 @@ limitations under the License.
 
 
 ====================================================
-serde_derive 1.0.132
+serde_derive 1.0.136
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Macros 1.1 implementation of #[derive(Serialize, Deserialize)]
@@ -11897,7 +11872,7 @@ limitations under the License.
 
 
 ====================================================
-serde_json 1.0.73
+serde_json 1.0.79
 https://github.com/serde-rs/json
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A JSON serialization file format
@@ -12136,7 +12111,7 @@ limitations under the License.
 
 
 ====================================================
-serde_test 1.0.132
+serde_test 1.0.136
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Token De/Serializer for testing De/Serialize implementations
@@ -12375,7 +12350,7 @@ limitations under the License.
 
 
 ====================================================
-simba 0.6.0
+simba 0.7.1
 https://github.com/dimforge/simba
 by sebcrozet <developer@crozet.re>
 SIMD algebra for Rust
@@ -12587,7 +12562,7 @@ LICENSE:
 
 
 ====================================================
-smallvec 1.7.0
+smallvec 1.8.0
 https://github.com/servo/rust-smallvec
 by The Servo Project Developers
 'Small vector' optimization: store up to a small number of items on the stack
@@ -12828,7 +12803,7 @@ limitations under the License.
 
 
 ====================================================
-syn 1.0.80
+syn 1.0.86
 https://github.com/dtolnay/syn
 by David Tolnay <dtolnay@gmail.com>
 Parser for Rust source code
@@ -13067,7 +13042,7 @@ limitations under the License.
 
 
 ====================================================
-test-case 1.2.1
+test-case 1.2.3
 https://github.com/frondeus/test-case
 by Marcin Sas-Szymanski <marcin.sas-szymanski@anixe.pl>, Wojciech Polak <frondeus@gmail.com>, Łukasz Biel <lukasz.p.biel@gmail.com>
 Provides #[test_case(...)] procedural macro attribute for generating parametrized test cases easily
@@ -13577,7 +13552,7 @@ limitations under the License.
 
 
 ====================================================
-typenum 1.14.0
+typenum 1.15.0
 https://github.com/paholg/typenum
 by Paho Lurie-Gregg <paho@paholg.com>, Andre Bogus <bogusandre@gmail.com>
 Typenum is a Rust library for type-level numbers evaluated at
@@ -14303,7 +14278,7 @@ limitations under the License.
 
 
 ====================================================
-version_check 0.9.3
+version_check 0.9.4
 https://github.com/SergioBenitez/version_check
 by Sergio Benitez <sb@sergio.bz>
 Tiny crate to check the version of the installed/running rustc.
@@ -15001,7 +14976,7 @@ limitations under the License.
 
 
 ====================================================
-wide 0.7.3
+wide 0.7.4
 https://github.com/Lokathor/wide
 by Lokathor <zefria@gmail.com>
 A crate to help you go wide.
