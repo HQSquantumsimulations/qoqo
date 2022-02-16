@@ -164,7 +164,8 @@ impl OperateSingleQubitGate for SingleQubitGate {
 /// U = \begin{pmatrix}
 /// \cos(\frac{\theta}{2}) & 0 \\\\
 /// 0 & \cos(\frac{\theta}{2})
-/// \end{pmatrix} + \begin{pmatrix}
+/// \end{pmatrix}
+/// + \begin{pmatrix}
 ///  -i \sin(\frac{\theta}{2}) & 0 \\\\
 /// 0 & i \sin(\frac{\theta}{2})
 /// \end{pmatrix}
