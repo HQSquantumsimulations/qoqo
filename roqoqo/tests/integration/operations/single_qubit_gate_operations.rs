@@ -1545,6 +1545,34 @@ fn test_singlequbitgate_mul_norm() {
     assert_eq!(multiplied.global_phase(), gate1.global_phase());
 }
 
+/// Test symbolic multiplication for SingleQubitGates
+#[test]
+fn test_singlequbitgate_mul_symb() {
+    let gate1 = SingleQubitGate::new(
+        0,
+        2.0.into(),
+        0.0.into(),
+        0.0.into(),
+        "beta_im".to_string().into(),
+        0.0.into(),
+    );
+    let gate2 = SingleQubitGate::new(
+        0,
+        1.0.into(),
+        0.0.into(),
+        0.0.into(),
+        0.0.into(),
+        0.0.into(),
+    );
+    let result = gate1.mul(&gate2);
+    let multiplied = result.unwrap();
+    assert_eq!(multiplied.alpha_r(), gate1.alpha_r());
+    assert_eq!(multiplied.alpha_i(), gate1.alpha_i());
+    assert_eq!(multiplied.beta_r(), gate1.beta_r());
+    assert_eq!(multiplied.beta_i(), gate1.beta_i());
+    assert_eq!(multiplied.global_phase(), gate1.global_phase());
+}
+
 /// Test SingleQubitGate multiplication for Hadamard gate
 #[test_case(
     SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from(PI / 2.0))),
