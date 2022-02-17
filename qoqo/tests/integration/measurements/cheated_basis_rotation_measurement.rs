@@ -482,3 +482,64 @@ fn test_substitute_parameters_error() {
         assert!(br_sub.is_err());
     })
 }
+
+/// Test measurement_type()
+#[test]
+fn test_measurement_type() {
+    Python::with_gil(|py| {
+        let input_type = py.get_type::<CheatedBasisRotationInputWrapper>();
+        let input = input_type
+            .call0()
+            .unwrap()
+            .cast_as::<PyCell<CheatedBasisRotationInputWrapper>>()
+            .unwrap();
+        let _ = input.call_method1("add_pauli_product", ("ro",)).unwrap();
+
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+        let mut circ1 = CircuitWrapper::new();
+        circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
+        circs.push(circ1);
+        let br_type = py.get_type::<CheatedBasisRotationWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .unwrap()
+            .cast_as::<PyCell<CheatedBasisRotationWrapper>>()
+            .unwrap();
+
+        let measurement_type = br.call_method0("measurement_type").unwrap();
+        assert_eq!(measurement_type.to_string(), "CheatedBasisRotation");
+    })
+}
+
+/// Test input()
+#[test]
+fn test_return_input() {
+    Python::with_gil(|py| {
+        let input_type = py.get_type::<CheatedBasisRotationInputWrapper>();
+        let input = input_type
+            .call0()
+            .unwrap()
+            .cast_as::<PyCell<CheatedBasisRotationInputWrapper>>()
+            .unwrap();
+        let _ = input.call_method1("add_pauli_product", ("ro",)).unwrap();
+
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+        let mut circ1 = CircuitWrapper::new();
+        circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
+        circs.push(circ1);
+        let br_type = py.get_type::<CheatedBasisRotationWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .unwrap()
+            .cast_as::<PyCell<CheatedBasisRotationWrapper>>()
+            .unwrap();
+
+        let input_returned = br
+            .call_method0("input")
+            .unwrap()
+            .cast_as::<PyCell<CheatedBasisRotationInputWrapper>>()
+            .unwrap();
+
+        assert_eq!(format!("{:?}", input_returned), format!("{:?}", input));
+    })
+}

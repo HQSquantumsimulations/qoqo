@@ -120,6 +120,93 @@ impl QuantumProgramWrapper {
         }
     }
 
+    /// Returns the measurement attribute of the QuantumProgram as Python object.
+    ///
+    /// Returns:
+    ///     PyObject corresponding to the qoqo measurement type of the QuantumProgram,
+    ///     i.e. BasisRotation, CheatedBasisRotation, Cheated or ClassicalRegister.
+    pub fn measurement(&self) -> PyObject {
+        match self.internal.clone() {
+            QuantumProgram::BasisRotation {
+                measurement,
+                input_parameter_names: _,
+            } => Python::with_gil(|py| -> PyObject {
+                let pyref: Py<BasisRotationWrapper> = Py::new(
+                    py,
+                    BasisRotationWrapper {
+                        internal: measurement.clone(),
+                    },
+                )
+                .unwrap();
+                pyref.to_object(py)
+            }),
+            QuantumProgram::CheatedBasisRotation {
+                measurement,
+                input_parameter_names: _,
+            } => Python::with_gil(|py| -> PyObject {
+                let pyref: Py<CheatedBasisRotationWrapper> = Py::new(
+                    py,
+                    CheatedBasisRotationWrapper {
+                        internal: measurement.clone(),
+                    },
+                )
+                .unwrap();
+                pyref.to_object(py)
+            }),
+            QuantumProgram::Cheated {
+                measurement,
+                input_parameter_names: _,
+            } => Python::with_gil(|py| -> PyObject {
+                let pyref: Py<CheatedWrapper> = Py::new(
+                    py,
+                    CheatedWrapper {
+                        internal: measurement.clone(),
+                    },
+                )
+                .unwrap();
+                pyref.to_object(py)
+            }),
+            QuantumProgram::ClassicalRegister {
+                measurement,
+                input_parameter_names: _,
+            } => Python::with_gil(|py| -> PyObject {
+                let pyref: Py<ClassicalRegisterWrapper> = Py::new(
+                    py,
+                    ClassicalRegisterWrapper {
+                        internal: measurement.clone(),
+                    },
+                )
+                .unwrap();
+                pyref.to_object(py)
+            }),
+        }
+    }
+
+    /// Returns the input_parameter_names attribute of the qoqo QuantumProgram.
+    ///
+    /// Returns:
+    ///     List of input parameter names.
+    pub fn input_parameter_names(&self) -> Vec<String> {
+        match self.internal.clone() {
+            QuantumProgram::BasisRotation {
+                measurement: _,
+                input_parameter_names,
+            } => input_parameter_names,
+            QuantumProgram::CheatedBasisRotation {
+                measurement: _,
+                input_parameter_names,
+            } => input_parameter_names,
+            QuantumProgram::Cheated {
+                measurement: _,
+                input_parameter_names,
+            } => input_parameter_names,
+            QuantumProgram::ClassicalRegister {
+                measurement: _,
+                input_parameter_names,
+            } => input_parameter_names,
+        }
+    }
+
     /// Runs the QuantumProgram and returns expectation values.
     ///
     /// Runs the quantum programm for a given set of parameters passed in the same order as the parameters
@@ -188,7 +275,7 @@ impl QuantumProgramWrapper {
                     substituted_parameters
                 ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
                 Python::with_gil(|py| -> PyResult<Py<PyAny>> {
-                    backend.call_method1(py, "run_measurement", (ClassicalRegisterWrapper{internal: substituted_measurement}, ))
+                    backend.call_method1(py, "run_measurement_registers", (ClassicalRegisterWrapper{internal: substituted_measurement}, ))
                 })           },
             _ => Err(PyTypeError::new_err("A quantum programm returning expectation values cannot be executed by `run_registers` use `run` instead".to_string()))
         }
