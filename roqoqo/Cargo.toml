@@ -53,4 +53,3 @@ default = ["serialize"]
 dynamic = ["typetag", "dyn-clone"]
 serialize = ["serde", "ndarray/serde", "num-complex/serde", "bincode"]
 overrotate = [ "rand_distr", "roqoqo-derive/overrotate"]
-
