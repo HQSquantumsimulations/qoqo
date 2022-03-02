@@ -25,7 +25,7 @@ use crate::RoqoqoError;
 use dyn_clone::DynClone;
 use ndarray::Array2;
 use num_complex::Complex64;
-use qoqo_calculator::{CalculatorFloat};
+use qoqo_calculator::CalculatorFloat;
 use roqoqo_derive::*;
 use std::collections::{HashMap, HashSet};
 /// Collection of roqoqo definition operations.
@@ -187,7 +187,10 @@ where
     Self: Sized,
 {
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, calculator: &mut qoqo_calculator::Calculator) -> Result<Self, RoqoqoError>;
+    fn substitute_parameters(
+        &self,
+        calculator: &mut qoqo_calculator::Calculator,
+    ) -> Result<Self, RoqoqoError>;
     /// Remaps the qubits in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError>;
 }
@@ -663,7 +666,10 @@ impl InvolveQubits for DynOperation {
 #[cfg(feature = "dynamic")]
 /// Implements [Substitute] trait allowing to replace symbolic parameters and to perform qubit mappings.
 impl Substitute for DynOperation {
-    fn substitute_parameters(&self, calculator: &mut qoqo_calculator::Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(
+        &self,
+        calculator: &mut qoqo_calculator::Calculator,
+    ) -> Result<Self, RoqoqoError> {
         Ok(DynOperation(self.0.substitute_parameters_dyn(calculator)?))
     }
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
