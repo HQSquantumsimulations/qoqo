@@ -21,9 +21,8 @@
 //!
 //! `Rust only Quantum Operation Quantum Operation` - the quantum computing toolkit by HQS Quantum Simulations.
 //!
-pub use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorError;
-pub use qoqo_calculator::CalculatorFloat;
+use qoqo_calculator::CalculatorFloat;
 #[cfg(feature="json_schema")]
 use schemars::{JsonSchema, schema::Schema};
 use std::str::FromStr;
@@ -33,7 +32,6 @@ use thiserror::Error;
 pub const ROQOQO_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Default)]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "serialize", serde(try_from = "RoqoqoVersionSerializable"))]
 #[cfg_attr(feature = "serialize", serde(into = "RoqoqoVersionSerializable"))]

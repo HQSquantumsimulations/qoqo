@@ -13,7 +13,7 @@
 //! Qoqo cheated measurement
 
 use super::CheatedInputWrapper;
-use crate::{CircuitWrapper, circuit};
+use crate::{CircuitWrapper};
 use bincode::serialize;
 use pyo3::exceptions::{PyRuntimeError, PyValueError};
 use pyo3::prelude::*;
