@@ -147,16 +147,16 @@ impl Display for QuantumProgram {
 
         match self {
             QuantumProgram::BasisRotation { .. } => {
-                s.push_str(&"QuantumProgram::BasisRotation".to_string());
+                s.push_str(&"QuantumProgram::BasisRotation");
             }
             QuantumProgram::CheatedBasisRotation { .. } => {
-                s.push_str(&"QuantumProgram::CheatedBasisRotation".to_string());
+                s.push_str(&"QuantumProgram::CheatedBasisRotation");
             }
             QuantumProgram::Cheated { .. } => {
-                s.push_str(&"QuantumProgram::Cheated".to_string());
+                s.push_str(&"QuantumProgram::Cheated");
             }
             QuantumProgram::ClassicalRegister { .. } => {
-                s.push_str(&"QuantumProgram::ClassicalRegister".to_string());
+                s.push_str(&"QuantumProgram::ClassicalRegister");
             }
         }
 
