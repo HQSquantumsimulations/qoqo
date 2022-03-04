@@ -23,6 +23,7 @@ pub type PauliProductMask = Vec<usize>;
 
 /// Defines how Pauli Products expectation values are post-processed into observable expectation value.
 #[derive(Debug, Clone, PartialEq)]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub enum PauliProductsToExpVal {
     /// Expectation value of observable is a linear combination of Pauli Product expectation values.
@@ -45,6 +46,7 @@ pub enum PauliProductsToExpVal {
 /// values are measured by BasisRotation. These expecation values are defined as
 /// expectation values of pauli products.
 #[derive(Debug, Clone, PartialEq)]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct BasisRotationInput {
     /// Collection of PauliProductMasks for each readout register in Measurement.
@@ -201,6 +203,7 @@ impl BasisRotationInput {
 /// Is used by the full measurement struct [crate::measurements::CheatedBasisRotation].
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct CheatedBasisRotationInput {
     /// Collection of names and construction methods of  expectation values.
     ///
@@ -320,6 +323,7 @@ impl CheatedBasisRotationInput {
 /// Is used by the full measurement struct [crate::measurements::Cheated].
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct CheatedInput {
     /// Map of expectation values and corresponding operator Matrices on the Hilbert Space.
     pub measured_operators: HashMap<String, (OperatorSparseVec, String)>,
