@@ -34,11 +34,23 @@ fn test_with_single_options() {
 fn test_random_circuits() {
     let seed1 = 0_u64;
     let seed2 = 197_u64;
-    let number_qubits = 6;
+    let number_qubits = 2;
     let circuit_length = 1;
     let circuit1 = construct_random_circuit(circuit_length, number_qubits, seed1);
     let circuit2 = construct_random_circuit(circuit_length, number_qubits, seed2);
     // verify that two randomly created circuit are always different for two different seeds.
     assert_ne!(circuit1, circuit2)
-    // println!("{}", circuit1)
+}
+
+#[test]
+fn test_large_random_circuits() {
+    let seed1 = 21_u64;
+    let seed2 = 13009_u64;
+    let number_qubits = 6;
+    let circuit_length = 100;
+    let mut circuit = construct_random_circuit(circuit_length, number_qubits, seed1);
+    circuit.add_operation(add_random_multi_qubit_gate(number_qubits, seed1));
+    circuit.add_operation(add_random_multi_qubit_gate(number_qubits, seed2));
+    assert_eq!(circuit.len(), circuit_length + 2);
+    assert!(circuit.get_operation_types().len() > 3);
 }

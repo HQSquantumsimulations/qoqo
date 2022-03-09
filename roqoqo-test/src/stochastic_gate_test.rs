@@ -187,7 +187,7 @@ pub fn construct_random_circuit(circuit_length: usize, number_qubits: usize, see
 /// Function to add a random operation to the Circuit.
 ///
 /// A random single- or two-qubit gate operation is added to the circuit.
-/// All arguments for the gate operation, like qubit number, rotation angle, etc. are randomly sitributed.
+/// All arguments for the peration, like qubit number, rotation angle, etc. are randomly distributed.
 ///
 /// # Arguments
 ///
@@ -207,119 +207,119 @@ pub fn add_random_operation(circuit: &mut Circuit, number_qubits: usize, seed: u
         3 => Hadamard::new(qubits_dist.sample(&mut rng)).into(),
         4 => SqrtPauliX::new(qubits_dist.sample(&mut rng)).into(),
         5 => InvSqrtPauliX::new(qubits_dist.sample(&mut rng)).into(),
-        7 => {
+        6 => {
             let theta: f64 = rng.sample(Standard);
             RotateX::new(qubits_dist.sample(&mut rng), theta.into()).into()
         }
-        8 => {
+        7 => {
             let theta: f64 = rng.sample(Standard);
             RotateY::new(qubits_dist.sample(&mut rng), theta.into()).into()
         }
-        9 => {
+        8 => {
             let theta: f64 = rng.sample(Standard);
             RotateZ::new(qubits_dist.sample(&mut rng), theta.into()).into()
         }
-        10 => {
+        9 => {
             let qubit = two_qubits_dist.sample(&mut rng);
             CNOT::new(qubit, qubit + 1).into()
         }
-        11 => {
+        10 => {
             let qubit = two_qubits_dist.sample(&mut rng);
             ControlledPauliY::new(qubit, qubit + 1).into()
         }
-        12 => {
+        11 => {
             let qubit = two_qubits_dist.sample(&mut rng);
             ControlledPauliZ::new(qubit, qubit + 1).into()
         }
-        13 => {
+        12 => {
             let qubit = two_qubits_dist.sample(&mut rng);
             MolmerSorensenXX::new(qubit, qubit + 1).into()
         }
-        14 => {
+        13 => {
             let qubit = two_qubits_dist.sample(&mut rng);
             SqrtISwap::new(qubit, qubit + 1).into()
         }
-        15 => {
+        14 => {
             let theta: f64 = rng.sample(Standard);
             let qubit = two_qubits_dist.sample(&mut rng);
             VariableMSXX::new(qubit, qubit + 1, theta.into()).into()
         }
-        16 => {
+        15 => {
             let theta: f64 = rng.sample(Standard);
             let qubit = two_qubits_dist.sample(&mut rng);
             ControlledPhaseShift::new(qubit, qubit + 1, theta.into()).into()
         }
-        17 => {
+        16 => {
             let qubit = two_qubits_dist.sample(&mut rng);
             let delta_real: f64 = rng.sample(Standard);
             let delta_imag: f64 = rng.sample(Standard);
             Bogoliubov::new(qubit, qubit + 1, delta_real.into(), delta_imag.into()).into()
         }
-        18 => {
+        17 => {
             let qubit = two_qubits_dist.sample(&mut rng);
             let t_real: f64 = rng.sample(Standard);
             let t_imag: f64 = rng.sample(Standard);
             ComplexPMInteraction::new(qubit, qubit + 1, t_real.into(), t_imag.into()).into()
         }
-        19 => {
+        18 => {
             let qubit = two_qubits_dist.sample(&mut rng);
             FSwap::new(qubit, qubit + 1).into()
         }
-        20 => {
+        19 => {
             let qubit = two_qubits_dist.sample(&mut rng);
             let t: f64 = rng.sample(Standard);
             let u: f64 = rng.sample(Standard);
             let delta: f64 = rng.sample(Standard);
             Fsim::new(qubit, qubit + 1, t.into(), u.into(), delta.into()).into()
         }
-        21 => {
+        20 => {
             let qubit = two_qubits_dist.sample(&mut rng);
             let theta: f64 = rng.sample(Standard);
             let phi: f64 = rng.sample(Standard);
             GivensRotation::new(qubit, qubit + 1, theta.into(), phi.into()).into()
         }
-        22 => {
+        21 => {
             let qubit = two_qubits_dist.sample(&mut rng);
             let theta: f64 = rng.sample(Standard);
             let phi: f64 = rng.sample(Standard);
             GivensRotationLittleEndian::new(qubit, qubit + 1, theta.into(), phi.into()).into()
         }
-        23 => {
+        22 => {
             let qubit = two_qubits_dist.sample(&mut rng);
             ISwap::new(qubit, qubit + 1).into()
         }
-        24 => {
+        23 => {
             let qubit = two_qubits_dist.sample(&mut rng);
             InvSqrtISwap::new(qubit, qubit + 1).into()
         }
-        25 => {
+        24 => {
             let t: f64 = rng.sample(Standard);
             let qubit = two_qubits_dist.sample(&mut rng);
             PMInteraction::new(qubit, qubit + 1, t.into()).into()
         }
-        26 => {
+        25 => {
             let theta: f64 = rng.sample(Standard);
             let qubit = qubits_dist.sample(&mut rng);
             PhaseShiftState0::new(qubit, theta.into()).into()
         }
-        27 => {
+        26 => {
             let theta: f64 = rng.sample(Standard);
             let qubit = qubits_dist.sample(&mut rng);
             PhaseShiftState1::new(qubit, theta.into()).into()
         }
-        28 => {
+        27 => {
             let phi: f64 = rng.sample(Standard);
             let qubit = two_qubits_dist.sample(&mut rng);
             PhaseShiftedControlledZ::new(qubit, qubit + 1, phi.into()).into()
         }
-        29 => {
+        28 => {
             let qubit = two_qubits_dist.sample(&mut rng);
             let x: f64 = rng.sample(Standard);
             let y: f64 = rng.sample(Standard);
             let z: f64 = rng.sample(Standard);
             Qsim::new(qubit, qubit + 1, x.into(), y.into(), z.into()).into()
         }
-        30 => {
+        29 => {
             let qubit = qubits_dist.sample(&mut rng);
             let theta: f64 = rng.sample(Standard);
             let spherical_theta: f64 = rng.sample(Standard);
@@ -332,20 +332,20 @@ pub fn add_random_operation(circuit: &mut Circuit, number_qubits: usize, seed: u
             )
             .into()
         }
-        31 => SGate::new(qubits_dist.sample(&mut rng)).into(),
-        32 => TGate::new(qubits_dist.sample(&mut rng)).into(),
-        33 => {
+        30 => SGate::new(qubits_dist.sample(&mut rng)).into(),
+        31 => TGate::new(qubits_dist.sample(&mut rng)).into(),
+        32 => {
             let qubit = two_qubits_dist.sample(&mut rng);
             SWAP::new(qubit, qubit + 1).into()
         }
-        34 => {
+        33 => {
             let qubit = two_qubits_dist.sample(&mut rng);
             let x: f64 = rng.sample(Standard);
             let y: f64 = rng.sample(Standard);
             let z: f64 = rng.sample(Standard);
             SpinInteraction::new(qubit, qubit + 1, x.into(), y.into(), z.into()).into()
         }
-        35 => {
+        34 => {
             let theta: f64 = rng.sample(Standard);
             let qubit = two_qubits_dist.sample(&mut rng);
             XY::new(qubit, qubit + 1, theta.into()).into()
@@ -356,6 +356,42 @@ pub fn add_random_operation(circuit: &mut Circuit, number_qubits: usize, seed: u
         }
     };
     circuit.add_operation(new_op);
+}
+
+/// Function to add a random multi-qubit-gate operation to the Circuit.
+///
+/// The qubits argument for the multi-qubit-gates is generated from a sorted list of qubits
+/// based on the provided number of qubits.
+/// The other arguments for the gate operation, like rotation angle, are distributed randomly.
+///
+/// # Arguments
+///
+/// * `number_qubits` - Number of qubits in the circuit.
+/// * `seed` - Seed for the random number generator.
+///
+/// # Returns
+///
+/// * `Operation` - The constructed random roqoqo Operation.
+///
+pub fn add_random_multi_qubit_gate(number_qubits: usize, seed: u64) -> Operation {
+    let mut rng = StdRng::seed_from_u64(seed);
+    let qubits: Vec<usize> = (0..number_qubits).collect();
+    let gate_type_dist = Uniform::<i64>::from(0..2);
+    let new_op: Operation = match gate_type_dist.sample(&mut rng) {
+        0 => {
+            let theta: f64 = rng.sample(Standard);
+            MultiQubitMS::new(qubits, theta.into()).into()
+        }
+        1 => {
+            let theta: f64 = rng.sample(Standard);
+            MultiQubitZZ::new(qubits, theta.into()).into()
+        }
+        _ => {
+            let theta: f64 = rng.sample(Standard);
+            MultiQubitZZ::new(qubits, theta.into()).into()
+        }
+    };
+    new_op
 }
 
 // Helper conversion function
