@@ -1,6 +1,6 @@
 [package]
 name = "qoqo-macros"
-version = "0.9.0"
+version = "0.10.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 readme = "../README.md"
@@ -8,6 +8,7 @@ edition = "2021"
 rust-version = "1.56"
 categories = ["science", "simulation"]
 description = "Macros for the qoqo crate"
+include = ["src*", "LICENSE"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]
@@ -15,6 +16,6 @@ proc-macro = true
 doctest = false
 
 [dependencies]
-proc-macro2 = {version="=1.0.29"}
+proc-macro2 = "1.0"
 syn = { version = "1.0", features = ["full", "visit"] }
 quote = "1.0"

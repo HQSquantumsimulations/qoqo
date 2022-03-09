@@ -67,7 +67,7 @@ fn test_singlequbitgate_abp(
     global_phase: CalculatorFloat,
 ) {
     let gate = SingleQubitGate::new(
-        qubit.clone(),
+        qubit,
         alpha_r.clone(),
         alpha_i.clone(),
         beta_r.clone(),
@@ -108,14 +108,7 @@ fn test_singlequbitgate_unitarity_ok(
     beta_i: CalculatorFloat,
     global_phase: CalculatorFloat,
 ) {
-    let gate = SingleQubitGate::new(
-        qubit.clone(),
-        alpha_r.clone(),
-        alpha_i.clone(),
-        beta_r.clone(),
-        beta_i.clone(),
-        global_phase.clone(),
-    );
+    let gate = SingleQubitGate::new(qubit, alpha_r, alpha_i, beta_r, beta_i, global_phase);
     let result: Result<Array2<Complex64>, RoqoqoError> = gate.unitary_matrix();
     assert!(result.is_ok());
     let result_matrix: Array2<Complex64> = result.unwrap();
@@ -235,7 +228,7 @@ fn test_singlequbitgate_operatesinglequbit() {
         CalculatorFloat::from(0.0),
         CalculatorFloat::from(0.0),
     );
-    let qubit_p: &usize = &gate.qubit();
+    let qubit_p: &usize = gate.qubit();
     assert_eq!(qubit_p, &0);
 }
 
@@ -301,14 +294,11 @@ fn test_singlequbitgate_substitute_parameters() {
         CalculatorFloat::from("beta_i"),
         CalculatorFloat::from("global_phase"),
     );
-    assert_eq!(gate.alpha_r().clone(), CalculatorFloat::from("alpha_r"));
-    assert_eq!(gate.alpha_i().clone(), CalculatorFloat::from("alpha_i"));
-    assert_eq!(gate.beta_r().clone(), CalculatorFloat::from("beta_r"));
-    assert_eq!(gate.beta_i().clone(), CalculatorFloat::from("beta_i"));
-    assert_eq!(
-        gate.global_phase().clone(),
-        CalculatorFloat::from("global_phase")
-    );
+    assert_eq!(gate.alpha_r(), CalculatorFloat::from("alpha_r"));
+    assert_eq!(gate.alpha_i(), CalculatorFloat::from("alpha_i"));
+    assert_eq!(gate.beta_r(), CalculatorFloat::from("beta_r"));
+    assert_eq!(gate.beta_i(), CalculatorFloat::from("beta_i"));
+    assert_eq!(gate.global_phase(), CalculatorFloat::from("global_phase"));
     assert!(gate.is_parametrized());
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("alpha_r", 0.0);
@@ -318,11 +308,11 @@ fn test_singlequbitgate_substitute_parameters() {
     substitution_dict.set_variable("beta_i", -1.0);
     let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
     assert!(!result.is_parametrized());
-    assert_eq!(result.alpha_r().clone(), CalculatorFloat::from(0.0));
-    assert_eq!(result.alpha_i().clone(), CalculatorFloat::from(0.0));
-    assert_eq!(result.beta_r().clone(), CalculatorFloat::from(1.0));
-    assert_eq!(result.beta_i().clone(), CalculatorFloat::from(-1.0));
-    assert_eq!(result.global_phase().clone(), CalculatorFloat::from(PI));
+    assert_eq!(result.alpha_r(), CalculatorFloat::from(0.0));
+    assert_eq!(result.alpha_i(), CalculatorFloat::from(0.0));
+    assert_eq!(result.beta_r(), CalculatorFloat::from(1.0));
+    assert_eq!(result.beta_i(), CalculatorFloat::from(-1.0));
+    assert_eq!(result.global_phase(), CalculatorFloat::from(PI));
 }
 
 ///Test remap qubits for SingleQubitGate
@@ -339,7 +329,7 @@ fn test_singlequbitgate_remap_qubits(newqubit: usize) {
         CalculatorFloat::from(PI),
     );
     let test_gate = SingleQubitGate::new(
-        newqubit.clone(),
+        newqubit,
         CalculatorFloat::from(1.0),
         CalculatorFloat::from(0.0),
         CalculatorFloat::from(0.0),
@@ -348,13 +338,13 @@ fn test_singlequbitgate_remap_qubits(newqubit: usize) {
     );
     // qubit mapping
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
-    qubit_mapping.insert(0, newqubit.clone());
+    qubit_mapping.insert(0, newqubit);
     let result = gate.remap_qubits(&qubit_mapping);
     assert_eq!(&result, &Ok(test_gate.clone()));
 
     // comparison of involved qubits (two variants, redundant on purpose)
     let mut qubits: HashSet<usize> = HashSet::new();
-    qubits.insert(newqubit.clone());
+    qubits.insert(newqubit);
     let test_qubits: InvolvedQubits = InvolvedQubits::Set(qubits);
     let result_unwrapped = result.unwrap();
     assert_eq!(
@@ -418,14 +408,8 @@ fn test_alpha_beta_singlequbitgates(gate: SingleQubitGateOperation) {
     let qubit = gate.qubit();
     let matrix = gate.unitary_matrix().unwrap();
 
-    let singlequbitgate = SingleQubitGate::new(
-        qubit.clone(),
-        alpha_r,
-        alpha_i,
-        beta_r,
-        beta_i,
-        global_phase,
-    );
+    let singlequbitgate =
+        SingleQubitGate::new(*qubit, alpha_r, alpha_i, beta_r, beta_i, global_phase);
     let test_matrix = singlequbitgate.unitary_matrix().unwrap();
 
     let epsilon = 1e-12;
@@ -441,21 +425,21 @@ fn test_alpha_beta_singlequbitgates(gate: SingleQubitGateOperation) {
 fn test_rotatexyz_rotate(qubit: usize, theta: CalculatorFloat) {
     // Test RotateZ rotate
     let gate1 = RotateZ::new(qubit, theta.clone());
-    let gate2 = RotateZ::new(qubit, CalculatorFloat::from(gate1.theta().clone()));
+    let gate2 = RotateZ::new(qubit, gate1.theta().clone());
     assert_eq!(gate1, gate2);
     let theta_p: &CalculatorFloat = gate1.theta();
     assert_eq!(theta_p, &theta);
 
     // Test RotateX rotate
     let gate1 = RotateX::new(qubit, theta.clone());
-    let gate2 = RotateX::new(qubit, CalculatorFloat::from(gate1.theta().clone()));
+    let gate2 = RotateX::new(qubit, gate1.theta().clone());
     assert_eq!(gate1, gate2);
     let theta_p: &CalculatorFloat = gate1.theta();
     assert_eq!(theta_p, &theta);
 
     // Test RotateY rotate
     let gate1 = RotateY::new(qubit, theta.clone());
-    let gate2 = RotateY::new(qubit, CalculatorFloat::from(gate1.theta().clone()));
+    let gate2 = RotateY::new(qubit, gate1.theta().clone());
     assert_eq!(gate1, gate2);
     let theta_p: &CalculatorFloat = gate1.theta();
     assert_eq!(theta_p, &theta);
@@ -467,14 +451,14 @@ fn test_rotatexyz_rotate(qubit: usize, theta: CalculatorFloat) {
 fn test_rotatexyz_phaseshiftstate(qubit: usize, theta: CalculatorFloat) {
     // Test PhaseShiftState0 rotate
     let gate1 = PhaseShiftState0::new(qubit, theta.clone());
-    let gate2 = PhaseShiftState0::new(qubit, CalculatorFloat::from(gate1.theta().clone()));
+    let gate2 = PhaseShiftState0::new(qubit, gate1.theta().clone());
     assert_eq!(gate1, gate2);
     let theta_p: &CalculatorFloat = gate1.theta();
     assert_eq!(theta_p, &theta);
 
     // Test PhaseShiftState1 rotate
     let gate1 = PhaseShiftState1::new(qubit, theta.clone());
-    let gate2 = PhaseShiftState1::new(qubit, CalculatorFloat::from(gate1.theta().clone()));
+    let gate2 = PhaseShiftState1::new(qubit, gate1.theta().clone());
     assert_eq!(gate1, gate2);
     let theta_p: &CalculatorFloat = gate1.theta();
     assert_eq!(theta_p, &theta);
@@ -503,17 +487,17 @@ fn test_rotatearoundsphericalaxis_rotate(
         spherical_phi.clone(),
     );
     let gate2 = RotateAroundSphericalAxis::new(
-        gate1.qubit().clone(),
-        CalculatorFloat::from(gate1.theta().clone()),
+        *gate1.qubit(),
+        gate1.theta().clone(),
         spherical_theta.clone(),
         spherical_phi.clone(),
     );
     assert_eq!(gate1, gate2);
     let theta_p: &CalculatorFloat = gate1.theta();
     assert_eq!(theta_p, &theta);
-    let spherical_theta_p: &CalculatorFloat = &gate1.spherical_theta();
+    let spherical_theta_p: &CalculatorFloat = gate1.spherical_theta();
     assert_eq!(spherical_theta_p, &spherical_theta);
-    let spherical_phi_p: &CalculatorFloat = &gate1.spherical_phi();
+    let spherical_phi_p: &CalculatorFloat = gate1.spherical_phi();
     assert_eq!(spherical_phi_p, &spherical_phi);
 }
 
@@ -540,7 +524,7 @@ fn test_rotatearoundsphericalaxis_rotate(
 #[test_case(0, SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate0")]
 #[test_case(1, SingleQubitGateOperation::from(PhaseShiftState1::new(1, CalculatorFloat::from(PI/2.0))); "phaseshiftstate1")]
 fn test_rotatexyz_operatesinglequbit(qubit: usize, gate: SingleQubitGateOperation) {
-    let qubit_p: &usize = &gate.qubit();
+    let qubit_p: &usize = gate.qubit();
     assert_eq!(qubit_p, &qubit);
 }
 
@@ -621,7 +605,7 @@ fn ser_de_rotate_xyz(name: &'static str, gate: SingleQubitGateOperation) {
                 name: "SingleQubitGateOperation",
                 variant: name,
             },
-            Token::Struct { name: name, len: 2 },
+            Token::Struct { name, len: 2 },
             Token::Str("qubit"),
             Token::U64(0),
             Token::Str("theta"),
@@ -651,7 +635,7 @@ fn ser_de_rotate_aroundsphericalaxis(name: &'static str, gate: SingleQubitGateOp
                 name: "SingleQubitGateOperation",
                 variant: name,
             },
-            Token::Struct { name: name, len: 4 },
+            Token::Struct { name, len: 4 },
             Token::Str("qubit"),
             Token::U64(0),
             Token::Str("theta"),
@@ -690,7 +674,7 @@ fn ser_de_singlequbitgates_others(name: &'static str, gate: SingleQubitGateOpera
                 name: "SingleQubitGateOperation",
                 variant: name,
             },
-            Token::Struct { name: name, len: 1 },
+            Token::Struct { name, len: 1 },
             Token::Str("qubit"),
             Token::U64(0),
             Token::StructEnd,
@@ -1142,7 +1126,7 @@ fn test_singlequbitgates_remap_qubits(
     let gate = operation.clone();
     // qubit mapping
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
-    qubit_mapping.insert(0, newqubit.clone());
+    qubit_mapping.insert(0, newqubit);
     let result_wrapped = gate.remap_qubits(&qubit_mapping);
 
     // comparison of Result
@@ -1154,12 +1138,9 @@ fn test_singlequbitgates_remap_qubits(
 
     // comparison of involved qubits (two variants, redundant on purpose)
     let mut qubits: HashSet<usize> = HashSet::new();
-    qubits.insert(newqubit.clone());
+    qubits.insert(newqubit);
     let test_qubits: InvolvedQubits = InvolvedQubits::Set(qubits);
-    assert_eq!(
-        result.involved_qubits(),
-        test_operation.clone().involved_qubits()
-    );
+    assert_eq!(result.involved_qubits(), test_operation.involved_qubits());
     //testing involved_qubits() function
     assert_eq!(result.involved_qubits(), test_qubits);
 
@@ -1167,7 +1148,7 @@ fn test_singlequbitgates_remap_qubits(
     qubit_mapping.remove(&0);
     qubit_mapping.insert(newqubit, 0);
     let result2 = result.remap_qubits(&qubit_mapping);
-    assert_eq!(result2, Ok(operation.clone()));
+    assert_eq!(result2, Ok(operation));
 }
 
 /// Test error case of remap_qubits() function for SingleQubitGateOperations
@@ -1690,19 +1671,15 @@ fn test_rotatearoundsphericalaxis_powerfc(
 ) {
     // Test rotate AroundSphericalAxis
     let gate = RotateAroundSphericalAxis::new(
-        qubit.clone(),
-        theta.clone(),
+        qubit,
+        theta,
         spherical_theta.clone(),
         spherical_phi.clone(),
     );
     let power_gate = gate.powercf(power.clone());
     let test_theta = power * gate.theta().clone();
-    let test_gate = RotateAroundSphericalAxis::new(
-        qubit.clone(),
-        test_theta,
-        spherical_theta.clone(),
-        spherical_phi.clone(),
-    );
+    let test_gate =
+        RotateAroundSphericalAxis::new(qubit, test_theta, spherical_theta, spherical_phi);
     assert_eq!(power_gate.alpha_r(), test_gate.alpha_r());
     assert_eq!(power_gate.alpha_i(), test_gate.alpha_i());
     assert_eq!(power_gate.beta_r(), test_gate.beta_r());
@@ -1867,7 +1844,8 @@ fn test_rotatearoundsphericalaxis_powerfc(
         ];
     "PhaseShiftState0")]
 pub fn test_tags(gate: SingleQubitGateOperation, tags: Vec<&str>) {
-    for i in 0..tags.len() {
+    let range = 0..tags.len();
+    for i in range {
         assert_eq!(gate.tags()[i], tags[i]);
     }
 }

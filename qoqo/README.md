@@ -106,11 +106,17 @@ qoqo = {version="0.9", default-features=false}
 
 to the `[dependencies]` section of the project Cargo.toml.
 
+A source distribution now exists but requires a Rust install with a rust version > 1.47 and a maturin version { >= 0.12, <0.13 } in order to be built.
+
+
 ### Examples
 
-For an expanded collection of Examples see the jupyter notebooks in qoqo/examples. The examples require the qoqo_quest and qoqo_mock interfaces.
+Since qoqo provides a full python interface to the underlying roqoqo library, there are examples for python users and for Rust users.
 
-* [Intro example](https://nbviewer.jupyter.org/github/HQSquantumsimulations/qoqo/blob/main/qoqo/examples/Intro_to_qoqo.ipynb)
+For an expanded collection of examples please see the jupyter notebooks in the extra repository [qoqo_examples](https://github.com/HQSquantumsimulations/qoqo_examples). The qoqo examples require the qoqo_quest and qoqo_mock interfaces.
+
+*  [Intro examples](https://github.com/HQSquantumsimulations/qoqo_examples/blob/main/qoqo/Intro_to_qoqo.ipynb). 
+
 
 ## Contributing
 

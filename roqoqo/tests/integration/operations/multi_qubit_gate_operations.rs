@@ -57,7 +57,7 @@ fn test_circuit_multi_ms(qubits: Vec<usize>) {
 
 #[test_case(vec![0,1]; "two_qubit")]
 fn test_matrix_output(qubits: Vec<usize>) {
-    let gate = MultiQubitMS::new(qubits.clone(), CalculatorFloat::FRAC_PI_2);
+    let gate = MultiQubitMS::new(qubits, CalculatorFloat::FRAC_PI_2);
     let f: f64 = 1.0 / ((2.0_f64).sqrt());
     let test_array = array![
         [
@@ -92,7 +92,7 @@ fn test_matrix_output(qubits: Vec<usize>) {
 
 #[test_case(vec![0,1,2]; "three_qubit")]
 fn test_matrix_output_three(qubits: Vec<usize>) {
-    let gate = MultiQubitMS::new(qubits.clone(), CalculatorFloat::FRAC_PI_2);
+    let gate = MultiQubitMS::new(qubits, CalculatorFloat::FRAC_PI_2);
     let f: f64 = 1.0 / ((2.0_f64).sqrt());
     let test_array = array![
         [
@@ -197,7 +197,7 @@ fn test_clone_partial_eq() {
         ]
     );
     assert!(!gate.is_parametrized());
-    let gate1 = MultiQubitMS::new(qubits.clone(), "theta".into());
+    let gate1 = MultiQubitMS::new(qubits, "theta".into());
     assert!(gate1.is_parametrized());
     let helper = gate != gate1;
     assert!(helper);
@@ -221,7 +221,7 @@ fn test_operate() {
     );
     assert_eq!(gate.qubits(), &vec![0, 1, 2]);
     assert!(!gate.is_parametrized());
-    let gate1 = MultiQubitMS::new(qubits.clone(), "theta".into());
+    let gate1 = MultiQubitMS::new(qubits, "theta".into());
     assert!(gate1.is_parametrized());
 }
 
@@ -229,7 +229,7 @@ fn test_operate() {
 fn test_substitute() {
     let qubits = vec![0, 1, 2];
     let gate1 = MultiQubitMS::new(qubits.clone(), "theta".into());
-    let gate = MultiQubitMS::new(qubits.clone(), CalculatorFloat::FRAC_PI_2);
+    let gate = MultiQubitMS::new(qubits, CalculatorFloat::FRAC_PI_2);
     let mut calc = Calculator::new();
     calc.set_variable("theta", std::f64::consts::FRAC_PI_2);
     let gate_substituted = roqoqo::operations::Substitute::substitute_parameters(&gate1, &mut calc);
@@ -247,7 +247,7 @@ fn test_substitute() {
 #[test]
 fn test_substitute_error() {
     let qubits = vec![0, 1, 2];
-    let gate1 = MultiQubitMS::new(qubits.clone(), "theta".into());
+    let gate1 = MultiQubitMS::new(qubits, "theta".into());
     let mut calc = Calculator::new();
     let gate_substituted = gate1.substitute_parameters(&mut calc);
     assert!(gate_substituted.is_err());
@@ -261,7 +261,7 @@ fn test_substitute_error() {
 #[test]
 fn test_format() {
     let qubits = vec![0, 1, 2];
-    let gate = MultiQubitMS::new(qubits.clone(), "theta".into());
+    let gate = MultiQubitMS::new(qubits, "theta".into());
     let string = format!("{:?}", gate);
     assert!(string.contains("theta"));
     assert!(string.contains("MultiQubitMS"));
@@ -270,7 +270,7 @@ fn test_format() {
 #[test]
 fn test_involved_qubits() {
     let qubits = vec![0, 1, 2];
-    let gate = MultiQubitMS::new(qubits.clone(), "theta".into());
+    let gate = MultiQubitMS::new(qubits, "theta".into());
     let involved_qubits = gate.involved_qubits();
     let mut comp_set: HashSet<usize> = HashSet::new();
     let _ = comp_set.insert(0);
@@ -292,7 +292,7 @@ fn test_rotatex_powercf(theta: CalculatorFloat, power: CalculatorFloat) {
 
     let power_gate = gate.powercf(power.clone());
     let test_theta = power * gate.theta().clone();
-    let test_gate = MultiQubitMS::new(qubits.clone(), test_theta);
+    let test_gate = MultiQubitMS::new(qubits, test_theta);
     assert_eq!(power_gate, test_gate);
     assert_eq!(power_gate.theta(), test_gate.theta());
 }
@@ -326,7 +326,7 @@ fn test_circuit_multi_zz(qubits: Vec<usize>) {
 
 #[test_case(vec![0,1]; "two_qubit")]
 fn test_matrix_output_multi_qubit_zz(qubits: Vec<usize>) {
-    let gate = MultiQubitZZ::new(qubits.clone(), CalculatorFloat::FRAC_PI_2);
+    let gate = MultiQubitZZ::new(qubits, CalculatorFloat::FRAC_PI_2);
     let f: f64 = 1.0 / ((2.0_f64).sqrt());
     let test_array = array![
         [
@@ -361,7 +361,7 @@ fn test_matrix_output_multi_qubit_zz(qubits: Vec<usize>) {
 
 #[test_case(vec![0,1,2]; "three_qubit")]
 fn test_matrix_output_three_multi_qubit_zz(qubits: Vec<usize>) {
-    let gate = MultiQubitZZ::new(qubits.clone(), CalculatorFloat::FRAC_PI_2);
+    let gate = MultiQubitZZ::new(qubits, CalculatorFloat::FRAC_PI_2);
     let f: f64 = 1.0 / ((2.0_f64).sqrt());
     let test_array = array![
         [
@@ -466,7 +466,7 @@ fn test_clone_partial_eq_mulit_qubit_ms() {
         ]
     );
     assert!(!gate.is_parametrized());
-    let gate1 = MultiQubitZZ::new(qubits.clone(), "theta".into());
+    let gate1 = MultiQubitZZ::new(qubits, "theta".into());
     assert!(gate1.is_parametrized());
     let helper = gate != gate1;
     assert!(helper);
@@ -490,7 +490,7 @@ fn test_operate_mulit_qubit_zz() {
     );
     assert_eq!(gate.qubits(), &vec![0, 1, 2]);
     assert!(!gate.is_parametrized());
-    let gate1 = MultiQubitZZ::new(qubits.clone(), "theta".into());
+    let gate1 = MultiQubitZZ::new(qubits, "theta".into());
     assert!(gate1.is_parametrized());
 }
 
@@ -498,7 +498,7 @@ fn test_operate_mulit_qubit_zz() {
 fn test_substitute_multi_qubit_zz() {
     let qubits = vec![0, 1, 2];
     let gate1 = MultiQubitZZ::new(qubits.clone(), "theta".into());
-    let gate = MultiQubitZZ::new(qubits.clone(), CalculatorFloat::FRAC_PI_2);
+    let gate = MultiQubitZZ::new(qubits, CalculatorFloat::FRAC_PI_2);
     let mut calc = Calculator::new();
     calc.set_variable("theta", std::f64::consts::FRAC_PI_2);
     let gate_substituted = roqoqo::operations::Substitute::substitute_parameters(&gate1, &mut calc);
@@ -516,7 +516,7 @@ fn test_substitute_multi_qubit_zz() {
 #[test]
 fn test_substitute_error_multi_qubit_zz() {
     let qubits = vec![0, 1, 2];
-    let gate1 = MultiQubitZZ::new(qubits.clone(), "theta".into());
+    let gate1 = MultiQubitZZ::new(qubits, "theta".into());
     let mut calc = Calculator::new();
     let gate_substituted = gate1.substitute_parameters(&mut calc);
     assert!(gate_substituted.is_err());
@@ -530,7 +530,7 @@ fn test_substitute_error_multi_qubit_zz() {
 #[test]
 fn test_format_error_multi_qubit_zz() {
     let qubits = vec![0, 1, 2];
-    let gate = MultiQubitZZ::new(qubits.clone(), "theta".into());
+    let gate = MultiQubitZZ::new(qubits, "theta".into());
     let string = format!("{:?}", gate);
     assert!(string.contains("theta"));
     assert!(string.contains("MultiQubitZZ"));
@@ -539,7 +539,7 @@ fn test_format_error_multi_qubit_zz() {
 #[test]
 fn test_involved_qubits_multi_qubit_zz() {
     let qubits = vec![0, 1, 2];
-    let gate = MultiQubitZZ::new(qubits.clone(), "theta".into());
+    let gate = MultiQubitZZ::new(qubits, "theta".into());
     let involved_qubits = gate.involved_qubits();
     let mut comp_set: HashSet<usize> = HashSet::new();
     let _ = comp_set.insert(0);
@@ -561,7 +561,7 @@ fn test_rotatex_powercf_multi_qubit_zz(theta: CalculatorFloat, power: Calculator
 
     let power_gate = gate.powercf(power.clone());
     let test_theta = power * gate.theta().clone();
-    let test_gate = MultiQubitZZ::new(qubits.clone(), test_theta);
+    let test_gate = MultiQubitZZ::new(qubits, test_theta);
     assert_eq!(power_gate, test_gate);
     assert_eq!(power_gate.theta(), test_gate.theta());
 }

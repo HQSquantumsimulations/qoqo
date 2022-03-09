@@ -104,7 +104,7 @@ use test_case::test_case;
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 fn test_conversion(input: Operation) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input.clone()).unwrap();
         let output = convert_pyany_to_operation(operation.as_ref(py)).unwrap();
         assert_eq!(input, output)

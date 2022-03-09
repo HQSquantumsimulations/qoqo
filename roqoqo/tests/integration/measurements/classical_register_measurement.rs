@@ -20,8 +20,7 @@ use roqoqo::prelude::*;
 use roqoqo::Circuit;
 #[test]
 fn test_returning_circuits() {
-    let mut circs: Vec<Circuit> = Vec::new();
-    circs.push(Circuit::new());
+    let mut circs: Vec<Circuit> = vec![Circuit::new()];
     let mut circ1 = Circuit::new();
     circ1 += operations::RotateX::new(0, 0.0.into());
     circs.push(circ1);
