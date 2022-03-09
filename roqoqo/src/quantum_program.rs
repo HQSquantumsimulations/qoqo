@@ -31,6 +31,7 @@ use std::fmt::{Display, Formatter};
 /// It is the intended way to interface between normal program code and roqoqo based quantum programs.
 ///
 #[derive(Debug, PartialEq, Clone)]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub enum QuantumProgram {
     /// Variant for basis rotation measurement based quantum programs
@@ -147,16 +148,16 @@ impl Display for QuantumProgram {
 
         match self {
             QuantumProgram::BasisRotation { .. } => {
-                s.push_str(&"QuantumProgram::BasisRotation".to_string());
+                s.push_str("QuantumProgram::BasisRotation");
             }
             QuantumProgram::CheatedBasisRotation { .. } => {
-                s.push_str(&"QuantumProgram::CheatedBasisRotation".to_string());
+                s.push_str("QuantumProgram::CheatedBasisRotation");
             }
             QuantumProgram::Cheated { .. } => {
-                s.push_str(&"QuantumProgram::Cheated".to_string());
+                s.push_str("QuantumProgram::Cheated");
             }
             QuantumProgram::ClassicalRegister { .. } => {
-                s.push_str(&"QuantumProgram::ClassicalRegister".to_string());
+                s.push_str("QuantumProgram::ClassicalRegister");
             }
         }
 
