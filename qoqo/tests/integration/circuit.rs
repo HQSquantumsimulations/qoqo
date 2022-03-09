@@ -486,17 +486,17 @@ fn test_get_slice() {
         assert!(comparison);
 
         match circuit.call_method1("get_slice", (1, 20)) {
-            Err(x) => assert!(x.is_instance::<PyIndexError>(py)),
+            Err(x) => assert!(x.is_instance_of::<PyIndexError>(py)),
             _ => panic!("Wrong error"),
         }
 
         match circuit.call_method1("get_slice", (2, 1)) {
-            Err(x) => assert!(x.is_instance::<PyIndexError>(py)),
+            Err(x) => assert!(x.is_instance_of::<PyIndexError>(py)),
             _ => panic!("Wrong error"),
         }
 
         match circuit.call_method1("get_slice", (21, 22)) {
-            Err(x) => assert!(x.is_instance::<PyIndexError>(py)),
+            Err(x) => assert!(x.is_instance_of::<PyIndexError>(py)),
             _ => panic!("Wrong error"),
         }
     })
