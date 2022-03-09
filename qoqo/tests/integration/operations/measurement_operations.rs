@@ -271,7 +271,7 @@ fn test_pyo3_tags(input_measurement: Operation, tag_name: &str) {
 
 /// Test tags function for MeasureQubit
 #[test]
-fn test_pyo3_tags() {
+fn test_pyo3_tags_measure_qubits() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(Operation::from(MeasureQubit::new(
