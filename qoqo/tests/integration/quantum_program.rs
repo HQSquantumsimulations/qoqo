@@ -13,15 +13,15 @@
 use num_complex::Complex64;
 use pyo3::prelude::*;
 use qoqo::measurements::{
-    BasisRotationInputWrapper, BasisRotationWrapper, CheatedBasisRotationInputWrapper,
-    CheatedBasisRotationWrapper, CheatedInputWrapper, CheatedWrapper, ClassicalRegisterWrapper,
+    PauliZProductInputWrapper, PauliZProductWrapper, CheatedPauliZProductInputWrapper,
+    CheatedPauliZProductWrapper, CheatedInputWrapper, CheatedWrapper, ClassicalRegisterWrapper,
 };
 use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::{
     convert_into_quantum_program, CircuitWrapper, QoqoError, QuantumProgramWrapper, QOQO_VERSION,
 };
 use roqoqo::measurements::{
-    BasisRotation, BasisRotationInput, Cheated, CheatedBasisRotation, CheatedBasisRotationInput,
+    PauliZProduct, PauliZProductInput, Cheated, CheatedPauliZProduct, CheatedPauliZProductInput,
     CheatedInput, ClassicalRegister,
 };
 use roqoqo::operations::Operation;
@@ -43,24 +43,24 @@ impl TestBackend {
     }
 }
 
-fn create_measurement(py: Python) -> &PyCell<CheatedBasisRotationWrapper> {
-    let input_type = py.get_type::<CheatedBasisRotationInputWrapper>();
+fn create_measurement(py: Python) -> &PyCell<CheatedPauliZProductWrapper> {
+    let input_type = py.get_type::<CheatedPauliZProductInputWrapper>();
     let input = input_type
         .call0()
         .unwrap()
-        .cast_as::<PyCell<CheatedBasisRotationInputWrapper>>()
+        .cast_as::<PyCell<CheatedPauliZProductInputWrapper>>()
         .unwrap();
-    let _ = input.call_method1("add_pauli_product", ("ro",)).unwrap();
+    let _ = input.call_method1("add_pauliz_product", ("ro",)).unwrap();
 
     let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
     let mut circ1 = CircuitWrapper::new();
     circ1.internal += roqoqo::operations::RotateX::new(0, 0.0.into());
     circs.push(circ1);
-    let br_type = py.get_type::<CheatedBasisRotationWrapper>();
+    let br_type = py.get_type::<CheatedPauliZProductWrapper>();
     br_type
         .call1((Some(CircuitWrapper::new()), circs.clone(), input))
         .unwrap()
-        .cast_as::<PyCell<CheatedBasisRotationWrapper>>()
+        .cast_as::<PyCell<CheatedPauliZProductWrapper>>()
         .unwrap()
 }
 
@@ -90,35 +90,35 @@ fn test_basic_traits() {
 
         assert_eq!(
             format!("{:?}", QuantumProgramWrapper::new(input, vec!["test".into()]).unwrap()),
-            "QuantumProgramWrapper { internal: CheatedBasisRotation { measurement: CheatedBasisRotation { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }, Circuit { definitions: [], operations: [RotateX(RotateX { qubit: 0, theta: Float(0.0) })], _roqoqo_version: RoqoqoVersion }], input: CheatedBasisRotationInput { measured_exp_vals: {}, pauli_product_keys: {\"ro\": 0} } }, input_parameter_names: [\"test\"] } }"
+            "QuantumProgramWrapper { internal: CheatedPauliZProduct { measurement: CheatedPauliZProduct { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }, Circuit { definitions: [], operations: [RotateX(RotateX { qubit: 0, theta: Float(0.0) })], _roqoqo_version: RoqoqoVersion }], input: CheatedPauliZProductInput { measured_exp_vals: {}, pauli_product_keys: {\"ro\": 0} } }, input_parameter_names: [\"test\"] } }"
         );
     })
 }
 
-/// Test new and run functions of QuantumProgram with all BasisRotation measurement input
+/// Test new and run functions of QuantumProgram with all PauliZProduct measurement input
 #[test]
 fn test_new_run_br() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let input_type = py.get_type::<BasisRotationInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let input_instance = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<BasisRotationInputWrapper>>()
+            .cast_as::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let _ = input_instance
-            .call_method1("add_pauli_product", ("ro", vec![0]))
+            .call_method1("add_pauliz_product", ("ro", vec![0]))
             .unwrap();
 
         let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += RotateX::new(0, 0.0.into());
         circs.push(circ1.clone());
-        let br_type = py.get_type::<BasisRotationWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let input = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input_instance))
             .unwrap()
-            .cast_as::<PyCell<BasisRotationWrapper>>()
+            .cast_as::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
@@ -129,9 +129,9 @@ fn test_new_run_br() {
             .unwrap();
         let program_wrapper = program.extract::<QuantumProgramWrapper>().unwrap();
 
-        let mut bri = BasisRotationInput::new(3, false);
-        let _ = bri.add_pauli_product("ro".to_string(), vec![0]);
-        let br = BasisRotation {
+        let mut bri = PauliZProductInput::new(3, false);
+        let _ = bri.add_pauliz_product("ro".to_string(), vec![0]);
+        let br = PauliZProduct {
             constant_circuit: Some(Circuit::new()),
             circuits: vec![Circuit::new(), circ1.internal],
             input: bri,
@@ -140,14 +140,14 @@ fn test_new_run_br() {
         assert_eq!(
             program_wrapper,
             QuantumProgramWrapper {
-                internal: QuantumProgram::BasisRotation {
+                internal: QuantumProgram::PauliZProduct {
                     measurement: br.clone(),
                     input_parameter_names: vec!["test".to_string()]
                 }
             }
         );
 
-        let measurement = BasisRotationWrapper::extract(
+        let measurement = PauliZProductWrapper::extract(
             program
                 .call_method1("run", (TestBackend, Some(vec![0.0])))
                 .unwrap(),
@@ -157,30 +157,30 @@ fn test_new_run_br() {
     })
 }
 
-/// Test new and run functions of QuantumProgram with all CheatedBasisRotation measurement input
+/// Test new and run functions of QuantumProgram with all CheatedPauliZProduct measurement input
 #[test]
 fn test_new_run_cheated_br() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let input_type = py.get_type::<CheatedBasisRotationInputWrapper>();
+        let input_type = py.get_type::<CheatedPauliZProductInputWrapper>();
         let input_instance = input_type
             .call0()
             .unwrap()
-            .cast_as::<PyCell<CheatedBasisRotationInputWrapper>>()
+            .cast_as::<PyCell<CheatedPauliZProductInputWrapper>>()
             .unwrap();
         let _ = input_instance
-            .call_method1("add_pauli_product", ("ro",))
+            .call_method1("add_pauliz_product", ("ro",))
             .unwrap();
 
         let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += RotateX::new(0, 0.0.into());
         circs.push(circ1.clone());
-        let br_type = py.get_type::<CheatedBasisRotationWrapper>();
+        let br_type = py.get_type::<CheatedPauliZProductWrapper>();
         let input = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input_instance))
             .unwrap()
-            .cast_as::<PyCell<CheatedBasisRotationWrapper>>()
+            .cast_as::<PyCell<CheatedPauliZProductWrapper>>()
             .unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
@@ -191,9 +191,9 @@ fn test_new_run_cheated_br() {
             .unwrap();
         let program_wrapper = program.extract::<QuantumProgramWrapper>().unwrap();
 
-        let mut cbri = CheatedBasisRotationInput::new();
-        cbri.add_pauli_product("ro".to_string());
-        let cbr = CheatedBasisRotation {
+        let mut cbri = CheatedPauliZProductInput::new();
+        cbri.add_pauliz_product("ro".to_string());
+        let cbr = CheatedPauliZProduct {
             constant_circuit: Some(Circuit::new()),
             circuits: vec![Circuit::new(), circ1.internal],
             input: cbri,
@@ -202,14 +202,14 @@ fn test_new_run_cheated_br() {
         assert_eq!(
             program_wrapper,
             QuantumProgramWrapper {
-                internal: QuantumProgram::CheatedBasisRotation {
+                internal: QuantumProgram::CheatedPauliZProduct {
                     measurement: cbr.clone(),
                     input_parameter_names: vec!["test".to_string()]
                 }
             }
         );
 
-        let measurement = CheatedBasisRotationWrapper::extract(
+        let measurement = CheatedPauliZProductWrapper::extract(
             program
                 .call_method1("run", (TestBackend, Some(vec![0.0])))
                 .unwrap(),
@@ -608,29 +608,29 @@ fn test_convert_into_program() {
     })
 }
 
-/// Test measurement() for CheatedBasisRotation
+/// Test measurement() for CheatedPauliZProduct
 #[test]
-fn test_return_measurement_cheatedbasisrotation() {
+fn test_return_measurement_cheatedPauliZProduct() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Create measurement
-        let input_type = py.get_type::<CheatedBasisRotationInputWrapper>();
+        let input_type = py.get_type::<CheatedPauliZProductInputWrapper>();
         let input = input_type
             .call0()
             .unwrap()
-            .cast_as::<PyCell<CheatedBasisRotationInputWrapper>>()
+            .cast_as::<PyCell<CheatedPauliZProductInputWrapper>>()
             .unwrap();
-        let _ = input.call_method1("add_pauli_product", ("ro",)).unwrap();
+        let _ = input.call_method1("add_pauliz_product", ("ro",)).unwrap();
 
         let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, 0.0.into());
         circs.push(circ1);
-        let br_type = py.get_type::<CheatedBasisRotationWrapper>();
+        let br_type = py.get_type::<CheatedPauliZProductWrapper>();
         let measurement_input = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap()
-            .cast_as::<PyCell<CheatedBasisRotationWrapper>>()
+            .cast_as::<PyCell<CheatedPauliZProductWrapper>>()
             .unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
@@ -643,7 +643,7 @@ fn test_return_measurement_cheatedbasisrotation() {
         let measurement_returned = program
             .call_method0("measurement")
             .unwrap()
-            .cast_as::<PyCell<CheatedBasisRotationWrapper>>()
+            .cast_as::<PyCell<CheatedPauliZProductWrapper>>()
             .unwrap();
 
         assert_eq!(
@@ -653,30 +653,30 @@ fn test_return_measurement_cheatedbasisrotation() {
     })
 }
 
-/// Test measurement() for BasisRotation
+/// Test measurement() for PauliZProduct
 #[test]
-fn test_return_measurement_basisrotation() {
+fn test_return_measurement_PauliZProduct() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Create measurement
-        let input_type = py.get_type::<BasisRotationInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<BasisRotationInputWrapper>>()
+            .cast_as::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
-            .call_method1("add_pauli_product", ("ro", tmp_vec.clone()))
+            .call_method1("add_pauliz_product", ("ro", tmp_vec.clone()))
             .unwrap();
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type::<BasisRotationWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let measurement_input = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap()
-            .cast_as::<PyCell<BasisRotationWrapper>>()
+            .cast_as::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
@@ -689,7 +689,7 @@ fn test_return_measurement_basisrotation() {
         let measurement_returned = program
             .call_method0("measurement")
             .unwrap()
-            .cast_as::<PyCell<BasisRotationWrapper>>()
+            .cast_as::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         assert_eq!(
@@ -795,23 +795,23 @@ fn test_input_parameter_names() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Create measurement
-        let input_type = py.get_type::<CheatedBasisRotationInputWrapper>();
+        let input_type = py.get_type::<CheatedPauliZProductInputWrapper>();
         let input = input_type
             .call0()
             .unwrap()
-            .cast_as::<PyCell<CheatedBasisRotationInputWrapper>>()
+            .cast_as::<PyCell<CheatedPauliZProductInputWrapper>>()
             .unwrap();
-        let _ = input.call_method1("add_pauli_product", ("ro",)).unwrap();
+        let _ = input.call_method1("add_pauliz_product", ("ro",)).unwrap();
 
         let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, "test".into());
         circs.push(circ1);
-        let br_type = py.get_type::<CheatedBasisRotationWrapper>();
+        let br_type = py.get_type::<CheatedPauliZProductWrapper>();
         let measurement_input = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap()
-            .cast_as::<PyCell<CheatedBasisRotationWrapper>>()
+            .cast_as::<PyCell<CheatedPauliZProductWrapper>>()
             .unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();

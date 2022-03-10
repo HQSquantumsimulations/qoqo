@@ -11,7 +11,7 @@
 // limitations under the License.
 
 use roqoqo::measurements::{
-    BasisRotation, BasisRotationInput, Cheated, CheatedBasisRotation, CheatedBasisRotationInput,
+    PauliZProduct, PauliZProductInput, Cheated, CheatedPauliZProduct, CheatedPauliZProductInput,
     CheatedInput, ClassicalRegister,
 };
 use roqoqo::operations;
@@ -47,7 +47,7 @@ impl EvaluatingBackend for TestBackend {
 #[test]
 fn test_basis_rotation() {
     // setting ub BR measurement
-    let bri = BasisRotationInput::new(3, false);
+    let bri = PauliZProductInput::new(3, false);
     let mut circs: Vec<Circuit> = Vec::new();
     let mut circ1 = Circuit::new();
     let mut circ1_subs = Circuit::new();
@@ -58,14 +58,14 @@ fn test_basis_rotation() {
     circ2 += operations::RotateZ::new(0, "theta2".into());
     circ2_subs += operations::RotateZ::new(0, 1.0.into());
     circs.push(circ1);
-    let br = BasisRotation {
+    let br = PauliZProduct {
         constant_circuit: Some(circ2),
         circuits: circs.clone(),
         input: bri,
     };
 
     let input_parameter_names = vec!["theta".to_string(), "theta2".to_string()];
-    let program = QuantumProgram::BasisRotation {
+    let program = QuantumProgram::PauliZProduct {
         measurement: br,
         input_parameter_names,
     };
@@ -85,7 +85,7 @@ fn test_basis_rotation() {
 #[test]
 fn test_cheated_basis_rotation() {
     // setting ub BR measurement
-    let bri = CheatedBasisRotationInput::new();
+    let bri = CheatedPauliZProductInput::new();
     let mut circs: Vec<Circuit> = Vec::new();
     let mut circ1 = Circuit::new();
     let mut circ1_subs = Circuit::new();
@@ -96,14 +96,14 @@ fn test_cheated_basis_rotation() {
     circ2 += operations::RotateZ::new(0, "theta2".into());
     circ2_subs += operations::RotateZ::new(0, 1.0.into());
     circs.push(circ1);
-    let br = CheatedBasisRotation {
+    let br = CheatedPauliZProduct {
         constant_circuit: Some(circ2),
         circuits: circs.clone(),
         input: bri,
     };
 
     let input_parameter_names = vec!["theta".to_string(), "theta2".to_string()];
-    let program = QuantumProgram::CheatedBasisRotation {
+    let program = QuantumProgram::CheatedPauliZProduct {
         measurement: br,
         input_parameter_names,
     };

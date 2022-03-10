@@ -15,12 +15,12 @@
 use pyo3::prelude::*;
 mod measurement_auxiliary_data_input;
 pub use measurement_auxiliary_data_input::{
-    BasisRotationInputWrapper, CheatedBasisRotationInputWrapper, CheatedInputWrapper,
+    PauliZProductInputWrapper, CheatedPauliZProductInputWrapper, CheatedInputWrapper,
 };
 mod basis_rotation_measurement;
-pub use basis_rotation_measurement::BasisRotationWrapper;
+pub use basis_rotation_measurement::PauliZProductWrapper;
 mod cheated_basis_rotation_measurement;
-pub use cheated_basis_rotation_measurement::CheatedBasisRotationWrapper;
+pub use cheated_basis_rotation_measurement::CheatedPauliZProductWrapper;
 mod cheated_measurement;
 pub use cheated_measurement::CheatedWrapper;
 mod classical_register_measurement;
@@ -29,11 +29,11 @@ pub use classical_register_measurement::ClassicalRegisterWrapper;
 /// Measurements
 #[pymodule]
 pub fn measurements(_py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_class::<BasisRotationInputWrapper>()?;
-    m.add_class::<CheatedBasisRotationInputWrapper>()?;
+    m.add_class::<PauliZProductInputWrapper>()?;
+    m.add_class::<CheatedPauliZProductInputWrapper>()?;
     m.add_class::<CheatedInputWrapper>()?;
-    m.add_class::<BasisRotationWrapper>()?;
-    m.add_class::<CheatedBasisRotationWrapper>()?;
+    m.add_class::<PauliZProductWrapper>()?;
+    m.add_class::<CheatedPauliZProductWrapper>()?;
     m.add_class::<CheatedWrapper>()?;
     m.add_class::<ClassicalRegisterWrapper>()?;
 

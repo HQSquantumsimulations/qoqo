@@ -16,43 +16,43 @@ use num_complex::Complex64;
 use pyo3::exceptions::PyRuntimeError;
 use pyo3::prelude::*;
 use roqoqo::measurements::{
-    BasisRotationInput, CheatedBasisRotationInput, CheatedInput, PauliProductMask,
+    PauliZProductInput, CheatedPauliZProductInput, CheatedInput, PauliProductMask,
 };
 use std::collections::HashMap;
 
-#[pyclass(name = "BasisRotationInput", module = "qoqo.measurements")]
+#[pyclass(name = "PauliZProductInput", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
-/// Provides Necessary Information to run a [roqoqo::measurements::BasisRotation] measurement.
-pub struct BasisRotationInputWrapper {
-    /// Internal storage of [roqoqo::BasisRotationInput].
-    pub internal: BasisRotationInput,
+/// Provides Necessary Information to run a [roqoqo::measurements::PauliZProduct] measurement.
+pub struct PauliZProductInputWrapper {
+    /// Internal storage of [roqoqo::PauliZProductInput].
+    pub internal: PauliZProductInput,
 }
 
 #[pymethods]
-impl BasisRotationInputWrapper {
-    /// Create new BasisRotationInput.
+impl PauliZProductInputWrapper {
+    /// Create new PauliZProductInput.
     ///
-    /// The BasisRotationInput starts with just the number of qubtis and flipped measurements set.
+    /// The PauliZProductInput starts with just the number of qubtis and flipped measurements set.
     /// The pauli_poduct_qubit_masks and measured_exp_vals start empty
-    /// and can be extended with [BasisRotationInput::add_pauli_product]
-    /// [BasisRotationInput::add_linear_exp_val] and [BasisRotationInput::add_symbolic_exp_val]
+    /// and can be extended with [PauliZProductInput::add_pauliz_product]
+    /// [PauliZProductInput::add_linear_exp_val] and [PauliZProductInput::add_symbolic_exp_val]
     ///
     /// Args:
-    ///     number_qubits (int): The number of qubits in the BasisRotation measurement.
+    ///     number_qubits (int): The number of qubits in the PauliZProduct measurement.
     ///     use_flipped_measurement (bool): Whether or not to use flipped measurements.
     ///
     /// Returns:
-    ///     self: The new instance of BasisRotationInput with pauli_product_qubit_masks = an empty dictionary, the
+    ///     self: The new instance of PauliZProductInput with pauli_product_qubit_masks = an empty dictionary, the
     ///           specified number of qubits in input, number_pauli_products = 0, measured_exp_vals = an empty
     ///           dictionary, and whether to use flipped measurements as specified in input.
     #[new]
     pub fn new(number_qubits: usize, use_flipped_measurement: bool) -> Self {
         Self {
-            internal: BasisRotationInput::new(number_qubits, use_flipped_measurement),
+            internal: PauliZProductInput::new(number_qubits, use_flipped_measurement),
         }
     }
 
-    /// Add measured Pauli product to BasisRotationInput and returns index of Pauli product.
+    /// Add measured Pauli product to PauliZProductInput and returns index of Pauli product.
     ///
     /// When the pauli product is already in the measurement input the function only returns
     /// it index.
@@ -66,13 +66,13 @@ impl BasisRotationInputWrapper {
     ///
     /// Raises:
     ///     RuntimeError: Failed to add pauli product.
-    pub fn add_pauli_product(
+    pub fn add_pauliz_product(
         &mut self,
         readout: String,
         pauli_product_mask: PauliProductMask,
     ) -> PyResult<usize> {
         self.internal
-            .add_pauli_product(readout, pauli_product_mask)
+            .add_pauliz_product(readout, pauli_product_mask)
             .map_err(|_| PyRuntimeError::new_err("Failed to add pauli product"))
     }
 
@@ -121,41 +121,41 @@ impl BasisRotationInputWrapper {
     }
 }
 
-#[pyclass(name = "CheatedBasisRotationInput", module = "qoqo.measurements")]
+#[pyclass(name = "CheatedPauliZProductInput", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Collected information for executing a cheated basis rotation measurement.
-pub struct CheatedBasisRotationInputWrapper {
-    /// Internal storage of [roqoqo::CheatedBasisRotationInput].
-    pub internal: CheatedBasisRotationInput,
+pub struct CheatedPauliZProductInputWrapper {
+    /// Internal storage of [roqoqo::CheatedPauliZProductInput].
+    pub internal: CheatedPauliZProductInput,
 }
 
-impl Default for CheatedBasisRotationInputWrapper {
+impl Default for CheatedPauliZProductInputWrapper {
     fn default() -> Self {
         Self::new()
     }
 }
 
 #[pymethods]
-impl CheatedBasisRotationInputWrapper {
-    /// Create new CheatedBasisRotationInput.
+impl CheatedPauliZProductInputWrapper {
+    /// Create new CheatedPauliZProductInput.
     ///
-    /// The CheatedBasisRotationInput starts with just the number of qubtis and flipped measurements set.
+    /// The CheatedPauliZProductInput starts with just the number of qubtis and flipped measurements set.
     /// The pauli_poduct_qubit_masks and measured_exp_vals start empty
-    /// and can be extended with [CheatedBasisRotationInput::add_linear_exp_val] and
-    /// [CheatedBasisRotationInput::add_symbolic_exp_val].
+    /// and can be extended with [CheatedPauliZProductInput::add_linear_exp_val] and
+    /// [CheatedPauliZProductInput::add_symbolic_exp_val].
     ///
     /// Returns:
-    ///     self: The new instance of BasisRotationInput with pauli_product_qubit_masks = an empty dictionary, the
+    ///     self: The new instance of PauliZProductInput with pauli_product_qubit_masks = an empty dictionary, the
     ///           specified number of qubits in input, number_pauli_products = 0, measured_exp_vals = an empty
     ///           dictionary, and whether to use flipped measurements as specified in input.
     #[new]
     pub fn new() -> Self {
         Self {
-            internal: CheatedBasisRotationInput::new(),
+            internal: CheatedPauliZProductInput::new(),
         }
     }
 
-    /// Add measured Pauli product to CheatedBasisRotationInput and returns index of Pauli product.
+    /// Add measured Pauli product to CheatedPauliZProductInput and returns index of Pauli product.
     ///
     /// When the pauli product is already in the measurement input the function only returns
     /// its index.
@@ -165,8 +165,8 @@ impl CheatedBasisRotationInputWrapper {
     ///
     /// Returns:
     ///     int: The index of the added Pauli product in the list of all Pauli products.
-    pub fn add_pauli_product(&mut self, readout: String) -> usize {
-        self.internal.add_pauli_product(readout)
+    pub fn add_pauliz_product(&mut self, readout: String) -> usize {
+        self.internal.add_pauliz_product(readout)
     }
 
     /// Add linear definition of expectation value to measurement input.
@@ -233,7 +233,7 @@ impl CheatedInputWrapper {
     /// of an operator matrix.
     ///
     /// Args:
-    ///     number_qubits (int): The number of qubits in the BasisRotation measurement.
+    ///     number_qubits (int): The number of qubits in the PauliZProduct measurement.
     ///
     /// Returns:
     ///     CheatedInput: The new instance of CheatedInput with the specified number of qubits in input,
