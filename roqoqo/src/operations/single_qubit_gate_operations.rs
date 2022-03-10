@@ -163,11 +163,11 @@ impl OperateSingleQubitGate for SingleQubitGate {
 ///
 /// $$
 /// U = \begin{pmatrix}
-/// \cos(\frac{\theta}{2}) & 0\\\\
+/// \cos(\frac{\theta}{2}) & 0 \\\\
 /// 0 & \cos(\frac{\theta}{2})
 /// \end{pmatrix}
-///  + \begin{pmatrix}
-///  -i \sin(\frac{\theta}{2}) & 0\\\\
+/// + \begin{pmatrix}
+///  -i \sin(\frac{\theta}{2}) & 0 \\\\
 /// 0 & i \sin(\frac{\theta}{2})
 /// \end{pmatrix}
 /// $$
@@ -270,14 +270,14 @@ impl OperateSingleQubitGate for RotateZ {
 ///
 /// $$
 /// U = \begin{pmatrix}
-/// \cos(\frac{\theta}{2}) & 0\\\\
+/// \cos(\frac{\theta}{2}) & 0 \\\\
 /// 0 & \cos(\frac{\theta}{2})
 /// \end{pmatrix}
 /// + \begin{pmatrix}
-/// 0  &  -i \sin(\frac{\theta}{2})   \\\\
+/// 0  &  -i \sin(\frac{\theta}{2}) \\\\
 /// -i \sin(\frac{\theta}{2})  & 0
 /// \end{pmatrix}
-///  $$
+/// $$
 ///
 #[derive(
     Debug,
@@ -372,14 +372,14 @@ impl OperateSingleQubitGate for RotateX {
 ///
 /// $$
 /// U = \begin{pmatrix}
-/// \cos(\frac{\theta}{2}) & 0\\\\
+/// \cos(\frac{\theta}{2}) & 0 \\\\
 /// 0 & \cos(\frac{\theta}{2})
 /// \end{pmatrix}
 /// + \begin{pmatrix}
-/// 0 & - \sin(\frac{\theta}{2})\\\\
+/// 0 & - \sin(\frac{\theta}{2}) \\\\
 /// \sin(\frac{\theta}{2}) & 0
 /// \end{pmatrix}
-///  $$
+/// $$
 ///
 #[derive(
     Debug,
