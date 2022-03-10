@@ -16,7 +16,6 @@ use pyo3::exceptions::{PyIndexError, PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
 use pyo3::types::PyType;
-use pyo3::{PyNumberProtocol};
 use roqoqo::prelude::*;
 use roqoqo::{Circuit, OperationIterator, ROQOQO_VERSION};
 use std::collections::HashSet;
@@ -523,10 +522,7 @@ impl CircuitWrapper {
         *mut_reference = operation;
         Ok(())
     }
-}
 
-#[pyproto]
-impl PyNumberProtocol for CircuitWrapper {
     /// Implement the `+=` (__iadd__) magic method to add a Operation to a Circuit.
     ///
     /// Args:
@@ -534,7 +530,7 @@ impl PyNumberProtocol for CircuitWrapper {
     ///
     /// Raises:
     ///     TypeError: Right hand side cannot be converted to Operation or Circuit.
-    fn __iadd__(&'p mut self, other: Py<PyAny>) -> PyResult<()> {
+    fn __iadd__(& mut self, other: Py<PyAny>) -> PyResult<()> {
         Python::with_gil(|py| -> PyResult<()> {
             let other_ref = other.as_ref(py);
             match convert_pyany_to_operation(other_ref) {
