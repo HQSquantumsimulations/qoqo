@@ -42,7 +42,7 @@ fn substitute_enum(de: DataEnum, ident: Ident) -> TokenStream {
 
     let qsubstitute = quote! {
         /// Substitutes symbolic parameters in clone of the operation.
-        fn substitute_parameters(&self, calculator: &mut qoqo_calculator::Calculator) -> Result<Self, RoqoqoError> {
+        fn substitute_parameters(&self, calculator: &qoqo_calculator::Calculator) -> Result<Self, RoqoqoError> {
             match self{
                 #(#substitute_quotes)*
                 _ => panic!("Unexpectedly cannot match variant")
@@ -114,7 +114,7 @@ fn substitute_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         #[automatically_derived]
         impl Substitute for #ident{
             /// Substitutes symbolic parameters in clone of the operation.
-            fn substitute_parameters(&self,calculator: &mut qoqo_calculator::Calculator) -> Result<Self, RoqoqoError> {
+            fn substitute_parameters(&self, calculator: &qoqo_calculator::Calculator) -> Result<Self, RoqoqoError> {
                 Ok(Self::new(#(#substitute_quote),*))
             }
             /// Remaps the qubits in clone of the operation.

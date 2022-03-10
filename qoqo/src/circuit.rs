@@ -16,7 +16,7 @@ use pyo3::exceptions::{PyIndexError, PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
 use pyo3::types::PyType;
-use pyo3::{PyIterProtocol, PyMappingProtocol, PyNumberProtocol, PyObjectProtocol};
+use pyo3::{PyNumberProtocol};
 use roqoqo::prelude::*;
 use roqoqo::{Circuit, OperationIterator, ROQOQO_VERSION};
 use std::collections::HashSet;
@@ -79,7 +79,7 @@ impl CircuitWrapper {
         Ok(Self {
             internal: self
                 .internal
-                .substitute_parameters(&mut calculator)
+                .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
                         "Parameter Substitution failed: {:?}",
@@ -426,8 +426,7 @@ impl CircuitWrapper {
     }
 }
 
-#[pyproto]
-impl PyObjectProtocol for CircuitWrapper {
+impl CircuitWrapper {
     /// Return a string containing a printable representation of the Circuit.
     ///
     /// Returns:
@@ -466,6 +465,63 @@ impl PyObjectProtocol for CircuitWrapper {
                 "Other comparison not implemented",
             )),
         }
+    }
+
+    /// Create an iterator of the Circuit.
+    ///
+    /// Returns:
+    ///     OperationIterator: The Circuit in iterator form.
+    fn __iter__(slf: PyRef<Self>) -> PyResult<OperationIteratorWrapper> {
+        Ok(OperationIteratorWrapper {
+            internal: slf.internal.clone().into_iter(),
+        })
+    }
+
+    /// Return the length of the Circuit.
+    ///
+    /// Returns:
+    ///     int: The length of the Circuit.
+    fn __len__(&self) -> usize {
+        self.internal.len()
+    }
+
+    /// Return a copy of the Operation at a certain index of the Circuit.
+    ///
+    /// Args:
+    ///     index (int): The index of the Operation to get in the Circuit.
+    ///
+    /// Returns:
+    ///     Operation: The operation at the given index (if it exists).
+    ///
+    /// Raises:
+    ///     IndexError: Index out of range.
+    fn __getitem__(&self, index: usize) -> PyResult<PyObject> {
+        let operation = self
+            .internal
+            .get(index)
+            .ok_or_else(|| PyIndexError::new_err(format!("Index {} out of range", index)))?
+            .clone();
+        convert_operation_to_pyobject(operation)
+    }
+
+    /// Set an Operation at the specified index in the Circuit.
+    ///
+    /// Args:
+    ///     index (int): The index of the Operation to set in the Circuit.
+    ///     value (Operation): The Operation to set in the Circuit.
+    ///
+    /// Raises:
+    ///     TypeError: Cannot convert python object to Operation.
+    ///     IndexError: Index out of range.
+    fn __setitem__(&mut self, index: usize, value: &PyAny) -> PyResult<()> {
+        let operation = convert_pyany_to_operation(value)
+            .map_err(|_| PyTypeError::new_err("Cannot convert python object to Operation"))?;
+        let mut_reference = self
+            .internal
+            .get_mut(index)
+            .ok_or_else(|| PyIndexError::new_err(format!("Index {} out of range", index)))?;
+        *mut_reference = operation;
+        Ok(())
     }
 }
 
@@ -542,68 +598,6 @@ impl PyNumberProtocol for CircuitWrapper {
     }
 }
 
-#[pyproto]
-impl PyIterProtocol for CircuitWrapper {
-    /// Create an iterator of the Circuit.
-    ///
-    /// Returns:
-    ///     OperationIterator: The Circuit in iterator form.
-    fn __iter__(slf: PyRef<Self>) -> PyResult<OperationIteratorWrapper> {
-        Ok(OperationIteratorWrapper {
-            internal: slf.internal.clone().into_iter(),
-        })
-    }
-}
-
-#[pyproto]
-impl PyMappingProtocol for CircuitWrapper {
-    /// Return the length of the Circuit.
-    ///
-    /// Returns:
-    ///     int: The length of the Circuit.
-    fn __len__(&self) -> usize {
-        self.internal.len()
-    }
-
-    /// Return a copy of the Operation at a certain index of the Circuit.
-    ///
-    /// Args:
-    ///     index (int): The index of the Operation to get in the Circuit.
-    ///
-    /// Returns:
-    ///     Operation: The operation at the given index (if it exists).
-    ///
-    /// Raises:
-    ///     IndexError: Index out of range.
-    fn __getitem__(&self, index: usize) -> PyResult<PyObject> {
-        let operation = self
-            .internal
-            .get(index)
-            .ok_or_else(|| PyIndexError::new_err(format!("Index {} out of range", index)))?
-            .clone();
-        convert_operation_to_pyobject(operation)
-    }
-
-    /// Set an Operation at the specified index in the Circuit.
-    ///
-    /// Args:
-    ///     index (int): The index of the Operation to set in the Circuit.
-    ///     value (Operation): The Operation to set in the Circuit.
-    ///
-    /// Raises:
-    ///     TypeError: Cannot convert python object to Operation.
-    ///     IndexError: Index out of range.
-    fn __setitem__(&mut self, index: usize, value: &PyAny) -> PyResult<()> {
-        let operation = convert_pyany_to_operation(value)
-            .map_err(|_| PyTypeError::new_err("Cannot convert python object to Operation"))?;
-        let mut_reference = self
-            .internal
-            .get_mut(index)
-            .ok_or_else(|| PyIndexError::new_err(format!("Index {} out of range", index)))?;
-        *mut_reference = operation;
-        Ok(())
-    }
-}
 
 /// Convert generic python object to [roqoqo::Circuit].
 ///
@@ -653,8 +647,7 @@ pub struct OperationIteratorWrapper {
     internal: OperationIterator,
 }
 
-#[pyproto]
-impl PyIterProtocol for OperationIteratorWrapper {
+impl OperationIteratorWrapper {
     /// Create an iterator of the Circuit.
     ///
     /// Returns:

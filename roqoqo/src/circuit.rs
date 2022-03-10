@@ -264,7 +264,8 @@ impl Circuit {
     ///
     /// * `Ok(Self)` -  The Circuit with the parameters substituted.
     /// * `Err(RoqoqoError)` - The subsitution failed.
-    pub fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    pub fn substitute_parameters(&self, calculator_in: &Calculator) -> Result<Self, RoqoqoError> {
+        let calculator: &mut Calculator = &mut calculator_in.clone();
         let mut tmp_def: Vec<Operation> = Vec::new();
         for def in self.definitions.iter() {
             let tmp_op = def.substitute_parameters(calculator)?;

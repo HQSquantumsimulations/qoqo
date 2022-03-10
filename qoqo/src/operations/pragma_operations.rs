@@ -226,8 +226,7 @@ impl PragmaSetStateVectorWrapper {
     }
 }
 
-#[pyproto]
-impl PyObjectProtocol for PragmaSetStateVectorWrapper {
+impl PragmaSetStateVectorWrapper {
     /// Return a string containing a printable representation of the PRAGMA operation.
     ///
     /// Returns:
@@ -452,8 +451,7 @@ impl PragmaSetDensityMatrixWrapper {
     }
 }
 
-#[pyproto]
-impl PyObjectProtocol for PragmaSetDensityMatrixWrapper {
+impl PragmaSetDensityMatrixWrapper {
     /// Return a string containing a printable representation of the PRAGMA operation.
     ///
     /// Returns:
@@ -1102,8 +1100,7 @@ impl PragmaGeneralNoiseWrapper {
     }
 }
 
-#[pyproto]
-impl PyObjectProtocol for PragmaGeneralNoiseWrapper {
+impl PragmaGeneralNoiseWrapper {
     /// Return a string containing a printable representation of the PRAGMA operation.
     ///
     /// Returns:
@@ -1350,8 +1347,7 @@ impl PragmaChangeDeviceWrapper {
     }
 }
 
-#[pyproto]
-impl PyObjectProtocol for PragmaChangeDeviceWrapper {
+impl PragmaChangeDeviceWrapper {
     /// Return a string containing a printable representation of the PRAGMA operation.
     ///
     /// Returns:
