@@ -389,9 +389,7 @@ impl QuantumProgramWrapper {
             })?,
         })
     }
-}
 
-impl QuantumProgramWrapper {
     /// Return the __richcmp__ magic method to perform rich comparison operations on QuantumProgram.
     ///
     /// Args:

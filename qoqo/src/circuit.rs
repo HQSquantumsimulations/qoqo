@@ -423,9 +423,7 @@ impl CircuitWrapper {
     fn __format__(&self, _format_spec: &str) -> PyResult<String> {
         Ok(format!("{}", self.internal))
     }
-}
 
-impl CircuitWrapper {
     /// Return a string containing a printable representation of the Circuit.
     ///
     /// Returns:
@@ -530,7 +528,7 @@ impl CircuitWrapper {
     ///
     /// Raises:
     ///     TypeError: Right hand side cannot be converted to Operation or Circuit.
-    fn __iadd__(& mut self, other: Py<PyAny>) -> PyResult<()> {
+    fn __iadd__(&mut self, other: Py<PyAny>) -> PyResult<()> {
         Python::with_gil(|py| -> PyResult<()> {
             let other_ref = other.as_ref(py);
             match convert_pyany_to_operation(other_ref) {
@@ -594,7 +592,6 @@ impl CircuitWrapper {
     }
 }
 
-
 /// Convert generic python object to [roqoqo::Circuit].
 ///
 /// Fallible conversion of generic python object to [roqoqo::Circuit].
@@ -643,6 +640,7 @@ pub struct OperationIteratorWrapper {
     internal: OperationIterator,
 }
 
+#[pymethods]
 impl OperationIteratorWrapper {
     /// Create an iterator of the Circuit.
     ///

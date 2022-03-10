@@ -170,7 +170,7 @@ impl PragmaSetStateVectorWrapper {
         Ok(Self {
             internal: self
                 .internal
-                .substitute_parameters(&mut calculator)
+                .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
                         "Parameter Substitution failed: {:?}",
@@ -223,9 +223,7 @@ impl PragmaSetStateVectorWrapper {
     fn __format__(&self, _format_spec: &str) -> PyResult<String> {
         Ok(format!("{:?}", self.internal))
     }
-}
 
-impl PragmaSetStateVectorWrapper {
     /// Return a string containing a printable representation of the PRAGMA operation.
     ///
     /// Returns:
@@ -395,7 +393,7 @@ impl PragmaSetDensityMatrixWrapper {
         Ok(Self {
             internal: self
                 .internal
-                .substitute_parameters(&mut calculator)
+                .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
                         "Parameter Substitution failed: {:?}",
@@ -448,9 +446,7 @@ impl PragmaSetDensityMatrixWrapper {
     fn __format__(&self, _format_spec: &str) -> PyResult<String> {
         Ok(format!("{:?}", self.internal))
     }
-}
 
-impl PragmaSetDensityMatrixWrapper {
     /// Return a string containing a printable representation of the PRAGMA operation.
     ///
     /// Returns:
@@ -1044,7 +1040,7 @@ impl PragmaGeneralNoiseWrapper {
         Ok(Self {
             internal: self
                 .internal
-                .substitute_parameters(&mut calculator)
+                .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
                         "Parameter Substitution failed: {:?}",
@@ -1097,9 +1093,7 @@ impl PragmaGeneralNoiseWrapper {
     fn __format__(&self, _format_spec: &str) -> PyResult<String> {
         Ok(format!("{:?}", self.internal))
     }
-}
 
-impl PragmaGeneralNoiseWrapper {
     /// Return a string containing a printable representation of the PRAGMA operation.
     ///
     /// Returns:
@@ -1291,7 +1285,7 @@ impl PragmaChangeDeviceWrapper {
         Ok(Self {
             internal: self
                 .internal
-                .substitute_parameters(&mut calculator)
+                .substitute_parameters(&calculator)
                 .map_err(|x| {
                     pyo3::exceptions::PyRuntimeError::new_err(format!(
                         "Parameter Substitution failed: {:?}",
@@ -1344,9 +1338,7 @@ impl PragmaChangeDeviceWrapper {
     fn __format__(&self, _format_spec: &str) -> PyResult<String> {
         Ok(format!("{:?}", self.internal))
     }
-}
 
-impl PragmaChangeDeviceWrapper {
     /// Return a string containing a printable representation of the PRAGMA operation.
     ///
     /// Returns:

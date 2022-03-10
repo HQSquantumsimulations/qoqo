@@ -32,7 +32,7 @@ num-complex = "0.4"
 thiserror = "1.0"
 qoqo_calculator = { version="0.7" }
 qoqo_calculator_pyo3 = {version="0.7", default-features=false}
-qoqo-macros = {version="0.10", path="../qoqo-macros"}
+qoqo-macros = {version="0.11", path="../qoqo-macros"}
 roqoqo = {version="0.11", path="../roqoqo", features=["serialize", "overrotate"]}
 numpy = "=0.16"
 bincode = "1.3"
