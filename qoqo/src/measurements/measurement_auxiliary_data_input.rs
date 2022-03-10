@@ -16,7 +16,7 @@ use num_complex::Complex64;
 use pyo3::exceptions::PyRuntimeError;
 use pyo3::prelude::*;
 use roqoqo::measurements::{
-    PauliZProductInput, CheatedPauliZProductInput, CheatedInput, PauliProductMask,
+    CheatedInput, CheatedPauliZProductInput, PauliProductMask, PauliZProductInput,
 };
 use std::collections::HashMap;
 

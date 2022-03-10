@@ -13,7 +13,7 @@
 use std::collections::HashMap;
 
 use crate::measurements::{
-    PauliZProductWrapper, CheatedPauliZProductWrapper, CheatedWrapper, ClassicalRegisterWrapper,
+    CheatedPauliZProductWrapper, CheatedWrapper, ClassicalRegisterWrapper, PauliZProductWrapper,
 };
 use crate::{QoqoError, QOQO_VERSION};
 use bincode::{deserialize, serialize};

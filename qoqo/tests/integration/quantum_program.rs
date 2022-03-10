@@ -13,16 +13,16 @@
 use num_complex::Complex64;
 use pyo3::prelude::*;
 use qoqo::measurements::{
-    PauliZProductInputWrapper, PauliZProductWrapper, CheatedPauliZProductInputWrapper,
-    CheatedPauliZProductWrapper, CheatedInputWrapper, CheatedWrapper, ClassicalRegisterWrapper,
+    CheatedInputWrapper, CheatedPauliZProductInputWrapper, CheatedPauliZProductWrapper,
+    CheatedWrapper, ClassicalRegisterWrapper, PauliZProductInputWrapper, PauliZProductWrapper,
 };
 use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::{
     convert_into_quantum_program, CircuitWrapper, QoqoError, QuantumProgramWrapper, QOQO_VERSION,
 };
 use roqoqo::measurements::{
-    PauliZProduct, PauliZProductInput, Cheated, CheatedPauliZProduct, CheatedPauliZProductInput,
-    CheatedInput, ClassicalRegister,
+    Cheated, CheatedInput, CheatedPauliZProduct, CheatedPauliZProductInput, ClassicalRegister,
+    PauliZProduct, PauliZProductInput,
 };
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;

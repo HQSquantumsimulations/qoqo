@@ -15,7 +15,7 @@
 use pyo3::prelude::*;
 mod measurement_auxiliary_data_input;
 pub use measurement_auxiliary_data_input::{
-    PauliZProductInputWrapper, CheatedPauliZProductInputWrapper, CheatedInputWrapper,
+    CheatedInputWrapper, CheatedPauliZProductInputWrapper, PauliZProductInputWrapper,
 };
 mod basis_rotation_measurement;
 pub use basis_rotation_measurement::PauliZProductWrapper;

@@ -11,8 +11,8 @@
 // limitations under the License.
 
 use roqoqo::measurements::{
-    PauliZProduct, PauliZProductInput, Cheated, CheatedPauliZProduct, CheatedPauliZProductInput,
-    CheatedInput, ClassicalRegister,
+    Cheated, CheatedInput, CheatedPauliZProduct, CheatedPauliZProductInput, ClassicalRegister,
+    PauliZProduct, PauliZProductInput,
 };
 use roqoqo::operations;
 use roqoqo::prelude::*;

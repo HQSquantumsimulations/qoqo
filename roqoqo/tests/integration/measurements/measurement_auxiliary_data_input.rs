@@ -14,7 +14,7 @@
 
 use num_complex::Complex64;
 use roqoqo::measurements::{
-    PauliZProductInput, CheatedPauliZProductInput, CheatedInput, PauliProductsToExpVal,
+    CheatedInput, CheatedPauliZProductInput, PauliProductsToExpVal, PauliZProductInput,
 };
 use roqoqo::RoqoqoError;
 use std::collections::HashMap;
