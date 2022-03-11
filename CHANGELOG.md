@@ -10,6 +10,15 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 * Semver-style version checking for Circuit serialization. In beta mode (0.y.z) minor version must match (y_library == y_data) in release mode (x.y.z) major version must match (x_library == x_data) and minor version of library must exceed minor version of data (y_library >= y_data).
 * `json_schema` implementing `JsonSchema` from schemars for roqoqo data structures
+* `roqoqo-test` extended by two new functions for stochastic gate tests: `construct_random_circuit` and `add_random_multi_qubit_gate`. 
+* A conversion function `to_single_qubit_gate` has been implemented for the OperateSingleQubitGate trait.
+
+### Changed
+
+* The multiplication function `mul` for single qubit gates has been updated so that the result is always normalized.
+* `qoqo/examples` has been moved to the new github repository `qoqo_examples` which also includes qoqo examples in Rust now.
+* Dependencies have been updated to `qoqo_calculator = 0.7` and `pyo3 = 0.16`. Qoqo python interface has been migrated from #[pyproto] to #[pymethods]. Mutable qoqo_calculator:Calculator has been changed to unmutable where possible after the upgrade to qoqo_calculator version 0.7.
+
 
 ## 0.10.0
 
