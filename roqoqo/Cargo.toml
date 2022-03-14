@@ -1,6 +1,6 @@
 [package]
 name = "roqoqo"
-version = "0.10.0"
+version = "0.11.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
@@ -49,7 +49,6 @@ proc-macro2 = "1.0"
 rand = {version="0.8"}
 
 
-
 [package.metadata.docs.rs]
 rustdoc-args = [ "--html-in-header", "katex.html", "--document-private-items" ]
 
@@ -59,4 +58,3 @@ dynamic = ["typetag", "dyn-clone"]
 serialize = ["serde", "ndarray/serde", "num-complex/serde", "bincode"]
 overrotate = [ "rand_distr", "roqoqo-derive/overrotate"]
 json_schema=["schemars", "serialize", "qoqo_calculator/json_schema"]
-
