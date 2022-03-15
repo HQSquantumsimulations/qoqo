@@ -274,7 +274,7 @@ impl AllToAllDevice {
         self
     }
 
-    /// Function that allows to set the gate time  for the two-qubit-gate.
+    /// Function that allows to set the gate time for the two-qubit-gate.
     ///
     /// # Arguments
     ///
@@ -471,10 +471,16 @@ impl GenericGrid {
 
         let mut two_qubit_gate_map: HashMap<String, HashMap<(usize, usize), f64>> = HashMap::new();
         let mut empty_times: HashMap<(usize, usize), f64> = HashMap::new();
-        for qubit0 in 0..number_qubits {
-            for qubit1 in 0..number_qubits {
-                if qubit0 != qubit1 {
-                    empty_times.insert((qubit0, qubit1), 0.0);
+        for row in 0..(number_rows) {
+            for column in 0..(number_columns) {
+                let qubit = row * number_columns + column;
+                if column < number_columns - 1 {
+                    empty_times.insert((qubit, qubit + 1), 0.0);
+                    empty_times.insert((qubit + 1, qubit), 0.0);
+                }
+                if row < number_rows - 1 {
+                    empty_times.insert((qubit, qubit + number_columns), 0.0);
+                    empty_times.insert((qubit + number_columns, qubit), 0.0);
                 }
             }
         }
@@ -503,7 +509,7 @@ impl GenericGrid {
     ///
     /// # Returns
     ///
-    /// An GenericGrid with updated gate times.
+    /// A GenericGrid with updated gate times.
     ///
     pub fn set_all_single_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
         if self.single_qubit_gates.get(&gate.to_string()).is_some() {
@@ -524,7 +530,7 @@ impl GenericGrid {
     ///
     /// # Returns
     ///
-    /// An GenericGrid with updated decoherence rates.
+    /// A GenericGrid with updated decoherence rates.
     ///
     pub fn set_all_qubit_decoherence_rates(mut self, rates: Array2<f64>) -> Self {
         for qubit in 0..self.number_qubits {
@@ -533,7 +539,7 @@ impl GenericGrid {
         self
     }
 
-    /// Function that allows to set the gate time  for the two-qubit-gate.
+    /// Function that allows to set the gate time for the two-qubit-gate.
     ///
     /// # Arguments
     ///
@@ -542,15 +548,27 @@ impl GenericGrid {
     ///
     /// # Returns
     ///
-    /// An GenericGrid with updated gate times.
+    /// A GenericGrid with updated gate times.
     ///
     pub fn set_all_two_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
         if self.two_qubit_gate.get(&gate.to_string()).is_some() {
             let mut times: HashMap<(usize, usize), f64> = HashMap::new();
-            for qubit0 in 0..self.number_qubits {
-                for qubit1 in 0..self.number_qubits {
-                    if qubit0 != qubit1 {
-                        times.insert((qubit0, qubit1), gate_time);
+            // // TBD if two_qubit_edges can be used here instead??
+            // let edges = self.two_qubit_edges();
+            // for edge in edges {
+            //     times.insert(edge, gate_time);
+            //      times.insert((edge.1, edge.0), gate_time);
+            // }
+            for row in 0..(self.number_rows) {
+                for column in 0..(self.number_columns) {
+                    let qubit = row * self.number_columns + column;
+                    if column < self.number_columns - 1 {
+                        times.insert((qubit, qubit + 1), gate_time);
+                        times.insert((qubit + 1, qubit), gate_time);
+                    }
+                    if row < self.number_rows - 1 {
+                        times.insert((qubit, qubit + self.number_columns), gate_time);
+                        times.insert((qubit + self.number_columns, qubit), gate_time);
                     }
                 }
             }
@@ -699,12 +717,12 @@ impl Device for GenericGrid {
         let mut vector: Vec<(usize, usize)> = Vec::new();
         for row in 0..(self.number_rows) {
             for column in 0..(self.number_columns) {
-                let number_qubit = row * self.number_columns + column;
+                let qubit = row * self.number_columns + column;
                 if column < self.number_columns - 1 {
-                    vector.push((number_qubit, number_qubit + 1));
+                    vector.push((qubit, qubit + 1));
                 }
                 if row < self.number_rows - 1 {
-                    vector.push((number_qubit, number_qubit + self.number_columns));
+                    vector.push((qubit, qubit + self.number_columns));
                 }
             }
         }

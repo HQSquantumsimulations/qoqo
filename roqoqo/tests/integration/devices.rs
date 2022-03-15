@@ -211,7 +211,8 @@ fn alltoalldevice_new() {
     assert_eq!(device.single_qubit_gate_time("RotateY", &0), None);
 
     assert_eq!(device.two_qubit_gate_time("CNOT", &0, &1), Some(0.0));
-    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &3), None);
+    assert_eq!(device.two_qubit_gate_time("CNOT", &1, &0), Some(0.0));
+    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &number_qubits), None);
     assert_eq!(device.two_qubit_gate_time("CZ", &0, &1), None);
 
     assert_eq!(
@@ -244,6 +245,7 @@ fn test_alltoalldevice_settimes() {
     assert_eq!(device.single_qubit_gate_time("RotateZ", &0), Some(0.1f64));
 
     assert_eq!(device.two_qubit_gate_time("CNOT", &0, &1), Some(0.05f64));
+    assert_eq!(device.two_qubit_gate_time("CNOT", &1, &0), Some(0.05f64));
     assert_eq!(device.two_qubit_gate_time("CNOT", &0, &number_qubits), None);
     assert_eq!(device.two_qubit_gate_time("CZ", &0, &1), None);
 
@@ -294,6 +296,8 @@ fn genericgrid_new() {
     assert_eq!(device.single_qubit_gate_time("RotateY", &0), None);
 
     assert_eq!(device.two_qubit_gate_time("CNOT", &0, &1), Some(0.0));
+    assert_eq!(device.two_qubit_gate_time("CNOT", &1, &0), Some(0.0));
+    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &5), None);
     assert_eq!(device.two_qubit_gate_time("CNOT", &0, &number_qubits), None);
     assert_eq!(device.two_qubit_gate_time("CZ", &0, &1), None);
 
@@ -334,6 +338,8 @@ fn test_genericgrid_settimes() {
     assert_eq!(device.single_qubit_gate_time("RotateZ", &0), Some(0.1f64));
 
     assert_eq!(device.two_qubit_gate_time("CNOT", &0, &1), Some(0.05f64));
+    assert_eq!(device.two_qubit_gate_time("CNOT", &1, &0), Some(0.05f64));
+    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &3), None);
     assert_eq!(device.two_qubit_gate_time("CNOT", &0, &number_qubits), None);
     assert_eq!(device.two_qubit_gate_time("CZ", &0, &1), None);
 
