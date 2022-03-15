@@ -11,7 +11,7 @@
 // limitations under the License.
 
 use ndarray::{array, Array2};
-use roqoqo::devices::{AllToAllDevice, Device};
+use roqoqo::devices::{AllToAllDevice, Device, GenericGrid};
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -260,6 +260,92 @@ fn test_alltoalldevice_setattributes() {
     let two_qubit_gate = "CNOT".to_string();
     let mut device = AllToAllDevice::new(number_qubits, single_qubit_gates, two_qubit_gate);
 
+    let rates = array![[0.2], [0.3]];
+    device = device.set_all_qubit_decoherence_rates(rates.clone());
+    assert_eq!(device.qubit_decoherence_rates(&1), Some(rates));
+    assert_eq!(device.qubit_decoherence_rates(&number_qubits), None);
+
+    let test_edges = vec![(0, 1), (0, 2), (1, 2)];
+    let edges = device.two_qubit_edges();
+    assert_eq!(test_edges.len(), edges.len());
+    for edge in edges {
+        assert!(test_edges.contains(&edge));
+    }
+}
+
+/// Test new() function for GenericGrid
+#[test]
+fn genericgrid_new() {
+    let number_qubits = 3usize;
+    let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
+    let two_qubit_gate = "CNOT".to_string();
+    let device = GenericGrid::new(number_qubits, single_qubit_gates, two_qubit_gate);
+
+    // Test number of qubits
+    assert_eq!(device.number_qubits(), number_qubits);
+    // Test that available single-qubit-gate is initialized with gate time set to zero
+    assert_eq!(device.single_qubit_gate_time("RotateZ", &0), Some(0.0));
+    // Test that for non-available gates the returned gate time is Non
+    assert_eq!(device.single_qubit_gate_time("RotateY", &0), None);
+
+    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &1), Some(0.0));
+    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &3), None);
+    assert_eq!(device.two_qubit_gate_time("CZ", &0, &1), None);
+
+    assert_eq!(
+        device.multi_qubit_gate_time("MultiQubitMS", &[0, 1, 2]),
+        None,
+    );
+
+    let empty_rates = array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]];
+    assert_eq!(device.qubit_decoherence_rates(&0), Some(empty_rates));
+}
+
+/// Test set gate time functions for GenericGrid
+#[test]
+fn test_genericgrid_settimes() {
+    let number_rows = 3usize;
+    let number_columns = 4usize;
+    let number_qubits = number_rows * number_columns;
+    let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
+    let two_qubit_gate = "CNOT".to_string();
+    let mut device = GenericGrid::new(
+        number_rows, number_columns, single_qubit_gates, two_qubit_gate
+    );
+
+    device = device.set_all_single_qubit_gate_times(&"RotateX", 0.07);
+    device = device.set_all_single_qubit_gate_times(&"RotateZ", 0.1);
+
+    device = device.set_all_two_qubit_gate_times(&"CNOT", 0.05);
+
+    assert_eq!(device.single_qubit_gate_time("RotateX", &0), Some(0.07f64));
+    assert_eq!(
+        device.single_qubit_gate_time("RotateX", &number_qubits),
+        None
+    );
+    assert_eq!(device.single_qubit_gate_time("RotateZ", &0), Some(0.1f64));
+
+    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &1), Some(0.05f64));
+    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &3), None);
+    assert_eq!(device.two_qubit_gate_time("CZ", &0, &1), None);
+
+    assert_eq!(
+        device.multi_qubit_gate_time("MultiQubitMS", &[0, 1, 2]),
+        None,
+    );
+}
+
+// Test set decoherence and two_qubit_edges for GenericGrid
+#[test]
+fn test_genericgrid_setattributes() {
+    let number_rows = 3usize;
+    let number_columns = 4usize;
+    let number_qubits = number_rows * number_columns;
+    let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
+    let two_qubit_gate = "CNOT".to_string();
+    let mut device = GenericGrid::new(
+        number_rows, number_columns, single_qubit_gates, two_qubit_gate
+    );
     let rates = array![[0.2], [0.3]];
     device = device.set_all_qubit_decoherence_rates(rates.clone());
     assert_eq!(device.qubit_decoherence_rates(&1), Some(rates));
