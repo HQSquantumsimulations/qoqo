@@ -163,7 +163,7 @@ pub trait Device {
     /// # Returns
     ///
     /// Result of changing the device.
-    /// In case the device is not allowed to be change a generic RoqoqoBackendError is returned.
+    /// In case the device is not allowed to be changed a generic RoqoqoBackendError is returned.
     ///
     #[allow(unused_variables)]
     #[allow(unused_mut)]
