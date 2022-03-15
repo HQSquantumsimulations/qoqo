@@ -13,6 +13,7 @@
 use ndarray::{array, Array2};
 use roqoqo::devices::{AllToAllDevice, Device, GenericGrid};
 use std::collections::HashMap;
+use test_case::test_case;
 
 #[derive(Debug, Clone, PartialEq)]
 struct TestDevice {
@@ -243,7 +244,7 @@ fn test_alltoalldevice_settimes() {
     assert_eq!(device.single_qubit_gate_time("RotateZ", &0), Some(0.1f64));
 
     assert_eq!(device.two_qubit_gate_time("CNOT", &0, &1), Some(0.05f64));
-    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &3), None);
+    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &number_qubits), None);
     assert_eq!(device.two_qubit_gate_time("CZ", &0, &1), None);
 
     assert_eq!(
@@ -267,19 +268,23 @@ fn test_alltoalldevice_setattributes() {
 
     let test_edges = vec![(0, 1), (0, 2), (1, 2)];
     let edges = device.two_qubit_edges();
-    assert_eq!(test_edges.len(), edges.len());
-    for edge in edges {
-        assert!(test_edges.contains(&edge));
-    }
+    assert_eq!(test_edges, edges);
 }
 
 /// Test new() function for GenericGrid
 #[test]
 fn genericgrid_new() {
-    let number_qubits = 3usize;
+    let number_rows = 3usize;
+    let number_columns = 4usize;
+    let number_qubits = number_rows * number_columns;
     let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
     let two_qubit_gate = "CNOT".to_string();
-    let device = GenericGrid::new(number_qubits, single_qubit_gates, two_qubit_gate);
+    let device = GenericGrid::new(
+        number_rows,
+        number_columns,
+        single_qubit_gates,
+        two_qubit_gate,
+    );
 
     // Test number of qubits
     assert_eq!(device.number_qubits(), number_qubits);
@@ -289,7 +294,7 @@ fn genericgrid_new() {
     assert_eq!(device.single_qubit_gate_time("RotateY", &0), None);
 
     assert_eq!(device.two_qubit_gate_time("CNOT", &0, &1), Some(0.0));
-    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &3), None);
+    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &number_qubits), None);
     assert_eq!(device.two_qubit_gate_time("CZ", &0, &1), None);
 
     assert_eq!(
@@ -310,7 +315,10 @@ fn test_genericgrid_settimes() {
     let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
     let two_qubit_gate = "CNOT".to_string();
     let mut device = GenericGrid::new(
-        number_rows, number_columns, single_qubit_gates, two_qubit_gate
+        number_rows,
+        number_columns,
+        single_qubit_gates,
+        two_qubit_gate,
     );
 
     device = device.set_all_single_qubit_gate_times(&"RotateX", 0.07);
@@ -326,7 +334,7 @@ fn test_genericgrid_settimes() {
     assert_eq!(device.single_qubit_gate_time("RotateZ", &0), Some(0.1f64));
 
     assert_eq!(device.two_qubit_gate_time("CNOT", &0, &1), Some(0.05f64));
-    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &3), None);
+    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &number_qubits), None);
     assert_eq!(device.two_qubit_gate_time("CZ", &0, &1), None);
 
     assert_eq!(
@@ -344,17 +352,32 @@ fn test_genericgrid_setattributes() {
     let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
     let two_qubit_gate = "CNOT".to_string();
     let mut device = GenericGrid::new(
-        number_rows, number_columns, single_qubit_gates, two_qubit_gate
+        number_rows,
+        number_columns,
+        single_qubit_gates,
+        two_qubit_gate,
     );
     let rates = array![[0.2], [0.3]];
     device = device.set_all_qubit_decoherence_rates(rates.clone());
     assert_eq!(device.qubit_decoherence_rates(&1), Some(rates));
     assert_eq!(device.qubit_decoherence_rates(&number_qubits), None);
+}
 
-    let test_edges = vec![(0, 1), (0, 2), (1, 2)];
+// Test two_qubit_edges() for GenericGrid
+#[test_case(3, 4, vec![(0, 1), (0, 4), (1, 2), (1, 5), (2, 3), (2, 6), (3, 7), (4, 5), (4, 8), (5, 6), (5, 9), (6, 7), (6, 10), (7, 11), (8, 9), (9, 10), (10, 11)]; "3_4")]
+#[test_case(2, 3, vec![(0, 1),(0, 3),(1, 2),(1, 4),(2, 5), (3, 4), (4, 5)]; "2_3")]
+fn test_genericgrid_edges(rows: usize, columns: usize, test_edges: Vec<(usize, usize)>) {
+    let number_rows = rows;
+    let number_columns = columns;
+    let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
+    let two_qubit_gate = "CNOT".to_string();
+    let device = GenericGrid::new(
+        number_rows,
+        number_columns,
+        single_qubit_gates,
+        two_qubit_gate,
+    );
+
     let edges = device.two_qubit_edges();
-    assert_eq!(test_edges.len(), edges.len());
-    for edge in edges {
-        assert!(test_edges.contains(&edge));
-    }
+    assert_eq!(test_edges, edges);
 }

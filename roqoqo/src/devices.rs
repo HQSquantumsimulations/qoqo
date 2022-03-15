@@ -697,9 +697,15 @@ impl Device for GenericGrid {
     ///
     fn two_qubit_edges(&self) -> Vec<(usize, usize)> {
         let mut vector: Vec<(usize, usize)> = Vec::new();
-        for row in 0..self.number_qubits() {
-            for column in row + 1..self.number_qubits() {
-                vector.push((row, column));
+        for row in 0..(self.number_rows) {
+            for column in 0..(self.number_columns) {
+                let number_qubit = row * self.number_columns + column;
+                if column < self.number_columns - 1 {
+                    vector.push((number_qubit, number_qubit + 1));
+                }
+                if row < self.number_rows - 1 {
+                    vector.push((number_qubit, number_qubit + self.number_columns));
+                }
             }
         }
         vector
