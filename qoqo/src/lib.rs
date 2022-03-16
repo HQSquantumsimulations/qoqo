@@ -92,8 +92,9 @@ pub enum QoqoBackendError {
 /// .. autosummary::
 ///     :toctree: generated/
 ///
-///     Circuit
-///     QuantumProgram
+///     circuit
+///     devices
+///     quantumprogram
 ///     operations
 ///     measurements
 ///
@@ -101,6 +102,7 @@ pub enum QoqoBackendError {
 fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<CircuitWrapper>()?;
     module.add_class::<QuantumProgramWrapper>()?;
+    module.add_class::<GenericGridWrapper>()?;
     let wrapper = wrap_pymodule!(operations);
     module.add_wrapped(wrapper)?;
     let wrapper2 = wrap_pymodule!(measurements);
