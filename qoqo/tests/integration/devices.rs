@@ -68,3 +68,21 @@ fn test_number_qubits() {
         assert_eq!(number_qubits, number_rows * number_columns);
     })
 }
+
+/// Test copy and deepcopy
+#[test]
+fn test_copy_deepcopy() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| -> () {
+        let device = new_genericgrid(py);
+
+        let copy_dev = device.call_method0("__copy__").unwrap();
+        let copy_wrapper = copy_dev.extract::<GenericGridWrapper>().unwrap();
+        let deepcopy_dev = device.call_method1("__deepcopy__", ("",)).unwrap();
+        let deepcopy_wrapper = deepcopy_dev.extract::<GenericGridWrapper>().unwrap();
+
+        let device_wrapper = device.extract::<GenericGridWrapper>().unwrap();
+        assert_eq!(device_wrapper, copy_wrapper);
+        assert_eq!(device_wrapper, deepcopy_wrapper);
+    });
+}
