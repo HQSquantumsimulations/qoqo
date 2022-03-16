@@ -1,0 +1,70 @@
+// Copyright © 2021 HQS Quantum Simulations GmbH. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+// in compliance with the License. You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software distributed under the
+// License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+// express or implied. See the License for the specific language governing permissions and
+// limitations under the License.
+
+use pyo3::prelude::*;
+use qoqo::GenericGridWrapper;
+// use roqoqo::devices::GenericGrid;
+// use test_case::test_case;
+
+// helper functions
+fn new_genericgrid(py: Python) -> &PyCell<GenericGridWrapper> {
+    // test parameters
+    let number_rows: u32 = 3;
+    let number_columns: u32 = 4;
+    let single_qubit_gates = ["RotateZ".to_string(), "RotateX".to_string()];
+    let two_qubit_gate = "CNOT".to_string();
+    let arguments = (
+        number_rows,
+        number_columns,
+        single_qubit_gates,
+        two_qubit_gate,
+    );
+    let device_type = py.get_type::<GenericGridWrapper>();
+    device_type
+        .call1(arguments)
+        .unwrap()
+        .cast_as::<PyCell<GenericGridWrapper>>()
+        .unwrap()
+}
+
+// Test number_qubits()
+#[test]
+fn test_number_qubits() {
+    // test parameters
+    let number_rows: usize = 3;
+    let number_columns: usize = 4;
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let device = new_genericgrid(py);
+
+        let number_rows_get = device
+            .call_method0("number_rows")
+            .unwrap()
+            .extract::<usize>()
+            .unwrap();
+        assert_eq!(number_rows_get, number_rows);
+
+        let number_columns_get = device
+            .call_method0("number_columns")
+            .unwrap()
+            .extract::<usize>()
+            .unwrap();
+        assert_eq!(number_columns_get, number_columns);
+
+        let number_qubits = device
+            .call_method0("number_qubits")
+            .unwrap()
+            .extract::<usize>()
+            .unwrap();
+        assert_eq!(number_qubits, number_rows * number_columns);
+    })
+}
