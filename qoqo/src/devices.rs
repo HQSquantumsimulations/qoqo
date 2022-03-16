@@ -18,7 +18,7 @@ use pyo3::exceptions::{PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::{PyByteArray, PyType};
 use roqoqo::devices::{Device, GenericGrid};
-use ndarray::Array2;
+// use ndarray::Array2;
 
 /// A generic 2D Grid Device with only next-neighbours-connectivity.
 ///
@@ -58,7 +58,7 @@ impl GenericGridWrapper {
                 number_columns,
                 &single_qubit_gates,
                 two_qubit_gate,
-            )
+            ),
         })
     }
 
@@ -211,9 +211,6 @@ impl GenericGridWrapper {
     // fn qubit_decoherence_rates(&self, qubit: usize) -> Option<Array2<f64>> {
     //     self.internal.qubit_decoherence_rates(&qubit)
     // }
-    fn qubit_decoherence_rates(&self, qubit: usize) -> Option<Vec<Vec<f64>>> {
-        self.internal.qubit_decoherence_rates(&qubit)
-    }
 
     /// Returns the gate time of a single qubit operation if the single qubit operation is available on device.
     ///
@@ -241,7 +238,8 @@ impl GenericGridWrapper {
     ///                      Or None if the gate is not available on the device.
     ///
     fn two_qubit_gate_time(&self, hqslang: &str, control: usize, target: usize) -> Option<f64> {
-        self.internal.two_qubit_gate_time(hqslang, &control, &target)
+        self.internal
+            .two_qubit_gate_time(hqslang, &control, &target)
     }
 
     /// Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
