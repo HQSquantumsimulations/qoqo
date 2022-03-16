@@ -29,6 +29,9 @@ use operations::*;
 pub mod measurements;
 use measurements::*;
 
+pub mod devices;
+use devices::*;
+
 mod circuit;
 pub use circuit::{convert_into_circuit, CircuitWrapper, OperationIteratorWrapper};
 

@@ -430,6 +430,7 @@ impl Device for AllToAllDevice {
 /// A generic 2D Grid Device with only next-neighbours-connectivity.
 ///
 #[derive(Debug, Clone, PartialEq)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericGrid {
     number_rows: usize,
     number_columns: usize,
@@ -614,8 +615,6 @@ impl Device for GenericGrid {
     }
 
     /// Returns the gate time of a single qubit operation if the single qubit operation is available on device.
-    ///
-    /// The base assumption
     ///
     /// # Arguments
     ///
