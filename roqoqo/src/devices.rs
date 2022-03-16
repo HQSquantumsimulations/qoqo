@@ -429,8 +429,7 @@ impl Device for AllToAllDevice {
 
 /// A generic 2D Grid Device with only next-neighbours-connectivity.
 ///
-#[derive(Debug, Clone, PartialEq)]
-#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct GenericGrid {
     number_rows: usize,
     number_columns: usize,
