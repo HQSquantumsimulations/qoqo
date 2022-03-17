@@ -75,7 +75,7 @@ fn measure_qubit_operate_trait() {
     assert_eq!(measure.hqslang(), String::from("MeasureQubit"));
 
     // (3) Test is_parametrized function
-    assert_eq!(measure.is_parametrized(), false);
+    assert!(!measure.is_parametrized());
 }
 
 /// Test MeasureQubit Substitute trait
@@ -204,7 +204,7 @@ fn pragma_get_statevector_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaGetStateVector"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaGetStateVector Substitute trait
@@ -232,7 +232,7 @@ fn pragma_get_statevector_substitute_trait() {
     // (2) Remap qubits function with an empty circuit
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
-    let result = pragma.clone().remap_qubits(&qubit_mapping_test).unwrap();
+    let result = pragma.remap_qubits(&qubit_mapping_test).unwrap();
     let test_gate = PragmaGetStateVector::new(String::from("ro"), None);
     assert_eq!(result, test_gate);
 
@@ -365,7 +365,7 @@ fn pragma_get_density_matrix_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaGetDensityMatrix"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaGetDensityMatrix Substitute trait
@@ -530,7 +530,7 @@ fn pragma_get_occupation_probability_operate_trait() {
     );
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaGetOccupationProbability Substitute trait
@@ -668,7 +668,7 @@ fn pragma_get_pauli_product_simple_traits() {
     // Test Debug trait
     assert_eq!(
         format!("{:?}", pragma),
-        "PragmaGetPauliProduct { qubit_paulis: {0: 1}, readout: \"ro\", circuit: Circuit { definitions: [], operations: [] } }"
+        "PragmaGetPauliProduct { qubit_paulis: {0: 1}, readout: \"ro\", circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"
     );
 
     // Test Clone trait
@@ -709,7 +709,7 @@ fn pragma_get_pauli_product_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaGetPauliProduct"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaGetPauliProduct Substitute trait
@@ -763,6 +763,22 @@ fn pragma_get_pauli_product_serde_readable() {
     qubit_paulis.insert(0, 1);
     let pragma_serialization =
         PragmaGetPauliProduct::new(qubit_paulis.clone(), String::from("ro"), Circuit::default());
+    use roqoqo::ROQOQO_VERSION;
+    use std::str::FromStr;
+    let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+    let major_version = u32::from_str(
+        rsplit
+            .next()
+            .expect("Internal error: Version not conforming to semver"),
+    )
+    .expect("Internal error: Major version is not unsigned integer.");
+    let minor_version = u32::from_str(
+        rsplit
+            .next()
+            .expect("Internal error: Version not conforming to semver"),
+    )
+    .expect("Internal error: Minor version is not unsigned integer.");
+
     assert_tokens(
         &pragma_serialization.readable(),
         &[
@@ -780,7 +796,7 @@ fn pragma_get_pauli_product_serde_readable() {
             Token::Str("circuit"),
             Token::Struct {
                 name: "Circuit",
-                len: 2,
+                len: 3,
             },
             Token::Str("definitions"),
             Token::Seq { len: Some(0) },
@@ -788,6 +804,16 @@ fn pragma_get_pauli_product_serde_readable() {
             Token::Str("operations"),
             Token::Seq { len: Some(0) },
             Token::SeqEnd,
+            Token::Str("_roqoqo_version"),
+            Token::Struct {
+                name: "RoqoqoVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(major_version),
+            Token::Str("minor_version"),
+            Token::U32(minor_version),
+            Token::StructEnd,
             Token::StructEnd,
             Token::StructEnd,
         ],
@@ -802,6 +828,22 @@ fn pragma_get_pauli_product_serde_compact() {
     qubit_paulis.insert(0, 1);
     let pragma_serialization =
         PragmaGetPauliProduct::new(qubit_paulis.clone(), String::from("ro"), Circuit::default());
+    use roqoqo::ROQOQO_VERSION;
+    use std::str::FromStr;
+    let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+    let major_version = u32::from_str(
+        rsplit
+            .next()
+            .expect("Internal error: Version not conforming to semver"),
+    )
+    .expect("Internal error: Major version is not unsigned integer.");
+    let minor_version = u32::from_str(
+        rsplit
+            .next()
+            .expect("Internal error: Version not conforming to semver"),
+    )
+    .expect("Internal error: Minor version is not unsigned integer.");
+
     assert_tokens(
         &pragma_serialization.compact(),
         &[
@@ -819,7 +861,7 @@ fn pragma_get_pauli_product_serde_compact() {
             Token::Str("circuit"),
             Token::Struct {
                 name: "Circuit",
-                len: 2,
+                len: 3,
             },
             Token::Str("definitions"),
             Token::Seq { len: Some(0) },
@@ -827,6 +869,16 @@ fn pragma_get_pauli_product_serde_compact() {
             Token::Str("operations"),
             Token::Seq { len: Some(0) },
             Token::SeqEnd,
+            Token::Str("_roqoqo_version"),
+            Token::Struct {
+                name: "RoqoqoVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(major_version),
+            Token::Str("minor_version"),
+            Token::U32(minor_version),
+            Token::StructEnd,
             Token::StructEnd,
             Token::StructEnd,
         ],
@@ -896,7 +948,7 @@ fn pragma_repeated_measurement_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaRepeatedMeasurement"));
 
     // (3) Test is_parametrized function
-    assert_eq!(pragma.is_parametrized(), false);
+    assert!(!pragma.is_parametrized());
 }
 
 /// Test PragmaRepeatedMeasurement Substitute trait
@@ -937,7 +989,7 @@ fn pragma_repeated_measurement_serde_readable() {
         PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(qubit_mapping.clone()));
 
     assert_tokens(
-        &pragma_serialization.clone().readable(),
+        &pragma_serialization.readable(),
         &[
             Token::Struct {
                 name: "PragmaRepeatedMeasurement",

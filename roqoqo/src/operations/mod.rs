@@ -25,7 +25,7 @@ use crate::RoqoqoError;
 use dyn_clone::DynClone;
 use ndarray::Array2;
 use num_complex::Complex64;
-use qoqo_calculator::{Calculator, CalculatorComplex, CalculatorFloat};
+use qoqo_calculator::CalculatorFloat;
 use roqoqo_derive::*;
 use std::collections::{HashMap, HashSet};
 /// Collection of roqoqo definition operations.
@@ -187,7 +187,10 @@ where
     Self: Sized,
 {
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError>;
+    fn substitute_parameters(
+        &self,
+        calculator: &mut qoqo_calculator::Calculator,
+    ) -> Result<Self, RoqoqoError>;
     /// Remaps the qubits in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError>;
 }
@@ -198,7 +201,7 @@ pub trait SubstituteDyn {
     /// Substitute parameters in symbolic expression in clone of operation.
     fn substitute_parameters_dyn(
         &self,
-        calculator: &mut Calculator,
+        calculator: &mut qoqo_calculator::Calculator,
     ) -> Result<Box<dyn Operate>, RoqoqoError>;
     /// Remap qubits in operations in clone of operation.
     fn remap_qubits_dyn(
@@ -215,7 +218,7 @@ where
     /// Substitute symbolic parameters in boxed clone of operation.
     fn substitute_parameters_dyn(
         &self,
-        calculator: &mut Calculator,
+        calculator: &mut qoqo_calculator::Calculator,
     ) -> Result<Box<dyn Operate>, RoqoqoError> {
         Ok(Box::new(Substitute::substitute_parameters(
             self, calculator,
@@ -317,7 +320,7 @@ pub trait OperatePragmaNoise:
     /// Returns superoperator matrix of the Operation.
     fn superoperator(&self) -> Result<Array2<f64>, RoqoqoError>;
     /// Returns the gate to the power of `power`.
-    fn powercf(&self, power: CalculatorFloat) -> Self;
+    fn powercf(&self, power: qoqo_calculator::CalculatorFloat) -> Self;
 }
 
 /// Trait for PRAGMA Operations that are not necessary available on all universal quantum hardware, that indicate noise.
@@ -559,20 +562,66 @@ pub trait OperateSingleQubitGate:
                 oqubit: *other.qubit(),
             });
         }
-        let alpha = CalculatorComplex::new(self.alpha_r(), self.alpha_i());
-        let beta = CalculatorComplex::new(self.beta_r(), self.beta_i());
-        let oalpha = CalculatorComplex::new(other.alpha_r(), other.alpha_i());
-        let obeta = CalculatorComplex::new(other.beta_r(), other.beta_i());
+        let alpha = qoqo_calculator::CalculatorComplex::new(self.alpha_r(), self.alpha_i());
+        let beta = qoqo_calculator::CalculatorComplex::new(self.beta_r(), self.beta_i());
+        let oalpha = qoqo_calculator::CalculatorComplex::new(other.alpha_r(), other.alpha_i());
+        let obeta = qoqo_calculator::CalculatorComplex::new(other.beta_r(), other.beta_i());
         let new_alpha = alpha.clone() * &oalpha - beta.conj() * &obeta;
         let new_beta = beta * oalpha + obeta * alpha.conj();
-        Ok(SingleQubitGate::new(
-            *other.qubit(),
-            new_alpha.re,
-            new_alpha.im,
-            new_beta.re,
-            new_beta.im,
-            self.global_phase() + other.global_phase(),
-        ))
+
+        if new_alpha.re.is_float()
+            && new_alpha.im.is_float()
+            && new_beta.re.is_float()
+            && new_beta.im.is_float()
+        {
+            let norm = (new_alpha.re.float().unwrap().powf(2.0)
+                + new_alpha.im.float().unwrap().powf(2.0)
+                + new_beta.re.float().unwrap().powf(2.0)
+                + new_beta.im.float().unwrap().powf(2.0))
+            .sqrt();
+
+            if (norm - 1.0).abs() > f64::EPSILON {
+                Ok(SingleQubitGate::new(
+                    *other.qubit(),
+                    new_alpha.re / norm,
+                    new_alpha.im / norm,
+                    new_beta.re / norm,
+                    new_beta.im / norm,
+                    self.global_phase() + other.global_phase(),
+                ))
+            } else {
+                Ok(SingleQubitGate::new(
+                    *other.qubit(),
+                    new_alpha.re,
+                    new_alpha.im,
+                    new_beta.re,
+                    new_beta.im,
+                    self.global_phase() + other.global_phase(),
+                ))
+            }
+        } else {
+            Ok(SingleQubitGate::new(
+                *other.qubit(),
+                new_alpha.re,
+                new_alpha.im,
+                new_beta.re,
+                new_beta.im,
+                self.global_phase() + other.global_phase(),
+            ))
+        }
+    }
+    /// Returns equivalent SingleQubitGate.
+    ///
+    /// Converts Operation implementing OperateSingleQubitGate Trait into SingleQubitGate.
+    fn to_single_qubit_gate(&self) -> SingleQubitGate {
+        SingleQubitGate::new(
+            *self.qubit(),
+            self.alpha_r(),
+            self.alpha_i(),
+            self.beta_r(),
+            self.beta_i(),
+            self.global_phase(),
+        )
     }
 }
 
@@ -663,7 +712,10 @@ impl InvolveQubits for DynOperation {
 #[cfg(feature = "dynamic")]
 /// Implements [Substitute] trait allowing to replace symbolic parameters and to perform qubit mappings.
 impl Substitute for DynOperation {
-    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(
+        &self,
+        calculator: &mut qoqo_calculator::Calculator,
+    ) -> Result<Self, RoqoqoError> {
         Ok(DynOperation(self.0.substitute_parameters_dyn(calculator)?))
     }
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {

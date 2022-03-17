@@ -17,6 +17,7 @@ use serde::{Deserialize, Serialize};
 
 /// Collected information for executing a cheated basis rotation measurement.
 #[derive(Debug, PartialEq, Clone)]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
 pub struct CheatedBasisRotation {
     /// Constant Circuit that is executed before each Circuit in circuits.

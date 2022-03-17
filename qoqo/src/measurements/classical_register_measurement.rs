@@ -79,6 +79,14 @@ impl ClassicalRegisterWrapper {
             .map(|c| CircuitWrapper { internal: c })
     }
 
+    /// Returns the type of the measurement in string form.
+    ///
+    /// Returns:
+    ///    str: The type of the measurement.
+    pub fn measurement_type(&self) -> &'static str {
+        "ClassicalRegister"
+    }
+
     /// Return copy of Measurement with symbolic parameters replaced.
     ///
     /// Args:

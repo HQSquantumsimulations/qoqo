@@ -40,6 +40,7 @@ use serde::{Deserialize, Serialize};
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct MultiQubitMS {
     /// The qubits involved in the multi qubit Molmer-Sorensen gate.
     qubits: Vec<usize>,
@@ -176,6 +177,7 @@ impl OperateMultiQubitGate for MultiCNOT {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct MultiQubitZZ {
     /// The qubits involved in the multi qubit Molmer-Sorensen gate.
     qubits: Vec<usize>,
