@@ -243,6 +243,35 @@ pub fn wrap(
             pub fn beta_i(&self) -> CalculatorFloatWrapper{
                 CalculatorFloatWrapper{cf_internal: self.internal.beta_i().clone()}
             }
+
+            /// Multiplies two compatible operations implementing OperateSingleQubitGate.
+            ///
+            /// Does not consume the two operations being multiplied.
+            /// Only Operations
+            ///
+            /// # Arguments:
+            ///
+            /// * `other` - An Operation implementing [OperateSingleQubitGate].
+            ///
+            /// # Example
+            /// ```
+            /// from qoqo.operations import RotateZ, RotateX
+            /// from qoqo_calculator import CalculatorFloat
+            ///
+            /// gate1 =  RotateZ(qubit=0, theta=1)
+            /// Gate2 = RotateX(qubit=0, theta=1)
+            /// multiplied = gate1.mul(gate2)
+            /// ```
+            // DRAFT. Does not build!
+            // pub fn mul(&self, other: Py<PyAny>) -> PyResult<Self> {
+            //     Python::with_gil(|py| -> PyResult<Self> {
+            //         let other_ref = other.as_ref(py);
+            //         let other: Operation = crate::operations::convert_pyany_to_operation(other_ref).map_err(|x| {
+            //             pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
+            //         })?;
+            //         Ok(self.internal.mul(&other).unwrap())
+            //     })
+            // }
         }
     } else {
         TokenStream::new()
