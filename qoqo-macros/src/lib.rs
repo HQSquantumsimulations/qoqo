@@ -269,7 +269,15 @@ pub fn wrap(
             //         let other: Operation = crate::operations::convert_pyany_to_operation(other_ref).map_err(|x| {
             //             pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
             //         })?;
-            //         Ok(self.internal.mul(&other).unwrap())
+            //         let other_converted: SingleQubitGateOperation = other.clone().try_into().unwrap();
+            //         let operation: SingleQubitGateOperation = self.internal.clone().try_into().unwrap();
+            //         // Ok(operation.mul(&other_converted).unwrap())
+            //         let multiplied = operation.mul(&other_converted).unwrap();
+            //         let multiplied_py = convert_operation_to_pyobject(multiplied);
+            //         let operation = multiplied_py.cast_as::<Self>().unwrap();
+            //         Ok(operation)
+            //         //Ok(Self { internal: operation.mul(&other_converted).unwrap()})
+            //         //Ok(self.internal.mul(&other_converted).unwrap())
             //     })
             // }
         }
