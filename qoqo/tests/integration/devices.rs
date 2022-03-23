@@ -121,23 +121,23 @@ fn test_to_from_json() {
     Python::with_gil(|py| -> () {
         let device = new_genericgrid(py);
 
-        let serialised = device.call_method0("to_json");
-        assert!(serialised.is_err()); // TBD: why??
-                                      // let new = device.clone();
-                                      // let deserialised = new.call_method1("from_json", (serialised,)).unwrap();
+        let serialised = device.call_method0("to_json").unwrap();
+        // assert!(serialised.is_err()); // TBD: why??
+        let new = device.clone();
+        let deserialised = new.call_method1("from_json", (serialised,)).unwrap();
 
-        // let vec: Vec<u8> = Vec::new();
-        // let deserialised_error = new.call_method1("from_json", (vec,));
-        // assert!(deserialised_error.is_err());
+        let vec: Vec<u8> = Vec::new();
+        let deserialised_error = new.call_method1("from_json", (vec,));
+        assert!(deserialised_error.is_err());
 
-        // let deserialised_error = deserialised.call_method0("from_json");
-        // assert!(deserialised_error.is_err());
+        let deserialised_error = deserialised.call_method0("from_json");
+        assert!(deserialised_error.is_err());
 
-        // let serialised_error = serialised.call_method0("to_json");
-        // assert!(serialised_error.is_err());
+        let serialised_error = serialised.call_method0("to_json");
+        assert!(serialised_error.is_err());
 
-        // let serde_wrapper = deserialised.extract::<GenericGridWrapper>().unwrap();
-        // let device_wrapper = device.extract::<GenericGridWrapper>().unwrap();
-        // assert_eq!(device_wrapper, serde_wrapper);
+        let serde_wrapper = deserialised.extract::<GenericGridWrapper>().unwrap();
+        let device_wrapper = device.extract::<GenericGridWrapper>().unwrap();
+        assert_eq!(device_wrapper, serde_wrapper);
     });
 }

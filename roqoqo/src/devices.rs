@@ -301,6 +301,7 @@ impl AllToAllDevice {
     }
 }
 
+
 /// Implements Device trait for AllToAllDevice.
 ///
 /// The Device trait defines standard functions available for roqoqo devices.
@@ -426,6 +427,7 @@ impl Device for AllToAllDevice {
         vector
     }
 }
+
 
 /// A generic 2D Grid Device with only next-neighbours-connectivity.
 ///

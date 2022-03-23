@@ -127,7 +127,7 @@ impl GenericGridWrapper {
     ///     ValueError: Cannot serialize GenericGrid to json.
     fn to_json(&self) -> PyResult<String> {
         let serialized = serde_json::to_string(&self.internal)
-            .map_err(|_| PyValueError::new_err("Cannot serialize GenericGrid to json"))?;
+            .map_err(|err| PyValueError::new_err(format!("Cannot serialize GenericGrid to json {:?}", err)))?;
         Ok(serialized)
     }
 
