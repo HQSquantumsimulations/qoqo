@@ -263,23 +263,19 @@ pub fn wrap(
             /// multiplied = gate1.mul(gate2)
             /// ```
             // DRAFT. Does not build!
-            // pub fn mul(&self, other: Py<PyAny>) -> PyResult<Self> {
-            //     Python::with_gil(|py| -> PyResult<Self> {
-            //         let other_ref = other.as_ref(py);
-            //         let other: Operation = crate::operations::convert_pyany_to_operation(other_ref).map_err(|x| {
-            //             pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
-            //         })?;
-            //         let other_converted: SingleQubitGateOperation = other.clone().try_into().unwrap();
-            //         let operation: SingleQubitGateOperation = self.internal.clone().try_into().unwrap();
-            //         // Ok(operation.mul(&other_converted).unwrap())
-            //         let multiplied = operation.mul(&other_converted).unwrap();
-            //         let multiplied_py = convert_operation_to_pyobject(multiplied);
-            //         let operation = multiplied_py.cast_as::<Self>().unwrap();
-            //         Ok(operation)
-            //         //Ok(Self { internal: operation.mul(&other_converted).unwrap()})
-            //         //Ok(self.internal.mul(&other_converted).unwrap())
-            //     })
-            // }
+            pub fn mul(&self, other: Py<PyAny>) -> PyResult<SingleQubitGateWrapper> {
+                Python::with_gil(|py| -> PyResult<SingleQubitGateWrapper> {
+                    let other_ref = other.as_ref(py);
+                    let other: Operation = crate::operations::convert_pyany_to_operation(other_ref).map_err(|x| {
+                        pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
+                    })?;
+                    let other_converted: SingleQubitGateOperation = other.clone().try_into().unwrap(); /// replace unwrap
+                    let multiplied = self.internal.mul(&other_converted).map_err(|x| {
+                        pyo3::exceptions::PyRuntimeError::new_err(format!("Multiplication failed {:?}",x))
+                    })?;
+                    Ok(SingleQubitGateWrapper{ internal: multiplied})
+                })
+            }
         }
     } else {
         TokenStream::new()
