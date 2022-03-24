@@ -2010,7 +2010,7 @@ fn test_pyo3_rotate_powercf(first_op: Operation, second_op: Operation) {
 fn test_pyo3_mul(gate1: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let gate2: Operation =  Operation::from(SingleQubitGate::new(
+        let gate2: Operation = Operation::from(SingleQubitGate::new(
             1,
             1.0.into(),
             0.0.into(),
@@ -2043,7 +2043,7 @@ fn test_pyo3_mul(gate1: Operation) {
 fn test_pyo3_mul_error1(gate1: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let alpha_r = CalculatorFloat::from(PI/2.0);
+        let alpha_r = CalculatorFloat::from(PI / 2.0);
         let input_cf = convert_cf_to_pyobject(py, alpha_r);
 
         let operation = convert_operation_to_pyobject(gate1.clone()).unwrap();
@@ -2079,8 +2079,6 @@ fn test_pyo3_mul_error2(gate1: Operation) {
     })
 }
 
-
-
 #[test_case(Operation::from(PauliX::new(1)); "PauliX")]
 #[test_case(Operation::from(PauliY::new(1)); "PauliY")]
 #[test_case(Operation::from(PauliZ::new(1)); "PauliZ")]
@@ -2097,7 +2095,7 @@ fn test_pyo3_mul_error2(gate1: Operation) {
 fn test_pyo3_mul_error3(gate1: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let gate2: Operation =  Operation::from(SingleQubitGate::new(
+        let gate2: Operation = Operation::from(SingleQubitGate::new(
             0,
             1.0.into(),
             0.0.into(),
