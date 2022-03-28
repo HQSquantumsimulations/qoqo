@@ -189,7 +189,7 @@ where
     /// Substitutes symbolic parameters in clone of the operation.
     fn substitute_parameters(
         &self,
-        calculator: &mut qoqo_calculator::Calculator,
+        calculator: &qoqo_calculator::Calculator,
     ) -> Result<Self, RoqoqoError>;
     /// Remaps the qubits in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError>;
@@ -201,7 +201,7 @@ pub trait SubstituteDyn {
     /// Substitute parameters in symbolic expression in clone of operation.
     fn substitute_parameters_dyn(
         &self,
-        calculator: &mut qoqo_calculator::Calculator,
+        calculator: &qoqo_calculator::Calculator,
     ) -> Result<Box<dyn Operate>, RoqoqoError>;
     /// Remap qubits in operations in clone of operation.
     fn remap_qubits_dyn(
@@ -218,7 +218,7 @@ where
     /// Substitute symbolic parameters in boxed clone of operation.
     fn substitute_parameters_dyn(
         &self,
-        calculator: &mut qoqo_calculator::Calculator,
+        calculator: &qoqo_calculator::Calculator,
     ) -> Result<Box<dyn Operate>, RoqoqoError> {
         Ok(Box::new(Substitute::substitute_parameters(
             self, calculator,
@@ -714,7 +714,7 @@ impl InvolveQubits for DynOperation {
 impl Substitute for DynOperation {
     fn substitute_parameters(
         &self,
-        calculator: &mut qoqo_calculator::Calculator,
+        calculator: &qoqo_calculator::Calculator,
     ) -> Result<Self, RoqoqoError> {
         Ok(DynOperation(self.0.substitute_parameters_dyn(calculator)?))
     }

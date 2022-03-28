@@ -68,7 +68,7 @@ impl Measure for BasisRotation {
         }
         let new_constant_circuit = match &self.constant_circuit {
             None => None,
-            Some(c) => Some(c.substitute_parameters(&mut calculator)?),
+            Some(c) => Some(c.substitute_parameters(&calculator)?),
         };
         let mut new_circuits = Vec::new();
         for circ in self.circuits.iter() {
@@ -76,7 +76,7 @@ impl Measure for BasisRotation {
             for (name, val) in substituted_parameters.iter() {
                 calculator.set_variable(name, *val)
             }
-            new_circuits.push(circ.substitute_parameters(&mut calculator)?)
+            new_circuits.push(circ.substitute_parameters(&calculator)?)
         }
         Ok(Self {
             constant_circuit: new_constant_circuit,

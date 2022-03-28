@@ -414,13 +414,10 @@ pub fn wrap(
             fn __format__(&self, _format_spec: &str) -> PyResult<String> {
                 Ok(format!("{:?}", self.internal))
             }
-    }
-        #[pyproto]
-        impl PyObjectProtocol for #wrapper_ident {
+
             fn __repr__(&self) -> PyResult<String> {
                 Ok(format!("{:?}", self.internal))
             }
-
 
 
             /// Returns the __richcmp__ magic method to perform rich comparison

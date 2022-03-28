@@ -956,7 +956,7 @@ fn test_singlequbitgates_unitarity(gate: SingleQubitGateOperation) {
 /// Test RotateX substitute parameters
 #[test]
 fn test_rotatex_substitute_parameters() {
-    //fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError>;
+    //fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError>;
     //fn is_parametrized(&self) -> bool;
     let gate: RotateX = RotateX::new(0, CalculatorFloat::from("theta"));
     assert_eq!(gate.theta().clone(), CalculatorFloat::from("theta"));
