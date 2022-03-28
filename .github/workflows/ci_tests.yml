@@ -68,7 +68,7 @@ jobs:
           python-version: ${{ matrix.python.py }}
       - run: |
           python -m pip install numpy
-          cargo test --workspace --no-default-features --locked
+          cargo test --workspace --no-default-features
           cargo fmt --all -- --check
 
   test_maturin_builds_linux_windows:
@@ -256,7 +256,6 @@ jobs:
           default: true
       - run: |
           cargo test --doc --package=roqoqo
-#       cargo test --doc --package=roqoqo --locked
 
   code_coverage_roqoqo:
     runs-on: ubuntu-latest
@@ -271,7 +270,7 @@ jobs:
           rustup component add llvm-tools-preview
           export RUSTFLAGS="-Zinstrument-coverage"
           export RUSTDOCFLAGS="-Zinstrument-coverage"
-          cargo build --verbose --locked
+          cargo build --verbose
           LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo +nightly test --package=roqoqo --no-default-features
           cd roqoqo/
           cargo install grcov
@@ -300,7 +299,7 @@ jobs:
           export RUSTFLAGS="-Zinstrument-coverage"
           export RUSTDOCFLAGS="-Zinstrument-coverage"
           python -m pip install numpy
-          cargo build --verbose --locked
+          cargo build --verbose
           LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo +nightly test --workspace --package=qoqo --no-default-features
           cd qoqo/
           cargo install grcov
