@@ -21,7 +21,6 @@ use pyo3::exceptions::{PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
 use pyo3::types::PyType;
-use pyo3::PyObjectProtocol;
 use roqoqo::measurements;
 use roqoqo::measurements::Measure;
 use roqoqo::QuantumProgram;
@@ -390,10 +389,7 @@ impl QuantumProgramWrapper {
             })?,
         })
     }
-}
 
-#[pyproto]
-impl PyObjectProtocol for QuantumProgramWrapper {
     /// Return the __richcmp__ magic method to perform rich comparison operations on QuantumProgram.
     ///
     /// Args:

@@ -217,7 +217,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             for (key, val) in substitution_parameters.iter(){
                 calculator.set_variable(key, *val);
             }
-            Ok(Self{internal: self.internal.substitute_parameters(&mut calculator).map_err(|x| {
+            Ok(Self{internal: self.internal.substitute_parameters(&calculator).map_err(|x| {
                 pyo3::exceptions::PyRuntimeError::new_err(format!("Parameter Substitution failed: {:?}", x))
             })?})
         }
