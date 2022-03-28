@@ -446,7 +446,7 @@ impl Substitute for PragmaStartDecompositionBlock {
     }
 
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, _calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(&self, _calculator: &Calculator) -> Result<Self, RoqoqoError> {
         Ok(self.clone())
     }
 }
@@ -991,7 +991,7 @@ impl Substitute for PragmaConditional {
     }
 
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
         let new_circuit = self.circuit.substitute_parameters(calculator).unwrap();
         Ok(PragmaConditional::new(
             self.condition_register.clone(),
@@ -1080,7 +1080,7 @@ impl Substitute for PragmaChangeDevice {
 
     #[allow(unused_variables)]
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
         Ok(self.clone())
     }
 }

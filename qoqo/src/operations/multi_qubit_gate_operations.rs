@@ -16,7 +16,6 @@ use numpy::{PyArray2, ToPyArray};
 use pyo3::exceptions::{PyRuntimeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PySet;
-use pyo3::PyObjectProtocol;
 use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::convert_into_calculator_float;
 use qoqo_calculator_pyo3::CalculatorFloatWrapper;
