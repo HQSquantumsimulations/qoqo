@@ -50,16 +50,16 @@ use crate::{
 /// # Example
 /// ```
 /// // We want to run a measurement for the following expectation value: 3 + 4.0 * < Z0 >.
-/// use roqoqo::{measurements::{BasisRotation, BasisRotationInput, Measure}, registers::BitOutputRegister, Circuit};
+/// use roqoqo::{measurements::{PauliZProduct, PauliZProductInput, Measure}, registers::BitOutputRegister, Circuit};
 /// use roqoqo::operations::RotateX;
 /// use std::collections::HashMap;
 ///
-/// // 1) Initialize our measurement input BasisRotationInput for the BasisRotation measurement
-/// let mut bri = BasisRotationInput::new(3, false);
+/// // 1) Initialize our measurement input PauliZProductInput for the PauliZProduct measurement
+/// let mut bri = PauliZProductInput::new(3, false);
 ///
 /// // 2) Add the pauli products to the input
-/// let _a = bri.add_pauli_product("ro".to_string(), vec![]);
-/// let _b = bri.add_pauli_product("ro".to_string(), vec![0]);
+/// let _a = bri.add_pauliz_product("ro".to_string(), vec![]);
+/// let _b = bri.add_pauliz_product("ro".to_string(), vec![0]);
 ///
 /// // 3) Add corresponding linear definition of expectation values
 /// let mut linear_map_0: HashMap<usize, f64> = HashMap::new();
@@ -69,15 +69,15 @@ use crate::{
 /// linear_map_1.insert(1, 4.0);
 /// bri.add_linear_exp_val("single_qubit_exp_val".to_string(), linear_map_1).unwrap();
 ///
-/// // 4) Construct circuits for the BasisRotation measurement
+/// // 4) Construct circuits for the PauliZProduct measurement
 /// let mut circs: Vec<Circuit> = Vec::new();
 /// circs.push(Circuit::new());
 /// let mut circ1 = Circuit::new();
 /// circ1 += RotateX::new(0, 0.0.into());
 /// circs.push(circ1);
 ///
-/// // 5) Initialize the BasisRotation with the circuits and input defined above
-/// let br = BasisRotation {
+/// // 5) Initialize the PauliZProduct with the circuits and input defined above
+/// let br = PauliZProduct {
 ///     constant_circuit: Some(Circuit::new()),
 ///     circuits: circs.clone(),
 ///     input: bri,
@@ -130,14 +130,14 @@ pub trait Measure: PartialEq + Clone {
 /// # Example
 /// ```
 /// // We want to run a measurement for the following expectation value: 3 + 4.0 * < Z0 >.
-/// use roqoqo::{measurements::{BasisRotation, BasisRotationInput, MeasureExpectationValues}, registers::BitOutputRegister, Circuit};
+/// use roqoqo::{measurements::{PauliZProduct, PauliZProductInput, MeasureExpectationValues}, registers::BitOutputRegister, Circuit};
 /// use std::collections::HashMap;
 ///
-/// // 1) Create and fill BasisRotationInput for the BasisRotation measurement
-/// let mut bri = BasisRotationInput::new(3, false);
+/// // 1) Create and fill PauliZProductInput for the PauliZProduct measurement
+/// let mut bri = PauliZProductInput::new(3, false);
 ///
-/// let _a = bri.add_pauli_product("ro".to_string(), vec![]);
-/// let _b = bri.add_pauli_product("ro".to_string(), vec![0]);
+/// let _a = bri.add_pauliz_product("ro".to_string(), vec![]);
+/// let _b = bri.add_pauliz_product("ro".to_string(), vec![0]);
 ///
 /// let mut linear_map_0: HashMap<usize, f64> = HashMap::new();
 /// linear_map_0.insert(0, 3.0);
@@ -146,11 +146,11 @@ pub trait Measure: PartialEq + Clone {
 /// linear_map_1.insert(1, 4.0);
 /// bri.add_linear_exp_val("single_qubit_exp_val".to_string(), linear_map_1).unwrap();
 ///
-/// // 2) Create and fill BasisRotation measurement
+/// // 2) Create and fill PauliZProduct measurement
 /// let mut circs: Vec<Circuit> = Vec::new();
 /// circs.push(Circuit::new());
 ///
-/// let br = BasisRotation {
+/// let br = PauliZProduct {
 ///     constant_circuit: None,
 ///     circuits: circs.clone(),
 ///     input: bri,
@@ -167,7 +167,7 @@ pub trait Measure: PartialEq + Clone {
 /// let new_output_register: BitOutputRegister = register;
 /// let _ = measured_registers.insert("ro".to_string(), new_output_register);
 ///
-/// // 4) Evaluate BasisRotation measurement
+/// // 4) Evaluate PauliZProduct measurement
 /// let result = br
 ///     .evaluate(measured_registers, HashMap::new(), HashMap::new())
 ///     .unwrap()

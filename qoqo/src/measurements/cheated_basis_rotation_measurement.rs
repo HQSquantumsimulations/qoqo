@@ -12,42 +12,42 @@
 
 //! Qoqo basis rotation measurement
 
-use super::CheatedBasisRotationInputWrapper;
+use super::CheatedPauliZProductInputWrapper;
 use crate::CircuitWrapper;
 use bincode::serialize;
 use pyo3::exceptions::{PyRuntimeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
 use pyo3::types::PyType;
-use roqoqo::measurements::CheatedBasisRotation;
+use roqoqo::measurements::CheatedPauliZProduct;
 use roqoqo::prelude::*;
 use roqoqo::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
 use roqoqo::Circuit;
 use std::collections::HashMap;
-#[pyclass(name = "CheatedBasisRotation", module = "qoqo.measurements")]
+#[pyclass(name = "CheatedPauliZProduct", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Collected information for executing a basis rotation measurement.
-pub struct CheatedBasisRotationWrapper {
-    /// Internal storage of [roqoqo::BasisRotation].
-    pub internal: CheatedBasisRotation,
+pub struct CheatedPauliZProductWrapper {
+    /// Internal storage of [roqoqo::PauliZProduct].
+    pub internal: CheatedPauliZProduct,
 }
 
 #[pymethods]
-impl CheatedBasisRotationWrapper {
-    /// Creates an new BasisRotation measurement.
+impl CheatedPauliZProductWrapper {
+    /// Creates an new PauliZProduct measurement.
     ///
     /// Args:
     ///     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
     ///     circuits (list[Circuit]): The collection of quantum circuits for the separate basis rotations.
-    ///     input (CheatedBasisRotationInput): The additional input information required for measurement.
+    ///     input (CheatedPauliZProductInput): The additional input information required for measurement.
     ///
     /// Returns:
-    ///     self: The CheatedBasisRotation containing the new basis rotation measurement.
+    ///     self: The CheatedPauliZProduct containing the new basis rotation measurement.
     #[new]
     pub fn new(
         constant_circuit: Option<CircuitWrapper>,
         circuits: Vec<CircuitWrapper>,
-        input: CheatedBasisRotationInputWrapper,
+        input: CheatedPauliZProductInputWrapper,
     ) -> Self {
         let new_circuits: Vec<Circuit> = circuits.into_iter().map(|c| c.internal).collect();
         let new_constant: Option<Circuit> = match constant_circuit {
@@ -55,7 +55,7 @@ impl CheatedBasisRotationWrapper {
             Some(c) => Some(c.internal),
         };
         Self {
-            internal: CheatedBasisRotation {
+            internal: CheatedPauliZProduct {
                 constant_circuit: new_constant,
                 circuits: new_circuits,
                 input: input.internal,
@@ -148,10 +148,10 @@ impl CheatedBasisRotationWrapper {
     /// Returns the measurement input data defining how to construct expectation values from measurements.
     ///
     /// Returns:
-    ///     CheatedBasisRotationInput: The measurment input of CheatedBasisRotation.
-    pub fn input(&self) -> CheatedBasisRotationInputWrapper {
+    ///     CheatedPauliZProductInput: The measurment input of CheatedPauliZProduct.
+    pub fn input(&self) -> CheatedPauliZProductInputWrapper {
         let input = self.internal.input.clone();
-        CheatedBasisRotationInputWrapper { internal: input }
+        CheatedPauliZProductInputWrapper { internal: input }
     }
 
     /// Returns the type of the measurement in string form.
@@ -159,7 +159,7 @@ impl CheatedBasisRotationWrapper {
     /// Returns:
     ///    str: The type of the measurement.
     pub fn measurement_type(&self) -> &'static str {
-        "CheatedBasisRotation"
+        "CheatedPauliZProduct"
     }
 
     /// Returns clone of Measurement with symbolic parameters replaced
@@ -191,39 +191,39 @@ impl CheatedBasisRotationWrapper {
     ///     ValueError: Cannot serialize Measurement to bytes.
     pub fn _internal_to_bincode(&self) -> PyResult<(&'static str, Py<PyByteArray>)> {
         let serialized = serialize(&self.internal).map_err(|_| {
-            PyValueError::new_err("Cannot serialize CheatedBasisRotationMeasurement to bytes")
+            PyValueError::new_err("Cannot serialize CheatedPauliZProductMeasurement to bytes")
         })?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
             PyByteArray::new(py, &serialized[..]).into()
         });
-        Ok(("CheatedBasisRotation", b))
+        Ok(("CheatedPauliZProduct", b))
     }
 
-    /// Serializes the CheatedBasisRotation to json form using the [serde_json] crate.
+    /// Serializes the CheatedPauliZProduct to json form using the [serde_json] crate.
     ///
     /// Returns:
-    ///     str: The serialized CheatedBasisRotation.
+    ///     str: The serialized CheatedPauliZProduct.
     ///
     /// Raises:
-    ///     RuntimeError: Unexpected error serializing CheatedBasisRotation.
+    ///     RuntimeError: Unexpected error serializing CheatedPauliZProduct.
     pub fn to_json(&self) -> PyResult<String> {
         serde_json::to_string(&self.internal)
-            .map_err(|_| PyRuntimeError::new_err("Unexpected error serializing BasisRotation"))
+            .map_err(|_| PyRuntimeError::new_err("Unexpected error serializing PauliZProduct"))
     }
 
-    /// Deserialize the CheatedBasisRotation from json form using the [serde_json] crate.
+    /// Deserialize the CheatedPauliZProduct from json form using the [serde_json] crate.
     ///
     /// Returns:
-    ///     CheatedBasisRotation: the deserialized CheatedBasisRotation.
+    ///     CheatedPauliZProduct: the deserialized CheatedPauliZProduct.
     ///
     /// Raises:
-    ///     RuntimeError: Cannot deserialize string to CheatedBasisRotation.
+    ///     RuntimeError: Cannot deserialize string to CheatedPauliZProduct.
     #[allow(unused_variables)]
     #[classmethod]
     pub fn from_json(cls: &PyType, json_string: &str) -> PyResult<Self> {
         Ok(Self {
             internal: serde_json::from_str(json_string)
-                .map_err(|_| PyValueError::new_err("Cannot deserialize string to BasisRotation"))?,
+                .map_err(|_| PyValueError::new_err("Cannot deserialize string to PauliZProduct"))?,
         })
     }
 }

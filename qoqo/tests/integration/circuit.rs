@@ -12,7 +12,7 @@
 
 use pyo3::exceptions::PyIndexError;
 use pyo3::prelude::*;
-use qoqo::measurements::{BasisRotationInputWrapper, BasisRotationWrapper};
+use qoqo::measurements::{PauliZProductInputWrapper, PauliZProductWrapper};
 use qoqo::operations::{
     convert_operation_to_pyobject, PragmaOverrotationWrapper, RotateXWrapper, RotateYWrapper,
 };
@@ -320,24 +320,24 @@ fn test_to_from_bincode() {
 fn test_value_error_bincode() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let input_type = py.get_type::<BasisRotationInputWrapper>();
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<BasisRotationInputWrapper>>()
+            .cast_as::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
-            .call_method1("add_pauli_product", ("ro", tmp_vec))
+            .call_method1("add_pauliz_product", ("ro", tmp_vec))
             .unwrap();
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type::<BasisRotationWrapper>();
+        let br_type = py.get_type::<PauliZProductWrapper>();
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
-            .cast_as::<PyCell<BasisRotationWrapper>>()
+            .cast_as::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let new_br = &(*br);
@@ -345,7 +345,7 @@ fn test_value_error_bincode() {
         let deserialised = new_br
             .call_method1("from_json", (serialised,))
             .unwrap()
-            .cast_as::<PyCell<BasisRotationWrapper>>()
+            .cast_as::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let new = new_circuit(py);

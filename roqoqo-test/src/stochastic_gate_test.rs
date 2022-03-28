@@ -25,7 +25,7 @@ use roqoqo::operations::{
 };
 use roqoqo::prelude::*;
 use roqoqo::{
-    measurements::{BasisRotation, BasisRotationInput},
+    measurements::{PauliZProduct, PauliZProductInput},
     operations::*,
     Circuit,
 };
@@ -51,7 +51,7 @@ pub fn prepare_monte_carlo_gate_test(
     two_qubit_gate: Option<TwoQubitGateOperation>,
     number_stochastic_tests: usize,
     number_projective_measurement: usize,
-) -> (BasisRotation, HashMap<String, f64>) {
+) -> (PauliZProduct, HashMap<String, f64>) {
     if let Some(x) = two_qubit_gate {
         if !(x.control() == &0 && x.target() == &1 || x.control() == &1 && x.target() == &0) {
             panic!("Provided two_qubit_gate does not act on qubits 0 and 1")
@@ -73,7 +73,7 @@ pub fn prepare_monte_carlo_gate_test(
     starting_vec[1] = Complex::<f64>::new(1.0, 0.0);
 
     let mut expected_values: HashMap<String, f64> = HashMap::new();
-    let mut measurement_input = BasisRotationInput::new(number_qubits, false);
+    let mut measurement_input = PauliZProductInput::new(number_qubits, false);
     let mut measurement_circuits: Vec<Circuit> = Vec::new();
     // for random number generation
     let mut rng = thread_rng();
@@ -134,7 +134,7 @@ pub fn prepare_monte_carlo_gate_test(
         );
 
         let j = measurement_input
-            .add_pauli_product(format!("ro_{}", i), pauli_product_mask)
+            .add_pauliz_product(format!("ro_{}", i), pauli_product_mask)
             .unwrap();
         let mut linear_map: HashMap<usize, f64> = HashMap::new();
         linear_map.insert(j, 1.0);
@@ -154,7 +154,7 @@ pub fn prepare_monte_carlo_gate_test(
             * init_matrix)[(0, 0)];
         let _ = expected_values.insert(format!("exp_val_{}", i), expected_value.re);
     }
-    let measurement = BasisRotation {
+    let measurement = PauliZProduct {
         circuits: measurement_circuits,
         input: measurement_input,
         constant_circuit: None,

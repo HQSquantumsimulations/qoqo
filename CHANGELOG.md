@@ -21,6 +21,10 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 * `qoqo/examples` has been moved to the new github repository `qoqo_examples` which also includes qoqo examples in Rust now.
 * Dependencies have been updated to `qoqo_calculator = 0.7` and `pyo3 = 0.16`. Qoqo python interface has been migrated from #[pyproto] to #[pymethods]. Mutable qoqo_calculator:Calculator has been changed to unmutable where possible after the upgrade to qoqo_calculator version 0.7.
 
+### Changed
+* BasisRotation and CheatedBasisRotation measurements renamed to PauliZProduct and CheatedPauliZProduct measurement to reflect that this is the measurement of the PauliProduct in the z-basis.
+
+
 ## 0.10.0
 
 ### Fixed 0.10.0

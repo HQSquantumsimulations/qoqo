@@ -210,7 +210,7 @@ pub enum RoqoqoError {
     },
     /// Error occured in basis rotation measurement.
     #[error("Error occured in basis rotation measurement. {msg}")]
-    BasisRotationMeasurementError {
+    PauliZProductMeasurementError {
         /// Error message.
         msg: String,
     },
