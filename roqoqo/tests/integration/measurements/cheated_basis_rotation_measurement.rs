@@ -207,7 +207,7 @@ fn test_evaluate_symbolic() {
 #[test]
 fn test_cheated_basis_rotation_json() {
     // setting up cheated BR measurement
-    let bri = CheatedBasisRotationInput::new();
+    let bri = CheatedPauliZProductInput::new();
     let mut circs: Vec<Circuit> = Vec::new();
     let mut circ1 = Circuit::new();
     let mut circ1_subs = Circuit::new();
@@ -218,18 +218,18 @@ fn test_cheated_basis_rotation_json() {
     circ2 += operations::RotateZ::new(0, "theta2".into());
     circ2_subs += operations::RotateZ::new(0, 1.0.into());
     circs.push(circ1);
-    let br = CheatedBasisRotation {
+    let br = CheatedPauliZProduct {
         constant_circuit: Some(circ2),
         circuits: circs.clone(),
         input: bri,
     };
 
-    // Serialize CheatedBasisRotation
+    // Serialize CheatedPauliZProduct
     let test_json = serde_json::to_string(&br).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
     // Create JSONSchema
-    let test_schema = schema_for!(CheatedBasisRotation);
+    let test_schema = schema_for!(CheatedPauliZProduct);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
     let compiled_schema = JSONSchema::options()

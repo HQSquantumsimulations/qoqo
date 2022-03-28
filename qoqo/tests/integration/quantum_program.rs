@@ -610,7 +610,7 @@ fn test_convert_into_program() {
 
 /// Test measurement() for CheatedPauliZProduct
 #[test]
-fn test_return_measurement_cheatedPauliZProduct() {
+fn test_return_measurement_cheatedpaulizproduct() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Create measurement
@@ -655,7 +655,7 @@ fn test_return_measurement_cheatedPauliZProduct() {
 
 /// Test measurement() for PauliZProduct
 #[test]
-fn test_return_measurement_PauliZProduct() {
+fn test_return_measurement_paulizproduct() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Create measurement
