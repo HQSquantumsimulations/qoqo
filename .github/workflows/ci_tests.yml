@@ -102,7 +102,7 @@ jobs:
           maturin-version: latest
           command: build
           manylinux: 2010
-          args: -i python${{ matrix.python.py }} --out wheels --no-sdist -m qoqo/Cargo.toml --cargo-extra-args="--locked"
+          args: -i python${{ matrix.python.py }} --out wheels --no-sdist -m qoqo/Cargo.toml
       - name: test install
         run: |
           pip install wheels/* --force-reinstall
@@ -169,7 +169,7 @@ jobs:
         with:
           maturin-version: latest
           command: build
-          args: -i python --out wheels --no-sdist -m qoqo/Cargo.toml --cargo-extra-args="--locked"
+          args: -i python --out wheels --no-sdist -m qoqo/Cargo.toml
 
   test_maturin_builds_macos:
     name: maturin_check-${{ matrix.combinations.runs_on }}
@@ -202,11 +202,11 @@ jobs:
       - name: macos wheels
         if: ${{ matrix.combinations.runs_on == 'macOS-latest' && matrix.python-version < '3.8'}}
         run: |
-          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --out wheels --no-sdist -m qoqo/Cargo.toml --cargo-extra-args="--locked"
+          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --out wheels --no-sdist -m qoqo/Cargo.toml
       - name: universal wheels
         if: ${{ matrix.combinations.runs_on == 'macOS-latest' && matrix.python-version >= '3.8' }}
         run: |
-          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --universal2 --out wheels --no-sdist -m qoqo/Cargo.toml --cargo-extra-args="--locked"
+          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --universal2 --out wheels --no-sdist -m qoqo/Cargo.toml
       - name: test install
         run: |
           pip install wheels/* --force-reinstall
