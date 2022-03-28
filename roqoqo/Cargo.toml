@@ -38,7 +38,7 @@ rand = { version = "0.8.4"}
 
 
 [dev-dependencies]
-serde_test = {version="1.0"}
+serde_test = "1.0"
 test-case = "2.0"
 serde_json = "1.0"
 schemars = "0.8"
