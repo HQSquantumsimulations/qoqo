@@ -367,7 +367,7 @@ fn test_evaluate_symbolic(register: Vec<Vec<bool>>, constant: f64) {
 #[test]
 fn test_basis_rotation_json() {
     // setting up BR measurement
-    let bri = BasisRotationInput::new(3, false);
+    let bri = PauliZProductInput::new(3, false);
     let mut circs: Vec<Circuit> = Vec::new();
     let mut circ1 = Circuit::new();
     let mut circ1_subs = Circuit::new();
@@ -378,18 +378,18 @@ fn test_basis_rotation_json() {
     circ2 += operations::RotateZ::new(0, "theta2".into());
     circ2_subs += operations::RotateZ::new(0, 1.0.into());
     circs.push(circ1);
-    let br = BasisRotation {
+    let br = PauliZProduct {
         constant_circuit: Some(circ2),
         circuits: circs.clone(),
         input: bri,
     };
 
-    // Serialize BasisRotation
+    // Serialize PauliZProduct
     let test_json = serde_json::to_string(&br).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
     // Create JSONSchema
-    let test_schema = schema_for!(BasisRotation);
+    let test_schema = schema_for!(PauliZProduct);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
     let compiled_schema = JSONSchema::options()

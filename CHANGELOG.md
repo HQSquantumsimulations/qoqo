@@ -25,6 +25,10 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 * BasisRotation and CheatedBasisRotation measurements renamed to PauliZProduct and CheatedPauliZProduct measurement to reflect that this is the measurement of the PauliProduct in the z-basis.
 
 
+### Changed
+* BasisRotation and CheatedBasisRotation measurements renamed to PauliZProduct and CheatedPauliZProduct measurement to reflect that this is the measurement of the PauliProduct in the z-basis.
+
+
 ## 0.10.0
 
 ### Fixed 0.10.0
