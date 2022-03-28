@@ -11,6 +11,10 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 * Semver-style version checking for Circuit serialization. In beta mode (0.y.z) minor version must match (y_library == y_data) in release mode (x.y.z) major version must match (x_library == x_data) and minor version of library must exceed minor version of data (y_library >= y_data).
 * `json_schema` implementing `JsonSchema` from schemars for roqoqo data structures
 
+### Changed
+* BasisRotation and CheatedBasisRotation measurements renamed to PauliZProduct and CheatedPauliZProduct measurement to reflect that this is the measurement of the PauliProduct in the z-basis.
+
+
 ## 0.10.0
 
 ### Fixed 0.10.0
