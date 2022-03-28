@@ -1993,6 +1993,125 @@ fn test_pyo3_rotate_powercf(first_op: Operation, second_op: Operation) {
     })
 }
 
+/// Test that multiplication function can be called in python for SingleQubitGates
+#[test_case(Operation::from(PauliX::new(1)); "PauliX")]
+#[test_case(Operation::from(PauliY::new(1)); "PauliY")]
+#[test_case(Operation::from(PauliZ::new(1)); "PauliZ")]
+#[test_case(Operation::from(SqrtPauliX::new(1)); "SqrtPauliX")]
+#[test_case(Operation::from(InvSqrtPauliX::new(1)); "InvSqrtPauliX")]
+#[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(TGate::new(1)); "TGate")]
+#[test_case(Operation::from(Hadamard::new(1)); "Hadamard")]
+#[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
+#[test_case(Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from(0))); "PhaseShiftState1")]
+#[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(0))); "RotateZ")]
+#[test_case(Operation::from(RotateX::new(1, CalculatorFloat::from(0))); "RotateX")]
+#[test_case(Operation::from(RotateY::new(1, CalculatorFloat::from(0))); "RotateY")]
+fn test_pyo3_mul(gate1: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let gate2: Operation = Operation::from(SingleQubitGate::new(
+            1,
+            1.0.into(),
+            0.0.into(),
+            0.0.into(),
+            0.0.into(),
+            0.0.into(),
+        ));
+
+        let operation = convert_operation_to_pyobject(gate1.clone()).unwrap();
+        let operation2 = convert_operation_to_pyobject(gate2).unwrap();
+        let result = operation.call_method1(py, "mul", (operation2,));
+
+        assert!(result.is_ok());
+    })
+}
+
+#[test_case(Operation::from(PauliX::new(1)); "PauliX")]
+#[test_case(Operation::from(PauliY::new(1)); "PauliY")]
+#[test_case(Operation::from(PauliZ::new(1)); "PauliZ")]
+#[test_case(Operation::from(SqrtPauliX::new(1)); "SqrtPauliX")]
+#[test_case(Operation::from(InvSqrtPauliX::new(1)); "InvSqrtPauliX")]
+#[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(TGate::new(1)); "TGate")]
+#[test_case(Operation::from(Hadamard::new(1)); "Hadamard")]
+#[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
+#[test_case(Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from(0))); "PhaseShiftState1")]
+#[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(0))); "RotateZ")]
+#[test_case(Operation::from(RotateX::new(1, CalculatorFloat::from(0))); "RotateX")]
+#[test_case(Operation::from(RotateY::new(1, CalculatorFloat::from(0))); "RotateY")]
+fn test_pyo3_mul_error1(gate1: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let alpha_r = CalculatorFloat::from(PI / 2.0);
+        let input_cf = convert_cf_to_pyobject(py, alpha_r);
+
+        let operation = convert_operation_to_pyobject(gate1.clone()).unwrap();
+        let result = operation.call_method1(py, "mul", (input_cf,));
+
+        assert!(result.is_err());
+    })
+}
+
+#[test_case(Operation::from(PauliX::new(1)); "PauliX")]
+#[test_case(Operation::from(PauliY::new(1)); "PauliY")]
+#[test_case(Operation::from(PauliZ::new(1)); "PauliZ")]
+#[test_case(Operation::from(SqrtPauliX::new(1)); "SqrtPauliX")]
+#[test_case(Operation::from(InvSqrtPauliX::new(1)); "InvSqrtPauliX")]
+#[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(TGate::new(1)); "TGate")]
+#[test_case(Operation::from(Hadamard::new(1)); "Hadamard")]
+#[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
+#[test_case(Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from(0))); "PhaseShiftState1")]
+#[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(0))); "RotateZ")]
+#[test_case(Operation::from(RotateX::new(1, CalculatorFloat::from(0))); "RotateX")]
+#[test_case(Operation::from(RotateY::new(1, CalculatorFloat::from(0))); "RotateY")]
+fn test_pyo3_mul_error2(gate1: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let gate2 = Operation::from(CNOT::new(0, 1));
+
+        let operation = convert_operation_to_pyobject(gate1.clone()).unwrap();
+        let operation2 = convert_operation_to_pyobject(gate2).unwrap();
+        let result = operation.call_method1(py, "mul", (operation2,));
+
+        assert!(result.is_err());
+    })
+}
+
+#[test_case(Operation::from(PauliX::new(1)); "PauliX")]
+#[test_case(Operation::from(PauliY::new(1)); "PauliY")]
+#[test_case(Operation::from(PauliZ::new(1)); "PauliZ")]
+#[test_case(Operation::from(SqrtPauliX::new(1)); "SqrtPauliX")]
+#[test_case(Operation::from(InvSqrtPauliX::new(1)); "InvSqrtPauliX")]
+#[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(TGate::new(1)); "TGate")]
+#[test_case(Operation::from(Hadamard::new(1)); "Hadamard")]
+#[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
+#[test_case(Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from(0))); "PhaseShiftState1")]
+#[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(0))); "RotateZ")]
+#[test_case(Operation::from(RotateX::new(1, CalculatorFloat::from(0))); "RotateX")]
+#[test_case(Operation::from(RotateY::new(1, CalculatorFloat::from(0))); "RotateY")]
+fn test_pyo3_mul_error3(gate1: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let gate2: Operation = Operation::from(SingleQubitGate::new(
+            0,
+            1.0.into(),
+            0.0.into(),
+            0.0.into(),
+            0.0.into(),
+            0.0.into(),
+        ));
+
+        let operation = convert_operation_to_pyobject(gate1.clone()).unwrap();
+        let operation2 = convert_operation_to_pyobject(gate2).unwrap();
+        let result = operation.call_method1(py, "mul", (operation2,));
+
+        assert!(result.is_err());
+    })
+}
+
 /// Test the __richcmp__ function
 #[test_case(
     Operation::from(RotateX::new(0, CalculatorFloat::from(0))),
