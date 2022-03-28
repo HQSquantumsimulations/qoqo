@@ -1573,6 +1573,43 @@ fn test_singlequbitgate_mul_symb() {
     assert_eq!(multiplied.global_phase(), gate1.global_phase());
 }
 
+/// Test multiplication by 1.0 for SingleQubitGates
+#[test_case(SingleQubitGateOperation::from(RotateZ::new(0, CalculatorFloat::from("theta"))); "RotateZ")]
+#[test_case(SingleQubitGateOperation::from(RotateX::new(0, CalculatorFloat::from("theta"))); "RotateX")]
+#[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from("theta"))); "RotateY")]
+#[test_case(SingleQubitGateOperation::from(PauliX::new(0)); "PauliX")]
+#[test_case(SingleQubitGateOperation::from(PauliY::new(0)); "PauliY")]
+#[test_case( SingleQubitGateOperation::from(PauliZ::new(0)); "PauliZ")]
+#[test_case(SingleQubitGateOperation::from(SqrtPauliX::new(0)); "SqrtPauliX")]
+#[test_case(SingleQubitGateOperation::from(InvSqrtPauliX::new(0)); "InvSqrtPauliX")]
+#[test_case(SingleQubitGateOperation::from(SGate::new(0)); "SGate")]
+#[test_case(SingleQubitGateOperation::from(TGate::new(0)); "TGate")]
+#[test_case(SingleQubitGateOperation::from(Hadamard::new(0)); "Hadamard")]
+#[test_case(SingleQubitGateOperation::from(RotateAroundSphericalAxis::new(
+    0,
+    CalculatorFloat::from("theta"),
+    CalculatorFloat::from("spherical_theta"),
+    CalculatorFloat::from("spherical_phi"))); "Rotation")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate0")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState1::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate1")]
+fn test_singlequbitgate_mul_all(gate1: SingleQubitGateOperation) {
+    let gate2 = SingleQubitGate::new(
+        0,
+        1.0.into(),
+        0.0.into(),
+        0.0.into(),
+        0.0.into(),
+        0.0.into(),
+    );
+    let result = gate1.mul(&gate2);
+    let multiplied = result.unwrap();
+    assert_eq!(multiplied.alpha_r(), gate1.alpha_r());
+    assert_eq!(multiplied.alpha_i(), gate1.alpha_i());
+    assert_eq!(multiplied.beta_r(), gate1.beta_r());
+    assert_eq!(multiplied.beta_i(), gate1.beta_i());
+    assert_eq!(multiplied.global_phase(), gate1.global_phase());
+}
+
 /// Test SingleQubitGate multiplication for Hadamard gate
 #[test_case(
     SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from(PI / 2.0))),

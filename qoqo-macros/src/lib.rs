@@ -95,7 +95,11 @@ pub fn wrap(
             /// Returns Rotated gate raised to power
             ///
             /// Args:
-            ///     power(CalculatorFloat):
+            ///     `power`(CalculatorFloat): exponent of the power operation.
+            ///
+            /// Returns:
+            ///     Self: gate raised to the power of `power`
+            ///
             pub fn powercf(&self, power: CalculatorFloatWrapper) -> Self{
                 Self{internal: self.internal.powercf(power.cf_internal)}
             }
@@ -120,6 +124,7 @@ pub fn wrap(
             ///
             /// Returns:
             ///     np.ndarray
+            ///
             pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>>{
                 Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
                     Ok(self.internal.superoperator().unwrap().to_pyarray(py).to_owned())
@@ -128,10 +133,11 @@ pub fn wrap(
             /// Return the power of the noise gate
             ///
             /// Args:
-            /// power (CalculatorFloat): exponent in the power operation of the noise gate
+            ///     `power` (CalculatorFloat): exponent in the power operation of the noise gate
             ///
             /// Returns:
             ///     Self
+            ///
             pub fn powercf(&self, power: CalculatorFloatWrapper) -> Self{
                 Self{internal: self.internal.powercf(power.cf_internal)}
             }
@@ -242,6 +248,43 @@ pub fn wrap(
             ///     CalculatorFloat
             pub fn beta_i(&self) -> CalculatorFloatWrapper{
                 CalculatorFloatWrapper{cf_internal: self.internal.beta_i().clone()}
+            }
+
+            /// Multiplies two compatible operations implementing OperateSingleQubitGate.
+            ///
+            /// Does not consume the two operations being multiplied.
+            /// Only Operations
+            ///
+            /// Args:
+            ///     `other` - An Operation implementing [OperateSingleQubitGate].
+            ///
+            /// Returns:
+            ///     PyResult: Result of the multiplication, i.e. the multiplied single qubit gate.
+            ///
+            /// Example:
+            /// ```
+            /// from qoqo.operations import RotateZ, RotateX
+            ///
+            /// gate1 =  RotateZ(qubit=0, theta=1)
+            /// gate2 = RotateX(qubit=0, theta=1)
+            /// multiplied = gate1.mul(gate2)
+            /// print("Multiplied gate: ", multiplied)
+            /// ```
+            ///
+            pub fn mul(&self, other: Py<PyAny>) -> PyResult<SingleQubitGateWrapper> {
+                Python::with_gil(|py| -> PyResult<SingleQubitGateWrapper> {
+                    let other_ref = other.as_ref(py);
+                    let other: Operation = crate::operations::convert_pyany_to_operation(other_ref).map_err(|x| {
+                        pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
+                    })?;
+                    let other_converted: SingleQubitGateOperation = other.clone().try_into().map_err(|x| {
+                        pyo3::exceptions::PyRuntimeError::new_err(format!("Conversion to SingleQubitGateOperation failed {:?}",x))
+                    })?;
+                    let multiplied = self.internal.mul(&other_converted).map_err(|x| {
+                        pyo3::exceptions::PyRuntimeError::new_err(format!("Multiplication failed {:?}",x))
+                    })?;
+                    Ok(SingleQubitGateWrapper{ internal: multiplied})
+                })
             }
         }
     } else {
@@ -380,13 +423,13 @@ pub fn wrap(
             /// Returns the __richcmp__ magic method to perform rich comparison
             /// operations on Operation.
             ///
-            /// # Arguments
+            /// Args:
             ///
             /// * `&self` - the OperationWrapper object
             /// * `other` - the object to compare self to
             /// * `op` - equal or not equal
             ///
-            /// # Returns
+            /// Returns:
             ///
             /// `PyResult<bool>` - whether the two operations compared evaluated to True or False
             ///
