@@ -14,7 +14,7 @@
 
 use num_complex::Complex64;
 use roqoqo::measurements::{
-    BasisRotationInput, CheatedBasisRotationInput, CheatedInput, PauliProductsToExpVal,
+    CheatedInput, CheatedPauliZProductInput, PauliProductsToExpVal, PauliZProductInput,
 };
 use roqoqo::RoqoqoError;
 use std::collections::HashMap;
@@ -36,22 +36,22 @@ fn test_pp_to_exp_val() {
 }
 #[test]
 fn test_clone_br() {
-    let bri = BasisRotationInput::new(3, false);
+    let bri = PauliZProductInput::new(3, false);
     let bri1 = bri.clone();
     assert_eq!(bri1, bri);
-    let bri2 = BasisRotationInput::new(4, true);
+    let bri2 = PauliZProductInput::new(4, true);
     let helper = bri != bri2;
     assert!(helper)
 }
 
 #[test]
 fn test_clone_cbr() {
-    let mut bri = CheatedBasisRotationInput::new();
-    let a = bri.add_pauli_product("test".to_string());
+    let mut bri = CheatedPauliZProductInput::new();
+    let a = bri.add_pauliz_product("test".to_string());
     assert_eq!(a, 0);
     let bri1 = bri.clone();
     assert_eq!(bri1, bri);
-    let bri2 = CheatedBasisRotationInput::new();
+    let bri2 = CheatedPauliZProductInput::new();
     let helper = bri != bri2;
     assert!(helper)
 }
@@ -71,7 +71,7 @@ fn test_clone_cheated() {
 
 #[test]
 fn test_format_br() {
-    let bri = BasisRotationInput::new(3, false);
+    let bri = PauliZProductInput::new(3, false);
     let string = format!("{:?}", bri);
     assert!(string.contains('3'));
     assert!(string.contains("false"));
@@ -79,8 +79,8 @@ fn test_format_br() {
 
 #[test]
 fn test_format_cbr() {
-    let mut bri = CheatedBasisRotationInput::new();
-    let _ = bri.add_pauli_product("test".to_string());
+    let mut bri = CheatedPauliZProductInput::new();
+    let _ = bri.add_pauliz_product("test".to_string());
     let string = format!("{:?}", bri);
     assert!(string.contains("test"));
     assert!(string.contains('0'));
@@ -99,33 +99,33 @@ fn test_format_cheated() {
 
 #[test]
 fn double_insertion_br() {
-    let mut bri = BasisRotationInput::new(3, false);
-    let x = bri.add_pauli_product("ro".to_string(), vec![0]).unwrap();
+    let mut bri = PauliZProductInput::new(3, false);
+    let x = bri.add_pauliz_product("ro".to_string(), vec![0]).unwrap();
     assert_eq!(x, 0);
-    let x = bri.add_pauli_product("ro".to_string(), vec![1]).unwrap();
+    let x = bri.add_pauliz_product("ro".to_string(), vec![1]).unwrap();
     assert_eq!(x, 1);
-    let x = bri.add_pauli_product("ro".to_string(), vec![1]).unwrap();
+    let x = bri.add_pauliz_product("ro".to_string(), vec![1]).unwrap();
     assert_eq!(x, 1);
-    let x = bri.add_pauli_product("rx".to_string(), vec![1]).unwrap();
+    let x = bri.add_pauliz_product("rx".to_string(), vec![1]).unwrap();
     assert_eq!(x, 2);
 }
 
 #[test]
 fn double_insertion_cbr() {
-    let mut bri = CheatedBasisRotationInput::new();
-    let a = bri.add_pauli_product("test".to_string());
+    let mut bri = CheatedPauliZProductInput::new();
+    let a = bri.add_pauliz_product("test".to_string());
     assert_eq!(a, 0);
-    let a = bri.add_pauli_product("test2".to_string());
+    let a = bri.add_pauliz_product("test2".to_string());
     assert_eq!(a, 1);
-    let a = bri.add_pauli_product("test".to_string());
+    let a = bri.add_pauliz_product("test".to_string());
     assert_eq!(a, 0);
-    let a = bri.add_pauli_product("tset".to_string());
+    let a = bri.add_pauliz_product("tset".to_string());
     assert_eq!(a, 2);
 }
 
 #[test]
 fn error_br() {
-    let mut bri = BasisRotationInput::new(3, false);
+    let mut bri = PauliZProductInput::new(3, false);
     let _ = bri.add_symbolic_exp_val("test".to_string(), "3.0".into());
     let a = bri.add_symbolic_exp_val("test".to_string(), "3.0".into());
     assert_eq!(
@@ -141,7 +141,7 @@ fn error_br() {
             name: "test".to_string()
         })
     );
-    let a = bri.add_pauli_product("tset".to_string(), vec![3]);
+    let a = bri.add_pauliz_product("tset".to_string(), vec![3]);
     assert_eq!(
         a,
         Err(RoqoqoError::PauliProductExceedsQubits {
@@ -153,7 +153,7 @@ fn error_br() {
 
 #[test]
 fn error_cbr() {
-    let mut bri = CheatedBasisRotationInput::new();
+    let mut bri = CheatedPauliZProductInput::new();
     let _ = bri.add_symbolic_exp_val("test".to_string(), "3.0".into());
     let a = bri.add_symbolic_exp_val("test".to_string(), "3.0".into());
     assert_eq!(
@@ -197,6 +197,6 @@ fn error_cheated() {
 
 #[test]
 fn default_cbr() {
-    let bri: CheatedBasisRotationInput = Default::default();
-    assert_eq!(bri, CheatedBasisRotationInput::new());
+    let bri: CheatedPauliZProductInput = Default::default();
+    assert_eq!(bri, CheatedPauliZProductInput::new());
 }

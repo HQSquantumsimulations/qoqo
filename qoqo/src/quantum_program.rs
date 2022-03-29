@@ -13,7 +13,7 @@
 use std::collections::HashMap;
 
 use crate::measurements::{
-    BasisRotationWrapper, CheatedBasisRotationWrapper, CheatedWrapper, ClassicalRegisterWrapper,
+    CheatedPauliZProductWrapper, CheatedWrapper, ClassicalRegisterWrapper, PauliZProductWrapper,
 };
 use crate::{QoqoError, QOQO_VERSION};
 use bincode::{deserialize, serialize};
@@ -21,7 +21,6 @@ use pyo3::exceptions::{PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
 use pyo3::types::PyType;
-use pyo3::PyObjectProtocol;
 use roqoqo::measurements;
 use roqoqo::measurements::Measure;
 use roqoqo::QuantumProgram;
@@ -59,17 +58,17 @@ impl QuantumProgramWrapper {
     ///     self: The new .
     #[new]
     pub fn new(measurement: &PyAny, input_parameter_names: Vec<String>) -> PyResult<Self> {
-        if let Ok(try_downcast) = measurement.extract::<BasisRotationWrapper>() {
+        if let Ok(try_downcast) = measurement.extract::<PauliZProductWrapper>() {
             return Ok(Self {
-                internal: QuantumProgram::BasisRotation {
+                internal: QuantumProgram::PauliZProduct {
                     measurement: try_downcast.internal,
                     input_parameter_names,
                 },
             });
         }
-        if let Ok(try_downcast) = measurement.extract::<CheatedBasisRotationWrapper>() {
+        if let Ok(try_downcast) = measurement.extract::<CheatedPauliZProductWrapper>() {
             return Ok(Self {
-                internal: QuantumProgram::CheatedBasisRotation {
+                internal: QuantumProgram::CheatedPauliZProduct {
                     measurement: try_downcast.internal,
                     input_parameter_names,
                 },
@@ -100,13 +99,13 @@ impl QuantumProgramWrapper {
             .extract::<(&str, &[u8])>()
             .map_err(|_| PyTypeError::new_err("measurement is not of type Measurement. Are you using different versions of roqoqo?"))?;
         match name {
-            "BasisRotation" => {
-                let measure: measurements::BasisRotation = deserialize(encoded).map_err(|_| PyTypeError::new_err("measurement is not of type Measurement. Are you using different versions of roqoqo?"))?;
-                Ok( Self{internal: QuantumProgram::BasisRotation{measurement: measure, input_parameter_names}})
+            "PauliZProduct" => {
+                let measure: measurements::PauliZProduct = deserialize(encoded).map_err(|_| PyTypeError::new_err("measurement is not of type Measurement. Are you using different versions of roqoqo?"))?;
+                Ok( Self{internal: QuantumProgram::PauliZProduct{measurement: measure, input_parameter_names}})
             },
-            "CheatedBasisRotation" => {
-                let measure: measurements::CheatedBasisRotation = deserialize(encoded).map_err(|_| PyTypeError::new_err("measurement is not of type Measurement. Are you using different versions of roqoqo?"))?;
-                Ok( Self{internal: QuantumProgram::CheatedBasisRotation{measurement: measure, input_parameter_names}})
+            "CheatedPauliZProduct" => {
+                let measure: measurements::CheatedPauliZProduct = deserialize(encoded).map_err(|_| PyTypeError::new_err("measurement is not of type Measurement. Are you using different versions of roqoqo?"))?;
+                Ok( Self{internal: QuantumProgram::CheatedPauliZProduct{measurement: measure, input_parameter_names}})
             },
             "Cheated" => {
                 let measure: measurements::Cheated = deserialize(encoded).map_err(|_| PyTypeError::new_err("measurement is not of type Measurement. Are you using different versions of roqoqo?"))?;
@@ -124,29 +123,29 @@ impl QuantumProgramWrapper {
     ///
     /// Returns:
     ///     PyObject corresponding to the qoqo measurement type of the QuantumProgram,
-    ///     i.e. BasisRotation, CheatedBasisRotation, Cheated or ClassicalRegister.
+    ///     i.e. PauliZProduct, CheatedPauliZProduct, Cheated or ClassicalRegister.
     pub fn measurement(&self) -> PyObject {
         match self.internal.clone() {
-            QuantumProgram::BasisRotation {
+            QuantumProgram::PauliZProduct {
                 measurement,
                 input_parameter_names: _,
             } => Python::with_gil(|py| -> PyObject {
-                let pyref: Py<BasisRotationWrapper> = Py::new(
+                let pyref: Py<PauliZProductWrapper> = Py::new(
                     py,
-                    BasisRotationWrapper {
+                    PauliZProductWrapper {
                         internal: measurement.clone(),
                     },
                 )
                 .unwrap();
                 pyref.to_object(py)
             }),
-            QuantumProgram::CheatedBasisRotation {
+            QuantumProgram::CheatedPauliZProduct {
                 measurement,
                 input_parameter_names: _,
             } => Python::with_gil(|py| -> PyObject {
-                let pyref: Py<CheatedBasisRotationWrapper> = Py::new(
+                let pyref: Py<CheatedPauliZProductWrapper> = Py::new(
                     py,
-                    CheatedBasisRotationWrapper {
+                    CheatedPauliZProductWrapper {
                         internal: measurement.clone(),
                     },
                 )
@@ -188,11 +187,11 @@ impl QuantumProgramWrapper {
     ///     List of input parameter names.
     pub fn input_parameter_names(&self) -> Vec<String> {
         match self.internal.clone() {
-            QuantumProgram::BasisRotation {
+            QuantumProgram::PauliZProduct {
                 measurement: _,
                 input_parameter_names,
             } => input_parameter_names,
-            QuantumProgram::CheatedBasisRotation {
+            QuantumProgram::CheatedPauliZProduct {
                 measurement: _,
                 input_parameter_names,
             } => input_parameter_names,
@@ -218,23 +217,23 @@ impl QuantumProgramWrapper {
     pub fn run(&self, backend: Py<PyAny>, parameters: Option<Vec<f64>>) -> PyResult<Py<PyAny>> {
         let parameters = parameters.unwrap_or_default();
         match &self.internal{
-            QuantumProgram::BasisRotation{measurement, input_parameter_names } => {
+            QuantumProgram::PauliZProduct{measurement, input_parameter_names } => {
                 if parameters.len() != input_parameter_names.len() { return Err(PyValueError::new_err( format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())))};
                 let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
                 ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
                 Python::with_gil(|py| -> PyResult<Py<PyAny>> {
-                    backend.call_method1(py, "run_measurement", (BasisRotationWrapper{internal: substituted_measurement}, ))
+                    backend.call_method1(py, "run_measurement", (PauliZProductWrapper{internal: substituted_measurement}, ))
                 })            }
-            QuantumProgram::CheatedBasisRotation{measurement, input_parameter_names } => {
+            QuantumProgram::CheatedPauliZProduct{measurement, input_parameter_names } => {
                 if parameters.len() != input_parameter_names.len() { return Err(PyValueError::new_err( format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())))};
                 let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
                 ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
                 Python::with_gil(|py| -> PyResult<Py<PyAny>> {
-                    backend.call_method1(py, "run_measurement", (CheatedBasisRotationWrapper{internal: substituted_measurement}, ))
+                    backend.call_method1(py, "run_measurement", (CheatedPauliZProductWrapper{internal: substituted_measurement}, ))
                 })
             }
             QuantumProgram::Cheated{measurement, input_parameter_names } => {
@@ -390,10 +389,7 @@ impl QuantumProgramWrapper {
             })?,
         })
     }
-}
 
-#[pyproto]
-impl PyObjectProtocol for QuantumProgramWrapper {
     /// Return the __richcmp__ magic method to perform rich comparison operations on QuantumProgram.
     ///
     /// Args:

@@ -19,16 +19,16 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, PartialEq, Clone)]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
-pub struct CheatedBasisRotation {
+pub struct CheatedPauliZProduct {
     /// Constant Circuit that is executed before each Circuit in circuits.
     pub constant_circuit: Option<Circuit>,
     /// Collection of quantum circuits for the separate basis rotations.
     pub circuits: Vec<Circuit>,
     /// Additional input information required for measurement.
-    pub input: CheatedBasisRotationInput,
+    pub input: CheatedPauliZProductInput,
 }
 
-impl Measure for CheatedBasisRotation {
+impl Measure for CheatedPauliZProduct {
     /// Returns the constant Circuit that is executed before each Circuit in circuits.
     ///
     /// # Returns
@@ -67,7 +67,7 @@ impl Measure for CheatedBasisRotation {
         }
         let new_constant_circuit = match &self.constant_circuit {
             None => None,
-            Some(c) => Some(c.substitute_parameters(&mut calculator)?),
+            Some(c) => Some(c.substitute_parameters(&calculator)?),
         };
         let mut new_circuits = Vec::new();
         for circ in self.circuits.iter() {
@@ -75,7 +75,7 @@ impl Measure for CheatedBasisRotation {
             for (name, val) in substituted_parameters.iter() {
                 calculator.set_variable(name, *val)
             }
-            new_circuits.push(circ.substitute_parameters(&mut calculator)?)
+            new_circuits.push(circ.substitute_parameters(&calculator)?)
         }
         Ok(Self {
             constant_circuit: new_constant_circuit,
@@ -85,7 +85,7 @@ impl Measure for CheatedBasisRotation {
     }
 }
 
-impl MeasureExpectationValues for CheatedBasisRotation {
+impl MeasureExpectationValues for CheatedPauliZProduct {
     /// Executes the cheated basis rotation measurement
     ///
     /// # Arguments

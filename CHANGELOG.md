@@ -12,6 +12,17 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 * `json_schema` implementing `JsonSchema` from schemars for roqoqo data structures.
 * AllToAllDevice added to the roqoqo devices.
 * GenericGrid  - a 2D grid device - added to the roqoqo devices.
+* * Unit tests to validate `json_schema` added for Circuit, QuantumProgram and measurements.
+* `roqoqo-test` extended by two new functions for stochastic gate tests: `construct_random_circuit` and `add_random_multi_qubit_gate`. 
+* A conversion function `to_single_qubit_gate` has been implemented for the OperateSingleQubitGate trait.
+* The multiplication function `mul` added to the python interface, i.e. qoqo, for Single Qubit Gates.
+
+### Changed
+
+* The multiplication function `mul` for single qubit gates has been updated so that the result is always normalized.
+* `qoqo/examples` has been moved to the new github repository `qoqo_examples` which also includes qoqo examples in Rust now.
+* Dependencies have been updated to `qoqo_calculator = 0.7` and `pyo3 = 0.16`. Qoqo python interface has been migrated from #[pyproto] to #[pymethods]. Mutable qoqo_calculator:Calculator has been changed to unmutable where possible after the upgrade to qoqo_calculator version 0.7.
+* BasisRotation and CheatedBasisRotation measurements renamed to PauliZProduct and CheatedPauliZProduct measurement to reflect that this is the measurement of the PauliProduct in the z-basis.
 
 ## 0.10.0
 
