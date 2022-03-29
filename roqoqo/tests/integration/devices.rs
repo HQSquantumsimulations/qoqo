@@ -200,8 +200,14 @@ fn change_device_test() {
 fn alltoalldevice_new() {
     let number_qubits = 3usize;
     let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
-    let two_qubit_gate = "CNOT".to_string();
-    let device = AllToAllDevice::new(number_qubits, single_qubit_gates, two_qubit_gate);
+    let two_qubit_gates = &["CNOT".to_string()];
+    let multi_qubit_gates = &[];
+    let device = AllToAllDevice::new(
+        number_qubits,
+        single_qubit_gates,
+        two_qubit_gates,
+        multi_qubit_gates,
+    );
 
     // Test number of qubits
     assert_eq!(device.number_qubits(), number_qubits);
@@ -229,8 +235,14 @@ fn alltoalldevice_new() {
 fn test_alltoalldevice_settimes() {
     let number_qubits = 3usize;
     let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
-    let two_qubit_gate = "CNOT".to_string();
-    let mut device = AllToAllDevice::new(number_qubits, single_qubit_gates, two_qubit_gate);
+    let two_qubit_gates = &["CNOT".to_string()];
+    let multi_qubit_gates = &[];
+    let mut device = AllToAllDevice::new(
+        number_qubits,
+        single_qubit_gates,
+        two_qubit_gates,
+        multi_qubit_gates,
+    );
 
     device = device.set_all_single_qubit_gate_times(&"RotateX", 0.07);
     device = device.set_all_single_qubit_gate_times(&"RotateZ", 0.1);
@@ -260,8 +272,14 @@ fn test_alltoalldevice_settimes() {
 fn test_alltoalldevice_setattributes() {
     let number_qubits = 3usize;
     let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
-    let two_qubit_gate = "CNOT".to_string();
-    let mut device = AllToAllDevice::new(number_qubits, single_qubit_gates, two_qubit_gate);
+    let two_qubit_gates = &["CNOT".to_string()];
+    let multi_qubit_gates = &[];
+    let mut device = AllToAllDevice::new(
+        number_qubits,
+        single_qubit_gates,
+        two_qubit_gates,
+        multi_qubit_gates,
+    );
 
     let rates = array![[0.2], [0.3]];
     device = device.set_all_qubit_decoherence_rates(rates.clone());
