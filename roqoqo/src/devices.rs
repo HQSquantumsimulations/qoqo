@@ -301,7 +301,6 @@ impl AllToAllDevice {
     }
 }
 
-
 /// Implements Device trait for AllToAllDevice.
 ///
 /// The Device trait defines standard functions available for roqoqo devices.
@@ -375,6 +374,12 @@ impl Device for AllToAllDevice {
     fn multi_qubit_gate_time(&self, _hqslang: &str, _qubits: &[usize]) -> Option<f64> {
         None
     }
+    // fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
+    //     match self.multi_qubit_gates.get(&hqslang.to_string()) {
+    //         Some(x) => x.get(&(*qubits)).copied(),
+    //         None => None,
+    //     }
+    // }
 
     /// Returns the matrix of the decoherence rates of the Lindblad equation.
     ///
@@ -428,17 +433,27 @@ impl Device for AllToAllDevice {
     }
 }
 
-
 /// A generic 2D Grid Device with only next-neighbours-connectivity.
+///
+/// To construct the geometry of the GenericGrid device the qubits are numbered
+/// in a row-major order.
+///
+/// # Example:
+/// Let `m=3` be the number of rows and `n=4` the number of columns.
+/// The number of qubits are numbered as follows:
+/// 0   1   2   3
+/// 4   5   6   7
+/// 8   9   10  11
+/// Resulting in qubit #6 being in the 2nd row in the 3rd column.
 ///
 #[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct GenericGrid {
     number_rows: usize,
     number_columns: usize,
     single_qubit_gates: HashMap<String, HashMap<usize, f64>>,
-    two_qubit_gate: HashMap<String, HashMap<(usize, usize), f64>>,
+    two_qubit_gates: HashMap<String, HashMap<(usize, usize), f64>>,
+    multi_qubit_gates: HashMap<String, HashMap<Vec<usize>, f64>>,
     decoherence_rates: HashMap<usize, Array2<f64>>,
-    number_qubits: usize,
 }
 
 impl GenericGrid {
@@ -449,7 +464,8 @@ impl GenericGrid {
     /// * `number_rows` - The number of rows in the device.
     /// * `number_columns` - The number of columns in the device.
     /// * `single_qubit_gates` - A list of 'hqslang' names of single-qubit-gates supported by the device.
-    /// * `two_qubit_gate` - The 'hqslang' name of the basic two-qubit-gate supported by the device.
+    /// * `two_qubit_gates` - A list of 'hqslang' namse of the basic two-qubit-gates supported by the device.
+    /// * `multi_qubit_gates` - Optional. A list of 'hqslang' namse of the basic multi-qubit-gates supported by the device.
     ///
     /// # Returns
     ///
@@ -459,9 +475,12 @@ impl GenericGrid {
         number_rows: usize,
         number_columns: usize,
         single_qubit_gates: &[String],
-        two_qubit_gate: String,
+        two_qubit_gates: &[String],
+        multi_qubit_gates: &[String],
     ) -> Self {
         let number_qubits = number_rows * number_columns;
+
+        // initialization of single qubit gates with empty times
         let mut single_qubit_gate_map: HashMap<String, HashMap<usize, f64>> = HashMap::new();
         for gate in single_qubit_gates.iter() {
             let mut empty_times: HashMap<usize, f64> = HashMap::new();
@@ -471,22 +490,34 @@ impl GenericGrid {
             single_qubit_gate_map.insert(gate.clone(), empty_times);
         }
 
+        // initialization of two qubit gates with empty times
         let mut two_qubit_gate_map: HashMap<String, HashMap<(usize, usize), f64>> = HashMap::new();
-        let mut empty_times: HashMap<(usize, usize), f64> = HashMap::new();
-        for row in 0..(number_rows) {
-            for column in 0..(number_columns) {
-                let qubit = row * number_columns + column;
-                if column < number_columns - 1 {
-                    empty_times.insert((qubit, qubit + 1), 0.0);
-                    empty_times.insert((qubit + 1, qubit), 0.0);
-                }
-                if row < number_rows - 1 {
-                    empty_times.insert((qubit, qubit + number_columns), 0.0);
-                    empty_times.insert((qubit + number_columns, qubit), 0.0);
+        for gate in two_qubit_gates.iter() {
+            let mut empty_times: HashMap<(usize, usize), f64> = HashMap::new();
+            for row in 0..(number_rows) {
+                for column in 0..(number_columns) {
+                    let qubit = row * number_columns + column;
+                    if column < number_columns - 1 {
+                        empty_times.insert((qubit, qubit + 1), 0.0);
+                        empty_times.insert((qubit + 1, qubit), 0.0);
+                    }
+                    if row < number_rows - 1 {
+                        empty_times.insert((qubit, qubit + number_columns), 0.0);
+                        empty_times.insert((qubit + number_columns, qubit), 0.0);
+                    }
                 }
             }
+            two_qubit_gate_map.insert(gate.clone(), empty_times);
         }
-        two_qubit_gate_map.insert(two_qubit_gate, empty_times);
+
+        // initialization of multi qubit gates with empty times applied to all qubits in the device
+        let mut multi_qubit_gate_map: HashMap<String, HashMap<Vec<usize>, f64>> = HashMap::new();
+        for gate in multi_qubit_gates.iter() {
+            let mut empty_times: HashMap<Vec<usize>, f64> = HashMap::new();
+            let qubits: Vec<usize> = (0..number_qubits).collect();
+            empty_times.insert(qubits, 0.0);
+            multi_qubit_gate_map.insert(gate.clone(), empty_times);
+        }
 
         let mut decoherence_rates: HashMap<usize, Array2<f64>> = HashMap::new();
         for qubit0 in 0..number_qubits {
@@ -497,9 +528,9 @@ impl GenericGrid {
             number_rows,
             number_columns,
             single_qubit_gates: single_qubit_gate_map,
-            two_qubit_gate: two_qubit_gate_map,
+            two_qubit_gates: two_qubit_gate_map,
+            multi_qubit_gates: multi_qubit_gate_map,
             decoherence_rates,
-            number_qubits,
         }
     }
 
@@ -516,27 +547,10 @@ impl GenericGrid {
     pub fn set_all_single_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
         if self.single_qubit_gates.get(&gate.to_string()).is_some() {
             let mut times: HashMap<usize, f64> = HashMap::new();
-            for qubit in 0..self.number_qubits {
+            for qubit in 0..self.number_qubits() {
                 times.insert(qubit, gate_time);
             }
             self.single_qubit_gates.insert(gate.to_string(), times);
-        }
-        self
-    }
-
-    /// Function to set the decoherence rates for all qubits in the device.
-    ///
-    /// # Arguments
-    ///
-    /// * `rates` - decoherence rates for the qubits in the device.
-    ///
-    /// # Returns
-    ///
-    /// A GenericGrid with updated decoherence rates.
-    ///
-    pub fn set_all_qubit_decoherence_rates(mut self, rates: Array2<f64>) -> Self {
-        for qubit in 0..self.number_qubits {
-            self.decoherence_rates.insert(qubit, rates.clone());
         }
         self
     }
@@ -553,14 +567,8 @@ impl GenericGrid {
     /// A GenericGrid with updated gate times.
     ///
     pub fn set_all_two_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
-        if self.two_qubit_gate.get(&gate.to_string()).is_some() {
+        if self.two_qubit_gates.get(&gate.to_string()).is_some() {
             let mut times: HashMap<(usize, usize), f64> = HashMap::new();
-            // // TBD if two_qubit_edges can be used here instead??
-            // let edges = self.two_qubit_edges();
-            // for edge in edges {
-            //     times.insert(edge, gate_time);
-            //      times.insert((edge.1, edge.0), gate_time);
-            // }
             for row in 0..(self.number_rows) {
                 for column in 0..(self.number_columns) {
                     let qubit = row * self.number_columns + column;
@@ -574,7 +582,46 @@ impl GenericGrid {
                     }
                 }
             }
-            self.two_qubit_gate.insert(gate.to_string(), times);
+            self.two_qubit_gates.insert(gate.to_string(), times);
+        }
+        self
+    }
+
+    /// Function that allows to set the gate time for the multi-qubit-gate,
+    /// when applied to all qubits in the device.
+    ///
+    /// # Arguments
+    ///
+    /// * `gate` - hqslang name of the multi-qubit-gate.
+    /// * `gate_time` - gate time for the given gate, valid for all qubits in the device.
+    ///
+    /// # Returns
+    ///
+    /// A GenericGrid with updated gate times.
+    ///
+    pub fn set_all_multi_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
+        if self.multi_qubit_gates.get(&gate.to_string()).is_some() {
+            let mut times: HashMap<Vec<usize>, f64> = HashMap::new();
+            let qubits: Vec<usize> = (0..self.number_qubits()).collect();
+            times.insert(qubits, gate_time);
+            self.multi_qubit_gates.insert(gate.to_string(), times);
+        }
+        self
+    }
+
+    /// Function to set the decoherence rates for all qubits in the device.
+    ///
+    /// # Arguments
+    ///
+    /// * `rates` - decoherence rates for the qubits in the device.
+    ///
+    /// # Returns
+    ///
+    /// A GenericGrid with updated decoherence rates.
+    ///
+    pub fn set_all_qubit_decoherence_rates(mut self, rates: Array2<f64>) -> Self {
+        for qubit in 0..self.number_qubits() {
+            self.decoherence_rates.insert(qubit, rates.clone());
         }
         self
     }
@@ -612,7 +659,8 @@ impl Device for GenericGrid {
     /// The number of qubits in the device.
     ///
     fn number_qubits(&self) -> usize {
-        self.number_qubits
+        let number_qubits = self.number_rows * self.number_columns;
+        number_qubits
     }
 
     /// Returns the gate time of a single qubit operation if the single qubit operation is available on device.
@@ -649,7 +697,7 @@ impl Device for GenericGrid {
     /// * `None` - The gate is not available on the device.
     ///
     fn two_qubit_gate_time(&self, hqslang: &str, control: &usize, target: &usize) -> Option<f64> {
-        match self.two_qubit_gate.get(&hqslang.to_string()) {
+        match self.two_qubit_gates.get(&hqslang.to_string()) {
             Some(x) => x.get(&(*control, *target)).copied(),
             None => None,
         }
@@ -668,8 +716,11 @@ impl Device for GenericGrid {
     /// * `Some<f64>` - The gate time.
     /// * `None` - The gate is not available on the device.
     ///
-    fn multi_qubit_gate_time(&self, _hqslang: &str, _qubits: &[usize]) -> Option<f64> {
-        None
+    fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
+        match self.multi_qubit_gates.get(&hqslang.to_string()) {
+            Some(x) => x.get(&(*qubits)).copied(),
+            None => None,
+        }
     }
 
     /// Returns the matrix of the decoherence rates of the Lindblad equation.

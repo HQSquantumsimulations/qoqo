@@ -10,12 +10,12 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 * Semver-style version checking for Circuit serialization. In beta mode (0.y.z) minor version must match (y_library == y_data) in release mode (x.y.z) major version must match (x_library == x_data) and minor version of library must exceed minor version of data (y_library >= y_data).
 * `json_schema` implementing `JsonSchema` from schemars for roqoqo data structures.
-* AllToAllDevice added to the roqoqo devices.
-* GenericGrid  - a 2D grid device - added to the roqoqo devices.
 * * Unit tests to validate `json_schema` added for Circuit, QuantumProgram and measurements.
 * `roqoqo-test` extended by two new functions for stochastic gate tests: `construct_random_circuit` and `add_random_multi_qubit_gate`. 
 * A conversion function `to_single_qubit_gate` has been implemented for the OperateSingleQubitGate trait.
 * The multiplication function `mul` added to the python interface, i.e. qoqo, for Single Qubit Gates.
+* AllToAllDevice added to the roqoqo devices.
+* GenericGrid  - a 2D grid device - added to the roqoqo devices.
 
 ### Changed
 

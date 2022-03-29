@@ -43,21 +43,24 @@ impl GenericGridWrapper {
     ///     number_rows (int): The fixed number of rows in device, needs to be the same for all layouts.
     ///     number_columns (int): Fixed number of tweezers in each row, needs to be the same for all layouts.
     ///     single_qubit_gates (List[str]): A list of 'hqslang' names of single-qubit-gates supported by the device.
-    ///     two_qubit_gate (str): The 'hqslang' name of the basic two-qubit-gate supported by the device.
+    ///     two_qubit_gates (List[str]): A list of 'hqslang' names of basic two-qubit-gates supported by the device.
+    ///     multi_qubit_gates (List[str]): A list of 'hqslang' names of basic multi-qubit-gate supported by the device.
     ///
     #[new]
     pub fn new(
         number_rows: usize,
         number_columns: usize,
         single_qubit_gates: Vec<String>,
-        two_qubit_gate: String,
+        two_qubit_gates: Vec<String>,
+        multi_qubit_gates: Vec<String>,
     ) -> PyResult<Self> {
         Ok(Self {
             internal: GenericGrid::new(
                 number_rows,
                 number_columns,
                 &single_qubit_gates,
-                two_qubit_gate,
+                &two_qubit_gates,
+                &multi_qubit_gates,
             ),
         })
     }
@@ -126,8 +129,9 @@ impl GenericGridWrapper {
     /// Raises:
     ///     ValueError: Cannot serialize GenericGrid to json.
     fn to_json(&self) -> PyResult<String> {
-        let serialized = serde_json::to_string(&self.internal)
-            .map_err(|err| PyValueError::new_err(format!("Cannot serialize GenericGrid to json {:?}", err)))?;
+        let serialized = serde_json::to_string(&self.internal).map_err(|err| {
+            PyValueError::new_err(format!("Cannot serialize GenericGrid to json {:?}", err))
+        })?;
         Ok(serialized)
     }
 

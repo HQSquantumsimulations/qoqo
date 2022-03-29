@@ -280,12 +280,14 @@ fn genericgrid_new() {
     let number_columns = 4usize;
     let number_qubits = number_rows * number_columns;
     let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
-    let two_qubit_gate = "CNOT".to_string();
+    let two_qubit_gates = &["CNOT".to_string()];
+    let multi_qubit_gates = &[];
     let device = GenericGrid::new(
         number_rows,
         number_columns,
         single_qubit_gates,
-        two_qubit_gate,
+        two_qubit_gates,
+        multi_qubit_gates,
     );
 
     // Test number of qubits
@@ -317,12 +319,14 @@ fn test_genericgrid_settimes() {
     let number_columns = 4usize;
     let number_qubits = number_rows * number_columns;
     let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
-    let two_qubit_gate = "CNOT".to_string();
+    let two_qubit_gates = &["CNOT".to_string()];
+    let multi_qubit_gates = &[];
     let mut device = GenericGrid::new(
         number_rows,
         number_columns,
         single_qubit_gates,
-        two_qubit_gate,
+        two_qubit_gates,
+        multi_qubit_gates,
     );
 
     device = device.set_all_single_qubit_gate_times(&"RotateX", 0.07);
@@ -356,12 +360,14 @@ fn test_genericgrid_setattributes() {
     let number_columns = 4usize;
     let number_qubits = number_rows * number_columns;
     let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
-    let two_qubit_gate = "CNOT".to_string();
+    let two_qubit_gates = &["CNOT".to_string()];
+    let multi_qubit_gates = &[];
     let mut device = GenericGrid::new(
         number_rows,
         number_columns,
         single_qubit_gates,
-        two_qubit_gate,
+        two_qubit_gates,
+        multi_qubit_gates,
     );
     let rates = array![[0.2], [0.3]];
     device = device.set_all_qubit_decoherence_rates(rates.clone());
@@ -376,12 +382,14 @@ fn test_genericgrid_edges(rows: usize, columns: usize, test_edges: Vec<(usize, u
     let number_rows = rows;
     let number_columns = columns;
     let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
-    let two_qubit_gate = "CNOT".to_string();
+    let two_qubit_gates = &["CNOT".to_string()];
+    let multi_qubit_gates = &[];
     let device = GenericGrid::new(
         number_rows,
         number_columns,
         single_qubit_gates,
-        two_qubit_gate,
+        two_qubit_gates,
+        multi_qubit_gates,
     );
 
     let edges = device.two_qubit_edges();
