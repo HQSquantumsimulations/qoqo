@@ -82,6 +82,7 @@ use std::{
 ///
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct Circuit {
     /// Definitions in the quantum circuit, must be unique.
     definitions: Vec<Operation>,
@@ -263,18 +264,19 @@ impl Circuit {
     ///
     /// * `Ok(Self)` -  The Circuit with the parameters substituted.
     /// * `Err(RoqoqoError)` - The subsitution failed.
-    pub fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    pub fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
+        let mut tmp_calculator = calculator.clone();
         let mut tmp_def: Vec<Operation> = Vec::new();
         for def in self.definitions.iter() {
-            let tmp_op = def.substitute_parameters(calculator)?;
+            let tmp_op = def.substitute_parameters(&tmp_calculator)?;
             if let Operation::InputSymbolic(x) = &tmp_op {
-                calculator.set_variable(x.name(), *x.input())
+                tmp_calculator.set_variable(x.name(), *x.input())
             }
             tmp_def.push(tmp_op);
         }
         let mut tmp_op: Vec<Operation> = Vec::new();
         for op in self.operations.iter() {
-            tmp_op.push(op.substitute_parameters(calculator)?);
+            tmp_op.push(op.substitute_parameters(&tmp_calculator)?);
         }
         Ok(Self {
             definitions: tmp_def,

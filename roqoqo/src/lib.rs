@@ -21,9 +21,10 @@
 //!
 //! `Rust only Quantum Operation Quantum Operation` - the quantum computing toolkit by HQS Quantum Simulations.
 //!
-pub use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorError;
-pub use qoqo_calculator::CalculatorFloat;
+use qoqo_calculator::CalculatorFloat;
+#[cfg(feature = "json_schema")]
+use schemars::{schema::Schema, JsonSchema};
 use std::str::FromStr;
 use thiserror::Error;
 
@@ -34,9 +35,21 @@ pub const ROQOQO_VERSION: &str = env!("CARGO_PKG_VERSION");
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "serialize", serde(try_from = "RoqoqoVersionSerializable"))]
 #[cfg_attr(feature = "serialize", serde(into = "RoqoqoVersionSerializable"))]
+
 struct RoqoqoVersion;
 
+#[cfg(feature = "json_schema")]
+impl JsonSchema for RoqoqoVersion {
+    fn schema_name() -> String {
+        "RoqoqoVersion".to_string()
+    }
+
+    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> Schema {
+        RoqoqoVersionSerializable::json_schema(gen)
+    }
+}
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Default)]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 struct RoqoqoVersionSerializable {
     /// The semver major version of roqoqo
@@ -197,7 +210,7 @@ pub enum RoqoqoError {
     },
     /// Error occured in basis rotation measurement.
     #[error("Error occured in basis rotation measurement. {msg}")]
-    BasisRotationMeasurementError {
+    PauliZProductMeasurementError {
         /// Error message.
         msg: String,
     },

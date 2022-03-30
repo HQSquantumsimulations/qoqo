@@ -31,19 +31,20 @@ use std::fmt::{Display, Formatter};
 /// It is the intended way to interface between normal program code and roqoqo based quantum programs.
 ///
 #[derive(Debug, PartialEq, Clone)]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub enum QuantumProgram {
     /// Variant for basis rotation measurement based quantum programs
-    BasisRotation {
+    PauliZProduct {
         /// The measurement that is performed
-        measurement: measurements::BasisRotation,
+        measurement: measurements::PauliZProduct,
         /// List of free input parameters that can be set when the QuantumProgram is executed
         input_parameter_names: Vec<String>,
     },
     /// Variant for cheated basis rotation measurement based quantum programs
-    CheatedBasisRotation {
+    CheatedPauliZProduct {
         /// The measurement that is performed
-        measurement: measurements::CheatedBasisRotation,
+        measurement: measurements::CheatedPauliZProduct,
         /// List of free input parameters that can be set when the QuantumProgram is executed
         input_parameter_names: Vec<String>,
     },
@@ -82,7 +83,7 @@ impl QuantumProgram {
         T: EvaluatingBackend,
     {
         match self{
-            QuantumProgram::BasisRotation{measurement, input_parameter_names } => {
+            QuantumProgram::PauliZProduct{measurement, input_parameter_names } => {
                 if parameters.len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())})};
                 let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
                 let substituted_measurement = measurement.substitute_parameters(
@@ -90,7 +91,7 @@ impl QuantumProgram {
                 )?;
                 backend.run_measurement(&substituted_measurement)
             }
-            QuantumProgram::CheatedBasisRotation{measurement, input_parameter_names } => {
+            QuantumProgram::CheatedPauliZProduct{measurement, input_parameter_names } => {
                 if parameters.len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())})};
                 let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
                 let substituted_measurement = measurement.substitute_parameters(
@@ -146,17 +147,17 @@ impl Display for QuantumProgram {
         let mut s: String = String::new();
 
         match self {
-            QuantumProgram::BasisRotation { .. } => {
-                s.push_str(&"QuantumProgram::BasisRotation".to_string());
+            QuantumProgram::PauliZProduct { .. } => {
+                s.push_str("QuantumProgram::PauliZProduct");
             }
-            QuantumProgram::CheatedBasisRotation { .. } => {
-                s.push_str(&"QuantumProgram::CheatedBasisRotation".to_string());
+            QuantumProgram::CheatedPauliZProduct { .. } => {
+                s.push_str("QuantumProgram::CheatedPauliZProduct");
             }
             QuantumProgram::Cheated { .. } => {
-                s.push_str(&"QuantumProgram::Cheated".to_string());
+                s.push_str("QuantumProgram::Cheated");
             }
             QuantumProgram::ClassicalRegister { .. } => {
-                s.push_str(&"QuantumProgram::ClassicalRegister".to_string());
+                s.push_str("QuantumProgram::ClassicalRegister");
             }
         }
 

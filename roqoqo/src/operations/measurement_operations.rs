@@ -41,6 +41,7 @@ use crate::Circuit;
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct MeasureQubit {
     /// The measured qubit.
     qubit: usize,
@@ -57,6 +58,7 @@ const TAGS_MeasureQubit: &[&str; 3] = &["Operation", "Measurement", "MeasureQubi
 ///
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGetStateVector {
     /// The name of the classical readout register.
     readout: String,
@@ -84,7 +86,7 @@ impl Substitute for PragmaGetStateVector {
     }
 
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
         let new_circuit = match self.circuit.as_ref() {
             Some(x) => Some(x.substitute_parameters(calculator)?),
             _ => None,
@@ -105,6 +107,7 @@ impl InvolveQubits for PragmaGetStateVector {
 ///
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGetDensityMatrix {
     /// The name of the classical readout register.
     readout: String,
@@ -135,7 +138,7 @@ impl Substitute for PragmaGetDensityMatrix {
     }
 
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
         let new_circuit = match self.circuit.as_ref() {
             Some(x) => Some(x.substitute_parameters(calculator)?),
             _ => None,
@@ -162,6 +165,7 @@ impl InvolveQubits for PragmaGetDensityMatrix {
 ///
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGetOccupationProbability {
     /// The name of the classical readout register.
     readout: String,
@@ -192,7 +196,7 @@ impl Substitute for PragmaGetOccupationProbability {
     }
 
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
         let new_circuit = match self.circuit.as_ref() {
             Some(x) => Some(x.substitute_parameters(calculator)?),
             _ => None,
@@ -220,6 +224,7 @@ impl InvolveQubits for PragmaGetOccupationProbability {
 ///
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGetPauliProduct {
     /// The HashMap of the pauli matrix to apply to each qubit in the form {qubit: pauli}. Allowed values to be provided for 'pauli' are: `0` = identity, `1` = PauliX, `2` = PauliY, `3` = PauliZ.
     qubit_paulis: HashMap<usize, usize>,
@@ -256,7 +261,7 @@ impl Substitute for PragmaGetPauliProduct {
     }
 
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
         let new_circuit = self.circuit.substitute_parameters(calculator).unwrap();
         Ok(PragmaGetPauliProduct::new(
             self.qubit_paulis.clone(),
@@ -287,6 +292,7 @@ impl InvolveQubits for PragmaGetPauliProduct {
 ///
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaRepeatedMeasurement {
     /// The name of the classical readout register.
     readout: String,
@@ -325,7 +331,7 @@ impl Substitute for PragmaRepeatedMeasurement {
     }
 
     /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, _calculator: &mut Calculator) -> Result<Self, RoqoqoError> {
+    fn substitute_parameters(&self, _calculator: &Calculator) -> Result<Self, RoqoqoError> {
         Ok(self.clone())
     }
 }

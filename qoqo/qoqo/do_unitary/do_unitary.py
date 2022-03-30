@@ -33,7 +33,7 @@ class DoUnitary(object):
     2) The unitary evolution phase is a circuit with gates usually representing a certain
        Hamiltonian, repeated a certain number of times or Trotter steps.
     3) The measurement phase is the measurement of certain expectation values. These are
-       defined in terms of pauli product expectations, such as the BasisRotation
+       defined in terms of pauli product expectations, such as the PauliZProduct
        (in qoqo -> measurements).
     """
 

@@ -26,6 +26,7 @@ use std::collections::HashMap;
 /// The expectation values are defined by a matrix representation of the measured observables.
 #[derive(Debug, PartialEq, Clone)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct Cheated {
     /// Constant Circuit that is executed before each Circuit in circuits.
     pub constant_circuit: Option<Circuit>,
@@ -74,7 +75,7 @@ impl Measure for Cheated {
         }
         let new_constant_circuit = match &self.constant_circuit {
             None => None,
-            Some(c) => Some(c.substitute_parameters(&mut calculator)?),
+            Some(c) => Some(c.substitute_parameters(&calculator)?),
         };
         let mut new_circuits = Vec::new();
         for circ in self.circuits.iter() {
@@ -82,7 +83,7 @@ impl Measure for Cheated {
             for (name, val) in substituted_parameters.iter() {
                 calculator.set_variable(name, *val)
             }
-            new_circuits.push(circ.substitute_parameters(&mut calculator)?)
+            new_circuits.push(circ.substitute_parameters(&calculator)?)
         }
         Ok(Self {
             constant_circuit: new_constant_circuit,
