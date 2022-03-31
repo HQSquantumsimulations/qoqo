@@ -39,8 +39,8 @@
 
 use crate::RoqoqoBackendError;
 use ndarray::Array2;
+use serde::ser::{SerializeStruct, Serializer};
 use std::collections::HashMap;
-use serde::ser::{Serializer, SerializeStruct};
 // use serde::de::{self, Deserialize, Deserializer, Visitor, SeqAccess, MapAccess};
 
 /// Trait for roqoqo devices.
@@ -466,9 +466,9 @@ impl Device for AllToAllDevice {
 pub struct GenericGrid {
     number_rows: usize,
     number_columns: usize,
-    single_qubit_gates: HashMap<SingleQubitKey, f64>,
-    two_qubit_gates: HashMap<String, HashMap<(usize, usize), f64>>,
-    multi_qubit_gates: HashMap<String, HashMap<Vec<usize>, f64>>,
+    single_qubit_gates: HashMap<SingleQubitMap, f64>,
+    two_qubit_gates: HashMap<TwoQubitMap, f64>,
+    multi_qubit_gates: HashMap<MultiQubitMap, f64>,
     decoherence_rates: HashMap<usize, Array2<f64>>,
 }
 
@@ -497,41 +497,64 @@ impl GenericGrid {
         let number_qubits = number_rows * number_columns;
 
         // initialization of single qubit gates with empty times
-        let mut single_qubit_gate_map: HashMap<SingleQubitKey, f64> = HashMap::new();
+        let mut single_qubit_gate_map: HashMap<SingleQubitMap, f64> = HashMap::new();
         for gate in single_qubit_gates.iter() {
             for qubit in 0..number_qubits {
-                let hashmapkey = SingleQubitKey {gate: gate.clone(), qubit: qubit};
+                let hashmapkey = SingleQubitMap {
+                    gate: gate.clone(),
+                    qubit: qubit,
+                };
                 single_qubit_gate_map.insert(hashmapkey, 0.0);
             }
         }
 
         // initialization of two qubit gates with empty times
-        let mut two_qubit_gate_map: HashMap<String, HashMap<(usize, usize), f64>> = HashMap::new();
+        let mut two_qubit_gate_map: HashMap<TwoQubitMap, f64> = HashMap::new();
         for gate in two_qubit_gates.iter() {
-            let mut empty_times: HashMap<(usize, usize), f64> = HashMap::new();
             for row in 0..(number_rows) {
                 for column in 0..(number_columns) {
                     let qubit = row * number_columns + column;
                     if column < number_columns - 1 {
-                        empty_times.insert((qubit, qubit + 1), 0.0);
-                        empty_times.insert((qubit + 1, qubit), 0.0);
+                        let key1 = TwoQubitMap {
+                            gate: gate.clone(),
+                            control: qubit,
+                            target: qubit + 1,
+                        };
+                        let key2 = TwoQubitMap {
+                            gate: gate.clone(),
+                            control: qubit + 1,
+                            target: qubit,
+                        };
+                        two_qubit_gate_map.insert(key1, 0.0);
+                        two_qubit_gate_map.insert(key2, 0.0);
                     }
                     if row < number_rows - 1 {
-                        empty_times.insert((qubit, qubit + number_columns), 0.0);
-                        empty_times.insert((qubit + number_columns, qubit), 0.0);
+                        let key1 = TwoQubitMap {
+                            gate: gate.clone(),
+                            control: qubit,
+                            target: qubit + number_columns,
+                        };
+                        let key2 = TwoQubitMap {
+                            gate: gate.clone(),
+                            control: qubit + number_columns,
+                            target: qubit,
+                        };
+                        two_qubit_gate_map.insert(key1, 0.0);
+                        two_qubit_gate_map.insert(key2, 0.0);
                     }
                 }
             }
-            two_qubit_gate_map.insert(gate.clone(), empty_times);
         }
 
         // initialization of multi qubit gates with empty times applied to all qubits in the device
-        let mut multi_qubit_gate_map: HashMap<String, HashMap<Vec<usize>, f64>> = HashMap::new();
+        let mut multi_qubit_gate_map: HashMap<MultiQubitMap, f64> = HashMap::new();
         for gate in multi_qubit_gates.iter() {
-            let mut empty_times: HashMap<Vec<usize>, f64> = HashMap::new();
             let qubits: Vec<usize> = (0..number_qubits).collect();
-            empty_times.insert(qubits, 0.0);
-            multi_qubit_gate_map.insert(gate.clone(), empty_times);
+            let hashmapkey = MultiQubitMap {
+                gate: gate.clone(),
+                qubits: qubits,
+            };
+            multi_qubit_gate_map.insert(hashmapkey, 0.0);
         }
 
         let mut decoherence_rates: HashMap<usize, Array2<f64>> = HashMap::new();
@@ -560,10 +583,16 @@ impl GenericGrid {
     /// A GenericGrid with updated gate times.
     ///
     pub fn set_all_single_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
-        let keytocheck = SingleQubitKey {gate: gate.clone().to_string(), qubit: 0};
+        let keytocheck = SingleQubitMap {
+            gate: gate.clone().to_string(),
+            qubit: 0,
+        };
         if self.single_qubit_gates.get(&keytocheck).is_some() {
             for qubit in 0..self.number_qubits() {
-                let hashmapkey = SingleQubitKey {gate: gate.clone().to_string(), qubit: qubit};
+                let hashmapkey = SingleQubitMap {
+                    gate: gate.clone().to_string(),
+                    qubit: qubit,
+                };
                 self.single_qubit_gates.insert(hashmapkey, gate_time);
             }
         }
@@ -582,22 +611,45 @@ impl GenericGrid {
     /// A GenericGrid with updated gate times.
     ///
     pub fn set_all_two_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
-        if self.two_qubit_gates.get(&gate.to_string()).is_some() {
-            let mut times: HashMap<(usize, usize), f64> = HashMap::new();
+        let keytocheck = TwoQubitMap {
+            gate: gate.clone().to_string(),
+            control: 0,
+            target: 1,
+        };
+        if self.two_qubit_gates.get(&keytocheck).is_some() {
             for row in 0..(self.number_rows) {
                 for column in 0..(self.number_columns) {
                     let qubit = row * self.number_columns + column;
                     if column < self.number_columns - 1 {
-                        times.insert((qubit, qubit + 1), gate_time);
-                        times.insert((qubit + 1, qubit), gate_time);
+                        let key1 = TwoQubitMap {
+                            gate: gate.clone().to_string(),
+                            control: qubit,
+                            target: qubit + 1,
+                        };
+                        let key2 = TwoQubitMap {
+                            gate: gate.clone().to_string(),
+                            control: qubit + 1,
+                            target: qubit,
+                        };
+                        self.two_qubit_gates.insert(key1, gate_time);
+                        self.two_qubit_gates.insert(key2, gate_time);
                     }
                     if row < self.number_rows - 1 {
-                        times.insert((qubit, qubit + self.number_columns), gate_time);
-                        times.insert((qubit + self.number_columns, qubit), gate_time);
+                        let key1 = TwoQubitMap {
+                            gate: gate.clone().to_string(),
+                            control: qubit,
+                            target: qubit + self.number_columns,
+                        };
+                        let key2 = TwoQubitMap {
+                            gate: gate.clone().to_string(),
+                            control: qubit + self.number_columns,
+                            target: qubit,
+                        };
+                        self.two_qubit_gates.insert(key1, gate_time);
+                        self.two_qubit_gates.insert(key2, gate_time);
                     }
                 }
             }
-            self.two_qubit_gates.insert(gate.to_string(), times);
         }
         self
     }
@@ -615,11 +667,13 @@ impl GenericGrid {
     /// A GenericGrid with updated gate times.
     ///
     pub fn set_all_multi_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
-        if self.multi_qubit_gates.get(&gate.to_string()).is_some() {
-            let mut times: HashMap<Vec<usize>, f64> = HashMap::new();
-            let qubits: Vec<usize> = (0..self.number_qubits()).collect();
-            times.insert(qubits, gate_time);
-            self.multi_qubit_gates.insert(gate.to_string(), times);
+        let qubits: Vec<usize> = (0..self.number_qubits()).collect();
+        let keytocheck = MultiQubitMap {
+            gate: gate.clone().to_string(),
+            qubits: qubits,
+        };
+        if self.multi_qubit_gates.get(&keytocheck).is_some() {
+            self.multi_qubit_gates.insert(keytocheck, gate_time);
         }
         self
     }
@@ -690,7 +744,10 @@ impl Device for GenericGrid {
     /// * `None` - The gate is not available on the device.
     ///
     fn single_qubit_gate_time(&self, hqslang: &str, qubit: &usize) -> Option<f64> {
-        let key = SingleQubitKey {gate: hqslang.to_string(), qubit: qubit.clone()};
+        let key = SingleQubitMap {
+            gate: hqslang.to_string(),
+            qubit: qubit.clone(),
+        };
         match self.single_qubit_gates.get(&key) {
             Some(x) => Some(x.clone()),
             None => None,
@@ -712,8 +769,13 @@ impl Device for GenericGrid {
     /// * `None` - The gate is not available on the device.
     ///
     fn two_qubit_gate_time(&self, hqslang: &str, control: &usize, target: &usize) -> Option<f64> {
-        match self.two_qubit_gates.get(&hqslang.to_string()) {
-            Some(x) => x.get(&(*control, *target)).copied(),
+        let key = TwoQubitMap {
+            gate: hqslang.to_string(),
+            control: control.clone(),
+            target: target.clone(),
+        };
+        match self.two_qubit_gates.get(&key) {
+            Some(x) => Some(x.clone()),
             None => None,
         }
     }
@@ -732,8 +794,12 @@ impl Device for GenericGrid {
     /// * `None` - The gate is not available on the device.
     ///
     fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
-        match self.multi_qubit_gates.get(&hqslang.to_string()) {
-            Some(x) => x.get(&(*qubits)).copied(),
+        let key = MultiQubitMap {
+            gate: hqslang.to_string(),
+            qubits: qubits.to_vec(),
+        };
+        match self.multi_qubit_gates.get(&key) {
+            Some(x) => Some(x.clone()),
             None => None,
         }
     }
@@ -800,17 +866,17 @@ impl Device for GenericGrid {
 // to access the gate times
 //
 #[derive(Clone, Debug, Hash, PartialEq, Eq, serde::Deserialize)]
-struct SingleQubitKey {
+struct SingleQubitMap {
     gate: String,
     qubit: usize,
 }
 
-impl serde::Serialize for SingleQubitKey {
+impl serde::Serialize for SingleQubitMap {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,
     {
-        let mut state = serializer.serialize_struct("SingleQubitKey", 2)?;
+        let mut state = serializer.serialize_struct("SingleQubitMap", 2)?;
         state.serialize_field("gate", &self.gate)?;
         state.serialize_field("qubit", &self.qubit)?;
         state.end()
@@ -821,18 +887,18 @@ impl serde::Serialize for SingleQubitKey {
 // to access the gate times
 //
 #[derive(Clone, Debug, Hash, PartialEq, Eq, serde::Deserialize)]
-struct TwoQubitKey {
+struct TwoQubitMap {
     gate: String,
     control: usize,
     target: usize,
 }
 
-impl serde::Serialize for TwoQubitKey {
+impl serde::Serialize for TwoQubitMap {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,
     {
-        let mut state = serializer.serialize_struct("TwoQubitKey", 3)?;
+        let mut state = serializer.serialize_struct("TwoQubitMap", 3)?;
         state.serialize_field("gate", &self.gate)?;
         state.serialize_field("control", &self.control)?;
         state.serialize_field("target", &self.target)?;
@@ -844,27 +910,27 @@ impl serde::Serialize for TwoQubitKey {
 // to access the gate times
 //
 #[derive(Clone, Debug, Hash, PartialEq, Eq, serde::Deserialize)]
-struct MultiQubitKey {
+struct MultiQubitMap {
     gate: String,
     qubits: Vec<usize>,
 }
 
-impl serde::Serialize for MultiQubitKey {
+impl serde::Serialize for MultiQubitMap {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,
     {
-        let mut state = serializer.serialize_struct("MultiQubitKey", 2)?;
+        let mut state = serializer.serialize_struct("MultiQubitMap", 2)?;
         state.serialize_field("gate", &self.gate)?;
         state.serialize_field("qubits", &self.qubits)?;
         state.end()
     }
 }
 
-// This implementation builds. To be tested, if standard implementation is enough. 
+// This implementation builds. To be tested, if standard implementation is enough.
 // CODE parked here for the moment.
 //
-// impl<'de> Deserialize<'de> for SingleQubitKey {
+// impl<'de> Deserialize<'de> for SingleQubitMap {
 //     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
 //     where
 //         D: Deserializer<'de>,
@@ -906,17 +972,16 @@ impl serde::Serialize for MultiQubitKey {
 //             }
 //         }
 
+//         struct SingleQubitMapVisitor;
 
-//         struct SingleQubitKeyVisitor;
-
-//         impl<'de> Visitor<'de> for SingleQubitKeyVisitor {
-//             type Value = SingleQubitKey;
+//         impl<'de> Visitor<'de> for SingleQubitMapVisitor {
+//             type Value = SingleQubitMap;
 
 //             fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
-//                 formatter.write_str("struct SingleQubitKey")
+//                 formatter.write_str("struct SingleQubitMap")
 //             }
 
-//             fn visit_seq<V>(self, mut seq: V) -> Result<SingleQubitKey, V::Error>
+//             fn visit_seq<V>(self, mut seq: V) -> Result<SingleQubitMap, V::Error>
 //             where
 //                 V: SeqAccess<'de>,
 //             {
@@ -924,10 +989,10 @@ impl serde::Serialize for MultiQubitKey {
 //                     .ok_or_else(|| de::Error::invalid_length(0, &self))?;
 //                 let qubit = seq.next_element()?
 //                     .ok_or_else(|| de::Error::invalid_length(1, &self))?;
-//                 Ok(SingleQubitKey{ gate: gate, qubit: qubit })
+//                 Ok(SingleQubitMap{ gate: gate, qubit: qubit })
 //             }
 
-//             fn visit_map<V>(self, mut map: V) -> Result<SingleQubitKey, V::Error>
+//             fn visit_map<V>(self, mut map: V) -> Result<SingleQubitMap, V::Error>
 //             where
 //                 V: MapAccess<'de>,
 //             {
@@ -951,11 +1016,11 @@ impl serde::Serialize for MultiQubitKey {
 //                 }
 //                 let gate = gate.ok_or_else(|| de::Error::missing_field("gate"))?;
 //                 let qubit = qubit.ok_or_else(|| de::Error::missing_field("qubit"))?;
-//                 Ok(SingleQubitKey{ gate: gate, qubit: qubit})
+//                 Ok(SingleQubitMap{ gate: gate, qubit: qubit})
 //             }
 //         }
 
 //         const FIELDS: &'static [&'static str] = &["gate", "qubit"];
-//         deserializer.deserialize_struct("SingleQubitKey", FIELDS, SingleQubitKeyVisitor)
+//         deserializer.deserialize_struct("SingleQubitMap", FIELDS, SingleQubitMapVisitor)
 //     }
 // }
