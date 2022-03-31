@@ -40,6 +40,7 @@
 use crate::RoqoqoBackendError;
 use ndarray::Array2;
 use std::collections::HashMap;
+use serde::ser::{Serializer, SerializeStruct};
 
 /// Trait for roqoqo devices.
 ///
@@ -171,6 +172,27 @@ pub trait Device {
         Err(RoqoqoBackendError::GenericError {
             msg: "The device ".to_string(),
         })
+    }
+}
+
+// A customized struct to use as a key in the HashMap for single_qubit_gates
+// to access the gate times
+//
+#[derive(Debug, Hash, PartialEq, Eq)]
+struct GateQubitKey {
+    gate: String,
+    qubit: usize,
+}
+
+impl serde::Serialize for GateQubitKey {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut state = serializer.serialize_struct("GateQubitKey", 2)?;
+        state.serialize_field("gate", &self.gate)?;
+        state.serialize_field("qubit", &self.qubit)?;
+        state.end()
     }
 }
 
