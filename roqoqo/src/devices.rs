@@ -817,6 +817,50 @@ impl serde::Serialize for SingleQubitKey {
     }
 }
 
+// A customized struct to use as a key in the HashMap for two_qubit_gates
+// to access the gate times
+//
+#[derive(Clone, Debug, Hash, PartialEq, Eq, serde::Deserialize)]
+struct TwoQubitKey {
+    gate: String,
+    control: usize,
+    target: usize,
+}
+
+impl serde::Serialize for TwoQubitKey {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut state = serializer.serialize_struct("TwoQubitKey", 3)?;
+        state.serialize_field("gate", &self.gate)?;
+        state.serialize_field("control", &self.control)?;
+        state.serialize_field("target", &self.target)?;
+        state.end()
+    }
+}
+
+// A customized struct to use as a key in the HashMap for multi_qubit_gates
+// to access the gate times
+//
+#[derive(Clone, Debug, Hash, PartialEq, Eq, serde::Deserialize)]
+struct MultiQubitKey {
+    gate: String,
+    qubits: Vec<usize>,
+}
+
+impl serde::Serialize for MultiQubitKey {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut state = serializer.serialize_struct("MultiQubitKey", 2)?;
+        state.serialize_field("gate", &self.gate)?;
+        state.serialize_field("qubits", &self.qubits)?;
+        state.end()
+    }
+}
+
 // This implementation builds. To be tested, if standard implementation is enough. 
 // CODE parked here for the moment.
 //
