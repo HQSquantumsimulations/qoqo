@@ -39,9 +39,7 @@
 
 use crate::RoqoqoBackendError;
 use ndarray::Array2;
-use serde::ser::{SerializeStruct, Serializer};
 use std::collections::HashMap;
-// use serde::de::{self, Deserialize, Deserializer, Visitor, SeqAccess, MapAccess};
 
 /// Trait for roqoqo devices.
 ///
@@ -468,7 +466,7 @@ pub struct GenericGrid {
     number_columns: usize,
     single_qubit_gates: HashMap<String, Vec<SingleQubitMap>>,
     two_qubit_gates: HashMap<String, Vec<TwoQubitMap>>,
-    multi_qubit_gates: HashMap<String, HashMap<Vec<usize>, f64>>,
+    multi_qubit_gates: HashMap<String, Vec<MultiQubitMap>>,
     decoherence_rates: HashMap<usize, Array2<f64>>,
 }
 
@@ -551,11 +549,15 @@ impl GenericGrid {
         }
 
         // initialization of multi qubit gates with empty times applied to all qubits in the device
-        let mut multi_qubit_gate_map: HashMap<String, HashMap<Vec<usize>, f64>> = HashMap::new();
+        let mut multi_qubit_gate_map: HashMap<String, Vec<MultiQubitMap>> = HashMap::new();
         for gate in multi_qubit_gates.iter() {
-            let mut empty_times: HashMap<Vec<usize>, f64> = HashMap::new();
+            let mut empty_times: Vec<MultiQubitMap> = Vec::new();
             let qubits: Vec<usize> = (0..number_qubits).collect();
-            empty_times.insert(qubits, 0.0);
+            let map = MultiQubitMap {
+                qubits: qubits,
+                time: 0.0,
+            };
+            empty_times.push(map);
             multi_qubit_gate_map.insert(gate.clone(), empty_times);
         }
 
@@ -665,9 +667,13 @@ impl GenericGrid {
     ///
     pub fn set_all_multi_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
         if self.multi_qubit_gates.get(&gate.to_string()).is_some() {
-            let mut times: HashMap<Vec<usize>, f64> = HashMap::new();
+            let mut times: Vec<MultiQubitMap> = Vec::new();
             let qubits: Vec<usize> = (0..self.number_qubits()).collect();
-            times.insert(qubits, gate_time);
+            let map = MultiQubitMap {
+                qubits: qubits,
+                time: gate_time,
+            };
+            times.push(map);
             self.multi_qubit_gates.insert(gate.to_string(), times);
         }
         self
@@ -741,7 +747,7 @@ impl Device for GenericGrid {
     fn single_qubit_gate_time(&self, hqslang: &str, qubit: &usize) -> Option<f64> {
         match self.single_qubit_gates.get(&hqslang.to_string()) {
             Some(x) => {
-                let mut item = x.iter().filter(|item| item.qubit == qubit.clone());
+                let mut item = x.iter().filter(|item| &item.qubit == qubit);
                 match item.next() {
                     Some(y) => Some(y.time),
                     None => None,
@@ -795,7 +801,13 @@ impl Device for GenericGrid {
     ///
     fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
         match self.multi_qubit_gates.get(&hqslang.to_string()) {
-            Some(x) => x.get(&(*qubits)).copied(),
+            Some(x) => {
+                let mut item = x.iter().filter(|item| &item.qubits == qubits);
+                match item.next() {
+                    Some(y) => Some(y.time),
+                    None => None,
+                }
+            }
             None => None,
         }
     }
@@ -861,162 +873,27 @@ impl Device for GenericGrid {
 // A customized struct to use as a value in the HashMap for single_qubit_gates
 // to access the gate times
 //
-#[derive(Clone, Debug, PartialEq, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 struct SingleQubitMap {
     qubit: usize,
     time: f64,
 }
 
-impl serde::Serialize for SingleQubitMap {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
-        let mut state = serializer.serialize_struct("SingleQubitMap", 2)?;
-        state.serialize_field("qubit", &self.qubit)?;
-        state.serialize_field("time", &self.time)?;
-        state.end()
-    }
-}
-
 // A customized struct to use as a value in the HashMap for two_qubit_gates
 // to access the gate times
 //
-#[derive(Clone, Debug, PartialEq, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 struct TwoQubitMap {
     control: usize,
     target: usize,
     time: f64,
 }
 
-impl serde::Serialize for TwoQubitMap {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
-        let mut state = serializer.serialize_struct("TwoQubitMap", 3)?;
-        state.serialize_field("control", &self.control)?;
-        state.serialize_field("target", &self.target)?;
-        state.serialize_field("time", &self.time)?;
-        state.end()
-    }
-}
-
-// A customized struct to use as a key in the HashMap for multi_qubit_gates
+// A customized struct to use as a value in the HashMap for multi_qubit_gates
 // to access the gate times
 //
-#[derive(Clone, Debug, Hash, PartialEq, Eq, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 struct MultiQubitMap {
-    gate: String,
     qubits: Vec<usize>,
+    time: f64,
 }
-
-impl serde::Serialize for MultiQubitMap {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
-        let mut state = serializer.serialize_struct("MultiQubitMap", 2)?;
-        state.serialize_field("gate", &self.gate)?;
-        state.serialize_field("qubits", &self.qubits)?;
-        state.end()
-    }
-}
-
-// This implementation builds. To be tested, if standard implementation is enough.
-// CODE parked here for the moment.
-//
-// impl<'de> Deserialize<'de> for SingleQubitMap {
-//     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-//     where
-//         D: Deserializer<'de>,
-//     {
-//         enum Field { Gate, Qubit }
-
-//         // This part could also be generated independently by:
-//         //
-//         //    #[derive(Deserialize)]
-//         //    #[serde(field_identifier, rename_all = "lowercase")]
-//         //    enum Field { Gate, Qubit }
-//         impl<'de> Deserialize<'de> for Field {
-//             fn deserialize<D>(deserializer: D) -> Result<Field, D::Error>
-//             where
-//                 D: Deserializer<'de>,
-//             {
-//                 struct FieldVisitor;
-
-//                 impl<'de> Visitor<'de> for FieldVisitor {
-//                     type Value = Field;
-
-//                     fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
-//                         formatter.write_str("`gate` or `qubit`")
-//                     }
-
-//                     fn visit_str<E>(self, value: &str) -> Result<Field, E>
-//                     where
-//                         E: de::Error,
-//                     {
-//                         match value {
-//                             "gate" => Ok(Field::Gate),
-//                             "qubit" => Ok(Field::Qubit),
-//                             _ => Err(de::Error::unknown_field(value, FIELDS)),
-//                         }
-//                     }
-//                 }
-
-//                 deserializer.deserialize_identifier(FieldVisitor)
-//             }
-//         }
-
-//         struct SingleQubitMapVisitor;
-
-//         impl<'de> Visitor<'de> for SingleQubitMapVisitor {
-//             type Value = SingleQubitMap;
-
-//             fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
-//                 formatter.write_str("struct SingleQubitMap")
-//             }
-
-//             fn visit_seq<V>(self, mut seq: V) -> Result<SingleQubitMap, V::Error>
-//             where
-//                 V: SeqAccess<'de>,
-//             {
-//                 let gate = seq.next_element()?
-//                     .ok_or_else(|| de::Error::invalid_length(0, &self))?;
-//                 let qubit = seq.next_element()?
-//                     .ok_or_else(|| de::Error::invalid_length(1, &self))?;
-//                 Ok(SingleQubitMap{ gate: gate, qubit: qubit })
-//             }
-
-//             fn visit_map<V>(self, mut map: V) -> Result<SingleQubitMap, V::Error>
-//             where
-//                 V: MapAccess<'de>,
-//             {
-//                 let mut gate = None;
-//                 let mut qubit = None;
-//                 while let Some(key) = map.next_key()? {
-//                     match key {
-//                         Field::Gate => {
-//                             if gate.is_some() {
-//                                 return Err(de::Error::duplicate_field("gate"));
-//                             }
-//                             gate = Some(map.next_value()?);
-//                         }
-//                         Field::Qubit => {
-//                             if qubit.is_some() {
-//                                 return Err(de::Error::duplicate_field("qubit"));
-//                             }
-//                             qubit = Some(map.next_value()?);
-//                         }
-//                     }
-//                 }
-//                 let gate = gate.ok_or_else(|| de::Error::missing_field("gate"))?;
-//                 let qubit = qubit.ok_or_else(|| de::Error::missing_field("qubit"))?;
-//                 Ok(SingleQubitMap{ gate: gate, qubit: qubit})
-//             }
-//         }
-
-//         const FIELDS: &'static [&'static str] = &["gate", "qubit"];
-//         deserializer.deserialize_struct("SingleQubitMap", FIELDS, SingleQubitMapVisitor)
-//     }
-// }
