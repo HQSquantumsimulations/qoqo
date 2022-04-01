@@ -338,7 +338,7 @@ fn test_genericgrid_settimes() {
     let number_qubits = number_rows * number_columns;
     let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
     let two_qubit_gates = &["CNOT".to_string()];
-    let multi_qubit_gates = &[];
+    let multi_qubit_gates = &["MultiQubitMS".to_string()];
     let mut device = GenericGrid::new(
         number_rows,
         number_columns,
@@ -351,6 +351,7 @@ fn test_genericgrid_settimes() {
     device = device.set_all_single_qubit_gate_times(&"RotateZ", 0.1);
 
     device = device.set_all_two_qubit_gate_times(&"CNOT", 0.05);
+    device = device.set_all_multi_qubit_gate_times(&"MultiQubitMS", 0.2);
 
     assert_eq!(device.single_qubit_gate_time("RotateX", &0), Some(0.07f64));
     assert_eq!(
@@ -365,6 +366,17 @@ fn test_genericgrid_settimes() {
     assert_eq!(device.two_qubit_gate_time("CNOT", &0, &number_qubits), None);
     assert_eq!(device.two_qubit_gate_time("CZ", &0, &1), None);
 
+    // test for all qubits in 2nd column
+    assert_eq!(
+        device.multi_qubit_gate_time("MultiQubitMS", &[1,5,9]),
+        Some(0.2f64),
+    );
+    // test for all qubits in 3rd row
+    assert_eq!(
+        device.multi_qubit_gate_time("MultiQubitMS", &[8,9,10,11]),
+        Some(0.2f64),
+    );
+    // test a combination not covered by the standard function
     assert_eq!(
         device.multi_qubit_gate_time("MultiQubitMS", &[0, 1, 2]),
         None,

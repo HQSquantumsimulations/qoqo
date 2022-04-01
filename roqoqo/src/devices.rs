@@ -291,7 +291,7 @@ impl AllToAllDevice {
         self
     }
 
-    /// Function that allows to set the gate time for the two-qubit-gate.
+    /// Function that allows to set the gate time for the two-qubit-gates in AllToAllDevice.
     ///
     /// # Arguments
     ///
@@ -322,7 +322,7 @@ impl AllToAllDevice {
         self
     }
 
-    /// Function that allows to set the gate time for the multi-qubit-gate,
+    /// Function that allows to set the gate time for the multi-qubit-gates in AllToAllDevice,
     /// when applied to all qubits in the device.
     ///
     /// # Arguments
@@ -332,7 +332,7 @@ impl AllToAllDevice {
     ///
     /// # Returns
     ///
-    /// A GenericGrid with updated gate times.
+    /// An AllToAllDevice with updated gate times.
     ///
     pub fn set_all_multi_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
         if self.multi_qubit_gates.get(&gate.to_string()).is_some() {
@@ -408,7 +408,7 @@ impl Device for AllToAllDevice {
         }
     }
 
-    /// Returns the gate time of a two qubit operation if the two qubit operation is available on device-.
+    /// Returns the gate time of a two qubit operation if the two qubit operation is available on device.
     ///
     ///
     /// # Arguments
@@ -620,12 +620,28 @@ impl GenericGrid {
         let mut multi_qubit_gate_map: HashMap<String, Vec<MultiQubitMap>> = HashMap::new();
         for gate in multi_qubit_gates.iter() {
             let mut empty_times: Vec<MultiQubitMap> = Vec::new();
-            let qubits: Vec<usize> = (0..number_qubits).collect();
-            let map = MultiQubitMap {
-                qubits: qubits,
-                time: 0.0,
-            };
-            empty_times.push(map);
+            let mut qubits: Vec<Vec<usize>> = Vec::new();
+            // collect qubits per row
+            for m in (0..number_qubits).step_by(number_columns) {
+                let vec: Vec<usize> = (m..m+number_columns).collect();
+                qubits.push(vec);
+            }
+            // collect qubits per column
+            for n in 0..number_columns {
+                let mut column: Vec<usize> = Vec::new();
+                for row in 0..number_rows {
+                    column.push(n+row*number_columns);
+                }
+                qubits.push(column);
+            }
+            // fill empty times for all collected qubit constellations
+            for item in qubits {
+                let map = MultiQubitMap {
+                    qubits: item,
+                    time: 0.0,
+                };
+                empty_times.push(map);
+            }
             multi_qubit_gate_map.insert(gate.clone(), empty_times);
         }
 
@@ -669,7 +685,8 @@ impl GenericGrid {
         self
     }
 
-    /// Function that allows to set the gate time for the two-qubit-gate.
+    /// Function that allows to set the gate time for the two-qubit-gates
+    /// considered as connected in the GenericGrid.
     ///
     /// # Arguments
     ///
@@ -721,8 +738,9 @@ impl GenericGrid {
         self
     }
 
-    /// Function that allows to set the gate time for the multi-qubit-gate,
-    /// when applied to all qubits in the device.
+    /// Function that allows to set the gate time for the multi-qubit-gates in the GenericGrid.
+    /// In the GenericGrid device the provided `gate_time` is set for the given `gate`
+    /// for all qubits considered to be in one row and all qubits in one column.
     ///
     /// # Arguments
     ///
@@ -734,14 +752,31 @@ impl GenericGrid {
     /// A GenericGrid with updated gate times.
     ///
     pub fn set_all_multi_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
+        let number_qubits = self.number_rows * self.number_columns;
         if self.multi_qubit_gates.get(&gate.to_string()).is_some() {
             let mut times: Vec<MultiQubitMap> = Vec::new();
-            let qubits: Vec<usize> = (0..self.number_qubits()).collect();
-            let map = MultiQubitMap {
-                qubits: qubits,
-                time: gate_time,
-            };
-            times.push(map);
+            let mut qubits: Vec<Vec<usize>> = Vec::new();
+            // collect qubits per row
+            for m in (0..number_qubits).step_by(self.number_columns) {
+                let vec: Vec<usize> = (m..m+self.number_columns).collect();
+                qubits.push(vec);
+            }
+            // collect qubits per column
+            for n in 0..self.number_columns {
+                let mut column: Vec<usize> = Vec::new();
+                for row in 0..self.number_rows {
+                    column.push(n+row*self.number_columns);
+                }
+                qubits.push(column);
+            }
+            // fill empty times for all collected qubit constellations
+            for item in qubits {
+                let map = MultiQubitMap {
+                    qubits: item,
+                    time: gate_time,
+                };
+                times.push(map);
+            }
             self.multi_qubit_gates.insert(gate.to_string(), times);
         }
         self
