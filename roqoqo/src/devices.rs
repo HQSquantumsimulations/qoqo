@@ -181,7 +181,7 @@ pub struct AllToAllDevice {
     number_qubits: usize,
     single_qubit_gates: HashMap<String, Vec<SingleQubitMap>>,
     two_qubit_gates: HashMap<String, Vec<TwoQubitMap>>,
-    multi_qubit_gates: HashMap<String, Vec<MultiQubitMap>>,
+    multi_qubit_gates: HashMap<String, f64>,
     decoherence_rates: HashMap<usize, Array2<f64>>,
 }
 
@@ -210,10 +210,7 @@ impl AllToAllDevice {
         for gate in single_qubit_gates.iter() {
             let mut empty_times: Vec<SingleQubitMap> = Vec::new();
             for qubit in 0..number_qubits {
-                let qubittime = SingleQubitMap {
-                    qubit: qubit,
-                    time: 0.0,
-                };
+                let qubittime = SingleQubitMap { qubit, time: 0.0 };
                 empty_times.push(qubittime);
             }
             single_qubit_gate_map.insert(gate.clone(), empty_times);
@@ -238,17 +235,10 @@ impl AllToAllDevice {
             two_qubit_gate_map.insert(gate.clone(), empty_times);
         }
 
-        // Initilization of multi qubit gates with empty times when applied to all qubits
-        let mut multi_qubit_gate_map: HashMap<String, Vec<MultiQubitMap>> = HashMap::new();
+        // Initilization of multi qubit gates with empty times when applied to any qubits
+        let mut multi_qubit_gate_map: HashMap<String, f64> = HashMap::new();
         for gate in multi_qubit_gates.iter() {
-            let mut empty_times: Vec<MultiQubitMap> = Vec::new();
-            let qubits: Vec<usize> = (0..number_qubits).collect();
-            let map = MultiQubitMap {
-                qubits: qubits,
-                time: 0.0,
-            };
-            empty_times.push(map);
-            multi_qubit_gate_map.insert(gate.clone(), empty_times);
+            multi_qubit_gate_map.insert(gate.clone(), 0.0);
         }
 
         let mut decoherence_rates: HashMap<usize, Array2<f64>> = HashMap::new();
@@ -281,7 +271,7 @@ impl AllToAllDevice {
             let mut gatetimes: Vec<SingleQubitMap> = Vec::new();
             for qubit in 0..self.number_qubits() {
                 let qubittime = SingleQubitMap {
-                    qubit: qubit,
+                    qubit,
                     time: gate_time,
                 };
                 gatetimes.push(qubittime);
@@ -323,7 +313,7 @@ impl AllToAllDevice {
     }
 
     /// Function that allows to set the gate time for the multi-qubit-gates in AllToAllDevice,
-    /// when applied to all qubits in the device.
+    /// when applied to any qubits in the device.
     ///
     /// # Arguments
     ///
@@ -336,14 +326,7 @@ impl AllToAllDevice {
     ///
     pub fn set_all_multi_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
         if self.multi_qubit_gates.get(&gate.to_string()).is_some() {
-            let mut times: Vec<MultiQubitMap> = Vec::new();
-            let qubits: Vec<usize> = (0..self.number_qubits()).collect();
-            let map = MultiQubitMap {
-                qubits: qubits,
-                time: gate_time,
-            };
-            times.push(map);
-            self.multi_qubit_gates.insert(gate.to_string(), times);
+            self.multi_qubit_gates.insert(gate.to_string(), gate_time);
         }
         self
     }
@@ -398,11 +381,8 @@ impl Device for AllToAllDevice {
     fn single_qubit_gate_time(&self, hqslang: &str, qubit: &usize) -> Option<f64> {
         match self.single_qubit_gates.get(&hqslang.to_string()) {
             Some(x) => {
-                let mut item = x.iter().filter(|item| &item.qubit == qubit);
-                match item.next() {
-                    Some(y) => Some(y.time),
-                    None => None,
-                }
+                let mut item = x.iter().filter(|item| item.qubit == *qubit);
+                item.next().map(|y| y.time)
             }
             None => None,
         }
@@ -427,23 +407,22 @@ impl Device for AllToAllDevice {
             Some(x) => {
                 let mut item = x
                     .iter()
-                    .filter(|item| &item.control == control && &item.target == target);
-                match item.next() {
-                    Some(y) => Some(y.time),
-                    None => None,
-                }
+                    .filter(|item| item.control == *control && item.target == *target);
+                item.next().map(|y| y.time)
             }
             None => None,
         }
     }
 
     /// Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
+    /// Note: in AllToAllDevice the gate time of multi qubit gates is treated uniformly for all qubits.
     ///
     ///
     /// # Arguments
     ///
     /// * `hqslang` - The hqslang name of a multi qubit gate.
-    /// * `qubits` - The qubits the gate acts on
+    /// * `qubits` - The qubits the gate acts on.
+    ///
     ///
     /// # Returns
     ///
@@ -451,14 +430,10 @@ impl Device for AllToAllDevice {
     /// * `None` - The gate is not available on the device.
     ///
     fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
+        // variable unused in AllToAllDevice, is kept here for consistency purposes.
+        let _qubits = qubits;
         match self.multi_qubit_gates.get(&hqslang.to_string()) {
-            Some(x) => {
-                let mut item = x.iter().filter(|item| &item.qubits == qubits);
-                match item.next() {
-                    Some(y) => Some(y.time),
-                    None => None,
-                }
-            }
+            Some(x) => Some(*x),
             None => None,
         }
     }
@@ -567,10 +542,7 @@ impl GenericGrid {
         for gate in single_qubit_gates.iter() {
             let mut empty_times: Vec<SingleQubitMap> = Vec::new();
             for qubit in 0..number_qubits {
-                let qubittime = SingleQubitMap {
-                    qubit: qubit,
-                    time: 0.0,
-                };
+                let qubittime = SingleQubitMap { qubit, time: 0.0 };
                 empty_times.push(qubittime);
             }
             single_qubit_gate_map.insert(gate.clone(), empty_times);
@@ -623,14 +595,14 @@ impl GenericGrid {
             let mut qubits: Vec<Vec<usize>> = Vec::new();
             // collect qubits per row
             for m in (0..number_qubits).step_by(number_columns) {
-                let vec: Vec<usize> = (m..m+number_columns).collect();
+                let vec: Vec<usize> = (m..m + number_columns).collect();
                 qubits.push(vec);
             }
             // collect qubits per column
             for n in 0..number_columns {
                 let mut column: Vec<usize> = Vec::new();
                 for row in 0..number_rows {
-                    column.push(n+row*number_columns);
+                    column.push(n + row * number_columns);
                 }
                 qubits.push(column);
             }
@@ -675,7 +647,7 @@ impl GenericGrid {
             let mut gatetimes: Vec<SingleQubitMap> = Vec::new();
             for qubit in 0..self.number_qubits() {
                 let qubittime = SingleQubitMap {
-                    qubit: qubit,
+                    qubit,
                     time: gate_time,
                 };
                 gatetimes.push(qubittime);
@@ -758,14 +730,14 @@ impl GenericGrid {
             let mut qubits: Vec<Vec<usize>> = Vec::new();
             // collect qubits per row
             for m in (0..number_qubits).step_by(self.number_columns) {
-                let vec: Vec<usize> = (m..m+self.number_columns).collect();
+                let vec: Vec<usize> = (m..m + self.number_columns).collect();
                 qubits.push(vec);
             }
             // collect qubits per column
             for n in 0..self.number_columns {
                 let mut column: Vec<usize> = Vec::new();
                 for row in 0..self.number_rows {
-                    column.push(n+row*self.number_columns);
+                    column.push(n + row * self.number_columns);
                 }
                 qubits.push(column);
             }
@@ -850,11 +822,8 @@ impl Device for GenericGrid {
     fn single_qubit_gate_time(&self, hqslang: &str, qubit: &usize) -> Option<f64> {
         match self.single_qubit_gates.get(&hqslang.to_string()) {
             Some(x) => {
-                let mut item = x.iter().filter(|item| &item.qubit == qubit);
-                match item.next() {
-                    Some(y) => Some(y.time),
-                    None => None,
-                }
+                let mut item = x.iter().filter(|item| item.qubit == *qubit);
+                item.next().map(|y| y.time)
             }
             None => None,
         }
@@ -879,11 +848,8 @@ impl Device for GenericGrid {
             Some(x) => {
                 let mut item = x
                     .iter()
-                    .filter(|item| &item.control == control && &item.target == target);
-                match item.next() {
-                    Some(y) => Some(y.time),
-                    None => None,
-                }
+                    .filter(|item| item.control == *control && item.target == *target);
+                item.next().map(|y| y.time)
             }
             None => None,
         }
@@ -905,11 +871,8 @@ impl Device for GenericGrid {
     fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
         match self.multi_qubit_gates.get(&hqslang.to_string()) {
             Some(x) => {
-                let mut item = x.iter().filter(|item| &item.qubits == qubits);
-                match item.next() {
-                    Some(y) => Some(y.time),
-                    None => None,
-                }
+                let mut item = x.iter().filter(|item| item.qubits == *qubits);
+                item.next().map(|y| y.time)
             }
             None => None,
         }
@@ -1013,7 +976,7 @@ fn test_mapstructs() {
         target: 2,
         time: 0.0,
     };
-    let qubits: Vec<usize> = vec![0,1,2,3,4];
+    let qubits: Vec<usize> = vec![0, 1, 2, 3, 4];
     let multiqubitstruct = MultiQubitMap {
         qubits: qubits.clone(),
         time: 5.0,

@@ -368,12 +368,12 @@ fn test_genericgrid_settimes() {
 
     // test for all qubits in 2nd column
     assert_eq!(
-        device.multi_qubit_gate_time("MultiQubitMS", &[1,5,9]),
+        device.multi_qubit_gate_time("MultiQubitMS", &[1, 5, 9]),
         Some(0.2f64),
     );
     // test for all qubits in 3rd row
     assert_eq!(
-        device.multi_qubit_gate_time("MultiQubitMS", &[8,9,10,11]),
+        device.multi_qubit_gate_time("MultiQubitMS", &[8, 9, 10, 11]),
         Some(0.2f64),
     );
     // test a combination not covered by the standard function
