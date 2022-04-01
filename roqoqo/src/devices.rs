@@ -468,8 +468,8 @@ pub struct GenericGrid {
     number_rows: usize,
     number_columns: usize,
     single_qubit_gates: HashMap<String, Vec<SingleQubitStruct>>,
-    two_qubit_gates: HashMap<TwoQubitMap, f64>,
-    multi_qubit_gates: HashMap<MultiQubitMap, f64>,
+    two_qubit_gates: HashMap<String, HashMap<(usize, usize), f64>>,
+    multi_qubit_gates: HashMap<String, HashMap<Vec<usize>, f64>>,
     decoherence_rates: HashMap<usize, Array2<f64>>,
 }
 
@@ -512,52 +512,32 @@ impl GenericGrid {
         }
 
         // initialization of two qubit gates with empty times
-        let mut two_qubit_gate_map: HashMap<TwoQubitMap, f64> = HashMap::new();
+        let mut two_qubit_gate_map: HashMap<String, HashMap<(usize, usize), f64>> = HashMap::new();
         for gate in two_qubit_gates.iter() {
+            let mut empty_times: HashMap<(usize, usize), f64> = HashMap::new();
             for row in 0..(number_rows) {
                 for column in 0..(number_columns) {
                     let qubit = row * number_columns + column;
                     if column < number_columns - 1 {
-                        let key1 = TwoQubitMap {
-                            gate: gate.clone(),
-                            control: qubit,
-                            target: qubit + 1,
-                        };
-                        let key2 = TwoQubitMap {
-                            gate: gate.clone(),
-                            control: qubit + 1,
-                            target: qubit,
-                        };
-                        two_qubit_gate_map.insert(key1, 0.0);
-                        two_qubit_gate_map.insert(key2, 0.0);
+                        empty_times.insert((qubit, qubit + 1), 0.0);
+                        empty_times.insert((qubit + 1, qubit), 0.0);
                     }
                     if row < number_rows - 1 {
-                        let key1 = TwoQubitMap {
-                            gate: gate.clone(),
-                            control: qubit,
-                            target: qubit + number_columns,
-                        };
-                        let key2 = TwoQubitMap {
-                            gate: gate.clone(),
-                            control: qubit + number_columns,
-                            target: qubit,
-                        };
-                        two_qubit_gate_map.insert(key1, 0.0);
-                        two_qubit_gate_map.insert(key2, 0.0);
+                        empty_times.insert((qubit, qubit + number_columns), 0.0);
+                        empty_times.insert((qubit + number_columns, qubit), 0.0);
                     }
                 }
             }
+            two_qubit_gate_map.insert(gate.clone(), empty_times);
         }
 
         // initialization of multi qubit gates with empty times applied to all qubits in the device
-        let mut multi_qubit_gate_map: HashMap<MultiQubitMap, f64> = HashMap::new();
+        let mut multi_qubit_gate_map: HashMap<String, HashMap<Vec<usize>, f64>> = HashMap::new();
         for gate in multi_qubit_gates.iter() {
+            let mut empty_times: HashMap<Vec<usize>, f64> = HashMap::new();
             let qubits: Vec<usize> = (0..number_qubits).collect();
-            let hashmapkey = MultiQubitMap {
-                gate: gate.clone(),
-                qubits: qubits,
-            };
-            multi_qubit_gate_map.insert(hashmapkey, 0.0);
+            empty_times.insert(qubits, 0.0);
+            multi_qubit_gate_map.insert(gate.clone(), empty_times);
         }
 
         let mut decoherence_rates: HashMap<usize, Array2<f64>> = HashMap::new();
@@ -612,45 +592,22 @@ impl GenericGrid {
     /// A GenericGrid with updated gate times.
     ///
     pub fn set_all_two_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
-        let keytocheck = TwoQubitMap {
-            gate: gate.clone().to_string(),
-            control: 0,
-            target: 1,
-        };
-        if self.two_qubit_gates.get(&keytocheck).is_some() {
+        if self.two_qubit_gates.get(&gate.to_string()).is_some() {
+            let mut times: HashMap<(usize, usize), f64> = HashMap::new();
             for row in 0..(self.number_rows) {
                 for column in 0..(self.number_columns) {
                     let qubit = row * self.number_columns + column;
                     if column < self.number_columns - 1 {
-                        let key1 = TwoQubitMap {
-                            gate: gate.clone().to_string(),
-                            control: qubit,
-                            target: qubit + 1,
-                        };
-                        let key2 = TwoQubitMap {
-                            gate: gate.clone().to_string(),
-                            control: qubit + 1,
-                            target: qubit,
-                        };
-                        self.two_qubit_gates.insert(key1, gate_time);
-                        self.two_qubit_gates.insert(key2, gate_time);
+                        times.insert((qubit, qubit + 1), gate_time);
+                        times.insert((qubit + 1, qubit), gate_time);
                     }
                     if row < self.number_rows - 1 {
-                        let key1 = TwoQubitMap {
-                            gate: gate.clone().to_string(),
-                            control: qubit,
-                            target: qubit + self.number_columns,
-                        };
-                        let key2 = TwoQubitMap {
-                            gate: gate.clone().to_string(),
-                            control: qubit + self.number_columns,
-                            target: qubit,
-                        };
-                        self.two_qubit_gates.insert(key1, gate_time);
-                        self.two_qubit_gates.insert(key2, gate_time);
+                        times.insert((qubit, qubit + self.number_columns), gate_time);
+                        times.insert((qubit + self.number_columns, qubit), gate_time);
                     }
                 }
             }
+            self.two_qubit_gates.insert(gate.to_string(), times);
         }
         self
     }
@@ -668,13 +625,11 @@ impl GenericGrid {
     /// A GenericGrid with updated gate times.
     ///
     pub fn set_all_multi_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
-        let qubits: Vec<usize> = (0..self.number_qubits()).collect();
-        let keytocheck = MultiQubitMap {
-            gate: gate.clone().to_string(),
-            qubits: qubits,
-        };
-        if self.multi_qubit_gates.get(&keytocheck).is_some() {
-            self.multi_qubit_gates.insert(keytocheck, gate_time);
+        if self.multi_qubit_gates.get(&gate.to_string()).is_some() {
+            let mut times: HashMap<Vec<usize>, f64> = HashMap::new();
+            let qubits: Vec<usize> = (0..self.number_qubits()).collect();
+            times.insert(qubits, gate_time);
+            self.multi_qubit_gates.insert(gate.to_string(), times);
         }
         self
     }
@@ -772,13 +727,8 @@ impl Device for GenericGrid {
     /// * `None` - The gate is not available on the device.
     ///
     fn two_qubit_gate_time(&self, hqslang: &str, control: &usize, target: &usize) -> Option<f64> {
-        let key = TwoQubitMap {
-            gate: hqslang.to_string(),
-            control: control.clone(),
-            target: target.clone(),
-        };
-        match self.two_qubit_gates.get(&key) {
-            Some(x) => Some(x.clone()),
+        match self.two_qubit_gates.get(&hqslang.to_string()) {
+            Some(x) => x.get(&(*control, *target)).copied(),
             None => None,
         }
     }
@@ -797,12 +747,8 @@ impl Device for GenericGrid {
     /// * `None` - The gate is not available on the device.
     ///
     fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
-        let key = MultiQubitMap {
-            gate: hqslang.to_string(),
-            qubits: qubits.to_vec(),
-        };
-        match self.multi_qubit_gates.get(&key) {
-            Some(x) => Some(x.clone()),
+        match self.multi_qubit_gates.get(&hqslang.to_string()) {
+            Some(x) => x.get(&(*qubits)).copied(),
             None => None,
         }
     }
