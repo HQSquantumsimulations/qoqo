@@ -965,3 +965,29 @@ struct MultiQubitMap {
     qubits: Vec<usize>,
     time: f64,
 }
+
+// Very basic unit test for the fields in the created private qubit map structs
+#[test]
+fn test_mapstructs() {
+    let singlequbitstruct = SingleQubitMap {
+        qubit: 0,
+        time: 4.3,
+    };
+    let twoqubitstruct = TwoQubitMap {
+        control: 0,
+        target: 2,
+        time: 0.0,
+    };
+    let qubits: Vec<usize> = vec![0,1,2,3,4];
+    let multiqubitstruct = MultiQubitMap {
+        qubits: qubits.clone(),
+        time: 5.0,
+    };
+    assert_eq!(singlequbitstruct.qubit, 0);
+    assert_eq!(singlequbitstruct.time, 4.3);
+    assert_eq!(twoqubitstruct.control, 0);
+    assert_eq!(twoqubitstruct.target, 2);
+    assert_eq!(twoqubitstruct.time, 0.0);
+    assert_eq!(multiqubitstruct.qubits, qubits);
+    assert_eq!(multiqubitstruct.time, 5.0);
+}
