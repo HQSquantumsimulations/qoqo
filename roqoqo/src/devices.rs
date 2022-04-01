@@ -449,6 +449,7 @@ impl Device for AllToAllDevice {
     }
 }
 
+
 /// A generic 2D Grid Device with only next-neighbours-connectivity.
 ///
 /// To construct the geometry of the GenericGrid device the qubits are numbered
@@ -466,7 +467,7 @@ impl Device for AllToAllDevice {
 pub struct GenericGrid {
     number_rows: usize,
     number_columns: usize,
-    single_qubit_gates: HashMap<SingleQubitMap, f64>,
+    single_qubit_gates: HashMap<String, Vec<SingleQubitStruct>>,
     two_qubit_gates: HashMap<TwoQubitMap, f64>,
     multi_qubit_gates: HashMap<MultiQubitMap, f64>,
     decoherence_rates: HashMap<usize, Array2<f64>>,
@@ -497,15 +498,17 @@ impl GenericGrid {
         let number_qubits = number_rows * number_columns;
 
         // initialization of single qubit gates with empty times
-        let mut single_qubit_gate_map: HashMap<SingleQubitMap, f64> = HashMap::new();
+        let mut single_qubit_gate_map: HashMap<String, Vec<SingleQubitStruct>> = HashMap::new();
         for gate in single_qubit_gates.iter() {
+            let mut empty_times: Vec<SingleQubitStruct> = Vec::new();
             for qubit in 0..number_qubits {
-                let hashmapkey = SingleQubitMap {
-                    gate: gate.clone(),
+                let qubittime = SingleQubitStruct {
                     qubit: qubit,
+                    time: 0.0,
                 };
-                single_qubit_gate_map.insert(hashmapkey, 0.0);
+                empty_times.push(qubittime);
             }
+            single_qubit_gate_map.insert(gate.clone(), empty_times);
         }
 
         // initialization of two qubit gates with empty times
@@ -583,18 +586,16 @@ impl GenericGrid {
     /// A GenericGrid with updated gate times.
     ///
     pub fn set_all_single_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
-        let keytocheck = SingleQubitMap {
-            gate: gate.clone().to_string(),
-            qubit: 0,
-        };
-        if self.single_qubit_gates.get(&keytocheck).is_some() {
+        if self.single_qubit_gates.get(&gate.to_string()).is_some() {
+            let mut gatetimes: Vec<SingleQubitStruct> = Vec::new();
             for qubit in 0..self.number_qubits() {
-                let hashmapkey = SingleQubitMap {
-                    gate: gate.clone().to_string(),
+                let qubittime = SingleQubitStruct {
                     qubit: qubit,
+                    time: gate_time,
                 };
-                self.single_qubit_gates.insert(hashmapkey, gate_time);
+                gatetimes.push(qubittime);
             }
+            self.single_qubit_gates.insert(gate.to_string(), gatetimes);
         }
         self
     }
@@ -744,12 +745,14 @@ impl Device for GenericGrid {
     /// * `None` - The gate is not available on the device.
     ///
     fn single_qubit_gate_time(&self, hqslang: &str, qubit: &usize) -> Option<f64> {
-        let key = SingleQubitMap {
-            gate: hqslang.to_string(),
-            qubit: qubit.clone(),
-        };
-        match self.single_qubit_gates.get(&key) {
-            Some(x) => Some(x.clone()),
+        match self.single_qubit_gates.get(&hqslang.to_string()) {
+            Some(x) => {
+                let mut item = x.iter().filter(|item| item.qubit == qubit.clone());
+                match item.next() {
+                    Some(y) => Some(y.time),
+                    None => None,
+                }
+            }
             None => None,
         }
     }
@@ -879,6 +882,27 @@ impl serde::Serialize for SingleQubitMap {
         let mut state = serializer.serialize_struct("SingleQubitMap", 2)?;
         state.serialize_field("gate", &self.gate)?;
         state.serialize_field("qubit", &self.qubit)?;
+        state.end()
+    }
+}
+
+// A customized struct to use as a value in the HashMap for single_qubit_gates
+// to access the gate times
+//
+#[derive(Clone, Debug, PartialEq, serde::Deserialize)]
+struct SingleQubitStruct {
+    qubit: usize,
+    time: f64,
+}
+
+impl serde::Serialize for SingleQubitStruct {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut state = serializer.serialize_struct("SingleQubitStruct", 2)?;
+        state.serialize_field("qubit", &self.qubit)?;
+        state.serialize_field("time", &self.time)?;
         state.end()
     }
 }
