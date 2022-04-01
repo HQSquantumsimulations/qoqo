@@ -179,9 +179,9 @@ pub trait Device {
 #[derive(Debug, Clone, PartialEq)]
 pub struct AllToAllDevice {
     number_qubits: usize,
-    single_qubit_gates: HashMap<String, HashMap<usize, f64>>,
-    two_qubit_gates: HashMap<String, HashMap<(usize, usize), f64>>,
-    multi_qubit_gates: HashMap<String, HashMap<Vec<usize>, f64>>,
+    single_qubit_gates: HashMap<String, Vec<SingleQubitMap>>,
+    two_qubit_gates: HashMap<String, Vec<TwoQubitMap>>,
+    multi_qubit_gates: HashMap<String, Vec<MultiQubitMap>>,
     decoherence_rates: HashMap<usize, Array2<f64>>,
 }
 
@@ -206,23 +206,32 @@ impl AllToAllDevice {
         multi_qubit_gates: &[String],
     ) -> Self {
         // Initialization of single qubit gates with empty times
-        let mut single_qubit_gate_map: HashMap<String, HashMap<usize, f64>> = HashMap::new();
+        let mut single_qubit_gate_map: HashMap<String, Vec<SingleQubitMap>> = HashMap::new();
         for gate in single_qubit_gates.iter() {
-            let mut empty_times: HashMap<usize, f64> = HashMap::new();
+            let mut empty_times: Vec<SingleQubitMap> = Vec::new();
             for qubit in 0..number_qubits {
-                empty_times.insert(qubit, 0.0);
+                let qubittime = SingleQubitMap {
+                    qubit: qubit,
+                    time: 0.0,
+                };
+                empty_times.push(qubittime);
             }
             single_qubit_gate_map.insert(gate.clone(), empty_times);
         }
 
         // Initialization of two qubit gates with empty times
-        let mut two_qubit_gate_map: HashMap<String, HashMap<(usize, usize), f64>> = HashMap::new();
+        let mut two_qubit_gate_map: HashMap<String, Vec<TwoQubitMap>> = HashMap::new();
         for gate in two_qubit_gates.iter() {
-            let mut empty_times: HashMap<(usize, usize), f64> = HashMap::new();
+            let mut empty_times: Vec<TwoQubitMap> = Vec::new();
             for qubit0 in 0..number_qubits {
                 for qubit1 in 0..number_qubits {
                     if qubit0 != qubit1 {
-                        empty_times.insert((qubit0, qubit1), 0.0);
+                        let qubittime = TwoQubitMap {
+                            control: qubit0,
+                            target: qubit1,
+                            time: 0.0,
+                        };
+                        empty_times.push(qubittime);
                     }
                 }
             }
@@ -230,11 +239,15 @@ impl AllToAllDevice {
         }
 
         // Initilization of multi qubit gates with empty times when applied to all qubits
-        let mut multi_qubit_gate_map: HashMap<String, HashMap<Vec<usize>, f64>> = HashMap::new();
+        let mut multi_qubit_gate_map: HashMap<String, Vec<MultiQubitMap>> = HashMap::new();
         for gate in multi_qubit_gates.iter() {
-            let mut empty_times: HashMap<Vec<usize>, f64> = HashMap::new();
+            let mut empty_times: Vec<MultiQubitMap> = Vec::new();
             let qubits: Vec<usize> = (0..number_qubits).collect();
-            empty_times.insert(qubits, 0.0);
+            let map = MultiQubitMap {
+                qubits: qubits,
+                time: 0.0,
+            };
+            empty_times.push(map);
             multi_qubit_gate_map.insert(gate.clone(), empty_times);
         }
 
@@ -265,28 +278,15 @@ impl AllToAllDevice {
     ///
     pub fn set_all_single_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
         if self.single_qubit_gates.get(&gate.to_string()).is_some() {
-            let mut times: HashMap<usize, f64> = HashMap::new();
-            for qubit in 0..self.number_qubits {
-                times.insert(qubit, gate_time);
+            let mut gatetimes: Vec<SingleQubitMap> = Vec::new();
+            for qubit in 0..self.number_qubits() {
+                let qubittime = SingleQubitMap {
+                    qubit: qubit,
+                    time: gate_time,
+                };
+                gatetimes.push(qubittime);
             }
-            self.single_qubit_gates.insert(gate.to_string(), times);
-        }
-        self
-    }
-
-    /// Function to set the decoherence rates for all qubits in the device.
-    ///
-    /// # Arguments
-    ///
-    /// * `rates` - decoherence rates for the qubits in the device.
-    ///
-    /// # Returns
-    ///
-    /// An AllToAllDevice with updated decoherence rates.
-    ///
-    pub fn set_all_qubit_decoherence_rates(mut self, rates: Array2<f64>) -> Self {
-        for qubit in 0..self.number_qubits {
-            self.decoherence_rates.insert(qubit, rates.clone());
+            self.single_qubit_gates.insert(gate.to_string(), gatetimes);
         }
         self
     }
@@ -304,15 +304,63 @@ impl AllToAllDevice {
     ///
     pub fn set_all_two_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
         if self.two_qubit_gates.get(&gate.to_string()).is_some() {
-            let mut times: HashMap<(usize, usize), f64> = HashMap::new();
+            let mut times: Vec<TwoQubitMap> = Vec::new();
             for qubit0 in 0..self.number_qubits {
                 for qubit1 in 0..self.number_qubits {
                     if qubit0 != qubit1 {
-                        times.insert((qubit0, qubit1), gate_time);
+                        let map = TwoQubitMap {
+                            control: qubit0,
+                            target: qubit1,
+                            time: gate_time,
+                        };
+                        times.push(map);
                     }
                 }
             }
             self.two_qubit_gates.insert(gate.to_string(), times);
+        }
+        self
+    }
+
+    /// Function that allows to set the gate time for the multi-qubit-gate,
+    /// when applied to all qubits in the device.
+    ///
+    /// # Arguments
+    ///
+    /// * `gate` - hqslang name of the multi-qubit-gate.
+    /// * `gate_time` - gate time for the given gate, valid for all qubits in the device.
+    ///
+    /// # Returns
+    ///
+    /// A GenericGrid with updated gate times.
+    ///
+    pub fn set_all_multi_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
+        if self.multi_qubit_gates.get(&gate.to_string()).is_some() {
+            let mut times: Vec<MultiQubitMap> = Vec::new();
+            let qubits: Vec<usize> = (0..self.number_qubits()).collect();
+            let map = MultiQubitMap {
+                qubits: qubits,
+                time: gate_time,
+            };
+            times.push(map);
+            self.multi_qubit_gates.insert(gate.to_string(), times);
+        }
+        self
+    }
+
+    /// Function to set the decoherence rates for all qubits in the device.
+    ///
+    /// # Arguments
+    ///
+    /// * `rates` - decoherence rates for the qubits in the device.
+    ///
+    /// # Returns
+    ///
+    /// An AllToAllDevice with updated decoherence rates.
+    ///
+    pub fn set_all_qubit_decoherence_rates(mut self, rates: Array2<f64>) -> Self {
+        for qubit in 0..self.number_qubits {
+            self.decoherence_rates.insert(qubit, rates.clone());
         }
         self
     }
@@ -349,7 +397,13 @@ impl Device for AllToAllDevice {
     ///
     fn single_qubit_gate_time(&self, hqslang: &str, qubit: &usize) -> Option<f64> {
         match self.single_qubit_gates.get(&hqslang.to_string()) {
-            Some(x) => x.get(qubit).copied(),
+            Some(x) => {
+                let mut item = x.iter().filter(|item| &item.qubit == qubit);
+                match item.next() {
+                    Some(y) => Some(y.time),
+                    None => None,
+                }
+            }
             None => None,
         }
     }
@@ -370,7 +424,15 @@ impl Device for AllToAllDevice {
     ///
     fn two_qubit_gate_time(&self, hqslang: &str, control: &usize, target: &usize) -> Option<f64> {
         match self.two_qubit_gates.get(&hqslang.to_string()) {
-            Some(x) => x.get(&(*control, *target)).copied(),
+            Some(x) => {
+                let mut item = x
+                    .iter()
+                    .filter(|item| &item.control == control && &item.target == target);
+                match item.next() {
+                    Some(y) => Some(y.time),
+                    None => None,
+                }
+            }
             None => None,
         }
     }
@@ -390,7 +452,13 @@ impl Device for AllToAllDevice {
     ///
     fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
         match self.multi_qubit_gates.get(&hqslang.to_string()) {
-            Some(x) => x.get(&(*qubits)).copied(),
+            Some(x) => {
+                let mut item = x.iter().filter(|item| &item.qubits == qubits);
+                match item.next() {
+                    Some(y) => Some(y.time),
+                    None => None,
+                }
+            }
             None => None,
         }
     }
