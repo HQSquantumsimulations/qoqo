@@ -255,7 +255,7 @@ jobs:
           target: x86_64-unknown-linux-gnu
           default: true
       - run: |
-          cargo test --doc --package=roqoqo --offline
+          cargo test --doc --package=roqoqo --locked
 
   code_coverage_roqoqo:
     runs-on: ubuntu-latest
