@@ -12,10 +12,8 @@
 
 use pyo3::prelude::*;
 use qoqo::GenericGridWrapper;
-// use roqoqo::devices::GenericGrid;
-// use test_case::test_case;
 use ndarray::Array2;
-use numpy::{PyArray2, ToPyArray};
+use numpy::PyArray2;
 
 // helper functions
 fn new_genericgrid(py: Python) -> &PyCell<GenericGridWrapper> {
