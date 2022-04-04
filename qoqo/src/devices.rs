@@ -14,10 +14,12 @@
 //! Qoqo devices
 
 use bincode::{deserialize, serialize};
+use numpy::{ToPyArray, PyArray2};
 use pyo3::exceptions::{PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::{PyByteArray, PyType};
 use roqoqo::devices::{Device, GenericGrid};
+use ndarray::Array2;
 // use ndarray::Array2;
 
 /// A generic 2D Grid Device with only next-neighbours-connectivity.
@@ -201,20 +203,33 @@ impl GenericGridWrapper {
         self.internal.two_qubit_edges()
     }
 
-    // DRAFT: trait IntoPyCallbackOutput is not implemented for Option<Array2>.
-    // /// Returns the matrix of the decoherence rates of the Lindblad equation.
-    // ///
-    // /// Args:
-    // ///     qubit[int]: The qubit for which the rate matrix M is returned
-    // ///
-    // /// Returns:
-    // ///
-    // /// Option: Some<Array2<f64>> for the decoherence rates.
-    // ///                 or None if the qubit is not part of the device.
-    // ///
-    // fn qubit_decoherence_rates(&self, qubit: usize) -> Option<Array2<f64>> {
-    //     self.internal.qubit_decoherence_rates(&qubit)
-    // }
+    /// Returns the matrix of the decoherence rates of the Lindblad equation.
+    ///
+    /// .. math::
+    /// \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
+    ///     L_0 = \sigma^{+} \\\\
+    ///     L_1 = \sigma^{-} \\\\
+    ///     L_2 = \sigma^{z}
+    ///
+    /// Args:
+    ///     qubit[int]: The qubit for which the rate matrix M is returned
+    ///
+    /// Returns:
+    ///
+    /// Decoherence rates: a 2d array of real numbers
+    ///
+    fn qubit_decoherence_rates(&self, qubit: usize) -> Py<PyArray2<f64>> {
+
+        Python::with_gil(|py| -> Py<PyArray2<f64>> {
+            match self.internal.qubit_decoherence_rates(&qubit) {
+                Some(matrix) => matrix.to_pyarray(py).to_owned(),
+                None => {
+                    let matrix = Array2::<f64>::zeros((3, 3));
+                    matrix.to_pyarray(py).to_owned()
+                }
+            }
+        })
+    }
 
     /// Returns the gate time of a single qubit operation if the single qubit operation is available on device.
     ///

@@ -14,6 +14,8 @@ use pyo3::prelude::*;
 use qoqo::GenericGridWrapper;
 // use roqoqo::devices::GenericGrid;
 // use test_case::test_case;
+use ndarray::Array2;
+use numpy::{ToPyArray, PyArray2};
 
 // helper functions
 fn new_genericgrid(py: Python) -> &PyCell<GenericGridWrapper> {
@@ -141,4 +143,18 @@ fn test_to_from_json() {
         let device_wrapper = device.extract::<GenericGridWrapper>().unwrap();
         assert_eq!(device_wrapper, serde_wrapper);
     });
+}
+
+// Test qubit_decoherence_rates()
+#[test]
+fn test_decoherence_rates() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let device = new_genericgrid(py);
+        let matrix_py = device.call_method1("qubit_decoherence_rates", (0_i64,)).unwrap();
+        let matrix_test = matrix_py.cast_as::<PyArray2<f64>>().unwrap().to_owned_array();
+        // reference matrix for an initialized deviced or a non-existing qubit
+        let matrix_zeros_py = Array2::<f64>::zeros((3, 3));
+        assert_eq!(matrix_test, matrix_zeros_py);
+    })
 }
