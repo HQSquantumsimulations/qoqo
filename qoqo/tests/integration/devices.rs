@@ -10,10 +10,11 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use pyo3::prelude::*;
-use qoqo::GenericGridWrapper;
 use ndarray::Array2;
 use numpy::PyArray2;
+use pyo3::prelude::*;
+use qoqo::{AllToAllDeviceWrapper, GenericGridWrapper};
+// use test_case::test_case;
 
 // helper functions
 fn new_genericgrid(py: Python) -> &PyCell<GenericGridWrapper> {
@@ -35,6 +36,25 @@ fn new_genericgrid(py: Python) -> &PyCell<GenericGridWrapper> {
         .call1(arguments)
         .unwrap()
         .cast_as::<PyCell<GenericGridWrapper>>()
+        .unwrap()
+}
+
+fn new_alltoalldevice(py: Python) -> &PyCell<AllToAllDeviceWrapper> {
+    let number_qubits: u32 = 10;
+    let single_qubit_gates = ["RotateX".to_string(), "RotateZ".to_string()];
+    let two_qubit_gates = ["CNOT".to_string()];
+    let multi_qubit_gates = ["".to_string()];
+    let arguments = (
+        number_qubits,
+        single_qubit_gates,
+        two_qubit_gates,
+        multi_qubit_gates,
+    );
+    let device_type = py.get_type::<AllToAllDeviceWrapper>();
+    device_type
+        .call1(arguments)
+        .unwrap()
+        .cast_as::<PyCell<AllToAllDeviceWrapper>>()
         .unwrap()
 }
 
@@ -68,6 +88,21 @@ fn test_number_qubits() {
             .extract::<usize>()
             .unwrap();
         assert_eq!(number_qubits, number_rows * number_columns);
+    })
+}
+
+// Test number_qubits() for AllToAllDevice
+#[test]
+fn test_number_qubits_all() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let device = new_alltoalldevice(py);
+        let number_qubits = device
+            .call_method0("number_qubits")
+            .unwrap()
+            .extract::<usize>()
+            .unwrap();
+        assert_eq!(number_qubits, 10);
     })
 }
 
@@ -149,6 +184,8 @@ fn test_decoherence_rates() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let device = new_genericgrid(py);
+        // reference matrix for an initialized deviced or a non-existing qubit
+        let matrix_zeros_py = Array2::<f64>::zeros((3, 3));
         let matrix_py = device
             .call_method1("qubit_decoherence_rates", (0_i64,))
             .unwrap();
@@ -156,8 +193,42 @@ fn test_decoherence_rates() {
             .cast_as::<PyArray2<f64>>()
             .unwrap()
             .to_owned_array();
-        // reference matrix for an initialized deviced or a non-existing qubit
-        let matrix_zeros_py = Array2::<f64>::zeros((3, 3));
         assert_eq!(matrix_test, matrix_zeros_py);
+
+        let matrix2_py = device
+            .call_method1("qubit_decoherence_rates", (100_i64,))
+            .unwrap();
+        let matrix2_test = matrix2_py
+            .cast_as::<PyArray2<f64>>()
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix2_test, matrix_zeros_py);
+    })
+}
+
+// Test qubit_decoherence_rates() for AllToAllDevice
+#[test]
+fn test_decoherence_rates_all() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let device = new_alltoalldevice(py);
+        let matrix_zeros_py = Array2::<f64>::zeros((3, 3));
+        let matrix_py = device
+            .call_method1("qubit_decoherence_rates", (0_i64,))
+            .unwrap();
+        let matrix_test = matrix_py
+            .cast_as::<PyArray2<f64>>()
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix_test, matrix_zeros_py);
+
+        let matrix2_py = device
+            .call_method1("qubit_decoherence_rates", (100_i64,))
+            .unwrap();
+        let matrix2_test = matrix2_py
+            .cast_as::<PyArray2<f64>>()
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix2_test, matrix_zeros_py);
     })
 }

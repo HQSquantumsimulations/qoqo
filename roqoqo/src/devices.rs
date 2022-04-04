@@ -176,7 +176,7 @@ pub trait Device {
 
 /// A device assuming all-to-all connectivity between all involved qubits.
 ///
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct AllToAllDevice {
     number_qubits: usize,
     single_qubit_gates: HashMap<String, Vec<SingleQubitMap>>,
@@ -526,7 +526,7 @@ impl GenericGrid {
     ///
     /// # Returns
     ///
-    /// An initiated GenericGrid with empty gate times and decoherence rates set to zero.
+    /// An initialized GenericGrid with empty gate times and decoherence rates set to zero.
     ///
     pub fn new(
         number_rows: usize,

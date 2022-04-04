@@ -654,43 +654,43 @@ pub fn devicewrapper(
                 Ok(serialized)
             }
 
-            /// Convert the bincode representation of the GenericGrid to a GenericGrid using the bincode crate.
+            /// Convert the bincode representation of the qoqo device to a device using the bincode crate.
             ///
             /// Args:
-            ///     input (ByteArray): The serialized GenericGrid (in bincode form).
+            ///     input (ByteArray): The serialized Device (in bincode form).
             ///
             /// Returns:
-            ///     GenericGrid: The deserialized GenericGrid.
+            ///     The deserialized Device.
             ///
             /// Raises:
             ///     TypeError: Input cannot be converted to byte array.
-            ///     ValueError: Input cannot be deserialized to GenericGrid.
+            ///     ValueError: Input cannot be deserialized to selected Device.
             #[classmethod]
             pub fn from_bincode(_cls: &PyType, input: &PyAny) -> PyResult<#ident> {
                 let bytes = input
                     .extract::<Vec<u8>>()
                     .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
-                Ok(GenericGridWrapper {
+                Ok(#ident {
                     internal: deserialize(&bytes[..]).map_err(|_| {
                         PyValueError::new_err("Input cannot be deserialized to selected Device.")
                     })?,
                 })
             }
 
-            /// Convert the json representation of a GenericGrid to a GenericGrid.
+            /// Convert the json representation of a device to a qoqo device.
             ///
             /// Args:
-            ///     input (str): The serialized GenericGrid in json form.
+            ///     input (str): The serialized device in json form.
             ///
             /// Returns:
-            ///     GenericGrid: The deserialized GenericGrid.
+            ///     The deserialized device.
             ///
             /// Raises:
-            ///     ValueError: Input cannot be deserialized to GenericGrid.
+            ///     ValueError: Input cannot be deserialized to selected Device.
             #[classmethod]
             pub fn from_json(_cls: &PyType, input: &str) -> PyResult<#ident> {
-                Ok(GenericGridWrapper {
+                Ok(#ident {
                     internal: serde_json::from_str(input).map_err(|_| {
                         PyValueError::new_err("Input cannot be deserialized to selected Device.")
                     })?,
