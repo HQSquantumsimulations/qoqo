@@ -563,16 +563,39 @@ fn genericdevice_new() {
 fn genericdevice_fields() {
     let number_qubits = 3usize;
     let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
-    let mapvec: Vec<SingleQubitMap> = vec![SingleQubitMap {qubit: 0, time: 0.0}, SingleQubitMap {qubit: 1, time: 0.0}, SingleQubitMap {qubit: 2, time: 0.0}];
+    let mapvec: Vec<SingleQubitMap> = vec![
+        SingleQubitMap {
+            qubit: 0,
+            time: 0.0,
+        },
+        SingleQubitMap {
+            qubit: 1,
+            time: 0.0,
+        },
+        SingleQubitMap {
+            qubit: 2,
+            time: 0.0,
+        },
+    ];
     let mut single_qubit_gate_map: HashMap<String, Vec<SingleQubitMap>> = HashMap::new();
     for gate in single_qubit_gates {
         single_qubit_gate_map.insert(gate.clone(), mapvec.clone());
     }
     let mut two_qubit_gate_map: HashMap<String, Vec<TwoQubitMap>> = HashMap::new();
     two_qubit_gate_map.insert(
-        "CNOT".to_string(), vec![
-            TwoQubitMap {control: 0, target: 1, time: 0.0}, TwoQubitMap {control: 1, target: 2, time: 0.0}
-        ]
+        "CNOT".to_string(),
+        vec![
+            TwoQubitMap {
+                control: 0,
+                target: 1,
+                time: 0.0,
+            },
+            TwoQubitMap {
+                control: 1,
+                target: 2,
+                time: 0.0,
+            },
+        ],
     );
     let multi_qubit_gates: HashMap<String, f64> = HashMap::new();
 
@@ -584,7 +607,7 @@ fn genericdevice_fields() {
     let device = GenericDevice {
         number_qubits: number_qubits.clone(),
         single_qubit_gates: single_qubit_gate_map.clone(),
-        two_qubit_gates: two_qubit_gate_map.clone(), 
+        two_qubit_gates: two_qubit_gate_map.clone(),
         multi_qubit_gates: multi_qubit_gates,
         decoherence_rates: decoherence_rates.clone(),
     };

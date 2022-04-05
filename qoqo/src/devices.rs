@@ -20,7 +20,7 @@ use pyo3::exceptions::{PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::{PyByteArray, PyType};
 use qoqo_macros::devicewrapper;
-use roqoqo::devices::{AllToAllDevice, Device, GenericGrid, GenericChain, GenericDevice};
+use roqoqo::devices::{AllToAllDevice, Device, GenericChain, GenericDevice, GenericGrid};
 
 /// A generic 2D Grid Device with only next-neighbours-connectivity.
 ///
@@ -182,7 +182,6 @@ impl AllToAllDeviceWrapper {
     }
 }
 
-
 /// A device struct with public fields for a qoqo device
 /// with all-to-all connectivity between all involved qubits.
 ///
@@ -251,8 +250,7 @@ impl GenericDeviceWrapper {
     }
 }
 
-
-/// /// A generic device containing a linear chain of qubits with next neighbour connectivity.
+/// A generic device containing a linear chain of qubits with next neighbour connectivity.
 ///
 #[pyclass(name = "GenericChain", module = "qoqo")]
 #[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
