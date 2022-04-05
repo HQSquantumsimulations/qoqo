@@ -1260,56 +1260,371 @@ impl Device for GenericChain {
     }
 }
 
-// A customized struct to use as a value in the HashMap for single_qubit_gates
-// to access the gate times
-//
+/// A device struct with public fields for a roqoqo device
+/// with all-to-all connectivity between all involved qubits.
+///
 #[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
-struct SingleQubitMap {
-    qubit: usize,
-    time: f64,
+pub struct GenericDevice {
+    /// The number of qubits in the device.
+    pub number_qubits: usize,
+    /// A map including 'hqslang' names of single-qubit-gates supported by the device,
+    /// with the according gate times specific for the particular qubit ([SingleQubitMap]).
+    pub single_qubit_gates: HashMap<String, Vec<SingleQubitMap>>,
+    /// A map including 'hqslang' names of two-qubit-gates supported by the device,
+    /// with the according gate times specific for the particular qubit ([TwoQubitMap]).
+    pub two_qubit_gates: HashMap<String, Vec<TwoQubitMap>>,
+    /// A map including 'hqslang' names of multi-qubit-gates supported by the device,
+    /// with the according gate times uniform for all qubits in the device.
+    pub multi_qubit_gates: HashMap<String, f64>,
+    /// A (3x3)-matrix of the decoherence rates.
+    pub decoherence_rates: HashMap<usize, Array2<f64>>,
 }
 
-// A customized struct to use as a value in the HashMap for two_qubit_gates
-// to access the gate times
-//
-#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
-struct TwoQubitMap {
-    control: usize,
-    target: usize,
-    time: f64,
+impl GenericDevice {
+    /// Create new GenericDevice.
+    ///
+    /// # Arguments
+    ///
+    /// * `number_qubits` - The number of qubits in the device.
+    /// * `single_qubit_gates` - A list of 'hqslang' names of single-qubit-gates supported by the device.
+    /// * `two_qubit_gates` - A list of 'hqslang' names of basic two-qubit-gates supported by the device.
+    /// * `multi_qubit_gates` - A list of 'hqslang' names of basic multi-qubit-gates supported by the device.
+    ///
+    /// # Returns
+    ///
+    /// An initiated GenericDevice with empty gate times and decoherence rates set to zero.
+    ///
+    pub fn new(
+        number_qubits: usize,
+        single_qubit_gates: &[String],
+        two_qubit_gates: &[String],
+        multi_qubit_gates: &[String],
+    ) -> Self {
+        // Initialization of single qubit gates with empty times
+        let mut single_qubit_gate_map: HashMap<String, Vec<SingleQubitMap>> = HashMap::new();
+        for gate in single_qubit_gates.iter() {
+            let mut empty_times: Vec<SingleQubitMap> = Vec::new();
+            for qubit in 0..number_qubits {
+                let qubittime = SingleQubitMap { qubit, time: 0.0 };
+                empty_times.push(qubittime);
+            }
+            single_qubit_gate_map.insert(gate.clone(), empty_times);
+        }
+
+        // Initialization of two qubit gates with empty times
+        let mut two_qubit_gate_map: HashMap<String, Vec<TwoQubitMap>> = HashMap::new();
+        for gate in two_qubit_gates.iter() {
+            let mut empty_times: Vec<TwoQubitMap> = Vec::new();
+            for qubit0 in 0..number_qubits {
+                for qubit1 in 0..number_qubits {
+                    if qubit0 != qubit1 {
+                        let qubittime1 = TwoQubitMap {
+                            control: qubit0,
+                            target: qubit1,
+                            time: 0.0,
+                        };
+                        let qubittime2 = TwoQubitMap {
+                            control: qubit1,
+                            target: qubit0,
+                            time: 0.0,
+                        };
+                        empty_times.push(qubittime1);
+                        empty_times.push(qubittime2);
+                    }
+                }
+            }
+            two_qubit_gate_map.insert(gate.clone(), empty_times);
+        }
+
+        // Initilization of multi qubit gates with empty times when applied to any qubits
+        let mut multi_qubit_gate_map: HashMap<String, f64> = HashMap::new();
+        for gate in multi_qubit_gates.iter() {
+            multi_qubit_gate_map.insert(gate.clone(), 0.0);
+        }
+
+        let mut decoherence_rates: HashMap<usize, Array2<f64>> = HashMap::new();
+        for qubit0 in 0..number_qubits {
+            decoherence_rates.insert(qubit0, Array2::<f64>::zeros((3, 3)));
+        }
+
+        GenericDevice {
+            number_qubits,
+            single_qubit_gates: single_qubit_gate_map,
+            two_qubit_gates: two_qubit_gate_map,
+            multi_qubit_gates: multi_qubit_gate_map,
+            decoherence_rates,
+        }
+    }
+
+    /// Function that allows to set one gate time per gate type for the single-qubit-gates.
+    ///
+    /// # Arguments
+    ///
+    /// * `gate` - hqslang name of the single-qubit-gate.
+    /// * `gate_time` - gate time for the given gate type, valid for all qubits in the device.
+    ///
+    /// # Returns
+    ///
+    /// An GenericDevice with updated gate times.
+    ///
+    pub fn set_all_single_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
+        if self.single_qubit_gates.get(&gate.to_string()).is_some() {
+            let mut gatetimes: Vec<SingleQubitMap> = Vec::new();
+            for qubit in 0..self.number_qubits() {
+                let qubittime = SingleQubitMap {
+                    qubit,
+                    time: gate_time,
+                };
+                gatetimes.push(qubittime);
+            }
+            self.single_qubit_gates.insert(gate.to_string(), gatetimes);
+        }
+        self
+    }
+
+    /// Function that allows to set the gate time for the two-qubit-gates in GenericDevice.
+    ///
+    /// # Arguments
+    ///
+    /// * `gate` - hqslang name of the two-qubit-gate.
+    /// * `gate_time` - gate time for the given gate, valid for all qubits in the device.
+    ///
+    /// # Returns
+    ///
+    /// An GenericDevice with updated gate times.
+    ///
+    pub fn set_all_two_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
+        if self.two_qubit_gates.get(&gate.to_string()).is_some() {
+            let mut times: Vec<TwoQubitMap> = Vec::new();
+            for qubit0 in 0..self.number_qubits {
+                for qubit1 in 0..self.number_qubits {
+                    if qubit0 != qubit1 {
+                        let map1 = TwoQubitMap {
+                            control: qubit0,
+                            target: qubit1,
+                            time: gate_time,
+                        };
+                        let map2 = TwoQubitMap {
+                            control: qubit1,
+                            target: qubit0,
+                            time: gate_time,
+                        };
+                        times.push(map1);
+                        times.push(map2);
+                    }
+                }
+            }
+            self.two_qubit_gates.insert(gate.to_string(), times);
+        }
+        self
+    }
+
+    /// Function that allows to set the gate time for the multi-qubit-gates in GenericDevice,
+    /// when applied to any qubits in the device.
+    ///
+    /// # Arguments
+    ///
+    /// * `gate` - hqslang name of the multi-qubit-gate.
+    /// * `gate_time` - gate time for the given gate, valid for all qubits in the device.
+    ///
+    /// # Returns
+    ///
+    /// An GenericDevice with updated gate times.
+    ///
+    pub fn set_all_multi_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
+        if self.multi_qubit_gates.get(&gate.to_string()).is_some() {
+            self.multi_qubit_gates.insert(gate.to_string(), gate_time);
+        }
+        self
+    }
+
+    /// Function to set the decoherence rates for all qubits in the device.
+    ///
+    /// # Arguments
+    ///
+    /// * `rates` - decoherence rates for the qubits in the device.
+    ///
+    /// # Returns
+    ///
+    /// An GenericDevice with updated decoherence rates.
+    ///
+    pub fn set_all_qubit_decoherence_rates(mut self, rates: Array2<f64>) -> Self {
+        for qubit in 0..self.number_qubits {
+            self.decoherence_rates.insert(qubit, rates.clone());
+        }
+        self
+    }
 }
 
-// A customized struct to use as a value in the HashMap for multi_qubit_gates
-// to access the gate times
-//
-#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
-struct MultiQubitMap {
-    qubits: Vec<usize>,
-    time: f64,
+/// Implements Device trait for GenericDevice.
+///
+/// The Device trait defines standard functions available for roqoqo devices.
+///
+impl Device for GenericDevice {
+    /// Returns the number of qubits the device supports.
+    ///
+    /// # Returns
+    ///
+    /// The number of qubits in the device.
+    ///
+    fn number_qubits(&self) -> usize {
+        self.number_qubits
+    }
+
+    /// Returns the gate time of a single qubit operation if the single qubit operation is available on device.
+    ///
+    /// The base assumption
+    ///
+    /// # Arguments
+    ///
+    /// * `hqslang` - The hqslang name of a single qubit gate.
+    /// * `qubit` - The qubit the gate acts on
+    ///
+    /// # Returns
+    ///
+    /// * `Some<f64>` - The gate time.
+    /// * `None` - The gate is not available on the device.
+    ///
+    fn single_qubit_gate_time(&self, hqslang: &str, qubit: &usize) -> Option<f64> {
+        match self.single_qubit_gates.get(&hqslang.to_string()) {
+            Some(x) => {
+                let mut item = x.iter().filter(|item| item.qubit == *qubit);
+                item.next().map(|y| y.time)
+            }
+            None => None,
+        }
+    }
+
+    /// Returns the gate time of a two qubit operation if the two qubit operation is available on device.
+    ///
+    ///
+    /// # Arguments
+    ///
+    /// * `hqslang` - The hqslang name of a two qubit gate.
+    /// * `control` - The control qubit the gate acts on
+    /// * `target` - The target qubit the gate acts on
+    ///
+    /// # Returns
+    ///
+    /// * `Some<f64>` - The gate time.
+    /// * `None` - The gate is not available on the device.
+    ///
+    fn two_qubit_gate_time(&self, hqslang: &str, control: &usize, target: &usize) -> Option<f64> {
+        match self.two_qubit_gates.get(&hqslang.to_string()) {
+            Some(x) => {
+                let mut item = x
+                    .iter()
+                    .filter(|item| item.control == *control && item.target == *target);
+                item.next().map(|y| y.time)
+            }
+            None => None,
+        }
+    }
+
+    /// Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
+    /// Note: in GenericDevice the gate time of multi qubit gates is treated uniformly for all qubits.
+    ///
+    ///
+    /// # Arguments
+    ///
+    /// * `hqslang` - The hqslang name of a multi qubit gate.
+    /// * `qubits` - The qubits the gate acts on.
+    ///
+    ///
+    /// # Returns
+    ///
+    /// * `Some<f64>` - The gate time.
+    /// * `None` - The gate is not available on the device.
+    ///
+    fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
+        // variable unused in GenericDevice, is kept here for consistency purposes.
+        let _qubits = qubits;
+        self.multi_qubit_gates.get(&hqslang.to_string()).copied()
+    }
+
+    /// Returns the matrix of the decoherence rates of the Lindblad equation.
+    ///
+    /// $$
+    /// \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
+    ///     L_0 = \sigma^{+} \\\\
+    ///     L_1 = \sigma^{-} \\\\
+    ///     L_2 = \sigma^{z}
+    /// $$
+    ///
+    /// # Arguments
+    ///
+    /// * `qubit` - The qubit for which the rate matrix M is returned
+    ///
+    /// # Returns
+    ///
+    /// * `Some<Array2<f64>>` - The decoherence rates.
+    /// * `None` - The qubit is not part of the device.
+    ///
+    fn qubit_decoherence_rates(&self, qubit: &usize) -> Option<Array2<f64>> {
+        self.decoherence_rates
+            .get(qubit)
+            .map(|rates| rates.to_owned())
+    }
+
+    /// Returns the list of pairs of qubits linked with a native two-qubit-gate in the device.
+    ///
+    /// A pair of qubits is considered linked by a native two-qubit-gate if the device
+    /// can implement a two-qubit-gate between the two qubits without decomposing it
+    /// into a sequence of gates that involves a third qubit of the device.
+    /// The two-qubit-gate also has to form a universal set together with the available
+    /// single qubit gates.
+    ///
+    /// The returned vectors is a simple, graph-library independent, representation of
+    /// the undirected connectivity graph of the device.
+    /// It can be used to construct the connectivity graph in a graph library of the users
+    /// choice from a list of edges and can be used for applications like routing in quantum algorithms.
+    ///
+    /// # Returns
+    ///
+    /// A list (Vec) of pairs of qubits linked with a native two-qubit-gate in the device.
+    ///
+    fn two_qubit_edges(&self) -> Vec<(usize, usize)> {
+        let mut vector: Vec<(usize, usize)> = Vec::new();
+        for row in 0..self.number_qubits() {
+            for column in row + 1..self.number_qubits() {
+                vector.push((row, column));
+            }
+        }
+        vector
+    }
 }
 
-// Very basic unit test for the fields in the created private qubit map structs
-#[test]
-fn test_mapstructs() {
-    let singlequbitstruct = SingleQubitMap {
-        qubit: 0,
-        time: 4.3,
-    };
-    let twoqubitstruct = TwoQubitMap {
-        control: 0,
-        target: 2,
-        time: 0.0,
-    };
-    let qubits: Vec<usize> = vec![0, 1, 2, 3, 4];
-    let multiqubitstruct = MultiQubitMap {
-        qubits: qubits.clone(),
-        time: 5.0,
-    };
-    assert_eq!(singlequbitstruct.qubit, 0);
-    assert_eq!(singlequbitstruct.time, 4.3);
-    assert_eq!(twoqubitstruct.control, 0);
-    assert_eq!(twoqubitstruct.target, 2);
-    assert_eq!(twoqubitstruct.time, 0.0);
-    assert_eq!(multiqubitstruct.qubits, qubits);
-    assert_eq!(multiqubitstruct.time, 5.0);
+/// A customized struct to use as a value in the HashMap for single_qubit_gates
+/// to access the gate times.
+///
+#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+pub struct SingleQubitMap {
+    ///The index of the qubit for which the gate time is set.
+    pub qubit: usize,
+    /// Gate time for the given qubit for the single qubit gate.
+    pub time: f64,
+}
+
+/// A customized struct to use as a value in the HashMap for two_qubit_gates
+/// to access the gate times.
+///
+#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+pub struct TwoQubitMap {
+    /// The index of the control qubit for which the gate time is set.
+    pub control: usize,
+    /// The index of the target qubit for which the gate time is set.
+    pub target: usize,
+    /// Gate time for the given qubits for the two qubit gate.
+    pub time: f64,
+}
+
+/// A customized struct to use as a value in the HashMap for multi_qubit_gates
+/// to access the gate times.
+///
+#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+pub struct MultiQubitMap {
+    /// A list of qubit indices for which the gate time is set.
+    pub qubits: Vec<usize>,
+    /// Gate time for the given qubits for the multi qubit gate.
+    pub time: f64,
 }
