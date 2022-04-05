@@ -103,6 +103,8 @@ fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<CircuitWrapper>()?;
     module.add_class::<QuantumProgramWrapper>()?;
     module.add_class::<GenericGridWrapper>()?;
+    module.add_class::<GenericChainWrapper>()?;
+    module.add_class::<GenericDeviceWrapper>()?;
     module.add_class::<AllToAllDeviceWrapper>()?;
     let wrapper = wrap_pymodule!(operations);
     module.add_wrapped(wrapper)?;
