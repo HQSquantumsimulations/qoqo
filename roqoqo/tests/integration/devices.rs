@@ -426,6 +426,141 @@ fn test_genericgrid_edges(rows: usize, columns: usize, test_edges: Vec<(usize, u
     assert_eq!(test_edges, edges);
 }
 
+/// Test new() function for GenericDevice
+#[test]
+fn genericdevice_new() {
+    let number_qubits = 3usize;
+    let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
+    let two_qubit_gates = &["CNOT".to_string()];
+    let multi_qubit_gates = &[];
+    let device = GenericDevice::new(
+        number_qubits,
+        single_qubit_gates,
+        two_qubit_gates,
+        multi_qubit_gates,
+    );
+
+    // Test number of qubits
+    assert_eq!(device.number_qubits(), number_qubits);
+    // Test that available single-qubit-gate is initialized with gate time set to zero
+    assert_eq!(device.single_qubit_gate_time("RotateZ", &0), Some(0.0));
+    // Test that for non-available gates the returned gate time is Non
+    assert_eq!(device.single_qubit_gate_time("RotateY", &0), None);
+
+    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &1), Some(0.0));
+    assert_eq!(device.two_qubit_gate_time("CNOT", &1, &0), Some(0.0));
+    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &number_qubits), None);
+    assert_eq!(device.two_qubit_gate_time("CZ", &0, &1), None);
+
+    assert_eq!(
+        device.multi_qubit_gate_time("MultiQubitMS", &[0, 1, 2]),
+        None,
+    );
+
+    let empty_rates = array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]];
+    assert_eq!(device.qubit_decoherence_rates(&0), Some(empty_rates));
+}
+
+/// Test public fields of the GenericDevice
+#[test]
+fn genericdevice_fields() {
+    let number_qubits = 3usize;
+    let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
+    let mapvec: Vec<SingleQubitMap> = vec![SingleQubitMap {qubit: 0, time: 0.0}, SingleQubitMap {qubit: 1, time: 0.0}, SingleQubitMap {qubit: 2, time: 0.0}];
+    let mut single_qubit_gate_map: HashMap<String, Vec<SingleQubitMap>> = HashMap::new();
+    for gate in single_qubit_gates {
+        single_qubit_gate_map.insert(gate.clone(), mapvec.clone());
+    }
+    let mut two_qubit_gate_map: HashMap<String, Vec<TwoQubitMap>> = HashMap::new();
+    two_qubit_gate_map.insert(
+        "CNOT".to_string(), vec![
+            TwoQubitMap {control: 0, target: 1, time: 0.0}, TwoQubitMap {control: 1, target: 2, time: 0.0}
+        ]
+    );
+    let multi_qubit_gates: HashMap<String, f64> = HashMap::new();
+
+    let mut decoherence_rates: HashMap<usize, Array2<f64>> = HashMap::new();
+    for qubit0 in 0..number_qubits {
+        decoherence_rates.insert(qubit0, Array2::<f64>::zeros((3, 3)));
+    }
+
+    let device = GenericDevice {
+        number_qubits: number_qubits.clone(),
+        single_qubit_gates: single_qubit_gate_map.clone(),
+        two_qubit_gates: two_qubit_gate_map.clone(), 
+        multi_qubit_gates: multi_qubit_gates,
+        decoherence_rates: decoherence_rates.clone(),
+    };
+
+    // Test public fields of the GenericDevice
+    assert_eq!(device.number_qubits, number_qubits);
+    assert_eq!(device.single_qubit_gates, single_qubit_gate_map);
+    assert_eq!(device.two_qubit_gates, two_qubit_gate_map);
+    assert_eq!(device.multi_qubit_gates, HashMap::new());
+    assert_eq!(device.decoherence_rates, decoherence_rates);
+}
+
+/// Test set gate time functions for GenericDevice
+#[test]
+fn test_genericldevice_settimes() {
+    let number_qubits = 3usize;
+    let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
+    let two_qubit_gates = &["CNOT".to_string()];
+    let multi_qubit_gates = &[];
+    let mut device = GenericDevice::new(
+        number_qubits,
+        single_qubit_gates,
+        two_qubit_gates,
+        multi_qubit_gates,
+    );
+
+    device = device.set_all_single_qubit_gate_times(&"RotateX", 0.07);
+    device = device.set_all_single_qubit_gate_times(&"RotateZ", 0.1);
+
+    device = device.set_all_two_qubit_gate_times(&"CNOT", 0.05);
+
+    assert_eq!(device.single_qubit_gate_time("RotateX", &0), Some(0.07f64));
+    assert_eq!(
+        device.single_qubit_gate_time("RotateX", &number_qubits),
+        None
+    );
+    assert_eq!(device.single_qubit_gate_time("RotateZ", &0), Some(0.1f64));
+
+    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &1), Some(0.05f64));
+    assert_eq!(device.two_qubit_gate_time("CNOT", &1, &0), Some(0.05f64));
+    assert_eq!(device.two_qubit_gate_time("CNOT", &0, &number_qubits), None);
+    assert_eq!(device.two_qubit_gate_time("CZ", &0, &1), None);
+
+    assert_eq!(
+        device.multi_qubit_gate_time("MultiQubitMS", &[0, 1, 2]),
+        None,
+    );
+}
+
+// Test set decoherence and two_qubit_edges for GenericDevice
+#[test]
+fn test_genericdevice_setattributes() {
+    let number_qubits = 3usize;
+    let single_qubit_gates = &["RotateX".to_string(), "RotateZ".to_string()];
+    let two_qubit_gates = &["CNOT".to_string()];
+    let multi_qubit_gates = &[];
+    let mut device = GenericDevice::new(
+        number_qubits,
+        single_qubit_gates,
+        two_qubit_gates,
+        multi_qubit_gates,
+    );
+
+    let rates = array![[0.2], [0.3]];
+    device = device.set_all_qubit_decoherence_rates(rates.clone());
+    assert_eq!(device.qubit_decoherence_rates(&1), Some(rates));
+    assert_eq!(device.qubit_decoherence_rates(&number_qubits), None);
+
+    let test_edges = vec![(0, 1), (0, 2), (1, 2)];
+    let edges = device.two_qubit_edges();
+    assert_eq!(test_edges, edges);
+}
+
 // Very basic unit test for the fields in the created custom qubit map structs
 #[test]
 fn test_mapstructs() {
