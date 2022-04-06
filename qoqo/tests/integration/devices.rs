@@ -14,6 +14,7 @@ use ndarray::{array, Array2};
 use numpy::{pyarray, PyArray2};
 use pyo3::prelude::*;
 use qoqo::{AllToAllDeviceWrapper, GenericChainWrapper, GenericDeviceWrapper, GenericGridWrapper};
+use roqoqo::devices::{AllToAllDevice, GenericChain, GenericDevice, GenericGrid};
 // use test_case::test_case;
 
 // helper functions to create device objects in pyo3
@@ -1007,5 +1008,224 @@ fn test_gatetimes_genericchain() {
             .extract::<Option<f64>>()
             .unwrap();
         assert_eq!(gate_time_test, None);
+    })
+}
+
+// Test Clone, PartialEq and Debug for GenericDevice
+#[test]
+fn test_genericdevice_derive() {
+    let number_qubits = 1usize;
+    let single_qubit_gates = &[];
+    let two_qubit_gates = &[];
+    let multi_qubit_gates = &[];
+    let device = GenericDevice::new(
+        number_qubits,
+        single_qubit_gates,
+        two_qubit_gates,
+        multi_qubit_gates,
+    );
+
+    let wrapper = GenericDeviceWrapper {internal: device};
+
+    // Test debug
+    let debug =  "GenericDeviceWrapper { internal: GenericDevice { number_qubits: 1, single_qubit_gates: {}, two_qubit_gates: {}, multi_qubit_gates: {}, decoherence_rates: {0: [[0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2} } }";
+    assert_eq!(format!("{:?}", wrapper.clone()), debug);
+
+    // Test Clone and PartialEq
+    assert!(wrapper.clone() == wrapper);
+}
+
+// Test Clone, PartialEq and Debug for GenericChain
+#[test]
+fn test_genericchain_derive() {
+    let number_qubits = 1usize;
+    let single_qubit_gates = &[];
+    let two_qubit_gates = &[];
+    let multi_qubit_gates = &[];
+    let device = GenericChain::new(
+        number_qubits,
+        single_qubit_gates,
+        two_qubit_gates,
+        multi_qubit_gates,
+    );
+
+    let wrapper = GenericChainWrapper {internal: device};
+
+    // Test debug
+    let debug =  "GenericChainWrapper { internal: GenericChain { number_qubits: 1, single_qubit_gates: {}, two_qubit_gates: {}, multi_qubit_gates: {}, decoherence_rates: {0: [[0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2} } }";
+    assert_eq!(format!("{:?}", wrapper.clone()), debug);
+
+    // Test Clone and PartialEq
+    assert!(wrapper.clone() == wrapper);
+}
+
+// Test Clone, PartialEq and Debug for AllToAllDevice
+#[test]
+fn test_alltoalldevice_derive() {
+    let number_qubits = 1usize;
+    let single_qubit_gates = &[];
+    let two_qubit_gates = &[];
+    let multi_qubit_gates = &[];
+    let device = AllToAllDevice::new(
+        number_qubits,
+        single_qubit_gates,
+        two_qubit_gates,
+        multi_qubit_gates,
+    );
+
+    let wrapper = AllToAllDeviceWrapper {internal: device};
+
+    // Test debug
+    let debug =  "AllToAllDeviceWrapper { internal: AllToAllDevice { number_qubits: 1, single_qubit_gates: {}, two_qubit_gates: {}, multi_qubit_gates: {}, decoherence_rates: {0: [[0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2} } }";
+    assert_eq!(format!("{:?}", wrapper.clone()), debug);
+
+    // Test Clone and PartialEq
+    assert!(wrapper.clone() == wrapper);
+}
+
+// Test Clone, PartialEq and Debug for GenericGrid
+#[test]
+fn test_genericgrid_derive() {
+    let number_rows = 1usize;
+    let number_columns = 1usize;
+    let single_qubit_gates = &[];
+    let two_qubit_gates = &[];
+    let multi_qubit_gates = &[];
+    let device = GenericGrid::new(
+        number_rows,
+        number_columns,
+        single_qubit_gates,
+        two_qubit_gates,
+        multi_qubit_gates,
+    );
+
+    let wrapper = GenericGridWrapper { internal: device };
+
+    // Test debug
+    let debug =  "GenericGridWrapper { internal: GenericGrid { number_rows: 1, number_columns: 1, single_qubit_gates: {}, two_qubit_gates: {}, multi_qubit_gates: {}, decoherence_rates: {0: [[0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2} } }";
+    assert_eq!(format!("{:?}", wrapper.clone()), debug);
+
+    // Test Clone and PartialEq
+    assert!(wrapper.clone() == wrapper);
+}
+
+// Test two_qubit_edges() for AllToAllDevice
+#[test]
+fn test_alltoalldevice_edges() {
+    Python::with_gil(|py| {
+        let number_qubits: u32 = 3;
+        let single_qubit_gates = ["RotateX".to_string(), "RotateZ".to_string()];
+        let two_qubit_gates = ["CNOT".to_string()];
+        let multi_qubit_gates = ["".to_string()];
+        let arguments = (
+            number_qubits,
+            single_qubit_gates,
+            two_qubit_gates,
+            multi_qubit_gates,
+        );
+        let device_type = py.get_type::<AllToAllDeviceWrapper>();
+        let device = device_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<AllToAllDeviceWrapper>>()
+            .unwrap();
+        let test_edges = vec![(0, 1), (0, 2), (1, 2)];
+        let edges = device
+            .call_method0("two_qubit_edges")
+            .unwrap()
+            .extract::<Vec<(usize, usize)>>()
+            .unwrap();
+
+        assert_eq!(test_edges.len(), edges.len());
+        for edge in edges {
+            assert!(test_edges.contains(&edge));
+        }
+    })
+}
+
+// Test two_qubit_edges() for GenericDevice
+#[test]
+fn test_genericdevice_edges() {
+    Python::with_gil(|py| {
+        let number_qubits: u32 = 3;
+        let single_qubit_gates = ["RotateX".to_string(), "RotateZ".to_string()];
+        let two_qubit_gates = ["CNOT".to_string()];
+        let multi_qubit_gates = ["".to_string()];
+        let arguments = (
+            number_qubits,
+            single_qubit_gates,
+            two_qubit_gates,
+            multi_qubit_gates,
+        );
+        let device_type = py.get_type::<GenericDeviceWrapper>();
+        let device = device_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<GenericDeviceWrapper>>()
+            .unwrap();
+        let test_edges = vec![(0, 1), (0, 2), (1, 2)];
+        let edges = device
+            .call_method0("two_qubit_edges")
+            .unwrap()
+            .extract::<Vec<(usize, usize)>>()
+            .unwrap();
+
+        assert_eq!(test_edges.len(), edges.len());
+        for edge in edges {
+            assert!(test_edges.contains(&edge));
+        }
+    })
+}
+
+// Test two_qubit_edges() for GenericChain
+#[test]
+fn test_genericchain_edges() {
+    Python::with_gil(|py| {
+        let number_qubits: u32 = 3;
+        let single_qubit_gates = ["RotateX".to_string(), "RotateZ".to_string()];
+        let two_qubit_gates = ["CNOT".to_string()];
+        let multi_qubit_gates = ["".to_string()];
+        let arguments = (
+            number_qubits,
+            single_qubit_gates,
+            two_qubit_gates,
+            multi_qubit_gates,
+        );
+        let device_type = py.get_type::<GenericChainWrapper>();
+        let device = device_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<GenericChainWrapper>>()
+            .unwrap();
+        let test_edges = vec![(0, 1), (1, 2)];
+        let edges = device
+            .call_method0("two_qubit_edges")
+            .unwrap()
+            .extract::<Vec<(usize, usize)>>()
+            .unwrap();
+
+        assert_eq!(test_edges.len(), edges.len());
+        for edge in edges {
+            assert!(test_edges.contains(&edge));
+        }
+    })
+}
+
+// Test two_qubit_edges() for GenericGrid
+#[test]
+fn test_genericgrid_edges() {
+    Python::with_gil(|py| {
+        let device = new_genericgrid(py);
+        let test_edges = vec![(0, 1), (0, 4), (1, 2), (1, 5), (2, 3), (2, 6), (3, 7), (4, 5), (4, 8), (5, 6), (5, 9), (6, 7), (6, 10), (7, 11), (8, 9), (9, 10), (10, 11)];
+        let edges = device
+            .call_method0("two_qubit_edges")
+            .unwrap()
+            .extract::<Vec<(usize, usize)>>()
+            .unwrap();
+
+        assert_eq!(test_edges.len(), edges.len());
+        for edge in edges {
+            assert!(test_edges.contains(&edge));
+        }
     })
 }
