@@ -31,7 +31,8 @@ use roqoqo::devices::{AllToAllDevice, Device, GenericChain, GenericDevice, Gener
 ///     two_qubit_gate (str): The 'hqslang' name of the basic two-qubit-gate supported by the device.
 ///
 #[pyclass(name = "GenericGrid", module = "qoqo")]
-#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericGridWrapper {
     /// Internal storage of [roqoqo::devices::GenericGrid]
     pub internal: GenericGrid,
@@ -136,7 +137,8 @@ impl GenericGridWrapper {
 /// A device assuming all-to-all connectivity between all involved qubits.
 ///
 #[pyclass(name = "AllToAllDevice", module = "qoqo")]
-#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct AllToAllDeviceWrapper {
     /// Internal storage of [roqoqo::devices::AllToAllDevice]
     pub internal: AllToAllDevice,
@@ -222,7 +224,8 @@ impl AllToAllDeviceWrapper {
 /// with all-to-all connectivity between all involved qubits.
 ///
 #[pyclass(name = "GenericDevice", module = "qoqo")]
-#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericDeviceWrapper {
     /// Internal storage of [roqoqo::devices::GenericDevice]
     pub internal: GenericDevice,
@@ -307,7 +310,8 @@ impl GenericDeviceWrapper {
 /// A device containing a linear chain of qubits with next neighbour connectivity.
 ///
 #[pyclass(name = "GenericChain", module = "qoqo")]
-#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericChainWrapper {
     /// Internal storage of [roqoqo::devices::GenericChain]
     pub internal: GenericChain,

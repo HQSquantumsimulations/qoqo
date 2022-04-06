@@ -176,7 +176,8 @@ pub trait Device {
 
 /// A device assuming all-to-all connectivity between all involved qubits.
 ///
-#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct AllToAllDevice {
     number_qubits: usize,
     single_qubit_gates: HashMap<String, Vec<SingleQubitMap>>,
@@ -512,7 +513,8 @@ impl Device for AllToAllDevice {
 /// 8   9   10  11
 /// Resulting in qubit #6 being in the 2nd row in the 3rd column.
 ///
-#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericGrid {
     number_rows: usize,
     number_columns: usize,
@@ -947,7 +949,8 @@ impl Device for GenericGrid {
 
 /// A generic device containing a linear chain of qubits with next neighbour connectivity.
 ///
-#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericChain {
     number_qubits: usize,
     single_qubit_gates: HashMap<String, Vec<SingleQubitMap>>,
@@ -1263,7 +1266,8 @@ impl Device for GenericChain {
 /// A device struct with public fields for a roqoqo device
 /// with all-to-all connectivity between all involved qubits.
 ///
-#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct GenericDevice {
     /// The number of qubits in the device.
     pub number_qubits: usize,
@@ -1597,7 +1601,8 @@ impl Device for GenericDevice {
 /// A customized struct to use as a value in the HashMap for single_qubit_gates
 /// to access the gate times.
 ///
-#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct SingleQubitMap {
     ///The index of the qubit for which the gate time is set.
     pub qubit: usize,
@@ -1608,7 +1613,8 @@ pub struct SingleQubitMap {
 /// A customized struct to use as a value in the HashMap for two_qubit_gates
 /// to access the gate times.
 ///
-#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct TwoQubitMap {
     /// The index of the control qubit for which the gate time is set.
     pub control: usize,
@@ -1621,7 +1627,8 @@ pub struct TwoQubitMap {
 /// A customized struct to use as a value in the HashMap for multi_qubit_gates
 /// to access the gate times.
 ///
-#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct MultiQubitMap {
     /// A list of qubit indices for which the gate time is set.
     pub qubits: Vec<usize>,

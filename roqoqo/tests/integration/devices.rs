@@ -249,6 +249,8 @@ fn test_alltoalldevice_settimes() {
 
     device = device.set_all_two_qubit_gate_times(&"CNOT", 0.05);
 
+    device = device.set_all_multi_qubit_gate_times(&"test", 0.0);
+
     assert_eq!(device.single_qubit_gate_time("RotateX", &0), Some(0.07f64));
     assert_eq!(
         device.single_qubit_gate_time("RotateX", &number_qubits),
@@ -638,6 +640,7 @@ fn test_genericldevice_settimes() {
     device = device.set_all_single_qubit_gate_times(&"RotateZ", 0.1);
 
     device = device.set_all_two_qubit_gate_times(&"CNOT", 0.05);
+    device = device.set_all_multi_qubit_gate_times(&"test", 0.0);
 
     assert_eq!(device.single_qubit_gate_time("RotateX", &0), Some(0.07f64));
     assert_eq!(
@@ -705,4 +708,94 @@ fn test_mapstructs() {
     assert_eq!(twoqubitstruct.time, 0.0);
     assert_eq!(multiqubitstruct.qubits, qubits);
     assert_eq!(multiqubitstruct.time, 5.0);
+}
+
+// Test Clone, PartialEq and Debug for GenericDevice
+#[test]
+fn test_genericdevice_derive() {
+    let number_qubits = 1usize;
+    let single_qubit_gates = &[];
+    let two_qubit_gates = &[];
+    let multi_qubit_gates = &[];
+    let device = GenericDevice::new(
+        number_qubits,
+        single_qubit_gates,
+        two_qubit_gates,
+        multi_qubit_gates,
+    );
+
+    // Test debug
+    let debug =  "GenericDevice { number_qubits: 1, single_qubit_gates: {}, two_qubit_gates: {}, multi_qubit_gates: {}, decoherence_rates: {0: [[0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2} }";
+    assert_eq!(format!("{:?}", device.clone()), debug);
+
+    // Test Clone and PartialEq
+    assert!(device.clone() == device);
+}
+
+// Test Clone, PartialEq and Debug for GenericChain
+#[test]
+fn test_genericchain_derive() {
+    let number_qubits = 1usize;
+    let single_qubit_gates = &[];
+    let two_qubit_gates = &[];
+    let multi_qubit_gates = &[];
+    let device = GenericChain::new(
+        number_qubits,
+        single_qubit_gates,
+        two_qubit_gates,
+        multi_qubit_gates,
+    );
+
+    // Test debug
+    let debug =  "GenericChain { number_qubits: 1, single_qubit_gates: {}, two_qubit_gates: {}, multi_qubit_gates: {}, decoherence_rates: {0: [[0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2} }";
+    assert_eq!(format!("{:?}", device.clone()), debug);
+
+    // Test Clone and PartialEq
+    assert!(device.clone() == device);
+}
+
+// Test Clone, PartialEq and Debug for AllToAllDevice
+#[test]
+fn test_alltoalldevice_derive() {
+    let number_qubits = 1usize;
+    let single_qubit_gates = &[];
+    let two_qubit_gates = &[];
+    let multi_qubit_gates = &[];
+    let device = AllToAllDevice::new(
+        number_qubits,
+        single_qubit_gates,
+        two_qubit_gates,
+        multi_qubit_gates,
+    );
+
+    // Test debug
+    let debug =  "AllToAllDevice { number_qubits: 1, single_qubit_gates: {}, two_qubit_gates: {}, multi_qubit_gates: {}, decoherence_rates: {0: [[0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2} }";
+    assert_eq!(format!("{:?}", device.clone()), debug);
+
+    // Test Clone and PartialEq
+    assert!(device.clone() == device);
+}
+
+// Test Clone, PartialEq and Debug for GenericGrid
+#[test]
+fn test_genericgrid_derive() {
+    let number_rows = 1usize;
+    let number_columns = 1usize;
+    let single_qubit_gates = &[];
+    let two_qubit_gates = &[];
+    let multi_qubit_gates = &[];
+    let device = GenericGrid::new(
+        number_rows,
+        number_columns,
+        single_qubit_gates,
+        two_qubit_gates,
+        multi_qubit_gates,
+    );
+
+    // Test debug
+    let debug =  "GenericGrid { number_rows: 1, number_columns: 1, single_qubit_gates: {}, two_qubit_gates: {}, multi_qubit_gates: {}, decoherence_rates: {0: [[0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2} }";
+    assert_eq!(format!("{:?}", device.clone()), debug);
+
+    // Test Clone and PartialEq
+    assert!(device.clone() == device);
 }
