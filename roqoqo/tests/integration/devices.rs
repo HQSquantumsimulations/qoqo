@@ -12,6 +12,7 @@
 
 use ndarray::{array, Array2};
 use roqoqo::devices::*;
+#[cfg(feature = "serialize")]
 use std::collections::HashMap;
 use test_case::test_case;
 
