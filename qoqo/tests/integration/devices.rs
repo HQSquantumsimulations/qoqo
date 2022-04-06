@@ -10,8 +10,8 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use ndarray::Array2;
-use numpy::PyArray2;
+use ndarray::{array, Array2};
+use numpy::{pyarray, PyArray2};
 use pyo3::prelude::*;
 use qoqo::{AllToAllDeviceWrapper, GenericChainWrapper, GenericDeviceWrapper, GenericGridWrapper};
 // use test_case::test_case;
@@ -246,12 +246,12 @@ fn test_to_from_json() {
     });
 }
 
-// Test qubit_decoherence_rates()
+// Test qubit_decoherence_rates() for GenericGrid
 #[test]
-fn test_decoherence_rates() {
+fn test_decoherence_rates_genericgrid() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let device = new_genericgrid(py);
+        let mut device = new_genericgrid(py);
         // reference matrix for an initialized deviced or a non-existing qubit
         let matrix_zeros_py = Array2::<f64>::zeros((3, 3));
         let matrix_py = device
@@ -271,15 +271,47 @@ fn test_decoherence_rates() {
             .unwrap()
             .to_owned_array();
         assert_eq!(matrix2_test, matrix_zeros_py);
+
+        let pyarray_testmatrix: Array2<f64> =
+            array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
+        let pyarray: &PyArray2<f64> =
+            pyarray![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
+        let readonly = pyarray.readonly();
+        device = device
+            .call_method1("set_all_qubit_decoherence_rates", (readonly,))
+            .unwrap()
+            .cast_as::<PyCell<GenericGridWrapper>>()
+            .unwrap();
+
+        // proper matrix returned for the available qubit after setting decoherence rates
+        let matrix_py2 = device
+            .call_method1("qubit_decoherence_rates", (0_i64,))
+            .unwrap();
+        let matrix_test2 = matrix_py2
+            .cast_as::<PyArray2<f64>>()
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix_test2, pyarray_testmatrix);
+
+        // matrix filled with zeros returned for a qubit not available in the given device
+        let matrix2_py2 = device
+            .call_method1("qubit_decoherence_rates", (100_i64,))
+            .unwrap();
+        let matrix2_test2 = matrix2_py2
+            .cast_as::<PyArray2<f64>>()
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix2_test2, matrix_zeros_py);
     })
 }
 
-// Test qubit_decoherence_rates() for AllToAllDevice
+// Test qubit_decoherence_rates() for GenericChain
 #[test]
-fn test_decoherence_rates_all() {
+fn test_decoherence_rates_genericchain() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let device = new_alltoalldevice(py);
+        let mut device = new_genericchain(py);
+        // reference matrix for an initialized deviced or a non-existing qubit
         let matrix_zeros_py = Array2::<f64>::zeros((3, 3));
         let matrix_py = device
             .call_method1("qubit_decoherence_rates", (0_i64,))
@@ -298,6 +330,155 @@ fn test_decoherence_rates_all() {
             .unwrap()
             .to_owned_array();
         assert_eq!(matrix2_test, matrix_zeros_py);
+
+        let pyarray_testmatrix: Array2<f64> =
+            array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
+        let pyarray: &PyArray2<f64> =
+            pyarray![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
+        let readonly = pyarray.readonly();
+        device = device
+            .call_method1("set_all_qubit_decoherence_rates", (readonly,))
+            .unwrap()
+            .cast_as::<PyCell<GenericChainWrapper>>()
+            .unwrap();
+
+        // proper matrix returned for the available qubit after setting decoherence rates
+        let matrix_py2 = device
+            .call_method1("qubit_decoherence_rates", (0_i64,))
+            .unwrap();
+        let matrix_test2 = matrix_py2
+            .cast_as::<PyArray2<f64>>()
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix_test2, pyarray_testmatrix);
+
+        // matrix filled with zeros returned for a qubit not available in the given device
+        let matrix2_py2 = device
+            .call_method1("qubit_decoherence_rates", (100_i64,))
+            .unwrap();
+        let matrix2_test2 = matrix2_py2
+            .cast_as::<PyArray2<f64>>()
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix2_test2, matrix_zeros_py);
+    })
+}
+
+// Test qubit_decoherence_rates() for GenericDevice
+#[test]
+fn test_decoherence_rates_genericdevice() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let mut device = new_genericdevice(py);
+        // reference matrix for an initialized deviced or a non-existing qubit
+        let matrix_zeros_py = Array2::<f64>::zeros((3, 3));
+        let matrix_py = device
+            .call_method1("qubit_decoherence_rates", (0_i64,))
+            .unwrap();
+        let matrix_test = matrix_py
+            .cast_as::<PyArray2<f64>>()
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix_test, matrix_zeros_py);
+
+        let matrix2_py = device
+            .call_method1("qubit_decoherence_rates", (100_i64,))
+            .unwrap();
+        let matrix2_test = matrix2_py
+            .cast_as::<PyArray2<f64>>()
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix2_test, matrix_zeros_py);
+
+        let pyarray_testmatrix: Array2<f64> =
+            array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
+        let pyarray: &PyArray2<f64> =
+            pyarray![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
+        let readonly = pyarray.readonly();
+        device = device
+            .call_method1("set_all_qubit_decoherence_rates", (readonly,))
+            .unwrap()
+            .cast_as::<PyCell<GenericDeviceWrapper>>()
+            .unwrap();
+
+        // proper matrix returned for the available qubit after setting decoherence rates
+        let matrix_py2 = device
+            .call_method1("qubit_decoherence_rates", (0_i64,))
+            .unwrap();
+        let matrix_test2 = matrix_py2
+            .cast_as::<PyArray2<f64>>()
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix_test2, pyarray_testmatrix);
+
+        // matrix filled with zeros returned for a qubit not available in the given device
+        let matrix2_py2 = device
+            .call_method1("qubit_decoherence_rates", (100_i64,))
+            .unwrap();
+        let matrix2_test2 = matrix2_py2
+            .cast_as::<PyArray2<f64>>()
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix2_test2, matrix_zeros_py);
+    })
+}
+
+// Test qubit_decoherence_rates() for AllToAllDevice
+#[test]
+fn test_decoherence_rates_alltoalldevice() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let mut device = new_alltoalldevice(py);
+        // reference matrix for an initialized deviced or a non-existing qubit
+        let matrix_zeros_py = Array2::<f64>::zeros((3, 3));
+        let matrix_py = device
+            .call_method1("qubit_decoherence_rates", (0_i64,))
+            .unwrap();
+        let matrix_test = matrix_py
+            .cast_as::<PyArray2<f64>>()
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix_test, matrix_zeros_py);
+
+        let matrix2_py = device
+            .call_method1("qubit_decoherence_rates", (100_i64,))
+            .unwrap();
+        let matrix2_test = matrix2_py
+            .cast_as::<PyArray2<f64>>()
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix2_test, matrix_zeros_py);
+
+        let pyarray_testmatrix: Array2<f64> =
+            array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
+        let pyarray: &PyArray2<f64> =
+            pyarray![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
+        let readonly = pyarray.readonly();
+        device = device
+            .call_method1("set_all_qubit_decoherence_rates", (readonly,))
+            .unwrap()
+            .cast_as::<PyCell<AllToAllDeviceWrapper>>()
+            .unwrap();
+
+        // proper matrix returned for the available qubit after setting decoherence rates
+        let matrix_py2 = device
+            .call_method1("qubit_decoherence_rates", (0_i64,))
+            .unwrap();
+        let matrix_test2 = matrix_py2
+            .cast_as::<PyArray2<f64>>()
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix_test2, pyarray_testmatrix);
+
+        // matrix filled with zeros returned for a qubit not available in the given device
+        let matrix2_py2 = device
+            .call_method1("qubit_decoherence_rates", (100_i64,))
+            .unwrap();
+        let matrix2_test2 = matrix2_py2
+            .cast_as::<PyArray2<f64>>()
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix2_test2, matrix_zeros_py);
     })
 }
 
@@ -373,34 +554,6 @@ fn test_to_from_json_genericchain() {
     });
 }
 
-// Test qubit_decoherence_rates()
-#[test]
-fn test_decoherence_rates_genericchain() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
-        let device = new_genericchain(py);
-        // reference matrix for an initialized deviced or a non-existing qubit
-        let matrix_zeros_py = Array2::<f64>::zeros((3, 3));
-        let matrix_py = device
-            .call_method1("qubit_decoherence_rates", (0_i64,))
-            .unwrap();
-        let matrix_test = matrix_py
-            .cast_as::<PyArray2<f64>>()
-            .unwrap()
-            .to_owned_array();
-        assert_eq!(matrix_test, matrix_zeros_py);
-
-        let matrix2_py = device
-            .call_method1("qubit_decoherence_rates", (100_i64,))
-            .unwrap();
-        let matrix2_test = matrix2_py
-            .cast_as::<PyArray2<f64>>()
-            .unwrap()
-            .to_owned_array();
-        assert_eq!(matrix2_test, matrix_zeros_py);
-    })
-}
-
 // Test copy and deepcopy
 #[test]
 fn test_copy_deepcopy_genericdevice() {
@@ -471,34 +624,6 @@ fn test_to_from_json_genericdevice() {
         let device_wrapper = device.extract::<GenericDeviceWrapper>().unwrap();
         assert_eq!(device_wrapper, serde_wrapper);
     });
-}
-
-// Test qubit_decoherence_rates()
-#[test]
-fn test_decoherence_rates_genericdevice() {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
-        let device = new_genericdevice(py);
-        // reference matrix for an initialized deviced or a non-existing qubit
-        let matrix_zeros_py = Array2::<f64>::zeros((3, 3));
-        let matrix_py = device
-            .call_method1("qubit_decoherence_rates", (0_i64,))
-            .unwrap();
-        let matrix_test = matrix_py
-            .cast_as::<PyArray2<f64>>()
-            .unwrap()
-            .to_owned_array();
-        assert_eq!(matrix_test, matrix_zeros_py);
-
-        let matrix2_py = device
-            .call_method1("qubit_decoherence_rates", (100_i64,))
-            .unwrap();
-        let matrix2_test = matrix2_py
-            .cast_as::<PyArray2<f64>>()
-            .unwrap()
-            .to_owned_array();
-        assert_eq!(matrix2_test, matrix_zeros_py);
-    })
 }
 
 // Test copy and deepcopy
