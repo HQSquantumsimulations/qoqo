@@ -580,18 +580,307 @@ fn test_gatetimes_all() {
     Python::with_gil(|py| {
         let mut device = new_alltoalldevice(py);
         let gate_time = 0.5_f64;
+
+        // Test single qubit gate times
         device = device
-            .call_method1("set_all_multi_qubit_gate_times", ("test", gate_time.clone(),))
+            .call_method1(
+                "set_all_single_qubit_gate_times",
+                ("RotateZ", gate_time.clone()),
+            )
             .unwrap()
             .cast_as::<PyCell<AllToAllDeviceWrapper>>()
             .unwrap();
-        
+
+        // get the gate time for RotateZ on qubit 0
+        let gate_time_rotatez = device
+            .call_method1("single_qubit_gate_time", ("RotateZ", 0_i64))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+
+        // get the gate time for RotateZ for a qubit not which is not in the device
+        let gate_time_none = device
+            .call_method1("single_qubit_gate_time", ("RotateZ", 100_i64))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+
+        assert_eq!(gate_time_rotatez, Some(gate_time.clone()));
+        assert_eq!(gate_time_none, None);
+
+        // Test two qubit gate times
+        device = device
+            .call_method1("set_all_two_qubit_gate_times", ("CNOT", gate_time.clone()))
+            .unwrap()
+            .cast_as::<PyCell<AllToAllDeviceWrapper>>()
+            .unwrap();
+
+        // get the gate time for RotateZ on qubit 0
+        let gate_time_cnot = device
+            .call_method1("two_qubit_gate_time", ("CNOT", 0_i64, 1_i64))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+
+        // get the gate time for RotateZ for a qubit not which is not in the device
+        let gate_time_none2 = device
+            .call_method1("two_qubit_gate_time", ("CNOT", 0_i64, 100_i64))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+
+        assert_eq!(gate_time_cnot, Some(gate_time.clone()));
+        assert_eq!(gate_time_none2, None);
+
+        // Test multi qubit gate times
+        device = device
+            .call_method1(
+                "set_all_multi_qubit_gate_times",
+                ("test", gate_time.clone()),
+            )
+            .unwrap()
+            .cast_as::<PyCell<AllToAllDeviceWrapper>>()
+            .unwrap();
+
         let gate_time_test = device
             .call_method1("multi_qubit_gate_time", ("test", Vec::<usize>::new()))
             .unwrap()
             .extract::<Option<f64>>()
             .unwrap();
         assert_eq!(gate_time_test, None);
-        // assert_eq!(gate_time_test, Some(gate_time.clone()));
+    })
+}
+
+// Test gate_times for GenericGrid
+#[test]
+fn test_gatetimes_genericgrid() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let mut device = new_genericgrid(py);
+        let gate_time = 0.5_f64;
+
+        // Test single qubit gate times
+        device = device
+            .call_method1(
+                "set_all_single_qubit_gate_times",
+                ("RotateZ", gate_time.clone()),
+            )
+            .unwrap()
+            .cast_as::<PyCell<GenericGridWrapper>>()
+            .unwrap();
+
+        // get the gate time for RotateZ on qubit 0
+        let gate_time_rotatez = device
+            .call_method1("single_qubit_gate_time", ("RotateZ", 0_i64))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+
+        // get the gate time for RotateZ for a qubit not which is not in the device
+        let gate_time_none = device
+            .call_method1("single_qubit_gate_time", ("RotateZ", 100_i64))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+
+        assert_eq!(gate_time_rotatez, Some(gate_time.clone()));
+        assert_eq!(gate_time_none, None);
+
+        // Test two qubit gate times
+        device = device
+            .call_method1("set_all_two_qubit_gate_times", ("CNOT", gate_time.clone()))
+            .unwrap()
+            .cast_as::<PyCell<GenericGridWrapper>>()
+            .unwrap();
+
+        // get the gate time for RotateZ on qubit 0
+        let gate_time_cnot = device
+            .call_method1("two_qubit_gate_time", ("CNOT", 0_i64, 1_i64))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+
+        // get the gate time for RotateZ for a qubit not which is not in the device
+        let gate_time_none2 = device
+            .call_method1("two_qubit_gate_time", ("CNOT", 0_i64, 2_i64))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+
+        assert_eq!(gate_time_cnot, Some(gate_time.clone()));
+        assert_eq!(gate_time_none2, None);
+
+        // Test multi qubit gate times
+        device = device
+            .call_method1(
+                "set_all_multi_qubit_gate_times",
+                ("test", gate_time.clone()),
+            )
+            .unwrap()
+            .cast_as::<PyCell<GenericGridWrapper>>()
+            .unwrap();
+
+        let gate_time_test = device
+            .call_method1("multi_qubit_gate_time", ("test", Vec::<usize>::new()))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+        assert_eq!(gate_time_test, None);
+    })
+}
+
+// Test gate_times for GenericDevice
+#[test]
+fn test_gatetimes_genericdevice() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let mut device = new_genericdevice(py);
+        let gate_time = 0.5_f64;
+
+        // Test single qubit gate times
+        device = device
+            .call_method1(
+                "set_all_single_qubit_gate_times",
+                ("RotateZ", gate_time.clone()),
+            )
+            .unwrap()
+            .cast_as::<PyCell<GenericDeviceWrapper>>()
+            .unwrap();
+
+        // get the gate time for RotateZ on qubit 0
+        let gate_time_rotatez = device
+            .call_method1("single_qubit_gate_time", ("RotateZ", 0_i64))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+
+        // get the gate time for RotateZ for a qubit not which is not in the device
+        let gate_time_none = device
+            .call_method1("single_qubit_gate_time", ("RotateZ", 100_i64))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+
+        assert_eq!(gate_time_rotatez, Some(gate_time.clone()));
+        assert_eq!(gate_time_none, None);
+
+        // Test two qubit gate times
+        device = device
+            .call_method1("set_all_two_qubit_gate_times", ("CNOT", gate_time.clone()))
+            .unwrap()
+            .cast_as::<PyCell<GenericDeviceWrapper>>()
+            .unwrap();
+
+        // get the gate time for RotateZ on qubit 0
+        let gate_time_cnot = device
+            .call_method1("two_qubit_gate_time", ("CNOT", 0_i64, 1_i64))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+
+        // get the gate time for RotateZ for a qubit not which is not in the device
+        let gate_time_none2 = device
+            .call_method1("two_qubit_gate_time", ("CNOT", 0_i64, 100_i64))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+
+        assert_eq!(gate_time_cnot, Some(gate_time.clone()));
+        assert_eq!(gate_time_none2, None);
+
+        // Test multi qubit gate times
+        device = device
+            .call_method1(
+                "set_all_multi_qubit_gate_times",
+                ("test", gate_time.clone()),
+            )
+            .unwrap()
+            .cast_as::<PyCell<GenericDeviceWrapper>>()
+            .unwrap();
+
+        let gate_time_test = device
+            .call_method1("multi_qubit_gate_time", ("test", Vec::<usize>::new()))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+        assert_eq!(gate_time_test, None);
+    })
+}
+
+// Test gate_times for GenericChain
+#[test]
+fn test_gatetimes_genericchain() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let mut device = new_genericchain(py);
+        let gate_time = 0.5_f64;
+
+        // Test single qubit gate times
+        device = device
+            .call_method1(
+                "set_all_single_qubit_gate_times",
+                ("RotateZ", gate_time.clone()),
+            )
+            .unwrap()
+            .cast_as::<PyCell<GenericChainWrapper>>()
+            .unwrap();
+
+        // get the gate time for RotateZ on qubit 0
+        let gate_time_rotatez = device
+            .call_method1("single_qubit_gate_time", ("RotateZ", 0_i64))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+
+        // get the gate time for RotateZ for a qubit not which is not in the device
+        let gate_time_none = device
+            .call_method1("single_qubit_gate_time", ("RotateZ", 100_i64))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+
+        assert_eq!(gate_time_rotatez, Some(gate_time.clone()));
+        assert_eq!(gate_time_none, None);
+
+        // Test two qubit gate times
+        device = device
+            .call_method1("set_all_two_qubit_gate_times", ("CNOT", gate_time.clone()))
+            .unwrap()
+            .cast_as::<PyCell<GenericChainWrapper>>()
+            .unwrap();
+
+        // get the gate time for RotateZ on qubit 0
+        let gate_time_cnot = device
+            .call_method1("two_qubit_gate_time", ("CNOT", 0_i64, 1_i64))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+
+        // get the gate time for RotateZ for a qubit not which is not in the device
+        let gate_time_none2 = device
+            .call_method1("two_qubit_gate_time", ("CNOT", 0_i64, 2_i64))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+
+        assert_eq!(gate_time_cnot, Some(gate_time.clone()));
+        assert_eq!(gate_time_none2, None);
+
+        // Test multi qubit gate times
+        device = device
+            .call_method1(
+                "set_all_multi_qubit_gate_times",
+                ("test", gate_time.clone()),
+            )
+            .unwrap()
+            .cast_as::<PyCell<GenericChainWrapper>>()
+            .unwrap();
+
+        let gate_time_test = device
+            .call_method1("multi_qubit_gate_time", ("test", Vec::<usize>::new()))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+        assert_eq!(gate_time_test, None);
     })
 }

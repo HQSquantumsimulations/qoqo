@@ -15,7 +15,7 @@
 
 use bincode::{deserialize, serialize};
 use ndarray::Array2;
-use numpy::{PyArray2, ToPyArray};
+use numpy::{PyArray2, PyReadonlyArray2, ToPyArray};
 use pyo3::exceptions::{PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::{PyByteArray, PyType};
@@ -97,10 +97,10 @@ impl GenericGridWrapper {
     ///     L_2 = \sigma^{z}
     ///
     /// Args:
-    ///     qubit[int]: The qubit for which the rate matrix M is returned
+    ///     qubit[int]: The qubit for which the rate matrix M is returned.
     ///
     /// Returns:
-    ///     Decoherence rates: a 2d array of real numbers
+    ///     Decoherence rates: a 2d array of real numbers.
     ///
     fn qubit_decoherence_rates(&self, qubit: usize) -> Py<PyArray2<f64>> {
         Python::with_gil(|py| -> Py<PyArray2<f64>> {
@@ -112,6 +112,24 @@ impl GenericGridWrapper {
                 }
             }
         })
+    }
+
+    /// Function to set the decoherence rates for all qubits in the GenericGrid device.
+    ///
+    /// Args:
+    ///     rates[2d array]: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
+    ///
+    /// Returns:
+    ///     GenericGrid with updated decoherence rates.
+    ///
+    pub fn set_all_qubit_decoherence_rates(&self, rates: PyReadonlyArray2<f64>) -> Self {
+        let rates_matrix = rates.as_array().to_owned();
+        Self {
+            internal: self
+                .internal
+                .clone()
+                .set_all_qubit_decoherence_rates(rates_matrix),
+        }
     }
 }
 
@@ -179,6 +197,24 @@ impl AllToAllDeviceWrapper {
                 }
             }
         })
+    }
+
+    /// Function to set the decoherence rates for all qubits in the AllToAllDevice.
+    ///
+    /// Args:
+    ///     rates[2d array]: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
+    ///
+    /// Returns:
+    ///     AllToAllDevice with updated decoherence rates.
+    ///
+    pub fn set_all_qubit_decoherence_rates(&self, rates: PyReadonlyArray2<f64>) -> Self {
+        let rates_matrix = rates.as_array().to_owned();
+        Self {
+            internal: self
+                .internal
+                .clone()
+                .set_all_qubit_decoherence_rates(rates_matrix),
+        }
     }
 }
 
@@ -248,9 +284,27 @@ impl GenericDeviceWrapper {
             }
         })
     }
+
+    /// Function to set the decoherence rates for all qubits in the GenericDevice device.
+    ///
+    /// Args:
+    ///     rates[2d array]: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
+    ///
+    /// Returns:
+    ///     GenericDevice with updated decoherence rates.
+    ///
+    pub fn set_all_qubit_decoherence_rates(&self, rates: PyReadonlyArray2<f64>) -> Self {
+        let rates_matrix = rates.as_array().to_owned();
+        Self {
+            internal: self
+                .internal
+                .clone()
+                .set_all_qubit_decoherence_rates(rates_matrix),
+        }
+    }
 }
 
-/// A generic device containing a linear chain of qubits with next neighbour connectivity.
+/// A device containing a linear chain of qubits with next neighbour connectivity.
 ///
 #[pyclass(name = "GenericChain", module = "qoqo")]
 #[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -314,5 +368,23 @@ impl GenericChainWrapper {
                 }
             }
         })
+    }
+
+    /// Function to set the decoherence rates for all qubits in the GenericChain device.
+    ///
+    /// Args:
+    ///     rates[2d array]: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
+    ///
+    /// Returns:
+    ///     GenericChain with updated decoherence rates.
+    ///
+    pub fn set_all_qubit_decoherence_rates(&self, rates: PyReadonlyArray2<f64>) -> Self {
+        let rates_matrix = rates.as_array().to_owned();
+        Self {
+            internal: self
+                .internal
+                .clone()
+                .set_all_qubit_decoherence_rates(rates_matrix),
+        }
     }
 }
