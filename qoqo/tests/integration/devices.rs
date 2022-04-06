@@ -572,3 +572,26 @@ fn test_to_from_json_alltoalldevice() {
         assert_eq!(device_wrapper, serde_wrapper);
     });
 }
+
+// Test gate_times for AllToAllDevice
+#[test]
+fn test_gatetimes_all() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let mut device = new_alltoalldevice(py);
+        let gate_time = 0.5_f64;
+        device = device
+            .call_method1("set_all_multi_qubit_gate_times", ("test", gate_time.clone(),))
+            .unwrap()
+            .cast_as::<PyCell<AllToAllDeviceWrapper>>()
+            .unwrap();
+        
+        let gate_time_test = device
+            .call_method1("multi_qubit_gate_time", ("test", Vec::<usize>::new()))
+            .unwrap()
+            .extract::<Option<f64>>()
+            .unwrap();
+        assert_eq!(gate_time_test, None);
+        // assert_eq!(gate_time_test, Some(gate_time.clone()));
+    })
+}

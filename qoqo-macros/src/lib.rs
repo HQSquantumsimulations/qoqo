@@ -605,6 +605,22 @@ pub fn devicewrapper(
                 self.internal.multi_qubit_gate_time(hqslang, &qubits)
             }
 
+            /// Function that allows to set the gate time for the multi-qubit-gates in the Device,
+            /// when applied to any qubits in the device.
+            ///
+            /// Args:
+            ///     gate[str]: The hqslang name of the multi-qubit-gate.
+            ///     gate_time[f64]: Gate time for the given gate, valid for all qubits in the device.
+            ///
+            /// Returns:
+            ///     A qoqo Device with updated gate times.
+            ///
+            pub fn set_all_multi_qubit_gate_times(&self, gate: &str, gate_time: f64) -> Self {
+                #ident {
+                    internal: self.internal.clone().set_all_multi_qubit_gate_times(gate, gate_time)
+                }
+            }
+
             /// Returns a copy of the device (copy here produces a deepcopy).
             ///
             /// Returns:
