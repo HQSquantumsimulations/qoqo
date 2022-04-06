@@ -1025,7 +1025,7 @@ fn test_genericdevice_derive() {
         multi_qubit_gates,
     );
 
-    let wrapper = GenericDeviceWrapper {internal: device};
+    let wrapper = GenericDeviceWrapper { internal: device };
 
     // Test debug
     let debug =  "GenericDeviceWrapper { internal: GenericDevice { number_qubits: 1, single_qubit_gates: {}, two_qubit_gates: {}, multi_qubit_gates: {}, decoherence_rates: {0: [[0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2} } }";
@@ -1049,7 +1049,7 @@ fn test_genericchain_derive() {
         multi_qubit_gates,
     );
 
-    let wrapper = GenericChainWrapper {internal: device};
+    let wrapper = GenericChainWrapper { internal: device };
 
     // Test debug
     let debug =  "GenericChainWrapper { internal: GenericChain { number_qubits: 1, single_qubit_gates: {}, two_qubit_gates: {}, multi_qubit_gates: {}, decoherence_rates: {0: [[0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2} } }";
@@ -1073,7 +1073,7 @@ fn test_alltoalldevice_derive() {
         multi_qubit_gates,
     );
 
-    let wrapper = AllToAllDeviceWrapper {internal: device};
+    let wrapper = AllToAllDeviceWrapper { internal: device };
 
     // Test debug
     let debug =  "AllToAllDeviceWrapper { internal: AllToAllDevice { number_qubits: 1, single_qubit_gates: {}, two_qubit_gates: {}, multi_qubit_gates: {}, decoherence_rates: {0: [[0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2} } }";
@@ -1216,7 +1216,25 @@ fn test_genericchain_edges() {
 fn test_genericgrid_edges() {
     Python::with_gil(|py| {
         let device = new_genericgrid(py);
-        let test_edges = vec![(0, 1), (0, 4), (1, 2), (1, 5), (2, 3), (2, 6), (3, 7), (4, 5), (4, 8), (5, 6), (5, 9), (6, 7), (6, 10), (7, 11), (8, 9), (9, 10), (10, 11)];
+        let test_edges = vec![
+            (0, 1),
+            (0, 4),
+            (1, 2),
+            (1, 5),
+            (2, 3),
+            (2, 6),
+            (3, 7),
+            (4, 5),
+            (4, 8),
+            (5, 6),
+            (5, 9),
+            (6, 7),
+            (6, 10),
+            (7, 11),
+            (8, 9),
+            (9, 10),
+            (10, 11),
+        ];
         let edges = device
             .call_method0("two_qubit_edges")
             .unwrap()
