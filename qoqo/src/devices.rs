@@ -11,7 +11,12 @@
 // limitations under the License.
 //
 
-//! Qoqo devices
+//! Devices in qoqo can be abstract devices or actual hardware devices.
+//!
+//! * Abstract devices: Contain abstract information for the model of a quantum computer and its parameters.
+//! * Actual hardware devices: These devices are provided by roqoqo backends and
+//! contain the necessary information for accessing the quantum computing hardware.
+//! The devices also encode a connectivity model.
 
 use bincode::{deserialize, serialize};
 use ndarray::Array2;
@@ -22,6 +27,47 @@ use pyo3::types::{PyByteArray, PyType};
 use qoqo_macros::devicewrapper;
 use roqoqo::devices::{AllToAllDevice, Device, GenericChain, GenericDevice, GenericGrid};
 
+/// Devices in qoqo have two use cases:
+///
+/// * Abstract devices: Contain abstract information for the model of a quantum computer and its parameters.
+///     They can be used to determine which Operations are available on a specific device model.
+///     A typical example are abstract linear chains of square lattices in which two-qubit operations are only
+///     available between neighbouring qubits.  
+///
+///     The abstract devices can also encode a noise model. Q/// Qoqo devicesoqo noise models are in general based on a (pseudo) time
+///     needed to execute a quantum operation and Lindblad rates for the qubits in the device.
+///     Specifically in the noise model each qubit undergoes a continuous Lindblad-type decoherence time evolution:
+///
+///     math::
+///     \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
+///         L_0 = \sigma^{+} \\\\
+///         L_1 = \sigma^{-} \\\\
+///         L_3 = \sigma^{z}
+///     $$
+///     Note that as long as gate times and decoherence rates are scaled inversely any kind of units can be used,
+///     but we recommend using nanoseconds and inverse nanosecconds as units for gate times and decoherence rates.
+///
+///
+/// * Actual hardware devices: These devices are provided by roqoqo backends and contain the necessary information for
+///     accessing the quantum computing hardware. The devices also encode a connectivity model.
+///
+/// .. autosummary::
+///    :toctree: generated/
+///
+///    AllToAllDevice
+///    GenericDevice
+///     GenericChain
+///     GenericGrid
+///
+#[pymodule]
+pub fn devices(_py: Python, module: &PyModule) -> PyResult<()> {
+    module.add_class::<GenericGridWrapper>()?;
+    module.add_class::<GenericChainWrapper>()?;
+    module.add_class::<GenericDeviceWrapper>()?;
+    module.add_class::<AllToAllDeviceWrapper>()?;
+    Ok(())
+}
+
 /// A generic 2D Grid Device with only next-neighbours-connectivity.
 ///
 /// Args:
@@ -30,7 +76,7 @@ use roqoqo::devices::{AllToAllDevice, Device, GenericChain, GenericDevice, Gener
 ///     single_qubit_gates (List[str]): A list of 'hqslang' names of single-qubit-gates supported by the device.
 ///     two_qubit_gate (str): The 'hqslang' name of the basic two-qubit-gate supported by the device.
 ///
-#[pyclass(name = "GenericGrid", module = "qoqo")]
+#[pyclass(name = "GenericGrid", module = "devices")]
 #[derive(Clone, Debug, PartialEq)]
 pub struct GenericGridWrapper {
     /// Internal storage of [roqoqo::devices::GenericGrid]
@@ -135,7 +181,7 @@ impl GenericGridWrapper {
 
 /// A device assuming all-to-all connectivity between all involved qubits.
 ///
-#[pyclass(name = "AllToAllDevice", module = "qoqo")]
+#[pyclass(name = "AllToAllDevice", module = "devices")]
 #[derive(Clone, Debug, PartialEq)]
 pub struct AllToAllDeviceWrapper {
     /// Internal storage of [roqoqo::devices::AllToAllDevice]
@@ -221,7 +267,7 @@ impl AllToAllDeviceWrapper {
 /// A device struct with public fields for a qoqo device
 /// with all-to-all connectivity between all involved qubits.
 ///
-#[pyclass(name = "GenericDevice", module = "qoqo")]
+#[pyclass(name = "GenericDevice", module = "devices")]
 #[derive(Clone, Debug, PartialEq)]
 pub struct GenericDeviceWrapper {
     /// Internal storage of [roqoqo::devices::GenericDevice]
@@ -306,7 +352,7 @@ impl GenericDeviceWrapper {
 
 /// A device containing a linear chain of qubits with next neighbour connectivity.
 ///
-#[pyclass(name = "GenericChain", module = "qoqo")]
+#[pyclass(name = "GenericChain", module = "devices")]
 #[derive(Clone, Debug, PartialEq)]
 pub struct GenericChainWrapper {
     /// Internal storage of [roqoqo::devices::GenericChain]

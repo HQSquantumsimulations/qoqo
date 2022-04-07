@@ -1624,6 +1624,7 @@ pub struct TwoQubitMap {
     pub time: f64,
 }
 
+#[doc(hidden)]
 /// A customized struct to use as a value in the HashMap for multi_qubit_gates
 /// to access the gate times.
 ///

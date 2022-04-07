@@ -11,10 +11,10 @@
 // limitations under the License.
 
 #![deny(missing_docs)]
-#![warn(private_intra_doc_links)]
-#![warn(missing_crate_level_docs)]
-#![warn(missing_doc_code_examples)]
-#![warn(private_doc_tests)]
+#![warn(rustdoc::private_intra_doc_links)]
+#![warn(rustdoc::missing_crate_level_docs)]
+#![warn(rustdoc::missing_doc_code_examples)]
+#![warn(rustdoc::private_doc_tests)]
 #![deny(missing_debug_implementations)]
 
 //! # roqoqo

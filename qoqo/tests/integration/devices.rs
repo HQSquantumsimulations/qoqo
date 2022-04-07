@@ -13,7 +13,9 @@
 use ndarray::{array, Array2};
 use numpy::{pyarray, PyArray2};
 use pyo3::prelude::*;
-use qoqo::{AllToAllDeviceWrapper, GenericChainWrapper, GenericDeviceWrapper, GenericGridWrapper};
+use qoqo::devices::{
+    AllToAllDeviceWrapper, GenericChainWrapper, GenericDeviceWrapper, GenericGridWrapper,
+};
 use roqoqo::devices::{AllToAllDevice, GenericChain, GenericDevice, GenericGrid};
 // use test_case::test_case;
 
