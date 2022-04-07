@@ -92,9 +92,9 @@ pub enum QoqoBackendError {
 /// .. autosummary::
 ///     :toctree: generated/
 ///
-///     circuit
+///     Circuit
 ///     devices
-///     quantumprogram
+///     QuantumProgram
 ///     operations
 ///     measurements
 ///
