@@ -14,6 +14,7 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 * `roqoqo-test` extended by two new functions for stochastic gate tests: `construct_random_circuit` and `add_random_multi_qubit_gate`. 
 * A conversion function `to_single_qubit_gate` has been implemented for the OperateSingleQubitGate trait.
 * The multiplication function `mul` added to the python interface, i.e. qoqo, for Single Qubit Gates.
+* New rotation gate `RotateXY(theta, phi)` added to the set of single qubit gates.
 
 ### Changed
 
