@@ -19,8 +19,8 @@ use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
     HadamardWrapper, InvSqrtPauliXWrapper, PauliXWrapper, PauliYWrapper, PauliZWrapper,
     PhaseShiftState0Wrapper, PhaseShiftState1Wrapper, RotateAroundSphericalAxisWrapper,
-    RotateXWrapper, RotateYWrapper, RotateZWrapper, SGateWrapper, SingleQubitGateWrapper,
-    SqrtPauliXWrapper, TGateWrapper,
+    RotateXWrapper, RotateXYWrapper, RotateYWrapper, RotateZWrapper, SGateWrapper,
+    SingleQubitGateWrapper, SqrtPauliXWrapper, TGateWrapper,
 };
 use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorFloat;
@@ -697,6 +697,68 @@ fn test_new_rotate(input_operation: Operation, arguments: (u32, f64, f64, f64), 
 }
 
 #[test_case(Operation::from(
+    RotateXY::new(
+        1,
+        CalculatorFloat::ZERO,
+        CalculatorFloat::ZERO,
+        )
+    ), (1, 0.0, 0.0,), "__eq__"; "rotation_eq")]
+#[test_case(Operation::from(
+    RotateXY::new(
+        1,
+        CalculatorFloat::ZERO,
+        CalculatorFloat::ZERO,
+        )
+    ), (0, 0.0, 0.0,), "__ne__"; "rotation_ne")]
+fn test_new_rotatexy(input_operation: Operation, arguments: (u32, f64, f64), method: &str) {
+    let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<RotateXYWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .cast_as::<PyCell<RotateXYWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        // Error initialisation
+        let result = operation_type.call1((0, vec!["fails"], 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+        let result = operation_type.call1((0, vec!["fails"], 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py.extract::<RotateXYWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((2, 0.0, 0.0))
+            .unwrap()
+            .cast_as::<PyCell<RotateXYWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<RotateXYWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "RotateXYWrapper { internal: RotateXY { qubit: 2, theta: Float(0.0), phi: Float(0.0) } }"
+        );
+    })
+}
+
+#[test_case(Operation::from(
     SingleQubitGate::new(
         1,
         CalculatorFloat::ZERO,
@@ -804,6 +866,14 @@ fn test_new_singlequbitgate(
         CalculatorFloat::from("spherical_phi"),
         )
     ); "RotateAroundSphericalAxis")
+]
+#[test_case(Operation::from(
+    RotateXY::new(
+        0,
+        CalculatorFloat::from("theta"),
+        CalculatorFloat::from("phi"),
+        )
+    ); "RotateXY")
 ]
 #[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from("theta"))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from("theta"))); "PhaseShiftState1")]
