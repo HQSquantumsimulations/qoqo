@@ -255,6 +255,7 @@ fn test_decoherence_rates_genericgrid() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let mut device = new_genericgrid(py);
+
         // reference matrix for an initialized deviced or a non-existing qubit
         let matrix_zeros_py = Array2::<f64>::zeros((3, 3));
         let matrix_py = device
@@ -274,6 +275,12 @@ fn test_decoherence_rates_genericgrid() {
             .unwrap()
             .to_owned_array();
         assert_eq!(matrix2_test, matrix_zeros_py);
+
+        // test that invalid matrix format is not accepted
+        let pyarray_invalid: &PyArray2<f64> = pyarray![py, [1.0], [2.0], [3.0]];
+        let readonly_invalid = pyarray_invalid.readonly();
+        let error = device.call_method1("set_all_qubit_decoherence_rates", (readonly_invalid,));
+        assert!(error.is_err());
 
         let pyarray_testmatrix: Array2<f64> =
             array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
@@ -334,6 +341,12 @@ fn test_decoherence_rates_genericchain() {
             .to_owned_array();
         assert_eq!(matrix2_test, matrix_zeros_py);
 
+        // test that invalid matrix format is not accepted
+        let pyarray_invalid: &PyArray2<f64> = pyarray![py, [1.0], [2.0], [3.0]];
+        let readonly_invalid = pyarray_invalid.readonly();
+        let error = device.call_method1("set_all_qubit_decoherence_rates", (readonly_invalid,));
+        assert!(error.is_err());
+
         let pyarray_testmatrix: Array2<f64> =
             array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
         let pyarray: &PyArray2<f64> =
@@ -393,6 +406,12 @@ fn test_decoherence_rates_genericdevice() {
             .to_owned_array();
         assert_eq!(matrix2_test, matrix_zeros_py);
 
+        // test that invalid matrix format is not accepted
+        let pyarray_invalid: &PyArray2<f64> = pyarray![py, [1.0], [2.0], [3.0]];
+        let readonly_invalid = pyarray_invalid.readonly();
+        let error = device.call_method1("set_all_qubit_decoherence_rates", (readonly_invalid,));
+        assert!(error.is_err());
+
         let pyarray_testmatrix: Array2<f64> =
             array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
         let pyarray: &PyArray2<f64> =
@@ -451,6 +470,12 @@ fn test_decoherence_rates_alltoalldevice() {
             .unwrap()
             .to_owned_array();
         assert_eq!(matrix2_test, matrix_zeros_py);
+
+        // test that invalid matrix format is not accepted
+        let pyarray_invalid: &PyArray2<f64> = pyarray![py, [1.0], [2.0], [3.0]];
+        let readonly_invalid = pyarray_invalid.readonly();
+        let error = device.call_method1("set_all_qubit_decoherence_rates", (readonly_invalid,));
+        assert!(error.is_err());
 
         let pyarray_testmatrix: Array2<f64> =
             array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];

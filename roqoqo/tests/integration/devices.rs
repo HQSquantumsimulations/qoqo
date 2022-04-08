@@ -284,8 +284,16 @@ fn test_alltoalldevice_setattributes() {
         multi_qubit_gates,
     );
 
-    let rates = array![[0.2], [0.3]];
-    device = device.set_all_qubit_decoherence_rates(rates.clone());
+    let rates_invalid = array![[0.1], [0.2], [0.3]];
+    let error = device
+        .clone()
+        .set_all_qubit_decoherence_rates(rates_invalid.clone());
+    assert!(error.is_err());
+
+    let rates = array![[0.1, 0.1, 0.1], [0.2, 0.2, 0.2], [0.3, 0.3, 0.3]];
+    device = device
+        .set_all_qubit_decoherence_rates(rates.clone())
+        .unwrap();
     assert_eq!(device.qubit_decoherence_rates(&1), Some(rates));
     assert_eq!(device.qubit_decoherence_rates(&number_qubits), None);
 
@@ -381,8 +389,16 @@ fn test_genericchain_setattributes() {
         multi_qubit_gates,
     );
 
-    let rates = array![[0.2], [0.3]];
-    device = device.set_all_qubit_decoherence_rates(rates.clone());
+    let rates_invalid = array![[0.1], [0.2], [0.3]];
+    let error = device
+        .clone()
+        .set_all_qubit_decoherence_rates(rates_invalid.clone());
+    assert!(error.is_err());
+
+    let rates = array![[0.1, 0.1, 0.1], [0.2, 0.2, 0.2], [0.3, 0.3, 0.3]];
+    device = device
+        .set_all_qubit_decoherence_rates(rates.clone())
+        .unwrap();
     assert_eq!(device.qubit_decoherence_rates(&1), Some(rates));
     assert_eq!(device.qubit_decoherence_rates(&number_qubits), None);
 
@@ -483,7 +499,7 @@ fn test_genericgrid_settimes() {
     );
 }
 
-// Test set decoherence and two_qubit_edges for GenericGrid
+// Test set decoherence for GenericGrid
 #[test]
 fn test_genericgrid_setattributes() {
     let number_rows = 3usize;
@@ -499,8 +515,17 @@ fn test_genericgrid_setattributes() {
         two_qubit_gates,
         multi_qubit_gates,
     );
-    let rates = array![[0.2], [0.3]];
-    device = device.set_all_qubit_decoherence_rates(rates.clone());
+
+    let rates_invalid = array![[0.1], [0.2], [0.3]];
+    let error = device
+        .clone()
+        .set_all_qubit_decoherence_rates(rates_invalid.clone());
+    assert!(error.is_err());
+
+    let rates = array![[0.1, 0.1, 0.1], [0.2, 0.2, 0.2], [0.3, 0.3, 0.3]];
+    device = device
+        .set_all_qubit_decoherence_rates(rates.clone())
+        .unwrap();
     assert_eq!(device.qubit_decoherence_rates(&1), Some(rates));
     assert_eq!(device.qubit_decoherence_rates(&number_qubits), None);
 }
@@ -675,8 +700,16 @@ fn test_genericdevice_setattributes() {
         multi_qubit_gates,
     );
 
-    let rates = array![[0.2], [0.3]];
-    device = device.set_all_qubit_decoherence_rates(rates.clone());
+    let rates_invalid = array![[0.1], [0.2], [0.3]];
+    let error = device
+        .clone()
+        .set_all_qubit_decoherence_rates(rates_invalid.clone());
+    assert!(error.is_err());
+
+    let rates = array![[0.1, 0.1, 0.1], [0.2, 0.2, 0.2], [0.3, 0.3, 0.3]];
+    device = device
+        .set_all_qubit_decoherence_rates(rates.clone())
+        .unwrap();
     assert_eq!(device.qubit_decoherence_rates(&1), Some(rates));
     assert_eq!(device.qubit_decoherence_rates(&number_qubits), None);
 

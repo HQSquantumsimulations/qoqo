@@ -166,16 +166,21 @@ impl GenericGridWrapper {
     ///     rates[2d array]: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
     ///
     /// Returns:
-    ///     GenericGrid with updated decoherence rates.
+    ///     self: GenericGrid with updated decoherence rates.
     ///
-    pub fn set_all_qubit_decoherence_rates(&self, rates: PyReadonlyArray2<f64>) -> Self {
+    /// Raises:
+    ///     PyValueError: The input parameter `rates` needs to be a (3x3)-matrix.
+    pub fn set_all_qubit_decoherence_rates(&self, rates: PyReadonlyArray2<f64>) -> PyResult<Self> {
         let rates_matrix = rates.as_array().to_owned();
-        Self {
+        Ok(Self {
             internal: self
                 .internal
                 .clone()
-                .set_all_qubit_decoherence_rates(rates_matrix),
-        }
+                .set_all_qubit_decoherence_rates(rates_matrix)
+                .map_err(|_| {
+                    PyValueError::new_err("The input parameter `rates` needs to be a (3x3)-matrix.")
+                })?,
+        })
     }
 }
 
@@ -253,14 +258,20 @@ impl AllToAllDeviceWrapper {
     /// Returns:
     ///     AllToAllDevice with updated decoherence rates.
     ///
-    pub fn set_all_qubit_decoherence_rates(&self, rates: PyReadonlyArray2<f64>) -> Self {
+    /// Raises:
+    ///     PyValueError: The input parameter `rates` needs to be a (3x3)-matrix.
+    ///
+    pub fn set_all_qubit_decoherence_rates(&self, rates: PyReadonlyArray2<f64>) -> PyResult<Self> {
         let rates_matrix = rates.as_array().to_owned();
-        Self {
+        Ok(Self {
             internal: self
                 .internal
                 .clone()
-                .set_all_qubit_decoherence_rates(rates_matrix),
-        }
+                .set_all_qubit_decoherence_rates(rates_matrix)
+                .map_err(|_| {
+                    PyValueError::new_err("The input parameter `rates` needs to be a (3x3)-matrix.")
+                })?,
+        })
     }
 }
 
@@ -339,14 +350,20 @@ impl GenericDeviceWrapper {
     /// Returns:
     ///     GenericDevice with updated decoherence rates.
     ///
-    pub fn set_all_qubit_decoherence_rates(&self, rates: PyReadonlyArray2<f64>) -> Self {
+    /// Raises:
+    ///     PyValueError: The input parameter `rates` needs to be a (3x3)-matrix.
+    ///
+    pub fn set_all_qubit_decoherence_rates(&self, rates: PyReadonlyArray2<f64>) -> PyResult<Self> {
         let rates_matrix = rates.as_array().to_owned();
-        Self {
+        Ok(Self {
             internal: self
                 .internal
                 .clone()
-                .set_all_qubit_decoherence_rates(rates_matrix),
-        }
+                .set_all_qubit_decoherence_rates(rates_matrix)
+                .map_err(|_| {
+                    PyValueError::new_err("The input parameter `rates` needs to be a (3x3)-matrix.")
+                })?,
+        })
     }
 }
 
@@ -424,13 +441,19 @@ impl GenericChainWrapper {
     /// Returns:
     ///     GenericChain with updated decoherence rates.
     ///
-    pub fn set_all_qubit_decoherence_rates(&self, rates: PyReadonlyArray2<f64>) -> Self {
+    /// Raises:
+    ///     PyValueError: The input parameter `rates` needs to be a (3x3)-matrix.
+    ///
+    pub fn set_all_qubit_decoherence_rates(&self, rates: PyReadonlyArray2<f64>) -> PyResult<Self> {
         let rates_matrix = rates.as_array().to_owned();
-        Self {
+        Ok(Self {
             internal: self
                 .internal
                 .clone()
-                .set_all_qubit_decoherence_rates(rates_matrix),
-        }
+                .set_all_qubit_decoherence_rates(rates_matrix)
+                .map_err(|_| {
+                    PyValueError::new_err("The input parameter `rates` needs to be a (3x3)-matrix.")
+                })?,
+        })
     }
 }

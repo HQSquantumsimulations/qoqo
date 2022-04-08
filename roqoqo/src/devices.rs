@@ -37,7 +37,7 @@
 //!     accessing the quantum computing hardware. The devices also encode a connectivity model
 //!
 
-use crate::RoqoqoBackendError;
+use crate::{RoqoqoBackendError, RoqoqoError};
 use ndarray::Array2;
 use std::collections::HashMap;
 
@@ -348,17 +348,29 @@ impl AllToAllDevice {
     ///
     /// # Arguments
     ///
-    /// * `rates` - decoherence rates for the qubits in the device.
+    /// * `rates` - decoherence rates for the qubits in the device, provided as a (3x3)-matrix.
     ///
     /// # Returns
     ///
-    /// An AllToAllDevice with updated decoherence rates.
+    /// * `Ok(Self)` -  The device with updated decoherence rates.
+    /// * `Err(RoqoqoError)` - The input parameter `rates` needs to be a (3x3)-matrix.
     ///
-    pub fn set_all_qubit_decoherence_rates(mut self, rates: Array2<f64>) -> Self {
-        for qubit in 0..self.number_qubits {
-            self.decoherence_rates.insert(qubit, rates.clone());
+    pub fn set_all_qubit_decoherence_rates(
+        mut self,
+        rates: Array2<f64>,
+    ) -> Result<Self, RoqoqoError> {
+        // Check if input matrix has the dimension (3x3)
+        let shape = &(*rates.shape());
+        if shape == [3, 3] {
+            for qubit in 0..self.number_qubits() {
+                self.decoherence_rates.insert(qubit, rates.clone());
+            }
+            Ok(self)
+        } else {
+            Err(RoqoqoError::GenericError {
+                msg: "The input parameter `rates` needs to be a (3x3)-matrix.".to_string(),
+            })
         }
-        self
     }
 }
 
@@ -769,17 +781,29 @@ impl GenericGrid {
     ///
     /// # Arguments
     ///
-    /// * `rates` - decoherence rates for the qubits in the device.
+    /// * `rates` - decoherence rates for the qubits in the device, provided as a (3x3)-matrix.
     ///
     /// # Returns
     ///
-    /// A GenericGrid with updated decoherence rates.
+    /// * `Ok(Self)` -  The device with updated decoherence rates.
+    /// * `Err(RoqoqoError)` - The input parameter `rates` needs to be a (3x3)-matrix.
     ///
-    pub fn set_all_qubit_decoherence_rates(mut self, rates: Array2<f64>) -> Self {
-        for qubit in 0..self.number_qubits() {
-            self.decoherence_rates.insert(qubit, rates.clone());
+    pub fn set_all_qubit_decoherence_rates(
+        mut self,
+        rates: Array2<f64>,
+    ) -> Result<Self, RoqoqoError> {
+        // Check if input matrix has the dimension (3x3)
+        let shape = &(*rates.shape());
+        if shape == [3, 3] {
+            for qubit in 0..self.number_qubits() {
+                self.decoherence_rates.insert(qubit, rates.clone());
+            }
+            Ok(self)
+        } else {
+            Err(RoqoqoError::GenericError {
+                msg: "The input parameter `rates` needs to be a (3x3)-matrix.".to_string(),
+            })
         }
-        self
     }
 
     /// Returns the number of rows in the device.
@@ -1113,17 +1137,29 @@ impl GenericChain {
     ///
     /// # Arguments
     ///
-    /// * `rates` - decoherence rates for the qubits in the device.
+    /// * `rates` - decoherence rates for the qubits in the device, provided as a (3x3)-matrix.
     ///
     /// # Returns
     ///
-    /// An GenericChain with updated decoherence rates.
+    /// * `Ok(Self)` -  The device with updated decoherence rates.
+    /// * `Err(RoqoqoError)` - The input parameter `rates` needs to be a (3x3)-matrix.
     ///
-    pub fn set_all_qubit_decoherence_rates(mut self, rates: Array2<f64>) -> Self {
-        for qubit in 0..self.number_qubits {
-            self.decoherence_rates.insert(qubit, rates.clone());
+    pub fn set_all_qubit_decoherence_rates(
+        mut self,
+        rates: Array2<f64>,
+    ) -> Result<Self, RoqoqoError> {
+        // Check if input matrix has the dimension (3x3)
+        let shape = &(*rates.shape());
+        if shape == [3, 3] {
+            for qubit in 0..self.number_qubits() {
+                self.decoherence_rates.insert(qubit, rates.clone());
+            }
+            Ok(self)
+        } else {
+            Err(RoqoqoError::GenericError {
+                msg: "The input parameter `rates` needs to be a (3x3)-matrix.".to_string(),
+            })
         }
-        self
     }
 }
 
@@ -1446,17 +1482,29 @@ impl GenericDevice {
     ///
     /// # Arguments
     ///
-    /// * `rates` - decoherence rates for the qubits in the device.
+    /// * `rates` - decoherence rates for the qubits in the device, provided as a (3x3)-matrix.
     ///
     /// # Returns
     ///
-    /// An GenericDevice with updated decoherence rates.
+    /// * `Ok(Self)` -  The device with updated decoherence rates.
+    /// * `Err(RoqoqoError)` - The input parameter `rates` needs to be a (3x3)-matrix.
     ///
-    pub fn set_all_qubit_decoherence_rates(mut self, rates: Array2<f64>) -> Self {
-        for qubit in 0..self.number_qubits {
-            self.decoherence_rates.insert(qubit, rates.clone());
+    pub fn set_all_qubit_decoherence_rates(
+        mut self,
+        rates: Array2<f64>,
+    ) -> Result<Self, RoqoqoError> {
+        // Check if input matrix has the dimension (3x3)
+        let shape = &(*rates.shape());
+        if shape == [3, 3] {
+            for qubit in 0..self.number_qubits() {
+                self.decoherence_rates.insert(qubit, rates.clone());
+            }
+            Ok(self)
+        } else {
+            Err(RoqoqoError::GenericError {
+                msg: "The input parameter `rates` needs to be a (3x3)-matrix.".to_string(),
+            })
         }
-        self
     }
 }
 
