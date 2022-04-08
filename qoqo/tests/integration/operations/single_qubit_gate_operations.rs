@@ -892,6 +892,14 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
 }
 
 /// Test is_parametrized = false for SingleQubitGate Operations
+#[test_case(Operation::from(
+    RotateXY::new(
+        0,
+        CalculatorFloat::from(0),
+        CalculatorFloat::from(0),
+        )
+    ); "RotateXY")
+]
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(1.3))); "RotateZ")]
 #[test_case(Operation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from(PI))); "RotateY")]
@@ -970,6 +978,14 @@ fn test_pyo3_theta(theta: CalculatorFloat, input_operation: Operation) {
 }
 
 /// Test qubit() function for SingleQubitGate Operations
+#[test_case(0, Operation::from(
+    RotateXY::new(
+        0,
+        CalculatorFloat::from("theta"),
+        CalculatorFloat::from("phi"),
+        )
+    ); "RotateXY")
+]
 #[test_case(0, Operation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(0, Operation::from(RotateY::new(0, CalculatorFloat::from(0))); "RotateY")]
 #[test_case(0, Operation::from(RotateZ::new(0, CalculatorFloat::from(0))); "RotateZ")]
@@ -1003,6 +1019,14 @@ fn test_pyo3_qubit(qubit: usize, input_operation: Operation) {
 }
 
 /// Test RotateX hqslang() function for SingleQubitGate Operations
+#[test_case("RotateXY", Operation::from(
+    RotateXY::new(
+        0,
+        CalculatorFloat::from("theta"),
+        CalculatorFloat::from("phi"),
+        )
+    ); "RotateXY")
+]
 #[test_case("RotateX", Operation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case("RotateY", Operation::from(RotateY::new(0, CalculatorFloat::from(0))); "RotateY")]
 #[test_case("RotateZ", Operation::from(RotateZ::new(0, CalculatorFloat::from(0))); "RotateZ")]
@@ -1215,6 +1239,14 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
 }
 
 /// Test remap_qubits() function for SingleQubitGate Operations
+#[test_case(Operation::from(
+    RotateXY::new(
+        0,
+        CalculatorFloat::from("theta"),
+        CalculatorFloat::from("phi"),
+        )
+    ); "RotateXY")
+]
 #[test_case(Operation::from(RotateZ::new(0, CalculatorFloat::from(1.3))); "RotateZ")]
 #[test_case(Operation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from(PI))); "RotateY")]
@@ -1272,6 +1304,14 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 }
 
 // test remap_qubits() function returning an error.
+#[test_case(Operation::from(
+    RotateXY::new(
+        0,
+        CalculatorFloat::from("theta"),
+        CalculatorFloat::from("phi"),
+        )
+    ); "RotateXY")
+]
 #[test_case(Operation::from(RotateZ::new(0, CalculatorFloat::from(1.3))); "RotateZ")]
 #[test_case(Operation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from(PI))); "RotateY")]
@@ -1319,6 +1359,14 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
 }
 
 /// Test unitary_matrix() function for SingleQubitGate Operations
+#[test_case(Operation::from(
+    RotateXY::new(
+        0,
+        CalculatorFloat::from(0),
+        CalculatorFloat::from(0),
+        )
+    ); "RotateXY")
+]
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(1.3))); "RotateZ")]
 #[test_case(Operation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from(PI))); "RotateY")]
@@ -1372,6 +1420,14 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
 }
 
 /// Test unitary_matrix() function for SingleQubitGate Operations for the error case
+#[test_case(Operation::from(
+    RotateXY::new(
+        0,
+        CalculatorFloat::from("theta"),
+        CalculatorFloat::from("phi"),
+        )
+    ); "RotateXY")
+]
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from("PI"))); "RotateZ")]
 #[test_case(Operation::from(RotateX::new(0, CalculatorFloat::from("PI"))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from("PI"))); "RotateY")]
@@ -1430,6 +1486,14 @@ fn test_pyo3_unitarymatrix_singlequbitgate(input_operation: Operation) {
 }
 
 /// Test copy and deepcopy functions
+#[test_case(Operation::from(
+    RotateXY::new(
+        0,
+        CalculatorFloat::from("theta"),
+        CalculatorFloat::from("phi"),
+        )
+    ); "RotateXY")
+]
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(1.3))); "RotateZ")]
 #[test_case(Operation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from(PI))); "RotateY")]
@@ -1491,6 +1555,14 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 }
 
 /// Test alpha_r obtained via the python interface for SingleQubitGate Operations
+#[test_case(Operation::from(
+    RotateXY::new(
+        0,
+        CalculatorFloat::from(0),
+        CalculatorFloat::from(0),
+        )
+    ); "RotateXY")
+]
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(1.3))); "RotateZ")]
 #[test_case(Operation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from(PI))); "RotateY")]
@@ -1546,6 +1618,14 @@ fn test_pyo3_alpha_r(input_operation: Operation) {
 }
 
 /// Test alpha_i obtained via the python interface for SingleQubitGate Operations
+#[test_case(Operation::from(
+    RotateXY::new(
+        0,
+        CalculatorFloat::from(0),
+        CalculatorFloat::from(0),
+        )
+    ); "RotateXY")
+]
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(1.3))); "RotateZ")]
 #[test_case(Operation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from(PI))); "RotateY")]
@@ -1601,6 +1681,14 @@ fn test_pyo3_alpha_i(input_operation: Operation) {
 }
 
 /// Test beta_r obtained via the python interface for SingleQubitGate Operations
+#[test_case(Operation::from(
+    RotateXY::new(
+        0,
+        CalculatorFloat::from(0),
+        CalculatorFloat::from(0),
+        )
+    ); "RotateXY")
+]
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(1.3))); "RotateZ")]
 #[test_case(Operation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from(PI))); "RotateY")]
@@ -1656,6 +1744,14 @@ fn test_pyo3_beta_r(input_operation: Operation) {
 }
 
 /// Test beta_i obtained via the python interface for SingleQubitGate Operations
+#[test_case(Operation::from(
+    RotateXY::new(
+        0,
+        CalculatorFloat::from(0),
+        CalculatorFloat::from(0),
+        )
+    ); "RotateXY")
+]
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(1.3))); "RotateZ")]
 #[test_case(Operation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from(PI))); "RotateY")]
@@ -1711,6 +1807,14 @@ fn test_pyo3_beta_i(input_operation: Operation) {
 }
 
 /// Test global_phase obtained via the python interface for SingleQubitGate Operations
+#[test_case(Operation::from(
+    RotateXY::new(
+        0,
+        CalculatorFloat::from(0),
+        CalculatorFloat::from(0),
+        )
+    ); "RotateXY")
+]
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(1.3))); "RotateZ")]
 #[test_case(Operation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from(PI))); "RotateY")]
@@ -2064,6 +2168,14 @@ fn test_pyo3_rotate_powercf(first_op: Operation, second_op: Operation) {
 }
 
 /// Test that multiplication function can be called in python for SingleQubitGates
+#[test_case(Operation::from(
+    RotateXY::new(
+        1,
+        CalculatorFloat::from("theta"),
+        CalculatorFloat::from("phi"),
+        )
+    ); "RotateXY")
+]
 #[test_case(Operation::from(PauliX::new(1)); "PauliX")]
 #[test_case(Operation::from(PauliY::new(1)); "PauliY")]
 #[test_case(Operation::from(PauliZ::new(1)); "PauliZ")]
