@@ -82,7 +82,7 @@ use std::{
 ///
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct Circuit {
     /// Definitions in the quantum circuit, must be unique.
     definitions: Vec<Operation>,

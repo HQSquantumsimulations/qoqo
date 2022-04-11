@@ -66,7 +66,7 @@ pub struct KakDecomposition {
     roqoqo_derive::OperateTwoQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct CNOT {
     /// The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of NOT on the target qubit.
     control: usize,
@@ -171,7 +171,7 @@ impl OperateTwoQubitGate for CNOT {
     roqoqo_derive::OperateTwoQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct SWAP {
     /// The index of the most significant qubit in the unitary representation.
     control: usize,
@@ -268,7 +268,7 @@ impl OperateTwoQubitGate for SWAP {
     roqoqo_derive::OperateTwoQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct ISwap {
     /// The index of the most significant qubit in the unitary representation.
     control: usize,
@@ -365,7 +365,7 @@ impl OperateTwoQubitGate for ISwap {
     roqoqo_derive::OperateTwoQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct FSwap {
     /// The index of the most significant qubit in the unitary representation.
     control: usize,
@@ -466,7 +466,7 @@ impl OperateTwoQubitGate for FSwap {
     roqoqo_derive::OperateTwoQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct SqrtISwap {
     /// The index of the most significant qubit in the unitary representation.
     control: usize,
@@ -564,7 +564,7 @@ impl OperateTwoQubitGate for SqrtISwap {
     roqoqo_derive::OperateTwoQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct InvSqrtISwap {
     /// The index of the most significant qubit in the unitary representation.
     control: usize,
@@ -663,7 +663,7 @@ impl OperateTwoQubitGate for InvSqrtISwap {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct XY {
     /// The index of the most significant qubit in the unitary representation.
     control: usize,
@@ -766,7 +766,7 @@ impl OperateTwoQubitGate for XY {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct ControlledPhaseShift {
     /// The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the phase-shift on the target qubit.
     control: usize,
@@ -873,7 +873,7 @@ impl OperateTwoQubitGate for ControlledPhaseShift {
     roqoqo_derive::OperateTwoQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct ControlledPauliY {
     /// The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of PauliY gate on the target qubit.
     control: usize,
@@ -978,7 +978,7 @@ impl OperateTwoQubitGate for ControlledPauliY {
     roqoqo_derive::OperateTwoQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct ControlledPauliZ {
     /// The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of PauliZ gate on the target qubit.
     control: usize,
@@ -1081,7 +1081,7 @@ impl OperateTwoQubitGate for ControlledPauliZ {
     roqoqo_derive::OperateTwoQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct MolmerSorensenXX {
     /// The index of the most significant qubit in the unitary representation. The gate is symmetric under the exchange of qubits.
     control: usize,
@@ -1180,7 +1180,7 @@ impl OperateTwoQubitGate for MolmerSorensenXX {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct VariableMSXX {
     /// The index of the most significant qubit in the unitary representation. The gate is symmetric under the exchange of qubits.
     control: usize,
@@ -1287,7 +1287,7 @@ impl OperateTwoQubitGate for VariableMSXX {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct GivensRotation {
     /// The index of the most significant qubit in the unitary representation.
     control: usize,
@@ -1405,7 +1405,7 @@ impl OperateTwoQubitGate for GivensRotation {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct GivensRotationLittleEndian {
     /// The index of the most significant qubit in the unitary representation.
     control: usize,
@@ -1518,7 +1518,7 @@ impl OperateTwoQubitGate for GivensRotationLittleEndian {
     roqoqo_derive::OperateTwoQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct Qsim {
     /// The index of the most significant qubit in the unitary representation.
     control: usize,
@@ -1639,7 +1639,7 @@ impl OperateTwoQubitGate for Qsim {
     roqoqo_derive::OperateTwoQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct Fsim {
     /// The index of the most significant qubit in the unitary representation.
     control: usize,
@@ -1749,7 +1749,7 @@ impl OperateTwoQubitGate for Fsim {
     roqoqo_derive::OperateTwoQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct SpinInteraction {
     /// The index of the most significant qubit in the unitary representation.
     control: usize,
@@ -1873,7 +1873,7 @@ impl OperateTwoQubitGate for SpinInteraction {
     roqoqo_derive::OperateTwoQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct Bogoliubov {
     /// The index of the most significant qubit in the unitary representation.
     control: usize,
@@ -1985,7 +1985,7 @@ impl OperateTwoQubitGate for Bogoliubov {
     roqoqo_derive::OperateTwoQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PMInteraction {
     /// The index of the most significant qubit in the unitary representation.
     control: usize,
@@ -2082,7 +2082,7 @@ impl OperateTwoQubitGate for PMInteraction {
     roqoqo_derive::OperateTwoQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct ComplexPMInteraction {
     /// The index of the most significant qubit in the unitary representation.
     control: usize,
@@ -2197,7 +2197,7 @@ impl OperateTwoQubitGate for ComplexPMInteraction {
     roqoqo_derive::OperateTwoQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PhaseShiftedControlledZ {
     /// The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the phase-shift on the target qubit.
     control: usize,

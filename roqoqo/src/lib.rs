@@ -23,8 +23,8 @@
 //!
 use qoqo_calculator::CalculatorError;
 use qoqo_calculator::CalculatorFloat;
-#[cfg(feature = "json_schema")]
-use schemars::{schema::Schema, JsonSchema};
+// #[cfg(feature = "json_schema")]
+// use schemars::{schema::Schema, JsonSchema};
 use std::str::FromStr;
 use thiserror::Error;
 
@@ -38,18 +38,18 @@ pub const ROQOQO_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 struct RoqoqoVersion;
 
-#[cfg(feature = "json_schema")]
-impl JsonSchema for RoqoqoVersion {
-    fn schema_name() -> String {
-        "RoqoqoVersion".to_string()
-    }
+// #[cfg(feature = "json_schema")]
+// impl JsonSchema for RoqoqoVersion {
+//     fn schema_name() -> String {
+//         "RoqoqoVersion".to_string()
+//     }
 
-    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> Schema {
-        RoqoqoVersionSerializable::json_schema(gen)
-    }
-}
+//     fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> Schema {
+//         RoqoqoVersionSerializable::json_schema(gen)
+//     }
+// }
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Default)]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 struct RoqoqoVersionSerializable {
     /// The semver major version of roqoqo
