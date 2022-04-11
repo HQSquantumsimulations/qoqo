@@ -625,21 +625,9 @@ fn test_rotatearoundsphericalaxis_rotate(
     CalculatorFloat::from("phi");
     "rotate1"
 )]
-fn test_rotatexy_rotate(
-    qubit: usize,
-    theta: CalculatorFloat,
-    phi: CalculatorFloat,
-) {
-    let gate1 = RotateXY::new(
-        qubit,
-        theta.clone(),
-        phi.clone(),
-    );
-    let gate2 = RotateXY::new(
-        *gate1.qubit(),
-        gate1.theta().clone(),
-        phi.clone(),
-    );
+fn test_rotatexy_rotate(qubit: usize, theta: CalculatorFloat, phi: CalculatorFloat) {
+    let gate1 = RotateXY::new(qubit, theta.clone(), phi.clone());
+    let gate2 = RotateXY::new(*gate1.qubit(), gate1.theta().clone(), phi.clone());
     assert_eq!(gate1, gate2);
     let theta_p: &CalculatorFloat = gate1.theta();
     assert_eq!(theta_p, &theta);
@@ -1234,20 +1222,14 @@ fn test_rotatexy_substitute_parameters() {
     );
     assert!(gate.is_parametrized());
     assert_eq!(gate.theta().clone(), CalculatorFloat::from("theta"));
-    assert_eq!(
-        gate.phi().clone(),
-        CalculatorFloat::from("phi"),
-    );
+    assert_eq!(gate.phi().clone(), CalculatorFloat::from("phi"),);
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
     substitution_dict.set_variable("phi", PI / 2.0);
     let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
     assert!(!result.is_parametrized());
     assert_eq!(result.theta().clone(), CalculatorFloat::from(0.0));
-    assert_eq!(
-        result.phi().clone(),
-        CalculatorFloat::from(PI / 2.0)
-    );
+    assert_eq!(result.phi().clone(), CalculatorFloat::from(PI / 2.0));
 }
 
 /// Test remap qubits for SingleQubitGate Operations
