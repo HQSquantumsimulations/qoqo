@@ -13,7 +13,7 @@
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::operations::*;
 use roqoqo::{AsVec, Circuit};
-#[cfg(feature = "serialize")]
+// #[cfg(feature = "serialize")]
 // use schemars::schema_for;
 use std::collections::{HashMap, HashSet};
 #[cfg(feature = "overrotate")]
