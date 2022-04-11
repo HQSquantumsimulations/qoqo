@@ -4,6 +4,10 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
 
+## 0.11.3
+
+* Fixing errors in git pushes
+
 ## 0.11.1
 
 ### Fixed 0.11.1
