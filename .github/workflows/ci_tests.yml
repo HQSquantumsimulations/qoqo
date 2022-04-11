@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v3.1.1
       with:
         python-version: 3.9
     - uses: actions-rs/toolchain@v1
@@ -63,7 +63,7 @@ jobs:
           target: ${{ matrix.combinations.rust }}
           default: true
           components: rustfmt
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3.1.1
         with:
           python-version: ${{ matrix.python.py }}
       - run: |
@@ -93,7 +93,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3.1.1
         with:
           python-version: ${{ matrix.python.py }}
       - name: linux wheels
@@ -126,7 +126,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3.1.1
         with:
           python-version: ${{ matrix.python.py }}
       - name: linux wheels
@@ -161,7 +161,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3.1.1
         with:
           python-version: ${{ matrix.python.py }}
       - name: windows wheels
@@ -193,7 +193,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3.1.1
         with:
           python-version: ${{ matrix.python.py }}
       - name: Install dependencies
@@ -230,7 +230,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3.1.1
         with:
           python-version: ${{ matrix.python.py }}
       - name: Install dependencies
@@ -276,7 +276,7 @@ jobs:
           cargo install grcov
           grcov . --binary-path ../target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "cargo" --ignore "/mod.rs" --ignore "/lib.rs" --ignore "*/_auto_generated_operations.rs" --keep-only "src/*" -o lcov_roqoqo.info
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           # token: ${{ secrets.CODECOV_TOKEN }}
           files: lcov_roqoqo.info
@@ -305,7 +305,7 @@ jobs:
           cargo install grcov
           grcov . --binary-path ../target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "cargo" --ignore "/mod.rs" --ignore "/lib.rs" --ignore "*/_auto_generated_operations.rs" --keep-only "src/*" -o lcov_qoqo.info
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           # token: ${{ secrets.CODECOV_TOKEN }}
           files: lcov_qoqo.info
