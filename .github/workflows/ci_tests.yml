@@ -10,7 +10,7 @@ jobs:
   test_pyproject_install:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: actions/setup-python@v3.1.1
       with:
         python-version: 3.9
@@ -30,7 +30,7 @@ jobs:
   clippy_check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -55,7 +55,7 @@ jobs:
             {py: '3.10', interpreter: "python3.10"}
         ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -86,7 +86,7 @@ jobs:
             {py: '3.10', interpreter: "python3.10"}
         ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -119,7 +119,7 @@ jobs:
             {py: '3.10', interpreter: "python3.10"}
         ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -154,7 +154,7 @@ jobs:
             {py: '3.10', interpreter: "python3.10"}
         ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -186,7 +186,7 @@ jobs:
             {py: '3.10', interpreter: "python3.10"}
         ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -223,7 +223,7 @@ jobs:
             {py: '3.10', interpreter: "python3.10"}
         ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -247,7 +247,7 @@ jobs:
     name: doctest_check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -260,7 +260,7 @@ jobs:
   code_coverage_roqoqo:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
             toolchain: nightly
@@ -288,7 +288,7 @@ jobs:
   code_coverage_qoqo:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
             toolchain: nightly
@@ -317,7 +317,7 @@ jobs:
   # format_check: # needs to run after test otherwise auogenerated files are not built
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - uses: actions/checkout@v2
+  #     - uses: actions/checkout@v3
   #     - uses: actions-rs/toolchain@v1
   #       with:
   #         profile: minimal
