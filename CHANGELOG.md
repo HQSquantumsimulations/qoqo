@@ -4,6 +4,12 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 
 ## Not released
 
+## 0.11.1
+
+### Fixed 0.11.1
+
+* Failed dependency resolution in roqoqo/Cargo.toml
+
 ## 0.11
 
 * qoqo can now be built using a source distribution
