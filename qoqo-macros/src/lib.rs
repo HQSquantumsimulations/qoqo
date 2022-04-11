@@ -20,8 +20,8 @@ use std::collections::HashSet;
 use syn::parse::{Parse, ParseStream};
 use syn::punctuated::Punctuated;
 use syn::{
-    parse2, parse_macro_input, DataStruct, DeriveInput, Fields, GenericArgument, Ident, ItemStruct,
-    PathArguments, Token, Type, TypePath,
+    parse2, parse_macro_input, DataStruct, DeriveInput, Fields, GenericArgument, Ident, ItemImpl,
+    ItemStruct, PathArguments, Token, Type, TypePath,
 };
 mod operate;
 // mod operate_unitary;
@@ -516,4 +516,234 @@ fn extract_fields_with_types(ds: DataStruct) -> Vec<(Ident, Option<String>, Type
    }
         (id, type_string, ty)
     }).collect()
+}
+
+// A macro to generate impl Device Wrapper for qoqo devices
+#[proc_macro_attribute]
+pub fn devicewrapper(
+    _metadata: proc_macro::TokenStream,
+    input: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as ItemImpl);
+    let ident = parsed_input.self_ty;
+    let items = parsed_input.items;
+    let q = quote! {
+        #[pymethods]
+        impl #ident {
+            #(#items)*
+
+            /// Return number of qubits in device.
+            ///
+            /// Returns:
+            ///     int: The number of qubits.
+            ///
+            pub fn number_qubits(&self) -> usize {
+                self.internal.number_qubits()
+            }
+
+            /// Return the list of pairs of qubits linked by a native two-qubit-gate in the device.
+            ///
+            /// A pair of qubits is considered linked by a native two-qubit-gate if the device
+            /// can implement a two-qubit-gate between the two qubits without decomposing it
+            /// into a sequence of gates that involves a third qubit of the device.
+            /// The two-qubit-gate also has to form a universal set together with the available
+            /// single qubit gates.
+            ///
+            /// The returned vectors is a simple, graph-library independent, representation of
+            /// the undirected connectivity graph of the device.
+            /// It can be used to construct the connectivity graph in a graph library of the user's
+            /// choice from a list of edges and can be used for applications like routing in quantum algorithms.
+            ///
+            /// Returns:
+            ///     Sequence[(int, int)]: List of two qubit edges in the undirected connectivity graph
+            ///
+            pub fn two_qubit_edges(&self) -> Vec<(usize, usize)> {
+                self.internal.two_qubit_edges()
+            }
+
+            /// Returns the gate time of a single qubit operation if the single qubit operation is available on device.
+            ///
+            /// Args:
+            ///     hqslang[str]: The hqslang name of a single qubit gate.
+            ///     qubit[int]: The qubit the gate acts on
+            ///
+            /// Returns:
+            ///     Option: Some<f64> for the gate time.
+            ///                      Or None if the gate is not available on the device.
+            ///
+            pub fn single_qubit_gate_time(&self, hqslang: &str, qubit: usize) -> Option<f64> {
+                self.internal.single_qubit_gate_time(hqslang, &qubit)
+            }
+
+            /// Returns the gate time of a two qubit operation if the two qubit operation is available on device.
+            ///
+            /// Args:
+            ///     hqslang[str]: The hqslang name of a single qubit gate.
+            ///     control[int]: The control qubit the gate acts on.
+            ///     target[int]: The target qubit the gate acts on.
+            ///
+            /// Returns:
+            ///     Option: Some<f64> for the gate time.
+            ///                      Or None if the gate is not available on the device.
+            ///
+            pub fn two_qubit_gate_time(&self, hqslang: &str, control: usize, target: usize) -> Option<f64> {
+                self.internal
+                    .two_qubit_gate_time(hqslang, &control, &target)
+            }
+
+            /// Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
+            ///
+            /// Args:
+            ///     hqslang[str]: The hqslang name of a multi qubit gate.
+            ///     qubits[List[int]]: The qubits the gate acts on.
+            ///
+            /// Returns:
+            ///     Option: Some<f64> for the gate time.
+            ///                      Or None if the gate is not available on the device.
+            ///
+            pub fn multi_qubit_gate_time(&self, hqslang: &str, qubits: Vec<usize>) -> Option<f64> {
+                self.internal.multi_qubit_gate_time(hqslang, &qubits)
+            }
+
+            /// Function that allows to set one gate time for all qubits per gate for the single-qubit-gates.
+            ///
+            /// Args:
+            ///     gate[str]: The hqslang name of the single-qubit-gate.
+            ///     gate_time[f64]: Gate time for the given gate type, valid for all qubits in the device.
+            ///
+            /// Returns:
+            ///     A qoqo Device with updated gate times.
+            ///
+            pub fn set_all_single_qubit_gate_times(&self, gate: &str, gate_time: f64) -> Self {
+                Self {
+                    internal: self.internal.clone().set_all_single_qubit_gate_times(gate, gate_time)
+                }
+            }
+
+            /// Function that allows to set the gate time for the two-qubit-gates
+            /// considered as connected in the selected device.
+            ///
+            /// Args:
+            ///     gate[str]: The hqslang name of the two-qubit-gate.
+            ///     gate_time[f64]: Gate time for the given gate, valid for all qubits in the device.
+            ///
+            /// Returns:
+            ///     A qoqo Device with updated gate times.
+            ///
+            pub fn set_all_two_qubit_gate_times(&self, gate: &str, gate_time: f64) -> Self {
+                Self {
+                    internal: self.internal.clone().set_all_two_qubit_gate_times(gate, gate_time)
+                }
+            }
+
+            /// Function that allows to set the gate time for the multi-qubit-gates in the Device,
+            /// when applied to any qubits in the device.
+            ///
+            /// Args:
+            ///     gate[str]: The hqslang name of the multi-qubit-gate.
+            ///     gate_time[f64]: Gate time for the given gate, valid for all qubits in the device.
+            ///
+            /// Returns:
+            ///     A qoqo Device with updated gate times.
+            ///
+            pub fn set_all_multi_qubit_gate_times(&self, gate: &str, gate_time: f64) -> Self {
+                Self {
+                    internal: self.internal.clone().set_all_multi_qubit_gate_times(gate, gate_time)
+                }
+            }
+
+            /// Returns a copy of the device (copy here produces a deepcopy).
+            ///
+            /// Returns:
+            /// A deep copy of self.
+            ///
+            pub fn __copy__(&self) -> Self {
+                self.clone()
+            }
+
+            /// Creates deep copy of Device.
+            ///
+            /// Returns:
+            /// A deep copy of self.
+            ///
+            pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+                self.clone()
+            }
+
+            /// Return the bincode representation of the Device using the bincode crate.
+            ///
+            /// Returns:
+            ///     ByteArray: The serialized Device (in bincode form).
+            ///
+            /// Raises:
+            ///     ValueError: Cannot serialize Device to bytes.
+            ///
+            pub fn to_bincode(&self) -> PyResult<Py<PyByteArray>> {
+                let serialized = serialize(&self.internal)
+                    .map_err(|_| PyValueError::new_err("Cannot serialize Device to bytes"))?;
+                let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+                    PyByteArray::new(py, &serialized[..]).into()
+                });
+                Ok(b)
+            }
+
+            /// Return the json representation of the Device.
+            ///
+            /// Returns:
+            ///     str: The serialized form of Device.
+            ///
+            /// Raises:
+            ///     ValueError: Cannot serialize Device to json.
+            ///
+            pub fn to_json(&self) -> PyResult<String> {
+                let serialized = serde_json::to_string(&self.internal)
+                    .map_err(|_| PyValueError::new_err("Cannot serialize Device to json"))?;
+                Ok(serialized)
+            }
+
+            /// Convert the bincode representation of the qoqo device to a device using the bincode crate.
+            ///
+            /// Args:
+            ///     input (ByteArray): The serialized Device (in bincode form).
+            ///
+            /// Returns:
+            ///     The deserialized Device.
+            ///
+            /// Raises:
+            ///     TypeError: Input cannot be converted to byte array.
+            ///     ValueError: Input cannot be deserialized to selected Device.
+            #[classmethod]
+            pub fn from_bincode(_cls: &PyType, input: &PyAny) -> PyResult<#ident> {
+                let bytes = input
+                    .extract::<Vec<u8>>()
+                    .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
+
+                Ok(#ident {
+                    internal: deserialize(&bytes[..]).map_err(|_| {
+                        PyValueError::new_err("Input cannot be deserialized to selected Device.")
+                    })?,
+                })
+            }
+
+            /// Convert the json representation of a device to a qoqo device.
+            ///
+            /// Args:
+            ///     input (str): The serialized device in json form.
+            ///
+            /// Returns:
+            ///     The deserialized device.
+            ///
+            /// Raises:
+            ///     ValueError: Input cannot be deserialized to selected Device.
+            #[classmethod]
+            pub fn from_json(_cls: &PyType, input: &str) -> PyResult<#ident> {
+                Ok(#ident {
+                    internal: serde_json::from_str(input).map_err(|_| {
+                        PyValueError::new_err("Input cannot be deserialized to selected Device.")
+                    })?,
+                })
+            }
+        }
+    };
+    q.into()
 }

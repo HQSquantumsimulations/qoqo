@@ -11,7 +11,7 @@
 // limitations under the License.
 
 #![deny(missing_docs)]
-#![deny(missing_crate_level_docs)]
+#![deny(rustdoc::missing_crate_level_docs)]
 #![deny(missing_debug_implementations)]
 
 //! Qoqo quantum computing toolkit
@@ -28,6 +28,10 @@ use operations::*;
 
 pub mod measurements;
 use measurements::*;
+
+pub mod devices;
+use devices::__PYO3_PYMODULE_DEF_DEVICES;
+use devices::*;
 
 mod circuit;
 pub use circuit::{convert_into_circuit, CircuitWrapper, OperationIteratorWrapper};
@@ -90,6 +94,7 @@ pub enum QoqoBackendError {
 ///     :toctree: generated/
 ///
 ///     Circuit
+///     devices
 ///     QuantumProgram
 ///     operations
 ///     measurements
@@ -98,15 +103,21 @@ pub enum QoqoBackendError {
 fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<CircuitWrapper>()?;
     module.add_class::<QuantumProgramWrapper>()?;
+    module.add_class::<GenericChainWrapper>()?;
+    module.add_class::<GenericDeviceWrapper>()?;
+    module.add_class::<AllToAllDeviceWrapper>()?;
     let wrapper = wrap_pymodule!(operations);
     module.add_wrapped(wrapper)?;
     let wrapper2 = wrap_pymodule!(measurements);
     module.add_wrapped(wrapper2)?;
+    let wrapper3 = wrap_pymodule!(devices);
+    module.add_wrapped(wrapper3)?;
 
     // Adding nice imports corresponding to maturin example
     let system = PyModule::import(_py, "sys")?;
     let system_modules: &PyDict = system.getattr("modules")?.downcast()?;
     system_modules.set_item("qoqo.operations", module.getattr("operations")?)?;
     system_modules.set_item("qoqo.measurements", module.getattr("measurements")?)?;
+    system_modules.set_item("qoqo.devices", module.getattr("devices")?)?;
     Ok(())
 }

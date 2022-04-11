@@ -10,6 +10,14 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+//! Module containing the Circuit class that represents a quantum circuit in qoqo.
+//!
+//! In qoqo, single operations are collected in a circuit to build up a quantum program.
+//! Qoqo circuits are strictly linear sequences of operations.
+//! The circuit struct behaves similar to a list and provides several standard
+//! functions of a Vec<Operation>, such as len(), is_empty(), get(), iter() and into_iter().
+//!
+
 use crate::{QoqoError, QOQO_VERSION};
 use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyIndexError, PyRuntimeError, PyTypeError, PyValueError};
@@ -22,7 +30,13 @@ use std::collections::HashSet;
 
 use crate::operations::{convert_operation_to_pyobject, convert_pyany_to_operation};
 
-/// Module containing the Circuit class.
+/// Module containing the Circuit class that represents a quantum circuit in qoqo.
+///
+/// In qoqo, single operations are collected in a circuit to build up a quantum program.
+/// Qoqo circuits are strictly linear sequences of operations.
+/// The circuit struct behaves similar to a list and provides several standard
+/// functions of a Vec<Operation>, such as len(), is_empty(), get(), iter() and into_iter().
+///
 #[pymodule]
 fn circuit(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<CircuitWrapper>()?;
