@@ -335,9 +335,9 @@ dependencies = [
 
 [[package]]
 name = "pyo3-build-config"
-version = "0.16.3"
+version = "0.16.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2486b96281859ff0a3929ba6467b13751627b974f7137362db38e2bed14b2094"
+checksum = "450e2e56cbfa67bbe224cef93312b7a76d81c471d4e0c459d24d4bfaf3d75b53"
 dependencies = [
  "once_cell",
  "target-lexicon",
