@@ -7,9 +7,6 @@ members = [
     "qoqo-macros"
 ]
 
-[patch.crates-io]
-schemars = { git = 'https://github.com/nfwvogt/schemars.git', branch="qoqo"}
-
 [profile.release]
 lto = "thin"
 

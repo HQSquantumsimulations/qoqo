@@ -339,7 +339,7 @@ struct TGate {
 /// Args:
 ///     qubit (int): The qubit the unitary gate is applied to.
 ///     theta (CalculatorFloat): The angle :math:`\theta` of the rotation.
-///     spherical_theta (CalculatorFloat): The rotation axis, unit-vector spherical coordinates :math:`\theta_{sph}.
+///     spherical_theta (CalculatorFloat): The rotation axis, unit-vector spherical coordinates :math:`\theta_{sph}`.
 ///     spherical_phi (CalculatorFloat): The rotation axis, unit-vector spherical coordinates :math:`\phi_{sph}`  gives the angle in the x-y plane.
 ///
 struct RotateAroundSphericalAxis {
@@ -347,4 +347,30 @@ struct RotateAroundSphericalAxis {
     theta: CalculatorFloat,
     spherical_theta: CalculatorFloat,
     spherical_phi: CalculatorFloat,
+}
+
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    Rotate,
+    OperateGate,
+    OperateSingleQubitGate
+)]
+/// Implements a rotation around an axis in the x-y plane in spherical coordinates.
+///
+/// .. math::
+/// U = \begin{pmatrix}
+/// \cos(\frac{\theta}{2}) & -i e^{-i \phi} \sin(\frac{\theta}{2})\\\\
+/// -i e^{i \phi} \sin(\frac{\theta}{2}) & \cos(\frac{\theta}{2})
+/// \end{pmatrix}
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+///     theta (CalculatorFloat): The angle :math:`\theta` of the rotation.
+///     phi (CalculatorFloat): The rotation axis, in spherical coordinates :math:`\phi_{sph}`  gives the angle in the x-y plane.
+///
+struct RotateXY {
+    qubit: usize,
+    theta: CalculatorFloat,
+    phi: CalculatorFloat,
 }

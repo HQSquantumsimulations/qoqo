@@ -116,6 +116,7 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<RotateZWrapper>()?;
     m.add_class::<RotateYWrapper>()?;
     m.add_class::<RotateXWrapper>()?;
+    m.add_class::<RotateXYWrapper>()?;
     m.add_class::<RotateAroundSphericalAxisWrapper>()?;
     m.add_class::<PauliZWrapper>()?;
     m.add_class::<PauliYWrapper>()?;
