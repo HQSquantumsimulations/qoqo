@@ -46,7 +46,7 @@ use rand_distr::{Distribution, Normal};
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct SingleQubitGate {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -183,7 +183,7 @@ impl OperateSingleQubitGate for SingleQubitGate {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct RotateZ {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -290,7 +290,7 @@ impl OperateSingleQubitGate for RotateZ {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct RotateX {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -392,7 +392,7 @@ impl OperateSingleQubitGate for RotateX {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct RotateY {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -489,7 +489,7 @@ impl OperateSingleQubitGate for RotateY {
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PauliX {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -582,7 +582,7 @@ impl OperateSingleQubitGate for PauliX {
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PauliY {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -675,7 +675,7 @@ impl OperateSingleQubitGate for PauliY {
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PauliZ {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -768,7 +768,7 @@ impl OperateSingleQubitGate for PauliZ {
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct SqrtPauliX {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -864,7 +864,7 @@ impl OperateSingleQubitGate for SqrtPauliX {
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct InvSqrtPauliX {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -960,7 +960,7 @@ impl OperateSingleQubitGate for InvSqrtPauliX {
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct Hadamard {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -1054,7 +1054,7 @@ impl OperateSingleQubitGate for Hadamard {
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct SGate {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -1147,7 +1147,7 @@ impl OperateSingleQubitGate for SGate {
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct TGate {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -1246,7 +1246,7 @@ impl OperateSingleQubitGate for TGate {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PhaseShiftState1 {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -1349,7 +1349,7 @@ impl OperateSingleQubitGate for PhaseShiftState1 {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PhaseShiftState0 {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -1459,7 +1459,7 @@ impl OperateSingleQubitGate for PhaseShiftState0 {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct RotateAroundSphericalAxis {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -1550,6 +1550,119 @@ impl OperateSingleQubitGate for RotateAroundSphericalAxis {
         let vx = (self.spherical_phi.clone()).cos();
         let st = (self.spherical_theta.clone()).sin();
         s * vx * st * (-1.0)
+    }
+    /// Returns global_phase parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    fn global_phase(&self) -> CalculatorFloat {
+        CalculatorFloat::from(0.0)
+    }
+}
+
+/// Implements a rotation around an x- and y-axis in spherical coordinates.
+///
+/// $$
+/// U = \begin{pmatrix}
+/// \cos(\frac{\theta}{2}) & -i e^{-i \phi} \sin(\frac{\theta}{2})\\\\
+/// -i e^{i \phi} \sin(\frac{\theta}{2}) & \cos(\frac{\theta}{2})
+/// \end{pmatrix}
+///  $$
+///
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateSingleQubit,
+    roqoqo_derive::Rotate,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct RotateXY {
+    /// The qubit the unitary gate is applied to.
+    qubit: usize,
+    /// The angle $\theta$ of the rotation, in the interval from 0 to $2^* 2 \pi$.
+    theta: CalculatorFloat,
+    /// The rotation axis, in spherical coordinates $\phi$  gives the angle in the x-y plane.
+    phi: CalculatorFloat,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_RotateXY: &[&str; 5] = &[
+    "Operation",
+    "GateOperation",
+    "SingleQubitGateOperation",
+    "Rotation",
+    "RotateXY",
+];
+
+/// Trait for all operations acting with a unitary gate on a set of qubits.
+impl OperateGate for RotateXY {
+    /// Returns unitary matrix of the gate.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Array2<Complex64>)` - The unitary matrix representation of the gate.
+    /// * `Err(RoqoqoError)` - The conversion of parameters to f64 failed.
+    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
+        let c: f64 = (f64::try_from(self.theta.clone())? / 2.0).cos();
+        let s: f64 = (f64::try_from(self.theta.clone())? / 2.0).sin();
+        let vx: f64 = (f64::try_from(self.phi.clone())?).cos();
+        let vy: f64 = (f64::try_from(self.phi.clone())?).sin();
+        Ok(array![
+            [
+                Complex64::new(c, 0.0),
+                Complex64::new(-1.0 * s * vy, -1.0 * s * vx)
+            ],
+            [
+                Complex64::new(s * vy, -1.0 * s * vx),
+                Complex64::new(c, 0.0)
+            ]
+        ])
+    }
+}
+
+/// Trait for unitary operations acting on exactly one qubit.
+impl OperateSingleQubitGate for RotateXY {
+    /// Returns the alpha_r parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    fn alpha_r(&self) -> CalculatorFloat {
+        (self.theta.clone() / 2.0).cos()
+    }
+    /// Returns the alpha_i parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    fn alpha_i(&self) -> CalculatorFloat {
+        CalculatorFloat::from(0.0)
+    }
+    /// Returns the beta_r parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    fn beta_r(&self) -> CalculatorFloat {
+        let s = (self.theta.clone() / 2.0).sin();
+        let vy = (self.phi.clone()).sin();
+        s * vy
+    }
+    /// Returns the beta_i parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    fn beta_i(&self) -> CalculatorFloat {
+        let s = (self.theta.clone() / 2.0).sin();
+        let vx = (self.phi.clone()).cos();
+        s * vx * (-1.0)
     }
     /// Returns global_phase parameter of the operation.
     ///
