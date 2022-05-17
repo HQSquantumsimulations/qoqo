@@ -10,6 +10,8 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+//! Represents a quantum program evaluating measurements based on a one or more free float parameters.
+
 use std::collections::HashMap;
 
 use crate::backends::{EvaluatingBackend, RegisterResult};
@@ -17,6 +19,7 @@ use crate::measurements;
 use crate::measurements::Measure;
 use crate::RoqoqoBackendError;
 use std::fmt::{Display, Formatter};
+
 /// Represents a quantum program evaluating measurements based on a one or more free float parameters.
 ///
 /// The main use of QuantumProgram is to contain a Measurements implementing [crate::measurements::Measure]
