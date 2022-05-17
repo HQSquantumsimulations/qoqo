@@ -23,9 +23,8 @@ qoqo is the HQS python package to represent quantum circuits.
     operations
     registers
     measurements
-    DoUnitary
+    QuantumProgram
 """
 
 from .qoqo import *
 __license__ = "Apache-2.0 for linked dependencies see qoqo/LICSENSE_FOR_BINARY_DISTRIBUTION"
-from .do_unitary import DoUnitary
