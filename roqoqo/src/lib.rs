@@ -304,10 +304,10 @@ pub use circuit::Circuit;
 #[doc(hidden)]
 pub use circuit::*;
 pub mod backends;
+pub mod devices;
+pub mod measurements;
 pub mod operations;
 pub mod prelude;
-// pub mod devices;
-pub mod measurements;
 #[doc(hidden)]
 mod quantum_program;
 pub mod registers;

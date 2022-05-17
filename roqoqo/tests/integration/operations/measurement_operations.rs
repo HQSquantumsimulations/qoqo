@@ -16,7 +16,6 @@ use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::operations::*;
 use roqoqo::prelude::RoqoqoError;
 use roqoqo::Circuit;
-use serde_json::{from_str, json};
 #[cfg(feature = "serialize")]
 use serde_test::{assert_tokens, Configure, Token};
 use std::collections::{HashMap, HashSet};
