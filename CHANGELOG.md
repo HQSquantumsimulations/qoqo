@@ -7,6 +7,7 @@ This changelog track changes to the qoqo project starting at version 0.5.0
 * Removed user access to devices to avoid breaking changes in version 1.
 * Updated dependencies and README.
 * Added unit tests for serialization of PragmaRepeatedMeasurement operations in  a Circuit.
+* Removed DoUnitary class from qoqo since functionality replaced by QuantumProgram.
 
 ## 0.11.3
 
