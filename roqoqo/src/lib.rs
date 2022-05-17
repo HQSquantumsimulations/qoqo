@@ -304,7 +304,7 @@ pub mod operations;
 pub mod prelude;
 pub use circuit::*;
 pub mod backends;
-pub mod devices;
+// pub mod devices;
 pub mod measurements;
 mod quantum_program;
 pub mod registers;
