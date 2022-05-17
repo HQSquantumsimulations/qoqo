@@ -1041,18 +1041,3 @@ fn pragma_repeated_measurement_serde_compact() {
         ],
     );
 }
-
-/// Test serialization of PragmaRepeatedMeasurement
-#[test]
-fn pragma_repeated_measurement_json() {
-    let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
-    qubit_mapping.insert(0, 1);
-    let pragma = PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(qubit_mapping.clone()));
-    // let pragma_test = PragmaRepeatedMeasurement::new(String::from("ro"), 2, None);
-    let serialised = json!(&pragma).to_string();
-    let deserialised: PragmaRepeatedMeasurement = from_str(&serialised).unwrap();
-    assert_eq!(pragma, deserialised);
-
-    let serialised_serde_json = serde_json::to_string(&pragma);
-    assert!(serialised_serde_json.is_ok());
-}
