@@ -70,7 +70,7 @@ qoqo provides a full python interface to the underlying roqoqo library, includin
 * PRAGMA Operations that only apply to certain hardware, simulators or annotate circuits with additional information
 * Classical Register and Measurement operations to use with a quantum program
 * Measurement structs for evaluating observable measurements based on projective measurements from quantum hardware or simulator readouts
-* A DoUnitary class combining circuits and measurement information in complete quantum programms with a simple interface
+* A QuantumProgram class combining circuits and measurement information in complete quantum programms with a simple interface
 * Serialization to json and deserialization from json for circuits and measurement information. Serialization support can easily be expanded to other targets with the help of the serde crate.
 
 ### Installation
