@@ -2,7 +2,11 @@
 
 This changelog track changes to the qoqo project starting at version 0.5.0
 
-## Not released
+## Release 1.0.0-alpha
+
+* Removed user access to devices to avoid breaking changes in version 1.
+* Updated dependencies and README.
+* Added unit tests for serialization of PragmaRepeatedMeasurement operations in  a Circuit.
 
 ## 0.11.3
 
