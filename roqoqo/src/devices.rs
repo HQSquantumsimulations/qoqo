@@ -49,8 +49,6 @@ use ndarray::Array2;
 pub trait Device {
     /// Returns the gate time of a single qubit operation if the single qubit operation is available on device.
     ///
-    /// The base assumption
-    ///
     /// # Arguments
     ///
     /// * `hqslang` - The hqslang name of a single qubit gate.
@@ -63,8 +61,7 @@ pub trait Device {
     ///
     fn single_qubit_gate_time(&self, hqslang: &str, qubit: &usize) -> Option<f64>;
 
-    /// Returns the gate time of a two qubit operation if the two qubit operation is available on device-.
-    ///
+    /// Returns the gate time of a two qubit operation if the two qubit operation is available on device.
     ///
     /// # Arguments
     ///
@@ -80,7 +77,6 @@ pub trait Device {
     fn two_qubit_gate_time(&self, hqslang: &str, control: &usize, target: &usize) -> Option<f64>;
 
     /// Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
-    ///
     ///
     /// # Arguments
     ///
