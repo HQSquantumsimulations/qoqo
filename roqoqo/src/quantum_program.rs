@@ -20,6 +20,8 @@ use crate::backends::{EvaluatingBackend, RegisterResult};
 use crate::measurements;
 use crate::measurements::Measure;
 use crate::RoqoqoBackendError;
+#[cfg(feature="async")]
+use crate::backends::AsyncEvaluatingBackend;
 use std::fmt::{Display, Formatter};
 
 /// Represents a quantum program evaluating measurements based on a one or more free float parameters.
@@ -145,6 +147,10 @@ impl QuantumProgram {
         }
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> da5d075 (WIP: async compatability)
     /// Runs the QuantumProgram and returns expectation values.
     ///
     /// Runs the quantum programm for a given set of parameters passed in the same order as the parameters
@@ -154,7 +160,11 @@ impl QuantumProgram {
     ///
     /// * `backend` - The backend the program is executed on.
     /// * `parameters` - List of float ([f64]) parameters of the function call in order of `input_parameter_names`
+<<<<<<< HEAD
     #[cfg(feature = "async")]
+=======
+    #[cfg(feature="async")]
+>>>>>>> da5d075 (WIP: async compatability)
     pub async fn async_run<T>(
         &self,
         backend: T,
@@ -162,7 +172,11 @@ impl QuantumProgram {
     ) -> Result<Option<HashMap<String, f64>>, RoqoqoBackendError>
     where
         T: AsyncEvaluatingBackend,
+<<<<<<< HEAD
         T: Sync,
+=======
+        T: Sync
+>>>>>>> da5d075 (WIP: async compatability)
     {
         match self{
             QuantumProgram::PauliZProduct{measurement, input_parameter_names } => {
@@ -205,11 +219,19 @@ impl QuantumProgram {
     ///
     /// * `backend` - The backend the program is executed on.
     /// * `parameters` - List of float ([f64]) parameters of the function call in order of `input_parameter_names`
+<<<<<<< HEAD
     #[cfg(feature = "async")]
     pub async fn async_run_registers<T>(&self, backend: T, parameters: &[f64]) -> RegisterResult
     where
         T: AsyncEvaluatingBackend,
         T: Sync,
+=======
+    #[cfg(feature="async")]
+    pub async fn async_run_registers<T>(&self, backend: T, parameters: &[f64]) -> RegisterResult
+    where
+        T: AsyncEvaluatingBackend,
+        T: Sync
+>>>>>>> da5d075 (WIP: async compatability)
     {
         match self{
             QuantumProgram::ClassicalRegister{measurement, input_parameter_names } => {
