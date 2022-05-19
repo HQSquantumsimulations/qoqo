@@ -15,6 +15,8 @@
 //! Registers are used to store classical information during the execution of a
 //! roqoqo circuit and to provide a unified output interface for the different backends.
 
+use std::collections::HashMap;
+
 use num_complex::Complex64;
 
 // This could be optimized by using bit-vec or bitvec traits
@@ -46,3 +48,12 @@ pub type FloatOutputRegister = Vec<FloatRegister>;
 /// Vector over single complex registers that are each the output of a single run
 /// of a quantum program.
 pub type ComplexOutputRegister = Vec<ComplexRegister>;
+
+
+/// Registers passed to and from functions running a full circuit.
+pub type Registers =
+    (
+        HashMap<String, BitOutputRegister>,
+        HashMap<String, FloatOutputRegister>,
+        HashMap<String, ComplexOutputRegister>,
+    );

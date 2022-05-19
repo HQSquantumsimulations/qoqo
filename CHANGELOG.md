@@ -2,6 +2,11 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+### Added not released
+
+* Optional `async` feature including:
+    1. AsyncEvaluatingBackend trait for backends that implement async evaluation (especially designed for Backends interfacing a Web-API)
+    2. Measurements async evaluating the Future of a register measurement returned from a backend.
 ## v1.0.0-alpha.2
 
 * Updated to qoqo_calculator 0.8
@@ -39,7 +44,7 @@ prerelease package: documentation not yet complete and new functionalities might
 * Semver-style version checking for Circuit serialization. In beta mode (0.y.z) minor version must match (y_library == y_data) in release mode (x.y.z) major version must match (x_library == x_data) and minor version of library must exceed minor version of data (y_library >= y_data).
 * `json_schema` implementing `JsonSchema` from schemars for roqoqo data structures.
 * Unit tests to validate `json_schema` added for Circuit, QuantumProgram and measurements.
-* `roqoqo-test` extended by two new functions for stochastic gate tests: `construct_random_circuit` and `add_random_multi_qubit_gate`. 
+* `roqoqo-test` extended by two new functions for stochastic gate tests: `construct_random_circuit` and `add_random_multi_qubit_gate`.
 * A conversion function `to_single_qubit_gate` has been implemented for the OperateSingleQubitGate trait.
 * The multiplication function `mul` added to the python interface, i.e. qoqo, for Single Qubit Gates.
 * New devices implemented in roqoqo and in qoqo: AllToAllDevice, GenericDevice, GenericChain (only next-neighbour qubits are connected) and GenericGrid (a 2D grid device).

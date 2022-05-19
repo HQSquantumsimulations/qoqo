@@ -18,6 +18,8 @@ use crate::backends::{EvaluatingBackend, RegisterResult};
 use crate::measurements;
 use crate::measurements::Measure;
 use crate::RoqoqoBackendError;
+#[cfg(feature="async")]
+use crate::backends::AsyncEvaluatingBackend;
 use std::fmt::{Display, Formatter};
 
 /// Represents a quantum program evaluating measurements based on a one or more free float parameters.
@@ -138,6 +140,86 @@ impl QuantumProgram {
                     substituted_parameters
                 )?;
                 backend.run_measurement_registers(&substituted_measurement)
+            }
+            _ => Err(RoqoqoBackendError::GenericError{msg: "A quantum programm returning expectation values cannot be executed by `run_registers` use `run` instead".to_string()})
+        }
+    }
+
+
+    /// Runs the QuantumProgram and returns expectation values.
+    ///
+    /// Runs the quantum programm for a given set of parameters passed in the same order as the parameters
+    /// listed in `input_parameter_names` and returns expectation values.
+    ///
+    /// Arguments:
+    ///
+    /// * `backend` - The backend the program is executed on.
+    /// * `parameters` - List of float ([f64]) parameters of the function call in order of `input_parameter_names`
+    #[cfg(feature="async")]
+    pub async fn async_run<T>(
+        &self,
+        backend: T,
+        parameters: &[f64],
+    ) -> Result<Option<HashMap<String, f64>>, RoqoqoBackendError>
+    where
+        T: AsyncEvaluatingBackend,
+        T: Sync
+    {
+        match self{
+            QuantumProgram::PauliZProduct{measurement, input_parameter_names } => {
+                if parameters.len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())})};
+                let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
+                let substituted_measurement = measurement.substitute_parameters(
+                    substituted_parameters
+                )?;
+                backend.async_run_measurement(substituted_measurement).await
+            }
+            QuantumProgram::CheatedPauliZProduct{measurement, input_parameter_names } => {
+                if parameters.len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())})};
+                let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
+                let substituted_measurement = measurement.substitute_parameters(
+                    substituted_parameters
+                )?;
+                backend.async_run_measurement(substituted_measurement).await
+            }
+            QuantumProgram::Cheated{measurement, input_parameter_names } => {
+                if parameters.len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())})};
+                let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
+                let substituted_measurement = measurement.substitute_parameters(
+                    substituted_parameters
+                )?;
+                backend.async_run_measurement(substituted_measurement).await
+            }
+            _ => Err(RoqoqoBackendError::GenericError{msg: "A quantum programm returning classical registeres cannot be executed by `run` use `run_registers` instead".to_string()})
+        }
+    }
+
+    /// Runs the QuantumProgram and returns the classical registers of the quantum program.
+    ///
+    /// Runs the quantum programm for a given set of parameters passed in the same order as the parameters
+    /// listed in `input_parameter_names` and returns the classical register output.  
+    /// The classical registers usually contain a record of measurement values for the repeated execution
+    /// of a [crate::Circuit] quantum circuit for real quantum hardware
+    /// or the readout of the statevector or the density matrix for simulators.
+    ///
+    /// Arguments:
+    ///
+    /// * `backend` - The backend the program is executed on.
+    /// * `parameters` - List of float ([f64]) parameters of the function call in order of `input_parameter_names`
+    #[cfg(feature="async")]
+    pub async fn async_run_registers<T>(&self, backend: T, parameters: &[f64]) -> RegisterResult
+    where
+        T: AsyncEvaluatingBackend,
+        T: Sync
+    {
+        match self{
+            QuantumProgram::ClassicalRegister{measurement, input_parameter_names } => {
+                if parameters.len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())})};
+                let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
+                let substituted_measurement = measurement.substitute_parameters(
+                    substituted_parameters
+                )?;
+                backend.async_run_measurement_registers(substituted_measurement).await
             }
             _ => Err(RoqoqoBackendError::GenericError{msg: "A quantum programm returning expectation values cannot be executed by `run_registers` use `run` instead".to_string()})
         }
