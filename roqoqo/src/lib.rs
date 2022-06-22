@@ -300,12 +300,15 @@ pub enum RoqoqoBackendError {
 
 #[doc(hidden)]
 mod circuit;
-pub mod operations;
-pub mod prelude;
+pub use circuit::Circuit;
+#[doc(hidden)]
 pub use circuit::*;
 pub mod backends;
 pub mod devices;
 pub mod measurements;
+pub mod operations;
+pub mod prelude;
+#[doc(hidden)]
 mod quantum_program;
 pub mod registers;
 pub use quantum_program::QuantumProgram;

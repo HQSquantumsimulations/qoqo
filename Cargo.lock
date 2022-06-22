@@ -161,6 +161,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "nalgebra"
+version = "0.31.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "18a89248335f688e4bd994e6d030fd7e185eb41769b8c435395075425e100ac6"
+dependencies = [
+ "approx",
+ "matrixmultiply",
+ "nalgebra-macros",
+ "num-complex",
+ "num-rational",
+ "num-traits",
+ "simba",
+ "typenum",
+]
+
+[[package]]
 name = "nalgebra-macros"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -375,10 +391,10 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "0.11.3"
+version = "1.0.0-alpha.2"
 dependencies = [
  "bincode",
- "nalgebra",
+ "nalgebra 0.30.1",
  "ndarray",
  "num-complex",
  "numpy",
@@ -398,7 +414,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "0.11.3"
+version = "1.0.0-alpha.2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -495,11 +511,11 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "0.11.3"
+version = "1.0.0-alpha.2"
 dependencies = [
  "bincode",
  "dyn-clone",
- "nalgebra",
+ "nalgebra 0.31.0",
  "ndarray",
  "num-complex",
  "proc-macro2",
@@ -519,7 +535,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "0.11.3"
+version = "1.0.0-alpha.2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -528,9 +544,9 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "0.11.3"
+version = "1.0.0-alpha.2"
 dependencies = [
- "nalgebra",
+ "nalgebra 0.30.1",
  "ndarray",
  "proc-macro2",
  "qoqo_calculator",

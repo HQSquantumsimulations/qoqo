@@ -49,6 +49,20 @@ fn populate_circuit_rotatex(
     }
 }
 
+fn add_circuit_measurement_operation(circuit: &PyCell<CircuitWrapper>) {
+    let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping.insert(0, 1);
+    let input_measurement: Operation = Operation::from(PragmaRepeatedMeasurement::new(
+        String::from("ro"),
+        2,
+        Some(qubit_mapping),
+    ));
+    let measurement_operation = convert_operation_to_pyobject(input_measurement).unwrap();
+    circuit
+        .call_method1("add", (measurement_operation,))
+        .unwrap();
+}
+
 /// Test default function of CircuitWrapper
 #[test]
 fn test_default() {
@@ -361,6 +375,7 @@ fn test_to_from_json() {
     Python::with_gil(|py| {
         let circuit = new_circuit(py);
         populate_circuit_rotatex(py, circuit, 0, 3);
+        add_circuit_measurement_operation(circuit);
 
         // testing 'from_json' and 'to_json' functions
         let serialised = circuit.call_method0("to_json").unwrap();

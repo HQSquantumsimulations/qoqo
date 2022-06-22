@@ -10,8 +10,8 @@ jobs:
   test_pyproject_install:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v3.1.1
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3.1.2
       with:
         python-version: 3.9
     - uses: actions-rs/toolchain@v1
@@ -30,7 +30,7 @@ jobs:
   clippy_check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -55,7 +55,7 @@ jobs:
             {py: '3.10', interpreter: "python3.10"}
         ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -63,7 +63,7 @@ jobs:
           target: ${{ matrix.combinations.rust }}
           default: true
           components: rustfmt
-      - uses: actions/setup-python@v3.1.1
+      - uses: actions/setup-python@v3.1.2
         with:
           python-version: ${{ matrix.python.py }}
       - run: |
@@ -86,14 +86,14 @@ jobs:
             {py: '3.10', interpreter: "python3.10"}
         ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v3.1.1
+      - uses: actions/setup-python@v3.1.2
         with:
           python-version: ${{ matrix.python.py }}
       - name: linux wheels
@@ -119,14 +119,14 @@ jobs:
             {py: '3.10', interpreter: "python3.10"}
         ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v3.1.1
+      - uses: actions/setup-python@v3.1.2
         with:
           python-version: ${{ matrix.python.py }}
       - name: linux wheels
@@ -154,14 +154,14 @@ jobs:
             {py: '3.10', interpreter: "python3.10"}
         ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v3.1.1
+      - uses: actions/setup-python@v3.1.2
         with:
           python-version: ${{ matrix.python.py }}
       - name: windows wheels
@@ -186,14 +186,14 @@ jobs:
             {py: '3.10', interpreter: "python3.10"}
         ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v3.1.1
+      - uses: actions/setup-python@v3.1.2
         with:
           python-version: ${{ matrix.python.py }}
       - name: Install dependencies
@@ -223,14 +223,14 @@ jobs:
             {py: '3.10', interpreter: "python3.10"}
         ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v3.1.1
+      - uses: actions/setup-python@v3.1.2
         with:
           python-version: ${{ matrix.python.py }}
       - name: Install dependencies
@@ -247,7 +247,7 @@ jobs:
     name: doctest_check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -317,7 +317,7 @@ jobs:
   # format_check: # needs to run after test otherwise auogenerated files are not built
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - uses: actions/checkout@v2
+  #     - uses: actions/checkout@v3
   #     - uses: actions-rs/toolchain@v1
   #       with:
   #         profile: minimal
