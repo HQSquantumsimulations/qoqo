@@ -31,21 +31,18 @@
 use std::collections::HashMap;
 
 use crate::operations::Operation;
+use crate::registers::Registers;
 use crate::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
 use crate::Circuit;
 use crate::{
     measurements::{Measure, MeasureExpectationValues},
     RoqoqoBackendError,
 };
-#[cfg(feature="async")]
+#[cfg(feature = "async")]
 use async_trait::async_trait;
-use crate::registers::Registers;
 
 /// Result of functions running a full circuit and producing output registers.
-pub type RegisterResult = Result<
-    Registers,
-    RoqoqoBackendError,
->;
+pub type RegisterResult = Result<Registers, RoqoqoBackendError>;
 
 /// Trait for Backends that can evaluate measurements to expectation values.
 pub trait EvaluatingBackend: Sized {
@@ -175,14 +172,12 @@ pub trait EvaluatingBackend: Sized {
     }
 }
 
-
-#[cfg(feature="async")]
+#[cfg(feature = "async")]
 #[async_trait]
 /// Trait for Backends that can evaluate measurements to expectation values as async functions
-/// 
+///
 /// Especially useful for Backends communicating with remote devices.
-pub trait AsyncEvaluatingBackend: Sized 
-{
+pub trait AsyncEvaluatingBackend: Sized {
     /// Runs a circuit with the backend.
     ///
     /// A circuit is passed to the backend and executed.
@@ -250,7 +245,7 @@ pub trait AsyncEvaluatingBackend: Sized
     async fn async_run_measurement_registers<T>(&self, measurement: T) -> RegisterResult
     where
         T: Measure,
-        T: std::marker::Send
+        T: std::marker::Send,
     {
         let mut bit_registers: HashMap<String, BitOutputRegister> = HashMap::new();
         let mut float_registers: HashMap<String, FloatOutputRegister> = HashMap::new();
@@ -258,8 +253,7 @@ pub trait AsyncEvaluatingBackend: Sized
 
         let mut circuit_futures = Vec::new();
         for circuit in measurement.circuits() {
-            let circuit_future = match measurement.constant_circuit()
-            {
+            let circuit_future = match measurement.constant_circuit() {
                 Some(x) => self.async_run_circuit_iterator(x.iter().chain(circuit.iter())),
                 None => self.async_run_circuit_iterator(circuit.iter()),
             };
@@ -267,7 +261,7 @@ pub trait AsyncEvaluatingBackend: Sized
         }
         let circuit_results = futures::future::try_join_all(circuit_futures).await?;
 
-        for (tmp_bit_reg, tmp_float_reg, tmp_complex_reg) in circuit_results{
+        for (tmp_bit_reg, tmp_float_reg, tmp_complex_reg) in circuit_results {
             for (key, mut val) in tmp_bit_reg.into_iter() {
                 if let Some(x) = bit_registers.get_mut(&key) {
                     x.append(&mut val);
@@ -308,7 +302,7 @@ pub trait AsyncEvaluatingBackend: Sized
     ) -> Result<Option<HashMap<String, f64>>, RoqoqoBackendError>
     where
         T: MeasureExpectationValues,
-        T: std::marker::Send
+        T: std::marker::Send,
     {
         // Futures trick so that compiler recognizes that clone of measurement in send safe
         let m = measurement.clone();

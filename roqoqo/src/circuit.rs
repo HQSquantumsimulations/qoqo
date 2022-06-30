@@ -396,7 +396,6 @@ impl Circuit {
                             let mut tmp_tmp_vec: Vec<Operation> = Vec::new();
                             for (mov_ind, op) in tmp_vec.into_iter().enumerate() {
                                 if mov_ind == index + ind {
-                                    println!("index: {}. op: {:?}", mov_ind, op.clone());
                                     tmp_tmp_vec.push(
                                         Rotation::try_from(op)?
                                             .overrotate(

@@ -129,6 +129,8 @@ fn test_remap_qubits() {
 
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(0, 2);
+        qubit_mapping.insert(2, 0);
+
         let remap_circ = circuit
             .call_method1("remap_qubits", (qubit_mapping,))
             .unwrap();

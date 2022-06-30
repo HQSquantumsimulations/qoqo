@@ -144,7 +144,7 @@ pub enum RoqoqoError {
         norm: f64,
     },
     /// Error when remapping qubits fails because qubit in operation is not in keys of HashMap/dict.
-    #[error("Mapping of qubit {qubit:?} failed")]
+    #[error("Mapping failed. Qubit map maps to qubit {qubit:?} but not from {qubit:?}")]
     QubitMappingError {
         /// Qubit that can not be mapped.
         qubit: usize,

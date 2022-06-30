@@ -728,3 +728,14 @@ impl PartialEq for DynOperation {
         self.0.hqslang() == other.0.hqslang()
     }
 }
+
+/// Check if a HashMap is a valid mapping for remapping_qubits
+#[inline]
+pub(crate) fn check_valid_mapping(mapping: &HashMap<usize, usize>) -> Result<(), RoqoqoError> {
+    for q in mapping.values() {
+        if !mapping.contains_key(q) {
+            return Err(RoqoqoError::QubitMappingError { qubit: *q });
+        }
+    }
+    Ok(())
+}

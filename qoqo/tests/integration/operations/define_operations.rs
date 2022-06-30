@@ -467,6 +467,7 @@ fn test_pyo3_remap_qubits(input_definition: Operation) {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(0, 1);
+        qubit_mapping.insert(1, 0);
         let remap_op = operation
             .call_method1(py, "remap_qubits", (qubit_mapping,))
             .unwrap();

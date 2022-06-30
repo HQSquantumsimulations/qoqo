@@ -36,6 +36,7 @@ jobs:
           profile: minimal
           toolchain: stable
           components: clippy
+      - uses: Swatinem/rust-cache@v1.4.0
       - run: cargo clippy -- -D warnings
 
   unittests_check:
@@ -63,6 +64,7 @@ jobs:
           target: ${{ matrix.combinations.rust }}
           default: true
           components: rustfmt
+      - uses: Swatinem/rust-cache@v1.4.0
       - uses: actions/setup-python@v3.1.2
         with:
           python-version: ${{ matrix.python.py }}
@@ -70,6 +72,17 @@ jobs:
           python -m pip install numpy
           cargo test --workspace --no-default-features --locked
           cargo fmt --all -- --check
+
+  cargo-deny:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: EmbarkStudios/cargo-deny-action@v1
+      with:
+        log-level: warn
+        command: check
+        arguments: --all-features
+        command-arguments: ""
 
   test_maturin_builds_linux_windows:
     name: maturin_check-${{ matrix.combinations.runs_on }}
@@ -93,6 +106,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
+      - uses: Swatinem/rust-cache@v1.4.0
       - uses: actions/setup-python@v3.1.2
         with:
           python-version: ${{ matrix.python.py }}
@@ -126,6 +140,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
+      - uses: Swatinem/rust-cache@v1.4.0
       - uses: actions/setup-python@v3.1.2
         with:
           python-version: ${{ matrix.python.py }}
@@ -161,6 +176,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
+      - uses: Swatinem/rust-cache@v1.4.0
       - uses: actions/setup-python@v3.1.2
         with:
           python-version: ${{ matrix.python.py }}

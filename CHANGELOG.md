@@ -7,6 +7,10 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 * Optional `async` feature including:
     1. AsyncEvaluatingBackend trait for backends that implement async evaluation (especially designed for Backends interfacing a Web-API)
     2. Measurements async evaluating the Future of a register measurement returned from a backend.
+
+### Changed not released
+
+* Make qubit_remapping more lenient only remapping values found in a HashMap skipping remapping for qubits not found in HashMap instead of returning an error.
 ## v1.0.0-alpha.2
 
 * Updated to qoqo_calculator 0.8
