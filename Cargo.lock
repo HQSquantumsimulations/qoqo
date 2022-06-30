@@ -493,7 +493,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "1.0.0-alpha.2"
+version = "1.0.0-alpha.3"
 dependencies = [
  "bincode",
  "nalgebra",
