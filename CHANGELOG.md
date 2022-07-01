@@ -2,6 +2,10 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## v1.0.0-alpha.2
+
+* Updated to qoqo_calculator 0.8
+
 ## v1.0.0-alpha.1
 
 * Device trait added in roqoqo.

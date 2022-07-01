@@ -973,7 +973,7 @@ fn test_pyo3_theta(theta: CalculatorFloat, input_operation: Operation) {
         .unwrap();
         let theta_param: CalculatorFloatWrapper =
             CalculatorFloatWrapper::extract(convert_cf_to_pyobject(py, theta)).unwrap();
-        assert_eq!(theta_op.cf_internal, theta_param.cf_internal);
+        assert_eq!(theta_op.internal, theta_param.internal);
     })
 }
 

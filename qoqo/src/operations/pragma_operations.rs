@@ -640,7 +640,7 @@ pub struct PragmaDamping {
 //     ///     CalculatorFloat: The probability of the PRAGMA operation.
 //     pub fn probability(&self) -> CalculatorFloatWrapper {
 //         CalculatorFloatWrapper {
-//             cf_internal: self.internal.probability(),
+//             internal: self.internal.probability(),
 //         }
 //     }
 //     /// Takes the power of the PRAGMA noise operation.
@@ -652,7 +652,7 @@ pub struct PragmaDamping {
 //     ///     self: The PRAGMA operation to the power of `power`.
 //     pub fn powercf(&self, power: CalculatorFloatWrapper) -> Self {
 //         Self {
-//             internal: self.internal.powercf(power.cf_internal),
+//             internal: self.internal.powercf(power.internal),
 //         }
 //     }
 // }
@@ -699,7 +699,7 @@ pub struct PragmaDepolarising {
 //     ///     CalculatorFloat: The probability of the PRAGMA operation.
 //     pub fn probability(&self) -> CalculatorFloatWrapper {
 //         CalculatorFloatWrapper {
-//             cf_internal: self.internal.probability(),
+//             internal: self.internal.probability(),
 //         }
 //     }
 //     /// Take the power of the noise PRAGMA operation.
@@ -711,7 +711,7 @@ pub struct PragmaDepolarising {
 //     ///     self: The PRAGMA operation to the power of `power`.
 //     pub fn powercf(&self, power: CalculatorFloatWrapper) -> Self {
 //         Self {
-//             internal: self.internal.powercf(power.cf_internal),
+//             internal: self.internal.powercf(power.internal),
 //         }
 //     }
 // }
@@ -758,7 +758,7 @@ pub struct PragmaDephasing {
 //     ///     CalculatorFloat: The probability of the PRAGMA operation.
 //     pub fn probability(&self) -> CalculatorFloatWrapper {
 //         CalculatorFloatWrapper {
-//             cf_internal: self.internal.probability(),
+//             internal: self.internal.probability(),
 //         }
 //     }
 //     /// Take the power of the noise PRAGMA operation.
@@ -770,7 +770,7 @@ pub struct PragmaDephasing {
 //     ///     self: The PRAGMA operation to the power of `power`.
 //     pub fn powercf(&self, power: CalculatorFloatWrapper) -> Self {
 //         Self {
-//             internal: self.internal.powercf(power.cf_internal),
+//             internal: self.internal.powercf(power.internal),
 //         }
 //     }
 // }
@@ -819,7 +819,7 @@ pub struct PragmaRandomNoise {
 //     ///     CalculatorFloat: The probability of the PRAGMA operation.
 //     pub fn probability(&self) -> CalculatorFloatWrapper {
 //         CalculatorFloatWrapper {
-//             cf_internal: self.internal.probability(),
+//             internal: self.internal.probability(),
 //         }
 //     }
 //     /// Take the power of the noise PRAGMA operation.
@@ -831,7 +831,7 @@ pub struct PragmaRandomNoise {
 //     ///     self: The PRAGMA operation to the power of `power`.
 //     pub fn powercf(&self, power: CalculatorFloatWrapper) -> Self {
 //         Self {
-//             internal: self.internal.powercf(power.cf_internal),
+//             internal: self.internal.powercf(power.internal),
 //         }
 //     }
 // }
@@ -953,7 +953,7 @@ impl PragmaGeneralNoiseWrapper {
     ///     CalculatorFloat: The gate time of the PRAGMA operation.
     fn gate_time(&self) -> CalculatorFloatWrapper {
         CalculatorFloatWrapper {
-            cf_internal: self.internal.gate_time().clone(),
+            internal: self.internal.gate_time().clone(),
         }
     }
 

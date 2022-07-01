@@ -90,7 +90,7 @@ pub fn wrap(
         quote! {
             /// Returns angle of rotation
             pub fn theta(&self) -> CalculatorFloatWrapper{
-                CalculatorFloatWrapper{cf_internal: self.internal.theta().clone()}
+                CalculatorFloatWrapper{internal: self.internal.theta().clone()}
             }
             /// Returns Rotated gate raised to power
             ///
@@ -101,7 +101,7 @@ pub fn wrap(
             ///     Self: gate raised to the power of `power`
             ///
             pub fn powercf(&self, power: CalculatorFloatWrapper) -> Self{
-                Self{internal: self.internal.powercf(power.cf_internal)}
+                Self{internal: self.internal.powercf(power.internal)}
             }
             #[cfg(feature = "overrotate")]
             /// Returns clone of the gate with one parameter statistically overrotated.
@@ -139,7 +139,7 @@ pub fn wrap(
             ///     Self
             ///
             pub fn powercf(&self, power: CalculatorFloatWrapper) -> Self{
-                Self{internal: self.internal.powercf(power.cf_internal)}
+                Self{internal: self.internal.powercf(power.internal)}
             }
         }
     } else {
@@ -153,7 +153,7 @@ pub fn wrap(
                 /// Returns:
                 ///     CalculatorFloat
                 pub fn probability(&self) -> CalculatorFloatWrapper{
-                    CalculatorFloatWrapper{cf_internal: self.internal.probability().clone()}
+                    CalculatorFloatWrapper{internal: self.internal.probability().clone()}
                 }
             }
         } else {
@@ -188,7 +188,7 @@ pub fn wrap(
             /// Returns:
             ///     CalculatorFloat
             pub fn global_phase(&self) -> CalculatorFloatWrapper{
-                CalculatorFloatWrapper{cf_internal: self.internal.global_phase().clone()}
+                CalculatorFloatWrapper{internal: self.internal.global_phase().clone()}
             }
             /// Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
             ///
@@ -203,7 +203,7 @@ pub fn wrap(
             /// Returns:
             ///     CalculatorFloat
             pub fn alpha_r(&self) -> CalculatorFloatWrapper{
-                CalculatorFloatWrapper{cf_internal: self.internal.alpha_r().clone()}
+                CalculatorFloatWrapper{internal: self.internal.alpha_r().clone()}
             }
             /// Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
             ///
@@ -216,7 +216,7 @@ pub fn wrap(
             /// Returns:
             ///     CalculatorFloat
             pub fn alpha_i(&self) -> CalculatorFloatWrapper{
-                CalculatorFloatWrapper{cf_internal: self.internal.alpha_i().clone()}
+                CalculatorFloatWrapper{internal: self.internal.alpha_i().clone()}
             }
             /// Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
             ///
@@ -231,7 +231,7 @@ pub fn wrap(
             /// Returns:
             ///     CalculatorFloat
             pub fn beta_r(&self) -> CalculatorFloatWrapper{
-                CalculatorFloatWrapper{cf_internal: self.internal.beta_r().clone()}
+                CalculatorFloatWrapper{internal: self.internal.beta_r().clone()}
             }
             /// Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
             ///
@@ -247,7 +247,7 @@ pub fn wrap(
             /// Returns:
             ///     CalculatorFloat
             pub fn beta_i(&self) -> CalculatorFloatWrapper{
-                CalculatorFloatWrapper{cf_internal: self.internal.beta_i().clone()}
+                CalculatorFloatWrapper{internal: self.internal.beta_i().clone()}
             }
 
             /// Multiplies two compatible operations implementing OperateSingleQubitGate.

@@ -117,7 +117,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     quote! {
                         #[doc = #msg]
                         pub fn #id(&self) -> CalculatorFloatWrapper{
-                            CalculatorFloatWrapper{cf_internal: self.internal.#id().clone()}
+                            CalculatorFloatWrapper{internal: self.internal.#id().clone()}
                         }
                     }
                 }
