@@ -89,6 +89,7 @@ fn definition_float_substitute_trait() {
     let newqubit: usize = 2;
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, newqubit);
+    qubit_mapping_test.insert(newqubit, 0);
     let result = def.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, def_test);
 }
@@ -212,6 +213,7 @@ fn definition_complex_substitute_trait() {
     let newqubit: usize = 2;
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, newqubit);
+    qubit_mapping_test.insert(newqubit, 0);
     let result = def.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, def_test);
 }
@@ -335,6 +337,7 @@ fn definition_usize_substitute_trait() {
     let newqubit: usize = 2;
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, newqubit);
+    qubit_mapping_test.insert(newqubit, 0);
     let result = def.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, def_test);
 }
@@ -458,6 +461,7 @@ fn definition_bit_substitute_trait() {
     let newqubit: usize = 2;
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, newqubit);
+    qubit_mapping_test.insert(newqubit, 0);
     let result = def.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, def_test);
 }
@@ -580,6 +584,7 @@ fn input_symbolic_substitute_trait() {
     let newqubit: usize = 2;
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, newqubit);
+    qubit_mapping_test.insert(newqubit, 0);
     let result = def.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, def_test);
 }

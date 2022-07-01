@@ -415,6 +415,7 @@ const TAGS_PragmaStartDecompositionBlock: &[&str; 4] = &[
 impl Substitute for PragmaStartDecompositionBlock {
     /// Remaps qubits in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        crate::operations::check_valid_mapping(mapping)?;
         let mut new_qubits: Vec<usize> = Vec::new();
         for q in &self.qubits {
             new_qubits.push(*mapping.get(q).ok_or(Err("")).map_err(
@@ -426,16 +427,8 @@ impl Substitute for PragmaStartDecompositionBlock {
 
         let mut mutable_reordering: HashMap<usize, usize> = HashMap::new();
         for (old_qubit, new_qubit) in self.reordering_dictionary.clone() {
-            let old_remapped = *mapping.get(&old_qubit).ok_or(Err("")).map_err(
-                |_x: std::result::Result<&usize, &str>| RoqoqoError::QubitMappingError {
-                    qubit: old_qubit,
-                },
-            )?;
-            let new_remapped = *mapping.get(&new_qubit).ok_or(Err("")).map_err(
-                |_x: std::result::Result<&usize, &str>| RoqoqoError::QubitMappingError {
-                    qubit: new_qubit,
-                },
-            )?;
+            let old_remapped = *mapping.get(&old_qubit).unwrap_or(&old_qubit);
+            let new_remapped = *mapping.get(&new_qubit).unwrap_or(&new_qubit);
             mutable_reordering.insert(old_remapped, new_remapped);
         }
 

@@ -24,7 +24,7 @@ use std::{
     usize,
 };
 use std::{
-    fmt::{Display, Formatter},
+    fmt::{Display, Formatter, Write},
     iter::{FromIterator, IntoIterator},
 };
 
@@ -88,7 +88,7 @@ pub struct Circuit {
     definitions: Vec<Operation>,
     /// Operations of the quantum circuit, do not have to be unique.
     operations: Vec<Operation>,
-    /// The roqoqo version
+    /// The roqoqo version.
     _roqoqo_version: RoqoqoVersion,
 }
 
@@ -396,7 +396,6 @@ impl Circuit {
                             let mut tmp_tmp_vec: Vec<Operation> = Vec::new();
                             for (mov_ind, op) in tmp_vec.into_iter().enumerate() {
                                 if mov_ind == index + ind {
-                                    println!("index: {}. op: {:?}", mov_ind, op.clone());
                                     tmp_tmp_vec.push(
                                         Rotation::try_from(op)?
                                             .overrotate(
@@ -776,7 +775,7 @@ impl Display for Circuit {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let mut s: String = String::new();
         for op in self.iter() {
-            s.push_str(&format!("{:?}\n", op))
+            _ = writeln!(s, "{:?}", op)
         }
         write!(f, "{}", s)
     }
