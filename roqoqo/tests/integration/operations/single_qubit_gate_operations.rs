@@ -451,6 +451,7 @@ fn test_singlequbitgate_remap_qubits(newqubit: usize) {
     // qubit mapping
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, newqubit);
+    qubit_mapping.insert(newqubit, 0);
     let result = gate.remap_qubits(&qubit_mapping);
     assert_eq!(&result, &Ok(test_gate.clone()));
 
@@ -469,6 +470,7 @@ fn test_singlequbitgate_remap_qubits(newqubit: usize) {
     // does 'mapping back' work?
     qubit_mapping.remove(&0);
     qubit_mapping.insert(newqubit, 0);
+    qubit_mapping.insert(0, newqubit);
     let result2 = result_unwrapped.remap_qubits(&qubit_mapping);
     assert_eq!(result2, Ok(gate));
 }
@@ -1346,6 +1348,7 @@ fn test_singlequbitgates_remap_qubits(
     // qubit mapping
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, newqubit);
+    qubit_mapping.insert(newqubit, 0);
     let result_wrapped = gate.remap_qubits(&qubit_mapping);
 
     // comparison of Result
@@ -1366,6 +1369,8 @@ fn test_singlequbitgates_remap_qubits(
     // does 'mapping back' work?
     qubit_mapping.remove(&0);
     qubit_mapping.insert(newqubit, 0);
+    qubit_mapping.insert(0, newqubit);
+
     let result2 = result.remap_qubits(&qubit_mapping);
     assert_eq!(result2, Ok(operation));
 }
@@ -1403,7 +1408,8 @@ fn test_singlequbitgates_remap_qubits(
         CalculatorFloat::from(PI),
     )); "SingleQubitGate")]
 fn remap_qubits_error(gate: SingleQubitGateOperation) {
-    let qubit_mapping: HashMap<usize, usize> = HashMap::new();
+    let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping.insert(1, 0);
     let result = gate.remap_qubits(&qubit_mapping);
     assert_eq!(result, Err(QubitMappingError { qubit: 0 }));
 }

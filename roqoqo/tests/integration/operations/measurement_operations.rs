@@ -14,7 +14,6 @@
 
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::operations::*;
-use roqoqo::prelude::RoqoqoError;
 use roqoqo::Circuit;
 #[cfg(feature = "serialize")]
 use serde_test::{assert_tokens, Configure, Token};
@@ -95,14 +94,11 @@ fn measure_qubit_substitute_trait() {
     // (2) Remap qubits function
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 2);
+    qubit_mapping.insert(2, 0);
     let result = measure.remap_qubits(&qubit_mapping).unwrap();
     // comparison of gates
     let test_meas = MeasureQubit::new(2, String::from("ro"), 1);
     assert_eq!(result, test_meas);
-
-    let qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
-    let result = measure.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 0 }));
 }
 
 /// Test MeasureQubit Serialization and Deserialization traits (readable)
@@ -232,6 +228,7 @@ fn pragma_get_statevector_substitute_trait() {
     // (2) Remap qubits function with an empty circuit
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let result = pragma.remap_qubits(&qubit_mapping_test).unwrap();
     let test_gate = PragmaGetStateVector::new(String::from("ro"), None);
     assert_eq!(result, test_gate);
@@ -392,6 +389,7 @@ fn pragma_get_density_matrix_substitute_trait() {
     // (2) Remap qubits function with an empty circuit
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let result = pragma.remap_qubits(&qubit_mapping_test).unwrap();
     let test_gate = PragmaGetDensityMatrix::new(String::from("ro"), None);
     assert_eq!(result, test_gate);
@@ -557,6 +555,7 @@ fn pragma_get_occupation_probability_substitute_trait() {
     // (2) Remap qubits function with an empty circuit
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let result = pragma.remap_qubits(&qubit_mapping_test).unwrap();
     let test_gate = PragmaGetOccupationProbability::new(String::from("ro"), None);
     assert_eq!(result, test_gate);
@@ -733,6 +732,7 @@ fn pragma_get_pauli_product_substitute_trait() {
     // (2) Remap qubits function with an empty circuit
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let mut new_qubit_paulis: HashMap<usize, usize> = HashMap::new();
     new_qubit_paulis.insert(2, 1);
     let result = pragma.remap_qubits(&qubit_mapping_test).unwrap();
@@ -971,6 +971,7 @@ fn pragma_repeated_measurement_substitute_trait() {
     // (2) Remap qubits function
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let mut new_qubit_mapping: HashMap<usize, usize> = HashMap::new();
     new_qubit_mapping.insert(2, 1);
     let result = pragma.remap_qubits(&qubit_mapping_test).unwrap();

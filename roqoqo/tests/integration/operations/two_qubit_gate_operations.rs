@@ -504,7 +504,8 @@ fn remap_qubits_result(gate: GateOperation, test_gate: GateOperation) {
 #[test_case(GateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(GateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
 fn remap_qubits_error0(gate: GateOperation) {
-    let qubit_mapping: HashMap<usize, usize> = HashMap::new();
+    let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping.insert(1, 0);
     let result = gate.remap_qubits(&qubit_mapping);
     assert_eq!(result, Err(QubitMappingError { qubit: 0 }));
 }
@@ -534,7 +535,7 @@ fn remap_qubits_error1(gate: GateOperation) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 2);
     let result = gate.remap_qubits(&qubit_mapping);
-    assert_eq!(result, Err(QubitMappingError { qubit: 1 }));
+    assert_eq!(result, Err(QubitMappingError { qubit: 2 }));
 }
 
 #[test_case(

@@ -111,6 +111,10 @@ impl MeasureExpectationValues for CheatedPauliZProduct {
         for (register_name, register) in float_registers.iter() {
             if let Some(index) = self.input.pauli_product_keys.get(register_name) {
                 pauli_products[*index] = register[0][0];
+            } else {
+                return Err(RoqoqoError::MissingRegister {
+                    name: register_name.clone(),
+                });
             }
         }
         // Evaluating expectation values
@@ -130,8 +134,6 @@ impl MeasureExpectationValues for CheatedPauliZProduct {
                     PauliProductsToExpVal::Symbolic(x) => {
                         let mut calculator = qoqo_calculator::Calculator::new();
                         for (ind, p) in pauli_products.iter().enumerate() {
-                            dbg!(ind);
-                            dbg!(p);
                             calculator.set_variable(format!("pauli_product_{}", ind).as_str(), *p);
                         }
                         calculator.parse_get(x.clone())?
