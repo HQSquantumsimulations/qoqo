@@ -24,7 +24,7 @@ use std::{
     usize,
 };
 use std::{
-    fmt::{Display, Formatter},
+    fmt::{Display, Formatter, Write},
     iter::{FromIterator, IntoIterator},
 };
 
@@ -775,7 +775,7 @@ impl Display for Circuit {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let mut s: String = String::new();
         for op in self.iter() {
-            s.push_str(&format!("{:?}\n", op))
+            _ = writeln!(s, "{:?}", op)
         }
         write!(f, "{}", s)
     }
