@@ -88,7 +88,7 @@ pub struct Circuit {
     definitions: Vec<Operation>,
     /// Operations of the quantum circuit, do not have to be unique.
     operations: Vec<Operation>,
-    /// The roqoqo version
+    /// The roqoqo version.
     _roqoqo_version: RoqoqoVersion,
 }
 
