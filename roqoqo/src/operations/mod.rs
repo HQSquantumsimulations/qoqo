@@ -178,6 +178,7 @@ pub trait InvolveQubits {
 /// let rotatez = RotateZ::new(0, CalculatorFloat::from(0.0));
 /// let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
 /// qubit_mapping_test.insert(0, 2);
+/// qubit_mapping_test.insert(2, 0);
 /// let result = rotatez.remap_qubits(&qubit_mapping_test).unwrap();
 /// assert_eq!(result, RotateZ::new(2, CalculatorFloat::from(0.0)));
 /// ```
