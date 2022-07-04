@@ -59,6 +59,7 @@ fn reordering_remapped() -> HashMap<usize, usize> {
 fn qubit_remapping() -> HashMap<usize, usize> {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 2);
+    qubit_mapping.insert(2, 0);
     qubit_mapping
 }
 
@@ -1227,7 +1228,8 @@ fn test_pyo3_remap_qubits_overrotation() {
         .unwrap();
         assert!(comparison);
 
-        let qubit_mapping: HashMap<usize, usize> = HashMap::new();
+        let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
+        qubit_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
         let result_ref = result.as_ref();
         assert!(result_ref.is_err());
@@ -2404,7 +2406,8 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // remap qubits
-        let qubit_mapping: HashMap<usize, usize> = HashMap::new();
+        let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
+        qubit_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
         let result_ref = result.as_ref();
         assert!(result_ref.is_err());

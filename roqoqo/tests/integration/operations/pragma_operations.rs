@@ -98,6 +98,7 @@ fn pragma_set_number_of_measurements_substitute_trait() {
     // (2) Remap qubits function
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
 }
@@ -236,6 +237,7 @@ fn pragma_set_statevector_substitute_trait() {
     // (2) Remap qubits function
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
 }
@@ -433,6 +435,7 @@ fn pragma_set_density_matrix_substitute_trait() {
     // (2) Remap qubits function
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
 }
@@ -611,6 +614,7 @@ fn pragma_repeat_gate_substitute_trait() {
     // (2) Remap qubits function
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
 }
@@ -732,12 +736,9 @@ fn pragma_overrotation_substitute_trait() {
     let pragma_test = PragmaOverrotation::new("RotateX".to_string(), vec![2], 0.03, 0.001);
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(2, 0);
+    qubit_mapping_test.insert(0, 2);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
-
-    let qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
-    let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 2 }));
 }
 
 /// Test PragmaOverrotation Serialization and Deserialization traits (readable)
@@ -862,6 +863,7 @@ fn pragma_boost_noise_substitute_trait() {
     // (2) Remap qubits function
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let result = pragma.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
 }
@@ -988,6 +990,7 @@ fn pragma_stop_substitute_trait() {
     let pragma_test = PragmaStopParallelBlock::new(vec![2, 1], CalculatorFloat::from(0.0000001));
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(2, 0);
+    qubit_mapping_test.insert(0, 2);
     qubit_mapping_test.insert(1, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
@@ -1120,6 +1123,7 @@ fn pragma_global_phase_substitute_trait() {
     // (2) Remap qubits function
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let result = pragma.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, result_test);
 }
@@ -1245,6 +1249,7 @@ fn pragma_sleep_substitute_trait() {
     let pragma_test = PragmaSleep::new(vec![2, 1], CalculatorFloat::from(0.0000001));
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(2, 0);
+    qubit_mapping_test.insert(0, 2);
     qubit_mapping_test.insert(1, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
@@ -1380,12 +1385,9 @@ fn pragma_active_reset_substitute_trait() {
     let pragma_test = PragmaActiveReset::new(2);
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(2, 0);
+    qubit_mapping_test.insert(0, 2);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
-
-    let qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
-    let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 2 }));
 }
 
 /// Test PragmaActiveReset Serialization and Deserialization traits (readable)
@@ -1665,13 +1667,14 @@ fn pragma_stop_decomp_block_substitute_trait() {
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 0);
     qubit_mapping_test.insert(2, 1);
+    qubit_mapping_test.insert(1, 2);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
 
     let mut qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_err.insert(1, 2);
     let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 0 }));
+    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 2 }));
 }
 
 /// Test PragmaStopDecompositionBlock Serialization and Deserialization traits (readable)
@@ -1807,12 +1810,9 @@ fn pragma_damping_substitute_trait() {
         PragmaDamping::new(1, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(1, 0);
+    qubit_mapping_test.insert(0, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
-
-    let qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
-    let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
 }
 
 /// Test PragmaDamping OperatePragmaNoise and OperatePragmaNoiseProba trait
@@ -1992,12 +1992,9 @@ fn pragma_depolarising_substitute_trait() {
         PragmaDepolarising::new(1, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(1, 0);
+    qubit_mapping_test.insert(0, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
-
-    let qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
-    let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
 }
 
 /// Test PragmaDepolarising OperatePragmaNoise and OperatePragmaNoiseProba trait
@@ -2177,12 +2174,9 @@ fn pragma_dephasing_substitute_trait() {
         PragmaDephasing::new(1, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02));
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(1, 0);
+    qubit_mapping_test.insert(0, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
-
-    let qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
-    let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
 }
 
 /// Test PragmaDephasing OperatePragmaNoise and OperatePragmaNoiseProba trait
@@ -2393,12 +2387,9 @@ fn pragma_random_noise_substitute_trait() {
     );
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(1, 0);
+    qubit_mapping_test.insert(0, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
-
-    let qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
-    let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
 }
 
 /// Test PragmaRandomNoise OperatePragmaNoise and OperatePragmaNoiseProba trait
@@ -2593,12 +2584,9 @@ fn pragma_general_noise_substitute_trait() {
     let pragma_test = PragmaGeneralNoise::new(1, CalculatorFloat::from(0.005), operators);
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(1, 0);
+    qubit_mapping_test.insert(0, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, pragma);
-
-    let qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
-    let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 1 }));
 }
 
 /// Test PragmaGeneralNoise Operate trait
@@ -2813,6 +2801,7 @@ fn pragma_conditional_substitute_trait() {
     // (2) Remap qubits function with an empty circuit
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let mut new_qubit_paulis: HashMap<usize, usize> = HashMap::new();
     new_qubit_paulis.insert(2, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
@@ -3026,6 +3015,7 @@ fn pragma_change_device_substitute_trait() {
     // This is not supported yet and should throw an error
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
     let mut new_qubit_paulis: HashMap<usize, usize> = HashMap::new();
     new_qubit_paulis.insert(2, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).is_err();

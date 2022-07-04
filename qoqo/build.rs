@@ -125,6 +125,7 @@ const SOURCE_FILES: &[&str] = &[
 ];
 
 fn main() {
+    pyo3_build_config::add_extension_module_link_args();
     // create a visitor that will go through source code and collect the identifiers of structs that belong ad variants
     // in the Operation enum, those that belong in the SingleQubitGateOperationEnum and so on
     let mut vis = Visitor::new();

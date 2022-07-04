@@ -178,6 +178,7 @@ pub trait InvolveQubits {
 /// let rotatez = RotateZ::new(0, CalculatorFloat::from(0.0));
 /// let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
 /// qubit_mapping_test.insert(0, 2);
+/// qubit_mapping_test.insert(2, 0);
 /// let result = rotatez.remap_qubits(&qubit_mapping_test).unwrap();
 /// assert_eq!(result, RotateZ::new(2, CalculatorFloat::from(0.0)));
 /// ```
@@ -727,4 +728,15 @@ impl PartialEq for DynOperation {
     fn eq(&self, other: &Self) -> bool {
         self.0.hqslang() == other.0.hqslang()
     }
+}
+
+/// Check if a HashMap is a valid mapping for remapping_qubits
+#[inline]
+pub(crate) fn check_valid_mapping(mapping: &HashMap<usize, usize>) -> Result<(), RoqoqoError> {
+    for q in mapping.values() {
+        if !mapping.contains_key(q) {
+            return Err(RoqoqoError::QubitMappingError { qubit: *q });
+        }
+    }
+    Ok(())
 }

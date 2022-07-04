@@ -85,14 +85,14 @@ fn substitute_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             _ => quote! {(self).#id.clone()},
         });
     let mut contains_qubits = false;
-    let remap_quote = fields_with_type.clone().map(|(fid, _, _)|  {
-            match fid.to_string().as_str() {
-            "qubit" => quote!{*mapping.get(&self.qubit).ok_or_else(|| Err("")).map_err(|x: std::result::Result<&usize,&str>| RoqoqoError::QubitMappingError{qubit: self.qubit.clone()})?},
-            "control" => quote!{*mapping.get(&self.control).ok_or_else(|| Err("")).map_err(|x: std::result::Result<&usize,&str>| RoqoqoError::QubitMappingError{qubit: self.control.clone()})?},
-            "target" => quote!{*mapping.get(&self.target).ok_or_else(|| Err("")).map_err(|x: std::result::Result<&usize,&str>| RoqoqoError::QubitMappingError{qubit: self.target.clone()})?},
-            "qubits" =>  quote!{ new_qubits },
-            _ => quote!{(self).#fid.clone()},
-        }
+    let remap_quote = fields_with_type
+        .clone()
+        .map(|(fid, _, _)| match fid.to_string().as_str() {
+            "qubit" => quote! {*mapping.get(&self.qubit).unwrap_or(&self.qubit)},
+            "control" => quote! {*mapping.get(&self.control).unwrap_or(&self.control)},
+            "target" => quote! {*mapping.get(&self.target).unwrap_or(&self.target)},
+            "qubits" => quote! { new_qubits },
+            _ => quote! {(self).#fid.clone()},
         });
     for (fid, _, _) in fields_with_type {
         if fid.to_string().as_str() == "qubits" {
@@ -103,7 +103,7 @@ fn substitute_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         quote! {
             let mut new_qubits: Vec<usize> = Vec::new();
             for q in &self.qubits{
-                new_qubits.push(*mapping.get(q).ok_or_else(|| Err("")).map_err(|x: std::result::Result<&usize,&str>| RoqoqoError::QubitMappingError{qubit: q.clone()})?)
+                new_qubits.push(*mapping.get(q).unwrap_or(q))
             }
         }
     } else {
@@ -119,6 +119,7 @@ fn substitute_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             }
             /// Remaps the qubits in clone of the operation.
             fn remap_qubits(&self, mapping: &std::collections::HashMap<usize, usize>) -> Result<Self, RoqoqoError>{
+                crate::operations::check_valid_mapping(mapping)?;
                 #new_qubits_quote
                 Ok(Self::new(#(#remap_quote),*))
             }

@@ -246,12 +246,15 @@ const TAGS_PragmaGetPauliProduct: &[&str; 4] = &[
 impl Substitute for PragmaGetPauliProduct {
     /// Remaps qubits in operations in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
-        let mut mutable_mapping: HashMap<usize, usize> = self.qubit_paulis.clone();
-        for (old_qubit, new_qubit) in mapping {
-            if let Some(v) = mutable_mapping.remove(old_qubit) {
-                mutable_mapping.insert(*new_qubit, v);
-            }
+        crate::operations::check_valid_mapping(mapping)?;
+
+        let mut mutable_mapping: HashMap<usize, usize> = HashMap::new();
+        for (key, val) in self.qubit_paulis.iter() {
+            let new_key = mapping.get(key).unwrap_or(key);
+
+            mutable_mapping.insert(*new_key, *val);
         }
+
         let new_circuit = self.circuit.remap_qubits(mapping).unwrap();
         Ok(PragmaGetPauliProduct::new(
             mutable_mapping,
@@ -314,15 +317,19 @@ const TAGS_PragmaRepeatedMeasurement: &[&str; 4] = &[
 impl Substitute for PragmaRepeatedMeasurement {
     /// Remaps qubits in operations in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
-        let new_mapping = (self.qubit_mapping.clone()).map(|hm| {
-            let mut mutable_mapping: HashMap<usize, usize> = hm;
-            for (old_qubit, new_qubit) in mapping {
-                if let Some(v) = mutable_mapping.remove(old_qubit) {
-                    mutable_mapping.insert(*new_qubit, v);
+        crate::operations::check_valid_mapping(mapping)?;
+        let new_mapping = match &self.qubit_mapping {
+            Some(hm) => {
+                let mut mutable_mapping: HashMap<usize, usize> = HashMap::new();
+                for (key, val) in hm {
+                    let new_key = mapping.get(key).unwrap_or(key);
+
+                    mutable_mapping.insert(*new_key, *val);
                 }
+                Some(mutable_mapping)
             }
-            mutable_mapping
-        });
+            None => Some(mapping.clone()),
+        };
         Ok(PragmaRepeatedMeasurement::new(
             self.readout.clone(),
             self.number_measurements,
