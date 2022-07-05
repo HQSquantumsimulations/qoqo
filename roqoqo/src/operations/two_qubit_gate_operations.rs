@@ -46,15 +46,6 @@ pub struct KakDecomposition {
 
 /// Implements the CNOT controlled not gate.
 ///
-/// $$
-/// U = \begin{pmatrix}
-/// 1 & 0 & 0 & 0 \\\\
-/// 0 & 1 & 0 & 0 \\\\
-/// 0 & 0 & 0 & 1 \\\\
-/// 0 & 0 & 1 & 0
-/// \end{pmatrix}
-/// $$
-///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
@@ -151,15 +142,6 @@ impl OperateTwoQubitGate for CNOT {
 
 /// Implements the SWAP gate.
 ///
-/// $$
-/// U = \begin{pmatrix}
-/// 1 & 0 & 0 & 0 \\\\
-/// 0 & 0 & 1 & 0 \\\\
-/// 0 & 1 & 0 & 0 \\\\
-/// 0 & 0 & 0 & 1
-/// \end{pmatrix}
-/// $$
-///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
@@ -248,15 +230,6 @@ impl OperateTwoQubitGate for SWAP {
 
 /// The ISwap gate.
 ///
-/// $$
-/// U = \begin{pmatrix}
-/// 1 & 0 & 0 & 0 \\\\
-/// 0 & 0 & i & 0 \\\\
-/// 0 & i & 0 & 0 \\\\
-/// 0 & 0 & 0 & 1
-/// \end{pmatrix}
-/// $$
-///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
@@ -344,15 +317,6 @@ impl OperateTwoQubitGate for ISwap {
 }
 
 /// The fermionic SWAP gate.
-///
-/// $$
-/// U = \begin{pmatrix}
-/// 1 & 0 & 0 & 0 \\\\
-/// 0 & 0 & 1 & 0 \\\\
-/// 0 & 1 & 0 & 0 \\\\
-/// 0 & 0 & 0 & -1
-/// \end{pmatrix}
-/// $$
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
@@ -446,15 +410,6 @@ impl OperateTwoQubitGate for FSwap {
 
 /// The square root ISwap gate.
 ///
-/// $$
-/// U = \begin{pmatrix}
-/// 1 & 0 & 0 & 0 \\\\
-/// 0 & \frac{1}{\sqrt{2}} & \frac{i}{\sqrt{2}} & 0 \\\\
-/// 0 & \frac{i}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0 \\\\
-/// 0 & 0 & 0 & 1
-/// \end{pmatrix}
-/// $$
-///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
@@ -544,15 +499,6 @@ impl OperateTwoQubitGate for SqrtISwap {
 
 /// The inverse square root ISwap gate.
 ///
-/// $$
-/// U = \begin{pmatrix}
-/// 1 & 0 & 0 & 0 \\\\
-/// 0 & \frac{1}{\sqrt{2}} & \frac{-i}{\sqrt{2}} & 0 \\\\
-/// 0 & \frac{-i}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0 \\\\
-/// 0 & 0 & 0 & 1
-/// \end{pmatrix}
-/// $$
-///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
@@ -641,15 +587,6 @@ impl OperateTwoQubitGate for InvSqrtISwap {
 }
 
 /// The XY gate.
-///
-/// $$
-/// U = \begin{pmatrix}
-/// 1 & 0 & 0 & 0 \\\\
-/// 0 & \cos(\theta/2) & i \sin(\theta/2) & 0 \\\\
-/// 0 & i \sin(\theta/2) & \cos(\theta/2) & 0 \\\\
-/// 0 & 0 & 0 & 1
-/// \end{pmatrix}
-/// $$
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
@@ -744,15 +681,6 @@ impl OperateTwoQubitGate for XY {
 }
 
 /// Implements the controlled-PhaseShift gate.
-///
-/// $$
-/// U = \begin{pmatrix}
-/// 1 & 0 & 0 & 0 \\\\
-/// 0 & 1 & 0 & 0 \\\\
-/// 0 & 0 & 1 & 0 \\\\
-/// 0 & 0 & 0 & e^{i \theta}
-/// \end{pmatrix}
-/// $$
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
