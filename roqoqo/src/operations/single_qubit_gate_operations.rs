@@ -154,7 +154,11 @@ impl OperateSingleQubitGate for SingleQubitGate {
     }
 }
 
+<<<<<<< HEAD
 /// The ZPower gate exp(-i * θ/2 * σ^z).
+=======
+/// The ZPower gate $e^{-i \frac{\theta}{2} \sigma^z}$.
+>>>>>>> math form of unitary matrix moved to user docs
 ///
 #[derive(
     Debug,
@@ -250,7 +254,11 @@ impl OperateSingleQubitGate for RotateZ {
     }
 }
 
+<<<<<<< HEAD
 /// The XPower gate exp(-i * θ/2 * σ^x).
+=======
+/// The XPower gate $e^{-i \frac{\theta}{2} \sigma^x}$.
+>>>>>>> math form of unitary matrix moved to user docs
 ///
 #[derive(
     Debug,
@@ -341,7 +349,11 @@ impl OperateSingleQubitGate for RotateX {
     }
 }
 
+<<<<<<< HEAD
 /// The YPower gate exp(-i * θ/2 * σ^y).
+=======
+/// The YPower gate $e^{-i \frac{\theta}{2} \sigma^y}$.
+>>>>>>> math form of unitary matrix moved to user docs
 ///
 #[derive(
     Debug,
@@ -690,7 +702,11 @@ impl OperateSingleQubitGate for PauliZ {
     }
 }
 
+<<<<<<< HEAD
 /// The square root of the XPower gate exp(-i * π/4 * σ^x).
+=======
+/// The square root of the XPower gate: $e^{-i \frac{\pi}{4} \sigma^x}$.
+>>>>>>> math form of unitary matrix moved to user docs
 ///
 #[derive(
     Debug,
@@ -779,7 +795,11 @@ impl OperateSingleQubitGate for SqrtPauliX {
     }
 }
 
+<<<<<<< HEAD
 /// The inverse square root of the XPower gate: exp(i * π/4 * σ^x).
+=======
+/// The inverse square root of the XPower gate: $e^{i \frac{\pi}{4} \sigma^x}$.
+>>>>>>> math form of unitary matrix moved to user docs
 ///
 #[derive(
     Debug,
@@ -1132,7 +1152,11 @@ impl OperateSingleQubitGate for TGate {
 
 /// The phase shift gate applied on state |1>.
 ///
+<<<<<<< HEAD
 /// Rotation around Z-axis by an arbitrary angle θ (AC Stark shift of the state |1>).
+=======
+/// Rotation around Z-axis by an arbitrary angle $\theta$ (AC Stark shift of the state |1>).
+>>>>>>> math form of unitary matrix moved to user docs
 ///
 #[derive(
     Debug,
@@ -1228,7 +1252,11 @@ impl OperateSingleQubitGate for PhaseShiftState1 {
 
 /// The phase shift gate applied on state |0>.
 ///
+<<<<<<< HEAD
 /// Rotation around Z-axis by an arbitrary angle θ (AC Stark shift of the state |0>).
+=======
+/// Rotation around Z-axis by an arbitrary angle $\theta$ (AC Stark shift of the state |0>).
+>>>>>>> math form of unitary matrix moved to user docs
 ///
 #[derive(
     Debug,
