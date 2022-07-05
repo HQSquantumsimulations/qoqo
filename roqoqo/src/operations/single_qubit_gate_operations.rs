@@ -161,13 +161,6 @@ impl OperateSingleQubitGate for SingleQubitGate {
 
 /// The ZPower gate $e^{-i \frac{\theta}{2} \sigma^z}$.
 ///
-/// $$
-/// U = \begin{pmatrix}
-/// \cos(\frac{\theta}{2})  -i \sin(\frac{\theta}{2}) & 0\\\\
-/// 0 & \cos(\frac{\theta}{2}) + i \sin(\frac{\theta}{2})
-/// \end{pmatrix}
-/// $$
-///
 #[derive(
     Debug,
     Clone,
@@ -264,13 +257,6 @@ impl OperateSingleQubitGate for RotateZ {
 
 /// The XPower gate $e^{-i \frac{\theta}{2} \sigma^x}$.
 ///
-/// $$
-/// U = \begin{pmatrix}
-/// \cos(\frac{\theta}{2}) & -i \sin(\frac{\theta}{2})\\\\
-/// -i \sin(\frac{\theta}{2}) & \cos(\frac{\theta}{2})
-/// \end{pmatrix}
-/// $$
-///
 #[derive(
     Debug,
     Clone,
@@ -361,13 +347,6 @@ impl OperateSingleQubitGate for RotateX {
 }
 
 /// The YPower gate $e^{-i \frac{\theta}{2} \sigma^y}$.
-///
-/// $$
-/// U = \begin{pmatrix}
-/// \cos(\frac{\theta}{2}) &  - \sin(\frac{\theta}{2})\\\\
-/// \sin(\frac{\theta}{2})  & \cos(\frac{\theta}{2})
-/// \end{pmatrix}
-/// $$
 ///
 #[derive(
     Debug,
@@ -460,13 +439,6 @@ impl OperateSingleQubitGate for RotateY {
 
 /// The Pauli X gate.
 ///
-/// $$
-/// U = \begin{pmatrix}
-/// 0 & 1\\\\
-/// 1 & 0
-/// \end{pmatrix}
-/// $$
-///
 #[derive(
     Debug,
     Clone,
@@ -552,13 +524,6 @@ impl OperateSingleQubitGate for PauliX {
 }
 
 /// The Pauli Y gate.
-///
-/// $$
-/// U = \begin{pmatrix}
-/// 0 & -i\\\\
-/// i & 0
-/// \end{pmatrix}
-/// $$
 ///
 #[derive(
     Debug,
@@ -646,13 +611,6 @@ impl OperateSingleQubitGate for PauliY {
 
 /// The Pauli Z gate.
 ///
-/// $$
-/// U = \begin{pmatrix}
-/// 1 & 0 \\\\
-/// 0 & -1
-/// \end{pmatrix}
-/// $$
-///
 #[derive(
     Debug,
     Clone,
@@ -738,13 +696,6 @@ impl OperateSingleQubitGate for PauliZ {
 }
 
 /// The square root of the XPower gate: $e^{-i \frac{\pi}{4} \sigma^x}$.
-///
-/// $$
-/// U = \frac{1}{\sqrt(2)}\begin{pmatrix}
-/// 1 & -i \\\\
-/// -i & 1
-/// \end{pmatrix}
-/// $$
 ///
 #[derive(
     Debug,
@@ -833,14 +784,7 @@ impl OperateSingleQubitGate for SqrtPauliX {
     }
 }
 
-/// The inverse square root of the XPower gate: $e^{i \frac{\pi}{2} \sigma^x}$.
-///
-/// $$
-/// U = \frac{1}{\sqrt{2}} \begin{pmatrix}
-/// 1 & i \\\\
-///  i & 1
-/// \end{pmatrix}
-/// $$
+/// The inverse square root of the XPower gate: $e^{i \frac{\pi}{4} \sigma^x}$.
 ///
 #[derive(
     Debug,
@@ -931,13 +875,6 @@ impl OperateSingleQubitGate for InvSqrtPauliX {
 
 /// The Hadamard gate.
 ///
-/// $$
-/// U = \frac{1}{\sqrt{2}} \begin{pmatrix}
-/// 1 & 1\\\\
-///  1 & -1
-/// \end{pmatrix}
-/// $$
-///
 #[derive(
     Debug,
     Clone,
@@ -1025,13 +962,6 @@ impl OperateSingleQubitGate for Hadamard {
 
 /// The S gate.
 ///
-/// $$
-/// U = \frac{1}{\sqrt{2}} \begin{pmatrix}
-/// 1 & 0\\\\
-///  0 & i
-/// \end{pmatrix}
-/// $$
-///
 #[derive(
     Debug,
     Clone,
@@ -1117,13 +1047,6 @@ impl OperateSingleQubitGate for SGate {
 }
 
 /// The T gate.
-///
-/// $$
-/// U = \frac{1}{\sqrt{2}} \begin{pmatrix}
-/// 1 & 0\\\\
-///  0 & e^{i \frac{\pi}{4}}
-/// \end{pmatrix}
-/// $$
 ///
 #[derive(
     Debug,
@@ -1215,13 +1138,6 @@ impl OperateSingleQubitGate for TGate {
 /// The phase shift gate applied on state |1>.
 ///
 /// Rotation around Z-axis by an arbitrary angle $\theta$ (AC Stark shift of the state |1>).
-///
-/// $$
-/// U = \begin{pmatrix}
-/// 1 & 0\\\\
-///  0 & e^{i \theta}
-/// \end{pmatrix}
-/// $$
 ///
 #[derive(
     Debug,
@@ -1319,13 +1235,6 @@ impl OperateSingleQubitGate for PhaseShiftState1 {
 ///
 /// Rotation around Z-axis by an arbitrary angle $\theta$ (AC Stark shift of the state |0>).
 ///
-/// $$
-/// U = \begin{pmatrix}
-/// e^{i \theta} & 0\\\\
-///  0 & 1
-/// \end{pmatrix}
-/// $$
-///
 #[derive(
     Debug,
     Clone,
@@ -1419,22 +1328,6 @@ impl OperateSingleQubitGate for PhaseShiftState0 {
 }
 
 /// Implements a rotation around an axis in the x-y plane in spherical coordinates.
-///
-/// $$
-/// U = \begin{pmatrix}
-/// \cos(\frac{\theta}{2}) & 0\\\\
-/// 0 & \cos(\frac{\theta}{2})
-/// \end{pmatrix}
-/// \+ \begin{pmatrix}
-/// -i \sin(\frac{\theta}{2}) v_z  &  \sin(\frac{\theta}{2}) \left(-i v_x - v_y \right)\\\\
-/// \sin(\frac{\theta}{2}) \left(-i v_x + v_y \right) & i \sin(\frac{\theta}{2}) v_z
-/// \end{pmatrix}
-///  $$
-///
-/// with
-/// $ v_x = \sin(\theta_{sph}) \cos(\phi_{sph}) $,
-/// $ v_y = \sin(\theta_{sph}) \sin(\phi_{sph}) $,
-/// $ v_z = \cos(\theta_{sph})$.
 ///
 #[derive(
     Debug,
@@ -1550,13 +1443,6 @@ impl OperateSingleQubitGate for RotateAroundSphericalAxis {
 }
 
 /// Implements a rotation around an x- and y-axis in spherical coordinates.
-///
-/// $$
-/// U = \begin{pmatrix}
-/// \cos(\frac{\theta}{2}) & -i e^{-i \phi} \sin(\frac{\theta}{2})\\\\
-/// -i e^{i \phi} \sin(\frac{\theta}{2}) & \cos(\frac{\theta}{2})
-/// \end{pmatrix}
-///  $$
 ///
 #[derive(
     Debug,
