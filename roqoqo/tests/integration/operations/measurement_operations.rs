@@ -956,6 +956,7 @@ fn pragma_repeated_measurement_operate_trait() {
 fn pragma_repeated_measurement_substitute_trait() {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 1);
+    qubit_mapping.insert(1, 0);
     let pragma = PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(qubit_mapping.clone()));
 
     // (1) Substitute parameters function
@@ -972,8 +973,17 @@ fn pragma_repeated_measurement_substitute_trait() {
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
     qubit_mapping_test.insert(2, 0);
+    qubit_mapping_test.insert(3, 4);
+    qubit_mapping_test.insert(4, 5);
+    qubit_mapping_test.insert(5, 3);
+
     let mut new_qubit_mapping: HashMap<usize, usize> = HashMap::new();
     new_qubit_mapping.insert(2, 1);
+    new_qubit_mapping.insert(1, 0);
+    new_qubit_mapping.insert(0, 2);
+    new_qubit_mapping.insert(3, 4);
+    new_qubit_mapping.insert(4, 5);
+    new_qubit_mapping.insert(5, 3);
     let result = pragma.remap_qubits(&qubit_mapping_test).unwrap();
     let test_gate =
         PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(new_qubit_mapping.clone()));

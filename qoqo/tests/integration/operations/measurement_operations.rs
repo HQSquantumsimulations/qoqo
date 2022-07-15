@@ -35,6 +35,13 @@ fn qubit_remapping() -> HashMap<usize, usize> {
 fn qubits_remapped() -> HashMap<usize, usize> {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(2, 1);
+    qubit_mapping.insert(0, 2);
+    qubit_mapping
+}
+
+fn qubits_remapped_pauli() -> HashMap<usize, usize> {
+    let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping.insert(2, 1);
     qubit_mapping
 }
 
@@ -395,7 +402,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
             Operation::from(PragmaGetOccupationProbability::new(String::from("ro"), Some(circuit_remapped())));
             "PragmaGetOccupationProbability")]
 #[test_case(Operation::from(PragmaGetPauliProduct::new(create_qubit_mapping(), String::from("ro"), create_circuit())),
-            Operation::from(PragmaGetPauliProduct::new(qubits_remapped(), String::from("ro"), circuit_remapped()));
+            Operation::from(PragmaGetPauliProduct::new(qubits_remapped_pauli(), String::from("ro"), circuit_remapped()));
             "PragmaGetPauliProduct")]
 #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(create_qubit_mapping()))),
             Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(qubits_remapped())));
