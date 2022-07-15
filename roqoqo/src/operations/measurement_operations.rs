@@ -326,7 +326,6 @@ impl Substitute for PragmaRepeatedMeasurement {
 
                     mutable_mapping.insert(*new_key, *val);
                 }
-                dbg!(&mutable_mapping);
                 for (key, val) in mapping.iter() {
                     if mutable_mapping.get(key).is_none() {
                         mutable_mapping.insert(*key, *val);
