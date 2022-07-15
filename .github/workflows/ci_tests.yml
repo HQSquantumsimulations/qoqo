@@ -280,13 +280,13 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions-rs/toolchain@v1
         with:
-            toolchain: nightly
-            components: clippy
+            profile: minimal
+            toolchain: stable
+            components: llvm-tools-preview
             override: true
       - run: |
-          rustup component add llvm-tools-preview
-          export RUSTFLAGS="-Zinstrument-coverage"
-          export RUSTDOCFLAGS="-Zinstrument-coverage"
+          export RUSTFLAGS="-Cinstrument-coverage"
+          export RUSTDOCFLAGS="-Cinstrument-coverage"
           cargo build --verbose --locked
           LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo +nightly test --package=roqoqo --no-default-features
           cd roqoqo/
@@ -308,13 +308,12 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions-rs/toolchain@v1
         with:
-            toolchain: nightly
-            components: clippy
+            toolchain: stable
+            components: llvm-tools-preview
             override: true
       - run: |
-          rustup component add llvm-tools-preview
-          export RUSTFLAGS="-Zinstrument-coverage"
-          export RUSTDOCFLAGS="-Zinstrument-coverage"
+          export RUSTFLAGS="-Cinstrument-coverage"
+          export RUSTDOCFLAGS="-Cinstrument-coverage"
           python -m pip install numpy
           cargo build --verbose --locked
           LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo +nightly test --workspace --package=qoqo --no-default-features
