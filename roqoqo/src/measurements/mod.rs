@@ -45,7 +45,6 @@ use crate::{
     Circuit, RoqoqoError,
 };
 
-<<<<<<< HEAD
 #[cfg(feature = "async")]
 use crate::registers::Registers;
 #[cfg(feature = "async")]
@@ -56,18 +55,6 @@ use async_trait::async_trait;
 use futures::future::FutureExt;
 #[cfg(feature = "async")]
 use std::pin::Pin;
-=======
-#[cfg(feature="async")]
-use futures::{ future::FutureExt};
-#[cfg(feature="async")]
-use async_trait::async_trait;
-#[cfg(feature="async")]
-use std::pin::Pin;
-#[cfg(feature="async")]
-use crate::RoqoqoBackendError;
-
-use crate::registers::Registers;
->>>>>>> da5d075 (WIP: async compatability)
 
 /// Allows generic interfacing with roqoqo measurements.
 ///
@@ -207,11 +194,7 @@ pub trait Measure: PartialEq + Clone {
 /// assert_eq!(result.get("single_qubit_exp_val").unwrap(), &0.0);
 /// ```
 ///
-<<<<<<< HEAD
 #[cfg_attr(feature = "async", async_trait)]
-=======
-#[cfg_attr(feature="async", async_trait)]
->>>>>>> da5d075 (WIP: async compatability)
 pub trait MeasureExpectationValues: PartialEq + Clone + Measure {
     /// Evaluates measurement results based on classical registers.
     ///
@@ -244,7 +227,6 @@ pub trait MeasureExpectationValues: PartialEq + Clone + Measure {
     /// * `Ok(Some(HashMap<String, f64>))` - The measurement has been evaluated successfully. The HashMap contains the measured expectation values.
     /// * `Ok(None)` - The measurement did not fail but is incomplete. A new round of measurements is needed.
     /// * `Err(RoqoqoError)` - The measurement evaluation failed.
-<<<<<<< HEAD
     #[cfg(feature = "async")]
     async fn async_evaluate(
         &self,
@@ -256,14 +238,5 @@ pub trait MeasureExpectationValues: PartialEq + Clone + Measure {
         Ok(self
             .evaluate(bit_registers, float_registers, complex_registers)?
             .unwrap())
-=======
-    #[cfg(feature="async")]
-    async fn async_evaluate(
-        &self,
-        registers: Pin<Box<dyn FutureExt<Output=Result<Registers, RoqoqoBackendError>> + std::marker::Send >>
-    ) -> Result<HashMap<String, f64>, RoqoqoBackendError>{
-        let (bit_registers, float_registers, complex_registers) = registers.await?;
-        Ok(self.evaluate(bit_registers, float_registers, complex_registers)?.unwrap())
->>>>>>> da5d075 (WIP: async compatability)
     }
 }

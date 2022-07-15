@@ -49,20 +49,9 @@ pub type FloatOutputRegister = Vec<FloatRegister>;
 /// of a quantum program.
 pub type ComplexOutputRegister = Vec<ComplexRegister>;
 
-<<<<<<< HEAD
 /// Registers passed to and from functions running a full circuit.
 pub type Registers = (
     HashMap<String, BitOutputRegister>,
     HashMap<String, FloatOutputRegister>,
     HashMap<String, ComplexOutputRegister>,
 );
-=======
-
-/// Registers passed to and from functions running a full circuit.
-pub type Registers =
-    (
-        HashMap<String, BitOutputRegister>,
-        HashMap<String, FloatOutputRegister>,
-        HashMap<String, ComplexOutputRegister>,
-    );
->>>>>>> da5d075 (WIP: async compatability)
