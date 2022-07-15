@@ -19,6 +19,7 @@ jobs:
         profile: minimal
         toolchain: stable
         default: true
+    - uses: Swatinem/rust-cache@v1.4.0
     - name: Install dependencies
       run: |
         pip install maturin pytest numpy
@@ -116,7 +117,7 @@ jobs:
           maturin-version: latest
           command: build
           manylinux: 2010
-          args: -i python${{ matrix.python.py }} --out wheels --no-sdist -m qoqo/Cargo.toml --cargo-extra-args="--locked"
+          args: -i python${{ matrix.python.py }} --out wheels  -m qoqo/Cargo.toml --locked
       - name: test install
         run: |
           pip install wheels/* --force-reinstall
@@ -185,7 +186,7 @@ jobs:
         with:
           maturin-version: latest
           command: build
-          args: -i python --out wheels --no-sdist -m qoqo/Cargo.toml --cargo-extra-args="--locked"
+          args: -i python --out wheels -m qoqo/Cargo.toml --locked
 
   test_maturin_builds_macos:
     name: maturin_check-${{ matrix.combinations.runs_on }}
@@ -218,11 +219,11 @@ jobs:
       - name: macos wheels
         if: ${{ matrix.combinations.runs_on == 'macOS-latest' && matrix.python-version < '3.8'}}
         run: |
-          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --out wheels --no-sdist -m qoqo/Cargo.toml --cargo-extra-args="--locked"
+          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --out wheels  -m qoqo/Cargo.toml --locked
       - name: universal wheels
         if: ${{ matrix.combinations.runs_on == 'macOS-latest' && matrix.python-version >= '3.8' }}
         run: |
-          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --universal2 --out wheels --no-sdist -m qoqo/Cargo.toml --cargo-extra-args="--locked"
+          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --universal2 --out wheels  -m qoqo/Cargo.toml --locked
       - name: test install
         run: |
           pip install wheels/* --force-reinstall
@@ -279,15 +280,15 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions-rs/toolchain@v1
         with:
-            toolchain: nightly
-            components: clippy
+            profile: minimal
+            toolchain: stable
+            components: llvm-tools-preview
             override: true
       - run: |
-          rustup component add llvm-tools-preview
-          export RUSTFLAGS="-Zinstrument-coverage"
-          export RUSTDOCFLAGS="-Zinstrument-coverage"
+          export RUSTFLAGS="-Cinstrument-coverage"
+          export RUSTDOCFLAGS="-Cinstrument-coverage"
           cargo build --verbose --locked
-          LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo +nightly test --package=roqoqo --no-default-features
+          LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo test --package=roqoqo --no-default-features
           cd roqoqo/
           cargo install grcov
           grcov . --binary-path ../target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "cargo" --ignore "/mod.rs" --ignore "/lib.rs" --ignore "*/_auto_generated_operations.rs" --keep-only "src/*" -o lcov_roqoqo.info
@@ -307,16 +308,15 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions-rs/toolchain@v1
         with:
-            toolchain: nightly
-            components: clippy
+            toolchain: stable
+            components: llvm-tools-preview
             override: true
       - run: |
-          rustup component add llvm-tools-preview
-          export RUSTFLAGS="-Zinstrument-coverage"
-          export RUSTDOCFLAGS="-Zinstrument-coverage"
+          export RUSTFLAGS="-Cinstrument-coverage"
+          export RUSTDOCFLAGS="-Cinstrument-coverage"
           python -m pip install numpy
           cargo build --verbose --locked
-          LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo +nightly test --workspace --package=qoqo --no-default-features
+          LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo test --workspace --package=qoqo --no-default-features
           cd qoqo/
           cargo install grcov
           grcov . --binary-path ../target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "cargo" --ignore "/mod.rs" --ignore "/lib.rs" --ignore "*/_auto_generated_operations.rs" --keep-only "src/*" -o lcov_qoqo.info
