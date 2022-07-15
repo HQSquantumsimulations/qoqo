@@ -2,6 +2,12 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## v1.0.0-alpha.4
+
+### Fixed v1.0.0-alpha.4
+
+* `PragmaRepeatedMeasurement` now adds remapped qubits that are not previously in the qubit_mapping of the gate.
+
 ## v1.0.0-alpha.3
 
 ### Added v1.0.0-alpha.3
