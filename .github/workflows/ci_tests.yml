@@ -28,6 +28,17 @@ jobs:
       run: |
         pytest ./qoqo/
 
+  cargo-deny:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: EmbarkStudios/cargo-deny-action@v1
+      with:
+        log-level: warn
+        command: check
+        arguments: --all-features
+        command-arguments: ""
+
   clippy_check:
     runs-on: ubuntu-latest
     steps:
