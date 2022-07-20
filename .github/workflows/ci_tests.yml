@@ -19,7 +19,7 @@ jobs:
         profile: minimal
         toolchain: stable
         default: true
-    - uses: Swatinem/rust-cache@v1.4.0
+    - uses: Swatinem/rust-cache@v2.0.0
     - name: Install dependencies
       run: |
         pip install maturin pytest numpy
@@ -37,7 +37,7 @@ jobs:
           profile: minimal
           toolchain: stable
           components: clippy
-      - uses: Swatinem/rust-cache@v1.4.0
+      - uses: Swatinem/rust-cache@v2.0.0
       - run: cargo clippy -- -D warnings
 
   unittests_check:
@@ -65,7 +65,7 @@ jobs:
           target: ${{ matrix.combinations.rust }}
           default: true
           components: rustfmt
-      - uses: Swatinem/rust-cache@v1.4.0
+      - uses: Swatinem/rust-cache@v2.0.0
       - uses: actions/setup-python@v3.1.2
         with:
           python-version: ${{ matrix.python.py }}
@@ -107,7 +107,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: Swatinem/rust-cache@v1.4.0
+      - uses: Swatinem/rust-cache@v2.0.0
       - uses: actions/setup-python@v3.1.2
         with:
           python-version: ${{ matrix.python.py }}
@@ -141,7 +141,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: Swatinem/rust-cache@v1.4.0
+      - uses: Swatinem/rust-cache@v2.0.0
       - uses: actions/setup-python@v3.1.2
         with:
           python-version: ${{ matrix.python.py }}
@@ -177,7 +177,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: Swatinem/rust-cache@v1.4.0
+      - uses: Swatinem/rust-cache@v2.0.0
       - uses: actions/setup-python@v3.1.2
         with:
           python-version: ${{ matrix.python.py }}
