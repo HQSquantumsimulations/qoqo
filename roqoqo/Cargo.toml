@@ -11,7 +11,7 @@ repository = "https://github.com/HQSquantumsimulations/qoqo"
 documentation = "https://docs.rs/roqoqo/"
 readme = "../README.md"
 description = "Rust Quantum Computing Toolkit by HQS"
-include = ["src*", "build.rs", "katex.html", "LICENSE", "README.md"]
+include = ["src*", "build.rs", "LICENSE", "README.md"]
 
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -50,7 +50,7 @@ proc-macro2 = "1.0"
 rand = {version="0.8"}
 
 [package.metadata.docs.rs]
-rustdoc-args = [ "--html-in-header", "katex.html", "--document-private-items" ]
+rustdoc-args = ["--document-private-items" ]
 
 [features]
 default = ["serialize"]

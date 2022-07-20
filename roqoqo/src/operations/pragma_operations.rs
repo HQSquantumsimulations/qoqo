@@ -759,19 +759,11 @@ impl OperatePragmaNoiseProba for PragmaRandomNoise {
 /// The general noise PRAGMA operation.
 ///
 /// This PRAGMA operation applies a noise term according to the given rates.
-/// The rates are represented by a 3x3 matrix:
-/// $$ M = \begin{pmatrix}
-/// a & b & c \\\\
-/// d & e & f \\\\
-/// g & h & j \\\\
-/// \end{pmatrix} $$
-/// where the coefficients correspond to the following summands
+/// The rates are represented by a 3x3 matrix,  where the coefficients correspond to the following summands
 /// expanded from the first term of the non-coherent part of the Lindblad equation:
-///     $$ \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
-///         L_0 = \sigma^{+} \\\\
-///         L_1 = \sigma^{-} \\\\
-///         L_3 = \sigma^{z}
-///     $$
+/// $ \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} $, 
+/// with $ L_0 = \sigma^{+}$, $L_1 = \sigma^{-}$ and $L_3 = \sigma^{z}$.
+///
 /// result{sigma_z, sigma_minus} = sigma_z (x) sigma_minus.T - 1/2 * (sigma_minus.T * sigma_z) (x) 1 - 1/2 * 1 (x) (sigma_minus.T * sigma_z).T
 ///
 /// Applying the Pragma with a given `gate_time` corresponds to applying the full time-evolution under the Lindblad equation for `gate_time` time.

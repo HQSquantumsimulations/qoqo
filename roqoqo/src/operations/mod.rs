@@ -456,10 +456,7 @@ pub trait OperateConstantGate:
 ///
 /// Implements the general single qubit unitary gates  that can be brought into the form:
 ///
-/// $$ U =e^{i \phi}\begin{pmatrix}
-/// \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
-/// \beta_r+i \beta_i & \alpha_r-i\alpha_i
-/// \end{pmatrix} $$
+/// $ U =e^{i \phi} \cdot [[\alpha_r+i \alpha_i , -\beta_r+i \beta_i], [\beta_r+i \beta_i , \alpha_r-i\alpha_i]] $.
 ///
 /// These gates can be parametrized by five real parameters:
 ///

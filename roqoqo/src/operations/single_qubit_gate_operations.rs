@@ -26,11 +26,6 @@ use rand_distr::{Distribution, Normal};
 
 /// The most general unitary operation acting on one qubit.
 ///
-/// $$ U =e^{i \phi}\begin{pmatrix}
-/// \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
-/// \beta_r+i \beta_i & \alpha_r-i\alpha_i
-/// \end{pmatrix} $$
-///
 /// # Warning
 ///
 /// Due to the support of parameterized values it cannot be guaranteed that the unitary matrix of the gate
@@ -695,7 +690,7 @@ impl OperateSingleQubitGate for PauliZ {
     }
 }
 
-/// The square root of the XPower gate: $e^{-i \frac{\pi}{4} \sigma^x}$.
+/// The square root of the XPower gate $ exp(-i \pi/4 \sigma_x) $.
 ///
 #[derive(
     Debug,
