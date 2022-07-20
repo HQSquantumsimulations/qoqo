@@ -192,3 +192,36 @@ impl InvolveQubits for InputSymbolic {
         InvolvedQubits::None
     }
 }
+
+
+/// InputBit sets a certain bit in an existing BitRegister of the circuit.
+///
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::Define,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct InputBit {
+    /// The name of the register that where the bit is set.
+    name: String,
+    /// The index in the register that is set.
+    index: usize,
+    /// The value the bit is set to
+    value: bool
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_InputBit: &[&str; 3] = &["Operation", "Definition", "InputBit"];
+
+// Implementing the InvolveQubits trait for InputSymbolic.
+impl InvolveQubits for InputBit {
+    /// Lists all involved Qubits (here, none).
+    fn involved_qubits(&self) -> InvolvedQubits {
+        InvolvedQubits::None
+    }
+}
