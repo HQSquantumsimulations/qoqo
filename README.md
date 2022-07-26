@@ -43,6 +43,7 @@ roqoqo provides:
 * A Backend trait defining a standard for interfacing from qoqo to other toolkits, hardware and simulators that can return measured values
 * Serialize and deserialize support for circuits and measurement information via the serde crate.
 
+This software is still in the beta stage. Functions and documentation are not yet complete and breaking changes can occur.
 
 ### Installation
 
