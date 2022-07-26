@@ -10,7 +10,8 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-fn add_operation() {
+
+/// Test no-involved-qubits operation
+fn add_operation_() {
 
 }

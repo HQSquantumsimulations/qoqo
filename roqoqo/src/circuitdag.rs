@@ -14,7 +14,7 @@
 
 use std::collections::{HashSet, HashMap};
 
-use roqoqo::operations::{Operation, InvolvedQubits};
+use crate::operations::{Operation, InvolvedQubits};
 
 use petgraph::adj::{NodeIndex, EdgeIndex};
 use petgraph::graph::DiGraph;
@@ -52,7 +52,7 @@ impl CircuitDag {
     }
 
     /// Adds an operation to the back of the CircuitDag.
-    fn add_to_back(operation: Operation) -> (){
+    fn add_to_back(operation: Operation) -> Self{
 
     }
 }
