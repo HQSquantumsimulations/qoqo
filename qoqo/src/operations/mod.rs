@@ -66,6 +66,7 @@ use pyo3::prelude::*;
 ///    DefinitionFloat
 ///    DefinitionComplex
 ///    InputSymbolic
+///    InputSymbolic
 ///    MeasureQubit
 ///    PragmaGetStateVector
 ///    PragmaGetDensityMatrix
@@ -131,6 +132,7 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<DefinitionFloatWrapper>()?;
     m.add_class::<DefinitionComplexWrapper>()?;
     m.add_class::<InputSymbolicWrapper>()?;
+    m.add_class::<InputBitWrapper>()?;
     m.add_class::<MeasureQubitWrapper>()?;
     m.add_class::<PragmaGetStateVectorWrapper>()?;
     m.add_class::<PragmaGetDensityMatrixWrapper>()?;
