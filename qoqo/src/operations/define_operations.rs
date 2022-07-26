@@ -79,3 +79,16 @@ pub struct InputSymbolic {
     name: String,
     input: f64,
 }
+
+#[wrap(Operate, Define)]
+/// InputBit sets a certain bit in an existing BitRegister of the circuit.
+///
+/// Args:
+///     name (string): The name of the register that is defined.
+///     index (int): The index in the register that is set.
+///     value (int): The value the bit is set to.
+pub struct InputBit {
+    name: String,
+    index: usize,
+    value: bool,
+}
