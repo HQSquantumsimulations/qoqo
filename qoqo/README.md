@@ -20,6 +20,35 @@ What roqoqo/qoqo is **not**:
 * A quantum circuit optimizer
 * A collection of quantum algorithms
 
+## roqoqo
+
+[![Crates.io](https://img.shields.io/crates/v/roqoqo)](https://crates.io/crates/roqoqo)
+[![GitHub Workflow Status](https://github.com/HQSquantumsimulations/qoqo/workflows/ci_tests/badge.svg)](https://github.com/HQSquantumsimulations/qoqo/actions)
+[![docs.rs](https://img.shields.io/docsrs/roqoqo)](https://docs.rs/roqoqo/)
+![Crates.io](https://img.shields.io/crates/l/roqoqo)
+[![codecov](https://codecov.io/gh/HQSquantumsimulations/qoqo/branch/main/graph/badge.svg?token=S1IN066V2W)](https://codecov.io/gh/HQSquantumsimulations/qoqo)
+
+roqoqo provides:
+
+* A circuit struct to represent quantum programs
+* Single-Qubit, Two-Qubit and Multi-Qubit Operations that can be executed (decomposed) on any universal quantum computer
+* PRAGMA Operations that only apply to certain hardware, simulators or annotate circuits with additional information
+* Classical Registers and Measurement operations to use with a quantum program
+* Measurement structs for evaluating observable measurements based on projective measurements from quantum hardware or simulator readouts
+* A Backend trait defining a standard for interfacing from qoqo to other toolkits, hardware and simulators that can return measured values
+* Serialize and deserialize support for circuits and measurement information via the serde crate.
+
+### Installation
+
+To use roqoqo in a Rust project simply add
+
+```TOML
+roqoqo = {version="0.8"}
+```
+
+to the `[dependencies]` section of the project Cargo.toml.
+
+## qoqo
 
 [![Documentation Status](https://readthedocs.org/projects/qoqo/badge/?version=latest)](https://qoqo.readthedocs.io/en/latest/?badge=latest)
 [![GitHub Workflow Status](https://github.com/HQSquantumsimulations/qoqo/workflows/ci_tests/badge.svg)](https://github.com/HQSquantumsimulations/qoqo/actions)

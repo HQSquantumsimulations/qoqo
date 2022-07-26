@@ -197,7 +197,6 @@ impl InvolveQubits for InputSymbolic {
     }
 }
 
-
 /// InputBit sets a certain bit in an existing BitRegister of the circuit.
 ///
 #[derive(
@@ -216,7 +215,7 @@ pub struct InputBit {
     /// The index in the register that is set.
     index: usize,
     /// The value the bit is set to
-    value: bool
+    value: bool,
 }
 
 #[allow(non_upper_case_globals)]
