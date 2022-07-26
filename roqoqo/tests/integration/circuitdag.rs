@@ -21,5 +21,7 @@ use test_case::test_case;
 fn add_operation_no_involved_qubits(operation: Operation) {
     let mut dag:CircuitDag = CircuitDag::new();
     
-    dag.add_to_back(operation);
+    dag.add_to_back(operation.clone());
+
+    assert_eq!(dag.get_op(0).unwrap(), &operation);
 }

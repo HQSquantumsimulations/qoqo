@@ -52,7 +52,32 @@ impl CircuitDag {
     }
 
     /// Adds an operation to the back of the CircuitDag.
+    /// 
+    /// # Arguments
+    /// 
+    /// * 'operation' - The Operation to add to the end of the CircuitDag.
     pub fn add_to_back(&mut self, operation: Operation) -> (){
         
+    }
+
+    /// Returns a reference to the Operation at index.
+    /// 
+    /// # Arguments
+    /// 
+    /// * 'index' - The index of the Operation to get from CircuitDag.
+    pub fn get_op(&self, index: usize) -> Option<&Operation> {
+        self.commuting_operations.get(index)
+    }
+
+    /// Returns a reference to the vector of commuting operations in CircuitDag.
+    /// 
+    pub fn commuting_operations(&self) -> &Vec<Operation> {
+        &self.commuting_operations
+    }
+
+    /// Returns a reference to the vector of commuting operations in CircuitDag.
+    /// 
+    pub fn graph(&self) -> &DiGraph<NodeIndex, EdgeIndex> {
+        &self.graph
     }
 }
