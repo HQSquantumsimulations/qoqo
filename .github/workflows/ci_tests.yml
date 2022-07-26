@@ -284,51 +284,46 @@ jobs:
             toolchain: stable
             components: llvm-tools-preview
             override: true
+      - uses: taiki-e/install-action@cargo-llvm-cov
       - run: |
-          export RUSTFLAGS="-Cinstrument-coverage"
-          export RUSTDOCFLAGS="-Cinstrument-coverage"
-          cargo build --verbose --locked
-          LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo test --package=roqoqo --no-default-features
-          cd roqoqo/
-          cargo install grcov
-          grcov . --binary-path ../target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "cargo" --ignore "/mod.rs" --ignore "/lib.rs" --ignore "*/_auto_generated_operations.rs" --keep-only "src/*" -o lcov_roqoqo.info
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          # token: ${{ secrets.CODECOV_TOKEN }}
-          files: lcov_roqoqo.info
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: true
-          verbose: true
+          cargo llvm-cov --no-default-features --workspace --lcov --output-path lcov_roqoqo.info --fail-under-linex=89
+      # - name: Upload coverage to Codecov
+      #   uses: codecov/codecov-action@v3
+      #   with:
+      #     # token: ${{ secrets.CODECOV_TOKEN }}
+      #     files: lcov_roqoqo.info
+      #     flags: unittests
+      #     name: codecov-umbrella
+      #     fail_ci_if_error: true
+      #     verbose: true
   
-  code_coverage_qoqo:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - uses: actions-rs/toolchain@v1
-        with:
-            toolchain: stable
-            components: llvm-tools-preview
-            override: true
-      - run: |
-          export RUSTFLAGS="-Cinstrument-coverage"
-          export RUSTDOCFLAGS="-Cinstrument-coverage"
-          python -m pip install numpy
-          cargo build --verbose --locked
-          LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo test --workspace --package=qoqo --no-default-features
-          cd qoqo/
-          cargo install grcov
-          grcov . --binary-path ../target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "cargo" --ignore "/mod.rs" --ignore "/lib.rs" --ignore "*/_auto_generated_operations.rs" --keep-only "src/*" -o lcov_qoqo.info
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          # token: ${{ secrets.CODECOV_TOKEN }}
-          files: lcov_qoqo.info
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: true
-          verbose: true
+  # code_coverage_qoqo:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@master
+  #     - uses: actions-rs/toolchain@v1
+  #       with:
+  #           toolchain: stable
+  #           components: llvm-tools-preview
+  #           override: true
+  #     - run: |
+  #         export RUSTFLAGS="-Cinstrument-coverage"
+  #         export RUSTDOCFLAGS="-Cinstrument-coverage"
+  #         python -m pip install numpy
+  #         cargo build --verbose --locked
+  #         LLVM_PROFILE_FILE="coverage-%p-%m.profraw" cargo test --workspace --package=qoqo --no-default-features
+  #         cd qoqo/
+  #         cargo install grcov
+  #         grcov . --binary-path ../target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "cargo" --ignore "/mod.rs" --ignore "/lib.rs" --ignore "*/_auto_generated_operations.rs" --keep-only "src/*" -o lcov_qoqo.info
+  #     - name: Upload coverage to Codecov
+  #       uses: codecov/codecov-action@v3
+  #       with:
+  #         # token: ${{ secrets.CODECOV_TOKEN }}
+  #         files: lcov_qoqo.info
+  #         flags: unittests
+  #         name: codecov-umbrella
+  #         fail_ci_if_error: true
+  #         verbose: true
   
   # format_check: # needs to run after test otherwise auogenerated files are not built
   #   runs-on: ubuntu-latest

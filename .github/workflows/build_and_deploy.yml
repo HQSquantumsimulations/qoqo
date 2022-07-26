@@ -194,6 +194,54 @@ jobs:
           name: py_wheels
           path: wheels
 
+  code_coverage_roqoqo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions-rs/toolchain@v1
+        with:
+            profile: minimal
+            toolchain: stable
+            components: llvm-tools-preview
+            override: true
+      - uses: taiki-e/install-action@cargo-llvm-cov
+      - run: |
+          cd roqoqo
+          cargo llvm-cov --no-default-features --lcov --output-path lcov_roqoqo.info --fail-under-linex=89
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          # token: ${{ secrets.CODECOV_TOKEN }}
+          files: lcov_roqoqo.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true
+  
+  code_coverage_roqoqo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions-rs/toolchain@v1
+        with:
+            profile: minimal
+            toolchain: stable
+            components: llvm-tools-preview
+            override: true
+      - uses: taiki-e/install-action@cargo-llvm-cov
+      - run: |
+          cd qoqo
+          cargo llvm-cov --no-default-features --lcov --output-path lcov_qoqo.info --fail-under-linex=89
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          # token: ${{ secrets.CODECOV_TOKEN }}
+          files: lcov_qoqo.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true
+
   deploy:
       needs: [deploy_cratesio, build_maturin_builds_macos, build_maturin_builds_linux, build_maturin_builds_linux_src, build_maturin_builds_windows]
       runs-on: ubuntu-latest
