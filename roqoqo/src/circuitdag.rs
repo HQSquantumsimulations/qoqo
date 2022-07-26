@@ -10,6 +10,8 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+//! Represents a Direct Acyclic Graph (DAG) 
+
 use std::collections::{HashSet, HashMap};
 
 use roqoqo::operations::{Operation, InvolvedQubits};
@@ -22,9 +24,9 @@ pub struct CircuitDag {
     commuting_operations: Vec<Operation>,
     first_parallel_block: HashSet<NodeIndex>,
     last_parallel_block: HashSet<NodeIndex>,
-    /// None if no Operation with InvovledQubits::All in circuit
+    /// None if no Operation with InvolvedQubits::All in circuit
     first_all: Option<NodeIndex>,
-    /// None if no Operation with InvovledQubits::All in circuit
+    /// None if no Operation with InvolvedQubits::All in circuit
     last_all: Option<NodeIndex>,
     first_operation_involving_qubit: HashMap<usize, NodeIndex>,
     last_operation_involving_qubit: HashMap<usize, NodeIndex>,
@@ -33,12 +35,13 @@ pub struct CircuitDag {
 }
 
 impl CircuitDag {
+    /// Creates a new empty CircuitDag
     fn new() -> Self{
         CircuitDag { 
             graph: DiGraph::new(), 
-            commuting_operations: Vec::new(), 
-            first_parallel_block: HashSet::new(), 
-            last_parallel_block: HashSet::new(), 
+            commuting_operations: Vec::<Operation>::new(), 
+            first_parallel_block: HashSet::<NodeIndex>::new(), 
+            last_parallel_block: HashSet::<NodeIndex>::new(), 
             first_all: None, 
             last_all: None, 
             first_operation_involving_qubit: HashMap::<usize, NodeIndex>::new(), 
@@ -48,6 +51,7 @@ impl CircuitDag {
         }
     }
 
+    /// Adds an operation to the back of the CircuitDag.
     fn add_to_back(operation: Operation) -> (){
 
     }
