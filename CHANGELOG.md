@@ -2,6 +2,11 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+
+## 1.1.0-alpha.1
+
+* Added `InputBit` to set bit in a (readout) bit register to a value.
+
 ## v1.0.0-alpha.4
 
 * Updated dependencies
