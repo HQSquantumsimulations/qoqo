@@ -31,6 +31,8 @@
 //! (5) InputSymbolic, where the user can define a floating point type value to replace a certain symbolic parameter.
 //!
 
+use std::collections::HashSet;
+
 use crate::operations::{Define, InvolveQubits, InvolvedQubits, Operate, RoqoqoError, Substitute};
 
 /// DefinitionFloat is the Definition for a floating point type register.
@@ -59,9 +61,11 @@ const TAGS_DefinitionFloat: &[&str; 3] = &["Operation", "Definition", "Definitio
 
 // Implementing the InvolveQubits trait for DefinitionFloat.
 impl InvolveQubits for DefinitionFloat {
-    /// Lists all involved Qubits (here, none).
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::None
+    }
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        super::InvolvedClassical::All(self.name.clone())
     }
 }
 
@@ -97,6 +101,10 @@ impl InvolveQubits for DefinitionComplex {
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::None
     }
+
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        super::InvolvedClassical::All(self.name.clone())
+    }
 }
 
 /// DefinitionUsize is the Definition for an Integer type register.
@@ -128,6 +136,10 @@ impl InvolveQubits for DefinitionUsize {
     /// Lists all involved Qubits (here, none).
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::None
+    }
+
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        super::InvolvedClassical::All(self.name.clone())
     }
 }
 
@@ -161,6 +173,10 @@ impl InvolveQubits for DefinitionBit {
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::None
     }
+
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        super::InvolvedClassical::All(self.name.clone())
+    }
 }
 
 /// InputSymbolic is the Definition for a floating point type parameter which will replace a certain symbolic parameter.
@@ -190,6 +206,12 @@ impl InvolveQubits for InputSymbolic {
     /// Lists all involved Qubits (here, none).
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::None
+    }
+
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        let mut a: HashSet<(String, usize)> = HashSet::new();
+        a.insert((self.name.clone(), 0));
+        super::InvolvedClassical::Set(a)
     }
 }
 
@@ -222,5 +244,11 @@ impl InvolveQubits for InputBit {
     /// Lists all involved Qubits (here, none).
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::None
+    }
+
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        let mut a: HashSet<(String, usize)> = HashSet::new();
+        a.insert((self.name.clone(), self.index));
+        super::InvolvedClassical::Set(a)
     }
 }
