@@ -623,20 +623,6 @@ fn input_symbolic_serde_compact() {
     );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /// Test InputBit inputs and involved qubits
 #[test]
 fn input_bit_inputs_qubits() {
