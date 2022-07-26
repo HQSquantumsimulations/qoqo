@@ -12,7 +12,7 @@
 
 use std::collections::{HashSet, HashMap};
 
-use crate::operations::{Operation, InvolvedQubits};
+use crate::operations::*;
 
 use petgraph::adj::{NodeIndex, EdgeIndex};
 use petgraph::graph::DiGraph;
@@ -20,7 +20,7 @@ use petgraph::graph::DiGraph;
 /// Represents a Direct Acyclic Graph (DAG) 
 #[derive(Debug)]
 pub struct CircuitDag {
-    graph: DiGraph<NodeIndex, EdgeIndex>,
+    graph: DiGraph<Operation, EdgeIndex>,
     commuting_operations: Vec<Operation>,
     first_parallel_block: HashSet<NodeIndex>,
     last_parallel_block: HashSet<NodeIndex>,
@@ -38,7 +38,7 @@ impl CircuitDag {
     /// Creates a new empty CircuitDag.
     pub fn new() -> Self{
         CircuitDag { 
-            graph: DiGraph::new(), 
+            graph: DiGraph::<Operation, EdgeIndex>::new(), 
             commuting_operations: Vec::<Operation>::new(), 
             first_parallel_block: HashSet::<NodeIndex>::new(), 
             last_parallel_block: HashSet::<NodeIndex>::new(), 
@@ -57,6 +57,18 @@ impl CircuitDag {
     /// 
     /// * 'operation' - The Operation to add to the end of the CircuitDag.
     pub fn add_to_back(&mut self, operation: Operation) -> (){
+        match operation.involved_qubits() {
+            InvolvedQubits::None => self.commuting_operations.push(operation),
+            InvolvedQubits::All | InvolvedQubits::Set(_) => self.add_to_back_involved(operation)
+        }
+    }
+
+    /// Adds an operation that involves some or all qubits to the end of the CircuitDag.
+    /// 
+    /// # Arguments
+    /// 
+    /// * 'operation' - The Operation to add to the end of the CircuitDag.
+    fn add_to_back_involved(&mut self, operation: Operation) {
         
     }
 
@@ -75,9 +87,9 @@ impl CircuitDag {
         &self.commuting_operations
     }
 
-    /// Returns a reference to the vector of commuting operations in CircuitDag.
+    /// Returns a reference to the graph in CircuitDag.
     /// 
-    pub fn graph(&self) -> &DiGraph<NodeIndex, EdgeIndex> {
+    pub fn graph(&self) -> &DiGraph<Operation, EdgeIndex> {
         &self.graph
     }
 }

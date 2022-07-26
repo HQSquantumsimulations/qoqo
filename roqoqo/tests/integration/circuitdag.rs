@@ -16,12 +16,25 @@ use roqoqo::operations::*;
 
 use test_case::test_case;
 
-/// Test no-involved-qubits operation
+/// Test adding an operation that doesn't involve qubits.
+/// 
 #[test_case(Operation::from(DefinitionBit::new(String::from("ro"), 1, false)); "DefinitionBit")]
 fn add_operation_no_involved_qubits(operation: Operation) {
     let mut dag:CircuitDag = CircuitDag::new();
     
     dag.add_to_back(operation.clone());
 
+    assert!(operation.involved_qubits() == InvolvedQubits::None);
     assert_eq!(dag.get_op(0).unwrap(), &operation);
+}
+
+/// Test graph node existance after adding an operation that involves qubits.
+/// 
+#[test_case(Operation::from(PauliX::new(0)))]
+#[test_case(Operation::from(PauliY::new(1)))]
+#[test_case(Operation::from(ControlledPauliZ::new(0,1)))]
+fn check_node_existance(operation: Operation) {
+    let mut dag:CircuitDag = CircuitDag::new();
+
+    dag.add_to_back(operation.clone());
 }
