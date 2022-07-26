@@ -290,7 +290,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2.0.0
       - uses: taiki-e/install-action@cargo-llvm-cov
       - run: |
-          cargo llvm-cov --no-default-features --workspace --lcov --output-path lcov_roqoqo.info --fail-under-linex=89
+          cargo llvm-cov --no-default-features --workspace --lcov --output-path lcov_roqoqo.info --fail-under-lines=89
       # - name: Upload coverage to Codecov
       #   uses: codecov/codecov-action@v3
       #   with:
