@@ -10,8 +10,6 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Represents a Direct Acyclic Graph (DAG) 
-
 use std::collections::{HashSet, HashMap};
 
 use crate::operations::{Operation, InvolvedQubits};
@@ -19,6 +17,8 @@ use crate::operations::{Operation, InvolvedQubits};
 use petgraph::adj::{NodeIndex, EdgeIndex};
 use petgraph::graph::DiGraph;
 
+/// Represents a Direct Acyclic Graph (DAG) 
+#[derive(Debug)]
 pub struct CircuitDag {
     graph: DiGraph<NodeIndex, EdgeIndex>,
     commuting_operations: Vec<Operation>,
@@ -35,8 +35,8 @@ pub struct CircuitDag {
 }
 
 impl CircuitDag {
-    /// Creates a new empty CircuitDag
-    fn new() -> Self{
+    /// Creates a new empty CircuitDag.
+    pub fn new() -> Self{
         CircuitDag { 
             graph: DiGraph::new(), 
             commuting_operations: Vec::<Operation>::new(), 
@@ -52,7 +52,7 @@ impl CircuitDag {
     }
 
     /// Adds an operation to the back of the CircuitDag.
-    fn add_to_back(operation: Operation) -> Self{
-
+    pub fn add_to_back(&mut self, operation: Operation) -> (){
+        
     }
 }

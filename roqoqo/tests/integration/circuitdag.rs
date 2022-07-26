@@ -10,8 +10,16 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use roqoqo::CircuitDag;
+
+use roqoqo::operations::*;
+
+use test_case::test_case;
 
 /// Test no-involved-qubits operation
-fn add_operation_() {
-
+#[test_case(Operation::from(DefinitionBit::new(String::from("ro"), 1, false)); "DefinitionBit")]
+fn add_operation_no_involved_qubits(operation: Operation) {
+    let mut dag:CircuitDag = CircuitDag::new();
+    
+    dag.add_to_back(operation);
 }
