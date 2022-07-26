@@ -193,6 +193,10 @@ impl InvolveQubits for InputSymbolic {
     }
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 692ffc421af7e32752f416c30a8f023ff9839eb5
 /// InputBit sets a certain bit in an existing BitRegister of the circuit.
 ///
 #[derive(
