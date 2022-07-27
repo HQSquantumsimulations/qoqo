@@ -456,15 +456,15 @@ pub trait OperateConstantGate:
 ///
 /// Implements the general single qubit unitary gates  that can be brought into the form:
 ///
-/// $ U =e^{i \phi} \cdot [[\alpha_r+i \alpha_i , -\beta_r+i \beta_i], [\beta_r+i \beta_i , \alpha_r-i\alpha_i]] $.
+/// U =exp(i * φ) * [[Re(α)+i * Im(α), -Re(β) + i * Im(β)], [Re(β) + i * Im(β) , Re(α) - i * Im(α) ]].
 ///
 /// These gates can be parametrized by five real parameters:
 ///
-/// * `alpha_r` - The real part $ \alpha_r $ of the on-diagonal elements of the single-qubit unitary.
-/// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary.
-/// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary.
-/// * `beta_i` - The imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary.
-/// * `global_phase` - The global phase $ \phi $ of the single-qubit unitary.
+/// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary.
+/// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary.
+/// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary.
+/// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary.
+/// * `global_phase` - The global phase φ of the single-qubit unitary.
 ///
 /// These are the single qubit gates that are performed in the Circuit(), and are then translated
 /// to quantum hardware through the relevant backend. Two-qubit gates are also available
@@ -500,35 +500,35 @@ pub trait OperateSingleQubitGate:
     ///
     /// # Returns
     ///
-    /// * `alpha_r` - The real part $\alpha_r$ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_r(&self) -> CalculatorFloat;
 
     /// Returns alpha_i parameter of operation.
     ///
     /// # Returns
     ///
-    /// * `alpha_i` - The imaginary part $ \alpha_i $ of the on-diagonal elements of the single-qubit unitary matrix.
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
     fn alpha_i(&self) -> CalculatorFloat;
 
     /// Returns beta_r parameter of operation.
     ///
     /// # Returns
     ///
-    /// * `beta_r` - The real part $ \beta_r $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_r(&self) -> CalculatorFloat;
 
     /// Returns beta_i parameter of operation.
     ///
     /// # Returns
     ///
-    /// * `beta_i` -  imaginary part $ \beta_i $ of the off-diagonal elements of the single-qubit unitary matrix.
+    /// * `beta_i` -  imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
     fn beta_i(&self) -> CalculatorFloat;
 
     /// Returns global_phase parameter of operation.
     ///
     /// # Returns
     ///
-    /// * `global_phase` - The global phase phi $ \phi $ of the single-qubit unitary.
+    /// * `global_phase` - The global phase phi φ of the single-qubit unitary.
     fn global_phase(&self) -> CalculatorFloat;
 
     /// Multiplies two compatible operations implementing OperateSingleQubitGate.
