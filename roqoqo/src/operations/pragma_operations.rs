@@ -768,6 +768,10 @@ impl OperatePragmaNoiseProba for PragmaRandomNoise {
 ///
 /// Applying the Pragma with a given `gate_time` corresponds to applying the full time-evolution under the Lindblad equation for `gate_time` time.
 ///
+///  Note: as long as gate times and decoherence rates are scaled inversely
+///  any kind of units can be used. However, we recommend using nanoseconds
+///  and inverse nanosecconds as units for gate times and decoherence rates.
+///
 /// # Example
 ///
 /// ```
