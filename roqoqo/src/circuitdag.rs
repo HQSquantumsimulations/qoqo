@@ -105,6 +105,15 @@ impl CircuitDag {
         self.last_parallel_block.clear();
         self.last_parallel_block.insert(node);
 
+        for (_, old_node) in &self.last_operation_involving_qubit {
+            self.graph.update_edge((*old_node).into(), node.into(), ());
+            //self.last_operation_involving_qubit.entry(*qubit).or_insert(node);
+            //self.last_operation_involving_qubit.get_mut(&qubit).insert(node);
+        }
+
+        for (qubit, _) in self.last_operation_involving_qubit.iter() {
+            //self.last_operation_involving_qubit.entry(*qubit).or_insert(node);
+        }
     }
 
     /// Returns a reference to the Operation at index.
