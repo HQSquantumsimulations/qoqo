@@ -606,7 +606,7 @@ pub struct XY {
     control: usize,
     /// The index of the least significant qubit in the unitary representation.
     target: usize,
-    /// The rotation angle $\theta$.
+    /// The rotation angle θ.
     theta: CalculatorFloat,
 }
 
@@ -700,7 +700,7 @@ pub struct ControlledPhaseShift {
     control: usize,
     /// The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
     target: usize,
-    /// The rotation angle $\theta$.
+    /// The rotation angle θ.
     theta: CalculatorFloat,
 }
 
@@ -1076,7 +1076,7 @@ pub struct VariableMSXX {
     control: usize,
     /// The index of the least significant qubit in the unitary representation. The gate is symmetric under the exchange of qubits.
     target: usize,
-    /// The rotation angle $\theta$.
+    /// The rotation angle θ.
     theta: CalculatorFloat,
 }
 
@@ -1150,10 +1150,10 @@ impl OperateTwoQubitGate for VariableMSXX {
     }
 }
 
-/// The Givens rotation interaction gate in big endian notation: $e^{-\mathrm{i} \theta (X_c Y_t - Y_c X_t)}\cdot e^{-i \phi Z_t/2}$.
+/// The Givens rotation interaction gate in big endian notation: exp(-i * θ * [X_c Y_t - Y_c X_t]) * exp(-i * φ * Z_t/2).
 ///
-/// Where $X_c$ is the Pauli matrix $\sigma^x$ acting on the control qubit, $Y_t$ is the Pauli matrix $\sigma^y$ acting on the target qubit,
-/// and $Z_t$ is the Pauli matrix $\sigma^z$ acting on the target qubit.
+/// Where X_c is the Pauli matrix σ^x acting on the control qubit, Y_t is the Pauli matrix σ^y acting on the target qubit,
+/// and Z_t is the Pauli matrix σ^z acting on the target qubit.
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
@@ -1173,9 +1173,9 @@ pub struct GivensRotation {
     control: usize,
     /// The index of the least significant qubit in the unitary representation.
     target: usize,
-    /// The rotation angle $\theta$.
+    /// The rotation angle θ.
     theta: CalculatorFloat,
-    /// The phase $\phi$ of the rotation.
+    /// The phase φ of the rotation.
     phi: CalculatorFloat,
 }
 
@@ -1258,10 +1258,10 @@ impl OperateTwoQubitGate for GivensRotation {
     }
 }
 
-/// The Givens rotation interaction gate in little endian notation: $e^{-\mathrm{i} \theta (X_c Y_t -Y_c  X_t)}\cdot e^{-i \phi Z_c/2}$.
+/// The Givens rotation interaction gate in little endian notation: exp(-i * θ * [X_c Y_t -Y_c  X_t]) * exp(-i * φ * Z_c/2).
 ///
-/// Where $X_c$ is the Pauli matrix $\sigma^x$ acting on the control qubit, $Y_t$ is the Pauli matrix $\sigma^y$ acting on the target qubit,
-/// and $Z_c$ is the Pauli matrix $\sigma^z$ acting on the control qubit.
+/// Where X_c is the Pauli matrix σ^x acting on the control qubit, Y_t is the Pauli matrix σ^y acting on the target qubit,
+/// and Z_c is the Pauli matrix σ^z acting on the control qubit.
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
@@ -1281,9 +1281,9 @@ pub struct GivensRotationLittleEndian {
     control: usize,
     /// The index of the least significant qubit in the unitary representation.
     target: usize,
-    /// The rotation angle $\theta$.
+    /// The rotation angle θ.
     theta: CalculatorFloat,
-    /// The phase $\phi$ of the rotation.
+    /// The phase φ of the rotation.
     phi: CalculatorFloat,
 }
 
@@ -1501,7 +1501,7 @@ pub struct Fsim {
     t: CalculatorFloat,
     /// The interaction strength.
     u: CalculatorFloat,
-    /// The Bogoliubov interaction strength $\Delta$.
+    /// The Bogoliubov interaction strength Δ.
     delta: CalculatorFloat,
 }
 
@@ -1691,11 +1691,9 @@ impl OperateTwoQubitGate for SpinInteraction {
 
 /// The Bogoliubov DeGennes interaction gate.
 ///
-/// $$
-/// e^{-\mathrm{i} Re(\Delta) (X_c X_t - Y_c Y_t)/2 + Im(\Delta) (X_c Y_t+Y_c X_t)/2}
-/// $$
+/// exp(-i * Re(Δ) * [X_c X_t - Y_c Y_t]/2 + Im(Δ) * [X_c Y_t+Y_c X_t]/2)
 ///
-/// Where $X_c$ is the Pauli matrix $\sigma^x$ acting on the control qubit, and $Y_t$ is the Pauli matrix $\sigma^y$ acting on the target qubit.
+/// Where X_c is the Pauli matrix σ^x acting on the control qubit, and Y_t is the Pauli matrix σ^y acting on the target qubit.
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
@@ -1714,9 +1712,9 @@ pub struct Bogoliubov {
     control: usize,
     /// The index of the least significant qubit in the unitary representation.
     target: usize,
-    /// The real part of the complex Bogoliubov interaction strength $Re(\Delta)$
+    /// The real part of the complex Bogoliubov interaction strength Re(Δ).
     delta_real: CalculatorFloat,
-    /// The imaginary part of the complex Bogoliubov interaction strength $Im(\Delta)$
+    /// The imaginary part of the complex Bogoliubov interaction strength Im(Δ).
     delta_imag: CalculatorFloat,
 }
 
@@ -1804,10 +1802,9 @@ impl OperateTwoQubitGate for Bogoliubov {
 
 /// The transversal interaction gate.
 ///
-/// $$
-/// e^{-\mathrm{i} \theta (X_c X_t + Y_c Y_t)} = e^{-\mathrm{i} \theta (\sigma^+_c \sigma^-_t + \sigma^-_c \sigma^+_t)}
-/// $$
-/// Where $X_c$ is the Pauli matrix $\sigma^x$ acting on the control qubit, and $Y_t$ is the Pauli matrix $\sigma^y$ acting on the target qubit.
+/// exp(-i * θ *[X_c X_t + Y_c Y_t]) = exp( -i * θ * [σ^+_c * σ^-_t + σ^-_c σ^+_t])
+///
+/// Where X_c is the Pauli matrix σ^x acting on the control qubit, and Y_t is the Pauli matrix σ^y acting on the target qubit.
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
@@ -1826,7 +1823,7 @@ pub struct PMInteraction {
     control: usize,
     /// The index of the least significant qubit in the unitary representation.
     target: usize,
-    /// The strength of the rotation $\theta$.
+    /// The strength of the rotation θ.
     t: CalculatorFloat,
 }
 
@@ -1901,10 +1898,9 @@ impl OperateTwoQubitGate for PMInteraction {
 
 /// The complex hopping gate.
 ///
-/// $$
-/// e^{-\mathrm{i} \left[ Re(\theta) \cdot (X_c X_t + Y_c Y_t) - Im(\theta) \cdot (X_c Y_t - Y_c X_t) \right] }
-/// $$
-/// Where $X_c$ is the Pauli matrix $\sigma^x$ acting on the control qubit, and $Y_t$ is the Pauli matrix $\sigma^y$ acting on the target qubit.
+/// exp(-i * [ Re(θ) * (X_c X_t + Y_c Y_t) - Im(θ) * (X_c Y_t - Y_c X_t) ] )
+///
+/// Where X_c is the Pauli matrix σ^x acting on the control qubit, and Y_t is the Pauli matrix σ^y acting on the target qubit.
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
@@ -1923,9 +1919,9 @@ pub struct ComplexPMInteraction {
     control: usize,
     /// The index of the least significant qubit in the unitary representation.
     target: usize,
-    /// The real part of the strength of the rotation $Re(\theta)$.
+    /// The real part of the strength of the rotation Re(θ).
     t_real: CalculatorFloat,
-    /// The imaginary part of the strength of the rotation $Im(\theta)$.
+    /// The imaginary part of the strength of the rotation Im(θ).
     t_imag: CalculatorFloat,
 }
 
@@ -2029,7 +2025,7 @@ pub struct PhaseShiftedControlledZ {
     control: usize,
     /// The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
     target: usize,
-    /// The single qubit phase $\phi$.
+    /// The single qubit phase φ.
     phi: CalculatorFloat,
 }
 
