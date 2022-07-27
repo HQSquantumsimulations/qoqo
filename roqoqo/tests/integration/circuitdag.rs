@@ -37,4 +37,24 @@ fn check_node_existance(operation: Operation) {
     let mut dag:CircuitDag = CircuitDag::new();
 
     dag.add_to_back(operation.clone());
+
+    assert!(dag.graph().node_count() == 1)
+}
+
+#[test_case(Operation::from(PauliX::new(0)))]
+#[test_case(Operation::from(CNOT::new(0,1)))]
+fn check_first_last_all_existance(operation: Operation) {
+    let mut dag:CircuitDag = CircuitDag::new();
+
+    assert!(dag.first_all().is_none());
+    assert!(dag.last_all().is_none());
+
+    dag.add_to_back(operation.clone());
+
+    assert!(dag.first_all().is_some());
+    assert!(dag.first_all().is_some());
+}
+
+fn check_first_last_all_order() {
+    
 }
