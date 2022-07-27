@@ -14,8 +14,8 @@ use std::collections::{HashSet, HashMap};
 
 use crate::operations::*;
 
-use petgraph::adj::{NodeIndex};
-use petgraph::graph::{Graph};
+use petgraph::adj::NodeIndex;
+use petgraph::graph::Graph;
 
 /// Represents a Direct Acyclic Graph (DAG) 
 #[derive(Debug)]
@@ -60,23 +60,11 @@ impl CircuitDag {
         
         let node = self.graph.add_node(operation.clone());
 
-        match operation.involved_qubits() {
-            InvolvedQubits::None => self.commuting_operations.push(operation),
-            InvolvedQubits::All => self.add_to_back_involved(node.index().try_into().unwrap(), true),
-            InvolvedQubits::Set(_) => self.add_to_back_involved(node.index().try_into().unwrap(), false)
-        };
-    }
-
-    /// Checks whether to update first_all or last_all or not.
-    /// 
-    /// # Arguments
-    /// 
-    /// * 'node' - The index of the node used to update first_all or last_all.
-    pub fn update_first_last_all(&mut self, node: NodeIndex) {
-        if self.first_all.is_none() {
-            self.first_all = Some(node);
+        if let InvolvedQubits::None = operation.involved_qubits() {
+            self.commuting_operations.push(operation);
+        } else {
+            self.add_to_back_involved(node.index().try_into().unwrap())
         }
-        self.last_all = Some(node);
     }
 
     /// Adds an operation that involves some or all qubits to the end of the CircuitDag.
@@ -84,10 +72,38 @@ impl CircuitDag {
     /// # Arguments
     /// 
     /// * 'operation' - The Operation to add to the end of the CircuitDag.
-    fn add_to_back_involved(&mut self, node: NodeIndex, all: bool) -> (){
-        if all {
-            self.update_first_last_all(node)
+    fn add_to_back_involved(&mut self, node: NodeIndex) -> (){
+        let node_involved_qubits: InvolvedQubits = self.graph.node_weight(node.into()).unwrap().involved_qubits();
+        if let InvolvedQubits::Set(x) = node_involved_qubits.clone() {
+            for qubit in x {
+                
+            }
+        } else if let InvolvedQubits::All = node_involved_qubits {
+            self.update_first_last_all(node);
+            self.update_last_parallel_block_all(node);
         }
+    }
+
+    /// Checks whether to update first_all or not and updates last_all.
+    /// 
+    /// # Arguments
+    /// 
+    /// * 'node' - The index of the node used to update first_all or last_all.
+    fn update_first_last_all(&mut self, node: NodeIndex) {
+        if self.first_all.is_none() {
+            self.first_all = Some(node);
+        }
+        self.last_all = Some(node);
+    }
+
+    /// Updates last_parallel_block for when the Operation involves all qubits.
+    /// 
+    /// # Arguments
+    /// 
+    /// * 'node' - The index of the node whose Operation involves all qubits.
+    fn update_last_parallel_block_all(&mut self, node: NodeIndex) {
+        self.last_parallel_block.clear();
+        self.last_parallel_block.insert(node);
 
     }
 
