@@ -15,7 +15,7 @@ use std::collections::{HashSet, HashMap};
 use crate::operations::*;
 
 use petgraph::adj::{NodeIndex};
-use petgraph::graph::{Graph, IndexType};
+use petgraph::graph::{Graph};
 
 /// Represents a Direct Acyclic Graph (DAG) 
 #[derive(Debug)]
@@ -88,7 +88,7 @@ impl CircuitDag {
         if all {
             self.update_first_last_all(node)
         }
-        
+
     }
 
     /// Returns a reference to the Operation at index.
