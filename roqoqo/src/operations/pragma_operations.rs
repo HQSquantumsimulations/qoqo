@@ -26,7 +26,7 @@ use num_complex::Complex64;
 use qoqo_calculator::{Calculator, CalculatorFloat};
 #[cfg(feature = "serialize")]
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::convert::TryFrom;
 
 /// This PRAGMA Operation sets the number of measurements of the circuit.
@@ -968,6 +968,12 @@ impl InvolveQubits for PragmaConditional {
     /// Lists all involved qubits.
     fn involved_qubits(&self) -> InvolvedQubits {
         self.circuit.involved_qubits()
+    }
+
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        let mut new_set: HashSet<(String, usize)> = HashSet::new();
+        new_set.insert((self.condition_register.clone(), self.condition_index));
+        super::InvolvedClassical::Set(new_set)
     }
 }
 
