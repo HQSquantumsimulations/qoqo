@@ -25,7 +25,7 @@ fn add_operation_no_involved_qubits(operation: Operation) {
     dag.add_to_back(operation.clone());
 
     assert!(operation.involved_qubits() == InvolvedQubits::None);
-    assert_eq!(dag.get_op(0).unwrap(), &operation);
+    assert_eq!(*dag.get_op(0).unwrap(), operation);
 }
 
 /// Test graph node existance after adding an operation that involves qubits.
@@ -41,9 +41,8 @@ fn check_node_existance(operation: Operation) {
     assert!(dag.graph().node_count() == 1)
 }
 
-#[test_case(Operation::from(PauliX::new(0)))]
-#[test_case(Operation::from(CNOT::new(0,1)))]
-fn check_first_last_all_existance(operation: Operation) {
+#[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None)))]
+fn check_first_last_all_existence(operation: Operation) {
     let mut dag:CircuitDag = CircuitDag::new();
 
     assert!(dag.first_all().is_none());
@@ -55,6 +54,21 @@ fn check_first_last_all_existance(operation: Operation) {
     assert!(dag.first_all().is_some());
 }
 
-fn check_first_last_all_order() {
-    
+#[test_case(
+    Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None)),
+    Operation::from(PragmaRepeatedMeasurement::new(String::from("ri"), 2, None))
+)]
+fn check_first_last_all_order(operation1: Operation, operation2: Operation) {
+    let mut dag:CircuitDag = CircuitDag::new();
+
+    dag.add_to_back(operation1);
+    dag.add_to_back(operation2);
+
+    assert!(dag.first_all().is_some());
+    assert!(dag.last_all().is_some());
+
+    let f_all = *dag.first_all();
+    let l_all = *dag.last_all();
+
+    assert_ne!(dag.graph().node_weight(f_all.unwrap().into()), dag.graph().node_weight(l_all.unwrap().into()));
 }
