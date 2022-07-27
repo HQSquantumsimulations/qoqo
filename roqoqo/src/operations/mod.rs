@@ -66,6 +66,21 @@ pub enum InvolvedQubits {
     /// Operation affects a specific set of qubits.
     Set(HashSet<usize>),
 }
+
+/// Represents classical register entries involved in a roqoqo Operation.
+#[derive(Debug, PartialEq, Clone, Eq)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+pub enum InvolvedClassical {
+    /// Operation affects all entries of a classical register.
+    All(String),
+    /// Operation affects all entries of a classical register up to the number of qubits in device.
+    AllQubits(String),
+    /// Operation affects no classical entries (annotations etc.).
+    None,
+    /// Operation affects a specific set of classical entries.
+    Set(HashSet<(String, usize)>),
+}
+
 #[cfg(feature = "dynamic")]
 /// Universal basic trait for all operations of roqoqo.
 #[cfg_attr(feature = "dynamic", typetag::serde(tag = "Operate"))]
@@ -154,8 +169,13 @@ dyn_clone::clone_trait_object!(Operate);
 /// assert_eq!(pragma.involved_qubits(), InvolvedQubits::All);
 /// ```
 pub trait InvolveQubits {
-    /// Returns a list of all involved qubits.
+    /// Returns all qubits involved in operation.
     fn involved_qubits(&self) -> InvolvedQubits;
+
+    /// Returns all classical registers involved in operation.
+    fn involved_classical(&self) -> InvolvedClassical {
+        InvolvedClassical::None
+    }
 }
 
 /// Substitute trait allowing to replace symbolic parameters and to perform qubit mappings.
