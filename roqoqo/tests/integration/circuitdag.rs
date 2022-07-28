@@ -127,17 +127,16 @@ fn check_last_parallel_block_set(operation1: Operation, operation2: Operation) {
 
     dag.add_to_back(operation1.clone());
 
-    if inv_qubits_1.len() == 1 {
-        assert!(dag.last_parallel_block().len() == 1);
-    } else {
-        assert!(dag.last_parallel_block().len() == 2);
-    }
-    
+    assert!(dag.last_parallel_block().len() == 1);
 
     dag.add_to_back(operation2.clone());
     dag.add_to_back(operation1.clone());
 
-    assert!(dag.last_parallel_block().len() == 2);
+    if inv_qubits_1.len() == 2 {
+        assert!(dag.last_parallel_block().len() == 1);
+    } else {
+        assert!(dag.last_parallel_block().len() == 2);
+    }
 }
 
 #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None)))]
@@ -154,4 +153,24 @@ fn check_last_parallel_block_all(operation: Operation) {
     dag.add_to_back(operation.clone());
 
     assert!(dag.last_parallel_block().len() == 1);
+}
+
+#[test_case(Operation::from(PauliX::new(0)))]
+#[test_case(Operation::from(CNOT::new(0,1)))]
+fn check_last_operation_involving_qubits(operation: Operation) {
+    let mut dag:CircuitDag = CircuitDag::new();
+
+    dag.add_to_back(Operation::from(PauliZ::new(0)));
+    dag.add_to_back(Operation::from(CNOT::new(0,1)));
+
+    assert!(dag.last_operation_involving_qubit().get(&0) == dag.last_operation_involving_qubit().get(&1));
+
+    dag.add_to_back(operation.clone());
+
+    if let InvolvedQubits::Set(qubits) = operation.involved_qubits() {
+        for qubit in qubits {
+            assert!(dag.last_operation_involving_qubit().contains_key(&qubit));
+        }
+    }
+    // TODO: same thing but check node. Needs add_to_back to return the node.
 }

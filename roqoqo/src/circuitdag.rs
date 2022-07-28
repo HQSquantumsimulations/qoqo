@@ -100,8 +100,7 @@ impl CircuitDag {
     fn update_from_qubit(&mut self, node: NodeIndex, qubit: usize) {
         // Update last_operation_involving qubit and last_parallel_block
         //  depending on current structure
-        let old_node = self.last_operation_involving_qubit.get(&qubit);
-        if let Some(&i) = old_node {
+        if let Some(&i) = self.last_operation_involving_qubit.get(&qubit) {
             self.graph.add_edge(i.into(), node.into(), ());
             self.last_parallel_block.remove(&i);
         }
@@ -183,5 +182,12 @@ impl CircuitDag {
     /// 
     pub fn last_parallel_block(&self) -> &HashSet<NodeIndex> {
         &self.last_parallel_block
+    }
+
+    /// Returns a reference to the HashMap where a key represents a qubit and its value represents
+    /// the last node the involves that qubit.
+    /// 
+    pub fn last_operation_involving_qubit(&self) -> &HashMap<usize, NodeIndex> {
+        &self.last_operation_involving_qubit
     }
 }
