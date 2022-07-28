@@ -62,7 +62,7 @@ impl CircuitDag {
         if let InvolvedQubits::None = operation.involved_qubits() {
             self.commuting_operations.push(operation);
         } else {
-            let node = self.graph.add_node(operation.clone());
+            let node = self.graph.add_node(operation);
             self.add_to_back_involved(node.index().try_into().unwrap())
         }
     }
@@ -97,13 +97,21 @@ impl CircuitDag {
     /// * 'node' - The index of the node whose Operation involves the qubit.
     /// * 'qubit' - The qubit involved in the Operation.
     fn update_from_qubit(&mut self, node: NodeIndex, qubit: usize) {
-        // Update last_operation_involving qubit
-        let old_node = self.last_operation_involving_qubit[&qubit];
-        self.graph.add_edge(old_node.into(), node.into(), ());
-        self.last_operation_involving_qubit.entry(qubit).or_insert(node);
+        // Update last_operation_involving qubit, adding an edge if necessary
+        let mut old_node: Option<u32> = None;
+        if self.last_operation_involving_qubit.contains_key(&qubit) {
+            old_node = Some(self.last_operation_involving_qubit[&qubit]);
+            self.graph
+                .add_edge(old_node.unwrap().into(), node.into(), ());
+        }
+        self.last_operation_involving_qubit
+            .entry(qubit)
+            .or_insert(node);
 
         // Update last_parallel_block
-        self.last_parallel_block.remove(&old_node);
+        if old_node.is_some() {
+            self.last_parallel_block.remove(&old_node.unwrap());
+        }
         self.last_parallel_block.insert(node);
 
         // TO MOVE
@@ -112,12 +120,13 @@ impl CircuitDag {
         }
 
         // Update first_operation_involving_qubit and first_parallel_block
-        //  depending on 
+        //  depending on last_all
         if self.last_all.is_none() {
             self.first_operation_involving_qubit.insert(qubit, node);
             self.first_parallel_block.insert(node);
         } else {
-            self.first_operation_involving_qubit.insert(qubit, self.last_all.unwrap());
+            self.first_operation_involving_qubit
+                .insert(qubit, self.last_all.unwrap());
             self.first_parallel_block.insert(self.last_all.unwrap());
         }
     }
