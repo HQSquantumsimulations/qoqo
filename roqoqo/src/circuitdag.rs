@@ -57,7 +57,6 @@ impl CircuitDag {
     /// 
     /// * 'operation' - The Operation to add to the end of the CircuitDag.
     pub fn add_to_back(&mut self, operation: Operation) -> (){
-        
         let node = self.graph.add_node(operation.clone());
 
         if let InvolvedQubits::None = operation.involved_qubits() {
@@ -79,8 +78,29 @@ impl CircuitDag {
                 
             }
         } else if let InvolvedQubits::All = node_involved_qubits {
-            self.update_first_last_all(node);
-            self.update_last_parallel_block_all(node);
+            self.update_from_all_operation(node);
+        }
+    }
+
+    /// Updates the relevant attributes when the Operation involves all qubits.
+    /// 
+    /// # Arguments
+    /// 
+    /// * 'node' - The index of the node whose Operation involves all qubits.
+    fn update_from_all_operation(&mut self, node: NodeIndex) {
+
+        // Update first_all and last_all
+        self.update_first_last_all(node);
+
+        // Clear and update last_parallel_block
+        self.last_parallel_block.clear();
+        self.last_parallel_block.insert(node);
+
+        // All the latest nodes in the graph must now point to the new node and
+        // last_operation_involving_qubit is updated
+        for (_, old_node) in self.last_operation_involving_qubit.iter_mut() {
+            self.graph.update_edge((*old_node).into(), node.into(), ());
+            *old_node = node;
         }
     }
 
@@ -94,26 +114,6 @@ impl CircuitDag {
             self.first_all = Some(node);
         }
         self.last_all = Some(node);
-    }
-
-    /// Updates last_parallel_block for when the Operation involves all qubits.
-    /// 
-    /// # Arguments
-    /// 
-    /// * 'node' - The index of the node whose Operation involves all qubits.
-    fn update_last_parallel_block_all(&mut self, node: NodeIndex) {
-        self.last_parallel_block.clear();
-        self.last_parallel_block.insert(node);
-
-        for (_, old_node) in &self.last_operation_involving_qubit {
-            self.graph.update_edge((*old_node).into(), node.into(), ());
-            //self.last_operation_involving_qubit.entry(*qubit).or_insert(node);
-            //self.last_operation_involving_qubit.get_mut(&qubit).insert(node);
-        }
-
-        for (qubit, _) in self.last_operation_involving_qubit.iter() {
-            //self.last_operation_involving_qubit.entry(*qubit).or_insert(node);
-        }
     }
 
     /// Returns a reference to the Operation at index.
@@ -144,6 +144,7 @@ impl CircuitDag {
     }
 
     /// Returns a reference to the last Operation that involves all qubits in CircuitDag.
+    /// 
     pub fn last_all(&self) -> &Option<u32> {
         &self.last_all
     }
