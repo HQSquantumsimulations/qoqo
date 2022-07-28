@@ -38,6 +38,7 @@ impl CircuitDag {
     /// Creates a new empty CircuitDag.
     pub fn new() -> Self {
         CircuitDag {
+            // TODO add Ix usize
             graph: Graph::<Operation, ()>::new(),
             commuting_operations: Vec::<Operation>::new(),
             first_parallel_block: HashSet::<NodeIndex>::new(),
@@ -100,6 +101,7 @@ impl CircuitDag {
         // Update last_operation_involving qubit, adding an edge if necessary
         let mut old_node: Option<u32> = None;
         if self.last_operation_involving_qubit.contains_key(&qubit) {
+            //TODO if let
             old_node = Some(self.last_operation_involving_qubit[&qubit]);
             self.graph
                 .add_edge(old_node.unwrap().into(), node.into(), ());
@@ -116,7 +118,7 @@ impl CircuitDag {
 
         // TO MOVE
         if !self.last_operation_involving_qubit.contains_key(&qubit) {
-            self.first_operation_involving_qubit.insert(qubit, node);
+            self.last_operation_involving_qubit.insert(qubit, node);
         }
 
         // Update first_operation_involving_qubit and first_parallel_block
@@ -149,6 +151,7 @@ impl CircuitDag {
 
         // All the latest nodes in the graph must now point to the new node and
         //  last_operation_involving_qubit is updated
+        // TODO new HashMap
         for (_, old_node) in self.last_operation_involving_qubit.iter_mut() {
             self.graph.update_edge((*old_node).into(), node.into(), ());
             *old_node = node;

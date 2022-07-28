@@ -86,7 +86,7 @@ fn check_first_last_all_existence(operation: Operation) {
     dag.add_to_back(operation.clone());
 
     assert!(dag.first_all().is_some());
-    assert!(dag.first_all().is_some());
+    assert!(dag.last_all().is_some());
 }
 
 #[test_case(
