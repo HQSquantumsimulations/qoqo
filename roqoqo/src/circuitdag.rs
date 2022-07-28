@@ -20,6 +20,7 @@ use petgraph::graph::Graph;
 /// Represents a Direct Acyclic Graph (DAG)
 #[derive(Debug)]
 pub struct CircuitDag {
+    // TODO add Ix usize
     graph: Graph<Operation, ()>,
     commuting_operations: Vec<Operation>,
     first_parallel_block: HashSet<NodeIndex>,
@@ -38,7 +39,6 @@ impl CircuitDag {
     /// Creates a new empty CircuitDag.
     pub fn new() -> Self {
         CircuitDag {
-            // TODO add Ix usize
             graph: Graph::<Operation, ()>::new(),
             commuting_operations: Vec::<Operation>::new(),
             first_parallel_block: HashSet::<NodeIndex>::new(),
@@ -98,28 +98,15 @@ impl CircuitDag {
     /// * 'node' - The index of the node whose Operation involves the qubit.
     /// * 'qubit' - The qubit involved in the Operation.
     fn update_from_qubit(&mut self, node: NodeIndex, qubit: usize) {
-        // Update last_operation_involving qubit, adding an edge if necessary
-        let mut old_node: Option<u32> = None;
-        if self.last_operation_involving_qubit.contains_key(&qubit) {
-            //TODO if let
-            old_node = Some(self.last_operation_involving_qubit[&qubit]);
-            self.graph
-                .add_edge(old_node.unwrap().into(), node.into(), ());
+        // Update last_operation_involving qubit and last_parallel_block
+        //  depending on current structure
+        let old_node = self.last_operation_involving_qubit.get(&qubit);
+        if let Some(&i) = old_node {
+            self.graph.add_edge(i.into(), node.into(), ());
+            self.last_parallel_block.remove(&i);
         }
-        self.last_operation_involving_qubit
-            .entry(qubit)
-            .or_insert(node);
-
-        // Update last_parallel_block
-        if old_node.is_some() {
-            self.last_parallel_block.remove(&old_node.unwrap());
-        }
+        self.last_operation_involving_qubit.insert(qubit, node);
         self.last_parallel_block.insert(node);
-
-        // TO MOVE
-        if !self.last_operation_involving_qubit.contains_key(&qubit) {
-            self.last_operation_involving_qubit.insert(qubit, node);
-        }
 
         // Update first_operation_involving_qubit and first_parallel_block
         //  depending on last_all
@@ -151,10 +138,11 @@ impl CircuitDag {
 
         // All the latest nodes in the graph must now point to the new node and
         //  last_operation_involving_qubit is updated
-        // TODO new HashMap
-        for (_, old_node) in self.last_operation_involving_qubit.iter_mut() {
-            self.graph.update_edge((*old_node).into(), node.into(), ());
-            *old_node = node;
+        let mut temp_map: HashMap<usize, NodeIndex> =
+            HashMap::with_capacity(self.last_operation_involving_qubit.capacity());
+        for (&qubit, &old_node) in &self.last_operation_involving_qubit {
+            self.graph.update_edge(old_node.into(), node.into(), ());
+            temp_map.insert(qubit, node);
         }
     }
 
@@ -189,5 +177,11 @@ impl CircuitDag {
     ///
     pub fn last_all(&self) -> &Option<u32> {
         &self.last_all
+    }
+
+    /// Returns a reference to the HashSet containing the nodes in the last parallel block.
+    /// 
+    pub fn last_parallel_block(&self) -> &HashSet<NodeIndex> {
+        &self.last_parallel_block
     }
 }

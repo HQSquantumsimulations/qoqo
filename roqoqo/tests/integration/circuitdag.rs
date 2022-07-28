@@ -10,6 +10,8 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use std::collections::HashSet;
+
 use roqoqo::CircuitDag;
 
 use roqoqo::operations::*;
@@ -109,4 +111,47 @@ fn check_first_last_all_order(operation1: Operation, operation2: Operation) {
         dag.graph().node_weight(f_all.unwrap().into()),
         dag.graph().node_weight(l_all.unwrap().into())
     );
+}
+
+#[test_case(Operation::from(PauliX::new(0)), Operation::from(PauliY::new(1)))]
+#[test_case(Operation::from(PauliY::new(1)), Operation::from(PauliZ::new(2)))]
+#[test_case(Operation::from(CNOT::new(0,1)), Operation::from(PauliX::new(1)))]
+fn check_last_parallel_block_set(operation1: Operation, operation2: Operation) {
+    let mut dag: CircuitDag = CircuitDag::new();
+    let mut inv_qubits_1: HashSet<usize> = HashSet::new();
+    if let InvolvedQubits::Set(x) = operation1.involved_qubits() {
+        for qubit in x {
+            inv_qubits_1.insert(qubit);
+        }
+    }
+
+    dag.add_to_back(operation1.clone());
+
+    if inv_qubits_1.len() == 1 {
+        assert!(dag.last_parallel_block().len() == 1);
+    } else {
+        assert!(dag.last_parallel_block().len() == 2);
+    }
+    
+
+    dag.add_to_back(operation2.clone());
+    dag.add_to_back(operation1.clone());
+
+    assert!(dag.last_parallel_block().len() == 2);
+}
+
+#[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None)))]
+fn check_last_parallel_block_all(operation: Operation) {
+    let mut dag:CircuitDag = CircuitDag::new();
+
+    assert!(dag.last_parallel_block().len() == 0);
+
+    dag.add_to_back(operation.clone());
+
+    assert!(dag.last_parallel_block().len() == 1);
+
+    dag.add_to_back(Operation::from(PauliX::new(0)));
+    dag.add_to_back(operation.clone());
+
+    assert!(dag.last_parallel_block().len() == 1);
 }
