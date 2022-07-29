@@ -28,6 +28,11 @@ fn add_operation_no_involved_qubits(operation: Operation) {
 
     assert!(operation.involved_qubits() == InvolvedQubits::None);
     assert_eq!(*dag.get_op(0).unwrap(), operation);
+
+    dag.add_to_back(Operation::from(PauliY::new(0)));
+    dag.add_to_back(Operation::from(CNOT::new(0,1)));
+
+    assert_eq!(*dag.get_op(0).unwrap(), operation);
 }
 
 /// Test graph node existance after adding an operation that involves qubits.
@@ -172,5 +177,7 @@ fn check_last_operation_involving_qubits(operation: Operation) {
             assert!(dag.last_operation_involving_qubit().contains_key(&qubit));
         }
     }
+
     // TODO: same thing but check node. Needs add_to_back to return the node.
 }
+
