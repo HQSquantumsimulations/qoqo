@@ -29,19 +29,31 @@ pub fn dispatch_struct_enum(input: DeriveInput) -> TokenStream {
 /// This derive delegates the invocations of the involved_qubits function to all possible variants via match arms
 fn involve_qubits_enum(de: DataEnum, ident: Ident) -> TokenStream {
     let variants_with_type = extract_variants_with_types(de).into_iter();
-    let match_quotes = variants_with_type.map(|(vident, _, _)| {
+    let match_quotes = variants_with_type.clone().map(|(vident, _, _)| {
         quote! {
             &#ident::#vident(ref inner) => {InvolveQubits::involved_qubits(&(*inner))},
+        }
+    });
+
+    let match_quotes_classical = variants_with_type.map(|(vident, _, _)| {
+        quote! {
+            &#ident::#vident(ref inner) => {InvolveQubits::involved_classical(&(*inner))},
         }
     });
     quote! {
         #[automatically_derived]
         /// Implements [InvolveQubits] trait for the qubits involved in this Operation.
         impl InvolveQubits for #ident{
-            /// Returns a list of all involved qubits.
             fn involved_qubits(&self) -> InvolvedQubits {
                 match self{
                     #(#match_quotes)*
+                    _ => panic!("Unexpectedly cannot match variant")
+                }
+            }
+
+            fn involved_classical(&self) -> InvolvedClassical {
+                match self{
+                    #(#match_quotes_classical)*
                     _ => panic!("Unexpectedly cannot match variant")
                 }
             }
