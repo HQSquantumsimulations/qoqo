@@ -13,7 +13,6 @@
 use std::collections::HashSet;
 
 use roqoqo::CircuitDag;
-
 use roqoqo::operations::*;
 
 use test_case::test_case;
@@ -27,12 +26,12 @@ fn add_operation_no_involved_qubits(operation: Operation) {
     dag.add_to_back(operation.clone());
 
     assert!(operation.involved_qubits() == InvolvedQubits::None);
-    assert_eq!(*dag.get_op(0).unwrap(), operation);
+    assert_eq!(dag.commuting_operations().get(0).unwrap(), &operation);
 
-    dag.add_to_back(Operation::from(PauliY::new(0)));
+    dag.add_to_front(Operation::from(PauliY::new(0)));
     dag.add_to_back(Operation::from(CNOT::new(0, 1)));
 
-    assert_eq!(*dag.get_op(0).unwrap(), operation);
+    assert_eq!(dag.commuting_operations().get(0).unwrap(), &operation);
 }
 
 /// Test graph node existance after adding an operation that involves qubits.
@@ -68,26 +67,15 @@ fn check_node_count(operation1: Operation, operation2: Operation) {
     assert!(dag.graph().node_count() == 3);
 }
 
-/*
 #[test_case(Operation::from(PauliX::new(0)), Operation::from(PauliY::new(0)))]
 fn check_edge(operation1: Operation, operation2: Operation) {
     let mut dag: CircuitDag = CircuitDag::new();
 
-    dag.add_to_back(operation1.clone());
-    dag.add_to_back(operation2.clone());
+    let ind1 = dag.add_to_back(operation1.clone());
+    let ind2 = dag.add_to_back(operation2.clone());
 
-    let ind1 = dag
-        .graph()
-        .node_indices()
-        .find(|&e| e.into() == operation1.clone());
-    let ind2 = dag
-        .graph()
-        .node_indices()
-        .find(|&e| e.into() == operation2.clone());
-
-    assert!(dag.graph().contains_edge(ind1.unwrap(), ind2.unwrap()))
+    assert!(dag.graph().contains_edge(ind1.unwrap().into(), ind2.unwrap().into()));
 }
-*/
 
 #[test_case(
     Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None)),

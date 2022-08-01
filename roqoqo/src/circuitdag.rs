@@ -57,14 +57,20 @@ impl CircuitDag {
     /// # Arguments
     ///
     /// * 'operation' - The Operation to add to the end of the CircuitDag.
-    pub fn add_to_back(&mut self, operation: Operation) -> () {
+    ///
+    /// # Returns
+    ///
+    /// * 'Option<NodeIndex> - The NodeIndex relative to the Operation, if added to CircuitGraph.
+    pub fn add_to_back(&mut self, operation: Operation) -> Option<NodeIndex> {
         // Push to commuting_operations or create the node and start the
         //  add to back process
         if let InvolvedQubits::None = operation.involved_qubits() {
             self.commuting_operations.push(operation);
+            None
         } else {
             let node = self.graph.add_node(operation);
-            self.add_to_back_involved(node.index().try_into().unwrap())
+            self.add_to_back_involved(node.index().try_into().unwrap());
+            Some(node.index().try_into().unwrap())
         }
     }
 
@@ -157,14 +163,20 @@ impl CircuitDag {
     /// # Arguments
     ///
     /// * 'operation' - The Operation to add to the front of the CircuitDag.
-    pub fn add_to_front(&mut self, operation: Operation) -> () {
+    ///
+    /// # Returns
+    ///
+    /// * 'Option<NodeIndex> - The NodeIndex relative to the Operation, if added to CircuitGraph.
+    pub fn add_to_front(&mut self, operation: Operation) -> Option<NodeIndex> {
         // Push to commuting_operations or create the node and start the
         //  add to back process
         if let InvolvedQubits::None = operation.involved_qubits() {
             self.commuting_operations.push(operation);
+            None
         } else {
             let node = self.graph.add_node(operation);
-            self.add_to_front_involved(node.index().try_into().unwrap())
+            self.add_to_front_involved(node.index().try_into().unwrap());
+            Some(node.index().try_into().unwrap())
         }
     }
 
@@ -250,15 +262,6 @@ impl CircuitDag {
         }
         self.first_operation_involving_qubit.clear();
         self.first_operation_involving_qubit = temp_map.clone();
-    }
-
-    /// Returns a reference to the Operation at index.
-    ///
-    /// # Arguments
-    ///
-    /// * 'index' - The index of the Operation to get from CircuitDag.
-    pub fn get_op(&self, index: usize) -> Option<&Operation> {
-        self.commuting_operations.get(index)
     }
 
     /// Returns a reference to the vector of commuting operations in CircuitDag.
