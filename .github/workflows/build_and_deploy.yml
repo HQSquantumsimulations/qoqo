@@ -53,7 +53,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v3.1.2
+      - uses: actions/setup-python@v4.1.0
         with:
           python-version: ${{ matrix.python.py }}
       - name: linux wheels
@@ -62,7 +62,7 @@ jobs:
           maturin-version: latest
           command: build
           manylinux: 2010
-          args: -i python${{ matrix.python.py }} --out wheels --no-sdist -m qoqo/Cargo.toml --release --cargo-extra-args="--locked"
+          args: -i python${{ matrix.python.py }} --out wheels -m qoqo/Cargo.toml --release --locked
       - name: test install
         run: |
           pip install wheels/* --force-reinstall
@@ -92,7 +92,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v3.1.2
+      - uses: actions/setup-python@v4.1.0
         with:
           python-version: ${{ matrix.python.py }}
       - name: linux wheels
@@ -133,7 +133,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v3.1.2
+      - uses: actions/setup-python@v4.1.0
         with:
           python-version: ${{ matrix.python.py }}
       - name: windows wheels
@@ -141,7 +141,7 @@ jobs:
         with:
           maturin-version: latest
           command: build
-          args: -i python --out wheels --no-sdist -m qoqo/Cargo.toml --release --cargo-extra-args="--locked"
+          args: -i python --out wheels  -m qoqo/Cargo.toml --release --locked
       - name: store artifact
         uses: actions/upload-artifact@v3
         with:
@@ -171,7 +171,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v3.1.2
+      - uses: actions/setup-python@v4.1.0
         with:
           python-version: ${{ matrix.python.py }}
       - name: Install dependencies
@@ -180,11 +180,11 @@ jobs:
       - name: macos wheels
         if: ${{ matrix.combinations.runs_on == 'macOS-latest' && matrix.python-version < '3.8'}}
         run: |
-          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --out wheels --no-sdist -m qoqo/Cargo.toml --release --cargo-extra-args="--locked"
+          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --out wheels  -m qoqo/Cargo.toml --release --locked
       - name: universal wheels
         if: ${{ matrix.combinations.runs_on == 'macOS-latest' && matrix.python-version >= '3.8' }}
         run: |
-          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --universal2 --out wheels --no-sdist -m qoqo/Cargo.toml --release --cargo-extra-args="--locked"
+          RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -i ${{ matrix.python.interpreter }} --universal2 --out wheels  -m qoqo/Cargo.toml --release --locked
       - name: test install
         run: |
           pip install wheels/* --force-reinstall
@@ -198,7 +198,7 @@ jobs:
       needs: [deploy_cratesio, build_maturin_builds_macos, build_maturin_builds_linux, build_maturin_builds_linux_src, build_maturin_builds_windows]
       runs-on: ubuntu-latest
       steps:
-      - uses: actions/setup-python@v3.1.2
+      - uses: actions/setup-python@v4.1.0
         with:
           python-version: ${{ matrix.python.py }}
       - uses: actions/download-artifact@v3
