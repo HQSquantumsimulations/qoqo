@@ -15,7 +15,7 @@ use ndarray::Array1;
 #[cfg(feature = "serialize")]
 use serde::{Deserialize, Serialize};
 
-/// Collected information for executing a cheated basis rotation measurement.
+/// Collected information for executing a cheated measurement of a PauliZ product.
 #[derive(Debug, PartialEq, Clone)]
 // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
@@ -86,7 +86,7 @@ impl Measure for CheatedPauliZProduct {
 }
 
 impl MeasureExpectationValues for CheatedPauliZProduct {
-    /// Executes the cheated basis rotation measurement
+    /// Executes the cheated PauliZ product measurement
     ///
     /// # Arguments
     ///
