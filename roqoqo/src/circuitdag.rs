@@ -132,9 +132,13 @@ impl CircuitDag {
         }
         self.last_all = Some(node);
 
-        // Set the node as the only one in last_parallel_block
+        // Set the node as the only one in last_parallel_block and updates
+        //  first_parallel_block if necessary
         self.last_parallel_block.clear();
         self.last_parallel_block.insert(node);
+        if self.first_parallel_block.is_empty() {
+            self.first_parallel_block.insert(node);
+        }
 
         // All the latest nodes in the graph must now point to the new node and
         //  last_operation_involving_qubit is updated
@@ -228,9 +232,13 @@ impl CircuitDag {
         }
         self.first_all = Some(node);
 
-        // Set the node as the only one in first_parallel_block
+        // Set the node as the only one in first_parallel_block and updates
+        //  last_parallel_block if necessary
         self.first_parallel_block.clear();
         self.first_parallel_block.insert(node);
+        if self.last_parallel_block.is_empty() {
+            self.last_parallel_block.insert(node);
+        }
 
         // All the latest nodes in the graph must now point to the new node and
         //  last_operation_involving_qubit is updated
