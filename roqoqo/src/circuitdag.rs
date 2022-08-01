@@ -110,18 +110,21 @@ impl CircuitDag {
             self.graph.add_edge(i.into(), node.into(), ());
             self.last_parallel_block.remove(&i);
         }
-        self.last_operation_involving_qubit.insert(qubit, node);
+        let qubit_presence = self.last_operation_involving_qubit.insert(qubit, node);
         self.last_parallel_block.insert(node);
 
-        // Update first_operation_involving_qubit and first_parallel_block
-        //  depending on last_all
-        if self.last_all.is_none() {
-            self.first_operation_involving_qubit.insert(qubit, node);
-            self.first_parallel_block.insert(node);
-        } else {
-            self.first_operation_involving_qubit
-                .insert(qubit, self.last_all.unwrap());
-            self.first_parallel_block.insert(self.last_all.unwrap());
+        // Update the first layer in case the qubit has never been seen before
+        if qubit_presence.is_none() {
+            // Update first_operation_involving_qubit and first_parallel_block
+            //  depending on last_all
+            if self.last_all.is_none() {
+                self.first_operation_involving_qubit.insert(qubit, node);
+                self.first_parallel_block.insert(node);
+            } else {
+                self.first_operation_involving_qubit
+                    .insert(qubit, self.last_all.unwrap());
+                self.first_parallel_block.insert(self.last_all.unwrap());
+            }
         }
     }
 
@@ -216,18 +219,21 @@ impl CircuitDag {
             self.graph.add_edge(node.into(), i.into(), ());
             self.first_parallel_block.remove(&i);
         }
-        self.first_operation_involving_qubit.insert(qubit, node);
+        let qubit_presence = self.first_operation_involving_qubit.insert(qubit, node);
         self.first_parallel_block.insert(node);
 
-        // Update last_operation_involving_qubit and last_parallel_block
-        //  depending on first_all
-        if self.first_all.is_none() {
-            self.last_operation_involving_qubit.insert(qubit, node);
-            self.last_parallel_block.insert(node);
-        } else {
-            self.last_operation_involving_qubit
-                .insert(qubit, self.first_all.unwrap());
-            self.last_parallel_block.insert(self.first_all.unwrap());
+        // Update the last layer in case the qubit has never been seen before
+        if qubit_presence.is_none() {
+            // Update last_operation_involving_qubit and last_parallel_block
+            //  depending on first_all
+            if self.first_all.is_none() {
+                self.last_operation_involving_qubit.insert(qubit, node);
+                self.last_parallel_block.insert(node);
+            } else {
+                self.last_operation_involving_qubit
+                    .insert(qubit, self.first_all.unwrap());
+                self.last_parallel_block.insert(self.first_all.unwrap());
+            }
         }
     }
 
@@ -290,13 +296,13 @@ impl CircuitDag {
 
     /// Returns a reference to the first Operation that involves all qubits in CircuitDag.
     ///
-    pub fn first_all(&self) -> &Option<u32> {
+    pub fn first_all(&self) -> &Option<NodeIndex> {
         &self.first_all
     }
 
     /// Returns a reference to the last Operation that involves all qubits in CircuitDag.
     ///
-    pub fn last_all(&self) -> &Option<u32> {
+    pub fn last_all(&self) -> &Option<NodeIndex> {
         &self.last_all
     }
 

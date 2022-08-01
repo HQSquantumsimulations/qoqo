@@ -12,26 +12,35 @@
 
 use std::collections::HashSet;
 
-use roqoqo::CircuitDag;
 use roqoqo::operations::*;
+use roqoqo::CircuitDag;
 
 use test_case::test_case;
 
 /// Test adding an operation that doesn't involve qubits.
 ///
-#[test_case(Operation::from(DefinitionBit::new(String::from("ro"), 1, false)); "DefinitionBit")]
-fn add_operation_no_involved_qubits(operation: Operation) {
+#[test_case(
+    Operation::from(DefinitionBit::new(String::from("ro"), 1, false)),
+    Operation::from(DefinitionComplex::new(String::from("ri"), 2, false))
+)]
+#[test_case(
+    Operation::from(DefinitionComplex::new(String::from("ri"), 3, false)),
+    Operation::from(DefinitionBit::new(String::from("ro"), 4, false))
+)]
+fn add_operation_no_involved_qubits(operation1: Operation, operation2: Operation) {
     let mut dag: CircuitDag = CircuitDag::new();
 
-    dag.add_to_back(operation.clone());
+    dag.add_to_back(operation1.clone());
 
-    assert!(operation.involved_qubits() == InvolvedQubits::None);
-    assert_eq!(dag.commuting_operations().get(0).unwrap(), &operation);
+    assert!(operation1.involved_qubits() == InvolvedQubits::None);
+    assert_eq!(dag.commuting_operations().get(0).unwrap(), &operation1);
 
     dag.add_to_front(Operation::from(PauliY::new(0)));
     dag.add_to_back(Operation::from(CNOT::new(0, 1)));
 
-    assert_eq!(dag.commuting_operations().get(0).unwrap(), &operation);
+    dag.add_to_front(operation2.clone());
+
+    assert_eq!(dag.commuting_operations().get(1).unwrap(), &operation2);
 }
 
 /// Test graph node existance after adding an operation that involves qubits.
@@ -74,31 +83,27 @@ fn check_edge(operation1: Operation, operation2: Operation) {
     let ind1 = dag.add_to_back(operation1.clone());
     let ind2 = dag.add_to_back(operation2.clone());
 
-    assert!(dag.graph().contains_edge(ind1.unwrap().into(), ind2.unwrap().into()));
+    assert!(dag
+        .graph()
+        .contains_edge(ind1.unwrap().into(), ind2.unwrap().into()));
 }
 
-#[test_case(
-    Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None)),
-    true
-)]
-#[test_case(
-    Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None)),
-    false
-)]
-fn check_first_last_all_existence(operation: Operation, back: bool) {
+#[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None)))]
+#[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ri"), 2, None)))]
+fn check_first_last_all_existence(operation: Operation) {
     let mut dag: CircuitDag = CircuitDag::new();
 
     assert!(dag.first_all().is_none());
     assert!(dag.last_all().is_none());
 
-    if back {
-        dag.add_to_back(operation.clone());
-    } else {
-        dag.add_to_front(operation.clone());
-    }
+    let ind_back = dag.add_to_back(operation.clone());
+    let ind_front = dag.add_to_front(operation.clone());
 
     assert!(dag.first_all().is_some());
     assert!(dag.last_all().is_some());
+
+    assert!(dag.first_all().unwrap() == ind_front.unwrap());
+    assert!(dag.last_all().unwrap() == ind_back.unwrap());
 }
 
 #[test_case(
@@ -193,10 +198,10 @@ fn check_parallel_blocks_mixed(operation1: Operation, operation2: Operation) {
 
 #[test_case(Operation::from(PauliX::new(0)))]
 #[test_case(Operation::from(CNOT::new(0, 1)))]
-fn check_operation_involving_qubits(operation: Operation) {
+fn check_operation_involving_qubits_set(operation: Operation) {
     let mut dag: CircuitDag = CircuitDag::new();
 
-    dag.add_to_back(Operation::from(PauliZ::new(0)));
+    dag.add_to_front(Operation::from(PauliZ::new(0)));
     dag.add_to_back(Operation::from(CNOT::new(0, 1)));
 
     assert!(
@@ -204,13 +209,44 @@ fn check_operation_involving_qubits(operation: Operation) {
             == dag.last_operation_involving_qubit().get(&1)
     );
 
-    dag.add_to_back(operation.clone());
+    let ind = dag.add_to_back(operation.clone());
 
     if let InvolvedQubits::Set(qubits) = operation.involved_qubits() {
         for qubit in qubits {
             assert!(dag.last_operation_involving_qubit().contains_key(&qubit));
+            assert!(dag.last_operation_involving_qubit().get(&qubit) == ind.as_ref());
         }
     }
+}
 
-    // TODO: same thing but check node. Needs add_to_back to return the node.
+#[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None,)))]
+#[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ri"), 2, None,)))]
+fn check_operation_involving_qubits_all(operation: Operation) {
+    let mut dag: CircuitDag = CircuitDag::new();
+
+    assert!(dag.first_operation_involving_qubit().is_empty());
+    assert!(dag.last_operation_involving_qubit().is_empty());
+
+    dag.add_to_front(operation.clone());
+
+    assert!(dag.first_operation_involving_qubit().is_empty());
+    assert!(dag.last_operation_involving_qubit().is_empty());
+
+    let back = dag.add_to_back(Operation::from(PauliX::new(0)));
+
+    assert_eq!(dag.last_operation_involving_qubit().get(&0), back.as_ref());
+
+    let front = dag.add_to_front(Operation::from(CNOT::new(0,1)));
+
+    assert_eq!(dag.last_operation_involving_qubit().get(&0), back.as_ref());
+    assert_eq!(dag.first_operation_involving_qubit().get(&0), front.as_ref());
+
+    assert_ne!(dag.last_operation_involving_qubit().get(&0), front.as_ref());
+    assert_ne!(dag.first_operation_involving_qubit().get(&0), back.as_ref());
+    
+    let new_front_all = dag.add_to_front(operation.clone());
+    let new_back_all = dag.add_to_back(operation.clone());
+
+    assert!(dag.graph().contains_edge(new_front_all.unwrap().into(), front.unwrap().into()));
+    assert!(dag.graph().contains_edge(back.unwrap().into(), new_back_all.unwrap().into()));
 }
