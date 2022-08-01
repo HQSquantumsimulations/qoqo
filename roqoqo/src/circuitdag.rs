@@ -72,7 +72,7 @@ impl CircuitDag {
     ///
     /// # Arguments
     ///
-    /// * 'operation' - The Operation to add to the end of the CircuitDag.
+    /// * 'node' - The NodeIndex of the node to add to the end of the CircuitDag.
     fn add_to_back_involved(&mut self, node: NodeIndex) -> () {
         let node_involved_qubits: InvolvedQubits = self
             .graph
@@ -83,21 +83,21 @@ impl CircuitDag {
         //  in the operation
         if let InvolvedQubits::Set(x) = node_involved_qubits {
             for qubit in x {
-                self.update_from_qubit(node, qubit);
+                self.update_from_qubit_back(node, qubit);
             }
         } else if let InvolvedQubits::All = node_involved_qubits {
-            self.update_from_all_operation(node);
+            self.update_from_all_operation_back(node);
         }
     }
 
     /// Updates the relevant attributes and the graph of CircuitDag from a single qubit involved
-    /// in an Operation.
+    /// in an Operation added to the back of the CircuitDag.
     ///
     /// # Arguments
     ///
     /// * 'node' - The index of the node whose Operation involves the qubit.
     /// * 'qubit' - The qubit involved in the Operation.
-    fn update_from_qubit(&mut self, node: NodeIndex, qubit: usize) {
+    fn update_from_qubit_back(&mut self, node: NodeIndex, qubit: usize) {
         // Update last_operation_involving qubit and last_parallel_block
         //  depending on current structure
         if let Some(&i) = self.last_operation_involving_qubit.get(&qubit) {
@@ -119,12 +119,13 @@ impl CircuitDag {
         }
     }
 
-    /// Updates the relevant attributes and the graph of CircuitDag when the Operation involves all qubits.
+    /// Updates the relevant attributes and the graph of CircuitDag when an Operation that involves
+    /// all qubits is added to the back.
     ///
     /// # Arguments
     ///
     /// * 'node' - The index of the node whose Operation involves all qubits.
-    fn update_from_all_operation(&mut self, node: NodeIndex) {
+    fn update_from_all_operation_back(&mut self, node: NodeIndex) {
         // Update first_all and last_all
         if self.first_all.is_none() {
             self.first_all = Some(node);
@@ -143,6 +144,86 @@ impl CircuitDag {
             self.graph.update_edge(old_node.into(), node.into(), ());
             temp_map.insert(qubit, node);
         }
+        self.last_operation_involving_qubit.clear();
+        self.last_operation_involving_qubit = temp_map.clone();
+    }
+
+    /// Adds an operation to the front of the CircuitDag is necessary.
+    /// 
+    /// # Arguments
+    /// 
+    /// * 'operation' - The Operation to add to the front of the CircuitDag.
+    pub fn add_to_front(&mut self, operation: Operation) -> (){
+        // Push to commuting_operations or create the node and start the
+        //  add to back process
+        if let InvolvedQubits::None = operation.involved_qubits() {
+            self.commuting_operations.push(operation);
+        } else {
+            let node = self.graph.add_node(operation);
+            self.add_to_front_involved(node.index().try_into().unwrap())
+        }
+    }
+
+    /// Adds an operation that involves some or all qubits to the front of the CircuitDag.
+    ///
+    /// # Arguments
+    ///
+    /// * 'node' - The NodeIndex of the node to add to the end of the CircuitDag.
+    fn add_to_front_involved(&mut self, node: NodeIndex) -> (){
+        let node_involved_qubits: InvolvedQubits = self
+            .graph
+            .node_weight(node.into())
+            .unwrap()
+            .involved_qubits();
+        // Calls the proper subfunction depending on the qubits involved
+        //  in the operation
+        if let InvolvedQubits::Set(x) = node_involved_qubits {
+            for qubit in x {
+                self.update_from_qubit_front(node, qubit);
+            }
+        } else if let InvolvedQubits::All = node_involved_qubits {
+            self.update_from_all_operation_front(node);
+        }
+    }
+
+    /// Updates the relevant attributes and the graph of CircuitDag from a single qubit involved
+    /// in an Operation added to the front of the CircuitDag.
+    ///
+    /// # Arguments
+    ///
+    /// * 'node' - The index of the node whose Operation involves the qubit.
+    /// * 'qubit' - The qubit involved in the Operation.
+    fn update_from_qubit_front(&mut self, node: NodeIndex, qubit: usize) {
+
+    }
+
+    /// Updates the relevant attributes and the graph of CircuitDag when an Operation that involves
+    /// all qubits is added to the front.
+    ///
+    /// # Arguments
+    ///
+    /// * 'node' - The index of the node whose Operation involves all qubits.
+    fn update_from_all_operation_front(&mut self, node: NodeIndex) {
+        // Update last_all and first_all
+        if self.last_all.is_none() {
+            self.last_all = Some(node);
+        }
+        self.first_all = Some(node);
+
+        // Set the node as the only one in first_parallel_block
+        self.first_parallel_block.clear();
+        self.first_parallel_block.insert(node);
+
+        // All the latest nodes in the graph must now point to the new node and
+        //  last_operation_involving_qubit is updated
+        let mut temp_map: HashMap<usize, NodeIndex> =
+            HashMap::with_capacity(self.first_operation_involving_qubit.capacity());
+        for (&qubit, &old_node) in &self.first_operation_involving_qubit {
+            self.graph.update_edge(node.into(), old_node.into(), ());
+            temp_map.insert(qubit, node);
+        }
+        self.first_operation_involving_qubit.clear();
+        self.first_operation_involving_qubit = temp_map.clone();
     }
 
     /// Returns a reference to the Operation at index.
