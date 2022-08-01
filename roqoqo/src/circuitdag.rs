@@ -149,11 +149,11 @@ impl CircuitDag {
     }
 
     /// Adds an operation to the front of the CircuitDag is necessary.
-    /// 
+    ///
     /// # Arguments
-    /// 
+    ///
     /// * 'operation' - The Operation to add to the front of the CircuitDag.
-    pub fn add_to_front(&mut self, operation: Operation) -> (){
+    pub fn add_to_front(&mut self, operation: Operation) -> () {
         // Push to commuting_operations or create the node and start the
         //  add to back process
         if let InvolvedQubits::None = operation.involved_qubits() {
@@ -169,7 +169,7 @@ impl CircuitDag {
     /// # Arguments
     ///
     /// * 'node' - The NodeIndex of the node to add to the end of the CircuitDag.
-    fn add_to_front_involved(&mut self, node: NodeIndex) -> (){
+    fn add_to_front_involved(&mut self, node: NodeIndex) -> () {
         let node_involved_qubits: InvolvedQubits = self
             .graph
             .node_weight(node.into())
@@ -194,7 +194,25 @@ impl CircuitDag {
     /// * 'node' - The index of the node whose Operation involves the qubit.
     /// * 'qubit' - The qubit involved in the Operation.
     fn update_from_qubit_front(&mut self, node: NodeIndex, qubit: usize) {
+        // Update first_operation_involving qubit and first_parallel_block
+        //  depending on current structure
+        if let Some(&i) = self.first_operation_involving_qubit.get(&qubit) {
+            self.graph.add_edge(node.into(), i.into(), ());
+            self.first_parallel_block.remove(&i);
+        }
+        self.first_operation_involving_qubit.insert(qubit, node);
+        self.first_parallel_block.insert(node);
 
+        // Update last_operation_involving_qubit and last_parallel_block
+        //  depending on first_all
+        if self.first_all.is_none() {
+            self.last_operation_involving_qubit.insert(qubit, node);
+            self.last_parallel_block.insert(node);
+        } else {
+            self.last_operation_involving_qubit
+                .insert(qubit, self.first_all.unwrap());
+            self.last_parallel_block.insert(self.first_all.unwrap());
+        }
     }
 
     /// Updates the relevant attributes and the graph of CircuitDag when an Operation that involves
@@ -247,6 +265,18 @@ impl CircuitDag {
         &self.graph
     }
 
+    /// Returns a reference to the HasSet containing the nodes in the first parallel block.
+    ///
+    pub fn first_parallel_block(&self) -> &HashSet<NodeIndex> {
+        &self.first_parallel_block
+    }
+
+    /// Returns a reference to the HashSet containing the nodes in the last parallel block.
+    ///
+    pub fn last_parallel_block(&self) -> &HashSet<NodeIndex> {
+        &self.last_parallel_block
+    }
+
     /// Returns a reference to the first Operation that involves all qubits in CircuitDag.
     ///
     pub fn first_all(&self) -> &Option<u32> {
@@ -259,15 +289,16 @@ impl CircuitDag {
         &self.last_all
     }
 
-    /// Returns a reference to the HashSet containing the nodes in the last parallel block.
-    /// 
-    pub fn last_parallel_block(&self) -> &HashSet<NodeIndex> {
-        &self.last_parallel_block
+    /// Returns a reference to the HashMap where a key represents a qubit and its value represents
+    /// the first node that involves that qubit.
+    ///
+    pub fn first_operation_involving_qubit(&self) -> &HashMap<usize, NodeIndex> {
+        &self.first_operation_involving_qubit
     }
 
     /// Returns a reference to the HashMap where a key represents a qubit and its value represents
-    /// the last node the involves that qubit.
-    /// 
+    /// the last node that involves that qubit.
+    ///
     pub fn last_operation_involving_qubit(&self) -> &HashMap<usize, NodeIndex> {
         &self.last_operation_involving_qubit
     }
