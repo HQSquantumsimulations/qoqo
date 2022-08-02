@@ -348,9 +348,12 @@ impl CircuitDag {
         // Depending on InvolvedClassical, update both last_ and first_operation_involving_classical
         match operation.involved_classical() {
             InvolvedClassical::Set(x) => {
+                // Cycle InvolvedClassical::Set, insert node everywhere in last_operation_involving_classical
                 for (name, readout) in &x {
                     self.last_operation_involving_classical
                         .insert((String::clone(name), *readout), node);
+                    // If the classical register has never been seen before, insert it in
+                    //  first_operation_involving_classical as well
                     if !self
                         .first_operation_involving_classical
                         .contains_key(&(String::clone(name), *readout))
@@ -361,11 +364,18 @@ impl CircuitDag {
                 }
             }
             InvolvedClassical::All(x) | InvolvedClassical::AllQubits(x) => {
+                // Cycle last_operation_involving_classical
                 let mut temp_map: HashMap<(String, usize), NodeIndex> =
                     HashMap::with_capacity(self.last_operation_involving_classical.capacity());
                 for ((name, readout), _) in &self.last_operation_involving_classical {
+                    // If the classical register's name in InvolvedClassical::All or ::AllQubits
+                    //  is present in last_operation_involving_classical, insert the node
+                    //  in the temporary HashMap
                     if *name == x {
                         temp_map.insert((String::clone(name), *readout), node);
+                        // If the classical register has never been seen before, insert it in
+                        //  first_operation_involving_classical as well
+                        // TODO: is this necessary here? Shouldn't the Set case be enough?
                         if !self
                             .first_operation_involving_classical
                             .contains_key(&(String::clone(name), *readout))
@@ -375,6 +385,7 @@ impl CircuitDag {
                         }
                     }
                 }
+                // Update last_operation_involving_classical with the temporary HashMap
                 self.last_operation_involving_classical = temp_map.clone();
             }
             InvolvedClassical::None => (),
@@ -392,9 +403,12 @@ impl CircuitDag {
         // Depending on InvolvedClassical, update both last_ and first_operation_involving_classical
         match operation.involved_classical() {
             InvolvedClassical::Set(x) => {
+                // Cycle InvolvedClassical::Set, insert node everywhere in first_operation_involving_classical
                 for (name, readout) in &x {
                     self.first_operation_involving_classical
                         .insert((String::clone(name), *readout), node);
+                    // If the classical register has never been seen before, insert it in
+                    //  last_operation_involving_classical as well
                     if !self
                         .last_operation_involving_classical
                         .contains_key(&(String::clone(name), *readout))
@@ -405,11 +419,18 @@ impl CircuitDag {
                 }
             }
             InvolvedClassical::All(x) | InvolvedClassical::AllQubits(x) => {
+                // Cycle first_operation_involving_classical
                 let mut temp_map: HashMap<(String, usize), NodeIndex> =
                     HashMap::with_capacity(self.first_operation_involving_classical.capacity());
                 for ((name, readout), _) in &self.first_operation_involving_classical {
+                    // If the classical register's name in InvolvedClassical::All or ::AllQubits
+                    //  is present in first_operation_involving_classical, insert the node
+                    //  in the temporary HashMap
                     if *name == x {
                         temp_map.insert((String::clone(name), *readout), node);
+                        // If the classical register has never been seen before, insert it in
+                        //  last_operation_involving_classical as well
+                        // TODO: is this necessary here? Shouldn't the Set case be enough?
                         if !self
                             .last_operation_involving_classical
                             .contains_key(&(String::clone(name), *readout))
@@ -419,6 +440,7 @@ impl CircuitDag {
                         }
                     }
                 }
+                // Update first_operation_involving_classical with the temporary HashMap
                 self.first_operation_involving_classical = temp_map.clone();
             }
             InvolvedClassical::None => (),
