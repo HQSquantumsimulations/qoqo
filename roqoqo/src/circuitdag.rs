@@ -390,16 +390,16 @@ impl CircuitDag {
         }
     }
 
-    /// Returns a reference to the vector of commuting operations in CircuitDag.
-    ///
-    pub fn commuting_operations(&self) -> &Vec<Operation> {
-        &self.commuting_operations
-    }
-
     /// Returns a reference to the graph in CircuitDag.
     ///
     pub fn graph(&self) -> &Graph<Operation, ()> {
         &self.graph
+    }
+
+    /// Returns a reference to the vector of commuting operations in CircuitDag.
+    ///
+    pub fn commuting_operations(&self) -> &Vec<Operation> {
+        &self.commuting_operations
     }
 
     /// Returns a reference to the HasSet containing the nodes in the first parallel block.
@@ -438,5 +438,21 @@ impl CircuitDag {
     ///
     pub fn last_operation_involving_qubit(&self) -> &HashMap<usize, NodeIndex> {
         &self.last_operation_involving_qubit
+    }
+
+    /// Returns a reference to the HashMap where a key is composed by the name and the size
+    /// of the classical register and its value represents the first node that involves that
+    /// register.
+    /// 
+    pub fn first_operation_involving_classical(&self) -> &HashMap<(String, usize), NodeIndex> {
+        &self.first_operation_involving_classical
+    }
+
+    /// Returns a reference to the HashMap where a key is composed by the name and the size
+    /// of the classical register and its value represents the last node that involves that
+    /// register.
+    /// 
+    pub fn last_operation_involving_classical(&self) -> &HashMap<(String, usize), NodeIndex> {
+        &self.last_operation_involving_classical
     }
 }
