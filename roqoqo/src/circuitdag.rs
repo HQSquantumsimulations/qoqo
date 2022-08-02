@@ -12,6 +12,7 @@
 
 use std::collections::{HashMap, HashSet};
 
+use crate::Circuit;
 use crate::operations::*;
 
 use petgraph::adj::NodeIndex;
@@ -37,6 +38,7 @@ pub struct CircuitDag {
 
 impl CircuitDag {
     /// Creates a new empty CircuitDag.
+    /// 
     pub fn new() -> Self {
         CircuitDag {
             graph: Graph::<Operation, ()>::new(),
@@ -52,6 +54,39 @@ impl CircuitDag {
         }
     }
 
+    /// Creates a new CircuitDag from a given Circuit.
+    /// 
+    pub fn new_from_circuit(circuit: Circuit) -> Self {
+        let mut new_dag = CircuitDag { 
+            graph: Graph::<Operation, ()>::new(),
+            commuting_operations: Vec::<Operation>::new(),
+            first_parallel_block: HashSet::<NodeIndex>::new(),
+            last_parallel_block: HashSet::<NodeIndex>::new(),
+            first_all: Option::<NodeIndex>::None,
+            last_all: Option::<NodeIndex>::None,
+            first_operation_involving_qubit: HashMap::<usize, NodeIndex>::new(),
+            last_operation_involving_qubit: HashMap::<usize, NodeIndex>::new(),
+            first_operation_involving_classical: HashMap::<(String, usize), NodeIndex>::new(),
+            last_operation_involving_classical: HashMap::<(String, usize), NodeIndex>::new(),
+        };
+
+        new_dag.circuit_dag_from_circuit(circuit);
+
+        new_dag
+    }
+
+    /// Given a Circuit, populates the CircuitDag by adding each Operation present
+    /// in the Circuit.
+    /// 
+    /// # Arguments
+    /// 
+    /// * 'circuit' - The input Circuit for the new CircuitDag.
+    fn circuit_dag_from_circuit(&mut self, circuit: Circuit) -> () {
+        for operation in circuit.operations() {
+            self.add_to_back(operation.clone());
+        }
+    }
+
     /// Adds an operation to the back of the CircuitDag if necessary.
     ///
     /// # Arguments
@@ -60,7 +95,7 @@ impl CircuitDag {
     ///
     /// # Returns
     ///
-    /// * 'Option<NodeIndex> - The NodeIndex relative to the Operation, if added to CircuitGraph.
+    /// * 'Option<NodeIndex>' - The NodeIndex relative to the Operation, if added to CircuitGraph.
     pub fn add_to_back(&mut self, operation: Operation) -> Option<NodeIndex> {
         // Push to commuting_operations or create the node and start the
         //  add to back process
@@ -175,7 +210,7 @@ impl CircuitDag {
     ///
     /// # Returns
     ///
-    /// * 'Option<NodeIndex> - The NodeIndex relative to the Operation, if added to CircuitGraph.
+    /// * 'Option<NodeIndex>' - The NodeIndex relative to the Operation, if added to CircuitGraph.
     pub fn add_to_front(&mut self, operation: Operation) -> Option<NodeIndex> {
         // Push to commuting_operations or create the node and start the
         //  add to back process

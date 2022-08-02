@@ -281,10 +281,11 @@ fn check_involved_classical_set(operation1: Operation, operation2: Operation) {
 
     if let InvolvedClassical::Set(x) = operation1.involved_classical() {
         let el = x.iter().next().unwrap();
-        assert!(dag
-            .last_operation_involving_classical()
-            .contains_key(el));
-        assert_eq!(dag.last_operation_involving_classical().get(el), back.as_ref());
+        assert!(dag.last_operation_involving_classical().contains_key(el));
+        assert_eq!(
+            dag.last_operation_involving_classical().get(el),
+            back.as_ref()
+        );
     }
 
     assert!(!dag.last_operation_involving_classical().is_empty());
@@ -295,19 +296,67 @@ fn check_involved_classical_set(operation1: Operation, operation2: Operation) {
     if let InvolvedClassical::Set(x) = operation2.involved_classical() {
         let el = x.iter().next().unwrap();
         assert!(dag.first_operation_involving_classical().contains_key(el));
-        assert_eq!(dag.first_operation_involving_classical().get(el), front.as_ref());
+        assert_eq!(
+            dag.first_operation_involving_classical().get(el),
+            front.as_ref()
+        );
     }
 
     let front2 = dag.add_to_front(operation2.clone());
 
     if let InvolvedClassical::Set(x) = operation2.involved_classical() {
         let el = x.iter().next().unwrap();
-        assert_ne!(dag.first_operation_involving_classical().get(el), front.as_ref());
-        assert_eq!(dag.first_operation_involving_classical().get(el), front2.as_ref());
+        assert_ne!(
+            dag.first_operation_involving_classical().get(el),
+            front.as_ref()
+        );
+        assert_eq!(
+            dag.first_operation_involving_classical().get(el),
+            front2.as_ref()
+        );
     }
 }
 
+#[test_case(Operation::from(DefinitionBit::new("ro".to_string(), 3, false)))]
+#[test_case(Operation::from(DefinitionComplex::new("ro".to_string(), 4, false)))]
+fn check_involved_classical_all(operation: Operation) {
+    let mut dag: CircuitDag = CircuitDag::new();
 
-fn check_involved_classical_all() {
+    let back = dag.add_to_back(Operation::from(MeasureQubit::new(0, "ro".to_string(), 0)));
+    let front = dag.add_to_front(Operation::from(MeasureQubit::new(1, "ro".to_string(), 1)));
 
+    let new_back = dag.add_to_back(operation.clone());
+
+    if let InvolvedClassical::All(x) = operation.involved_classical() {
+        assert_eq!(
+            dag.last_operation_involving_classical()
+                .get(&(x.clone(), 0)),
+            new_back.as_ref()
+        );
+        assert_ne!(
+            dag.last_operation_involving_classical()
+                .get(&(x.clone(), 1)),
+            back.as_ref()
+        );
+    }
+
+    let new_front = dag.add_to_front(operation.clone());
+
+    if let InvolvedClassical::All(x) = operation.involved_classical() {
+        assert_eq!(
+            dag.first_operation_involving_classical()
+                .get(&(x.clone(), 0)),
+            new_front.as_ref()
+        );
+        assert_ne!(
+            dag.first_operation_involving_classical()
+                .get(&(x.clone(), 1)),
+            front.as_ref()
+        );
+
+        assert_ne!(
+            dag.first_operation_involving_classical().get(&(x.clone(), 0)),
+            dag.last_operation_involving_classical().get(&(x.clone(), 0))
+        );
+    }
 }
