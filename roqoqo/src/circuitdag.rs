@@ -65,11 +65,17 @@ impl CircuitDag {
         // Push to commuting_operations or create the node and start the
         //  add to back process
         if let InvolvedQubits::None = operation.involved_qubits() {
-            self.commuting_operations.push(operation);
+            self.commuting_operations.push(operation.clone());
+            self.update_classical(None, operation.clone(), true);
             None
         } else {
-            let node = self.graph.add_node(operation);
+            let node = self.graph.add_node(operation.clone());
             self.add_to_back_involved(node.index().try_into().unwrap());
+            self.update_classical(
+                Some(node.index().try_into().unwrap()),
+                operation.clone(),
+                true,
+            );
             Some(node.index().try_into().unwrap())
         }
     }
@@ -174,11 +180,17 @@ impl CircuitDag {
         // Push to commuting_operations or create the node and start the
         //  add to back process
         if let InvolvedQubits::None = operation.involved_qubits() {
-            self.commuting_operations.push(operation);
+            self.commuting_operations.push(operation.clone());
+            self.update_classical(None, operation.clone(), false);
             None
         } else {
-            let node = self.graph.add_node(operation);
+            let node = self.graph.add_node(operation.clone());
             self.add_to_front_involved(node.index().try_into().unwrap());
+            self.update_classical(
+                Some(node.index().try_into().unwrap()),
+                operation.clone(),
+                false,
+            );
             Some(node.index().try_into().unwrap())
         }
     }
@@ -268,6 +280,114 @@ impl CircuitDag {
         }
         self.first_operation_involving_qubit.clear();
         self.first_operation_involving_qubit = temp_map.clone();
+    }
+
+    /// Checks and updates the relevant classical registers attributes from a given Operation.
+    ///
+    /// # Arguments
+    ///
+    /// * 'node' - The index of the node, if present, of the given Operation.
+    /// * 'operation' - The Operation under examine.
+    /// * 'back' - bool value indicating whether the operation was added from the back or not.
+    fn update_classical(&mut self, node: Option<NodeIndex>, operation: Operation, back: bool) {
+        // Check whether the operation involves qubits or not
+        if let Some(_) = node {
+            if back {
+                self.update_classical_back(node.unwrap(), operation);
+            } else {
+                self.update_classical_front(node.unwrap(), operation);
+            }
+        } else {
+            // TODO
+        }
+    }
+
+    /// Checks and updates the relevant classical registers attributes from a given Operation
+    /// that was added to the back of the graph.
+    ///
+    /// # Arguments
+    ///
+    /// * 'node' - The index of the node of the Operation that was added to the back of the graph.
+    /// * 'operation' - The Operation that was added to the back of the graph.
+    fn update_classical_back(&mut self, node: NodeIndex, operation: Operation) {
+        // Depending on InvolvedClassical, update both last_ and first_operation_involving_classical
+        match operation.involved_classical() {
+            InvolvedClassical::Set(x) => {
+                for (name, readout) in &x {
+                    self.last_operation_involving_classical
+                        .insert((String::clone(name), *readout), node);
+                    if !self
+                        .first_operation_involving_classical
+                        .contains_key(&(String::clone(name), *readout))
+                    {
+                        self.first_operation_involving_classical
+                            .insert((String::clone(name), *readout), node);
+                    }
+                }
+            }
+            InvolvedClassical::All(x) | InvolvedClassical::AllQubits(x) => {
+                let mut temp_map: HashMap<(String, usize), NodeIndex> =
+                    HashMap::with_capacity(self.last_operation_involving_classical.capacity());
+                for ((name, readout), _) in &self.last_operation_involving_classical {
+                    if *name == x {
+                        temp_map.insert((String::clone(name), *readout), node);
+                        if !self
+                            .first_operation_involving_classical
+                            .contains_key(&(String::clone(name), *readout))
+                        {
+                            self.first_operation_involving_classical
+                                .insert((String::clone(name), *readout), node);
+                        }
+                    }
+                }
+                self.last_operation_involving_classical = temp_map.clone();
+            }
+            InvolvedClassical::None => (),
+        }
+    }
+
+    /// Checks and updates the relevant classical registers attributes from a given Operation
+    /// that was added to the front of the graph.
+    ///
+    /// # Arguments
+    ///
+    /// * 'node' - The index of the node of the Operation that was added to the front of the graph.
+    /// * 'operation' - The Operation that was added to the front of the graph.
+    fn update_classical_front(&mut self, node: NodeIndex, operation: Operation) {
+        // Depending on InvolvedClassical, update both last_ and first_operation_involving_classical
+        match operation.involved_classical() {
+            InvolvedClassical::Set(x) => {
+                for (name, readout) in &x {
+                    self.first_operation_involving_classical
+                        .insert((String::clone(name), *readout), node);
+                    if !self
+                        .last_operation_involving_classical
+                        .contains_key(&(String::clone(name), *readout))
+                    {
+                        self.last_operation_involving_classical
+                            .insert((String::clone(name), *readout), node);
+                    }
+                }
+            }
+            InvolvedClassical::All(x) | InvolvedClassical::AllQubits(x) => {
+                let mut temp_map: HashMap<(String, usize), NodeIndex> =
+                    HashMap::with_capacity(self.first_operation_involving_classical.capacity());
+                for ((name, readout), _) in &self.first_operation_involving_classical {
+                    if *name == x {
+                        temp_map.insert((String::clone(name), *readout), node);
+                        if !self
+                            .last_operation_involving_classical
+                            .contains_key(&(String::clone(name), *readout))
+                        {
+                            self.last_operation_involving_classical
+                                .insert((String::clone(name), *readout), node);
+                        }
+                    }
+                }
+                self.first_operation_involving_classical = temp_map.clone();
+            }
+            InvolvedClassical::None => (),
+        }
     }
 
     /// Returns a reference to the vector of commuting operations in CircuitDag.
