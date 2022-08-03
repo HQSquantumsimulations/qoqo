@@ -10,7 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Qoqo basis rotation measurement
+//! Qoqo cheated PauliZ product measurement
 
 use super::CheatedPauliZProductInputWrapper;
 use crate::CircuitWrapper;
@@ -26,7 +26,7 @@ use roqoqo::Circuit;
 use std::collections::HashMap;
 #[pyclass(name = "CheatedPauliZProduct", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
-/// Collected information for executing a basis rotation measurement.
+/// Collected information for executing a cheated measurement of PauliZ product.
 pub struct CheatedPauliZProductWrapper {
     /// Internal storage of [roqoqo::PauliZProduct].
     pub internal: CheatedPauliZProduct,
@@ -42,7 +42,7 @@ impl CheatedPauliZProductWrapper {
     ///     input (CheatedPauliZProductInput): The additional input information required for measurement.
     ///
     /// Returns:
-    ///     self: The CheatedPauliZProduct containing the new basis rotation measurement.
+    ///     self: The CheatedPauliZProduct containing the new cheated PauliZ product measurement.
     #[new]
     pub fn new(
         constant_circuit: Option<CircuitWrapper>,
@@ -63,7 +63,7 @@ impl CheatedPauliZProductWrapper {
         }
     }
 
-    /// Executes the basis rotation measurement.
+    /// Executes the cheated PauliZ product measurement.
     ///
     /// Args:
     ///     input_bit_registers (dict[str, Union[list[list[int]], list[list[bool]]]]): The classical bit registers with the register name as key
@@ -75,7 +75,7 @@ impl CheatedPauliZProductWrapper {
     ///
     /// Raises:
     ///     RuntimeError: Unexpected repetition of key in bit_register.
-    ///     RuntimeError: Error evaluating cheated basis rotation measurement.
+    ///     RuntimeError: Error evaluating cheated PauliZ product measurement.
     pub fn evaluate(
         &mut self,
         input_bit_registers: Py<PyAny>,
@@ -115,7 +115,7 @@ impl CheatedPauliZProductWrapper {
             .evaluate(bit_registers, float_registers, complex_registers)
             .map_err(|x| {
                 PyRuntimeError::new_err(format!(
-                    "Error evaluating cheated basis rotation measurement {:?}",
+                    "Error evaluating cheated PauliZ product measurement {:?}",
                     x
                 ))
             })
