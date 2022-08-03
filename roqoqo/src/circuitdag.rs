@@ -356,32 +356,32 @@ impl CircuitDag {
             Operation::DefinitionBit(_) => {
                 let new_op:DefinitionBit = operation.clone().try_into().unwrap();
                 for i in 0..*new_op.length() {
-                    self.first_operation_involving_classical.insert((String::from(operation.hqslang()), i), node.try_into().unwrap());
-                    self.last_operation_involving_classical.insert((String::from(operation.hqslang()), i), node.try_into().unwrap());
+                    self.first_operation_involving_classical.insert((String::from(new_op.name()), i), node.try_into().unwrap());
+                    self.last_operation_involving_classical.insert((String::from(new_op.name()), i), node.try_into().unwrap());
                 }
                 true
             },
             Operation::DefinitionComplex(_) => {
                 let new_op:DefinitionComplex = operation.clone().try_into().unwrap();
                 for i in 0..*new_op.length() {
-                    self.first_operation_involving_classical.insert((String::from(operation.hqslang()), i), node.try_into().unwrap());
-                    self.last_operation_involving_classical.insert((String::from(operation.hqslang()), i), node.try_into().unwrap());
+                    self.first_operation_involving_classical.insert((String::from(new_op.name()), i), node.try_into().unwrap());
+                    self.last_operation_involving_classical.insert((String::from(new_op.name()), i), node.try_into().unwrap());
                 }
                 true
             },
             Operation::DefinitionFloat(_) => {
                 let new_op:DefinitionFloat = operation.clone().try_into().unwrap();
                 for i in 0..*new_op.length() {
-                    self.first_operation_involving_classical.insert((String::from(operation.hqslang()), i), node.try_into().unwrap());
-                    self.last_operation_involving_classical.insert((String::from(operation.hqslang()), i), node.try_into().unwrap());
+                    self.first_operation_involving_classical.insert((String::from(new_op.name()), i), node.try_into().unwrap());
+                    self.last_operation_involving_classical.insert((String::from(new_op.name()), i), node.try_into().unwrap());
                 }
                 true
             },
             Operation::DefinitionUsize(_) => {
                 let new_op:DefinitionUsize = operation.clone().try_into().unwrap();
                 for i in 0..*new_op.length() {
-                    self.first_operation_involving_classical.insert((String::from(operation.hqslang()), i), node.try_into().unwrap());
-                    self.last_operation_involving_classical.insert((String::from(operation.hqslang()), i), node.try_into().unwrap());
+                    self.first_operation_involving_classical.insert((String::from(new_op.name()), i), node.try_into().unwrap());
+                    self.last_operation_involving_classical.insert((String::from(new_op.name()), i), node.try_into().unwrap());
                 }
                 true
             },

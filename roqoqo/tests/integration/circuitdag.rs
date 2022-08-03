@@ -335,14 +335,28 @@ fn check_involved_classical_set(operation1: Operation, operation2: Operation) {
 }
 
 #[test_case(Operation::from(DefinitionComplex::new("ri".to_string(), 4, false)))]
-#[test_case(Operation::from(DefinitionBit::new("ri".to_string(), 3, false)))]
+#[test_case(Operation::from(DefinitionBit::new("ri".to_string(), 4, false)))]
 fn test_is_definition_classical_populate(operation: Operation) {
     let mut dag: CircuitDag = CircuitDag::new();
 
+    let node = dag.add_to_back(operation.clone());
 
+    assert!(!dag.first_operation_involving_classical().is_empty());
+    assert!(!dag.last_operation_involving_classical().is_empty());
+
+    assert!(dag.first_operation_involving_classical().contains_key(&("ri".to_string(), 0)));
+    assert!(dag.first_operation_involving_classical().contains_key(&("ri".to_string(), 1)));
+    assert!(dag.first_operation_involving_classical().contains_key(&("ri".to_string(), 2)));
+
+    for i in 0..4 {
+        assert!(dag.first_operation_involving_classical().contains_key(&("ri".to_string(), i)));
+        assert_eq!(dag.first_operation_involving_classical().get(&("ri".to_string(), i)), node.as_ref());
+        assert!(dag.last_operation_involving_classical().contains_key(&("ri".to_string(), i)));
+        assert_eq!(dag.last_operation_involving_classical().get(&("ri".to_string(), i)), node.as_ref());
+    }
 }
 
-#[test_case(Operation::from(DefinitionComplex::new("ri".to_string(), 4, false)))]
+#[test_case(Operation::from(DefinitionComplex::new("ro".to_string(), 4, false)))]
 #[test_case(Operation::from(DefinitionBit::new("ri".to_string(), 3, false)))]
 fn check_involved_classical_all(operation: Operation) {
     let mut dag: CircuitDag = CircuitDag::new();
@@ -387,11 +401,6 @@ fn check_involved_classical_all(operation: Operation) {
             dag.first_operation_involving_classical()
                 .get(&(x.clone(), 1)),
             front.as_ref()
-        );
-
-        assert_ne!(
-            dag.first_operation_involving_classical().get(&(x.clone(), 0)),
-            dag.last_operation_involving_classical().get(&(x.clone(), 0))
         );
     }
 }
