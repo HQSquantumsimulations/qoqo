@@ -107,8 +107,13 @@ impl CircuitDag {
             self.add_to_back_involved(node.index().try_into().unwrap());
         }
 
-        // InvolvedClassical: start the update process
-        self.update_classical_back(node.index().try_into().unwrap(), operation.clone());
+        // InvolvedClassical: populate for the first time the classical register data
+        // structure or start the update process
+        // TODO: handle nodes separately? qubit graph + classical graph
+        if !self.is_definition_classical_populate(node.index().try_into().unwrap(), operation.clone()) {
+            self.update_classical_back(node.index().try_into().unwrap(), operation.clone());
+        }
+        
 
         Some(node.index().try_into().unwrap())
     }
@@ -220,8 +225,12 @@ impl CircuitDag {
             self.add_to_front_involved(node.index().try_into().unwrap());
         }
 
-        // InvolvedClassical: start the update process
-        self.update_classical_front(node.index().try_into().unwrap(), operation.clone());
+        // InvolvedClassical: populate for the first time the classical register data
+        // structure or start the update process
+        // TODO: handle nodes separately? qubit graph + classical graph
+        if !self.is_definition_classical_populate(node.index().try_into().unwrap(), operation.clone()) {
+            self.update_classical_front(node.index().try_into().unwrap(), operation.clone());
+        }
 
         Some(node.index().try_into().unwrap())
     }
@@ -335,6 +344,51 @@ impl CircuitDag {
     }
     */
 
+    /// Given an Operation and its node, checks that it is a Definition and populates the
+    /// classical layer accordingly.
+    /// 
+    /// # Arguments
+    /// 
+    /// * 'node' - The index of the node of the Operation.
+    /// * 'operation' - The Operation itself.
+    fn is_definition_classical_populate(&mut self, node: NodeIndex, operation: Operation) -> bool {
+        match &operation {
+            Operation::DefinitionBit(_) => {
+                let new_op:DefinitionBit = operation.clone().try_into().unwrap();
+                for i in 0..*new_op.length() {
+                    self.first_operation_involving_classical.insert((String::from(operation.hqslang()), i), node.try_into().unwrap());
+                    self.last_operation_involving_classical.insert((String::from(operation.hqslang()), i), node.try_into().unwrap());
+                }
+                true
+            },
+            Operation::DefinitionComplex(_) => {
+                let new_op:DefinitionComplex = operation.clone().try_into().unwrap();
+                for i in 0..*new_op.length() {
+                    self.first_operation_involving_classical.insert((String::from(operation.hqslang()), i), node.try_into().unwrap());
+                    self.last_operation_involving_classical.insert((String::from(operation.hqslang()), i), node.try_into().unwrap());
+                }
+                true
+            },
+            Operation::DefinitionFloat(_) => {
+                let new_op:DefinitionFloat = operation.clone().try_into().unwrap();
+                for i in 0..*new_op.length() {
+                    self.first_operation_involving_classical.insert((String::from(operation.hqslang()), i), node.try_into().unwrap());
+                    self.last_operation_involving_classical.insert((String::from(operation.hqslang()), i), node.try_into().unwrap());
+                }
+                true
+            },
+            Operation::DefinitionUsize(_) => {
+                let new_op:DefinitionUsize = operation.clone().try_into().unwrap();
+                for i in 0..*new_op.length() {
+                    self.first_operation_involving_classical.insert((String::from(operation.hqslang()), i), node.try_into().unwrap());
+                    self.last_operation_involving_classical.insert((String::from(operation.hqslang()), i), node.try_into().unwrap());
+                }
+                true
+            },
+            _ => false,
+        }
+    }
+
     /// Checks and updates the relevant classical registers attributes from a given Operation
     /// that was added to the back of the graph.
     ///
@@ -359,10 +413,12 @@ impl CircuitDag {
                     }
                 }
             }
+            // TODO need to have access to length of the (defined) register to properly setup 
+            //  the classical data structure
             InvolvedClassical::All(x) | InvolvedClassical::AllQubits(x) => {
-                // Cycle last_operation_involving_classical
                 let mut temp_map: HashMap<(String, usize), NodeIndex> =
                     HashMap::with_capacity(self.last_operation_involving_classical.capacity());
+                // Cycle last_operation_involving_classical
                 for ((name, readout), _) in &self.last_operation_involving_classical {
                     // If the classical register's name in InvolvedClassical::All or ::AllQubits
                     //  is present in last_operation_involving_classical, insert the node
@@ -372,13 +428,13 @@ impl CircuitDag {
                         // If the classical register has never been seen before, insert it in
                         //  first_operation_involving_classical as well
                         // TODO: is this necessary here? Shouldn't the Set case be enough?
-                        if !self
-                            .first_operation_involving_classical
-                            .contains_key(&(String::clone(name), *readout))
-                        {
-                            self.first_operation_involving_classical
-                                .insert((String::clone(name), *readout), node);
-                        }
+                        //if !self
+                        //    .first_operation_involving_classical
+                        //    .contains_key(&(String::clone(name), *readout))
+                        //{
+                        //    self.first_operation_involving_classical
+                        //        .insert((String::clone(name), *readout), node);
+                        //}
                     }
                 }
                 // Update last_operation_involving_classical with the temporary HashMap
@@ -412,6 +468,8 @@ impl CircuitDag {
                     }
                 }
             }
+            // TODO need to have access to length of the (defined) register to properly setup 
+            //  the classical data structure
             InvolvedClassical::All(x) | InvolvedClassical::AllQubits(x) => {
                 // Cycle first_operation_involving_classical
                 let mut temp_map: HashMap<(String, usize), NodeIndex> =
@@ -425,13 +483,13 @@ impl CircuitDag {
                         // If the classical register has never been seen before, insert it in
                         //  last_operation_involving_classical as well
                         // TODO: is this necessary here? Shouldn't the Set case be enough?
-                        if !self
-                            .last_operation_involving_classical
-                            .contains_key(&(String::clone(name), *readout))
-                        {
-                            self.last_operation_involving_classical
-                                .insert((String::clone(name), *readout), node);
-                        }
+                        //if !self
+                        //    .last_operation_involving_classical
+                        //    .contains_key(&(String::clone(name), *readout))
+                        //{
+                        //    self.last_operation_involving_classical
+                        //        .insert((String::clone(name), *readout), node);
+                        //}
                     }
                 }
                 // Update first_operation_involving_classical with the temporary HashMap

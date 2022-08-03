@@ -334,13 +334,31 @@ fn check_involved_classical_set(operation1: Operation, operation2: Operation) {
     }
 }
 
-//#[test_case(Operation::from(PragmaGetPauliProduct::new()))]
-//#[test_case(Operation::from(DefinitionComplex::new("ro".to_string(), 4, false)))]
+#[test_case(Operation::from(DefinitionComplex::new("ri".to_string(), 4, false)))]
+#[test_case(Operation::from(DefinitionBit::new("ri".to_string(), 3, false)))]
+fn test_is_definition_classical_populate(operation: Operation) {
+    let mut dag: CircuitDag = CircuitDag::new();
+
+
+}
+
+#[test_case(Operation::from(DefinitionComplex::new("ri".to_string(), 4, false)))]
+#[test_case(Operation::from(DefinitionBit::new("ri".to_string(), 3, false)))]
 fn check_involved_classical_all(operation: Operation) {
     let mut dag: CircuitDag = CircuitDag::new();
 
     let back = dag.add_to_back(Operation::from(MeasureQubit::new(0, "ro".to_string(), 0)));
     let front = dag.add_to_front(Operation::from(MeasureQubit::new(1, "ro".to_string(), 1)));
+
+    assert_eq!(dag.last_operation_involving_classical().get(&("ro".to_string(), 0)), back.as_ref());
+    assert_eq!(dag.last_operation_involving_classical().get(&("ro".to_string(), 0)), back.as_ref());
+    assert_eq!(dag.last_operation_involving_classical().get(&("ro".to_string(), 1)), front.as_ref());
+    assert_eq!(dag.last_operation_involving_classical().get(&("ro".to_string(), 1)), front.as_ref());
+    assert_eq!(dag.first_operation_involving_classical().get(&("ro".to_string(), 0)), back.as_ref());
+    assert_eq!(dag.first_operation_involving_classical().get(&("ro".to_string(), 0)), back.as_ref());
+    assert_eq!(dag.first_operation_involving_classical().get(&("ro".to_string(), 1)), front.as_ref());
+    assert_eq!(dag.first_operation_involving_classical().get(&("ro".to_string(), 1)), front.as_ref());
+
 
     let new_back = dag.add_to_back(operation.clone());
 
