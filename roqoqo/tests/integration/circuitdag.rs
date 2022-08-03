@@ -259,20 +259,6 @@ fn check_operation_involving_qubits_all(operation: Operation) {
         .contains_edge(back.unwrap().into(), new_back_all.unwrap().into()));
 }
 
-#[test_case(Operation::from(CNOT::new(0, 1)))]
-#[test_case(Operation::from(PauliX::new(0)))]
-fn check_involved_classical_none(operation: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
-
-    assert!(dag.first_operation_involving_classical().is_empty());
-    assert!(dag.last_operation_involving_classical().is_empty());
-
-    dag.add_to_back(operation.clone());
-
-    assert!(dag.first_operation_involving_classical().is_empty());
-    assert!(dag.last_operation_involving_classical().is_empty());
-}
-
 #[test_case(vec![Operation::from(CNOT::new(0,1)), Operation::from(PauliX::new(0)), Operation::from(PauliY::new(1))])]
 #[test_case(vec![Operation::from(PauliZ::new(0)), Operation::from(ControlledPauliZ::new(1,2))])]
 fn test_new_from_circuit(op_vec: Vec<Operation>) {
@@ -287,6 +273,20 @@ fn test_new_from_circuit(op_vec: Vec<Operation>) {
     assert!(!dag.last_operation_involving_qubit().is_empty());
 
     assert_eq!(dag.graph().node_count(), op_vec.len());
+}
+
+#[test_case(Operation::from(CNOT::new(0, 1)))]
+#[test_case(Operation::from(PauliX::new(0)))]
+fn check_involved_classical_none(operation: Operation) {
+    let mut dag: CircuitDag = CircuitDag::new();
+
+    assert!(dag.first_operation_involving_classical().is_empty());
+    assert!(dag.last_operation_involving_classical().is_empty());
+
+    dag.add_to_back(operation.clone());
+
+    assert!(dag.first_operation_involving_classical().is_empty());
+    assert!(dag.last_operation_involving_classical().is_empty());
 }
 
 #[test_case(Operation::from(MeasureQubit::new(0, "ro".to_string(), 0)), Operation::from(MeasureQubit::new(1, "ro".to_string(), 1)))]
@@ -334,7 +334,7 @@ fn check_involved_classical_set(operation1: Operation, operation2: Operation) {
     }
 }
 
-//#[test_case(Operation::from(DefinitionBit::new("ro".to_string(), 3, false)))]
+//#[test_case(Operation::from(PragmaGetPauliProduct::new()))]
 //#[test_case(Operation::from(DefinitionComplex::new("ro".to_string(), 4, false)))]
 fn check_involved_classical_all(operation: Operation) {
     let mut dag: CircuitDag = CircuitDag::new();
