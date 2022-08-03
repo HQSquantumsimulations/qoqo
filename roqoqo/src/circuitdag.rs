@@ -12,8 +12,8 @@
 
 use std::collections::{HashMap, HashSet};
 
-use crate::Circuit;
 use crate::operations::*;
+use crate::Circuit;
 
 use petgraph::adj::NodeIndex;
 use petgraph::graph::Graph;
@@ -38,7 +38,7 @@ pub struct CircuitDag {
 
 impl CircuitDag {
     /// Creates a new empty CircuitDag.
-    /// 
+    ///
     pub fn new() -> Self {
         CircuitDag {
             graph: Graph::<Operation, ()>::new(),
@@ -55,9 +55,9 @@ impl CircuitDag {
     }
 
     /// Creates a new CircuitDag from a given Circuit.
-    /// 
+    ///
     pub fn new_from_circuit(circuit: Circuit) -> Self {
-        let mut new_dag = CircuitDag { 
+        let mut new_dag = CircuitDag {
             graph: Graph::<Operation, ()>::new(),
             commuting_operations: Vec::<Operation>::new(),
             first_parallel_block: HashSet::<NodeIndex>::new(),
@@ -77,9 +77,9 @@ impl CircuitDag {
 
     /// Given a Circuit, populates the CircuitDag by adding each Operation present
     /// in the Circuit.
-    /// 
+    ///
     /// # Arguments
-    /// 
+    ///
     /// * 'circuit' - The input Circuit for the new CircuitDag.
     fn circuit_dag_from_circuit(&mut self, circuit: Circuit) -> () {
         for operation in circuit.operations() {
@@ -97,22 +97,20 @@ impl CircuitDag {
     ///
     /// * 'Option<NodeIndex>' - The NodeIndex relative to the Operation, if added to CircuitGraph.
     pub fn add_to_back(&mut self, operation: Operation) -> Option<NodeIndex> {
-        // Push to commuting_operations or create the node and start the
-        //  add to back process
+        // Create node
+        let node = self.graph.add_node(operation.clone());
+
+        // InvolvedQubits: push to commuting_operations or start the add to back process
         if let InvolvedQubits::None = operation.involved_qubits() {
             self.commuting_operations.push(operation.clone());
-            self.update_classical(None, operation.clone(), true);
-            None
         } else {
-            let node = self.graph.add_node(operation.clone());
             self.add_to_back_involved(node.index().try_into().unwrap());
-            self.update_classical(
-                Some(node.index().try_into().unwrap()),
-                operation.clone(),
-                true,
-            );
-            Some(node.index().try_into().unwrap())
         }
+
+        // InvolvedClassical: start the update process
+        self.update_classical_back(node.index().try_into().unwrap(), operation.clone());
+
+        Some(node.index().try_into().unwrap())
     }
 
     /// Adds an operation that involves some or all qubits to the end of the CircuitDag.
@@ -212,22 +210,20 @@ impl CircuitDag {
     ///
     /// * 'Option<NodeIndex>' - The NodeIndex relative to the Operation, if added to CircuitGraph.
     pub fn add_to_front(&mut self, operation: Operation) -> Option<NodeIndex> {
-        // Push to commuting_operations or create the node and start the
-        //  add to back process
+        // Create node
+        let node = self.graph.add_node(operation.clone());
+
+        // InvolvedQubits: push to commuting_operations or start the add to front process
         if let InvolvedQubits::None = operation.involved_qubits() {
             self.commuting_operations.push(operation.clone());
-            self.update_classical(None, operation.clone(), false);
-            None
         } else {
-            let node = self.graph.add_node(operation.clone());
             self.add_to_front_involved(node.index().try_into().unwrap());
-            self.update_classical(
-                Some(node.index().try_into().unwrap()),
-                operation.clone(),
-                false,
-            );
-            Some(node.index().try_into().unwrap())
         }
+
+        // InvolvedClassical: start the update process
+        self.update_classical_front(node.index().try_into().unwrap(), operation.clone());
+
+        Some(node.index().try_into().unwrap())
     }
 
     /// Adds an operation that involves some or all qubits to the front of the CircuitDag.
@@ -317,6 +313,7 @@ impl CircuitDag {
         self.first_operation_involving_qubit = temp_map.clone();
     }
 
+    /*
     /// Checks and updates the relevant classical registers attributes from a given Operation.
     ///
     /// # Arguments
@@ -336,6 +333,7 @@ impl CircuitDag {
             // TODO
         }
     }
+    */
 
     /// Checks and updates the relevant classical registers attributes from a given Operation
     /// that was added to the back of the graph.
@@ -350,13 +348,11 @@ impl CircuitDag {
             InvolvedClassical::Set(x) => {
                 // Cycle InvolvedClassical::Set, insert node everywhere in last_operation_involving_classical
                 for (name, readout) in &x {
-                    self.last_operation_involving_classical
-                        .insert((String::clone(name), *readout), node);
                     // If the classical register has never been seen before, insert it in
                     //  first_operation_involving_classical as well
-                    if !self
-                        .first_operation_involving_classical
-                        .contains_key(&(String::clone(name), *readout))
+                    if let None = self
+                        .last_operation_involving_classical
+                        .insert((String::clone(name), *readout), node)
                     {
                         self.first_operation_involving_classical
                             .insert((String::clone(name), *readout), node);
@@ -405,13 +401,11 @@ impl CircuitDag {
             InvolvedClassical::Set(x) => {
                 // Cycle InvolvedClassical::Set, insert node everywhere in first_operation_involving_classical
                 for (name, readout) in &x {
-                    self.first_operation_involving_classical
-                        .insert((String::clone(name), *readout), node);
                     // If the classical register has never been seen before, insert it in
                     //  last_operation_involving_classical as well
-                    if !self
-                        .last_operation_involving_classical
-                        .contains_key(&(String::clone(name), *readout))
+                    if let None = self
+                        .first_operation_involving_classical
+                        .insert((String::clone(name), *readout), node)
                     {
                         self.last_operation_involving_classical
                             .insert((String::clone(name), *readout), node);
@@ -500,7 +494,7 @@ impl CircuitDag {
     /// Returns a reference to the HashMap where a key is composed by the name and the size
     /// of the classical register and its value represents the first node that involves that
     /// register.
-    /// 
+    ///
     pub fn first_operation_involving_classical(&self) -> &HashMap<(String, usize), NodeIndex> {
         &self.first_operation_involving_classical
     }
@@ -508,7 +502,7 @@ impl CircuitDag {
     /// Returns a reference to the HashMap where a key is composed by the name and the size
     /// of the classical register and its value represents the last node that involves that
     /// register.
-    /// 
+    ///
     pub fn last_operation_involving_classical(&self) -> &HashMap<(String, usize), NodeIndex> {
         &self.last_operation_involving_classical
     }
