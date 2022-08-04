@@ -84,7 +84,7 @@ impl CircuitDag {
         // InvolvedClassical: populate for the first time the classical register data
         // structure or start the update process
         if !self.is_definition_classical_populate(node.index(), operation.clone()) {
-            self.update_classical_back(node.index(), operation.clone());
+            self.update_classical_back(node.index(), operation);
         }
 
         Some(node.index())
@@ -95,7 +95,7 @@ impl CircuitDag {
     /// # Arguments
     ///
     /// * 'node' - The NodeIndex<usize> of the node to add to the end of the CircuitDag.
-    fn add_to_back_involved(&mut self, node: NodeIndex<usize>) -> () {
+    fn add_to_back_involved(&mut self, node: NodeIndex<usize>) {
         let node_involved_qubits: InvolvedQubits = self
             .graph
             .node_weight(node.into())
@@ -202,7 +202,7 @@ impl CircuitDag {
         // InvolvedClassical: populate for the first time the classical register data
         // structure or start the update process
         if !self.is_definition_classical_populate(node.index(), operation.clone()) {
-            self.update_classical_front(node.index(), operation.clone());
+            self.update_classical_front(node.index(), operation);
         }
 
         Some(node.index())
@@ -213,7 +213,7 @@ impl CircuitDag {
     /// # Arguments
     ///
     /// * 'node' - The NodeIndex<usize> of the node to add to the end of the CircuitDag.
-    fn add_to_front_involved(&mut self, node: NodeIndex<usize>) -> () {
+    fn add_to_front_involved(&mut self, node: NodeIndex<usize>) {
         let node_involved_qubits: InvolvedQubits = self
             .graph
             .node_weight(node.into())
@@ -367,9 +367,9 @@ impl CircuitDag {
                 for (name, readout) in &x {
                     // If the classical register has never been seen before, insert it in
                     //  first_operation_involving_classical as well
-                    if let None = self
+                    if self
                         .last_operation_involving_classical
-                        .insert((String::clone(name), *readout), node)
+                        .insert((String::clone(name), *readout), node).is_none()
                     {
                         self.first_operation_involving_classical
                             .insert((String::clone(name), *readout), node);
@@ -380,7 +380,7 @@ impl CircuitDag {
                 let mut temp_map: HashMap<(String, usize), NodeIndex<usize>> =
                     HashMap::with_capacity(self.last_operation_involving_classical.capacity());
                 // Cycle last_operation_involving_classical
-                for ((name, readout), _) in &self.last_operation_involving_classical {
+                for (name, readout) in self.last_operation_involving_classical.keys() {
                     // If the classical register's name in InvolvedClassical::All or ::AllQubits
                     //  is present in last_operation_involving_classical, insert the node
                     //  in the temporary HashMap
@@ -410,9 +410,9 @@ impl CircuitDag {
                 for (name, readout) in &x {
                     // If the classical register has never been seen before, insert it in
                     //  last_operation_involving_classical as well
-                    if let None = self
+                    if self
                         .first_operation_involving_classical
-                        .insert((String::clone(name), *readout), node)
+                        .insert((String::clone(name), *readout), node).is_none()
                     {
                         self.last_operation_involving_classical
                             .insert((String::clone(name), *readout), node);
@@ -423,7 +423,7 @@ impl CircuitDag {
                 // Cycle first_operation_involving_classical
                 let mut temp_map: HashMap<(String, usize), NodeIndex<usize>> =
                     HashMap::with_capacity(self.first_operation_involving_classical.capacity());
-                for ((name, readout), _) in &self.first_operation_involving_classical {
+                for (name, readout) in self.first_operation_involving_classical.keys() {
                     // If the classical register's name in InvolvedClassical::All or ::AllQubits
                     //  is present in first_operation_involving_classical, insert the node
                     //  in the temporary HashMap
@@ -535,5 +535,11 @@ impl From<Circuit> for CircuitDag {
         }
 
         new_dag
+    }
+}
+
+impl Default for CircuitDag {
+    fn default() -> Self {
+        Self::new()
     }
 }
