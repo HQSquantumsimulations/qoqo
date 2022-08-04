@@ -266,7 +266,7 @@ fn test_new_from_circuit(op_vec: Vec<Operation>) {
         circuit.add_operation((*op).clone());
     }
     
-    let dag: CircuitDag = CircuitDag::new_from_circuit(circuit);
+    let dag: CircuitDag = CircuitDag::from(circuit);
 
     assert!(!dag.first_operation_involving_qubit().is_empty());
     assert!(!dag.last_operation_involving_qubit().is_empty());

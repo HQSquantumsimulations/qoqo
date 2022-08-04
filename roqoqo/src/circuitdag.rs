@@ -15,10 +15,11 @@ use std::collections::{HashMap, HashSet};
 use crate::operations::*;
 use crate::Circuit;
 
-use petgraph::adj::NodeIndex;
+use petgraph::Directed;
+use petgraph::adj::{NodeIndex, IndexType};
 use petgraph::graph::Graph;
 
-/// Represents a Direct Acyclic Graph (DAG)
+/// Represents the Direct Acyclic Graph (DAG) of a Circuit.
 #[derive(Debug)]
 pub struct CircuitDag {
     // TODO add Ix usize
@@ -49,39 +50,6 @@ impl CircuitDag {
             last_operation_involving_qubit: HashMap::<usize, NodeIndex>::new(),
             first_operation_involving_classical: HashMap::<(String, usize), NodeIndex>::new(),
             last_operation_involving_classical: HashMap::<(String, usize), NodeIndex>::new(),
-        }
-    }
-
-    /// Creates a new CircuitDag from a given Circuit.
-    ///
-    pub fn new_from_circuit(circuit: Circuit) -> Self {
-        let mut new_dag = CircuitDag {
-            graph: Graph::<Operation, ()>::new(),
-            commuting_operations: Vec::<NodeIndex>::new(),
-            first_parallel_block: HashSet::<NodeIndex>::new(),
-            last_parallel_block: HashSet::<NodeIndex>::new(),
-            first_all: Option::<NodeIndex>::None,
-            last_all: Option::<NodeIndex>::None,
-            first_operation_involving_qubit: HashMap::<usize, NodeIndex>::new(),
-            last_operation_involving_qubit: HashMap::<usize, NodeIndex>::new(),
-            first_operation_involving_classical: HashMap::<(String, usize), NodeIndex>::new(),
-            last_operation_involving_classical: HashMap::<(String, usize), NodeIndex>::new(),
-        };
-
-        new_dag.circuit_dag_from_circuit(circuit);
-
-        new_dag
-    }
-
-    /// Given a Circuit, populates the CircuitDag by adding each Operation present
-    /// in the Circuit.
-    ///
-    /// # Arguments
-    ///
-    /// * 'circuit' - The input Circuit for the new CircuitDag.
-    fn circuit_dag_from_circuit(&mut self, circuit: Circuit) -> () {
-        for operation in circuit.operations() {
-            self.add_to_back(operation.clone());
         }
     }
 
@@ -575,5 +543,33 @@ impl CircuitDag {
     ///
     pub fn last_operation_involving_classical(&self) -> &HashMap<(String, usize), NodeIndex> {
         &self.last_operation_involving_classical
+    }
+}
+
+/// Creates a new CircuitDag from a given Circuit.
+/// 
+impl From<Circuit> for CircuitDag {
+    fn from(circuit: Circuit) -> Self {
+        let mut new_dag = CircuitDag {
+            graph: Graph::<Operation, ()>::with_capacity(
+                circuit.len(),
+                circuit.operations().len(),
+            ),
+            commuting_operations: Vec::<NodeIndex>::new(),
+            first_parallel_block: HashSet::<NodeIndex>::new(),
+            last_parallel_block: HashSet::<NodeIndex>::new(),
+            first_all: Option::<NodeIndex>::None,
+            last_all: Option::<NodeIndex>::None,
+            first_operation_involving_qubit: HashMap::<usize, NodeIndex>::new(),
+            last_operation_involving_qubit: HashMap::<usize, NodeIndex>::new(),
+            first_operation_involving_classical: HashMap::<(String, usize), NodeIndex>::new(),
+            last_operation_involving_classical: HashMap::<(String, usize), NodeIndex>::new(),
+        };
+
+        for operation in circuit.operations() {
+            new_dag.add_to_back(operation.clone());
+        }
+
+        new_dag
     }
 }
