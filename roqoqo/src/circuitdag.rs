@@ -25,7 +25,6 @@ static DEFAULT_EDGE_NUMBER: usize = 300;
 /// Represents the Direct Acyclic Graph (DAG) of a Circuit.
 #[derive(Debug)]
 pub struct CircuitDag {
-    // TODO add Ix usize
     graph: Graph<Operation, (), Directed, usize>,
     commuting_operations: Vec<NodeIndex<usize>>,
     first_parallel_block: HashSet<NodeIndex<usize>>,
@@ -74,21 +73,17 @@ impl CircuitDag {
         let node = self.graph.add_node(operation.clone());
 
         // InvolvedQubits: push to commuting_operations or start the add to back process
-        // TODO: if None and None add to commuting
         if let (InvolvedQubits::None, InvolvedClassical::None) =
             (operation.involved_qubits(), operation.involved_classical())
         {
-            self.commuting_operations
-                .push(node.index());
+            self.commuting_operations.push(node.index());
         } else {
             self.add_to_back_involved(node.index());
         }
 
         // InvolvedClassical: populate for the first time the classical register data
         // structure or start the update process
-        if !self
-            .is_definition_classical_populate(node.index(), operation.clone())
-        {
+        if !self.is_definition_classical_populate(node.index(), operation.clone()) {
             self.update_classical_back(node.index(), operation.clone());
         }
 
@@ -196,18 +191,17 @@ impl CircuitDag {
         let node = self.graph.add_node(operation.clone());
 
         // InvolvedQubits: push to commuting_operations or start the add to front process
-        if let InvolvedQubits::None = operation.involved_qubits() {
-            self.commuting_operations
-                .push(node.index());
+        if let (InvolvedQubits::None, InvolvedClassical::None) =
+            (operation.involved_qubits(), operation.involved_classical())
+        {
+            self.commuting_operations.push(node.index());
         } else {
             self.add_to_front_involved(node.index());
         }
 
         // InvolvedClassical: populate for the first time the classical register data
         // structure or start the update process
-        if !self
-            .is_definition_classical_populate(node.index(), operation.clone())
-        {
+        if !self.is_definition_classical_populate(node.index(), operation.clone()) {
             self.update_classical_front(node.index(), operation.clone());
         }
 
@@ -308,7 +302,11 @@ impl CircuitDag {
     ///
     /// * 'node' - The index of the node of the Operation.
     /// * 'operation' - The Operation itself.
-    fn is_definition_classical_populate(&mut self, node: NodeIndex<usize>, operation: Operation) -> bool {
+    fn is_definition_classical_populate(
+        &mut self,
+        node: NodeIndex<usize>,
+        operation: Operation,
+    ) -> bool {
         match &operation {
             Operation::DefinitionBit(_) => {
                 let new_op: DefinitionBit = operation.clone().try_into().unwrap();
@@ -378,8 +376,6 @@ impl CircuitDag {
                     }
                 }
             }
-            // TODO need to have access to length of the (defined) register to properly setup
-            //  the classical data structure
             InvolvedClassical::All(x) | InvolvedClassical::AllQubits(x) => {
                 let mut temp_map: HashMap<(String, usize), NodeIndex<usize>> =
                     HashMap::with_capacity(self.last_operation_involving_classical.capacity());
@@ -390,16 +386,6 @@ impl CircuitDag {
                     //  in the temporary HashMap
                     if *name == x {
                         temp_map.insert((String::clone(name), *readout), node);
-                        // If the classical register has never been seen before, insert it in
-                        //  first_operation_involving_classical as well
-                        // TODO: is this necessary here? Shouldn't the Set case be enough?
-                        //if !self
-                        //    .first_operation_involving_classical
-                        //    .contains_key(&(String::clone(name), *readout))
-                        //{
-                        //    self.first_operation_involving_classical
-                        //        .insert((String::clone(name), *readout), node);
-                        //}
                     }
                 }
                 // Update last_operation_involving_classical with the temporary HashMap
@@ -433,8 +419,6 @@ impl CircuitDag {
                     }
                 }
             }
-            // TODO need to have access to length of the (defined) register to properly setup
-            //  the classical data structure
             InvolvedClassical::All(x) | InvolvedClassical::AllQubits(x) => {
                 // Cycle first_operation_involving_classical
                 let mut temp_map: HashMap<(String, usize), NodeIndex<usize>> =
@@ -445,16 +429,6 @@ impl CircuitDag {
                     //  in the temporary HashMap
                     if *name == x {
                         temp_map.insert((String::clone(name), *readout), node);
-                        // If the classical register has never been seen before, insert it in
-                        //  last_operation_involving_classical as well
-                        // TODO: is this necessary here? Shouldn't the Set case be enough?
-                        //if !self
-                        //    .last_operation_involving_classical
-                        //    .contains_key(&(String::clone(name), *readout))
-                        //{
-                        //    self.last_operation_involving_classical
-                        //        .insert((String::clone(name), *readout), node);
-                        //}
                     }
                 }
                 // Update first_operation_involving_classical with the temporary HashMap

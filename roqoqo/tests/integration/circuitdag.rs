@@ -265,7 +265,7 @@ fn test_new_from_circuit(op_vec: Vec<Operation>) {
     for op in &op_vec {
         circuit.add_operation((*op).clone());
     }
-    
+
     let dag: CircuitDag = CircuitDag::from(circuit);
 
     assert!(!dag.first_operation_involving_qubit().is_empty());
@@ -343,15 +343,33 @@ fn test_is_definition_classical_populate(operation: Operation) {
     assert!(!dag.first_operation_involving_classical().is_empty());
     assert!(!dag.last_operation_involving_classical().is_empty());
 
-    assert!(dag.first_operation_involving_classical().contains_key(&("ri".to_string(), 0)));
-    assert!(dag.first_operation_involving_classical().contains_key(&("ri".to_string(), 1)));
-    assert!(dag.first_operation_involving_classical().contains_key(&("ri".to_string(), 2)));
+    assert!(dag
+        .first_operation_involving_classical()
+        .contains_key(&("ri".to_string(), 0)));
+    assert!(dag
+        .first_operation_involving_classical()
+        .contains_key(&("ri".to_string(), 1)));
+    assert!(dag
+        .first_operation_involving_classical()
+        .contains_key(&("ri".to_string(), 2)));
 
     for i in 0..4 {
-        assert!(dag.first_operation_involving_classical().contains_key(&("ri".to_string(), i)));
-        assert_eq!(dag.first_operation_involving_classical().get(&("ri".to_string(), i)), node.as_ref());
-        assert!(dag.last_operation_involving_classical().contains_key(&("ri".to_string(), i)));
-        assert_eq!(dag.last_operation_involving_classical().get(&("ri".to_string(), i)), node.as_ref());
+        assert!(dag
+            .first_operation_involving_classical()
+            .contains_key(&("ri".to_string(), i)));
+        assert_eq!(
+            dag.first_operation_involving_classical()
+                .get(&("ri".to_string(), i)),
+            node.as_ref()
+        );
+        assert!(dag
+            .last_operation_involving_classical()
+            .contains_key(&("ri".to_string(), i)));
+        assert_eq!(
+            dag.last_operation_involving_classical()
+                .get(&("ri".to_string(), i)),
+            node.as_ref()
+        );
     }
 }
 
@@ -363,15 +381,46 @@ fn check_involved_classical_all(operation: Operation) {
     let back = dag.add_to_back(Operation::from(MeasureQubit::new(0, "ro".to_string(), 0)));
     let front = dag.add_to_front(Operation::from(MeasureQubit::new(1, "ro".to_string(), 1)));
 
-    assert_eq!(dag.last_operation_involving_classical().get(&("ro".to_string(), 0)), back.as_ref());
-    assert_eq!(dag.last_operation_involving_classical().get(&("ro".to_string(), 0)), back.as_ref());
-    assert_eq!(dag.last_operation_involving_classical().get(&("ro".to_string(), 1)), front.as_ref());
-    assert_eq!(dag.last_operation_involving_classical().get(&("ro".to_string(), 1)), front.as_ref());
-    assert_eq!(dag.first_operation_involving_classical().get(&("ro".to_string(), 0)), back.as_ref());
-    assert_eq!(dag.first_operation_involving_classical().get(&("ro".to_string(), 0)), back.as_ref());
-    assert_eq!(dag.first_operation_involving_classical().get(&("ro".to_string(), 1)), front.as_ref());
-    assert_eq!(dag.first_operation_involving_classical().get(&("ro".to_string(), 1)), front.as_ref());
-
+    assert_eq!(
+        dag.last_operation_involving_classical()
+            .get(&("ro".to_string(), 0)),
+        back.as_ref()
+    );
+    assert_eq!(
+        dag.last_operation_involving_classical()
+            .get(&("ro".to_string(), 0)),
+        back.as_ref()
+    );
+    assert_eq!(
+        dag.last_operation_involving_classical()
+            .get(&("ro".to_string(), 1)),
+        front.as_ref()
+    );
+    assert_eq!(
+        dag.last_operation_involving_classical()
+            .get(&("ro".to_string(), 1)),
+        front.as_ref()
+    );
+    assert_eq!(
+        dag.first_operation_involving_classical()
+            .get(&("ro".to_string(), 0)),
+        back.as_ref()
+    );
+    assert_eq!(
+        dag.first_operation_involving_classical()
+            .get(&("ro".to_string(), 0)),
+        back.as_ref()
+    );
+    assert_eq!(
+        dag.first_operation_involving_classical()
+            .get(&("ro".to_string(), 1)),
+        front.as_ref()
+    );
+    assert_eq!(
+        dag.first_operation_involving_classical()
+            .get(&("ro".to_string(), 1)),
+        front.as_ref()
+    );
 
     let new_back = dag.add_to_back(operation.clone());
 
@@ -402,4 +451,22 @@ fn check_involved_classical_all(operation: Operation) {
             front.as_ref()
         );
     }
+}
+
+#[test_case(vec![Operation::from(CNOT::new(0,1)), Operation::from(PauliX::new(0)), Operation::from(PauliY::new(1))])]
+#[test_case(vec![Operation::from(PauliZ::new(0)), Operation::from(ControlledPauliZ::new(1,2))])]
+fn test_pragma_conditional(op_vec: Vec<Operation>) {
+    let mut dag: CircuitDag = CircuitDag::new();
+    let mut circuit: Circuit = Circuit::new();
+    for op in &op_vec {
+        circuit.add_operation((*op).clone());
+    }
+
+    let operation: Operation =
+        Operation::from(PragmaConditional::new("to".to_string(), 2, circuit));
+
+    dag.add_to_back(operation.clone());
+
+    assert!(!dag.first_operation_involving_qubit().is_empty());
+    assert!(!dag.last_operation_involving_qubit().is_empty());
 }
