@@ -13,35 +13,34 @@
 use std::collections::HashSet;
 
 use roqoqo::operations::*;
-use roqoqo::CircuitDag;
-use roqoqo::Circuit;
+use roqoqo::{Circuit, CircuitDag};
 
 use test_case::test_case;
 
 /// Test adding an operation that doesn't involve qubits.
 ///
 #[test_case(
-    Operation::from(DefinitionBit::new(String::from("ro"), 1, false)),
-    Operation::from(DefinitionComplex::new(String::from("ri"), 2, false))
+    Operation::from(PragmaSetNumberOfMeasurements::new(3, "ro".to_string())),
+    Operation::from(PragmaSetNumberOfMeasurements::new(5, "ti".to_string()))
 )]
 #[test_case(
-    Operation::from(DefinitionComplex::new(String::from("ri"), 3, false)),
-    Operation::from(DefinitionBit::new(String::from("ro"), 4, false))
+    Operation::from(PragmaSetNumberOfMeasurements::new(4, "ri".to_string())),
+    Operation::from(PragmaSetNumberOfMeasurements::new(1, "to".to_string()))
 )]
 fn add_operation_no_involved_qubits(operation1: Operation, operation2: Operation) {
     let mut dag: CircuitDag = CircuitDag::new();
 
-    dag.add_to_back(operation1.clone());
+    let back1 = dag.add_to_back(operation1.clone());
 
     assert!(operation1.involved_qubits() == InvolvedQubits::None);
-    assert_eq!(dag.commuting_operations().get(0).unwrap(), &operation1);
+    assert_eq!(dag.commuting_operations().get(0), back1.as_ref());
 
     dag.add_to_front(Operation::from(PauliY::new(0)));
     dag.add_to_back(Operation::from(CNOT::new(0, 1)));
 
-    dag.add_to_front(operation2.clone());
+    let front1 = dag.add_to_front(operation2.clone());
 
-    assert_eq!(dag.commuting_operations().get(1).unwrap(), &operation2);
+    assert_eq!(dag.commuting_operations().get(1), front1.as_ref());
 }
 
 /// Test graph node existance after adding an operation that involves qubits.

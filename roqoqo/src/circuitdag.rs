@@ -23,12 +23,10 @@ use petgraph::graph::Graph;
 pub struct CircuitDag {
     // TODO add Ix usize
     graph: Graph<Operation, ()>,
-    commuting_operations: Vec<Operation>,
+    commuting_operations: Vec<NodeIndex>,
     first_parallel_block: HashSet<NodeIndex>,
     last_parallel_block: HashSet<NodeIndex>,
-    /// None if no Operation with InvolvedQubits::All in circuit
     first_all: Option<NodeIndex>,
-    /// None if no Operation with InvolvedQubits::All in circuit
     last_all: Option<NodeIndex>,
     first_operation_involving_qubit: HashMap<usize, NodeIndex>,
     last_operation_involving_qubit: HashMap<usize, NodeIndex>,
@@ -42,7 +40,7 @@ impl CircuitDag {
     pub fn new() -> Self {
         CircuitDag {
             graph: Graph::<Operation, ()>::new(),
-            commuting_operations: Vec::<Operation>::new(),
+            commuting_operations: Vec::<NodeIndex>::new(),
             first_parallel_block: HashSet::<NodeIndex>::new(),
             last_parallel_block: HashSet::<NodeIndex>::new(),
             first_all: Option::<NodeIndex>::None,
@@ -59,7 +57,7 @@ impl CircuitDag {
     pub fn new_from_circuit(circuit: Circuit) -> Self {
         let mut new_dag = CircuitDag {
             graph: Graph::<Operation, ()>::new(),
-            commuting_operations: Vec::<Operation>::new(),
+            commuting_operations: Vec::<NodeIndex>::new(),
             first_parallel_block: HashSet::<NodeIndex>::new(),
             last_parallel_block: HashSet::<NodeIndex>::new(),
             first_all: Option::<NodeIndex>::None,
@@ -101,19 +99,23 @@ impl CircuitDag {
         let node = self.graph.add_node(operation.clone());
 
         // InvolvedQubits: push to commuting_operations or start the add to back process
-        if let InvolvedQubits::None = operation.involved_qubits() {
-            self.commuting_operations.push(operation.clone());
+        // TODO: if None and None add to commuting
+        if let (InvolvedQubits::None, InvolvedClassical::None) =
+            (operation.involved_qubits(), operation.involved_classical())
+        {
+            self.commuting_operations
+                .push(node.index().try_into().unwrap());
         } else {
             self.add_to_back_involved(node.index().try_into().unwrap());
         }
 
         // InvolvedClassical: populate for the first time the classical register data
         // structure or start the update process
-        // TODO: handle nodes separately? qubit graph + classical graph
-        if !self.is_definition_classical_populate(node.index().try_into().unwrap(), operation.clone()) {
+        if !self
+            .is_definition_classical_populate(node.index().try_into().unwrap(), operation.clone())
+        {
             self.update_classical_back(node.index().try_into().unwrap(), operation.clone());
         }
-        
 
         Some(node.index().try_into().unwrap())
     }
@@ -220,15 +222,17 @@ impl CircuitDag {
 
         // InvolvedQubits: push to commuting_operations or start the add to front process
         if let InvolvedQubits::None = operation.involved_qubits() {
-            self.commuting_operations.push(operation.clone());
+            self.commuting_operations
+                .push(node.index().try_into().unwrap());
         } else {
             self.add_to_front_involved(node.index().try_into().unwrap());
         }
 
         // InvolvedClassical: populate for the first time the classical register data
         // structure or start the update process
-        // TODO: handle nodes separately? qubit graph + classical graph
-        if !self.is_definition_classical_populate(node.index().try_into().unwrap(), operation.clone()) {
+        if !self
+            .is_definition_classical_populate(node.index().try_into().unwrap(), operation.clone())
+        {
             self.update_classical_front(node.index().try_into().unwrap(), operation.clone());
         }
 
@@ -346,45 +350,53 @@ impl CircuitDag {
 
     /// Given an Operation and its node, checks that it is a Definition and populates the
     /// classical layer accordingly.
-    /// 
+    ///
     /// # Arguments
-    /// 
+    ///
     /// * 'node' - The index of the node of the Operation.
     /// * 'operation' - The Operation itself.
     fn is_definition_classical_populate(&mut self, node: NodeIndex, operation: Operation) -> bool {
         match &operation {
             Operation::DefinitionBit(_) => {
-                let new_op:DefinitionBit = operation.clone().try_into().unwrap();
+                let new_op: DefinitionBit = operation.clone().try_into().unwrap();
                 for i in 0..*new_op.length() {
-                    self.first_operation_involving_classical.insert((String::from(new_op.name()), i), node.try_into().unwrap());
-                    self.last_operation_involving_classical.insert((String::from(new_op.name()), i), node.try_into().unwrap());
+                    self.first_operation_involving_classical
+                        .insert((String::from(new_op.name()), i), node.try_into().unwrap());
+                    self.last_operation_involving_classical
+                        .insert((String::from(new_op.name()), i), node.try_into().unwrap());
                 }
                 true
-            },
+            }
             Operation::DefinitionComplex(_) => {
-                let new_op:DefinitionComplex = operation.clone().try_into().unwrap();
+                let new_op: DefinitionComplex = operation.clone().try_into().unwrap();
                 for i in 0..*new_op.length() {
-                    self.first_operation_involving_classical.insert((String::from(new_op.name()), i), node.try_into().unwrap());
-                    self.last_operation_involving_classical.insert((String::from(new_op.name()), i), node.try_into().unwrap());
+                    self.first_operation_involving_classical
+                        .insert((String::from(new_op.name()), i), node.try_into().unwrap());
+                    self.last_operation_involving_classical
+                        .insert((String::from(new_op.name()), i), node.try_into().unwrap());
                 }
                 true
-            },
+            }
             Operation::DefinitionFloat(_) => {
-                let new_op:DefinitionFloat = operation.clone().try_into().unwrap();
+                let new_op: DefinitionFloat = operation.clone().try_into().unwrap();
                 for i in 0..*new_op.length() {
-                    self.first_operation_involving_classical.insert((String::from(new_op.name()), i), node.try_into().unwrap());
-                    self.last_operation_involving_classical.insert((String::from(new_op.name()), i), node.try_into().unwrap());
+                    self.first_operation_involving_classical
+                        .insert((String::from(new_op.name()), i), node.try_into().unwrap());
+                    self.last_operation_involving_classical
+                        .insert((String::from(new_op.name()), i), node.try_into().unwrap());
                 }
                 true
-            },
+            }
             Operation::DefinitionUsize(_) => {
-                let new_op:DefinitionUsize = operation.clone().try_into().unwrap();
+                let new_op: DefinitionUsize = operation.clone().try_into().unwrap();
                 for i in 0..*new_op.length() {
-                    self.first_operation_involving_classical.insert((String::from(new_op.name()), i), node.try_into().unwrap());
-                    self.last_operation_involving_classical.insert((String::from(new_op.name()), i), node.try_into().unwrap());
+                    self.first_operation_involving_classical
+                        .insert((String::from(new_op.name()), i), node.try_into().unwrap());
+                    self.last_operation_involving_classical
+                        .insert((String::from(new_op.name()), i), node.try_into().unwrap());
                 }
                 true
-            },
+            }
             _ => false,
         }
     }
@@ -413,7 +425,7 @@ impl CircuitDag {
                     }
                 }
             }
-            // TODO need to have access to length of the (defined) register to properly setup 
+            // TODO need to have access to length of the (defined) register to properly setup
             //  the classical data structure
             InvolvedClassical::All(x) | InvolvedClassical::AllQubits(x) => {
                 let mut temp_map: HashMap<(String, usize), NodeIndex> =
@@ -468,7 +480,7 @@ impl CircuitDag {
                     }
                 }
             }
-            // TODO need to have access to length of the (defined) register to properly setup 
+            // TODO need to have access to length of the (defined) register to properly setup
             //  the classical data structure
             InvolvedClassical::All(x) | InvolvedClassical::AllQubits(x) => {
                 // Cycle first_operation_involving_classical
@@ -507,7 +519,7 @@ impl CircuitDag {
 
     /// Returns a reference to the vector of commuting operations in CircuitDag.
     ///
-    pub fn commuting_operations(&self) -> &Vec<Operation> {
+    pub fn commuting_operations(&self) -> &Vec<NodeIndex> {
         &self.commuting_operations
     }
 
