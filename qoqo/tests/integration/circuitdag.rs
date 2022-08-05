@@ -19,12 +19,27 @@ use roqoqo::operations::*;
 
 use test_case::test_case;
 
+// Helper functions
+fn new_circuitdag(py: Python) -> &PyCell<CircuitDagWrapper> {
+    let circuitdag_type = py.get_type::<CircuitDagWrapper>();
+    circuitdag_type
+        .call0()
+        .unwrap()
+        .cast_as::<PyCell<CircuitDagWrapper>>()
+        .unwrap()
+}
+
 #[test]
 fn test_default() {
     let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py|{
-        
+    Python::with_gil(|py| {
+        let dag = new_circuitdag(py);
+        dag.call_method1("add_to_back", (operation.clone(),)).unwrap();
+        let circuitdag_wrapper = dag.extract::<CircuitDagWrapper>();
+
+        //assert_ne!(CircuitDagWrapper::default(), circuitdag_wrapper.unwrap());
+        //assert_eq!(CircuitDagWrapper::default(), CircuitDagWrapper::new());
     })
 }
 
