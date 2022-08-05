@@ -47,7 +47,7 @@ impl CircuitDagWrapper {
     /// Create an empty CircuitDag.
     ///
     /// Returns:
-    ///     self: The new, empy CircuitDag.
+    ///     self: The new, empty CircuitDag.
     #[new]
     pub fn new() -> Self {
         Self {
