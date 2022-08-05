@@ -448,9 +448,9 @@ impl CircuitDag {
                 }
             }
             InvolvedClassical::All(x) | InvolvedClassical::AllQubits(x) => {
-                // Cycle first_operation_involving_classical
                 let mut temp_map: HashMap<(String, usize), NodeIndex<usize>> =
                     HashMap::with_capacity(self.first_operation_involving_classical.capacity());
+                // Cycle first_operation_involving_classical
                 for (name, readout) in self.first_operation_involving_classical.keys() {
                     // If the classical register's name in InvolvedClassical::All or ::AllQubits
                     //  is present in first_operation_involving_classical, insert the node
@@ -534,6 +534,13 @@ impl CircuitDag {
         &self,
     ) -> &HashMap<(String, usize), NodeIndex<usize>> {
         &self.last_operation_involving_classical
+    }
+
+    /// Given a NodeIndex, returns a reference to the Operation contained in the node of
+    /// the CircuitDag.
+    /// 
+    pub fn get(&self, node: NodeIndex<usize>) -> Option<&Operation>{
+        self.graph.node_weight(node.into())
     }
 }
 

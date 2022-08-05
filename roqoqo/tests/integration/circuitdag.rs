@@ -470,3 +470,15 @@ fn test_pragma_conditional(op_vec: Vec<Operation>) {
     assert!(!dag.first_operation_involving_qubit().is_empty());
     assert!(!dag.last_operation_involving_qubit().is_empty());
 }
+
+#[test_case(Operation::from(PauliX::new(0)))]
+#[test_case(Operation::from(PauliZ::new(1)))]
+#[test_case(Operation::from(CNOT::new(0,1)))]
+#[test_case(Operation::from(PauliY::new(2)))]
+fn test_get(operation: Operation) {
+    let mut dag:CircuitDag = CircuitDag::new();
+    
+    let node = dag.add_to_back(operation.clone());
+
+    assert_eq!(dag.get(node.unwrap()).unwrap(), &operation);
+}
