@@ -17,8 +17,6 @@ use qoqo::CircuitDagWrapper;
 
 use roqoqo::operations::*;
 
-use test_case::test_case;
-
 // Helper functions
 fn new_circuitdag(py: Python) -> &PyCell<CircuitDagWrapper> {
     let circuitdag_type = py.get_type::<CircuitDagWrapper>();
@@ -35,8 +33,9 @@ fn test_default() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let dag = new_circuitdag(py);
-        dag.call_method1("add_to_back", (operation.clone(),)).unwrap();
-        let circuitdag_wrapper = dag.extract::<CircuitDagWrapper>();
+        dag.call_method1("add_to_back", (operation.clone(),))
+            .unwrap();
+        let _circuitdag_wrapper = dag.extract::<CircuitDagWrapper>();
 
         //assert_ne!(CircuitDagWrapper::default(), circuitdag_wrapper.unwrap());
         //assert_eq!(CircuitDagWrapper::default(), CircuitDagWrapper::new());

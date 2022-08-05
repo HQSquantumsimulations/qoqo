@@ -10,11 +10,13 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::{QoqoError, QOQO_VERSION};
-use bincode::{deserialize, serialize};
+///! Module containing the CircuitDag class that represents the Directed Acyclic Graph (DAG)
+///! of a quantum circuit in qoqo.
+///!
+
 use pyo3::exceptions::{PyIndexError, PyTypeError};
 use pyo3::prelude::*;
-use roqoqo::{CircuitDag, ROQOQO_VERSION};
+use roqoqo::CircuitDag;
 
 use crate::operations::{convert_operation_to_pyobject, convert_pyany_to_operation};
 
