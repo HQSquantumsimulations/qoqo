@@ -10,7 +10,29 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use pyo3::prelude::*;
+
+use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::CircuitDagWrapper;
+
+use roqoqo::operations::*;
 
 use test_case::test_case;
 
+#[test]
+fn test_default() {
+    let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py|{
+        
+    })
+}
+
+#[test]
+fn test_add_to_back() {}
+
+#[test]
+fn test_add_to_front() {}
+
+#[test]
+fn test_get() {}

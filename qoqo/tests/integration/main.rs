@@ -20,6 +20,9 @@ mod circuit;
 // mod devices;
 
 #[cfg(test)]
+mod circuitdag;
+
+#[cfg(test)]
 mod quantum_program;
 
 #[cfg(test)]
