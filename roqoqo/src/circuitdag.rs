@@ -23,7 +23,8 @@ static DEFAULT_NODE_NUMBER: usize = 100;
 static DEFAULT_EDGE_NUMBER: usize = 300;
 
 /// Represents the Direct Acyclic Graph (DAG) of a Circuit.
-#[derive(Debug)]
+/// 
+#[derive(Debug, Clone)]
 pub struct CircuitDag {
     graph: Graph<Operation, (), Directed, usize>,
     commuting_operations: Vec<NodeIndex<usize>>,
@@ -35,6 +36,33 @@ pub struct CircuitDag {
     last_operation_involving_qubit: HashMap<usize, NodeIndex<usize>>,
     first_operation_involving_classical: HashMap<(String, usize), NodeIndex<usize>>,
     last_operation_involving_classical: HashMap<(String, usize), NodeIndex<usize>>,
+}
+
+impl Default for CircuitDag {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+// TODO: temporary solution, use is_isomorphic
+impl PartialEq for CircuitDag {
+    fn eq(&self, other: &Self) -> bool {
+        for ind in self.graph.node_indices().into_iter() {
+            if self.graph.node_weight(ind) != other.graph.node_weight(ind) {
+                return false;
+            }
+        }
+        for ind in other.graph.node_indices().into_iter() {
+            if self.graph.node_weight(ind) != other.graph.node_weight(ind) {
+                return false;
+            }
+        }
+        true
+    }
+
+    fn ne(&self, other: &Self) -> bool {
+        return !self.eq(other)
+    }
 }
 
 impl CircuitDag {
@@ -59,11 +87,11 @@ impl CircuitDag {
         }
     }
 
-    /// Adds an operation to the back of the CircuitDag if necessary.
+    /// Adds an operation to the back of the CircuitDag, if necessary.
     ///
     /// # Arguments
     ///
-    /// * 'operation' - The Operation to add to the end of the CircuitDag.
+    /// * 'operation' - The Operation to add to the back of the CircuitDag.
     ///
     /// # Returns
     ///
@@ -535,11 +563,5 @@ impl From<Circuit> for CircuitDag {
         }
 
         new_dag
-    }
-}
-
-impl Default for CircuitDag {
-    fn default() -> Self {
-        Self::new()
     }
 }

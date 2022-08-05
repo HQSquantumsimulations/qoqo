@@ -39,6 +39,9 @@ pub use circuit::{convert_into_circuit, CircuitWrapper, OperationIteratorWrapper
 mod quantum_program;
 pub use quantum_program::{convert_into_quantum_program, QuantumProgramWrapper};
 
+mod circuitdag;
+pub use circuitdag::CircuitDagWrapper;
+
 /// qoqo version information, used for qoqo import/export checks
 pub const QOQO_VERSION: &str = env!("CARGO_PKG_VERSION");
 
