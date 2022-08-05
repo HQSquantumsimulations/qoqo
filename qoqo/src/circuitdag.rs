@@ -12,7 +12,7 @@
 
 use crate::{QoqoError, QOQO_VERSION};
 use bincode::{deserialize, serialize};
-use pyo3::exceptions::{PyTypeError};
+use pyo3::exceptions::{PyIndexError, PyTypeError};
 use pyo3::prelude::*;
 use roqoqo::{CircuitDag, ROQOQO_VERSION};
 
@@ -56,10 +56,13 @@ impl CircuitDagWrapper {
     }
 
     /// Add an Operation to the back of the CircuitDag, if necessary.
-    /// 
+    ///
     /// Args:
     ///     op (Operation): The Operation to add to the back of the CircuitDag.
-    pub fn add_to_back(&mut self, op: &PyAny) -> PyResult<Option<usize>>{
+    /// 
+    /// Raises:
+    ///     TypeError: The Python Object cannot be converted to Operation.
+    pub fn add_to_back(&mut self, op: &PyAny) -> PyResult<Option<usize>> {
         let operation = convert_pyany_to_operation(op).map_err(|x| {
             PyTypeError::new_err(format!("Cannot convert python object to Operation {:?}", x))
         })?;
@@ -67,24 +70,47 @@ impl CircuitDagWrapper {
     }
 
     /// Add an Operation to the front of the CircuitDag, if necessary.
-    /// 
+    ///
     /// Args:
     ///     op (Operation): The Operation to add to the front of the CircuitDag.
-    pub fn add_to_front(&mut self, op: &PyAny) -> PyResult<Option<usize>>{
+    /// 
+    /// Raises:
+    ///     TypeError: The Python Object cannot be converted to Operation.
+    pub fn add_to_front(&mut self, op: &PyAny) -> PyResult<Option<usize>> {
         let operation = convert_pyany_to_operation(op).map_err(|x| {
             PyTypeError::new_err(format!("Cannot convert python object to Operation {:?}", x))
         })?;
         Ok(self.internal.add_to_front(operation))
     }
 
+    /// Given a NodeIndex, returns the Operation contained in the node of
+    /// the CircuitDag.
+    ///
+    /// Args:
+    ///     index (usize): The index of the node to get from the CircuitDag.
+    /// 
+    /// Returns:
+    ///     Operation: The Operation at the given index (if it exists).
+    /// 
+    /// Raises:
+    ///     IndexError: Index out of range.
+    pub fn get(&self, index: usize) -> PyResult<PyObject> {
+        let operation = self
+            .internal
+            .get(index)
+            .ok_or_else(|| PyIndexError::new_err(format!("Index {} out of range", index)))?
+            .clone();
+        convert_operation_to_pyobject(operation)
+    }
+
     /*
     #[allow(unused_variables)]
     #[classmethod]
     /// Convert the bincode representation of the CircuitDag to a CircuitDag using the [bincode] crate.
-    /// 
+    ///
     /// Args:
     ///     input (ByteArray): The serialized CircuitDag (in [bincode] form).
-    /// 
+    ///
     /// Returns:
     ///     Circuit: The deserialized CircuitDag.
     ///
@@ -96,9 +122,9 @@ impl CircuitDagWrapper {
     }
     */
 }
-/* 
+/*
 /// Convert generic python object to [roqoqo::CircuitDag].
-/// 
+///
 /// Fallible conversion of generic python object to [roqoqo::CircuitDag].
 pub fn convert_into_circuitdag(input: &PyAny) -> Result<CircuitDag, QoqoError> {
     if let Ok(try_downcast) = input.extract::<CircuitDagWrapper>() {
