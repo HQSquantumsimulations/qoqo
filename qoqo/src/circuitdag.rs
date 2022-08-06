@@ -14,6 +14,7 @@
 ///! of a quantum circuit in qoqo.
 ///!
 
+use crate::QoqoError;
 use pyo3::exceptions::{PyIndexError, PyTypeError};
 use pyo3::prelude::*;
 use roqoqo::CircuitDag;
@@ -32,7 +33,7 @@ fn circuitdag(_py: Python, module: &PyModule) -> PyResult<()> {
 /// Represents the Direct Acyclic Graph (DAG) of a Circuit.
 ///
 #[pyclass(name = "CircuitDag", module = "qoqo")]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct CircuitDagWrapper {
     /// Internal storage of [roqoqo:CircuitDag]
     pub internal: CircuitDag,
@@ -123,8 +124,10 @@ impl CircuitDagWrapper {
 
     }
     */
+
+    // TODO from_circuit
 }
-/*
+
 /// Convert generic python object to [roqoqo::CircuitDag].
 ///
 /// Fallible conversion of generic python object to [roqoqo::CircuitDag].
@@ -132,6 +135,7 @@ pub fn convert_into_circuitdag(input: &PyAny) -> Result<CircuitDag, QoqoError> {
     if let Ok(try_downcast) = input.extract::<CircuitDagWrapper>() {
         return Ok(try_downcast.internal);
     }
+    /*
     // Everything that follows tries to extract the circuitdag when two separately
     // compiled python packages are involved
     let get_version = input
@@ -161,8 +165,8 @@ pub fn convert_into_circuitdag(input: &PyAny) -> Result<CircuitDag, QoqoError> {
             .extract::<Vec<u8>>()
             .map_err(|_| QoqoError::CannotExtractObject)?;
         deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractObject)
-    } else {
+    } */ else {
         Err(QoqoError::VersionMismatch)
     }
 }
-*/
+

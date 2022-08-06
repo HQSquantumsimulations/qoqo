@@ -27,6 +27,7 @@ fn new_circuitdag(py: Python) -> &PyCell<CircuitDagWrapper> {
         .unwrap()
 }
 
+/// Test default
 #[test]
 fn test_default() {
     let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
@@ -35,18 +36,54 @@ fn test_default() {
         let dag = new_circuitdag(py);
         dag.call_method1("add_to_back", (operation.clone(),))
             .unwrap();
-        let _circuitdag_wrapper = dag.extract::<CircuitDagWrapper>();
+        let circuitdag_wrapper = dag.extract::<CircuitDagWrapper>();
 
-        //assert_ne!(CircuitDagWrapper::default(), circuitdag_wrapper.unwrap());
-        //assert_eq!(CircuitDagWrapper::default(), CircuitDagWrapper::new());
+        let helper_ne: bool = CircuitDagWrapper::default() != circuitdag_wrapper.unwrap();
+        assert!(helper_ne);
+        let helper_eq: bool = CircuitDagWrapper::default() == CircuitDagWrapper::new();
+        assert!(helper_eq);
     })
 }
 
+/// Test add_to_back and add_to_front
 #[test]
-fn test_add_to_back() {}
+fn test_add_to() {
+    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
+    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let dag = new_circuitdag(py);
+        dag.call_method1("add_to_back", (paulix_0.clone(),))
+            .unwrap();
+        dag.call_method1("add_to_front", (cnot_01.clone(),))
+            .unwrap();
+        let _circuit_wrapper = dag.extract::<CircuitDagWrapper>();
+    })
+}
 
+/// Test get
 #[test]
-fn test_add_to_front() {}
+fn test_get() {
+    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+    let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let dag = new_circuitdag(py);
+        dag.call_method1("add_to_back", (paulix_0.clone(),))
+            .unwrap();
+        dag.call_method1("add_to_back", (pauliy_0.clone(),))
+            .unwrap();
 
-#[test]
-fn test_get() {}
+        let comp_op = dag.call_method1("get", (0,)).unwrap();
+        let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+
+        let helper1 = bool::extract(comp_op.call_method1("__eq__", (operation,)).unwrap()).unwrap();
+        assert!(helper1);
+
+        let comp_op = dag.call_method1("get", (1,)).unwrap();
+        let operation = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
+
+        let helper2 = bool::extract(comp_op.call_method1("__eq__", (operation,)).unwrap()).unwrap();
+        assert!(helper2);
+    })
+}
