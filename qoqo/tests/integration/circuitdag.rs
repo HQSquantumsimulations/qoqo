@@ -118,3 +118,32 @@ fn test_copy() {
         assert!(empty_dag_comparison);
     })
 }
+
+#[test]
+fn test_richcmp() {
+    pyo3::prepare_freethreaded_python();
+    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+    let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
+    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
+    Python::with_gil(|py| {
+        let dag1 = new_circuitdag(py);
+        dag1.call_method1("add_to_back", (paulix_0.clone(),))
+            .unwrap();
+        dag1.call_method1("add_to_back", (pauliy_0.clone(),))
+            .unwrap();
+        let dag2 = new_circuitdag(py);
+        dag2.call_method1("add_to_back", (cnot_01.clone(),))
+            .unwrap();
+        dag2.call_method1("add_to_front", (paulix_0.clone(),))
+            .unwrap();
+        dag2.call_method1("add_to_back", (pauliy_0.clone(),))
+            .unwrap();
+
+        let comparison = bool::extract(dag1.call_method1("__eq__", (dag2,)).unwrap()).unwrap();
+        assert!(!comparison);
+        let comparison = bool::extract(dag1.call_method1("__ne__", (dag2,)).unwrap()).unwrap();
+        assert!(comparison);
+        let comparison = dag1.call_method1("__ge__", (dag2,));
+        assert!(comparison.is_err());
+    })
+}
