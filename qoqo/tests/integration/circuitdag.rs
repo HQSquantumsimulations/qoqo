@@ -30,8 +30,8 @@ fn new_circuitdag(py: Python) -> &PyCell<CircuitDagWrapper> {
 /// Test default
 #[test]
 fn test_default() {
-    let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
     pyo3::prepare_freethreaded_python();
+    let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
     Python::with_gil(|py| {
         let dag = new_circuitdag(py);
         dag.call_method1("add_to_back", (operation.clone(),))
@@ -48,9 +48,9 @@ fn test_default() {
 /// Test add_to_back and add_to_front
 #[test]
 fn test_add_to() {
+    pyo3::prepare_freethreaded_python();
     let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
     let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
-    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let dag = new_circuitdag(py);
         dag.call_method1("add_to_back", (paulix_0.clone(),))
@@ -64,9 +64,9 @@ fn test_add_to() {
 /// Test get
 #[test]
 fn test_get() {
+    pyo3::prepare_freethreaded_python();
     let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
     let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
-    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let dag = new_circuitdag(py);
         dag.call_method1("add_to_back", (paulix_0.clone(),))
