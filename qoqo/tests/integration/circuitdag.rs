@@ -87,3 +87,34 @@ fn test_get() {
         assert!(helper2);
     })
 }
+
+/// Test copy
+#[test]
+fn test_copy() {
+    pyo3::prepare_freethreaded_python();
+    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+    let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
+    Python::with_gil(|py| {
+        let dag = new_circuitdag(py);
+        dag.call_method1("add_to_back", (paulix_0.clone(),))
+            .unwrap();
+        dag.call_method1("add_to_back", (pauliy_0.clone(),))
+            .unwrap();
+        let empty_dag = new_circuitdag(py);
+
+        let dag_copy = dag.call_method0("__copy__").unwrap();
+        let empty_dag_copy = empty_dag.call_method0("__copy__").unwrap();
+
+        let full_dag_comparison =
+            bool::extract(dag_copy.call_method1("__eq__", (&(*dag),)).unwrap()).unwrap();
+        assert!(full_dag_comparison);
+
+        let empty_dag_comparison = bool::extract(
+            empty_dag_copy
+                .call_method1("__eq__", (&(*empty_dag),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(empty_dag_comparison);
+    })
+}

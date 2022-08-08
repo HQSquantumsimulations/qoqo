@@ -125,7 +125,45 @@ impl CircuitDagWrapper {
     }
     */
 
-    // TODO from_circuit
+    /// Returns a copy of the CircuitDag (produces a deepcopy).
+    /// 
+    /// Returns:
+    ///     CircuitDag: A copy of self.
+    pub fn __copy__(&self) -> CircuitDagWrapper {
+        self.clone()
+    }
+
+    /// Return the __richcmp__ magic method to perform rich comparison operations on Circuit.
+    ///
+    /// Args:
+    ///     self: The CircuitDag object.
+    ///     other: The object to compare self to.
+    ///     op: Type of comparison.
+    ///
+    /// Returns:
+    ///     Whether the two operations compared evaluated to True or False.
+    ///
+    /// Raises:
+    ///     NotImplementedError: Other comparison not implemented.
+    fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
+        let other = Python::with_gil(|py| -> Result<CircuitDag, QoqoError> {
+            let other_ref = other.as_ref(py);
+            crate::convert_into_circuitdag(other_ref)
+        });
+        match op {
+            pyo3::class::basic::CompareOp::Eq => match other {
+                Ok(dag) => Ok(self.internal == dag),
+                _ => Ok(false),
+            },
+            pyo3::class::basic::CompareOp::Ne => match other {
+                Ok(dag) => Ok(self.internal != dag),
+                _ => Ok(true),
+            },
+            _ => Err(pyo3::exceptions::PyNotImplementedError::new_err(
+                "Other comparison not implemented",
+            )),
+        }
+    }
 }
 
 /// Convert generic python object to [roqoqo::CircuitDag].
