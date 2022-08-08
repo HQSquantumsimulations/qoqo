@@ -16,6 +16,7 @@ use crate::operations::*;
 use crate::Circuit;
 
 use petgraph::adj::NodeIndex;
+use petgraph::algo::toposort;
 use petgraph::graph::Graph;
 use petgraph::Directed;
 
@@ -23,7 +24,7 @@ static DEFAULT_NODE_NUMBER: usize = 100;
 static DEFAULT_EDGE_NUMBER: usize = 300;
 
 /// Represents the Direct Acyclic Graph (DAG) of a Circuit.
-/// 
+///
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct CircuitDag {
@@ -62,7 +63,7 @@ impl PartialEq for CircuitDag {
     }
 
     fn ne(&self, other: &Self) -> bool {
-        return !self.eq(other)
+        return !self.eq(other);
     }
 }
 
@@ -398,7 +399,8 @@ impl CircuitDag {
                     //  first_operation_involving_classical as well
                     if self
                         .last_operation_involving_classical
-                        .insert((String::clone(name), *readout), node).is_none()
+                        .insert((String::clone(name), *readout), node)
+                        .is_none()
                     {
                         self.first_operation_involving_classical
                             .insert((String::clone(name), *readout), node);
@@ -441,7 +443,8 @@ impl CircuitDag {
                     //  last_operation_involving_classical as well
                     if self
                         .first_operation_involving_classical
-                        .insert((String::clone(name), *readout), node).is_none()
+                        .insert((String::clone(name), *readout), node)
+                        .is_none()
                     {
                         self.last_operation_involving_classical
                             .insert((String::clone(name), *readout), node);
@@ -539,8 +542,8 @@ impl CircuitDag {
 
     /// Given a NodeIndex, returns a reference to the Operation contained in the node of
     /// the CircuitDag.
-    /// 
-    pub fn get(&self, node: NodeIndex<usize>) -> Option<&Operation>{
+    ///
+    pub fn get(&self, node: NodeIndex<usize>) -> Option<&Operation> {
         self.graph.node_weight(node.into())
     }
 }
@@ -574,8 +577,23 @@ impl From<Circuit> for CircuitDag {
     }
 }
 
+/// Creates a new Circuit from a given CircuitDag.
+///
 impl From<CircuitDag> for Circuit {
     fn from(dag: CircuitDag) -> Circuit {
+        let mut circuit: Circuit = Circuit::new();
 
+        match toposort(dag.graph(), None) {
+            Ok(order) => {
+                for i in order {
+                    circuit.add_operation(dag.graph().node_weight(i).unwrap().clone());
+                }
+            }
+            Err(_) => {
+                println!("Error: graph not acyclic");
+            }
+        }
+
+        circuit
     }
 }
