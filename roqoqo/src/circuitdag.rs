@@ -25,6 +25,7 @@ static DEFAULT_EDGE_NUMBER: usize = 300;
 /// Represents the Direct Acyclic Graph (DAG) of a Circuit.
 /// 
 #[derive(Debug, Clone)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct CircuitDag {
     graph: Graph<Operation, (), Directed, usize>,
     commuting_operations: Vec<NodeIndex<usize>>,
@@ -570,5 +571,11 @@ impl From<Circuit> for CircuitDag {
         }
 
         new_dag
+    }
+}
+
+impl From<CircuitDag> for Circuit {
+    fn from(dag: CircuitDag) -> Circuit {
+
     }
 }
