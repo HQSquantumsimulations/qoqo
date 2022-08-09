@@ -18,7 +18,9 @@ use crate::Circuit;
 use petgraph::adj::NodeIndex;
 use petgraph::algo::toposort;
 use petgraph::graph::Graph;
+use petgraph::visit::Dfs;
 use petgraph::Directed;
+use petgraph::Direction::Incoming;
 
 static DEFAULT_NODE_NUMBER: usize = 100;
 static DEFAULT_EDGE_NUMBER: usize = 300;
@@ -468,6 +470,52 @@ impl CircuitDag {
             }
             InvolvedClassical::None => (),
         }
+    }
+
+    /// Checks if executing an operation is blocked by any not-yet executed operation.
+    ///
+    /// # Arguments:
+    ///
+    /// * `already_executed` - Slice of NodeIndices of Nodes that have already been executed in the Circuit.
+    /// * `to_be_executed` - NodeIndex of the operation that should be executed next.
+    ///
+    /// # Returns:
+    ///
+    /// * `Vec<NodeIndex<usize>>` - Vector containing the blocking elements.
+    pub fn execution_blocked(
+        &self,
+        already_executed: &[NodeIndex<usize>],
+        to_be_executed: &NodeIndex<usize>,
+    ) -> Vec<NodeIndex<usize>> {
+        let mut blocking_elements: Vec<NodeIndex<usize>> = vec![];
+        let mut rev_graph: Graph<Operation, (), Directed, usize> = self.graph.clone();
+        rev_graph.reverse();
+        let mut dfs = Dfs::new(&rev_graph, (*to_be_executed).into());
+
+        while let Some(nxt) = dfs.next(&rev_graph) {
+            if !already_executed.contains(&nxt.index()) {
+                blocking_elements.push(nxt.index());
+            }
+        }
+
+        blocking_elements
+    }
+
+    /// Returns a new front-layer after executing an operation from the current front layer.
+    ///
+    /// Returns an error if operation to be executed is not in the current front layer.
+    ///
+    /// # Arguments:
+    ///
+    /// * `already_executed` - Slice of NodeIndices of Nodes that have already been executed in the Circuit.
+    /// * `current_front_layer` - Slice of NodeIndices in the current front layer ready to be executed if physically possible.
+    /// * `to_be_executed` - NodeIndex of the operation that should be executed next.
+    pub fn new_front_layer(
+        &self,
+        already_executed: &[NodeIndex],
+        current_front_layer: &[NodeIndex],
+        to_be_executed: &NodeIndex,
+    ) -> () {
     }
 
     /// Returns a reference to the graph in CircuitDag.
