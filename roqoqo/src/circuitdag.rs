@@ -163,12 +163,9 @@ impl CircuitDag {
         //  last_operation_involving_qubit is updated
         let mut temp_map: HashMap<usize, NodeIndex<usize>> =
             HashMap::with_capacity(self.last_operation_involving_qubit.capacity());
-        if self.last_operation_involving_qubit.is_empty() {
-        } else {
-            for (&qubit, &old_node) in &self.last_operation_involving_qubit {
-                self.graph.update_edge(old_node.into(), node.into(), ());
-                temp_map.insert(qubit, node);
-            }
+        for (&qubit, &old_node) in &self.last_operation_involving_qubit {
+            self.graph.update_edge(old_node.into(), node.into(), ());
+            temp_map.insert(qubit, node);
         }
         self.last_operation_involving_qubit = temp_map;
     }
