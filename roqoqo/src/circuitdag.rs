@@ -1,4 +1,4 @@
-// Copyright © 2021 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2022 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -19,33 +19,27 @@ use petgraph::adj::NodeIndex;
 use petgraph::graph::Graph;
 use petgraph::Directed;
 
-static DEFAULT_NODE_NUMBER: usize = 100;
-static DEFAULT_EDGE_NUMBER: usize = 300;
-
 /// Represents the Direct Acyclic Graph (DAG) of a Circuit.
 #[derive(Debug)]
 pub struct CircuitDag {
-    graph: Graph<Operation, (), Directed, usize>,
-    commuting_operations: Vec<NodeIndex<usize>>,
-    first_parallel_block: HashSet<NodeIndex<usize>>,
-    last_parallel_block: HashSet<NodeIndex<usize>>,
-    first_all: Option<NodeIndex<usize>>,
-    last_all: Option<NodeIndex<usize>>,
-    first_operation_involving_qubit: HashMap<usize, NodeIndex<usize>>,
-    last_operation_involving_qubit: HashMap<usize, NodeIndex<usize>>,
-    first_operation_involving_classical: HashMap<(String, usize), NodeIndex<usize>>,
-    last_operation_involving_classical: HashMap<(String, usize), NodeIndex<usize>>,
+    pub(crate) graph: Graph<Operation, (), Directed, usize>,
+    pub(crate) commuting_operations: Vec<NodeIndex<usize>>,
+    pub(crate) first_parallel_block: HashSet<NodeIndex<usize>>,
+    pub(crate) last_parallel_block: HashSet<NodeIndex<usize>>,
+    pub(crate) first_all: Option<NodeIndex<usize>>,
+    pub(crate) last_all: Option<NodeIndex<usize>>,
+    pub(crate) first_operation_involving_qubit: HashMap<usize, NodeIndex<usize>>,
+    pub(crate) last_operation_involving_qubit: HashMap<usize, NodeIndex<usize>>,
+    pub(crate) first_operation_involving_classical: HashMap<(String, usize), NodeIndex<usize>>,
+    pub(crate) last_operation_involving_classical: HashMap<(String, usize), NodeIndex<usize>>,
 }
 
 impl CircuitDag {
     /// Creates a new empty CircuitDag.
     ///
-    pub fn new() -> Self {
+    pub fn with_capacity(node_number: usize, edge_number: usize) -> Self {
         CircuitDag {
-            graph: Graph::<Operation, (), Directed, usize>::with_capacity(
-                DEFAULT_NODE_NUMBER,
-                DEFAULT_EDGE_NUMBER,
-            ),
+            graph: Graph::<Operation, (), Directed, usize>::with_capacity(node_number, edge_number),
             commuting_operations: Vec::<NodeIndex<usize>>::new(),
             first_parallel_block: HashSet::<NodeIndex<usize>>::new(),
             last_parallel_block: HashSet::<NodeIndex<usize>>::new(),
@@ -68,7 +62,7 @@ impl CircuitDag {
     /// # Returns
     ///
     /// * 'Option<NodeIndex<usize>>' - The NodeIndex relative to the Operation, if added to CircuitGraph.
-    pub fn add_to_back(&mut self, operation: Operation) -> Option<NodeIndex<usize>> {
+    pub fn add_to_back(&mut self, operation: Operation) -> Option<usize> {
         // Create node
         let node = self.graph.add_node(operation.clone());
 
@@ -169,12 +163,14 @@ impl CircuitDag {
         //  last_operation_involving_qubit is updated
         let mut temp_map: HashMap<usize, NodeIndex<usize>> =
             HashMap::with_capacity(self.last_operation_involving_qubit.capacity());
-        for (&qubit, &old_node) in &self.last_operation_involving_qubit {
-            self.graph.update_edge(old_node.into(), node.into(), ());
-            temp_map.insert(qubit, node);
+        if self.last_operation_involving_qubit.is_empty() {
+        } else {
+            for (&qubit, &old_node) in &self.last_operation_involving_qubit {
+                self.graph.update_edge(old_node.into(), node.into(), ());
+                temp_map.insert(qubit, node);
+            }
         }
-        self.last_operation_involving_qubit.clear();
-        self.last_operation_involving_qubit = temp_map.clone();
+        self.last_operation_involving_qubit = temp_map;
     }
 
     /// Adds an operation to the front of the CircuitDag is necessary.
@@ -186,7 +182,7 @@ impl CircuitDag {
     /// # Returns
     ///
     /// * 'Option<NodeIndex<usize>>' - The NodeIndex<usize> relative to the Operation, if added to CircuitGraph.
-    pub fn add_to_front(&mut self, operation: Operation) -> Option<NodeIndex<usize>> {
+    pub fn add_to_front(&mut self, operation: Operation) -> Option<usize> {
         // Create node
         let node = self.graph.add_node(operation.clone());
 
@@ -291,8 +287,7 @@ impl CircuitDag {
             self.graph.update_edge(node.into(), old_node.into(), ());
             temp_map.insert(qubit, node);
         }
-        self.first_operation_involving_qubit.clear();
-        self.first_operation_involving_qubit = temp_map.clone();
+        self.first_operation_involving_qubit = temp_map;
     }
 
     /// Given an Operation and its node, checks that it is a Definition and populates the
@@ -369,7 +364,8 @@ impl CircuitDag {
                     //  first_operation_involving_classical as well
                     if self
                         .last_operation_involving_classical
-                        .insert((String::clone(name), *readout), node).is_none()
+                        .insert((String::clone(name), *readout), node)
+                        .is_none()
                     {
                         self.first_operation_involving_classical
                             .insert((String::clone(name), *readout), node);
@@ -412,7 +408,8 @@ impl CircuitDag {
                     //  last_operation_involving_classical as well
                     if self
                         .first_operation_involving_classical
-                        .insert((String::clone(name), *readout), node).is_none()
+                        .insert((String::clone(name), *readout), node)
+                        .is_none()
                     {
                         self.last_operation_involving_classical
                             .insert((String::clone(name), *readout), node);
@@ -438,53 +435,35 @@ impl CircuitDag {
         }
     }
 
-    /// Returns a reference to the graph in CircuitDag.
-    ///
-    pub fn graph(&self) -> &Graph<Operation, (), Directed, usize> {
-        &self.graph
-    }
-
     /// Returns a reference to the vector of commuting operations in CircuitDag.
     ///
-    pub fn commuting_operations(&self) -> &Vec<NodeIndex<usize>> {
+    pub fn commuting_operations(&self) -> &Vec<usize> {
         &self.commuting_operations
     }
 
     /// Returns a reference to the HasSet containing the nodes in the first parallel block.
     ///
-    pub fn first_parallel_block(&self) -> &HashSet<NodeIndex<usize>> {
+    pub fn first_parallel_block(&self) -> &HashSet<usize> {
         &self.first_parallel_block
     }
 
     /// Returns a reference to the HashSet containing the nodes in the last parallel block.
     ///
-    pub fn last_parallel_block(&self) -> &HashSet<NodeIndex<usize>> {
+    pub fn last_parallel_block(&self) -> &HashSet<usize> {
         &self.last_parallel_block
-    }
-
-    /// Returns a reference to the first Operation that involves all qubits in CircuitDag.
-    ///
-    pub fn first_all(&self) -> &Option<NodeIndex<usize>> {
-        &self.first_all
-    }
-
-    /// Returns a reference to the last Operation that involves all qubits in CircuitDag.
-    ///
-    pub fn last_all(&self) -> &Option<NodeIndex<usize>> {
-        &self.last_all
     }
 
     /// Returns a reference to the HashMap where a key represents a qubit and its value represents
     /// the first node that involves that qubit.
     ///
-    pub fn first_operation_involving_qubit(&self) -> &HashMap<usize, NodeIndex<usize>> {
+    pub fn first_operation_involving_qubit(&self) -> &HashMap<usize, usize> {
         &self.first_operation_involving_qubit
     }
 
     /// Returns a reference to the HashMap where a key represents a qubit and its value represents
     /// the last node that involves that qubit.
     ///
-    pub fn last_operation_involving_qubit(&self) -> &HashMap<usize, NodeIndex<usize>> {
+    pub fn last_operation_involving_qubit(&self) -> &HashMap<usize, usize> {
         &self.last_operation_involving_qubit
     }
 
@@ -492,9 +471,7 @@ impl CircuitDag {
     /// of the classical register and its value represents the first node that involves that
     /// register.
     ///
-    pub fn first_operation_involving_classical(
-        &self,
-    ) -> &HashMap<(String, usize), NodeIndex<usize>> {
+    pub fn first_operation_involving_classical(&self) -> &HashMap<(String, usize), usize> {
         &self.first_operation_involving_classical
     }
 
@@ -502,9 +479,7 @@ impl CircuitDag {
     /// of the classical register and its value represents the last node that involves that
     /// register.
     ///
-    pub fn last_operation_involving_classical(
-        &self,
-    ) -> &HashMap<(String, usize), NodeIndex<usize>> {
+    pub fn last_operation_involving_classical(&self) -> &HashMap<(String, usize), usize> {
         &self.last_operation_involving_classical
     }
 }
@@ -538,8 +513,172 @@ impl From<Circuit> for CircuitDag {
     }
 }
 
-impl Default for CircuitDag {
-    fn default() -> Self {
-        Self::new()
+/// The following module contains tests that need access to internal data structures.
+///
+#[cfg(test)]
+mod tests {
+    use crate::operations::*;
+    use crate::{Circuit, CircuitDag};
+    use test_case::test_case;
+
+    static DEFAULT_NODE_NUMBER: usize = 10;
+    static DEFAULT_EDGE_NUMBER: usize = 30;
+
+    /// Test graph node existance after adding an operation that involves qubits.
+    ///
+    #[test_case(Operation::from(PauliX::new(0)))]
+    #[test_case(Operation::from(PauliY::new(1)))]
+    #[test_case(Operation::from(ControlledPauliZ::new(0, 1)))]
+    fn check_node_existance(operation: Operation) {
+        let mut dag: CircuitDag =
+            CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+        dag.add_to_back(operation.clone());
+
+        assert!(dag.graph.node_count() == 1);
+
+        dag.add_to_front(operation.clone());
+        dag.add_to_back(Operation::from(CNOT::new(0, 1)));
+
+        assert!(dag.graph.node_count() == 3);
+    }
+
+    #[test_case(Operation::from(PauliX::new(0)), Operation::from(PauliY::new(0)))]
+    #[test_case(Operation::from(PauliZ::new(0)), Operation::from(CNOT::new(0, 1)))]
+    fn check_node_count(operation1: Operation, operation2: Operation) {
+        let mut dag: CircuitDag =
+            CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+        dag.add_to_back(operation1.clone());
+        dag.add_to_front(operation2.clone());
+
+        assert!(dag.graph.node_count() == 2);
+
+        dag.add_to_back(operation1.clone());
+
+        assert!(dag.graph.node_count() == 3);
+    }
+
+    #[test_case(Operation::from(PauliX::new(0)), Operation::from(PauliY::new(0)))]
+    #[test_case(
+        Operation::from(PauliX::new(0)),
+        Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None,))
+    )]
+    /* 
+    #[test_case(
+        Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None,)),
+        Operation::from(PauliX::new(0))
+    )]
+    #[test_case(
+        Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None,)),
+        Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None,))
+    )]
+    */
+    fn check_edge(operation1: Operation, operation2: Operation) {
+        let mut dag: CircuitDag =
+            CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+        dag.add_to_back(Operation::from(DefinitionBit::new("ro".to_string(), 4, false)));
+
+        let ind1 = dag.add_to_back(operation1.clone());
+        let ind2 = dag.add_to_back(operation2.clone());
+
+        assert!(dag
+            .graph
+            .contains_edge(ind1.unwrap().into(), ind2.unwrap().into()));
+    }
+
+    #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None)))]
+    #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ri"), 2, None)))]
+    fn check_first_last_all_existence(operation: Operation) {
+        let mut dag: CircuitDag =
+            CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+        assert!(dag.first_all.is_none());
+        assert!(dag.last_all.is_none());
+
+        let ind_back = dag.add_to_back(operation.clone());
+        let ind_front = dag.add_to_front(operation.clone());
+
+        assert!(dag.first_all.is_some());
+        assert!(dag.last_all.is_some());
+
+        assert!(dag.first_all.unwrap() == ind_front.unwrap());
+        assert!(dag.last_all.unwrap() == ind_back.unwrap());
+    }
+
+    #[test_case(
+        Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None)),
+        Operation::from(PragmaRepeatedMeasurement::new(String::from("ri"), 2, None))
+    )]
+    fn check_first_last_all_order(operation1: Operation, operation2: Operation) {
+        let mut dag: CircuitDag =
+            CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+        dag.add_to_back(operation1);
+        dag.add_to_front(operation2);
+
+        assert!(dag.first_all.is_some());
+        assert!(dag.last_all.is_some());
+
+        assert_ne!(
+            dag.graph.node_weight(dag.first_all.unwrap().into()),
+            dag.graph.node_weight(dag.last_all.unwrap().into())
+        );
+    }
+
+    #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None,)))]
+    #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ri"), 2, None,)))]
+    fn check_operation_involving_qubits_all(operation: Operation) {
+        let mut dag: CircuitDag =
+            CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+        assert!(dag.first_operation_involving_qubit().is_empty());
+        assert!(dag.last_operation_involving_qubit().is_empty());
+
+        dag.add_to_front(operation.clone());
+
+        assert!(dag.first_operation_involving_qubit().is_empty());
+        assert!(dag.last_operation_involving_qubit().is_empty());
+
+        let back = dag.add_to_back(Operation::from(PauliX::new(0)));
+
+        assert_eq!(dag.last_operation_involving_qubit().get(&0), back.as_ref());
+
+        let front = dag.add_to_front(Operation::from(CNOT::new(0, 1)));
+
+        assert_eq!(dag.last_operation_involving_qubit().get(&0), back.as_ref());
+        assert_eq!(
+            dag.first_operation_involving_qubit().get(&0),
+            front.as_ref()
+        );
+
+        assert_ne!(dag.last_operation_involving_qubit().get(&0), front.as_ref());
+        assert_ne!(dag.first_operation_involving_qubit().get(&0), back.as_ref());
+
+        let new_front_all = dag.add_to_front(operation.clone());
+        let new_back_all = dag.add_to_back(operation.clone());
+
+        assert!(dag
+            .graph
+            .contains_edge(new_front_all.unwrap().into(), front.unwrap().into()));
+        assert!(dag
+            .graph
+            .contains_edge(back.unwrap().into(), new_back_all.unwrap().into()));
+    }
+
+    #[test_case(vec![Operation::from(CNOT::new(0,1)), Operation::from(PauliX::new(0)), Operation::from(PauliY::new(1))])]
+    #[test_case(vec![Operation::from(PauliZ::new(0)), Operation::from(ControlledPauliZ::new(1,2))])]
+    fn test_new_from_circuit(op_vec: Vec<Operation>) {
+        let mut circuit: Circuit = Circuit::new();
+        for op in &op_vec {
+            circuit.add_operation((*op).clone());
+        }
+
+        let dag: CircuitDag = CircuitDag::from(circuit);
+
+        assert!(!dag.first_operation_involving_qubit().is_empty());
+        assert!(!dag.last_operation_involving_qubit().is_empty());
+
+        assert_eq!(dag.graph.node_count(), op_vec.len());
     }
 }
