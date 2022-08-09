@@ -17,7 +17,7 @@
 use crate::QoqoError;
 use pyo3::exceptions::{PyIndexError, PyTypeError};
 use pyo3::prelude::*;
-use roqoqo::CircuitDag;
+use roqoqo::{CircuitDag, Circuit};
 
 use crate::operations::{convert_operation_to_pyobject, convert_pyany_to_operation};
 
@@ -56,6 +56,21 @@ impl CircuitDagWrapper {
         Self {
             internal: CircuitDag::new(),
         }
+    }
+
+    /// Create a CircuitDag from a given Circuit;
+    /// 
+    /// Returns:
+    ///     self: The new CircuitDag.
+    pub fn from_circuit(&self, circuit: Py<PyAny>) -> PyResult<Self> {
+        let circuit = Python::with_gil(|py| -> Result<Circuit, QoqoError> {
+            let circ_ref = circuit.as_ref(py);
+            crate::convert_into_circuit(circ_ref)
+        }).unwrap();
+        
+        Ok(Self{
+            internal: CircuitDag::from(circuit)
+        })
     }
 
     /// Add an Operation to the back of the CircuitDag, if necessary.

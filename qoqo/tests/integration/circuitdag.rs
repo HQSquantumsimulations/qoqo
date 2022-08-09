@@ -13,7 +13,7 @@
 use pyo3::prelude::*;
 
 use qoqo::operations::convert_operation_to_pyobject;
-use qoqo::CircuitDagWrapper;
+use qoqo::{CircuitDagWrapper, CircuitWrapper};
 
 use roqoqo::operations::*;
 
@@ -24,6 +24,15 @@ fn new_circuitdag(py: Python) -> &PyCell<CircuitDagWrapper> {
         .call0()
         .unwrap()
         .cast_as::<PyCell<CircuitDagWrapper>>()
+        .unwrap()
+}
+
+fn new_circuit(py: Python) -> &PyCell<CircuitWrapper> {
+    let circuit_type = py.get_type::<CircuitWrapper>();
+    circuit_type
+        .call0()
+        .unwrap()
+        .cast_as::<PyCell<CircuitWrapper>>()
         .unwrap()
 }
 
@@ -119,6 +128,7 @@ fn test_copy() {
     })
 }
 
+/// Test __richcmp__
 #[test]
 fn test_richcmp() {
     pyo3::prepare_freethreaded_python();
@@ -145,5 +155,38 @@ fn test_richcmp() {
         assert!(comparison);
         let comparison = dag1.call_method1("__ge__", (dag2,));
         assert!(comparison.is_err());
+    })
+}
+
+/// Test from_circuit
+#[test]
+fn test_from_circuit() {
+    pyo3::prepare_freethreaded_python();
+    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+    let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
+    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
+    Python::with_gil(|py| {
+        let circuit = new_circuit(py);
+        circuit.call_method1("add", (paulix_0.clone(),)).unwrap();
+        circuit.call_method1("add", (pauliy_0.clone(),)).unwrap();
+        circuit.call_method1("add", (cnot_01.clone(),)).unwrap();
+
+        let dag = new_circuitdag(py);
+        let dag = dag.call_method1("from_circuit", (circuit,))
+            .unwrap()
+            .cast_as::<PyCell<CircuitDagWrapper>>()
+            .unwrap();
+
+        let comp_op = dag.call_method1("get", (0,)).unwrap();
+        let helper1 = bool::extract(comp_op.call_method1("__eq__", (paulix_0,)).unwrap()).unwrap();
+        assert!(helper1);
+
+        let comp_op = dag.call_method1("get", (1,)).unwrap();
+        let helper2 = bool::extract(comp_op.call_method1("__eq__", (pauliy_0,)).unwrap()).unwrap();
+        assert!(helper2);
+
+        let comp_op = dag.call_method1("get", (2,)).unwrap();
+        let helper3 = bool::extract(comp_op.call_method1("__eq__", (cnot_01,)).unwrap()).unwrap();
+        assert!(helper3);
     })
 }
