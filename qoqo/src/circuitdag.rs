@@ -19,6 +19,7 @@ use pyo3::exceptions::{PyIndexError, PyTypeError};
 use pyo3::prelude::*;
 use roqoqo::{CircuitDag, Circuit};
 
+use crate::CircuitWrapper;
 use crate::operations::{convert_operation_to_pyobject, convert_pyany_to_operation};
 
 /// Module containing the CircuitDag class that represents the Directed Acyclic Graph (DAG)
@@ -70,6 +71,14 @@ impl CircuitDagWrapper {
         
         Ok(Self{
             internal: CircuitDag::from(circuit)
+        })
+    }
+
+    /// Transforms the CircuitDag into a Circuit.
+    /// 
+    pub fn to_circuit(&self) -> PyResult<CircuitWrapper> {
+        Ok(CircuitWrapper{
+            internal: Circuit::from(self.internal.clone())
         })
     }
 

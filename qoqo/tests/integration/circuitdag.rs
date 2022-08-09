@@ -172,7 +172,8 @@ fn test_from_circuit() {
         circuit.call_method1("add", (cnot_01.clone(),)).unwrap();
 
         let dag = new_circuitdag(py);
-        let dag = dag.call_method1("from_circuit", (circuit,))
+        let dag = dag
+            .call_method1("from_circuit", (circuit,))
             .unwrap()
             .cast_as::<PyCell<CircuitDagWrapper>>()
             .unwrap();
@@ -186,6 +187,41 @@ fn test_from_circuit() {
         assert!(helper2);
 
         let comp_op = dag.call_method1("get", (2,)).unwrap();
+        let helper3 = bool::extract(comp_op.call_method1("__eq__", (cnot_01,)).unwrap()).unwrap();
+        assert!(helper3);
+    })
+}
+
+#[test]
+fn test_to_circuit() {
+    pyo3::prepare_freethreaded_python();
+    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+    let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
+    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
+    Python::with_gil(|py| {
+        let dag = new_circuitdag(py);
+        dag.call_method1("add_to_back", (paulix_0.clone(),))
+            .unwrap();
+        dag.call_method1("add_to_back", (pauliy_0.clone(),))
+            .unwrap();
+        dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
+
+        let circuit = new_circuit(py);
+        circuit.call_method1("add", (paulix_0.clone(),)).unwrap();
+        circuit.call_method1("add", (pauliy_0.clone(),)).unwrap();
+        circuit.call_method1("add", (cnot_01.clone(),)).unwrap();
+
+        let new_circuit = dag.call_method0("to_circuit").unwrap();
+
+        let comp_op = new_circuit.call_method1("get", (0,)).unwrap();
+        let helper1 = bool::extract(comp_op.call_method1("__eq__", (paulix_0,)).unwrap()).unwrap();
+        assert!(helper1);
+
+        let comp_op = new_circuit.call_method1("get", (1,)).unwrap();
+        let helper2 = bool::extract(comp_op.call_method1("__eq__", (pauliy_0,)).unwrap()).unwrap();
+        assert!(helper2);
+
+        let comp_op = new_circuit.call_method1("get", (2,)).unwrap();
         let helper3 = bool::extract(comp_op.call_method1("__eq__", (cnot_01,)).unwrap()).unwrap();
         assert!(helper3);
     })
