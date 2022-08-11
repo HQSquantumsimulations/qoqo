@@ -599,7 +599,7 @@ impl OperateTwoQubitGate for InvSqrtISwap {
 /// The XY gate.
 ///
 /// The XY gate applies a unitary rotation to the two qubit gates `control` and `target`.
-/// 
+///
 /// XY = exp(i * (X_target * X_control + Y_target * Y_control) * theta / 2)
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
@@ -696,8 +696,8 @@ impl OperateTwoQubitGate for XY {
 /// Implements the controlled PhaseShift gate.
 ///
 /// The controlled PhaseShift applies a phase shift to the `target` qubit
-/// depending on the state of the `control` qubit. 
-/// 
+/// depending on the state of the `control` qubit.
+///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
@@ -1390,7 +1390,7 @@ impl OperateTwoQubitGate for GivensRotationLittleEndian {
 ///
 /// Swaps the state of two qubits `control` and `target` and
 /// at the same time applies the unitary
-/// 
+///
 /// exp(-i (x * X_c X_t + y * Y_c Y_t + z * Z_c Z_t))
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
@@ -1499,7 +1499,7 @@ impl OperateTwoQubitGate for Qsim {
 }
 
 /// The fermionic qubit simulation gate.
-/// 
+///
 /// Applies a Fermionic SWAP between two qubits `target` and `control`
 /// and applies the unitary evolution with a hopping t, a density-density interaction u and
 /// a Bogoliubov interaction delta.
