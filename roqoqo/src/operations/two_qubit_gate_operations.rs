@@ -44,13 +44,15 @@ pub struct KakDecomposition {
     pub circuit_after: Option<Circuit>,
 }
 
-/// Implements the CNOT controlled not gate.
+/// The CNOT controlled not gate.
 ///
+/// Flips the state of a `target` qubit based on the `control` qubit.
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
@@ -140,13 +142,15 @@ impl OperateTwoQubitGate for CNOT {
     }
 }
 
-/// Implements the SWAP gate.
+/// The SWAP gate.
 ///
+/// Swaps the states of two qubits `target` and `control`.
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
@@ -230,11 +234,14 @@ impl OperateTwoQubitGate for SWAP {
 
 /// The ISwap gate.
 ///
+/// Swaps the states of two qubits `target` and `control`
+/// and applies a complex phase `i` to states |01> and |10>.
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
@@ -316,13 +323,17 @@ impl OperateTwoQubitGate for ISwap {
     }
 }
 
-/// The fermionic SWAP gate.
+/// The Fermionic SWAP gate.
 ///
+/// Swaps the states of two qubits `target` and `control`
+/// and applies a sign `-1` to states |01> and |10>.
+/// Conserves the correct sign when the qubits represent Fermionic degrees of freedom.
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
@@ -410,11 +421,14 @@ impl OperateTwoQubitGate for FSwap {
 
 /// The square root ISwap gate.
 ///
+/// Square root version of the ISwap gate so that
+/// SqrtISwap * SqrtISwap = ISwap
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
@@ -499,11 +513,13 @@ impl OperateTwoQubitGate for SqrtISwap {
 
 /// The inverse square root ISwap gate.
 ///
+/// InvSqrtISwap * SqrtISwap = Identity
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
@@ -588,6 +604,9 @@ impl OperateTwoQubitGate for InvSqrtISwap {
 
 /// The XY gate.
 ///
+/// The XY gate applies a unitary rotation to the two qubit gates `control` and `target`.
+///
+/// XY = exp(i * (X_target * X_control + Y_target * Y_control) * theta / 2)
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
@@ -680,7 +699,10 @@ impl OperateTwoQubitGate for XY {
     }
 }
 
-/// Implements the controlled-PhaseShift gate.
+/// Implements the controlled PhaseShift gate.
+///
+/// The controlled PhaseShift applies a phase shift to the `target` qubit
+/// depending on the state of the `control` qubit.
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
@@ -781,11 +803,13 @@ impl OperateTwoQubitGate for ControlledPhaseShift {
 
 /// The controlled-PauliY gate.
 ///
+/// Applies a PauliY unitary to the `target` qubit depending on the state of the `control`
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
@@ -877,11 +901,13 @@ impl OperateTwoQubitGate for ControlledPauliY {
 
 /// The controlled-PauliZ gate.
 ///
+/// Applies a PauliZ unitary to the `target` qubit depending on the state of the `control` qubit.
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
@@ -969,11 +995,13 @@ impl OperateTwoQubitGate for ControlledPauliZ {
 
 /// The fixed phase MolmerSorensen XX gate.
 ///
+/// Applies the unitary exp(-1 X_control X_target * pi/4) to two qubits `control` and `target`
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
@@ -1058,6 +1086,7 @@ impl OperateTwoQubitGate for MolmerSorensenXX {
 
 /// The variable-angle MolmerSorensen XX gate.
 ///
+/// Applies the unitary exp(-1 X_control X_target * theta/2) to two qubits `control` and `target`
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
@@ -1368,6 +1397,10 @@ impl OperateTwoQubitGate for GivensRotationLittleEndian {
 
 /// The qubit simulation gate.
 ///
+/// Swaps the state of two qubits `control` and `target` and
+/// at the same time applies the unitary
+///
+/// exp(-i (x * X_c X_t + y * Y_c Y_t + z * Z_c Z_t))
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
@@ -1476,6 +1509,10 @@ impl OperateTwoQubitGate for Qsim {
 
 /// The fermionic qubit simulation gate.
 ///
+/// Applies a Fermionic SWAP between two qubits `target` and `control`
+/// and applies the unitary evolution with a hopping t, a density-density interaction u and
+/// a Bogoliubov interaction delta.
+///
 /// # Note
 /// The qubits have to be adjacent, i.e., :math:`|i-j|=1` has to hold. This is the only case
 /// in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transformation).
@@ -1583,6 +1620,8 @@ impl OperateTwoQubitGate for Fsim {
 
 /// The generalized, anisotropic XYZ Heisenberg interaction between spins.
 ///
+/// Applies a unitary to two qubits `control` and `target`  
+/// exp(-i (x * X_t X_c + y * Y_t Y_c + z * Z_t Z_c))
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
@@ -2006,7 +2045,6 @@ impl OperateTwoQubitGate for ComplexPMInteraction {
 /// Implements the phased-shifted controlled-Z gate.
 ///
 /// Modified, i.e. phase-shifted ControlledPauliZ two-qubit gate (`<https://arxiv.org/pdf/1908.06101.pdf eq.(1)>`).
-/// The unitary matrix representation is:
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(

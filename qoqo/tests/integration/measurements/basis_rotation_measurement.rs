@@ -473,7 +473,7 @@ fn test_pyo3_copy() {
             .unwrap()
             .cast_as::<PyCell<PauliZProductWrapper>>()
             .unwrap();
-        let br_clone = &(*br);
+        let br_clone = br;
 
         let circuits: Vec<CircuitWrapper> = br.call_method0("circuits").unwrap().extract().unwrap();
         let circuits_clone: Vec<CircuitWrapper> = br_clone
@@ -533,7 +533,7 @@ fn test_pyo3_debug() {
         let debug_input_string = "RefCell { value: PauliZProductInputWrapper { internal: PauliZProductInput { pauli_product_qubit_masks: {\"ro\": {0: []}}, number_qubits: 3, number_pauli_products: 1, measured_exp_vals: {}, use_flipped_measurement: false } } }";
         assert_eq!(format!("{:?}", input), debug_input_string);
 
-        let debug_input = &(*input);
+        let debug_input = input;
         let mut linear_map: HashMap<usize, f64> = HashMap::new();
         linear_map.insert(0, 3.0);
         let _ = debug_input
@@ -627,7 +627,7 @@ fn test_to_from_json() {
             .cast_as::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
-        let new_br = &(*br);
+        let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
         let deserialised = new_br
             .call_method1("from_json", (serialised,))
@@ -749,7 +749,7 @@ fn test_measurement_type() {
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
-            .call_method1("add_pauliz_product", ("ro", tmp_vec.clone()))
+            .call_method1("add_pauliz_product", ("ro", tmp_vec))
             .unwrap();
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
@@ -778,7 +778,7 @@ fn test_return_input() {
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
-            .call_method1("add_pauliz_product", ("ro", tmp_vec.clone()))
+            .call_method1("add_pauliz_product", ("ro", tmp_vec))
             .unwrap();
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];

@@ -5,16 +5,13 @@
 Quantum Operation Quantum Operation  
 Yes we use [reduplication](https://en.wikipedia.org/wiki/Reduplication)
 
-qoqo is a toolkit to represent quantum circuits by [HQS Quantum Simulations](https://quantumsimulations.de).
+qoqo/roqoqo is a toolkit to represent quantum circuits by [HQS Quantum Simulations](https://quantumsimulations.de).
 
-This repository contains two components:
-
-* roqoqo: the core rust library
-* qoqo: the python interface to roqoqo
+For a detailed introduction see the [user documentation](https://hqsquantumsimulations.github.io/qoqo_examples/) and the [qoqo examples repository](https://github.com/HQSquantumsimulations/qoqo_examples)
 
 What roqoqo/qoqo is:
 
-* A toolkit to represent quantum operations and circuits
+* A toolkit to represent quantum programs including circuits and measurement information
 * A thin runtime to run quantum measurements
 * A way to serialize quantum circuits and measurement information
 * A set of optional interfaces to devices, simulators and toolkits (e.g. [qoqo_quest](https://github.com/HQSquantumsimulations/qoqo-quest), [qoqo_mock](https://github.com/HQSquantumsimulations/qoqo_mock), [qoqo_qasm](https://github.com/HQSquantumsimulations/qoqo_qasm))
@@ -24,6 +21,11 @@ What roqoqo/qoqo is **not**:
 * A decomposer translating circuits to a specific set of gates
 * A quantum circuit optimizer
 * A collection of quantum algorithms
+
+This repository contains two components:
+
+* roqoqo: the core rust library
+* qoqo: the python interface to roqoqo
 
 ## roqoqo
 
@@ -83,25 +85,22 @@ pip install qoqo
 ```
 
 For other platforms we recommend using the source distribution from PyPi to build a python package for qoqo locally via pip. The install requires  the [maturin](https://github.com/PyO3/maturin) tool (also available via pip) and a working rust toolchain.
-Specifically for macOS on Apple Silicon the following build command should be used:
 
 ```shell
-RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" pip install qoqo
+pip install qoqo
 ```
 
 Alternatively one can check out the latest tagged version from github and use the [maturin](https://github.com/PyO3/maturin) tool to build a python package for qoqo locally and install it via pip.
 Please note that the package should be built from the top level directory of the workspace selecting the qoqo package with the `-m qoqo/Cargo.toml` option.
-Specifically for macOS on Apple Silicon the following build command should be used.
-
 ```shell
-RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -m qoqo/Cargo.toml  --release
+maturin build -m qoqo/Cargo.toml  --release
 pip install target/wheels/$NAME_OF_WHEEL
 ```
 
 When using qoqo in a rust project providing a python interface add
 
 ```TOML
-qoqo = {version="0.9", default-features=false}
+qoqo = {version="1.0", default-features=false}
 ```
 
 to the `[dependencies]` section of the project Cargo.toml.

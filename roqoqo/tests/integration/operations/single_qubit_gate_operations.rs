@@ -280,8 +280,8 @@ fn test_to_single_qubit_gate_symbolic(operation: SingleQubitGateOperation) {
         operation.beta_i(),
         operation.global_phase(),
     );
-    let gate_test: SingleQubitGate = operation.clone().to_single_qubit_gate();
-    assert_eq!(gate.clone(), gate_test);
+    let gate_test: SingleQubitGate = operation.to_single_qubit_gate();
+    assert_eq!(gate, gate_test);
 }
 
 /// Test 'to_single_qubit_gate()` for all SingleQubitGateOperations
@@ -316,8 +316,8 @@ fn test_to_single_qubit_gate_all(operation: SingleQubitGateOperation) {
         operation.beta_i(),
         operation.global_phase(),
     );
-    let gate_test: SingleQubitGate = operation.clone().to_single_qubit_gate();
-    assert_eq!(gate.clone(), gate_test);
+    let gate_test: SingleQubitGate = operation.to_single_qubit_gate();
+    assert_eq!(gate, gate_test);
 
     let matrix_gate = operation.unitary_matrix().unwrap();
     let matrix_singlequbitgate = gate.unitary_matrix().unwrap();
@@ -1119,7 +1119,7 @@ fn test_ineffective_substitute_parameters(gate: SingleQubitGateOperation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
     let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
-    assert_eq!(result, gate.clone());
+    assert_eq!(result, gate);
 }
 
 /// Test RotateY substitute parameters
@@ -1574,7 +1574,7 @@ fn test_singlequbitgates_partialeq(
     gate1: SingleQubitGateOperation,
     gate2: SingleQubitGateOperation,
 ) {
-    assert!(gate1.clone() == gate1);
+    assert!(gate1 == gate1);
     assert!(gate1 == gate1.clone());
     assert!(gate2 != gate1);
     assert!(gate1 != gate2);

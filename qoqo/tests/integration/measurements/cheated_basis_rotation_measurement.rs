@@ -252,7 +252,7 @@ fn test_pyo3_copy() {
             .unwrap()
             .cast_as::<PyCell<CheatedPauliZProductWrapper>>()
             .unwrap();
-        let br_clone = &(*br);
+        let br_clone = br;
 
         let circuits: Vec<CircuitWrapper> = br.call_method0("circuits").unwrap().extract().unwrap();
         let circuits_clone: Vec<CircuitWrapper> = br_clone
@@ -305,7 +305,7 @@ fn test_pyo3_debug() {
         let debug_string = "RefCell { value: CheatedPauliZProductWrapper { internal: CheatedPauliZProduct { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: CheatedPauliZProductInput { measured_exp_vals: {}, pauli_product_keys: {\"ro\": 0} } } } }";
         assert_eq!(format!("{:?}", br), debug_string);
 
-        let debug_input = &(*input);
+        let debug_input = input;
         let debug_input_string = "RefCell { value: CheatedPauliZProductInputWrapper { internal: CheatedPauliZProductInput { measured_exp_vals: {}, pauli_product_keys: {\"ro\": 0} } } }";
         assert_eq!(format!("{:?}", input), debug_input_string);
         assert_eq!(
@@ -393,7 +393,7 @@ fn test_to_from_json() {
             .cast_as::<PyCell<CheatedPauliZProductWrapper>>()
             .unwrap();
 
-        let new_br = &(*br);
+        let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
         let deserialised = new_br
             .call_method1("from_json", (serialised,))
