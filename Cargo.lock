@@ -493,7 +493,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "1.0.0-alpha.5"
+version = "1.0.0-beta.1"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -517,7 +517,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "1.0.0-alpha.5"
+version = "1.0.0-beta.1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -526,9 +526,9 @@ dependencies = [
 
 [[package]]
 name = "qoqo_calculator"
-version = "0.8.3"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "00d3ab68366f40e8d6f97d6ef977168904d4aff7823e3bd13058282b839aefd9"
+checksum = "a5598b18921d688d12413ac8a1e7ce7d5a5270d6fb0ab4b7f096aa5e31f3dca3"
 dependencies = [
  "num-complex",
  "serde",
@@ -537,12 +537,13 @@ dependencies = [
 
 [[package]]
 name = "qoqo_calculator_pyo3"
-version = "0.8.3"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f11ec1ab10a4c3e258b0a3ac52e881277ee87189e6ac6633ec1facf3fb975f72"
+checksum = "3fde8ca39f26f39f1955a109b57baf56ca19ae0bb5dfc0f2b02c9827210f3814"
 dependencies = [
  "num-complex",
  "pyo3",
+ "pyo3-build-config",
  "qoqo_calculator",
  "serde",
  "thiserror",
@@ -614,7 +615,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.0.0-alpha.5"
+version = "1.0.0-beta.1"
 dependencies = [
  "async-trait",
  "bincode",
@@ -640,7 +641,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "1.0.0-alpha.5"
+version = "1.0.0-beta.1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -649,7 +650,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "1.0.0-alpha.5"
+version = "1.0.0-beta.1"
 dependencies = [
  "nalgebra",
  "ndarray",
