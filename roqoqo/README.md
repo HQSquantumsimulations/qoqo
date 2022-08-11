@@ -1,5 +1,3 @@
-<img src="qoqo_Logo_vertical_color.png" alt="qoqo logo" width="300" />
-
 # roqoqo
 
 roqoqo is a toolkit to represent quantum circuits by [HQS Quantum Simulations](https://quantumsimulations.de).
