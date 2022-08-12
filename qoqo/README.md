@@ -20,6 +20,7 @@ What roqoqo/qoqo is **not**:
 * A quantum circuit optimizer
 * A collection of quantum algorithms
 
+This software is still in the beta stage. Functions and documentation are not yet complete and breaking changes can occur.
 ## roqoqo
 
 [![Crates.io](https://img.shields.io/crates/v/roqoqo)](https://crates.io/crates/roqoqo)
