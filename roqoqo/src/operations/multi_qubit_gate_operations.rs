@@ -27,7 +27,7 @@ use serde::{Deserialize, Serialize};
 /// The Molmer-Sorensen gate between multiple qubits.
 ///
 /// The gate applies the rotation under the product of Pauli X operators on multiple qubits.
-/// In mathematical terms the gate applies exp(-i * theta/2 * X_i0 * X_i1 * ... * X_in).
+/// In mathematical terms the gate applies exp(-i * θ/2 * X_i0 * X_i1 * ... * X_in).
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
@@ -95,7 +95,7 @@ impl OperateMultiQubitGate for MultiQubitMS {
 /// The multi qubit Pauli-Z-Product gate.
 ///
 /// The gate applies the rotation under the product of Pauli Z operators on multiple qubits.
-/// In mathematical terms the gate applies exp(-i * theta/2 * Z_i0 * Z_i1 * ... * Z_in).
+/// In mathematical terms the gate applies exp(-i * θ/2 * Z_i0 * Z_i1 * ... * Z_in).
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,

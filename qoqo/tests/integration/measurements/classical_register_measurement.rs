@@ -63,7 +63,7 @@ fn test_pyo3_copy() {
             .unwrap()
             .cast_as::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
-        let br_clone = &(*br);
+        let br_clone = br;
 
         let circuits: Vec<CircuitWrapper> = br.call_method0("circuits").unwrap().extract().unwrap();
         let circuits_clone: Vec<CircuitWrapper> = br_clone
@@ -155,7 +155,7 @@ fn test_to_from_json() {
             .cast_as::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
 
-        let new_br = &(*br);
+        let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
         let deserialised = new_br
             .call_method1("from_json", (serialised,))

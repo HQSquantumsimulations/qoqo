@@ -19,6 +19,7 @@ use roqoqo::Circuit;
 use std::collections::HashMap;
 
 #[wrap(Operate, OperateSingleQubit)]
+#[derive(Eq)]
 /// Measurement gate operation.
 ///
 /// This Operation acts on one qubit writing the result of the measurement into a readout.
@@ -94,6 +95,7 @@ struct PragmaGetPauliProduct {
 }
 
 #[wrap(Operate, OperatePragma)]
+#[derive(Eq)]
 /// This PRAGMA measurement operation returns a measurement record for N repeated measurements.
 ///
 /// Args:

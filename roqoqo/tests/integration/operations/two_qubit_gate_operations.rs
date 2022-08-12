@@ -850,7 +850,7 @@ fn test_two_qubitgates_debug(message: &'static str, gate: Operation) {
     Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)),
     Operation::from(PhaseShiftedControlledZ::new(1, 0, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_twoqubitgates_partialeq(gate1: Operation, gate2: Operation) {
-    assert!(gate1.clone() == gate1);
+    assert!(gate1 == gate1);
     assert!(gate1 == gate1.clone());
     assert!(gate2 != gate1);
     assert!(gate1 != gate2);
@@ -901,7 +901,7 @@ fn test_ineffective_substitute_parameters(gate: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
     let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
-    assert_eq!(result, gate.clone());
+    assert_eq!(result, gate);
 }
 
 /// Test substitute parameters function for TwoQubitGate Operations
@@ -1062,7 +1062,7 @@ fn test_kakdecomposition_partialeq() {
     };
 
     // comparison
-    assert!(gate1.clone() == gate1);
+    assert!(gate1 == gate1);
     assert!(gate1 == gate1.clone());
     assert!(gate2 != gate1);
     assert!(gate1 != gate2);

@@ -1,23 +1,18 @@
-<img src="qoqo_Logo_vertical_color.png" alt="qoqo logo" width="300" />
-
 # qoqo
 
 Quantum Operation Quantum Operation  
 Yes we use [reduplication](https://en.wikipedia.org/wiki/Reduplication)
 
-qoqo is a toolkit to represent quantum circuits by [HQS Quantum Simulations](https://quantumsimulations.de).
+qoqo/roqoqo is a toolkit to represent quantum circuits by [HQS Quantum Simulations](https://quantumsimulations.de).
 
-This repository contains two components:
-
-* roqoqo: the core rust library
-* qoqo: the python interface to roqoqo
+For a detailed introduction see the [user documentation](https://hqsquantumsimulations.github.io/qoqo_examples/) and the [qoqo examples repository](https://github.com/HQSquantumsimulations/qoqo_examples)
 
 What roqoqo/qoqo is:
 
-* A toolkit to represent quantum operations and circuits
+* A toolkit to represent quantum programs including circuits and measurement information
 * A thin runtime to run quantum measurements
 * A way to serialize quantum circuits and measurement information
-* A set of optional interfaces to devices, simulators and toolkits (e.g. [qoqo_quest](https://github.com/HQSquantumsimulations/qoqo-quest), [qoqo_mock](https://github.com/HQSquantumsimulations/qoqo_mock), [qoqo_qasm](https://github.com/HQSquantumsimulations/qoqo_qasm))
+* A set of optional interfaces to devices, simulators and toolkits (e.g. [qoqo_qest](https://github.com/HQSquantumsimulations/qoqo-quest), [qoqo_mock](https://github.com/HQSquantumsimulations/qoqo_mock), [qoqo_qasm](https://github.com/HQSquantumsimulations/qoqo_qasm))
 
 What roqoqo/qoqo is **not**:
 
@@ -49,7 +44,7 @@ roqoqo provides:
 To use roqoqo in a Rust project simply add
 
 ```TOML
-roqoqo = {version="0.8"}
+roqoqo = {version="1.0"}
 ```
 
 to the `[dependencies]` section of the project Cargo.toml.
@@ -82,10 +77,9 @@ pip install qoqo
 ```
 
 For other platforms we recommend using the source distribution from PyPi to build a python package for qoqo locally via pip. The install requires  the [maturin](https://github.com/PyO3/maturin) tool (also available via pip) and a working rust toolchain.
-Specifically for macOS on Apple Silicon the following build command should be used:
 
 ```shell
-RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" pip install qoqo
+pip install qoqo
 ```
 
 Alternatively one can check out the latest tagged version from github and use the [maturin](https://github.com/PyO3/maturin) tool to build a python package for qoqo locally and install it via pip.
@@ -93,31 +87,14 @@ Please note that the package should be built from the top level directory of the
 Specifically for macOS on Apple Silicon the following build command should be used.
 
 ```shell
-RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -m qoqo/Cargo.toml  --release
+maturin build -m qoqo/Cargo.toml  --release
 pip install target/wheels/$NAME_OF_WHEEL
 ```
 
 When using qoqo in a rust project providing a python interface add
 
 ```TOML
-qoqo = {version="0.9", default-features=false}
+qoqo = {version="1.0.0", default-features=false}
 ```
 
 to the `[dependencies]` section of the project Cargo.toml.
-
-A source distribution now exists but requires a Rust install with a rust version > 1.47 and a maturin version { >= 0.12, <0.13 } in order to be built.
-
-
-### Examples
-
-Since qoqo provides a full python interface to the underlying roqoqo library, there are examples for python users and for Rust users.
-
-For an expanded collection of examples please see the jupyter notebooks in the extra repository [qoqo_examples](https://github.com/HQSquantumsimulations/qoqo_examples). The qoqo examples require the qoqo_quest and qoqo_mock interfaces.
-
-*  [Intro examples](https://github.com/HQSquantumsimulations/qoqo_examples/blob/main/qoqo/Intro_to_qoqo.ipynb). 
-
-
-## Contributing
-
-We welcome contributions to the project. If you want to contribute code, please have a look at CONTRIBUTE.md for our code contribution guidelines.
-
