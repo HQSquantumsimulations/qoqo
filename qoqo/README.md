@@ -51,7 +51,7 @@ If no pre-built python wheel is available for your architecture you can install 
 
 ```shell
 # can be necessary on macOS
-RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" pip install qoqo
+pip install qoqo
 ```
 
 When using qoqo in a rust project providing a python interface add

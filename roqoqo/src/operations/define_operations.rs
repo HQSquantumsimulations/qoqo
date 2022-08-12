@@ -225,6 +225,7 @@ impl InvolveQubits for InputSymbolic {
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::Define,

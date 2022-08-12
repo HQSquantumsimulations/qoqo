@@ -96,6 +96,15 @@ If no pre-built python wheel is available for your architecture you can install 
 RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" pip install qoqo
 ```
 
+Alternatively one can check out the latest tagged version from github and use the [maturin](https://github.com/PyO3/maturin) tool to build a python package for qoqo locally and install it via pip.
+Please note that the package should be built from the top level directory of the workspace selecting the qoqo package with the `-m qoqo/Cargo.toml` option.
+Specifically for macOS on Apple Silicon the following build command should be used.
+
+```shell
+RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -m qoqo/Cargo.toml  --release
+pip install target/wheels/$NAME_OF_WHEEL
+```
+
 When using qoqo in a rust project providing a python interface add
 
 ```TOML
