@@ -85,6 +85,7 @@ pub struct InputSymbolic {
 }
 
 #[wrap(Operate, Define)]
+#[derive(Eq)]
 /// InputBit sets a certain bit in an existing BitRegister of the circuit.
 ///
 /// Args:

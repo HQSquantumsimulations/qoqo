@@ -43,7 +43,7 @@ roqoqo provides:
 To use roqoqo in a Rust project simply add
 
 ```TOML
-roqoqo = {version="0.8"}
+roqoqo = {version="1.0"}
 ```
 
 to the `[dependencies]` section of the project Cargo.toml.

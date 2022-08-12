@@ -38,7 +38,6 @@ use super::InvolvedClassical;
     Clone,
     PartialEq,
     Eq,
-    roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
