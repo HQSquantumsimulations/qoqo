@@ -16,12 +16,12 @@ use crate::operations::*;
 use crate::Circuit;
 use crate::RoqoqoError;
 
-use petgraph::Direction::Outgoing;
 use petgraph::adj::NodeIndex;
 use petgraph::algo::toposort;
 use petgraph::graph::Graph;
 use petgraph::visit::Dfs;
 use petgraph::Directed;
+use petgraph::Direction::Outgoing;
 
 static DEFAULT_NODE_NUMBER: usize = 100;
 static DEFAULT_EDGE_NUMBER: usize = 300;
@@ -493,6 +493,8 @@ impl CircuitDag {
         rev_graph.reverse();
         let mut dfs = Dfs::new(&rev_graph, (*to_be_executed).into());
 
+        // Perform a DFS on the reversed graph starting from to_be_executed,
+        //  pushing on blocking_elements the nodes not contained in already_executed
         while let Some(nxt) = dfs.next(&rev_graph) {
             if !already_executed.contains(&nxt.index()) {
                 blocking_elements.push(nxt.index());
@@ -522,14 +524,42 @@ impl CircuitDag {
                 msg: "The Operation to be executed is not in the current front layer.".to_string(),
             })
         } else {
-            while let Some(nxt) = self.graph.neighbors_directed((*to_be_executed).into(), Outgoing).next() {
-                if self.execution_blocked(already_executed.into(), &nxt.index()).is_empty() {
-                    // TODO: current_front_layer
+            let mut current_front_layer = current_front_layer.to_vec();
+            let mut added: bool = false;
+            while let Some(nxt) = self
+                .graph
+                .neighbors_directed((*to_be_executed).into(), Outgoing)
+                .next()
+            {
+                if self
+                    .execution_blocked(already_executed.into(), &nxt.index())
+                    .is_empty()
+                {
+                    current_front_layer.push(nxt.index());
+                    added = true;
                 }
             }
-            Ok(current_front_layer.to_vec())
+            if added {
+                current_front_layer.remove(
+                    current_front_layer
+                        .iter()
+                        .position(|&x| x == *to_be_executed)
+                        .unwrap(),
+                );
+            }
+            Ok(current_front_layer)
         }
     }
+
+    /*
+    /// Returns an iterator over the possible parallel blocks in  circuit that can be executed simultaneously
+    ///
+    /// Returns an Iterator over Vectors of references to the NodeIndices in the parallel block as well
+    /// as references to the Operation in the blocks
+    pub fn parallel_blocks(&self) -> impl Iterator<Item=Vec<(&NodeIndex<usize>, &Operation)>> {
+
+    }
+    */
 
     /// Returns a reference to the graph in CircuitDag.
     ///
