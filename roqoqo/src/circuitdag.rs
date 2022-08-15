@@ -159,15 +159,23 @@ impl CircuitDag {
             self.first_parallel_block.insert(node);
         }
 
-        // All the latest nodes in the graph must now point to the new node and
-        //  last_operation_involving_qubit is updated
-        let mut temp_map: HashMap<usize, NodeIndex<usize>> =
-            HashMap::with_capacity(self.last_operation_involving_qubit.capacity());
-        for (&qubit, &old_node) in &self.last_operation_involving_qubit {
-            self.graph.update_edge(old_node.into(), node.into(), ());
-            temp_map.insert(qubit, node);
+        // Handling InvolvedQubits::All as first Operation
+        if self.first_operation_involving_qubit.is_empty()
+            && self.last_operation_involving_qubit.is_empty()
+        {
+            self.first_operation_involving_qubit.insert(0, node);
+            self.last_operation_involving_qubit.insert(0, node);
+        } else {
+            // All the latest nodes in the graph must now point to the new node and
+            //  last_operation_involving_qubit is updated
+            let mut temp_map: HashMap<usize, NodeIndex<usize>> =
+                HashMap::with_capacity(self.last_operation_involving_qubit.capacity());
+            for (&qubit, &old_node) in &self.last_operation_involving_qubit {
+                self.graph.update_edge(old_node.into(), node.into(), ());
+                temp_map.insert(qubit, node);
+            }
+            self.last_operation_involving_qubit = temp_map;
         }
-        self.last_operation_involving_qubit = temp_map;
     }
 
     /// Adds an operation to the front of the CircuitDag is necessary.
@@ -276,15 +284,23 @@ impl CircuitDag {
             self.last_parallel_block.insert(node);
         }
 
-        // All the latest nodes in the graph must now point to the new node and
-        //  last_operation_involving_qubit is updated
-        let mut temp_map: HashMap<usize, NodeIndex<usize>> =
-            HashMap::with_capacity(self.first_operation_involving_qubit.capacity());
-        for (&qubit, &old_node) in &self.first_operation_involving_qubit {
-            self.graph.update_edge(node.into(), old_node.into(), ());
-            temp_map.insert(qubit, node);
+        // Handling InvolvedQubits::All as first Operation
+        if self.first_operation_involving_qubit.is_empty()
+            && self.last_operation_involving_qubit.is_empty()
+        {
+            self.first_operation_involving_qubit.insert(0, node);
+            self.last_operation_involving_qubit.insert(0, node);
+        } else {
+            // The new node in the graph must point to the last first layer nodes and
+            //  first_operation_involving_qubit is updated
+            let mut temp_map: HashMap<usize, NodeIndex<usize>> =
+                HashMap::with_capacity(self.first_operation_involving_qubit.capacity());
+            for (&qubit, &old_node) in &self.first_operation_involving_qubit {
+                self.graph.update_edge(node.into(), old_node.into(), ());
+                temp_map.insert(qubit, node);
+            }
+            self.first_operation_involving_qubit = temp_map;
         }
-        self.first_operation_involving_qubit = temp_map;
     }
 
     /// Given an Operation and its node, checks that it is a Definition and populates the
@@ -561,7 +577,6 @@ mod tests {
         Operation::from(PauliX::new(0)),
         Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None,))
     )]
-    /* 
     #[test_case(
         Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None,)),
         Operation::from(PauliX::new(0))
@@ -570,11 +585,14 @@ mod tests {
         Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None,)),
         Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None,))
     )]
-    */
     fn check_edge(operation1: Operation, operation2: Operation) {
         let mut dag: CircuitDag =
             CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
-        dag.add_to_back(Operation::from(DefinitionBit::new("ro".to_string(), 4, false)));
+        dag.add_to_back(Operation::from(DefinitionBit::new(
+            "ro".to_string(),
+            4,
+            false,
+        )));
 
         let ind1 = dag.add_to_back(operation1.clone());
         let ind2 = dag.add_to_back(operation2.clone());
@@ -633,9 +651,6 @@ mod tests {
         assert!(dag.last_operation_involving_qubit().is_empty());
 
         dag.add_to_front(operation.clone());
-
-        assert!(dag.first_operation_involving_qubit().is_empty());
-        assert!(dag.last_operation_involving_qubit().is_empty());
 
         let back = dag.add_to_back(Operation::from(PauliX::new(0)));
 
