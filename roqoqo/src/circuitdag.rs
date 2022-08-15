@@ -14,13 +14,14 @@ use std::collections::{HashMap, HashSet};
 
 use crate::operations::*;
 use crate::Circuit;
+use crate::RoqoqoError;
 
+use petgraph::Direction::Outgoing;
 use petgraph::adj::NodeIndex;
 use petgraph::algo::toposort;
 use petgraph::graph::Graph;
 use petgraph::visit::Dfs;
 use petgraph::Directed;
-use petgraph::Direction::Incoming;
 
 static DEFAULT_NODE_NUMBER: usize = 100;
 static DEFAULT_EDGE_NUMBER: usize = 300;
@@ -512,10 +513,22 @@ impl CircuitDag {
     /// * `to_be_executed` - NodeIndex of the operation that should be executed next.
     pub fn new_front_layer(
         &self,
-        already_executed: &[NodeIndex],
-        current_front_layer: &[NodeIndex],
-        to_be_executed: &NodeIndex,
-    ) -> () {
+        already_executed: &[NodeIndex<usize>],
+        current_front_layer: &[NodeIndex<usize>],
+        to_be_executed: &NodeIndex<usize>,
+    ) -> Result<Vec<NodeIndex<usize>>, RoqoqoError> {
+        if !current_front_layer.contains(to_be_executed) {
+            Err(RoqoqoError::GenericError {
+                msg: "The Operation to be executed is not in the current front layer.".to_string(),
+            })
+        } else {
+            while let Some(nxt) = self.graph.neighbors_directed((*to_be_executed).into(), Outgoing).next() {
+                if self.execution_blocked(already_executed.into(), &nxt.index()).is_empty() {
+                    // TODO: current_front_layer
+                }
+            }
+            Ok(current_front_layer.to_vec())
+        }
     }
 
     /// Returns a reference to the graph in CircuitDag.
