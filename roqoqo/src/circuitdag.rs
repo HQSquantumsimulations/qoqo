@@ -482,7 +482,7 @@ impl CircuitDag {
     ///
     /// # Returns:
     ///
-    /// * `Vec<NodeIndex<usize>>` - Vector containing the blocking elements.
+    /// * `Vec<NodeIndex<usize>>` - Vector containing the sorted blocking elements.
     pub fn execution_blocked(
         &self,
         already_executed: &[NodeIndex<usize>],
@@ -492,6 +492,7 @@ impl CircuitDag {
         let mut rev_graph: Graph<Operation, (), Directed, usize> = self.graph.clone();
         rev_graph.reverse();
         let mut dfs = Dfs::new(&rev_graph, (*to_be_executed).into());
+        dfs.next(&rev_graph);
 
         // Perform a DFS on the reversed graph starting from to_be_executed,
         //  pushing on blocking_elements the nodes not contained in already_executed
@@ -501,6 +502,7 @@ impl CircuitDag {
             }
         }
 
+        blocking_elements.sort();
         blocking_elements
     }
 
@@ -519,6 +521,8 @@ impl CircuitDag {
         current_front_layer: &[NodeIndex<usize>],
         to_be_executed: &NodeIndex<usize>,
     ) -> Result<Vec<NodeIndex<usize>>, RoqoqoError> {
+        // Raise an error if the node to be executed is not in the current
+        //  front layer
         if !current_front_layer.contains(to_be_executed) {
             Err(RoqoqoError::GenericError {
                 msg: "The Operation to be executed is not in the current front layer.".to_string(),
@@ -526,20 +530,34 @@ impl CircuitDag {
         } else {
             let mut current_front_layer = current_front_layer.to_vec();
             let mut added: bool = false;
-            while let Some(nxt) = self
+            let mut neighbor_iter = self
                 .graph
-                .neighbors_directed((*to_be_executed).into(), Outgoing)
-                .next()
-            {
+                .neighbors_directed((*to_be_executed).into(), Outgoing);
+
+            // Boolean needed for end of graph case
+            let mut check_emptiness = neighbor_iter.clone();
+            let mut empty:bool = false;
+            if let None = check_emptiness.next() {
+                empty = true;
+            }
+
+            // Already_executed vector extension for execution_blocked() compatibility
+            let mut extended_a_e: Vec<NodeIndex<usize>> = Vec::from(already_executed);
+            extended_a_e.push(*to_be_executed);
+            // Cycle through each neighbor of to_be_executed
+            while let Some(nxt) = neighbor_iter.next() {
+                // Push the neighbor into the current front layer if it is not execution blocked
+                //  by any other node
                 if self
-                    .execution_blocked(already_executed.into(), &nxt.index())
+                    .execution_blocked(&extended_a_e, &nxt.index())
                     .is_empty()
                 {
                     current_front_layer.push(nxt.index());
                     added = true;
                 }
             }
-            if added {
+            // Remove to_be_executed from the current front layer
+            if added || empty {
                 current_front_layer.remove(
                     current_front_layer
                         .iter()

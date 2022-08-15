@@ -12,7 +12,7 @@
 
 use std::collections::HashSet;
 
-use roqoqo::operations::*;
+use roqoqo::{operations::*, RoqoqoError};
 use roqoqo::{Circuit, CircuitDag};
 
 use test_case::test_case;
@@ -503,4 +503,49 @@ fn test_get(operation: Operation) {
     let node = dag.add_to_back(operation.clone());
 
     assert_eq!(dag.get(node.unwrap()).unwrap(), &operation);
+}
+
+#[test]
+fn test_execution_blocked() {
+    let mut dag: CircuitDag = CircuitDag::new();
+
+    let a = dag.add_to_back(Operation::from(PauliX::new(0))).unwrap();
+    let b = dag.add_to_back(Operation::from(PauliZ::new(0))).unwrap();
+    let c = dag.add_to_back(Operation::from(PauliY::new(1))).unwrap();
+    let d = dag.add_to_back(Operation::from(CNOT::new(0, 1))).unwrap();
+    let e = dag
+        .add_to_back(Operation::from(ControlledPauliZ::new(1, 2)))
+        .unwrap();
+
+    assert!(dag.execution_blocked(&[a, b, c], &d).is_empty());
+    assert_eq!(dag.execution_blocked(&[a, b, c], &e), vec![d]);
+    assert!(dag.execution_blocked(&[a, b, c, d], &e).is_empty());
+    assert!(dag.execution_blocked(&[d, e], &a).is_empty());
+    assert_eq!(dag.execution_blocked(&[d, e], &b), vec![a]);
+    assert_eq!(dag.execution_blocked(&[], &e), vec![a, b, c, d]);
+}
+
+#[test]
+fn test_new_front_layer() {
+    let mut dag: CircuitDag = CircuitDag::new();
+
+    let a = dag.add_to_back(Operation::from(PauliX::new(0))).unwrap();
+    let b = dag.add_to_back(Operation::from(PauliZ::new(0))).unwrap();
+    let c = dag.add_to_back(Operation::from(PauliY::new(1))).unwrap();
+    let d = dag.add_to_back(Operation::from(CNOT::new(0, 1))).unwrap();
+    let e = dag
+        .add_to_back(Operation::from(ControlledPauliZ::new(1, 2)))
+        .unwrap();
+
+    assert_eq!(
+        dag.new_front_layer(&[a, b, c], &[d], &e),
+        Err(RoqoqoError::GenericError {
+            msg: "The Operation to be executed is not in the current front layer.".to_string(),
+        })
+    );
+    assert_eq!(dag.new_front_layer(&[], &[a], &a), Ok(vec![b]));
+    assert_eq!(dag.new_front_layer(&[a,c], &[b], &b), Ok(vec![d]));
+    assert_eq!(dag.new_front_layer(&[a], &[b], &b), Ok(vec![b]));
+    assert_eq!(dag.new_front_layer(&[a,b,c], &[d], &d), Ok(vec![e]));
+    assert_eq!(dag.new_front_layer(&[a,b,c,d], &[e], &e), Ok(vec![]));
 }
