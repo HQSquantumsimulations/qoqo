@@ -1,0 +1,30 @@
+qoqo.operations.PragmaSetNumberOfMeasurements
+=============================================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: PragmaSetNumberOfMeasurements
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PragmaSetNumberOfMeasurements.__init__
+      ~PragmaSetNumberOfMeasurements.hqslang
+      ~PragmaSetNumberOfMeasurements.involved_qubits
+      ~PragmaSetNumberOfMeasurements.is_parametrized
+      ~PragmaSetNumberOfMeasurements.number_measurements
+      ~PragmaSetNumberOfMeasurements.readout
+      ~PragmaSetNumberOfMeasurements.remap_qubits
+      ~PragmaSetNumberOfMeasurements.substitute_parameters
+      ~PragmaSetNumberOfMeasurements.tags
+   
+   
+
+   
+   
+   

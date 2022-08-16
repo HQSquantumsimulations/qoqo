@@ -1,0 +1,31 @@
+qoqo.operations.DefinitionUsize
+===============================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: DefinitionUsize
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~DefinitionUsize.__init__
+      ~DefinitionUsize.hqslang
+      ~DefinitionUsize.involved_qubits
+      ~DefinitionUsize.is_output
+      ~DefinitionUsize.is_parametrized
+      ~DefinitionUsize.length
+      ~DefinitionUsize.name
+      ~DefinitionUsize.remap_qubits
+      ~DefinitionUsize.substitute_parameters
+      ~DefinitionUsize.tags
+   
+   
+
+   
+   
+   

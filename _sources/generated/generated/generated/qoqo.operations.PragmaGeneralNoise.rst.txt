@@ -1,0 +1,32 @@
+qoqo.operations.PragmaGeneralNoise
+==================================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: PragmaGeneralNoise
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PragmaGeneralNoise.__init__
+      ~PragmaGeneralNoise.gate_time
+      ~PragmaGeneralNoise.hqslang
+      ~PragmaGeneralNoise.involved_qubits
+      ~PragmaGeneralNoise.is_parametrized
+      ~PragmaGeneralNoise.qubit
+      ~PragmaGeneralNoise.rates
+      ~PragmaGeneralNoise.remap_qubits
+      ~PragmaGeneralNoise.substitute_parameters
+      ~PragmaGeneralNoise.superoperator
+      ~PragmaGeneralNoise.tags
+   
+   
+
+   
+   
+   

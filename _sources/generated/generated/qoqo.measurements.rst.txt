@@ -1,0 +1,35 @@
+qoqo.measurements
+=================
+
+.. automodule:: qoqo.measurements
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Cheated
+      CheatedInput
+      CheatedPauliZProduct
+      CheatedPauliZProductInput
+      ClassicalRegister
+      PauliZProduct
+      PauliZProductInput
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,38 @@
+qoqo.operations.RotateX
+=======================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: RotateX
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~RotateX.__init__
+      ~RotateX.alpha_i
+      ~RotateX.alpha_r
+      ~RotateX.beta_i
+      ~RotateX.beta_r
+      ~RotateX.global_phase
+      ~RotateX.hqslang
+      ~RotateX.involved_qubits
+      ~RotateX.is_parametrized
+      ~RotateX.mul
+      ~RotateX.powercf
+      ~RotateX.qubit
+      ~RotateX.remap_qubits
+      ~RotateX.substitute_parameters
+      ~RotateX.tags
+      ~RotateX.theta
+      ~RotateX.unitary_matrix
+   
+   
+
+   
+   
+   

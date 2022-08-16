@@ -1,0 +1,31 @@
+qoqo.operations.ControlledPauliZ
+================================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: ControlledPauliZ
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ControlledPauliZ.__init__
+      ~ControlledPauliZ.control
+      ~ControlledPauliZ.hqslang
+      ~ControlledPauliZ.involved_qubits
+      ~ControlledPauliZ.is_parametrized
+      ~ControlledPauliZ.remap_qubits
+      ~ControlledPauliZ.substitute_parameters
+      ~ControlledPauliZ.tags
+      ~ControlledPauliZ.target
+      ~ControlledPauliZ.unitary_matrix
+   
+   
+
+   
+   
+   

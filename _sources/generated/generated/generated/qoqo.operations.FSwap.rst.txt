@@ -1,0 +1,31 @@
+qoqo.operations.FSwap
+=====================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: FSwap
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~FSwap.__init__
+      ~FSwap.control
+      ~FSwap.hqslang
+      ~FSwap.involved_qubits
+      ~FSwap.is_parametrized
+      ~FSwap.remap_qubits
+      ~FSwap.substitute_parameters
+      ~FSwap.tags
+      ~FSwap.target
+      ~FSwap.unitary_matrix
+   
+   
+
+   
+   
+   

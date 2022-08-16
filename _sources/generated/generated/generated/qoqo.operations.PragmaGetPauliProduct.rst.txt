@@ -1,0 +1,31 @@
+qoqo.operations.PragmaGetPauliProduct
+=====================================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: PragmaGetPauliProduct
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PragmaGetPauliProduct.__init__
+      ~PragmaGetPauliProduct.circuit
+      ~PragmaGetPauliProduct.hqslang
+      ~PragmaGetPauliProduct.involved_qubits
+      ~PragmaGetPauliProduct.is_parametrized
+      ~PragmaGetPauliProduct.qubit_paulis
+      ~PragmaGetPauliProduct.readout
+      ~PragmaGetPauliProduct.remap_qubits
+      ~PragmaGetPauliProduct.substitute_parameters
+      ~PragmaGetPauliProduct.tags
+   
+   
+
+   
+   
+   

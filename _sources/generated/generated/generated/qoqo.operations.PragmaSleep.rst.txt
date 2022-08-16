@@ -1,0 +1,30 @@
+qoqo.operations.PragmaSleep
+===========================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: PragmaSleep
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PragmaSleep.__init__
+      ~PragmaSleep.hqslang
+      ~PragmaSleep.involved_qubits
+      ~PragmaSleep.is_parametrized
+      ~PragmaSleep.qubits
+      ~PragmaSleep.remap_qubits
+      ~PragmaSleep.sleep_time
+      ~PragmaSleep.substitute_parameters
+      ~PragmaSleep.tags
+   
+   
+
+   
+   
+   

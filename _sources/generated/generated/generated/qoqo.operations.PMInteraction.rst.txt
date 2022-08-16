@@ -1,0 +1,32 @@
+qoqo.operations.PMInteraction
+=============================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: PMInteraction
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PMInteraction.__init__
+      ~PMInteraction.control
+      ~PMInteraction.hqslang
+      ~PMInteraction.involved_qubits
+      ~PMInteraction.is_parametrized
+      ~PMInteraction.remap_qubits
+      ~PMInteraction.substitute_parameters
+      ~PMInteraction.t
+      ~PMInteraction.tags
+      ~PMInteraction.target
+      ~PMInteraction.unitary_matrix
+   
+   
+
+   
+   
+   

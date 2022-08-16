@@ -1,0 +1,30 @@
+qoqo.operations.PragmaGetOccupationProbability
+==============================================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: PragmaGetOccupationProbability
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PragmaGetOccupationProbability.__init__
+      ~PragmaGetOccupationProbability.circuit
+      ~PragmaGetOccupationProbability.hqslang
+      ~PragmaGetOccupationProbability.involved_qubits
+      ~PragmaGetOccupationProbability.is_parametrized
+      ~PragmaGetOccupationProbability.readout
+      ~PragmaGetOccupationProbability.remap_qubits
+      ~PragmaGetOccupationProbability.substitute_parameters
+      ~PragmaGetOccupationProbability.tags
+   
+   
+
+   
+   
+   

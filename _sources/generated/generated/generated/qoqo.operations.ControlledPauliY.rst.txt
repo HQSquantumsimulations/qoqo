@@ -1,0 +1,31 @@
+qoqo.operations.ControlledPauliY
+================================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: ControlledPauliY
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ControlledPauliY.__init__
+      ~ControlledPauliY.control
+      ~ControlledPauliY.hqslang
+      ~ControlledPauliY.involved_qubits
+      ~ControlledPauliY.is_parametrized
+      ~ControlledPauliY.remap_qubits
+      ~ControlledPauliY.substitute_parameters
+      ~ControlledPauliY.tags
+      ~ControlledPauliY.target
+      ~ControlledPauliY.unitary_matrix
+   
+   
+
+   
+   
+   

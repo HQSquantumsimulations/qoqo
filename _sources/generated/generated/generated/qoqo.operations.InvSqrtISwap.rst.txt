@@ -1,0 +1,31 @@
+qoqo.operations.InvSqrtISwap
+============================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: InvSqrtISwap
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~InvSqrtISwap.__init__
+      ~InvSqrtISwap.control
+      ~InvSqrtISwap.hqslang
+      ~InvSqrtISwap.involved_qubits
+      ~InvSqrtISwap.is_parametrized
+      ~InvSqrtISwap.remap_qubits
+      ~InvSqrtISwap.substitute_parameters
+      ~InvSqrtISwap.tags
+      ~InvSqrtISwap.target
+      ~InvSqrtISwap.unitary_matrix
+   
+   
+
+   
+   
+   

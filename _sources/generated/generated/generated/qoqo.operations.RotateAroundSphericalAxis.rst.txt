@@ -1,0 +1,40 @@
+qoqo.operations.RotateAroundSphericalAxis
+=========================================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: RotateAroundSphericalAxis
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~RotateAroundSphericalAxis.__init__
+      ~RotateAroundSphericalAxis.alpha_i
+      ~RotateAroundSphericalAxis.alpha_r
+      ~RotateAroundSphericalAxis.beta_i
+      ~RotateAroundSphericalAxis.beta_r
+      ~RotateAroundSphericalAxis.global_phase
+      ~RotateAroundSphericalAxis.hqslang
+      ~RotateAroundSphericalAxis.involved_qubits
+      ~RotateAroundSphericalAxis.is_parametrized
+      ~RotateAroundSphericalAxis.mul
+      ~RotateAroundSphericalAxis.powercf
+      ~RotateAroundSphericalAxis.qubit
+      ~RotateAroundSphericalAxis.remap_qubits
+      ~RotateAroundSphericalAxis.spherical_phi
+      ~RotateAroundSphericalAxis.spherical_theta
+      ~RotateAroundSphericalAxis.substitute_parameters
+      ~RotateAroundSphericalAxis.tags
+      ~RotateAroundSphericalAxis.theta
+      ~RotateAroundSphericalAxis.unitary_matrix
+   
+   
+
+   
+   
+   

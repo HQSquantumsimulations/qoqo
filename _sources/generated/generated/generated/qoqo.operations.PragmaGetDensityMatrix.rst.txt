@@ -1,0 +1,30 @@
+qoqo.operations.PragmaGetDensityMatrix
+======================================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: PragmaGetDensityMatrix
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PragmaGetDensityMatrix.__init__
+      ~PragmaGetDensityMatrix.circuit
+      ~PragmaGetDensityMatrix.hqslang
+      ~PragmaGetDensityMatrix.involved_qubits
+      ~PragmaGetDensityMatrix.is_parametrized
+      ~PragmaGetDensityMatrix.readout
+      ~PragmaGetDensityMatrix.remap_qubits
+      ~PragmaGetDensityMatrix.substitute_parameters
+      ~PragmaGetDensityMatrix.tags
+   
+   
+
+   
+   
+   

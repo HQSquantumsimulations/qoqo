@@ -1,0 +1,29 @@
+qoqo.operations.PragmaGlobalPhase
+=================================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: PragmaGlobalPhase
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PragmaGlobalPhase.__init__
+      ~PragmaGlobalPhase.hqslang
+      ~PragmaGlobalPhase.involved_qubits
+      ~PragmaGlobalPhase.is_parametrized
+      ~PragmaGlobalPhase.phase
+      ~PragmaGlobalPhase.remap_qubits
+      ~PragmaGlobalPhase.substitute_parameters
+      ~PragmaGlobalPhase.tags
+   
+   
+
+   
+   
+   

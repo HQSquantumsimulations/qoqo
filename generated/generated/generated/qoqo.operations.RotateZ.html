@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="English" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qoqo.operations.RotateZ &mdash; qoqo 0.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="qoqo.operations.RotateY" href="qoqo.operations.RotateY.html" />
+    <link rel="prev" title="qoqo.operations.SingleQubitGate" href="qoqo.operations.SingleQubitGate.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> qoqo
+          </a>
+              <div class="version">
+                0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../modules.html">qoqo documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../qoqo.html">qoqo</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.Circuit.html">qoqo.Circuit</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../qoqo.operations.html">qoqo.operations</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.SingleQubitGate.html">qoqo.operations.SingleQubitGate</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">qoqo.operations.RotateZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.RotateY.html">qoqo.operations.RotateY</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.RotateX.html">qoqo.operations.RotateX</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.RotateAroundSphericalAxis.html">qoqo.operations.RotateAroundSphericalAxis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PauliZ.html">qoqo.operations.PauliZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PauliY.html">qoqo.operations.PauliY</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PauliX.html">qoqo.operations.PauliX</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.SqrtPauliX.html">qoqo.operations.SqrtPauliX</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.InvSqrtPauliX.html">qoqo.operations.InvSqrtPauliX</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.Hadamard.html">qoqo.operations.Hadamard</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.TGate.html">qoqo.operations.TGate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.SGate.html">qoqo.operations.SGate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.DefinitionUsize.html">qoqo.operations.DefinitionUsize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.DefinitionBit.html">qoqo.operations.DefinitionBit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.DefinitionFloat.html">qoqo.operations.DefinitionFloat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.DefinitionComplex.html">qoqo.operations.DefinitionComplex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.InputSymbolic.html">qoqo.operations.InputSymbolic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.MeasureQubit.html">qoqo.operations.MeasureQubit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaGetStateVector.html">qoqo.operations.PragmaGetStateVector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaGetDensityMatrix.html">qoqo.operations.PragmaGetDensityMatrix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaGetOccupationProbability.html">qoqo.operations.PragmaGetOccupationProbability</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaGetPauliProduct.html">qoqo.operations.PragmaGetPauliProduct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaRepeatedMeasurement.html">qoqo.operations.PragmaRepeatedMeasurement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaSetNumberOfMeasurements.html">qoqo.operations.PragmaSetNumberOfMeasurements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaSetStateVector.html">qoqo.operations.PragmaSetStateVector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaSetDensityMatrix.html">qoqo.operations.PragmaSetDensityMatrix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaRepeatGate.html">qoqo.operations.PragmaRepeatGate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaOverrotation.html">qoqo.operations.PragmaOverrotation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaBoostNoise.html">qoqo.operations.PragmaBoostNoise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaStopParallelBlock.html">qoqo.operations.PragmaStopParallelBlock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaGlobalPhase.html">qoqo.operations.PragmaGlobalPhase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaSleep.html">qoqo.operations.PragmaSleep</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaActiveReset.html">qoqo.operations.PragmaActiveReset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaStopDecompositionBlock.html">qoqo.operations.PragmaStopDecompositionBlock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaDamping.html">qoqo.operations.PragmaDamping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaDepolarising.html">qoqo.operations.PragmaDepolarising</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaDephasing.html">qoqo.operations.PragmaDephasing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaRandomNoise.html">qoqo.operations.PragmaRandomNoise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaGeneralNoise.html">qoqo.operations.PragmaGeneralNoise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaConditional.html">qoqo.operations.PragmaConditional</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.CNOT.html">qoqo.operations.CNOT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.SWAP.html">qoqo.operations.SWAP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.FSwap.html">qoqo.operations.FSwap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.ISwap.html">qoqo.operations.ISwap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.SqrtISwap.html">qoqo.operations.SqrtISwap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.InvSqrtISwap.html">qoqo.operations.InvSqrtISwap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.XY.html">qoqo.operations.XY</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.ControlledPhaseShift.html">qoqo.operations.ControlledPhaseShift</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.ControlledPauliY.html">qoqo.operations.ControlledPauliY</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.ControlledPauliZ.html">qoqo.operations.ControlledPauliZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.MolmerSorensenXX.html">qoqo.operations.MolmerSorensenXX</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.VariableMSXX.html">qoqo.operations.VariableMSXX</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.GivensRotation.html">qoqo.operations.GivensRotation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.GivensRotationLittleEndian.html">qoqo.operations.GivensRotationLittleEndian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.Qsim.html">qoqo.operations.Qsim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.Fsim.html">qoqo.operations.Fsim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.SpinInteraction.html">qoqo.operations.SpinInteraction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.Bogoliubov.html">qoqo.operations.Bogoliubov</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PMInteraction.html">qoqo.operations.PMInteraction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.ComplexPMInteraction.html">qoqo.operations.ComplexPMInteraction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.MultiQubitMS.html">qoqo.operations.MultiQubitMS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.measurements.html">qoqo.measurements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.QuantumProgram.html">qoqo.QuantumProgram</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">qoqo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../modules.html">qoqo documentation</a> &raquo;</li>
+          <li><a href="../../qoqo.html">qoqo</a> &raquo;</li>
+          <li><a href="../qoqo.operations.html">qoqo.operations</a> &raquo;</li>
+      <li>qoqo.operations.RotateZ</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/generated/generated/generated/qoqo.operations.RotateZ.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="qoqo-operations-rotatez">
+<h1>qoqo.operations.RotateZ<a class="headerlink" href="#qoqo-operations-rotatez" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.operations.</span></span><span class="sig-name descname"><span class="pre">RotateZ</span></span><a class="headerlink" href="#qoqo.operations.RotateZ" title="Permalink to this definition"></a></dt>
+<dd><p>The ZPower gate <span class="math notranslate nohighlight">\(e^{-i \frac{\theta}{2} \sigma^z}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U = \begin{pmatrix}
+    \cos(\frac{\theta}{2}) &amp; 0 \\\\
+    0 &amp; \cos(\frac{\theta}{2})
+    \end{pmatrix}
+    + \begin{pmatrix}
+    - i \sin(\frac{\theta}{2}) &amp; 0 \\\\
+    0 &amp; i \sin(\frac{\theta}{2})
+    \end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qubit</strong> (<em>int</em>) -- The qubit the unitary gate is applied to.</p></li>
+<li><p><strong>theta</strong> (<em>CalculatorFloat</em>) -- The angle <span class="math notranslate nohighlight">\(\theta\)</span> of the rotation.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.RotateZ.__init__" title="qoqo.operations.RotateZ.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.RotateZ.alpha_i" title="qoqo.operations.RotateZ.alpha_i"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alpha_i</span></code></a></p></td>
+<td><p>Return the property alpha_i <span class="math notranslate nohighlight">\(\alpha_i\)</span> of a unitary gate acting on one qubit</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.RotateZ.alpha_r" title="qoqo.operations.RotateZ.alpha_r"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alpha_r</span></code></a></p></td>
+<td><p>Return the property alpha_r <span class="math notranslate nohighlight">\(\alpha_r\)</span> of a unitary gate acting on one qubit</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.RotateZ.beta_i" title="qoqo.operations.RotateZ.beta_i"><code class="xref py py-obj docutils literal notranslate"><span class="pre">beta_i</span></code></a></p></td>
+<td><p>Returns the property beta_i <span class="math notranslate nohighlight">\(\beta_i\)</span> of a unitary gate acting on one qubit</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.RotateZ.beta_r" title="qoqo.operations.RotateZ.beta_r"><code class="xref py py-obj docutils literal notranslate"><span class="pre">beta_r</span></code></a></p></td>
+<td><p>Return the property beta_r <span class="math notranslate nohighlight">\(\beta_r\)</span> of a unitary gate acting on one qubit</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.RotateZ.global_phase" title="qoqo.operations.RotateZ.global_phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">global_phase</span></code></a></p></td>
+<td><p>Return the global phase <span class="math notranslate nohighlight">\(g\)</span> of a unitary gate acting on one qubit</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.RotateZ.hqslang" title="qoqo.operations.RotateZ.hqslang"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hqslang</span></code></a></p></td>
+<td><p>Returns hqslang name of Operation</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.RotateZ.involved_qubits" title="qoqo.operations.RotateZ.involved_qubits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">involved_qubits</span></code></a></p></td>
+<td><p>List all involved Qubits</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.RotateZ.is_parametrized" title="qoqo.operations.RotateZ.is_parametrized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_parametrized</span></code></a></p></td>
+<td><p>Returns true if operation contains symbolic parameters</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.RotateZ.mul" title="qoqo.operations.RotateZ.mul"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mul</span></code></a></p></td>
+<td><p>Multiplies two compatible operations implementing OperateSingleQubitGate.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.RotateZ.powercf" title="qoqo.operations.RotateZ.powercf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">powercf</span></code></a></p></td>
+<td><p>Returns Rotated gate raised to power</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.RotateZ.qubit" title="qoqo.operations.RotateZ.qubit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">qubit</span></code></a></p></td>
+<td><p>Return the qubit the operation acts on</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.RotateZ.remap_qubits" title="qoqo.operations.RotateZ.remap_qubits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remap_qubits</span></code></a></p></td>
+<td><p>Remap qubits</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.RotateZ.substitute_parameters" title="qoqo.operations.RotateZ.substitute_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">substitute_parameters</span></code></a></p></td>
+<td><p>Substitutes internal symbolic parameters with float values</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.RotateZ.tags" title="qoqo.operations.RotateZ.tags"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tags</span></code></a></p></td>
+<td><p>Returns tags identifying the Operation</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.RotateZ.theta" title="qoqo.operations.RotateZ.theta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">theta</span></code></a></p></td>
+<td><p>Returns angle of rotation</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.RotateZ.unitary_matrix" title="qoqo.operations.RotateZ.unitary_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unitary_matrix</span></code></a></p></td>
+<td><p>Return unitary matrix of gate.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.alpha_i">
+<span class="sig-name descname"><span class="pre">alpha_i</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.alpha_i" title="Permalink to this definition"></a></dt>
+<dd><p>Return the property alpha_i <span class="math notranslate nohighlight">\(\alpha_i\)</span> of a unitary gate acting on one qubit</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U =e^{i \cdot g}\begin{pmatrix}
+\alpha_r+i \alpha_i &amp; -\beta_r+i \beta_i \\\\
+\beta_r+i \beta_i &amp; \alpha_r-i\alpha_i
+\end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>CalculatorFloat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.alpha_r">
+<span class="sig-name descname"><span class="pre">alpha_r</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.alpha_r" title="Permalink to this definition"></a></dt>
+<dd><p>Return the property alpha_r <span class="math notranslate nohighlight">\(\alpha_r\)</span> of a unitary gate acting on one qubit</p>
+<p>Here alpha_r is defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U =e^{i \cdot g}\begin{pmatrix}
+\alpha_r+i \alpha_i &amp; -\beta_r+i \beta_i \\\\
+\beta_r+i \beta_i &amp; \alpha_r-i\alpha_i
+\end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>CalculatorFloat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.beta_i">
+<span class="sig-name descname"><span class="pre">beta_i</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.beta_i" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the property beta_i <span class="math notranslate nohighlight">\(\beta_i\)</span> of a unitary gate acting on one qubit</p>
+<p>Here beta_i is defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U =e^{i \cdot g}\begin{pmatrix}
+\alpha_r+i \alpha_i &amp; -\beta_r+i \beta_i \\\\
+\beta_r+i \beta_i &amp; \alpha_r-i\alpha_i
+\end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>CalculatorFloat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.beta_r">
+<span class="sig-name descname"><span class="pre">beta_r</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.beta_r" title="Permalink to this definition"></a></dt>
+<dd><p>Return the property beta_r <span class="math notranslate nohighlight">\(\beta_r\)</span> of a unitary gate acting on one qubit</p>
+<p>Here beta_r is defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U =e^{i \cdot g}\begin{pmatrix}
+\alpha_r+i \alpha_i &amp; -\beta_r+i \beta_i \\\\
+\beta_r+i \beta_i &amp; \alpha_r-i\alpha_i
+\end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>CalculatorFloat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.global_phase">
+<span class="sig-name descname"><span class="pre">global_phase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.global_phase" title="Permalink to this definition"></a></dt>
+<dd><p>Return the global phase <span class="math notranslate nohighlight">\(g\)</span> of a unitary gate acting on one qubit</p>
+<p>Here global_phase is defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U =e^{i \cdot g}\begin{pmatrix}
+\alpha_r+i \alpha_i &amp; -\beta_r+i \beta_i \\\\
+\beta_r+i \beta_i &amp; \alpha_r-i\alpha_i
+\end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>CalculatorFloat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.hqslang">
+<span class="sig-name descname"><span class="pre">hqslang</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.hqslang" title="Permalink to this definition"></a></dt>
+<dd><p>Returns hqslang name of Operation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.involved_qubits">
+<span class="sig-name descname"><span class="pre">involved_qubits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.involved_qubits" title="Permalink to this definition"></a></dt>
+<dd><p>List all involved Qubits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The involved qubits as a set or 'ALL' if all qubits are involved</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Union[set[int], str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.is_parametrized">
+<span class="sig-name descname"><span class="pre">is_parametrized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.is_parametrized" title="Permalink to this definition"></a></dt>
+<dd><p>Returns true if operation contains symbolic parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.mul">
+<span class="sig-name descname"><span class="pre">mul</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.mul" title="Permalink to this definition"></a></dt>
+<dd><p>Multiplies two compatible operations implementing OperateSingleQubitGate.</p>
+<p>Does not consume the two operations being multiplied.
+Only Operations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>PyResult</p>
+</dd>
+</dl>
+<p>Example:
+<a href="#id1"><span class="problematic" id="id2">``</span></a>`
+from qoqo.operations import RotateZ, RotateX</p>
+<p>gate1 =  RotateZ(qubit=0, theta=1)
+gate2 = RotateX(qubit=0, theta=1)
+multiplied = gate1.mul(gate2)
+print(&quot;Multiplied gate: &quot;, multiplied)
+<a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.powercf">
+<span class="sig-name descname"><span class="pre">powercf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.powercf" title="Permalink to this definition"></a></dt>
+<dd><p>Returns Rotated gate raised to power</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>power</strong> (<em>CalculatorFloat</em>) -- exponent of the power operation.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>gate raised to the power of <cite>power</cite></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.qubit">
+<span class="sig-name descname"><span class="pre">qubit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.qubit" title="Permalink to this definition"></a></dt>
+<dd><p>Return the qubit the operation acts on</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.remap_qubits">
+<span class="sig-name descname"><span class="pre">remap_qubits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.remap_qubits" title="Permalink to this definition"></a></dt>
+<dd><p>Remap qubits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mapping</strong> (<em>dict</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) -- The mapping</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The operation with the remapped qubits</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Operation</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> -- Qubit remapping failed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.substitute_parameters">
+<span class="sig-name descname"><span class="pre">substitute_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.substitute_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>Substitutes internal symbolic parameters with float values</p>
+<p>Only available when all symbolic expressions can be evaluated to float with the
+provided parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>substitution_parameters</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) -- The substituted free parameters</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The operation with the parameters substituted</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Operation</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> -- Parameter Substitution failed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.tags">
+<span class="sig-name descname"><span class="pre">tags</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.tags" title="Permalink to this definition"></a></dt>
+<dd><p>Returns tags identifying the Operation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The tags identifying the operation</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.theta">
+<span class="sig-name descname"><span class="pre">theta</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.theta" title="Permalink to this definition"></a></dt>
+<dd><p>Returns angle of rotation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.RotateZ.unitary_matrix">
+<span class="sig-name descname"><span class="pre">unitary_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.RotateZ.unitary_matrix" title="Permalink to this definition"></a></dt>
+<dd><p>Return unitary matrix of gate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="qoqo.operations.SingleQubitGate.html" class="btn btn-neutral float-left" title="qoqo.operations.SingleQubitGate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qoqo.operations.RotateY.html" class="btn btn-neutral float-right" title="qoqo.operations.RotateY" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, HQS Quantum Simulations GmbH.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

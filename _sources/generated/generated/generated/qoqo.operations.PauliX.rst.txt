@@ -1,0 +1,36 @@
+qoqo.operations.PauliX
+======================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: PauliX
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PauliX.__init__
+      ~PauliX.alpha_i
+      ~PauliX.alpha_r
+      ~PauliX.beta_i
+      ~PauliX.beta_r
+      ~PauliX.global_phase
+      ~PauliX.hqslang
+      ~PauliX.involved_qubits
+      ~PauliX.is_parametrized
+      ~PauliX.mul
+      ~PauliX.qubit
+      ~PauliX.remap_qubits
+      ~PauliX.substitute_parameters
+      ~PauliX.tags
+      ~PauliX.unitary_matrix
+   
+   
+
+   
+   
+   

@@ -1,0 +1,36 @@
+qoqo.operations.SqrtPauliX
+==========================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: SqrtPauliX
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SqrtPauliX.__init__
+      ~SqrtPauliX.alpha_i
+      ~SqrtPauliX.alpha_r
+      ~SqrtPauliX.beta_i
+      ~SqrtPauliX.beta_r
+      ~SqrtPauliX.global_phase
+      ~SqrtPauliX.hqslang
+      ~SqrtPauliX.involved_qubits
+      ~SqrtPauliX.is_parametrized
+      ~SqrtPauliX.mul
+      ~SqrtPauliX.qubit
+      ~SqrtPauliX.remap_qubits
+      ~SqrtPauliX.substitute_parameters
+      ~SqrtPauliX.tags
+      ~SqrtPauliX.unitary_matrix
+   
+   
+
+   
+   
+   

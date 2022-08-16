@@ -1,0 +1,36 @@
+qoqo.operations.TGate
+=====================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: TGate
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~TGate.__init__
+      ~TGate.alpha_i
+      ~TGate.alpha_r
+      ~TGate.beta_i
+      ~TGate.beta_r
+      ~TGate.global_phase
+      ~TGate.hqslang
+      ~TGate.involved_qubits
+      ~TGate.is_parametrized
+      ~TGate.mul
+      ~TGate.qubit
+      ~TGate.remap_qubits
+      ~TGate.substitute_parameters
+      ~TGate.tags
+      ~TGate.unitary_matrix
+   
+   
+
+   
+   
+   

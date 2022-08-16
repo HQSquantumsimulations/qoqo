@@ -1,0 +1,36 @@
+qoqo.operations.SingleQubitGate
+===============================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: SingleQubitGate
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SingleQubitGate.__init__
+      ~SingleQubitGate.alpha_i
+      ~SingleQubitGate.alpha_r
+      ~SingleQubitGate.beta_i
+      ~SingleQubitGate.beta_r
+      ~SingleQubitGate.global_phase
+      ~SingleQubitGate.hqslang
+      ~SingleQubitGate.involved_qubits
+      ~SingleQubitGate.is_parametrized
+      ~SingleQubitGate.mul
+      ~SingleQubitGate.qubit
+      ~SingleQubitGate.remap_qubits
+      ~SingleQubitGate.substitute_parameters
+      ~SingleQubitGate.tags
+      ~SingleQubitGate.unitary_matrix
+   
+   
+
+   
+   
+   

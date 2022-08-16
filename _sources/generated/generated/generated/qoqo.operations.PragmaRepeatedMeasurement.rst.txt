@@ -1,0 +1,31 @@
+qoqo.operations.PragmaRepeatedMeasurement
+=========================================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: PragmaRepeatedMeasurement
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PragmaRepeatedMeasurement.__init__
+      ~PragmaRepeatedMeasurement.hqslang
+      ~PragmaRepeatedMeasurement.involved_qubits
+      ~PragmaRepeatedMeasurement.is_parametrized
+      ~PragmaRepeatedMeasurement.number_measurements
+      ~PragmaRepeatedMeasurement.qubit_mapping
+      ~PragmaRepeatedMeasurement.readout
+      ~PragmaRepeatedMeasurement.remap_qubits
+      ~PragmaRepeatedMeasurement.substitute_parameters
+      ~PragmaRepeatedMeasurement.tags
+   
+   
+
+   
+   
+   

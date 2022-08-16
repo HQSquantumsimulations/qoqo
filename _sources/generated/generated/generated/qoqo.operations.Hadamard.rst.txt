@@ -1,0 +1,36 @@
+qoqo.operations.Hadamard
+========================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: Hadamard
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Hadamard.__init__
+      ~Hadamard.alpha_i
+      ~Hadamard.alpha_r
+      ~Hadamard.beta_i
+      ~Hadamard.beta_r
+      ~Hadamard.global_phase
+      ~Hadamard.hqslang
+      ~Hadamard.involved_qubits
+      ~Hadamard.is_parametrized
+      ~Hadamard.mul
+      ~Hadamard.qubit
+      ~Hadamard.remap_qubits
+      ~Hadamard.substitute_parameters
+      ~Hadamard.tags
+      ~Hadamard.unitary_matrix
+   
+   
+
+   
+   
+   

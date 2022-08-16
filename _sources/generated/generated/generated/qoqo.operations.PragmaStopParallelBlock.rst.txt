@@ -1,0 +1,30 @@
+qoqo.operations.PragmaStopParallelBlock
+=======================================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: PragmaStopParallelBlock
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PragmaStopParallelBlock.__init__
+      ~PragmaStopParallelBlock.execution_time
+      ~PragmaStopParallelBlock.hqslang
+      ~PragmaStopParallelBlock.involved_qubits
+      ~PragmaStopParallelBlock.is_parametrized
+      ~PragmaStopParallelBlock.qubits
+      ~PragmaStopParallelBlock.remap_qubits
+      ~PragmaStopParallelBlock.substitute_parameters
+      ~PragmaStopParallelBlock.tags
+   
+   
+
+   
+   
+   

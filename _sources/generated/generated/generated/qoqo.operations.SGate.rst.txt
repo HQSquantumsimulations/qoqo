@@ -1,0 +1,36 @@
+qoqo.operations.SGate
+=====================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: SGate
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SGate.__init__
+      ~SGate.alpha_i
+      ~SGate.alpha_r
+      ~SGate.beta_i
+      ~SGate.beta_r
+      ~SGate.global_phase
+      ~SGate.hqslang
+      ~SGate.involved_qubits
+      ~SGate.is_parametrized
+      ~SGate.mul
+      ~SGate.qubit
+      ~SGate.remap_qubits
+      ~SGate.substitute_parameters
+      ~SGate.tags
+      ~SGate.unitary_matrix
+   
+   
+
+   
+   
+   

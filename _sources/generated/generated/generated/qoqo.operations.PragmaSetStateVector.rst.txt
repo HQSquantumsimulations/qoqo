@@ -1,0 +1,29 @@
+qoqo.operations.PragmaSetStateVector
+====================================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: PragmaSetStateVector
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PragmaSetStateVector.__init__
+      ~PragmaSetStateVector.hqslang
+      ~PragmaSetStateVector.involved_qubits
+      ~PragmaSetStateVector.is_parametrized
+      ~PragmaSetStateVector.remap_qubits
+      ~PragmaSetStateVector.statevector
+      ~PragmaSetStateVector.substitute_parameters
+      ~PragmaSetStateVector.tags
+   
+   
+
+   
+   
+   

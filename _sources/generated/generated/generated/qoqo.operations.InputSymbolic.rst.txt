@@ -1,0 +1,30 @@
+qoqo.operations.InputSymbolic
+=============================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: InputSymbolic
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~InputSymbolic.__init__
+      ~InputSymbolic.hqslang
+      ~InputSymbolic.input
+      ~InputSymbolic.involved_qubits
+      ~InputSymbolic.is_parametrized
+      ~InputSymbolic.name
+      ~InputSymbolic.remap_qubits
+      ~InputSymbolic.substitute_parameters
+      ~InputSymbolic.tags
+   
+   
+
+   
+   
+   

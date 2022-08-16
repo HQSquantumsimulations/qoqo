@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="English" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qoqo.operations.PragmaOverrotation &mdash; qoqo 0.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="qoqo.operations.PragmaBoostNoise" href="qoqo.operations.PragmaBoostNoise.html" />
+    <link rel="prev" title="qoqo.operations.PragmaRepeatGate" href="qoqo.operations.PragmaRepeatGate.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> qoqo
+          </a>
+              <div class="version">
+                0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../modules.html">qoqo documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../qoqo.html">qoqo</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.Circuit.html">qoqo.Circuit</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../qoqo.operations.html">qoqo.operations</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.SingleQubitGate.html">qoqo.operations.SingleQubitGate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.RotateZ.html">qoqo.operations.RotateZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.RotateY.html">qoqo.operations.RotateY</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.RotateX.html">qoqo.operations.RotateX</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.RotateAroundSphericalAxis.html">qoqo.operations.RotateAroundSphericalAxis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PauliZ.html">qoqo.operations.PauliZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PauliY.html">qoqo.operations.PauliY</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PauliX.html">qoqo.operations.PauliX</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.SqrtPauliX.html">qoqo.operations.SqrtPauliX</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.InvSqrtPauliX.html">qoqo.operations.InvSqrtPauliX</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.Hadamard.html">qoqo.operations.Hadamard</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.TGate.html">qoqo.operations.TGate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.SGate.html">qoqo.operations.SGate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.DefinitionUsize.html">qoqo.operations.DefinitionUsize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.DefinitionBit.html">qoqo.operations.DefinitionBit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.DefinitionFloat.html">qoqo.operations.DefinitionFloat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.DefinitionComplex.html">qoqo.operations.DefinitionComplex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.InputSymbolic.html">qoqo.operations.InputSymbolic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.MeasureQubit.html">qoqo.operations.MeasureQubit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaGetStateVector.html">qoqo.operations.PragmaGetStateVector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaGetDensityMatrix.html">qoqo.operations.PragmaGetDensityMatrix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaGetOccupationProbability.html">qoqo.operations.PragmaGetOccupationProbability</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaGetPauliProduct.html">qoqo.operations.PragmaGetPauliProduct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaRepeatedMeasurement.html">qoqo.operations.PragmaRepeatedMeasurement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaSetNumberOfMeasurements.html">qoqo.operations.PragmaSetNumberOfMeasurements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaSetStateVector.html">qoqo.operations.PragmaSetStateVector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaSetDensityMatrix.html">qoqo.operations.PragmaSetDensityMatrix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaRepeatGate.html">qoqo.operations.PragmaRepeatGate</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">qoqo.operations.PragmaOverrotation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaBoostNoise.html">qoqo.operations.PragmaBoostNoise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaStopParallelBlock.html">qoqo.operations.PragmaStopParallelBlock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaGlobalPhase.html">qoqo.operations.PragmaGlobalPhase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaSleep.html">qoqo.operations.PragmaSleep</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaActiveReset.html">qoqo.operations.PragmaActiveReset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaStopDecompositionBlock.html">qoqo.operations.PragmaStopDecompositionBlock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaDamping.html">qoqo.operations.PragmaDamping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaDepolarising.html">qoqo.operations.PragmaDepolarising</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaDephasing.html">qoqo.operations.PragmaDephasing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaRandomNoise.html">qoqo.operations.PragmaRandomNoise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaGeneralNoise.html">qoqo.operations.PragmaGeneralNoise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PragmaConditional.html">qoqo.operations.PragmaConditional</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.CNOT.html">qoqo.operations.CNOT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.SWAP.html">qoqo.operations.SWAP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.FSwap.html">qoqo.operations.FSwap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.ISwap.html">qoqo.operations.ISwap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.SqrtISwap.html">qoqo.operations.SqrtISwap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.InvSqrtISwap.html">qoqo.operations.InvSqrtISwap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.XY.html">qoqo.operations.XY</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.ControlledPhaseShift.html">qoqo.operations.ControlledPhaseShift</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.ControlledPauliY.html">qoqo.operations.ControlledPauliY</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.ControlledPauliZ.html">qoqo.operations.ControlledPauliZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.MolmerSorensenXX.html">qoqo.operations.MolmerSorensenXX</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.VariableMSXX.html">qoqo.operations.VariableMSXX</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.GivensRotation.html">qoqo.operations.GivensRotation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.GivensRotationLittleEndian.html">qoqo.operations.GivensRotationLittleEndian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.Qsim.html">qoqo.operations.Qsim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.Fsim.html">qoqo.operations.Fsim</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.SpinInteraction.html">qoqo.operations.SpinInteraction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.Bogoliubov.html">qoqo.operations.Bogoliubov</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.PMInteraction.html">qoqo.operations.PMInteraction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.ComplexPMInteraction.html">qoqo.operations.ComplexPMInteraction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qoqo.operations.MultiQubitMS.html">qoqo.operations.MultiQubitMS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.measurements.html">qoqo.measurements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.QuantumProgram.html">qoqo.QuantumProgram</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">qoqo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../modules.html">qoqo documentation</a> &raquo;</li>
+          <li><a href="../../qoqo.html">qoqo</a> &raquo;</li>
+          <li><a href="../qoqo.operations.html">qoqo.operations</a> &raquo;</li>
+      <li>qoqo.operations.PragmaOverrotation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/generated/generated/generated/qoqo.operations.PragmaOverrotation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="qoqo-operations-pragmaoverrotation">
+<h1>qoqo.operations.PragmaOverrotation<a class="headerlink" href="#qoqo-operations-pragmaoverrotation" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaOverrotation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.operations.</span></span><span class="sig-name descname"><span class="pre">PragmaOverrotation</span></span><a class="headerlink" href="#qoqo.operations.PragmaOverrotation" title="Permalink to this definition"></a></dt>
+<dd><p>The statistical overrotation PRAGMA operation.</p>
+<p>This PRAGMA applies a statistical overrotation to the next rotation gate in the circuit, which
+matches the hqslang name in the <cite>gate</cite> parameter of PragmaOverrotation and the involved qubits in <cite>qubits</cite>.</p>
+<p>The applied overrotation corresponds to adding a random number to the rotation angle.
+The random number is drawn from a normal distribution with mean <cite>0</cite>
+and standard deviation <cite>variance</cite> and is multiplied by the <cite>amplitude</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gate</strong> (<em>str</em>) -- The unique hqslang name of the gate to overrotate.</p></li>
+<li><p><strong>qubits</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) -- The qubits of the gate to overrotate.</p></li>
+<li><p><strong>amplitude</strong> (<em>float</em>) -- The amplitude the random number is multiplied by.</p></li>
+<li><p><strong>variance</strong> (<em>float</em>) -- The standard deviation of the normal distribution the random number is drawn from.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaOverrotation.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaOverrotation.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaOverrotation.__init__" title="qoqo.operations.PragmaOverrotation.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.PragmaOverrotation.amplitude" title="qoqo.operations.PragmaOverrotation.amplitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">amplitude</span></code></a></p></td>
+<td><p>Get value of struct field amplitude</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.PragmaOverrotation.gate_hqslang" title="qoqo.operations.PragmaOverrotation.gate_hqslang"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gate_hqslang</span></code></a></p></td>
+<td><p>Get value of struct field gate_hqslang</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.PragmaOverrotation.hqslang" title="qoqo.operations.PragmaOverrotation.hqslang"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hqslang</span></code></a></p></td>
+<td><p>Returns hqslang name of Operation</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.PragmaOverrotation.involved_qubits" title="qoqo.operations.PragmaOverrotation.involved_qubits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">involved_qubits</span></code></a></p></td>
+<td><p>List all involved Qubits</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.PragmaOverrotation.is_parametrized" title="qoqo.operations.PragmaOverrotation.is_parametrized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_parametrized</span></code></a></p></td>
+<td><p>Returns true if operation contains symbolic parameters</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.PragmaOverrotation.qubits" title="qoqo.operations.PragmaOverrotation.qubits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">qubits</span></code></a></p></td>
+<td><p>Return list of qubits of the multi qubit operation in order of descending significance</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.PragmaOverrotation.remap_qubits" title="qoqo.operations.PragmaOverrotation.remap_qubits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remap_qubits</span></code></a></p></td>
+<td><p>Remap qubits</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.PragmaOverrotation.substitute_parameters" title="qoqo.operations.PragmaOverrotation.substitute_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">substitute_parameters</span></code></a></p></td>
+<td><p>Substitutes internal symbolic parameters with float values</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.PragmaOverrotation.tags" title="qoqo.operations.PragmaOverrotation.tags"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tags</span></code></a></p></td>
+<td><p>Returns tags identifying the Operation</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.operations.html#qoqo.operations.PragmaOverrotation.variance" title="qoqo.operations.PragmaOverrotation.variance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">variance</span></code></a></p></td>
+<td><p>Get value of struct field variance</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaOverrotation.amplitude">
+<span class="sig-name descname"><span class="pre">amplitude</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaOverrotation.amplitude" title="Permalink to this definition"></a></dt>
+<dd><p>Get value of struct field amplitude</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaOverrotation.gate_hqslang">
+<span class="sig-name descname"><span class="pre">gate_hqslang</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaOverrotation.gate_hqslang" title="Permalink to this definition"></a></dt>
+<dd><p>Get value of struct field gate_hqslang</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaOverrotation.hqslang">
+<span class="sig-name descname"><span class="pre">hqslang</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaOverrotation.hqslang" title="Permalink to this definition"></a></dt>
+<dd><p>Returns hqslang name of Operation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaOverrotation.involved_qubits">
+<span class="sig-name descname"><span class="pre">involved_qubits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaOverrotation.involved_qubits" title="Permalink to this definition"></a></dt>
+<dd><p>List all involved Qubits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The involved qubits as a set or 'ALL' if all qubits are involved</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Union[set[int], str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaOverrotation.is_parametrized">
+<span class="sig-name descname"><span class="pre">is_parametrized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaOverrotation.is_parametrized" title="Permalink to this definition"></a></dt>
+<dd><p>Returns true if operation contains symbolic parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaOverrotation.qubits">
+<span class="sig-name descname"><span class="pre">qubits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaOverrotation.qubits" title="Permalink to this definition"></a></dt>
+<dd><p>Return list of qubits of the multi qubit operation in order of descending significance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaOverrotation.remap_qubits">
+<span class="sig-name descname"><span class="pre">remap_qubits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaOverrotation.remap_qubits" title="Permalink to this definition"></a></dt>
+<dd><p>Remap qubits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mapping</strong> (<em>dict</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) -- The mapping</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The operation with the remapped qubits</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Operation</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> -- Qubit remapping failed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaOverrotation.substitute_parameters">
+<span class="sig-name descname"><span class="pre">substitute_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaOverrotation.substitute_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>Substitutes internal symbolic parameters with float values</p>
+<p>Only available when all symbolic expressions can be evaluated to float with the
+provided parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>substitution_parameters</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) -- The substituted free parameters</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The operation with the parameters substituted</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Operation</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> -- Parameter Substitution failed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaOverrotation.tags">
+<span class="sig-name descname"><span class="pre">tags</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaOverrotation.tags" title="Permalink to this definition"></a></dt>
+<dd><p>Returns tags identifying the Operation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The tags identifying the operation</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaOverrotation.variance">
+<span class="sig-name descname"><span class="pre">variance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaOverrotation.variance" title="Permalink to this definition"></a></dt>
+<dd><p>Get value of struct field variance</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="qoqo.operations.PragmaRepeatGate.html" class="btn btn-neutral float-left" title="qoqo.operations.PragmaRepeatGate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qoqo.operations.PragmaBoostNoise.html" class="btn btn-neutral float-right" title="qoqo.operations.PragmaBoostNoise" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, HQS Quantum Simulations GmbH.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

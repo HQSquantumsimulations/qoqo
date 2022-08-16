@@ -1,0 +1,97 @@
+qoqo.operations
+===============
+
+.. automodule:: qoqo.operations
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Bogoliubov
+      CNOT
+      ComplexPMInteraction
+      ControlledPauliY
+      ControlledPauliZ
+      ControlledPhaseShift
+      DefinitionBit
+      DefinitionComplex
+      DefinitionFloat
+      DefinitionUsize
+      FSwap
+      Fsim
+      GivensRotation
+      GivensRotationLittleEndian
+      Hadamard
+      ISwap
+      InputSymbolic
+      InvSqrtISwap
+      InvSqrtPauliX
+      MeasureQubit
+      MolmerSorensenXX
+      MultiQubitMS
+      MultiQubitZZ
+      PMInteraction
+      PauliX
+      PauliY
+      PauliZ
+      PhaseShiftState0
+      PhaseShiftState1
+      PhaseShiftedControlledZ
+      PragmaActiveReset
+      PragmaBoostNoise
+      PragmaChangeDevice
+      PragmaConditional
+      PragmaDamping
+      PragmaDephasing
+      PragmaDepolarising
+      PragmaGeneralNoise
+      PragmaGetDensityMatrix
+      PragmaGetOccupationProbability
+      PragmaGetPauliProduct
+      PragmaGetStateVector
+      PragmaGlobalPhase
+      PragmaOverrotation
+      PragmaRandomNoise
+      PragmaRepeatGate
+      PragmaRepeatedMeasurement
+      PragmaSetDensityMatrix
+      PragmaSetNumberOfMeasurements
+      PragmaSetStateVector
+      PragmaSleep
+      PragmaStartDecompositionBlock
+      PragmaStopDecompositionBlock
+      PragmaStopParallelBlock
+      Qsim
+      RotateAroundSphericalAxis
+      RotateX
+      RotateXY
+      RotateY
+      RotateZ
+      SGate
+      SWAP
+      SingleQubitGate
+      SpinInteraction
+      SqrtISwap
+      SqrtPauliX
+      TGate
+      VariableMSXX
+      XY
+   
+   
+
+   
+   
+   
+
+
+
