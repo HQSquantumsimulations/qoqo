@@ -131,6 +131,7 @@ fn check_first_last_all_order(operation1: Operation, operation2: Operation) {
 #[test_case(Operation::from(PauliX::new(0)), Operation::from(PauliY::new(1)))]
 #[test_case(Operation::from(PauliY::new(1)), Operation::from(PauliZ::new(2)))]
 #[test_case(Operation::from(CNOT::new(0, 1)), Operation::from(PauliX::new(1)))]
+#[test_case(Operation::from(PauliX::new(1)), Operation::from(CNOT::new(0, 1)))]
 fn check_parallel_blocks_set(operation1: Operation, operation2: Operation) {
     let mut dag: CircuitDag = CircuitDag::new();
     let mut inv_qubits_1: HashSet<usize> = HashSet::new();
@@ -548,4 +549,30 @@ fn test_new_front_layer() {
     assert_eq!(dag.new_front_layer(&[a], &[b], &b), Ok(vec![b]));
     assert_eq!(dag.new_front_layer(&[a,b,c], &[d], &d), Ok(vec![e]));
     assert_eq!(dag.new_front_layer(&[a,b,c,d], &[e], &e), Ok(vec![]));
+}
+
+#[test]
+fn test_parallel_block_iterator() {
+    let mut dag: CircuitDag = CircuitDag::new();
+
+    let a = dag.add_to_back(Operation::from(PauliX::new(0))).unwrap();
+    let b = dag.add_to_back(Operation::from(PauliZ::new(0))).unwrap();
+    let c = dag.add_to_back(Operation::from(PauliY::new(1))).unwrap();
+    let d = dag.add_to_back(Operation::from(PauliX::new(1))).unwrap();
+    let e = dag.add_to_back(Operation::from(CNOT::new(0, 1))).unwrap();
+
+    let mut par_bl = dag.parallel_blocks();
+    
+    let vec = par_bl.next().unwrap();
+    assert_eq!(vec.get(0).unwrap().0, c);
+    assert_eq!(vec.get(1).unwrap().0, a);
+
+    let vec = par_bl.next().unwrap();
+    assert_eq!(vec.get(0).unwrap().0, d);
+    assert_eq!(vec.get(1).unwrap().0, b);
+    
+    let vec = par_bl.next().unwrap();
+    assert_eq!(vec.get(0).unwrap().0, e);
+
+    assert!(par_bl.next().unwrap().is_empty());
 }
