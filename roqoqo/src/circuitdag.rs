@@ -581,15 +581,15 @@ impl CircuitDag {
     /// Returns an Iterator over Vectors of references to the NodeIndices in the parallel block as well
     /// as references to the Operation in the blocks
     pub fn parallel_blocks<'a>(&'a self) -> ParallelBlocks<'a> {
-        let mut first_parallel_block:Vec::<(NodeIndex<usize>, Operation)> = Vec::new();
+        let mut first_parallel_block: Vec<(NodeIndex<usize>, Operation)> = Vec::new();
         for node in &self.first_parallel_block {
-            let op:Operation = self.graph.node_weight((*node).into()).unwrap().clone();
+            let op: Operation = self.graph.node_weight((*node).into()).unwrap().clone();
             first_parallel_block.push((*node, op));
         }
 
         ParallelBlocks {
             dag: self,
-            parallel_block: first_parallel_block.clone(),
+            parallel_block: first_parallel_block,
             already_executed: Vec::<NodeIndex<usize>>::new(),
         }
     }
@@ -726,11 +726,30 @@ impl<'a> Iterator for ParallelBlocks<'a> {
     type Item = Vec<(NodeIndex<usize>, Operation)>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let new_parallel_block:Vec<(NodeIndex<usize>, Operation)> = Vec::new();
-        for el in &self.parallel_block {
-            
+        // Populate already_executed with current parallel_block
+        for (node, _) in &self.parallel_block {
+            self.already_executed.push(*node);
         }
 
+        let mut new_parallel_block: Vec<(NodeIndex<usize>, Operation)> = Vec::new();
+        // Cycle through the current parallel block
+        for (node, _) in &self.parallel_block {
+            let mut neighbor_iter = self.dag.graph.neighbors_directed((*node).into(), Outgoing);
+            // Cycle through its neighbors
+            while let Some(nxt) = neighbor_iter.next() {
+                // Add the neighbor to the new parallel block if ready to be executed
+                if self
+                    .dag
+                    .execution_blocked(self.already_executed.as_slice(), &nxt.index())
+                    .is_empty()
+                {
+                    let op: Operation = self.dag.graph.node_weight(nxt).unwrap().clone();
+                    new_parallel_block.push((nxt.index(), op));
+                }
+            }
+        }
+
+        // Update parallel_block and return it
         self.parallel_block = new_parallel_block.clone();
         Some(new_parallel_block)
     }
