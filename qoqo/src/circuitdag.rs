@@ -13,14 +13,13 @@
 ///! Module containing the CircuitDag class that represents the Directed Acyclic Graph (DAG)
 ///! of a quantum circuit in qoqo.
 ///!
-
 use crate::QoqoError;
 use pyo3::exceptions::{PyIndexError, PyTypeError};
 use pyo3::prelude::*;
-use roqoqo::{CircuitDag, Circuit};
+use roqoqo::{Circuit, CircuitDag};
 
-use crate::CircuitWrapper;
 use crate::operations::{convert_operation_to_pyobject, convert_pyany_to_operation};
+use crate::CircuitWrapper;
 
 /// Module containing the CircuitDag class that represents the Directed Acyclic Graph (DAG)
 /// of a quantum circuit in qoqo.
@@ -60,25 +59,26 @@ impl CircuitDagWrapper {
     }
 
     /// Create a CircuitDag from a given Circuit;
-    /// 
+    ///
     /// Returns:
     ///     self: The new CircuitDag.
     pub fn from_circuit(&self, circuit: Py<PyAny>) -> PyResult<Self> {
         let circuit = Python::with_gil(|py| -> Result<Circuit, QoqoError> {
             let circ_ref = circuit.as_ref(py);
             crate::convert_into_circuit(circ_ref)
-        }).unwrap();
-        
-        Ok(Self{
-            internal: CircuitDag::from(circuit)
+        })
+        .unwrap();
+
+        Ok(Self {
+            internal: CircuitDag::from(circuit),
         })
     }
 
     /// Transforms the CircuitDag into a Circuit.
-    /// 
+    ///
     pub fn to_circuit(&self) -> PyResult<CircuitWrapper> {
-        Ok(CircuitWrapper{
-            internal: Circuit::from(self.internal.clone())
+        Ok(CircuitWrapper {
+            internal: Circuit::from(self.internal.clone()),
         })
     }
 
@@ -86,7 +86,7 @@ impl CircuitDagWrapper {
     ///
     /// Args:
     ///     op (Operation): The Operation to add to the back of the CircuitDag.
-    /// 
+    ///
     /// Raises:
     ///     TypeError: The Python Object cannot be converted to Operation.
     pub fn add_to_back(&mut self, op: &PyAny) -> PyResult<Option<usize>> {
@@ -100,7 +100,7 @@ impl CircuitDagWrapper {
     ///
     /// Args:
     ///     op (Operation): The Operation to add to the front of the CircuitDag.
-    /// 
+    ///
     /// Raises:
     ///     TypeError: The Python Object cannot be converted to Operation.
     pub fn add_to_front(&mut self, op: &PyAny) -> PyResult<Option<usize>> {
@@ -115,10 +115,10 @@ impl CircuitDagWrapper {
     ///
     /// Args:
     ///     index (usize): The index of the node to get from the CircuitDag.
-    /// 
+    ///
     /// Returns:
     ///     Operation: The Operation at the given index (if it exists).
-    /// 
+    ///
     /// Raises:
     ///     IndexError: Index out of range.
     pub fn get(&self, index: usize) -> PyResult<PyObject> {
@@ -150,7 +150,7 @@ impl CircuitDagWrapper {
     */
 
     /// Returns a copy of the CircuitDag (produces a deepcopy).
-    /// 
+    ///
     /// Returns:
     ///     CircuitDag: A copy of self.
     pub fn __copy__(&self) -> CircuitDagWrapper {
@@ -227,8 +227,8 @@ pub fn convert_into_circuitdag(input: &PyAny) -> Result<CircuitDag, QoqoError> {
             .extract::<Vec<u8>>()
             .map_err(|_| QoqoError::CannotExtractObject)?;
         deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractObject)
-    } */ else {
+    } */
+    else {
         Err(QoqoError::VersionMismatch)
     }
 }
-

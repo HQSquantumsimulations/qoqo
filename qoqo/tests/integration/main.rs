@@ -20,7 +20,7 @@ mod circuit;
 // mod devices;
 
 #[cfg(test)]
-#[cfg(feature="circuitdag")]
+#[cfg(feature = "circuitdag")]
 mod circuitdag;
 
 #[cfg(test)]

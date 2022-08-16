@@ -728,7 +728,7 @@ impl<'a> Iterator for ParallelBlocks<'a> {
                 let op: Operation = self.dag.graph.node_weight((*node).into()).unwrap().clone();
                 self.parallel_block.push((*node, op));
             }
-            return Some(self.parallel_block.clone())
+            return Some(self.parallel_block.clone());
         }
 
         // Populate already_executed with current parallel_block
@@ -746,7 +746,8 @@ impl<'a> Iterator for ParallelBlocks<'a> {
                 if self
                     .dag
                     .execution_blocked(self.already_executed.as_slice(), &nxt.index())
-                    .is_empty() && !new_parallel_block.iter().any(|(id, _)| *id == nxt.index())
+                    .is_empty()
+                    && !new_parallel_block.iter().any(|(id, _)| *id == nxt.index())
                 {
                     let op: Operation = self.dag.graph.node_weight(nxt).unwrap().clone();
                     new_parallel_block.push((nxt.index(), op));

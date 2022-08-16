@@ -545,10 +545,10 @@ fn test_new_front_layer() {
         })
     );
     assert_eq!(dag.new_front_layer(&[], &[a], &a), Ok(vec![b]));
-    assert_eq!(dag.new_front_layer(&[a,c], &[b], &b), Ok(vec![d]));
+    assert_eq!(dag.new_front_layer(&[a, c], &[b], &b), Ok(vec![d]));
     assert_eq!(dag.new_front_layer(&[a], &[b], &b), Ok(vec![b]));
-    assert_eq!(dag.new_front_layer(&[a,b,c], &[d], &d), Ok(vec![e]));
-    assert_eq!(dag.new_front_layer(&[a,b,c,d], &[e], &e), Ok(vec![]));
+    assert_eq!(dag.new_front_layer(&[a, b, c], &[d], &d), Ok(vec![e]));
+    assert_eq!(dag.new_front_layer(&[a, b, c, d], &[e], &e), Ok(vec![]));
 }
 
 #[test]
@@ -562,7 +562,7 @@ fn test_parallel_block_iterator() {
     let e = dag.add_to_back(Operation::from(CNOT::new(0, 1))).unwrap();
 
     let mut par_bl = dag.parallel_blocks();
-    
+
     let vec = par_bl.next().unwrap();
     assert_eq!(vec.get(0).unwrap().0, c);
     assert_eq!(vec.get(1).unwrap().0, a);
@@ -570,7 +570,7 @@ fn test_parallel_block_iterator() {
     let vec = par_bl.next().unwrap();
     assert_eq!(vec.get(0).unwrap().0, d);
     assert_eq!(vec.get(1).unwrap().0, b);
-    
+
     let vec = par_bl.next().unwrap();
     assert_eq!(vec.get(0).unwrap().0, e);
 
