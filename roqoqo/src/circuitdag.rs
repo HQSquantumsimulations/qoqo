@@ -569,15 +569,31 @@ impl CircuitDag {
         }
     }
 
-    /*
-    /// Returns an iterator over the possible parallel blocks in  circuit that can be executed simultaneously
+    
+    /// Returns an iterator over the possible parallel blocks in circuit that can be executed simultaneously
     ///
     /// Returns an Iterator over Vectors of references to the NodeIndices in the parallel block as well
     /// as references to the Operation in the blocks
     pub fn parallel_blocks(&self) -> impl Iterator<Item=Vec<(&NodeIndex<usize>, &Operation)>> {
+        let mut parallel_blocks:Vec<Vec<(&NodeIndex<usize>, &Operation)>> = Vec::new();
+        let already_executed:Vec<NodeIndex<usize>> = Vec::new();
 
+        // Pushing first_parallel_block in parallel_blocks
+        let mut first_vec:Vec<(&NodeIndex<usize>, &Operation)> = Vec::new();
+        for el in self.first_parallel_block.iter() {
+            let op = self.graph.node_weight((*el).into()).unwrap();
+            first_vec.push((el, op));
+        }
+        parallel_blocks.push(first_vec);
+
+        // TODO
+        for node in parallel_blocks.last() {
+
+        }
+
+        parallel_blocks.into_iter()
     }
-    */
+    
 
     /// Returns a reference to the graph in CircuitDag.
     ///
