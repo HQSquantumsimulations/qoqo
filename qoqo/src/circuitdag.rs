@@ -14,7 +14,7 @@
 ///! of a quantum circuit in qoqo.
 ///!
 use crate::QoqoError;
-use pyo3::exceptions::{PyIndexError, PyTypeError};
+use pyo3::exceptions::{PyIndexError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use roqoqo::{Circuit, CircuitDag};
 
@@ -108,6 +108,49 @@ impl CircuitDagWrapper {
             PyTypeError::new_err(format!("Cannot convert python object to Operation {:?}", x))
         })?;
         Ok(self.internal.add_to_front(operation))
+    }
+
+    /// Checks if executing an operation is blocked by any not-yet executed operation.
+    ///
+    /// Args:
+    ///     already_executed (list[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
+    ///     to_be_executed (int): NodeIndex of the operation that should be executed next.
+    ///
+    /// Returns:
+    ///     list[int]: List containing the sorted blocking elements.
+    pub fn execution_blocked(
+        &self,
+        already_executed: Vec<usize>,
+        to_be_executed: usize,
+    ) -> Vec<usize> {
+        self.internal
+            .execution_blocked(already_executed.as_slice(), &to_be_executed)
+    }
+
+    /// Returns a new front-layer after executing an operation from the current front layer.
+    ///
+    /// Returns an error if operation to be executed is not in the current front layer.
+    ///
+    /// Args:
+    ///     already_executed (list[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
+    ///     current_front_layer (list[int]): List of NodeIndices in the current front layer ready to be executed if physically possible.
+    ///     to_be_executed (int): NodeIndex of the operation that should be executed next.
+    pub fn new_front_layer(
+        &self,
+        already_executed: Vec<usize>,
+        current_front_layer: Vec<usize>,
+        to_be_executed: usize,
+    ) -> PyResult<Vec<usize>> {
+        if !current_front_layer.contains(&to_be_executed) {
+            return PyValueError::new_err(format!(
+                "The Operation to be executed is not in the current front layer."
+            ));
+        }
+        Ok(self.internal.new_front_layer(
+            already_executed.as_slice(),
+            current_front_layer.as_slice(),
+            &to_be_executed,
+        ))
     }
 
     /// Given a NodeIndex, returns the Operation contained in the node of
