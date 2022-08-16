@@ -78,7 +78,7 @@ qoqo provides a full python interface to the underlying roqoqo library, includin
 
 ### Installation
 
-On Linux and macOS and Windows on x86 precompiled packages can be found on PyPi and installed via
+On Linux, macOS and Windows on x86 precompiled packages can be found on PyPi and installed via
 
 ```shell
 pip install qoqo
