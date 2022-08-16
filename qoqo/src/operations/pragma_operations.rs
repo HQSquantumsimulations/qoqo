@@ -614,6 +614,13 @@ pub struct PragmaStopDecompositionBlock {
 ///
 /// This PRAGMA operation applies a pure damping error corresponding to zero temperature environments.
 ///
+/// Note
+///
+/// Damping means going from state `|1>` to `|0>` and corresponds to zero-temperature in a physical
+/// device where `|0>` is the ground state.
+/// With respect to the definition of the Pauli operator `Z`, `|0>` is the excited state and damping leads to
+/// an increase in energy.
+///
 /// Args:
 ///     qubit (int): The qubit on which to apply the damping.
 ///     gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware

@@ -20,7 +20,7 @@ use crate::operations::{
 use crate::Circuit;
 #[cfg(feature = "serialize")]
 use bincode::serialize;
-use nalgebra::Matrix4;
+use nalgebra::{matrix, Matrix4};
 use ndarray::{array, Array, Array1, Array2};
 use num_complex::Complex64;
 use qoqo_calculator::{Calculator, CalculatorFloat};
@@ -480,6 +480,12 @@ const TAGS_PragmaStopDecompositionBlock: &[&str; 4] = &[
 ///
 /// This PRAGMA Operation applies a pure damping error corresponding to zero temperature environments.
 ///
+/// # Note
+///
+/// Damping means going from state `|1>` to `|0>` and corresponds to zero-temperature in a physical
+/// device where `|0>` is the ground state.
+/// With respect to the definition of the Pauli operator `Z`, `|0>` is the excited state and damping leads to
+/// an increase in energy.
 #[derive(
     Debug,
     Clone,
@@ -767,9 +773,11 @@ impl OperatePragmaNoiseProba for PragmaRandomNoise {
 /// The rates are represented by a 3x3 matrix,  where the coefficients correspond to the following summands
 /// expanded from the first term of the non-coherent part of the Lindblad equation:
 ///
-/// d/dt * ρ = Σ_{i,j=0}^{2} M_i,j * L_i * ρ * L†_j - 1/2 *  L†_j * L_i * ρ,
+/// d/dt * ρ = Σ Mij * Li * ρ * Lj† - 1/2 * ( Lj† * Li * ρ + ρ * Lj† * Li),
 ///
-/// with L_0 = σ+, L_1 = σ- and L_3 = σ^z.
+/// where the indices i and j run from 0 to 2
+///
+/// with L0 = σ+, L1 = σ- and L3 = σz.
 ///
 /// Applying the Pragma with a given `gate_time` corresponds to applying the full time-evolution under the Lindblad equation for `gate_time` time.
 ///
@@ -840,74 +848,74 @@ const TAGS_PragmaGeneralNoise: &[&str; 5] = &[
 
 // Collection of superoperators that appear in the Lindblad equation for a single qubit/spin with
 // a basis of the form 0: sigma+ 1:sigma- 2: sigmaz
-const PGN_SUPEROP: [[[[f64; 4]; 4]; 3]; 3] = [
+const PGN_SUPEROP: [[Matrix4<f64>; 3]; 3] = [
     [
         // sigma+ sigma+
-        [
-            [0., 0., 0., 4.],
-            [0., -2., 0., 0.],
-            [0., 0., -2., 0.],
-            [0., 0., 0., -4.],
+        matrix![
+            0., 0., 0., 1.;
+            0., -0.5, 0., 0.;
+            0., 0., -0.5, 0.;
+            0., 0., 0., -1.;
         ],
         // sigma+ sigma-
-        [
-            [0., 0., 0., 0.],
-            [0., 0., 4., 0.],
-            [0., 0., 0., 0.],
-            [0., 0., 0., 0.],
+        matrix![
+            0., 0., 0., 0.;
+            0., 0., 1., 0.;
+            0., 0., 0., 0.;
+            0., 0., 0., 0.;
         ],
         // sigma+ sigmaz
-        [
-            [0., 0., 1., 0.],
-            [-1., 0., 0., -3.],
-            [0., 0., 0., 0.],
-            [0., 0., 0., -1.],
+        matrix![
+            0., 0., 0.5, 0.;
+            -0.5, 0., 0., -1.5;
+            0., 0., 0., 0.;
+            0., 0., -0.5, 0.;
         ],
     ],
     [
         // sigma- sigma+
-        [
-            [0., 0., 0., 0.],
-            [0., 0., 0., 0.],
-            [0., 4., 0., 0.],
-            [0., 0., 0., 0.],
+        matrix![
+            0., 0., 0., 0.;
+            0., 0., 0., 0.;
+            0., 1., 0., 0.;
+            0., 0., 0., 0.;
         ],
         // sigma- sigma-
-        [
-            [-4., 0., 0., 0.],
-            [0., -2., 0., 0.],
-            [0., 0., -2., 0.],
-            [4., 0., 0., 0.],
-        ],
+        matrix![
+        -1., 0., 0., 0.;
+        0., -0.5, 0., 0.;
+        0., 0., -0.5, 0.;
+        1., 0., 0., 0.;
+                ],
         // sigma- sigmaz
-        [
-            [0., 1., 0., 0.],
-            [0., 0., 0., 0.],
-            [3., 0., 0., 1.],
-            [0., -1., 0., 0.],
+        matrix![
+            0., 0.5, 0., 0.;
+            0., 0., 0., 0.;
+            1.5, 0., 0., 0.5;
+            0., -0.5, 0., 0.;
         ],
     ],
     [
         //  sigmaz sigma+
-        [
-            [0., 1., 0., 0.],
-            [0., 0., 0., 0.],
-            [-1., 0., 0., -3.],
-            [0., -1., 0., 0.],
+        matrix![
+            0., 0.5, 0., 0.;
+            0., 0., 0., 0.;
+            -0.5, 0., 0., -1.5;
+            0., -0.5, 0., 0.;
         ],
         // sigmaz sigma-
-        [
-            [0., 0., 1., 0.],
-            [3., 0., 0., 1.],
-            [0., 0., 0., 0.],
-            [0., 0., -1., 0.],
+        matrix![
+            0., 0., 0.5, 0.;
+            1.5, 0., 0., 0.5;
+            0., 0., 0., 0.;
+            0., 0., -0.5, 0.;
         ],
         // sigmaz sigmaz
-        [
-            [0., 0., 0., 0.],
-            [0., -2., 0., 0.],
-            [0., 0., 0., 0.],
-            [0., 0., 0., -2.],
+        matrix![
+            0., 0., 0., 0.;
+            0., -2., 0., 0.;
+            0., 0., -2., 0.;
+            0., 0., 0., 0.;
         ],
     ],
 ];
@@ -920,7 +928,7 @@ impl OperatePragmaNoise for PragmaGeneralNoise {
         let mut superop = Matrix4::<f64>::default();
         for (i, row) in PGN_SUPEROP.iter().enumerate() {
             for (j, op) in row.iter().clone().enumerate() {
-                let tmp_superop: Matrix4<f64> = (*op).into();
+                let tmp_superop: Matrix4<f64> = *op;
                 superop += gate_time * self.rates[(i, j)] * tmp_superop;
             }
         }
