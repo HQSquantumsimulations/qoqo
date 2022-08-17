@@ -759,6 +759,9 @@ impl<'a> Iterator for ParallelBlocks<'a> {
 
         // Update parallel_block and return it
         self.parallel_block = new_parallel_block.clone();
+        if new_parallel_block.is_empty() {
+            return None;
+        }
         Some(new_parallel_block)
     }
 }

@@ -160,15 +160,20 @@ impl CircuitDagWrapper {
     /// Returns an Iterator over Vectors of references to the NodeIndices in the parallel block as well
     /// as references to the Operation in the blocks
     pub fn parallel_blocks(&self) -> Vec<Vec<(usize, PyObject)>> {
-        let mut par_bl = self.internal.parallel_blocks();
         let mut par_bl_vec: Vec<Vec<(usize, PyObject)>> = Vec::new();
 
-        while let Some(vec) = par_bl.next() {
-            let mut inner_vec: Vec<(usize, PyObject)> = Vec::new();
-            for tuple in &vec {
-                inner_vec.push((tuple.0, convert_operation_to_pyobject(tuple.1.clone()).unwrap()));
-            }
-            par_bl_vec.push(inner_vec);
+        for block in self.internal.parallel_blocks() {
+            let inner: Vec<(usize, PyObject)> = block
+                .into_iter()
+                .map(|(index, op)| {
+                    (
+                        index,
+                        convert_operation_to_pyobject(op)
+                            .expect("Internal conversion error. But in qoqo"),
+                    )
+                })
+                .collect();
+            par_bl_vec.push(inner);
         }
 
         par_bl_vec
@@ -193,25 +198,6 @@ impl CircuitDagWrapper {
             .clone();
         convert_operation_to_pyobject(operation)
     }
-
-    /*
-    #[allow(unused_variables)]
-    #[classmethod]
-    /// Convert the bincode representation of the CircuitDag to a CircuitDag using the [bincode] crate.
-    ///
-    /// Args:
-    ///     input (ByteArray): The serialized CircuitDag (in [bincode] form).
-    ///
-    /// Returns:
-    ///     Circuit: The deserialized CircuitDag.
-    ///
-    /// Raises:
-    ///     TypeError: Input cannot be converted to byte array.
-    ///     ValueError: Input cannot be deserialized to Circuit.
-    pub fn from_bincode(cls: &PyType, input: &PyAny) -> PyResult<Self> {
-
-    }
-    */
 
     /// Returns a copy of the CircuitDag (produces a deepcopy).
     ///

@@ -564,15 +564,19 @@ fn test_parallel_block_iterator() {
     let mut par_bl = dag.parallel_blocks();
 
     let vec = par_bl.next().unwrap();
-    assert_eq!(vec.get(0).unwrap().0, c);
-    assert_eq!(vec.get(1).unwrap().0, a);
+    for (ind, _) in vec {
+        assert!(ind==a || ind==c);
+    }
 
     let vec = par_bl.next().unwrap();
-    assert_eq!(vec.get(0).unwrap().0, d);
-    assert_eq!(vec.get(1).unwrap().0, b);
+    for (ind, _) in vec {
+        assert!(ind==b || ind==d);
+    }
 
     let vec = par_bl.next().unwrap();
-    assert_eq!(vec.get(0).unwrap().0, e);
+    for (ind, _) in vec {
+        assert!(ind==e);
+    }
 
-    assert!(par_bl.next().unwrap().is_empty());
+    assert!(par_bl.next().is_none());
 }

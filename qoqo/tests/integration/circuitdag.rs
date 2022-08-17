@@ -315,34 +315,93 @@ fn test_new_front_layer() {
             .call_method1("add_to_back", (cpauliz_12.clone(),))
             .unwrap();
 
-        assert!(dag.call_method1("new_front_layer", (vec![a,b,c], vec![d], e)).is_err());
+        assert!(dag
+            .call_method1("new_front_layer", (vec![a, b, c], vec![d], e))
+            .is_err());
 
         let comp = dag
-            .call_method1("new_front_layer", (vec![a,c], vec![b], b))
+            .call_method1("new_front_layer", (vec![a, c], vec![b], b))
             .unwrap();
-        let helper =
-            bool::extract(comp.call_method1("__eq__", (vec![d],)).unwrap()).unwrap();
+        let helper = bool::extract(comp.call_method1("__eq__", (vec![d],)).unwrap()).unwrap();
         assert!(helper);
 
         let comp = dag
             .call_method1("new_front_layer", (vec![a], vec![b], b))
             .unwrap();
-        let helper =
-            bool::extract(comp.call_method1("__eq__", (vec![b],)).unwrap()).unwrap();
+        let helper = bool::extract(comp.call_method1("__eq__", (vec![b],)).unwrap()).unwrap();
         assert!(helper);
 
         let comp = dag
-            .call_method1("new_front_layer", (vec![a,b,c], vec![d], d))
+            .call_method1("new_front_layer", (vec![a, b, c], vec![d], d))
             .unwrap();
-        let helper =
-            bool::extract(comp.call_method1("__eq__", (vec![e],)).unwrap()).unwrap();
+        let helper = bool::extract(comp.call_method1("__eq__", (vec![e],)).unwrap()).unwrap();
         assert!(helper);
 
         let comp = dag
-            .call_method1("new_front_layer", (vec![a,b,c,d], vec![e], e))
+            .call_method1("new_front_layer", (vec![a, b, c, d], vec![e], e))
             .unwrap();
         let helper =
             bool::extract(comp.call_method1("__eq__", (Vec::<usize>::new(),)).unwrap()).unwrap();
+        assert!(helper);
+    })
+}
+
+#[test]
+fn test_parallel_blocks() {
+    pyo3::prepare_freethreaded_python();
+    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+    let paulix_1 = convert_operation_to_pyobject(Operation::from(PauliX::new(1))).unwrap();
+    let pauliy_1 = convert_operation_to_pyobject(Operation::from(PauliY::new(1))).unwrap();
+    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
+    let pauliz_0 = convert_operation_to_pyobject(Operation::from(PauliZ::new(0))).unwrap();
+    Python::with_gil(|py| {
+        let dag = new_circuitdag(py);
+
+        dag.call_method1("add_to_back", (paulix_0.clone(),))
+            .unwrap();
+        dag.call_method1("add_to_back", (pauliz_0.clone(),))
+            .unwrap();
+        dag.call_method1("add_to_back", (pauliy_1.clone(),))
+            .unwrap();
+        dag.call_method1("add_to_back", (paulix_1.clone(),))
+            .unwrap();
+        dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
+
+        let par_bl = dag.call_method0("parallel_blocks").unwrap();
+
+        // TODO: horrible solution
+        let correct_vec: Vec<Vec<(usize, PyObject)>> = vec![
+            [
+                (
+                    0usize,
+                    convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap(),
+                ),
+                (
+                    2usize,
+                    convert_operation_to_pyobject(Operation::from(PauliY::new(1))).unwrap(),
+                ),
+            ]
+            .to_vec(),
+            [
+                (
+                    1usize,
+                    convert_operation_to_pyobject(Operation::from(PauliZ::new(0))).unwrap(),
+                ),
+                (
+                    3usize,
+                    convert_operation_to_pyobject(Operation::from(PauliX::new(1))).unwrap(),
+                ),
+            ]
+            .to_vec(),
+            [(
+                4usize,
+                convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap(),
+            )]
+            .to_vec(),
+        ]
+        .to_vec();
+
+        let helper = bool::extract(par_bl.call_method1("__eq__", (correct_vec,)).unwrap()).unwrap();
         assert!(helper);
     })
 }
