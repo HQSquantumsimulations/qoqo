@@ -233,7 +233,7 @@ fn test_pyo3_copy() {
             .unwrap()
             .cast_as::<PyCell<CheatedWrapper>>()
             .unwrap();
-        let br_clone = &(*br);
+        let br_clone = br;
 
         let circuits: Vec<CircuitWrapper> = br.call_method0("circuits").unwrap().extract().unwrap();
         let circuits_clone: Vec<CircuitWrapper> = br_clone
@@ -297,7 +297,7 @@ fn test_pyo3_debug() {
         let debug_input_string = "RefCell { value: CheatedInputWrapper { internal: CheatedInput { measured_operators: {\"test_diagonal\": ([(0, 0, Complex { re: 1.0, im: 0.0 }), (0, 1, Complex { re: 0.0, im: 0.0 }), (1, 0, Complex { re: 0.0, im: 0.0 }), (1, 1, Complex { re: -1.0, im: 0.0 })], \"ro\")}, number_qubits: 3 } } }";
         assert_eq!(format!("{:?}", input), debug_input_string);
 
-        let debug_input = &(*input);
+        let debug_input = input;
         let error = debug_input.call_method1(
             "add_operator_exp_val",
             (
@@ -395,7 +395,7 @@ fn test_to_from_json() {
             .cast_as::<PyCell<CheatedWrapper>>()
             .unwrap();
 
-        let new_br = &(*br);
+        let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
         let deserialised = new_br
             .call_method1("from_json", (serialised,))

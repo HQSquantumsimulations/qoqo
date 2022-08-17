@@ -184,6 +184,7 @@ struct PhaseShiftState0 {
 }
 
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[derive(Eq)]
 /// The Pauli X gate.
 ///
 /// .. math::
@@ -200,6 +201,7 @@ struct PauliX {
 }
 
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[derive(Eq)]
 /// The Pauli Y gate.
 ///
 /// .. math::
@@ -216,6 +218,7 @@ struct PauliY {
 }
 
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[derive(Eq)]
 /// The Pauli Z gate.
 ///
 /// .. math::
@@ -232,6 +235,7 @@ struct PauliZ {
 }
 
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[derive(Eq)]
 /// The square root of the XPower gate :math:`e^{-i \frac{\pi}{4} \sigma^x}`.
 ///
 /// .. math::
@@ -248,6 +252,7 @@ struct SqrtPauliX {
 }
 
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[derive(Eq)]
 /// The inverse square root XPower gate :math:`e^{i \frac{\pi}{2} \sigma^x}`.
 ///
 /// .. math::
@@ -264,6 +269,7 @@ struct InvSqrtPauliX {
 }
 
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[derive(Eq)]
 /// The Hadamard gate.
 ///
 /// .. math::
@@ -280,6 +286,7 @@ struct Hadamard {
 }
 
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[derive(Eq)]
 /// The S gate.
 ///
 /// .. math::
@@ -295,6 +302,7 @@ struct SGate {
     qubit: usize,
 }
 #[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[derive(Eq)]
 /// The T gate.
 ///
 /// .. math::

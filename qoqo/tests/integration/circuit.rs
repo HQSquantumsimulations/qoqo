@@ -249,7 +249,7 @@ fn test_copy_deepcopy() {
 
         let comparison_copy = bool::extract(
             copy_circ
-                .call_method1("__eq__", (&(*copy_deepcopy_param),))
+                .call_method1("__eq__", (copy_deepcopy_param,))
                 .unwrap(),
         )
         .unwrap();
@@ -356,7 +356,7 @@ fn test_value_error_bincode() {
             .cast_as::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
-        let new_br = &(*br);
+        let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
         let deserialised = new_br
             .call_method1("from_json", (serialised,))
@@ -732,9 +732,7 @@ fn test_circuit_iadd_magic_method() {
         circuit
             .call_method1("__iadd__", (operation2.clone(),))
             .unwrap();
-        circuit
-            .call_method1("__iadd__", (&(*added_circuit),))
-            .unwrap();
+        circuit.call_method1("__iadd__", (added_circuit,)).unwrap();
 
         let comp_op = circuit.call_method1("__getitem__", (0,)).unwrap();
         let comparison =
@@ -776,9 +774,7 @@ fn test_circuit_add_magic_method() {
         let circuit1 = circuit
             .call_method1("__add__", (operation2.clone(),))
             .unwrap();
-        let circuit2 = circuit1
-            .call_method1("__add__", (&(*added_circuit),))
-            .unwrap();
+        let circuit2 = circuit1.call_method1("__add__", (added_circuit,)).unwrap();
 
         let comp_op = circuit2.call_method1("__getitem__", (0,)).unwrap();
         let comparison =
@@ -960,8 +956,8 @@ fn test_circuit_overrotate() {
             .unwrap();
 
         assert_ne!(
-            format!("{:?}", &(*circuit)),
-            format!("{:?}", &(*circuit_overrotated))
+            format!("{:?}", circuit),
+            format!("{:?}", circuit_overrotated)
         );
 
         let comparison = bool::extract(

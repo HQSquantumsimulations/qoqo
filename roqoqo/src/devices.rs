@@ -21,17 +21,11 @@
 //!
 //!     The abstract devices can also encode a noise model. Roqoqo noise models are in general based on a (pseudo) time
 //!     needed to execute a quantum operation and Lindblad rates for the qubits in the device.
-//!     Specifically in the noise model each qubit undergoes a continuous Lindblad-type decoherence time evolution:
-//!
-//!     $$
-//!     \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
-//!         L_0 = \sigma^{+} \\\\
-//!         L_1 = \sigma^{-} \\\\
-//!         L_3 = \sigma^{z}
-//!     $$
+//!     
 //!     Note that as long as gate times and decoherence rates are scaled inversely any kind of units can be used,
 //!     but we recommend using nanoseconds and inverse nanosecconds as units for gate times and decoherence rates.
 //!
+//!     Specifically in the noise model each qubit undergoes a continuous Lindblad-type decoherence time evolution.
 //!
 //! * Actual hardware devices: These devices are provided by roqoqo backends and contain the necessary information for
 //!     accessing the quantum computing hardware. The devices also encode a connectivity model
@@ -49,8 +43,6 @@ use ndarray::Array2;
 pub trait Device {
     /// Returns the gate time of a single qubit operation if the single qubit operation is available on device.
     ///
-    /// The base assumption
-    ///
     /// # Arguments
     ///
     /// * `hqslang` - The hqslang name of a single qubit gate.
@@ -63,8 +55,7 @@ pub trait Device {
     ///
     fn single_qubit_gate_time(&self, hqslang: &str, qubit: &usize) -> Option<f64>;
 
-    /// Returns the gate time of a two qubit operation if the two qubit operation is available on device-.
-    ///
+    /// Returns the gate time of a two qubit operation if the two qubit operation is available on device.
     ///
     /// # Arguments
     ///
@@ -81,7 +72,6 @@ pub trait Device {
 
     /// Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
     ///
-    ///
     /// # Arguments
     ///
     /// * `hqslang` - The hqslang name of a multi qubit gate.
@@ -96,16 +86,9 @@ pub trait Device {
 
     /// Returns the matrix of the decoherence rates of the Lindblad equation.
     ///
-    /// $$
-    /// \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
-    ///     L_0 = \sigma^{+} \\\\
-    ///     L_1 = \sigma^{-} \\\\
-    ///     L_3 = \sigma^{z}
-    /// $$
-    ///
     /// # Arguments
     ///
-    /// * `qubit` - The qubit for which the rate matrix M is returned
+    /// * `qubit` - The qubit for which the rate matrix is returned.
     ///
     /// # Returns
     ///
@@ -463,16 +446,9 @@ pub trait Device {
 
 //     /// Returns the matrix of the decoherence rates of the Lindblad equation.
 //     ///
-//     /// $$
-//     /// \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
-//     ///     L_0 = \sigma^{+} \\\\
-//     ///     L_1 = \sigma^{-} \\\\
-//     ///     L_2 = \sigma^{z}
-//     /// $$
-//     ///
 //     /// # Arguments
 //     ///
-//     /// * `qubit` - The qubit for which the rate matrix M is returned
+//     /// * `qubit` - The qubit for which the rate matrix is returned.
 //     ///
 //     /// # Returns
 //     ///
@@ -916,16 +892,9 @@ pub trait Device {
 
 //     /// Returns the matrix of the decoherence rates of the Lindblad equation.
 //     ///
-//     /// $$
-//     /// \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
-//     ///     L_0 = \sigma^{+} \\\\
-//     ///     L_1 = \sigma^{-} \\\\
-//     ///     L_3 = \sigma^{z}
-//     /// $$
-//     ///
 //     /// # Arguments
 //     ///
-//     /// * `qubit` - The qubit for which the rate matrix M is returned
+//     /// * `qubit` - The qubit for which the rate matrix is returned.
 //     ///
 //     /// # Returns
 //     ///
@@ -1252,16 +1221,9 @@ pub trait Device {
 
 //     /// Returns the matrix of the decoherence rates of the Lindblad equation.
 //     ///
-//     /// $$
-//     /// \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
-//     ///     L_0 = \sigma^{+} \\\\
-//     ///     L_1 = \sigma^{-} \\\\
-//     ///     L_2 = \sigma^{z}
-//     /// $$
-//     ///
 //     /// # Arguments
 //     ///
-//     /// * `qubit` - The qubit for which the rate matrix M is returned
+//     /// * `qubit` - The qubit for which the rate matrix is returned.
 //     ///
 //     /// # Returns
 //     ///
@@ -1597,16 +1559,9 @@ pub trait Device {
 
 //     /// Returns the matrix of the decoherence rates of the Lindblad equation.
 //     ///
-//     /// $$
-//     /// \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
-//     ///     L_0 = \sigma^{+} \\\\
-//     ///     L_1 = \sigma^{-} \\\\
-//     ///     L_2 = \sigma^{z}
-//     /// $$
-//     ///
 //     /// # Arguments
 //     ///
-//     /// * `qubit` - The qubit for which the rate matrix M is returned
+//     /// * `qubit` - The qubit for which the rate matrix is returned.
 //     ///
 //     /// # Returns
 //     ///

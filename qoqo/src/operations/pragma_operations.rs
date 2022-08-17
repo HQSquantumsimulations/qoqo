@@ -27,6 +27,7 @@ use std::collections::HashMap;
 
 /// Wrap function automatically generates functions in these traits.
 #[wrap(Operate, OperatePragma)]
+#[derive(Eq)]
 /// This PRAGMA operation sets the number of measurements of the circuit.
 ///
 /// This is used for backends that allow setting the number of tries. However, setting the number of
@@ -488,6 +489,7 @@ impl PragmaSetDensityMatrixWrapper {
 }
 
 #[wrap(Operate, OperatePragma)]
+#[derive(Eq)]
 /// The repeated gate PRAGMA operation.
 ///
 /// This PRAGMA operation repeats the next gate in the circuit the given number of times
@@ -570,6 +572,7 @@ pub struct PragmaSleep {
 }
 
 #[wrap(Operate, OperateSingleQubit, OperatePragma)]
+#[derive(Eq)]
 /// This PRAGMA operation resets the chosen qubit to the zero state.
 ///
 /// Args:
@@ -579,6 +582,7 @@ pub struct PragmaActiveReset {
 }
 
 #[wrap(Operate, OperateMultiQubit, OperatePragma)]
+#[derive(Eq)]
 /// This PRAGMA operation signals the START of a decomposition block.
 ///
 /// Args:
@@ -590,6 +594,7 @@ pub struct PragmaStartDecompositionBlock {
 }
 
 #[wrap(Operate, OperateMultiQubit, OperatePragma)]
+#[derive(Eq)]
 /// This PRAGMA operation signals the STOP of a decomposition block.
 ///
 /// Args:
@@ -608,6 +613,13 @@ pub struct PragmaStopDecompositionBlock {
 /// The damping PRAGMA noise operation.
 ///
 /// This PRAGMA operation applies a pure damping error corresponding to zero temperature environments.
+///
+/// Note
+///
+/// Damping means going from state `|1>` to `|0>` and corresponds to zero-temperature in a physical
+/// device where `|0>` is the ground state.
+/// With respect to the definition of the Pauli operator `Z`, `|0>` is the excited state and damping leads to
+/// an increase in energy.
 ///
 /// Args:
 ///     qubit (int): The qubit on which to apply the damping.
@@ -1150,7 +1162,7 @@ pub struct PragmaConditional {
 }
 
 #[pyclass(name = "PragmaChangeDevice", module = "qoqo.operations")]
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 /// A wrapper around backend specific PRAGMA operations capable of changing a device.
 ///
 /// This PRAGMA is a thin wrapper around device specific operations that can change

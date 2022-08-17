@@ -14,7 +14,8 @@
 
 #[cfg(feature = "serialize")]
 use bincode::serialize;
-use ndarray::{array, Array1, Array2};
+use nalgebra::{matrix, Matrix4};
+use ndarray::{array, Array, Array1, Array2};
 use num_complex::Complex64;
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::operations::*;
@@ -23,7 +24,6 @@ use roqoqo::Circuit;
 #[cfg(feature = "serialize")]
 use serde_test::{assert_tokens, Configure, Token};
 use std::collections::{HashMap, HashSet};
-
 /// Test PragmaSetNumberOfMeasurements inputs and involved qubits
 #[test]
 fn pragma_set_number_of_measurements_inputs_qubits() {
@@ -2592,40 +2592,35 @@ fn pragma_general_noise_substitute_trait() {
 /// Test PragmaGeneralNoise Operate trait
 #[test]
 fn pragma_general_noise_pragmanoise_trait() {
-    let rates: Array2<f64> = array![[0.3, 0.0, 0.1], [0.7, 0.0, 0.0], [0.0, 0.8, 0.2]]; // add check for >= eigenvalues
-    let pragma = PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), rates);
+    let time = 0.005;
+    let rates: Array2<f64> = array![[0.3, 0.7, 0.0], [0.7, 2.0, 0.8], [0.0, 0.8, 3.0]]; // add check for >= eigenvalues
+    let pragma = PragmaGeneralNoise::new(0, CalculatorFloat::from(time), rates);
+    let superop: Matrix4<f64> = matrix![-2., 0.4, 0.4, 0.3;
+    1.2, -7.15, 0.7, 0.4;
+    1.2, 0.7, -7.15, 0.4;
+    2., -0.4, -0.4, -0.3;]
+        * time;
+    let mut exponential = superop.exp();
+    exponential.transpose_mut();
+    let mut tmp_iter = exponential.iter();
+    // convert to ndarray.
+    let array: Array2<f64> = Array::from_shape_simple_fn((4, 4), || *tmp_iter.next().unwrap());
 
     // matrix exponential using numpy:
     let test_exponential = array![
-        [
-            1.00000004e+00,
-            3.13603590e-05,
-            4.48130265e-03,
-            5.97459826e-03
-        ],
-        [
-            1.14712981e-02,
-            9.95012493e-01,
-            2.86751104e-06,
-            2.49363597e-03
-        ],
-        [
-            2.44347666e-05,
-            1.39441142e-02,
-            9.97004509e-01,
-            1.74528238e-05
-        ],
-        [
-            -3.25322253e-08,
-            -2.78464407e-05,
-            -3.97707102e-03,
-            9.91536000e-01
-        ]
+        [0.99006908, 0.00195677, 0.00195677, 0.00149535],
+        [0.00588459, 0.96489129, 0.00338099, 0.00197106],
+        [0.00588459, 0.00338099, 0.96489129, 0.00197106],
+        [0.00993092, -0.00195677, -0.00195677, 0.99850465]
     ];
 
-    let result: Array2<f64> = test_exponential - pragma.superoperator().unwrap().t();
+    let result: Array2<f64> = test_exponential - pragma.superoperator().unwrap();
     for item in result.iter() {
         assert!(item.abs() <= 0.0001);
+    }
+    let result2: Array2<f64> = array - pragma.superoperator().unwrap();
+    for item in result2.iter() {
+        assert!(item.abs() <= 1e-6);
     }
 }
 
