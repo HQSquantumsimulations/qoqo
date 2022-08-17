@@ -54,7 +54,7 @@ impl CircuitDagWrapper {
     #[new]
     pub fn new() -> Self {
         Self {
-            internal: CircuitDag::new(),
+            internal: CircuitDag::with_capacity(100, 300),
         }
     }
 

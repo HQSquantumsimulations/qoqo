@@ -17,6 +17,9 @@ use roqoqo::{Circuit, CircuitDag};
 
 use test_case::test_case;
 
+static DEFAULT_NODE_NUMBER: usize = 10;
+static DEFAULT_EDGE_NUMBER: usize = 30;
+
 /// Test adding an operation that doesn't involve qubits.
 ///
 #[test_case(
@@ -28,7 +31,7 @@ use test_case::test_case;
     Operation::from(PragmaSetNumberOfMeasurements::new(1, "to".to_string()))
 )]
 fn add_operation_no_involved_qubits(operation1: Operation, operation2: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
 
     let back1 = dag.add_to_back(operation1.clone());
 
@@ -43,97 +46,12 @@ fn add_operation_no_involved_qubits(operation1: Operation, operation2: Operation
     assert_eq!(dag.commuting_operations().get(1), front1.as_ref());
 }
 
-/// Test graph node existance after adding an operation that involves qubits.
-///
-#[test_case(Operation::from(PauliX::new(0)))]
-#[test_case(Operation::from(PauliY::new(1)))]
-#[test_case(Operation::from(ControlledPauliZ::new(0, 1)))]
-fn check_node_existance(operation: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
-
-    dag.add_to_back(operation.clone());
-
-    assert!(dag.graph().node_count() == 1);
-
-    dag.add_to_front(operation.clone());
-    dag.add_to_back(Operation::from(CNOT::new(0, 1)));
-
-    assert!(dag.graph().node_count() == 3);
-}
-
-#[test_case(Operation::from(PauliX::new(0)), Operation::from(PauliY::new(0)))]
-#[test_case(Operation::from(PauliZ::new(0)), Operation::from(CNOT::new(0, 1)))]
-fn check_node_count(operation1: Operation, operation2: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
-
-    dag.add_to_back(operation1.clone());
-    dag.add_to_front(operation2.clone());
-
-    assert!(dag.graph().node_count() == 2);
-
-    dag.add_to_back(operation1.clone());
-
-    assert!(dag.graph().node_count() == 3);
-}
-
-#[test_case(Operation::from(PauliX::new(0)), Operation::from(PauliY::new(0)))]
-fn check_edge(operation1: Operation, operation2: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
-
-    let ind1 = dag.add_to_back(operation1.clone());
-    let ind2 = dag.add_to_back(operation2.clone());
-
-    assert!(dag
-        .graph()
-        .contains_edge(ind1.unwrap().into(), ind2.unwrap().into()));
-}
-
-#[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None)))]
-#[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ri"), 2, None)))]
-fn check_first_last_all_existence(operation: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
-
-    assert!(dag.first_all().is_none());
-    assert!(dag.last_all().is_none());
-
-    let ind_back = dag.add_to_back(operation.clone());
-    let ind_front = dag.add_to_front(operation.clone());
-
-    assert!(dag.first_all().is_some());
-    assert!(dag.last_all().is_some());
-
-    assert!(dag.first_all().unwrap() == ind_front.unwrap());
-    assert!(dag.last_all().unwrap() == ind_back.unwrap());
-}
-
-#[test_case(
-    Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None)),
-    Operation::from(PragmaRepeatedMeasurement::new(String::from("ri"), 2, None))
-)]
-fn check_first_last_all_order(operation1: Operation, operation2: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
-
-    dag.add_to_back(operation1);
-    dag.add_to_front(operation2);
-
-    assert!(dag.first_all().is_some());
-    assert!(dag.last_all().is_some());
-
-    let f_all = *dag.first_all();
-    let l_all = *dag.last_all();
-
-    assert_ne!(
-        dag.graph().node_weight(f_all.unwrap().into()),
-        dag.graph().node_weight(l_all.unwrap().into())
-    );
-}
-
 #[test_case(Operation::from(PauliX::new(0)), Operation::from(PauliY::new(1)))]
 #[test_case(Operation::from(PauliY::new(1)), Operation::from(PauliZ::new(2)))]
 #[test_case(Operation::from(CNOT::new(0, 1)), Operation::from(PauliX::new(1)))]
 #[test_case(Operation::from(PauliX::new(1)), Operation::from(CNOT::new(0, 1)))]
 fn check_parallel_blocks_set(operation1: Operation, operation2: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
     let mut inv_qubits_1: HashSet<usize> = HashSet::new();
     if let InvolvedQubits::Set(x) = operation1.involved_qubits() {
         for qubit in x {
@@ -159,7 +77,7 @@ fn check_parallel_blocks_set(operation1: Operation, operation2: Operation) {
 #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None)))]
 #[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ri"), 2, None)))]
 fn check_parallel_blocks_all(operation: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
 
     assert!(dag.last_parallel_block().len() == 0);
     assert!(dag.first_parallel_block().len() == 0);
@@ -179,7 +97,7 @@ fn check_parallel_blocks_all(operation: Operation) {
 #[test_case(Operation::from(PauliY::new(1)), Operation::from(PauliZ::new(2)))]
 #[test_case(Operation::from(PauliX::new(0)), Operation::from(PauliX::new(2)))]
 fn check_parallel_blocks_mixed(operation1: Operation, operation2: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
 
     dag.add_to_front(operation1);
 
@@ -200,7 +118,7 @@ fn check_parallel_blocks_mixed(operation1: Operation, operation2: Operation) {
 #[test_case(Operation::from(PauliX::new(0)))]
 #[test_case(Operation::from(CNOT::new(0, 1)))]
 fn check_operation_involving_qubits_set(operation: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
 
     dag.add_to_front(Operation::from(PauliZ::new(0)));
     dag.add_to_back(Operation::from(CNOT::new(0, 1)));
@@ -220,87 +138,10 @@ fn check_operation_involving_qubits_set(operation: Operation) {
     }
 }
 
-#[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 1, None,)))]
-#[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ri"), 2, None,)))]
-fn check_operation_involving_qubits_all(operation: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
-
-    assert!(dag.first_operation_involving_qubit().is_empty());
-    assert!(dag.last_operation_involving_qubit().is_empty());
-
-    dag.add_to_front(operation.clone());
-
-    assert!(dag.first_operation_involving_qubit().is_empty());
-    assert!(dag.last_operation_involving_qubit().is_empty());
-
-    let back = dag.add_to_back(Operation::from(PauliX::new(0)));
-
-    assert_eq!(dag.last_operation_involving_qubit().get(&0), back.as_ref());
-
-    let front = dag.add_to_front(Operation::from(CNOT::new(0, 1)));
-
-    assert_eq!(dag.last_operation_involving_qubit().get(&0), back.as_ref());
-    assert_eq!(
-        dag.first_operation_involving_qubit().get(&0),
-        front.as_ref()
-    );
-
-    assert_ne!(dag.last_operation_involving_qubit().get(&0), front.as_ref());
-    assert_ne!(dag.first_operation_involving_qubit().get(&0), back.as_ref());
-
-    let new_front_all = dag.add_to_front(operation.clone());
-    let new_back_all = dag.add_to_back(operation.clone());
-
-    assert!(dag
-        .graph()
-        .contains_edge(new_front_all.unwrap().into(), front.unwrap().into()));
-    assert!(dag
-        .graph()
-        .contains_edge(back.unwrap().into(), new_back_all.unwrap().into()));
-}
-
-#[test_case(vec![Operation::from(CNOT::new(0,1)), Operation::from(PauliX::new(0)), Operation::from(PauliY::new(1))])]
-#[test_case(vec![Operation::from(PauliZ::new(0)), Operation::from(ControlledPauliZ::new(1,2))])]
-fn test_from_circuit(op_vec: Vec<Operation>) {
-    let mut circuit: Circuit = Circuit::new();
-    for op in &op_vec {
-        circuit.add_operation((*op).clone());
-    }
-
-    let dag: CircuitDag = CircuitDag::from(circuit);
-
-    assert!(!dag.first_operation_involving_qubit().is_empty());
-    assert!(!dag.last_operation_involving_qubit().is_empty());
-
-    assert_eq!(dag.graph().node_count(), op_vec.len());
-}
-
-#[test_case(vec![Operation::from(CNOT::new(0,1)), Operation::from(PauliX::new(0)), Operation::from(PauliY::new(0)), Operation::from(PauliZ::new(0))])]
-#[test_case(vec![Operation::from(PauliZ::new(0)), Operation::from(ControlledPauliZ::new(0,1))])]
-fn test_from_circuitdag(op_vec: Vec<Operation>) {
-    let mut dag: CircuitDag = CircuitDag::new();
-
-    for op in &op_vec {
-        dag.add_to_back(op.clone());
-    }
-
-    let circuit = Circuit::from(dag.clone());
-
-    assert_eq!(circuit.len(), dag.graph().node_count());
-
-    circuit
-        .iter()
-        .enumerate()
-        .into_iter()
-        .for_each(|(ind, oper)| {
-            assert_eq!(*oper, *dag.graph().node_weight(ind.into()).unwrap());
-        });
-}
-
 #[test_case(Operation::from(CNOT::new(0, 1)))]
 #[test_case(Operation::from(PauliX::new(0)))]
 fn check_involved_classical_none(operation: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
 
     assert!(dag.first_operation_involving_classical().is_empty());
     assert!(dag.last_operation_involving_classical().is_empty());
@@ -314,7 +155,7 @@ fn check_involved_classical_none(operation: Operation) {
 #[test_case(Operation::from(MeasureQubit::new(0, "ro".to_string(), 0)), Operation::from(MeasureQubit::new(1, "ro".to_string(), 1)))]
 #[test_case(Operation::from(MeasureQubit::new(1, "ro".to_string(), 1)), Operation::from(MeasureQubit::new(2, "ro".to_string(), 2)))]
 fn check_involved_classical_set(operation1: Operation, operation2: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
 
     let back = dag.add_to_back(operation1.clone());
 
@@ -359,7 +200,7 @@ fn check_involved_classical_set(operation1: Operation, operation2: Operation) {
 #[test_case(Operation::from(DefinitionComplex::new("ri".to_string(), 4, false)))]
 #[test_case(Operation::from(DefinitionBit::new("ri".to_string(), 4, false)))]
 fn test_is_definition_classical_populate(operation: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
 
     let node = dag.add_to_back(operation.clone());
 
@@ -399,7 +240,7 @@ fn test_is_definition_classical_populate(operation: Operation) {
 #[test_case(Operation::from(DefinitionComplex::new("ro".to_string(), 4, false)))]
 #[test_case(Operation::from(DefinitionBit::new("ri".to_string(), 3, false)))]
 fn check_involved_classical_all(operation: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
 
     let back = dag.add_to_back(Operation::from(MeasureQubit::new(0, "ro".to_string(), 0)));
     let front = dag.add_to_front(Operation::from(MeasureQubit::new(1, "ro".to_string(), 1)));
@@ -479,7 +320,7 @@ fn check_involved_classical_all(operation: Operation) {
 #[test_case(vec![Operation::from(CNOT::new(0,1)), Operation::from(PauliX::new(0)), Operation::from(PauliY::new(1))])]
 #[test_case(vec![Operation::from(PauliZ::new(0)), Operation::from(ControlledPauliZ::new(1,2))])]
 fn test_pragma_conditional(op_vec: Vec<Operation>) {
-    let mut dag: CircuitDag = CircuitDag::new();
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
     let mut circuit: Circuit = Circuit::new();
     for op in &op_vec {
         circuit.add_operation((*op).clone());
@@ -499,7 +340,7 @@ fn test_pragma_conditional(op_vec: Vec<Operation>) {
 #[test_case(Operation::from(CNOT::new(0, 1)))]
 #[test_case(Operation::from(PauliY::new(2)))]
 fn test_get(operation: Operation) {
-    let mut dag: CircuitDag = CircuitDag::new();
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
 
     let node = dag.add_to_back(operation.clone());
 
@@ -508,7 +349,7 @@ fn test_get(operation: Operation) {
 
 #[test]
 fn test_execution_blocked() {
-    let mut dag: CircuitDag = CircuitDag::new();
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
 
     let a = dag.add_to_back(Operation::from(PauliX::new(0))).unwrap();
     let b = dag.add_to_back(Operation::from(PauliZ::new(0))).unwrap();
@@ -528,7 +369,7 @@ fn test_execution_blocked() {
 
 #[test]
 fn test_new_front_layer() {
-    let mut dag: CircuitDag = CircuitDag::new();
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
 
     let a = dag.add_to_back(Operation::from(PauliX::new(0))).unwrap();
     let b = dag.add_to_back(Operation::from(PauliZ::new(0))).unwrap();
@@ -553,7 +394,7 @@ fn test_new_front_layer() {
 
 #[test]
 fn test_parallel_block_iterator() {
-    let mut dag: CircuitDag = CircuitDag::new();
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
 
     let a = dag.add_to_back(Operation::from(PauliX::new(0))).unwrap();
     let b = dag.add_to_back(Operation::from(PauliZ::new(0))).unwrap();
