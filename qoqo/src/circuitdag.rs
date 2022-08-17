@@ -141,16 +141,37 @@ impl CircuitDagWrapper {
         current_front_layer: Vec<usize>,
         to_be_executed: usize,
     ) -> PyResult<Vec<usize>> {
-        if !current_front_layer.contains(&to_be_executed) {
-            return PyValueError::new_err(format!(
-                "The Operation to be executed is not in the current front layer."
-            ));
+        Ok(self
+            .internal
+            .new_front_layer(
+                already_executed.as_slice(),
+                current_front_layer.as_slice(),
+                &to_be_executed,
+            )
+            .map_err(|_| {
+                PyValueError::new_err(format!(
+                    "The Operation to be executed is not in the current front layer."
+                ))
+            })?)
+    }
+
+    /// Returns an iterator over the possible parallel blocks in circuit that can be executed simultaneously
+    ///
+    /// Returns an Iterator over Vectors of references to the NodeIndices in the parallel block as well
+    /// as references to the Operation in the blocks
+    pub fn parallel_blocks(&self) -> Vec<Vec<(usize, PyObject)>> {
+        let mut par_bl = self.internal.parallel_blocks();
+        let mut par_bl_vec: Vec<Vec<(usize, PyObject)>> = Vec::new();
+
+        while let Some(vec) = par_bl.next() {
+            let mut inner_vec: Vec<(usize, PyObject)> = Vec::new();
+            for tuple in &vec {
+                inner_vec.push((tuple.0, convert_operation_to_pyobject(tuple.1.clone()).unwrap()));
+            }
+            par_bl_vec.push(inner_vec);
         }
-        Ok(self.internal.new_front_layer(
-            already_executed.as_slice(),
-            current_front_layer.as_slice(),
-            &to_be_executed,
-        ))
+
+        par_bl_vec
     }
 
     /// Given a NodeIndex, returns the Operation contained in the node of

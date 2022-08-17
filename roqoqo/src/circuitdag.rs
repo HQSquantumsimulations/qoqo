@@ -43,6 +43,8 @@ pub struct CircuitDag {
     last_operation_involving_classical: HashMap<(String, usize), NodeIndex<usize>>,
 }
 
+/// Iterator over all possible parallel executable blocks of a Circuit.
+/// 
 #[derive(Debug)]
 pub struct ParallelBlocks<'a> {
     dag: &'a CircuitDag,
