@@ -38,6 +38,7 @@ use std::convert::TryFrom;
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperatePragma,
@@ -173,6 +174,7 @@ impl InvolveQubits for PragmaSetDensityMatrix {
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperatePragma,
@@ -362,6 +364,7 @@ const TAGS_PragmaSleep: &[&str; 4] = &[
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
@@ -389,6 +392,7 @@ const TAGS_PragmaActiveReset: &[&str; 4] = &[
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::OperateMultiQubit,
@@ -450,6 +454,7 @@ impl Substitute for PragmaStartDecompositionBlock {
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
@@ -1003,7 +1008,7 @@ impl Substitute for PragmaConditional {
 ///
 /// Since this PRAGMA uses serde and bincode to store a representation of the wrapped
 /// operation internally it is only available when roqoqo is built with the `serialize` feature
-#[derive(Debug, Clone, PartialEq, roqoqo_derive::OperatePragma)]
+#[derive(Debug, Clone, PartialEq, Eq, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaChangeDevice {

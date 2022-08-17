@@ -900,8 +900,8 @@ fn test_rotate_powercf(gate: Rotation, gate2: Rotation) {
 fn test_ineffective_substitute_parameters(gate: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
-    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
-    assert_eq!(result, gate.clone());
+    let result = gate.substitute_parameters(&substitution_dict).unwrap();
+    assert_eq!(result, gate);
 }
 
 /// Test substitute parameters function for TwoQubitGate Operations
@@ -932,7 +932,7 @@ fn test_ineffective_substitute_parameters(gate: Operation) {
 fn test_substitute_parameters(gate: Operation, gate2: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
-    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
+    let result = gate.substitute_parameters(&substitution_dict).unwrap();
     assert_eq!(result, gate2);
 }
 
@@ -954,7 +954,7 @@ fn test_substitute_parameters(gate: Operation, gate2: Operation) {
 fn test_substitute_parameters_error(gate: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("error", 0.0);
-    let result = gate.substitute_parameters(&mut substitution_dict);
+    let result = gate.substitute_parameters(&substitution_dict);
     assert!(result.is_err());
 }
 

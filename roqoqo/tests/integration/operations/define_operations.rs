@@ -81,7 +81,7 @@ fn definition_float_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.0);
     let result = def_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(def, result);
 
@@ -205,7 +205,7 @@ fn definition_complex_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.0);
     let result = def_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(def, result);
 
@@ -329,7 +329,7 @@ fn definition_usize_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.0);
     let result = def_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(def, result);
 
@@ -453,7 +453,7 @@ fn definition_bit_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.0);
     let result = def_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(def, result);
 
@@ -576,7 +576,7 @@ fn input_symbolic_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.0);
     let result = def_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(def, result);
 

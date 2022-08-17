@@ -35,6 +35,7 @@ use crate::Circuit;
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
@@ -293,7 +294,7 @@ impl InvolveQubits for PragmaGetPauliProduct {
 
 /// This PRAGMA measurement operation returns a measurement record for $N$ repeated measurements.
 ///
-#[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
+#[derive(Debug, Clone, PartialEq, Eq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaRepeatedMeasurement {
