@@ -44,7 +44,7 @@ pub struct CircuitDag {
 }
 
 /// Iterator over all possible parallel executable blocks of a Circuit.
-/// 
+///
 #[derive(Debug)]
 pub struct ParallelBlocks<'a> {
     dag: &'a CircuitDag,

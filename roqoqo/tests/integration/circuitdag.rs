@@ -565,17 +565,17 @@ fn test_parallel_block_iterator() {
 
     let vec = par_bl.next().unwrap();
     for (ind, _) in vec {
-        assert!(ind==a || ind==c);
+        assert!(ind == a || ind == c);
     }
 
     let vec = par_bl.next().unwrap();
     for (ind, _) in vec {
-        assert!(ind==b || ind==d);
+        assert!(ind == b || ind == d);
     }
 
     let vec = par_bl.next().unwrap();
     for (ind, _) in vec {
-        assert!(ind==e);
+        assert!(ind == e);
     }
 
     assert!(par_bl.next().is_none());
