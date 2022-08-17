@@ -177,7 +177,7 @@ impl CircuitDag {
             //  depending on last_all
             if self.last_all.is_none() {
                 self.first_operation_involving_qubit.insert(qubit, node);
-                // BUG: to execute only if all InvolvedQubits in the node were first timers
+                // TODO:BUG to execute only if all InvolvedQubits in the node were first timers
                 self.first_parallel_block.insert(node);
             } else {
                 self.first_operation_involving_qubit
@@ -296,7 +296,7 @@ impl CircuitDag {
             //  depending on first_all
             if self.first_all.is_none() {
                 self.last_operation_involving_qubit.insert(qubit, node);
-                // BUG: to execute only if all InvolvedQubits in the node were first timers
+                // TODO:BUG to execute only if all InvolvedQubits in the node were first timers
                 self.last_parallel_block.insert(node);
             } else {
                 self.last_operation_involving_qubit
