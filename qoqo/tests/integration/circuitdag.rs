@@ -288,3 +288,61 @@ fn test_execution_blocked() {
         assert!(helper);
     })
 }
+
+#[test]
+fn test_new_front_layer() {
+    pyo3::prepare_freethreaded_python();
+    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+    let pauliy_1 = convert_operation_to_pyobject(Operation::from(PauliY::new(1))).unwrap();
+    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
+    let pauliz_0 = convert_operation_to_pyobject(Operation::from(PauliZ::new(0))).unwrap();
+    let cpauliz_12 =
+        convert_operation_to_pyobject(Operation::from(ControlledPauliZ::new(1, 2))).unwrap();
+    Python::with_gil(|py| {
+        let dag = new_circuitdag(py);
+
+        let a = dag
+            .call_method1("add_to_back", (paulix_0.clone(),))
+            .unwrap();
+        let b = dag
+            .call_method1("add_to_back", (pauliz_0.clone(),))
+            .unwrap();
+        let c = dag
+            .call_method1("add_to_back", (pauliy_1.clone(),))
+            .unwrap();
+        let d = dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
+        let e = dag
+            .call_method1("add_to_back", (cpauliz_12.clone(),))
+            .unwrap();
+
+        assert!(dag.call_method1("new_front_layer", (vec![a,b,c], vec![d], e)).is_err());
+
+        let comp = dag
+            .call_method1("new_front_layer", (vec![a,c], vec![b], b))
+            .unwrap();
+        let helper =
+            bool::extract(comp.call_method1("__eq__", (vec![d],)).unwrap()).unwrap();
+        assert!(helper);
+
+        let comp = dag
+            .call_method1("new_front_layer", (vec![a], vec![b], b))
+            .unwrap();
+        let helper =
+            bool::extract(comp.call_method1("__eq__", (vec![b],)).unwrap()).unwrap();
+        assert!(helper);
+
+        let comp = dag
+            .call_method1("new_front_layer", (vec![a,b,c], vec![d], d))
+            .unwrap();
+        let helper =
+            bool::extract(comp.call_method1("__eq__", (vec![e],)).unwrap()).unwrap();
+        assert!(helper);
+
+        let comp = dag
+            .call_method1("new_front_layer", (vec![a,b,c,d], vec![e], e))
+            .unwrap();
+        let helper =
+            bool::extract(comp.call_method1("__eq__", (Vec::<usize>::new(),)).unwrap()).unwrap();
+        assert!(helper);
+    })
+}
