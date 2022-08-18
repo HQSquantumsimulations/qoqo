@@ -369,39 +369,54 @@ fn test_parallel_blocks() {
 
         let par_bl = dag.call_method0("parallel_blocks").unwrap();
 
-        // TODO: horrible solution
-        let correct_vec: Vec<Vec<(usize, PyObject)>> = vec![
-            [
-                (
-                    0usize,
-                    convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap(),
-                ),
-                (
-                    2usize,
-                    convert_operation_to_pyobject(Operation::from(PauliY::new(1))).unwrap(),
-                ),
-            ]
-            .to_vec(),
-            [
-                (
-                    1usize,
-                    convert_operation_to_pyobject(Operation::from(PauliZ::new(0))).unwrap(),
-                ),
-                (
-                    3usize,
-                    convert_operation_to_pyobject(Operation::from(PauliX::new(1))).unwrap(),
-                ),
-            ]
-            .to_vec(),
-            [(
-                4usize,
-                convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap(),
-            )]
-            .to_vec(),
-        ]
-        .to_vec();
+        let vec0 = par_bl.get_item(0).unwrap();
+        for el in vec0.call0() {
+            let helper1 = bool::extract(
+                el.get_item(0)
+                    .unwrap()
+                    .call_method1("__eq__", (0,))
+                    .unwrap(),
+            )
+            .unwrap();
+            let helper2 = bool::extract(
+                el.get_item(0)
+                    .unwrap()
+                    .call_method1("__eq__", (2,))
+                    .unwrap(),
+            )
+            .unwrap();
+            assert!(helper1 || helper2);
+        }
 
-        let helper = bool::extract(par_bl.call_method1("__eq__", (correct_vec,)).unwrap()).unwrap();
-        assert!(helper);
+        let vec1 = par_bl.get_item(1).unwrap();
+        for el in vec1.call0() {
+            let helper1 = bool::extract(
+                el.get_item(0)
+                    .unwrap()
+                    .call_method1("__eq__", (1,))
+                    .unwrap(),
+            )
+            .unwrap();
+            let helper2 = bool::extract(
+                el.get_item(0)
+                    .unwrap()
+                    .call_method1("__eq__", (3,))
+                    .unwrap(),
+            )
+            .unwrap();
+            assert!(helper1 || helper2);
+        }
+
+        let vec2 = par_bl.get_item(2).unwrap();
+        for el in vec2.call0() {
+            let helper1 = bool::extract(
+                el.get_item(0)
+                    .unwrap()
+                    .call_method1("__eq__", (4,))
+                    .unwrap(),
+            )
+            .unwrap();
+            assert!(helper1);
+        }
     })
 }
