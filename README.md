@@ -37,13 +37,17 @@ This repository contains two components:
 
 roqoqo provides:
 
-* A circuit struct to represent quantum programs
-* Single-Qubit, Two-Qubit and Multi-Qubit Operations that can be executed (decomposed) on any universal quantum computer
-* PRAGMA Operations that only apply to certain hardware, simulators or annotate circuits with additional information
-* Classical Registers and Measurement operations to use with a quantum program
-* Measurement structs for evaluating observable measurements based on projective measurements from quantum hardware or simulator readouts
-* A Backend trait defining a standard for interfacing from qoqo to other toolkits, hardware and simulators that can return measured values
-* Serialize and deserialize support for circuits and measurement information via the serde crate.
+* A `Circuit` struct to represent quantum circuits
+* A `QuantumProgram` enum to represent quantum programs using different measurement methods
+* Structs representing single-qubit, two-qubit, multi-qubit and measurement operations that can be executed (decomposed) on any universal quantum computer
+* Structs representing so-called PRAGMA operations that only apply to certain hardware, simulators or annotate circuits with additional information
+* Enums that group operations based on the properties of operations (*e.g.* `Operation` for all operations or `SingleQubitGateOperation` for all unitary operations acting on a single qubit)
+* Support for symbolic variables
+* Readout based on classical registers
+* Measurement structs for evaluating observable measurements based on raw readout date returned by quantum computer backends
+* An `EvaluatingBackend` trait defining a standard for interfacing from qoqo to hardware and simulators that can return measured values
+* A `Device` trait defining a standard to obtain connectivity information and a noise model for quantum computing devices
+* Serialize and deserialize support for `Circuit` and `QuantumProgram` via the serde crate.
 
 This software is still in the beta stage. Functions and documentation are not yet complete and breaking changes can occur.
 
@@ -66,14 +70,15 @@ to the `[dependencies]` section of the project Cargo.toml.
 [![Crates.io](https://img.shields.io/crates/v/roqoqo)](https://crates.io/crates/qoqo)
 ![Crates.io](https://img.shields.io/crates/l/qoqo)
 
-qoqo provides a full python interface to the underlying roqoqo library, including:
+qoqo provides the Python interface to the underlying roqoqo library, including:
 
-* A circuit class to represent quantum programs
-* Single-Qubit, Two-Qubit and Multi-Qubit Operations that can be executed (decomposed) on any universal quantum computer
-* PRAGMA Operations that only apply to certain hardware, simulators or annotate circuits with additional information
-* Classical Register and Measurement operations to use with a quantum program
-* Measurement structs for evaluating observable measurements based on projective measurements from quantum hardware or simulator readouts
-* A QuantumProgram class combining circuits and measurement information in complete quantum programms with a simple interface
+* A `Circuit` class to represent quantum circuits
+* A `QuantumProgram` class to represent quantum programs 
+* Classes representing single-qubit, two-qubit, multi-qubit and measurement operations that can be executed (decomposed) on any universal quantum computer
+* Classes representing so-called PRAGMA operations that only apply to certain hardware, simulators or annotate circuits with additional information
+* Support for symbolic variables
+* Readout based on classical registers
+* Measurement classes for evaluating observable measurements based on raw readout date returned by quantum computer backends
 * Serialization to json and deserialization from json for circuits and measurement information. Serialization support can easily be expanded to other targets with the help of the serde crate.
 
 ### Installation
