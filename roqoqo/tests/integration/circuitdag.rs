@@ -55,8 +55,8 @@ fn test_partial_eq() {
     dag2.add_to_back(Operation::from(PauliX::new(0)));
     dag1.add_to_back(Operation::from(PauliY::new(0)));
     dag2.add_to_back(Operation::from(PauliY::new(0)));
-    dag1.add_to_back(Operation::from(CNOT::new(0,1)));
-    dag2.add_to_back(Operation::from(CNOT::new(0,1)));
+    dag1.add_to_back(Operation::from(CNOT::new(0, 1)));
+    dag2.add_to_back(Operation::from(CNOT::new(0, 1)));
 
     assert_eq!(dag1, dag2);
 
