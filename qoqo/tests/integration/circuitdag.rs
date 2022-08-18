@@ -290,6 +290,50 @@ fn test_execution_blocked() {
 }
 
 #[test]
+fn test_blocking_predecessors() {
+    pyo3::prepare_freethreaded_python();
+    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+    let pauliy_1 = convert_operation_to_pyobject(Operation::from(PauliY::new(1))).unwrap();
+    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
+    let pauliz_0 = convert_operation_to_pyobject(Operation::from(PauliZ::new(0))).unwrap();
+    Python::with_gil(|py| {
+        let dag = new_circuitdag(py);
+
+        let a = dag
+            .call_method1("add_to_back", (paulix_0.clone(),))
+            .unwrap();
+        let b = dag
+            .call_method1("add_to_back", (pauliz_0.clone(),))
+            .unwrap();
+        let c = dag
+            .call_method1("add_to_back", (pauliy_1.clone(),))
+            .unwrap();
+        let d = dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
+
+        let comp = dag
+            .call_method1("blocking_predecessors", (vec![a, b, c], d))
+            .unwrap();
+        assert_eq!(comp.len().unwrap(), 0);
+
+        let comp = dag
+            .call_method1("blocking_predecessors", (vec![a], b))
+            .unwrap();
+        assert_eq!(comp.len().unwrap(), 0);
+
+        let comp = dag
+            .call_method1("blocking_predecessors", (Vec::<usize>::new(), c))
+            .unwrap();
+        assert_eq!(comp.len().unwrap(), 0);
+
+        let comp = dag
+            .call_method1("blocking_predecessors", (vec![a, b], d))
+            .unwrap();
+        let helper = bool::extract(comp.call_method1("__eq__", (vec![c],)).unwrap()).unwrap();
+        assert!(helper);
+    })
+}
+
+#[test]
 fn test_new_front_layer() {
     pyo3::prepare_freethreaded_python();
     let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
