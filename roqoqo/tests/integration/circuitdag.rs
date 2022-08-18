@@ -91,7 +91,7 @@ fn check_parallel_blocks_set(operation1: Operation, operation2: Operation) {
     dag.add_to_back(operation1.clone());
 
     assert!(dag.last_parallel_block().len() == 1);
-    assert!(dag.last_parallel_block().len() == 1);
+    assert!(dag.first_parallel_block().len() == 1);
 
     dag.add_to_front(operation2.clone());
     dag.add_to_back(operation1.clone());
