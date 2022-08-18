@@ -12,7 +12,7 @@ What roqoqo/qoqo is:
 * A toolkit to represent quantum programs including circuits and measurement information
 * A thin runtime to run quantum measurements
 * A way to serialize quantum circuits and measurement information
-* A set of optional interfaces to devices, simulators and toolkits (e.g. [qoqo_qest](https://github.com/HQSquantumsimulations/qoqo-quest), [qoqo_mock](https://github.com/HQSquantumsimulations/qoqo_mock), [qoqo_qasm](https://github.com/HQSquantumsimulations/qoqo_qasm))
+* A set of optional interfaces to devices, simulators and toolkits (e.g. [qoqo_quest](https://github.com/HQSquantumsimulations/qoqo-quest), [qoqo_mock](https://github.com/HQSquantumsimulations/qoqo_mock), [qoqo_qasm](https://github.com/HQSquantumsimulations/qoqo_qasm))
 
 What roqoqo/qoqo is **not**:
 
@@ -28,14 +28,15 @@ What roqoqo/qoqo is **not**:
 [![Crates.io](https://img.shields.io/crates/v/roqoqo)](https://crates.io/crates/qoqo)
 ![Crates.io](https://img.shields.io/crates/l/qoqo)
 
-qoqo provides a full python interface to the underlying roqoqo library, including:
+qoqo provides the Python interface to the underlying roqoqo library, including:
 
-* A circuit class to represent quantum programs
-* Single-Qubit, Two-Qubit and Multi-Qubit Operations that can be executed (decomposed) on any universal quantum computer
-* PRAGMA Operations that only apply to certain hardware, simulators or annotate circuits with additional information
-* Classical Register and Measurement operations to use with a quantum program
-* Measurement structs for evaluating observable measurements based on projective measurements from quantum hardware or simulator readouts
-* A QuantumProgram class combining circuits and measurement information in complete quantum programms with a simple interface
+* A `Circuit` class to represent quantum circuits
+* A `QuantumProgram` class to represent quantum programs 
+* Classes representing single-qubit, two-qubit, multi-qubit and measurement operations that can be executed (decomposed) on any universal quantum computer
+* Classes representing so-called PRAGMA operations that only apply to certain hardware, simulators or annotate circuits with additional information
+* Support for symbolic variables
+* Readout based on classical registers
+* Measurement classes for evaluating observable measurements based on raw readout date returned by quantum computer backends
 * Serialization to json and deserialization from json for circuits and measurement information. Serialization support can easily be expanded to other targets with the help of the serde crate.
 
 ### Installation
@@ -46,13 +47,11 @@ On Linux, macOS and Windows on x86 precompiled packages can be found on PyPi and
 pip install qoqo
 ```
 
-Alternatively, installing from the source distribution is possible. For this, a rust toolchain and the maturin Python package need to be already installed. A Rust toolchain can be installed using rustup.
-With this Rust toolchain installed, qoqo can be installed using a pip command:
+If no pre-built python wheel is available for your architecture you can install qoqo from the source distribution using a rust toolchain (for example available via rustup) and maturin (also available via pip). After installing the rust toolchain and maturing run the same pip install command as above. In some cases on macOS it can be necessary to provide specific linker arguments as shown below:
 
-```bash
-# After installing the Rust toolchain, execute the following:
-pip install maturin
-pip install qoqo
+```shell
+# can be necessary on macOS
+RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" pip install qoqo
 ```
 
 When using qoqo in a rust project providing a python interface add

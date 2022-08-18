@@ -232,7 +232,7 @@ fn test_substitute() {
     let gate = MultiQubitMS::new(qubits, CalculatorFloat::FRAC_PI_2);
     let mut calc = Calculator::new();
     calc.set_variable("theta", std::f64::consts::FRAC_PI_2);
-    let gate_substituted = roqoqo::operations::Substitute::substitute_parameters(&gate1, &mut calc);
+    let gate_substituted = roqoqo::operations::Substitute::substitute_parameters(&gate1, &calc);
     let subs = gate_substituted.unwrap();
     assert_eq!(gate, subs);
     let mut mapping: HashMap<usize, usize> = std::collections::HashMap::new();
@@ -248,8 +248,8 @@ fn test_substitute() {
 fn test_substitute_error() {
     let qubits = vec![0, 1, 2];
     let gate1 = MultiQubitMS::new(qubits, "theta".into());
-    let mut calc = Calculator::new();
-    let gate_substituted = gate1.substitute_parameters(&mut calc);
+    let calc = Calculator::new();
+    let gate_substituted = gate1.substitute_parameters(&calc);
     assert!(gate_substituted.is_err());
     let mut mapping: HashMap<usize, usize> = std::collections::HashMap::new();
     let _ = mapping.insert(1, 2);
@@ -501,7 +501,7 @@ fn test_substitute_multi_qubit_zz() {
     let gate = MultiQubitZZ::new(qubits, CalculatorFloat::FRAC_PI_2);
     let mut calc = Calculator::new();
     calc.set_variable("theta", std::f64::consts::FRAC_PI_2);
-    let gate_substituted = roqoqo::operations::Substitute::substitute_parameters(&gate1, &mut calc);
+    let gate_substituted = roqoqo::operations::Substitute::substitute_parameters(&gate1, &calc);
     let subs = gate_substituted.unwrap();
     assert_eq!(gate, subs);
     let mut mapping: HashMap<usize, usize> = std::collections::HashMap::new();
@@ -517,8 +517,8 @@ fn test_substitute_multi_qubit_zz() {
 fn test_substitute_error_multi_qubit_zz() {
     let qubits = vec![0, 1, 2];
     let gate1 = MultiQubitZZ::new(qubits, "theta".into());
-    let mut calc = Calculator::new();
-    let gate_substituted = gate1.substitute_parameters(&mut calc);
+    let calc = Calculator::new();
+    let gate_substituted = gate1.substitute_parameters(&calc);
     assert!(gate_substituted.is_err());
     let mut mapping: HashMap<usize, usize> = std::collections::HashMap::new();
     let _ = mapping.insert(1, 2);

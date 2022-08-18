@@ -850,7 +850,7 @@ fn test_two_qubitgates_debug(message: &'static str, gate: Operation) {
     Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)),
     Operation::from(PhaseShiftedControlledZ::new(1, 0, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_twoqubitgates_partialeq(gate1: Operation, gate2: Operation) {
-    assert!(gate1 == gate1);
+    assert!(gate1.clone() == gate1);
     assert!(gate1 == gate1.clone());
     assert!(gate2 != gate1);
     assert!(gate1 != gate2);
@@ -900,7 +900,7 @@ fn test_rotate_powercf(gate: Rotation, gate2: Rotation) {
 fn test_ineffective_substitute_parameters(gate: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
-    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
+    let result = gate.substitute_parameters(&substitution_dict).unwrap();
     assert_eq!(result, gate);
 }
 
@@ -932,7 +932,7 @@ fn test_ineffective_substitute_parameters(gate: Operation) {
 fn test_substitute_parameters(gate: Operation, gate2: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
-    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
+    let result = gate.substitute_parameters(&substitution_dict).unwrap();
     assert_eq!(result, gate2);
 }
 
@@ -954,7 +954,7 @@ fn test_substitute_parameters(gate: Operation, gate2: Operation) {
 fn test_substitute_parameters_error(gate: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("error", 0.0);
-    let result = gate.substitute_parameters(&mut substitution_dict);
+    let result = gate.substitute_parameters(&substitution_dict);
     assert!(result.is_err());
 }
 
@@ -1062,7 +1062,7 @@ fn test_kakdecomposition_partialeq() {
     };
 
     // comparison
-    assert!(gate1 == gate1);
+    assert!(gate1.clone() == gate1);
     assert!(gate1 == gate1.clone());
     assert!(gate2 != gate1);
     assert!(gate1 != gate2);

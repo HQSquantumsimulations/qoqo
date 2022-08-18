@@ -91,7 +91,7 @@ fn pragma_set_number_of_measurements_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -230,7 +230,7 @@ fn pragma_set_statevector_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -428,7 +428,7 @@ fn pragma_set_density_matrix_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -607,7 +607,7 @@ fn pragma_repeat_gate_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -728,7 +728,7 @@ fn pragma_overrotation_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -856,7 +856,7 @@ fn pragma_boost_noise_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.003);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -982,7 +982,7 @@ fn pragma_stop_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.0000001);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -1116,7 +1116,7 @@ fn pragma_global_phase_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.05);
     let result_test = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(pragma, result_test);
 
@@ -1241,7 +1241,7 @@ fn pragma_sleep_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.0000001);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -1377,7 +1377,7 @@ fn pragma_active_reset_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.05);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -1512,7 +1512,7 @@ fn pragma_start_decomp_block_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.05);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -1658,7 +1658,7 @@ fn pragma_stop_decomp_block_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.05);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -1801,7 +1801,7 @@ fn pragma_damping_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.005);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -1983,7 +1983,7 @@ fn pragma_depolarising_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.005);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -2165,7 +2165,7 @@ fn pragma_dephasing_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.005);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -2374,7 +2374,7 @@ fn pragma_random_noise_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.005);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -2576,7 +2576,7 @@ fn pragma_general_noise_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.005);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, pragma);
 
@@ -2614,7 +2614,7 @@ fn pragma_general_noise_pragmanoise_trait() {
         [0.00993092, -0.00195677, -0.00195677, 0.99850465]
     ];
 
-    let result: Array2<f64> = test_exponential.clone() - pragma.superoperator().unwrap();
+    let result: Array2<f64> = test_exponential - pragma.superoperator().unwrap();
     for item in result.iter() {
         assert!(item.abs() <= 0.0001);
     }
@@ -2789,7 +2789,7 @@ fn pragma_conditional_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(pragma, result);
 
@@ -3002,7 +3002,7 @@ fn pragma_change_device_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(pragma, result);
 

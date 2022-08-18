@@ -87,7 +87,7 @@ fn measure_qubit_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = measure_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(measure, result);
 
@@ -214,7 +214,7 @@ fn pragma_get_statevector_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(pragma, result);
     // // Error
@@ -375,7 +375,7 @@ fn pragma_get_density_matrix_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap(); // add something that is remapped -> check that remap is correctly called
     assert_eq!(pragma, result);
     // // Error
@@ -541,7 +541,7 @@ fn pragma_get_occupation_probability_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(pragma, result);
     // // Error
@@ -725,7 +725,7 @@ fn pragma_get_pauli_product_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(pragma, result);
 
@@ -965,7 +965,7 @@ fn pragma_repeated_measurement_substitute_trait() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("ro", 0.0);
     let result = pragma_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(pragma, result);
 

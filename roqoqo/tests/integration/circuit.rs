@@ -159,7 +159,7 @@ fn substitute_params_calculator() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.5);
     let result = circuit_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, circuit)
 }
@@ -175,9 +175,9 @@ fn substitute_params_input_symbolic() {
     circuit_test.add_operation(InputSymbolic::new("test".to_string(), 0.5));
     circuit_test.add_operation(RotateX::new(0, CalculatorFloat::from("test")));
 
-    let mut substitution_dict: Calculator = Calculator::new();
+    let substitution_dict: Calculator = Calculator::new();
     let result = circuit_test
-        .substitute_parameters(&mut substitution_dict)
+        .substitute_parameters(&substitution_dict)
         .unwrap();
     assert_eq!(result, circuit)
 }

@@ -9,7 +9,7 @@ What roqoqo is:
 * A toolkit to represent quantum programs including circuits and measurement information
 * A thin runtime to run quantum measurements
 * A way to serialize quantum circuits and measurement information
-* A set of optional interfaces to devices, simulators and toolkits (e.g. [qoqo_qest](https://github.com/HQSquantumsimulations/qoqo-quest), [qoqo_mock](https://github.com/HQSquantumsimulations/qoqo_mock), [qoqo_qasm](https://github.com/HQSquantumsimulations/qoqo_qasm))
+* A set of optional interfaces to devices, simulators and toolkits (e.g. [qoqo_quest](https://github.com/HQSquantumsimulations/qoqo-quest), [qoqo_mock](https://github.com/HQSquantumsimulations/qoqo_mock), [qoqo_qasm](https://github.com/HQSquantumsimulations/qoqo_qasm))
 
 What roqoqo is **not**:
 
@@ -28,13 +28,17 @@ What roqoqo is **not**:
 
 roqoqo provides:
 
-* A circuit struct to represent quantum programs
-* Single-Qubit, Two-Qubit and Multi-Qubit Operations that can be executed (decomposed) on any universal quantum computer
-* PRAGMA Operations that only apply to certain hardware, simulators or annotate circuits with additional information
-* Classical Registers and Measurement operations to use with a quantum program
-* Measurement structs for evaluating observable measurements based on projective measurements from quantum hardware or simulator readouts
-* A Backend trait defining a standard for interfacing from qoqo to other toolkits, hardware and simulators that can return measured values
-* Serialize and deserialize support for circuits and measurement information via the serde crate.
+* A `Circuit` struct to represent quantum circuits
+* A `QuantumProgram` enum to represent quantum programs using different measurement methods
+* Structs representing single-qubit, two-qubit, multi-qubit and measurement operations that can be executed (decomposed) on any universal quantum computer
+* Structs representing so-called PRAGMA operations that only apply to certain hardware, simulators or annotate circuits with additional information
+* Enums that group operations based on the properties of operations (*e.g.* `Operation` for all operations or `SingleQubitGateOperation` for all unitary operations acting on a single qubit)
+* Support for symbolic variables
+* Readout based on classical registers
+* Measurement structs for evaluating observable measurements based on raw readout date returned by quantum computer backends
+* An `EvaluatingBackend` trait defining a standard for interfacing from qoqo to hardware and simulators that can return measured values
+* A `Device` trait defining a standard to obtain connectivity information and a noise model for quantum computing devices
+* Serialize and deserialize support for `Circuit` and `QuantumProgram` via the serde crate.
 
 This software is still in the beta stage. Functions and documentation are not yet complete and breaking changes can occur.
 
