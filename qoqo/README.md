@@ -47,13 +47,11 @@ On Linux, macOS and Windows on x86 precompiled packages can be found on PyPi and
 pip install qoqo
 ```
 
-Alternatively, installing from the source distribution is possible. For this, a rust toolchain and the maturin Python package need to be already installed. A Rust toolchain can be installed using rustup.
-With this Rust toolchain installed, qoqo can be installed using a pip command:
+If your architecture does not support this installation process, please install maturin before installing qoqo using `pip install maturin`.
+For other platforms we recommend using the source distribution from PyPi to build a python package for qoqo locally via pip. The install requires the maturin tool (also available via pip) and a working rust toolchain. Specifically for macOS on Apple Silicon the following build command should be used:
 
-```bash
-# After installing the Rust toolchain, execute the following:
-pip install maturin
-pip install qoqo
+```shell
+RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" pip install qoqo
 ```
 
 When using qoqo in a rust project providing a python interface add
