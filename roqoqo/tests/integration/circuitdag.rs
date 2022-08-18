@@ -397,6 +397,21 @@ fn test_execution_blocked() {
 }
 
 #[test]
+fn test_blocking_predecessors() {
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+    let a = dag.add_to_back(Operation::from(PauliX::new(0))).unwrap();
+    let b = dag.add_to_back(Operation::from(PauliZ::new(0))).unwrap();
+    let c = dag.add_to_back(Operation::from(PauliY::new(1))).unwrap();
+    let d = dag.add_to_back(Operation::from(CNOT::new(0, 1))).unwrap();
+
+    assert!(dag.blocking_predecessors(&[a, b, c], &d).is_empty());
+    assert!(dag.blocking_predecessors(&[a], &b).is_empty());
+    assert!(dag.blocking_predecessors(&[], &c).is_empty());
+    assert_eq!(dag.blocking_predecessors(&[a,b], &d), vec![c]);
+}
+
+#[test]
 fn test_new_front_layer() {
     let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
 

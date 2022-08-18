@@ -22,7 +22,7 @@ use petgraph::algo::toposort;
 use petgraph::graph::Graph;
 use petgraph::visit::Dfs;
 use petgraph::Directed;
-use petgraph::Direction::Outgoing;
+use petgraph::Direction::{Incoming, Outgoing};
 
 /// Represents the Direct Acyclic Graph (DAG) of a Circuit.
 ///
@@ -480,12 +480,13 @@ impl CircuitDag {
         }
     }
 
-    /// Checks if executing an operation is blocked by any not-yet executed operation.
+    /// Checks if executing an Operation is blocked by any previous not-yet executed Operation.
+    /// The scope of the check is the whole graph.
     ///
     /// # Arguments:
     ///
     /// * `already_executed` - Slice of NodeIndices of Nodes that have already been executed in the Circuit.
-    /// * `to_be_executed` - NodeIndex of the operation that should be executed next.
+    /// * `to_be_executed` - NodeIndex of the Operation that should be executed next.
     ///
     /// # Returns:
     ///
@@ -509,7 +510,39 @@ impl CircuitDag {
             }
         }
 
-        blocking_elements.sort();
+        blocking_elements.sort_unstable();
+        blocking_elements
+    }
+
+    /// Checks which of the direct predecessors of an Operation in the CircuitDag blocks the execution.
+    ///
+    /// # Warning
+    ///
+    /// This method can only be used to determine if an operation can be executed when `already_executed` is consistent.
+    /// When the list  `already_executed` is inconsistent (a n operation is reported as executed that could not have been executed yet)
+    /// this method returning an empty vector does not imply that the `to_be_executed` operation can be executed.
+    ///
+    /// # Arguments:
+    ///
+    /// * `already_executed` - Slice of NodeIndices of Nodes that have already been executed in the Circuit.
+    /// * `to_be_executed` - NodeIndex of the Operation that should be executed next.
+    pub fn blocking_predecessors(
+        &self,
+        already_executed: &[NodeIndex<usize>],
+        to_be_executed: &NodeIndex<usize>,
+    ) -> Vec<NodeIndex<usize>> {
+        let mut blocking_elements: Vec<NodeIndex<usize>> = vec![];
+        let mut neighbor_iter = self
+                .graph
+                .neighbors_directed((*to_be_executed).into(), Incoming);
+        
+        while let Some(nxt) = neighbor_iter.next() {
+            if !already_executed.contains(&nxt.index()) {
+                blocking_elements.push(nxt.index());
+            }
+        }
+
+        blocking_elements.sort_unstable();
         blocking_elements
     }
 
