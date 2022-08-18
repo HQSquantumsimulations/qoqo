@@ -13,15 +13,16 @@
 use pyo3::prelude::*;
 
 use qoqo::operations::convert_operation_to_pyobject;
-use qoqo::{CircuitDagWrapper, CircuitWrapper};
+use qoqo::{CircuitDagWrapper, CircuitWrapper, QOQO_VERSION};
 
 use roqoqo::operations::*;
+use roqoqo::ROQOQO_VERSION;
 
 // Helper functions
 fn new_circuitdag(py: Python) -> &PyCell<CircuitDagWrapper> {
     let circuitdag_type = py.get_type::<CircuitDagWrapper>();
     circuitdag_type
-        .call0()
+        .call1((100,300))
         .unwrap()
         .cast_as::<PyCell<CircuitDagWrapper>>()
         .unwrap()
@@ -49,7 +50,7 @@ fn test_default() {
 
         let helper_ne: bool = CircuitDagWrapper::default() != circuitdag_wrapper.unwrap();
         assert!(helper_ne);
-        let helper_eq: bool = CircuitDagWrapper::default() == CircuitDagWrapper::new();
+        let helper_eq: bool = CircuitDagWrapper::default() == CircuitDagWrapper::new(100, 300);
         assert!(helper_eq);
     })
 }
@@ -155,6 +156,78 @@ fn test_richcmp() {
         assert!(comparison);
         let comparison = dag1.call_method1("__ge__", (dag2,));
         assert!(comparison.is_err());
+    })
+}
+
+/// Test qoqo_versions function of Circuit
+#[test]
+fn test_qoqo_versions() {
+    pyo3::prepare_freethreaded_python();
+    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+    Python::with_gil(|py| {
+        let dag = new_circuitdag(py);
+        dag.call_method1("add_to_back", (paulix_0.clone(),))
+            .unwrap();
+        let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+        let mut qsplit = QOQO_VERSION.split('.').take(2);
+        let rver = format!(
+            "{}.{}",
+            rsplit.next().expect("ROQOQO_VERSION badly formatted"),
+            rsplit.next().expect("ROQOQO_VERSION badly formatted")
+        );
+        let qver = format!(
+            "{}.{}",
+            qsplit.next().expect("QOQO_VERSION badly formatted"),
+            qsplit.next().expect("QOQO_VERSION badly formatted")
+        );
+
+        let comparison_copy: Vec<&str> =
+            Vec::extract(dag.call_method0("_qoqo_versions").unwrap()).unwrap();
+        assert_eq!(comparison_copy, vec![rver.as_str(), qver.as_str()]);
+    })
+}
+
+/// Test to_ and from_bincode functions of CircuitDag
+#[test]
+fn test_to_from_bincode() {
+    pyo3::prepare_freethreaded_python();
+    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+    Python::with_gil(|py| {
+        let dag = new_circuitdag(py);
+        dag.call_method1("add_to_back", (paulix_0.clone(),))
+            .unwrap();
+
+        // testing 'to_bincode' and 'from_bincode' functions
+        let serialised = dag.call_method0("to_bincode").unwrap();
+        let new = new_circuitdag(py);
+        let deserialised = new.call_method1("from_bincode", (serialised,)).unwrap();
+        let comparison =
+            bool::extract(deserialised.call_method1("__eq__", (dag,)).unwrap()).unwrap();
+        assert!(comparison);
+
+        let deserialised_error =
+            new.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));
+        assert!(deserialised_error.is_err());
+
+        let deserialised_error =
+            new.call_method1("from_bincode", (bincode::serialize(&vec![0]).unwrap(),));
+        assert!(deserialised_error.is_err());
+
+        let deserialised_error = deserialised.call_method0("from_bincode");
+        assert!(deserialised_error.is_err());
+
+        let serialised_error = serialised.call_method0("to_bincode");
+        assert!(serialised_error.is_err());
+
+        // testing that 'from_bincode' can be called directly on a circuitdag (python classmethod)
+        let circuitdag_type = py.get_type::<CircuitDagWrapper>();
+        let deserialised_py = circuitdag_type
+            .call_method1("from_bincode", (serialised,))
+            .unwrap();
+
+        let comparison =
+            bool::extract(deserialised_py.call_method1("__eq__", (dag,)).unwrap()).unwrap();
+        assert!(comparison);
     })
 }
 
@@ -462,5 +535,18 @@ fn test_parallel_blocks() {
             .unwrap();
             assert!(helper1);
         }
+    })
+}
+
+#[test]
+fn test_convert_into_circuitdag() {
+    let added_op = Operation::from(PauliX::new(0));
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(added_op).unwrap();
+
+        let added_dag = new_circuitdag(py);
+        let comparison = added_dag.call_method1("convert_into_circuitdag", (operation,));
+        assert!(comparison.is_err());
     })
 }

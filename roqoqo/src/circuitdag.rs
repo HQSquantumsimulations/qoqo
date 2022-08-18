@@ -14,7 +14,7 @@ use std::collections::{HashMap, HashSet};
 
 use crate::operations::*;
 use crate::Circuit;
-use crate::RoqoqoError;
+use crate::{RoqoqoError, RoqoqoVersion};
 
 use petgraph::adj::NodeIndex;
 use petgraph::algo;
@@ -40,6 +40,7 @@ pub struct CircuitDag {
     pub(crate) last_operation_involving_qubit: HashMap<usize, NodeIndex<usize>>,
     pub(crate) first_operation_involving_classical: HashMap<(String, usize), NodeIndex<usize>>,
     pub(crate) last_operation_involving_classical: HashMap<(String, usize), NodeIndex<usize>>,
+    _roqoqo_version: RoqoqoVersion,
 }
 
 /// Iterator over all possible parallel executable blocks of a Circuit.
@@ -51,7 +52,6 @@ pub struct ParallelBlocks<'a> {
     already_executed: Vec<NodeIndex<usize>>,
 }
 
-// TODO: check derive
 impl PartialEq for CircuitDag {
     fn eq(&self, other: &Self) -> bool {
         let nodes = |a: &Operation, b: &Operation| a.eq(b);
@@ -80,6 +80,7 @@ impl CircuitDag {
             first_operation_involving_classical: HashMap::<(String, usize), NodeIndex<usize>>::new(
             ),
             last_operation_involving_classical: HashMap::<(String, usize), NodeIndex<usize>>::new(),
+            _roqoqo_version: RoqoqoVersion,
         }
     }
 
@@ -696,6 +697,7 @@ impl From<Circuit> for CircuitDag {
             first_operation_involving_classical: HashMap::<(String, usize), NodeIndex<usize>>::new(
             ),
             last_operation_involving_classical: HashMap::<(String, usize), NodeIndex<usize>>::new(),
+            _roqoqo_version: RoqoqoVersion,
         };
 
         for operation in circuit.operations() {

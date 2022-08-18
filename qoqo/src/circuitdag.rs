@@ -13,10 +13,13 @@
 ///! Module containing the CircuitDag class that represents the Directed Acyclic Graph (DAG)
 ///! of a quantum circuit in qoqo.
 ///!
-use crate::QoqoError;
+
+use crate::{QoqoError, QOQO_VERSION};
+use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyIndexError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
-use roqoqo::{Circuit, CircuitDag};
+use pyo3::types::{PyByteArray, PyType};
+use roqoqo::{Circuit, CircuitDag, ROQOQO_VERSION};
 
 use crate::operations::{convert_operation_to_pyobject, convert_pyany_to_operation};
 use crate::CircuitWrapper;
@@ -41,7 +44,7 @@ pub struct CircuitDagWrapper {
 
 impl Default for CircuitDagWrapper {
     fn default() -> Self {
-        Self::new()
+        Self::new(100, 300)
     }
 }
 
@@ -52,9 +55,9 @@ impl CircuitDagWrapper {
     /// Returns:
     ///     self: The new, empty CircuitDag.
     #[new]
-    pub fn new() -> Self {
+    pub fn new(node_number:usize, edge_number:usize) -> Self {
         Self {
-            internal: CircuitDag::with_capacity(100, 300),
+            internal: CircuitDag::with_capacity(node_number, edge_number),
         }
     }
 
@@ -260,6 +263,66 @@ impl CircuitDagWrapper {
             )),
         }
     }
+
+    /// Return the roqoqo and qoqo versions from when the code was compiled.
+    ///
+    /// Returns:
+    ///     tuple[str, str]: The roqoqo and qoqo versions.
+    fn _qoqo_versions(&self) -> (String, String) {
+        let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+        let mut qsplit = QOQO_VERSION.split('.').take(2);
+        let rver = format!(
+            "{}.{}",
+            rsplit.next().expect("ROQOQO_VERSION badly formatted"),
+            rsplit.next().expect("ROQOQO_VERSION badly formatted")
+        );
+        let qver = format!(
+            "{}.{}",
+            qsplit.next().expect("QOQO_VERSION badly formatted"),
+            qsplit.next().expect("QOQO_VERSION badly formatted")
+        );
+        (rver, qver)
+    }
+
+    /// Return the bincode representation of the CircuitDag using the [bincode] crate.
+    ///
+    /// Returns:
+    ///     ByteArray: The serialized CircuitDag (in [bincode] form).
+    ///
+    /// Raises:
+    ///     ValueError: Cannot serialize CircuitDag to bytes.
+    pub fn to_bincode(&self) -> PyResult<Py<PyByteArray>> {
+        let serialized = serialize(&self.internal)
+            .map_err(|_| PyValueError::new_err("Cannot serialize CircuitDag to bytes"))?;
+        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+            PyByteArray::new(py, &serialized[..]).into()
+        });
+        Ok(b)
+    }
+
+    #[allow(unused_variables)]
+    #[classmethod]
+    /// Convert the bincode representation of the CircuitDag to a CircuitDag using the [bincode] crate.
+    ///
+    /// Args:
+    ///     input (ByteArray): The serialized CircuitDag (in [bincode] form).
+    ///
+    /// Returns:
+    ///     CircuitDag: The deserialized CircuitDag.
+    ///
+    /// Raises:
+    ///     TypeError: Input cannot be converted to byte array.
+    ///     ValueError: Input cannot be deserialized to CircuitDag.
+    pub fn from_bincode(cls: &PyType, input: &PyAny) -> PyResult<Self> {
+        let bytes = input
+            .extract::<Vec<u8>>()
+            .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
+
+        Ok(Self {
+            internal: deserialize(&bytes[..])
+                .map_err(|_| PyValueError::new_err("Input cannot be deserialized to CircuitDag"))?,
+        })
+    }
 }
 
 /// Convert generic python object to [roqoqo::CircuitDag].
@@ -269,7 +332,6 @@ pub fn convert_into_circuitdag(input: &PyAny) -> Result<CircuitDag, QoqoError> {
     if let Ok(try_downcast) = input.extract::<CircuitDagWrapper>() {
         return Ok(try_downcast.internal);
     }
-    /*
     // Everything that follows tries to extract the circuitdag when two separately
     // compiled python packages are involved
     let get_version = input
@@ -299,7 +361,7 @@ pub fn convert_into_circuitdag(input: &PyAny) -> Result<CircuitDag, QoqoError> {
             .extract::<Vec<u8>>()
             .map_err(|_| QoqoError::CannotExtractObject)?;
         deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractObject)
-    } */
+    }
     else {
         Err(QoqoError::VersionMismatch)
     }
