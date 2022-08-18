@@ -46,6 +46,35 @@ fn add_operation_no_involved_qubits(operation1: Operation, operation2: Operation
     assert_eq!(dag.commuting_operations().get(1), front1.as_ref());
 }
 
+#[test]
+fn test_partial_eq() {
+    let mut dag1: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+    let mut dag2: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+    dag1.add_to_back(Operation::from(PauliX::new(0)));
+    dag2.add_to_back(Operation::from(PauliX::new(0)));
+    dag1.add_to_back(Operation::from(PauliY::new(0)));
+    dag2.add_to_back(Operation::from(PauliY::new(0)));
+    dag1.add_to_back(Operation::from(CNOT::new(0,1)));
+    dag2.add_to_back(Operation::from(CNOT::new(0,1)));
+
+    assert_eq!(dag1, dag2);
+
+    dag2.add_to_back(Operation::from(PauliZ::new(1)));
+
+    assert_ne!(dag1, dag2);
+
+    let mut dag1: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+    let mut dag2: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+    dag1.add_to_back(Operation::from(PauliX::new(0)));
+    dag2.add_to_back(Operation::from(PauliY::new(0)));
+    dag1.add_to_back(Operation::from(PauliY::new(0)));
+    dag2.add_to_back(Operation::from(PauliX::new(0)));
+
+    assert_ne!(dag1, dag2);
+}
+
 #[test_case(Operation::from(PauliX::new(0)), Operation::from(PauliY::new(1)))]
 #[test_case(Operation::from(PauliY::new(1)), Operation::from(PauliZ::new(2)))]
 #[test_case(Operation::from(CNOT::new(0, 1)), Operation::from(PauliX::new(1)))]

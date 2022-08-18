@@ -17,6 +17,7 @@ use crate::Circuit;
 use crate::RoqoqoError;
 
 use petgraph::adj::NodeIndex;
+use petgraph::algo;
 use petgraph::algo::toposort;
 use petgraph::graph::Graph;
 use petgraph::visit::Dfs;
@@ -49,20 +50,11 @@ pub struct ParallelBlocks<'a> {
     already_executed: Vec<NodeIndex<usize>>,
 }
 
-// TODO: temporary solution, use is_isomorphic
 impl PartialEq for CircuitDag {
     fn eq(&self, other: &Self) -> bool {
-        for ind in self.graph.node_indices().into_iter() {
-            if self.graph.node_weight(ind) != other.graph.node_weight(ind) {
-                return false;
-            }
-        }
-        for ind in other.graph.node_indices().into_iter() {
-            if self.graph.node_weight(ind) != other.graph.node_weight(ind) {
-                return false;
-            }
-        }
-        true
+        let nodes = |a: &Operation, b: &Operation| a.eq(b);
+        let edges = |_: &(), _: &()| true;
+        algo::is_isomorphic_matching(&self.graph, &other.graph, nodes, edges)
     }
 
     fn ne(&self, other: &Self) -> bool {
