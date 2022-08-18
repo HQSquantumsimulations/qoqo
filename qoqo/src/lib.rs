@@ -108,6 +108,7 @@ pub enum QoqoBackendError {
 fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<CircuitWrapper>()?;
     module.add_class::<QuantumProgramWrapper>()?;
+    #[cfg(feature = "circuitdag")]
     module.add_class::<CircuitDagWrapper>()?;
     // module.add_class::<GenericChainWrapper>()?;
     // module.add_class::<GenericDeviceWrapper>()?;
