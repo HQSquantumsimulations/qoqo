@@ -26,6 +26,7 @@ use petgraph::Direction::Outgoing;
 
 /// Represents the Direct Acyclic Graph (DAG) of a Circuit.
 ///
+/// TODO serialize on qoqo
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct CircuitDag {
@@ -50,6 +51,7 @@ pub struct ParallelBlocks<'a> {
     already_executed: Vec<NodeIndex<usize>>,
 }
 
+// TODO: check derive
 impl PartialEq for CircuitDag {
     fn eq(&self, other: &Self) -> bool {
         let nodes = |a: &Operation, b: &Operation| a.eq(b);
@@ -145,7 +147,7 @@ impl CircuitDag {
         // Update last_operation_involving qubit and last_parallel_block
         //  depending on current structure
         if let Some(&i) = self.last_operation_involving_qubit.get(&qubit) {
-            self.graph.add_edge(i.into(), node.into(), ());
+            self.graph.update_edge(i.into(), node.into(), ());
             self.last_parallel_block.remove(&i);
         }
         let qubit_presence = self.last_operation_involving_qubit.insert(qubit, node);
@@ -271,7 +273,7 @@ impl CircuitDag {
         // Update first_operation_involving qubit and first_parallel_block
         //  depending on current structure
         if let Some(&i) = self.first_operation_involving_qubit.get(&qubit) {
-            self.graph.add_edge(node.into(), i.into(), ());
+            self.graph.update_edge(node.into(), i.into(), ());
             self.first_parallel_block.remove(&i);
         }
         let qubit_presence = self.first_operation_involving_qubit.insert(qubit, node);
