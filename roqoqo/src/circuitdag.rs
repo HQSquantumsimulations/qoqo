@@ -913,4 +913,27 @@ mod tests {
 
         assert_eq!(dag.graph.node_count(), op_vec.len());
     }
+
+    #[test_case(vec![Operation::from(CNOT::new(0,1)), Operation::from(PauliX::new(0)), Operation::from(PauliY::new(0)), Operation::from(PauliZ::new(0))])]
+    #[test_case(vec![Operation::from(PauliZ::new(0)), Operation::from(ControlledPauliZ::new(0,1))])]
+    fn test_from_circuitdag(op_vec: Vec<Operation>) {
+        let mut dag: CircuitDag =
+            CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+        for op in &op_vec {
+            dag.add_to_back(op.clone());
+        }
+
+        let circuit = Circuit::from(dag.clone());
+
+        assert_eq!(circuit.len(), dag.graph.node_count());
+
+        circuit
+            .iter()
+            .enumerate()
+            .into_iter()
+            .for_each(|(ind, oper)| {
+                assert_eq!(*oper, *dag.graph.node_weight(ind.into()).unwrap());
+            });
+    }
 }
