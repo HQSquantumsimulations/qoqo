@@ -78,7 +78,6 @@ fn test_partial_eq() {
 #[test_case(Operation::from(PauliX::new(0)), Operation::from(PauliY::new(1)))]
 #[test_case(Operation::from(PauliY::new(1)), Operation::from(PauliZ::new(2)))]
 #[test_case(Operation::from(CNOT::new(0, 1)), Operation::from(PauliX::new(1)))]
-#[test_case(Operation::from(PauliX::new(1)), Operation::from(CNOT::new(0, 1)))]
 fn check_parallel_blocks_set(operation1: Operation, operation2: Operation) {
     let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
     let mut inv_qubits_1: HashSet<usize> = HashSet::new();
@@ -140,8 +139,8 @@ fn check_parallel_blocks_mixed(operation1: Operation, operation2: Operation) {
     )));
     dag.add_to_front(operation2);
 
-    assert!(dag.last_parallel_block().len() == 1);
     assert!(dag.first_parallel_block().len() == 2);
+    assert!(dag.last_parallel_block().len() == 1);
 }
 
 #[test_case(Operation::from(PauliX::new(0)))]

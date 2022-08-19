@@ -26,7 +26,6 @@ use petgraph::Direction::{Incoming, Outgoing};
 
 /// Represents the Direct Acyclic Graph (DAG) of a Circuit.
 ///
-/// TODO serialize on qoqo
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct CircuitDag {
@@ -132,6 +131,9 @@ impl CircuitDag {
             for qubit in x {
                 self.update_from_qubit_back(node, qubit);
             }
+            if self.graph.neighbors_directed(node.into(), Incoming).next().is_none() {
+                self.first_parallel_block.insert(node);
+            }
         } else if let InvolvedQubits::All = node_involved_qubits {
             self.update_from_all_operation_back(node);
         }
@@ -150,22 +152,21 @@ impl CircuitDag {
         if let Some(&i) = self.last_operation_involving_qubit.get(&qubit) {
             self.graph.update_edge(i.into(), node.into(), ());
             self.last_parallel_block.remove(&i);
+        } else if self.last_all.is_some() {
+            self.graph.update_edge(self.last_all.unwrap().into(), node.into(), ());
+            self.last_parallel_block.remove(&self.last_all.unwrap().into());
         }
         let qubit_presence = self.last_operation_involving_qubit.insert(qubit, node);
         self.last_parallel_block.insert(node);
 
         // Update the first layer in case the qubit has never been seen before
         if qubit_presence.is_none() {
-            // Update first_operation_involving_qubit and first_parallel_block
-            //  depending on last_all
+            // Update first_operation_involving_qubit depending on last_all
             if self.last_all.is_none() {
                 self.first_operation_involving_qubit.insert(qubit, node);
-                // TODO:BUG to execute only if all InvolvedQubits in the node were first timers
-                self.first_parallel_block.insert(node);
             } else {
                 self.first_operation_involving_qubit
                     .insert(qubit, self.last_all.unwrap());
-                self.first_parallel_block.insert(self.last_all.unwrap());
             }
         }
     }
@@ -258,6 +259,9 @@ impl CircuitDag {
             for qubit in x {
                 self.update_from_qubit_front(node, qubit);
             }
+            if self.graph.neighbors_directed(node.into(), Outgoing).next().is_none() {
+                self.last_parallel_block.insert(node);
+            }
         } else if let InvolvedQubits::All = node_involved_qubits {
             self.update_from_all_operation_front(node);
         }
@@ -276,22 +280,21 @@ impl CircuitDag {
         if let Some(&i) = self.first_operation_involving_qubit.get(&qubit) {
             self.graph.update_edge(node.into(), i.into(), ());
             self.first_parallel_block.remove(&i);
+        } else if self.first_all.is_some() {
+            self.graph.update_edge(node.into(), self.first_all.unwrap().into(), ());
+            self.first_parallel_block.remove(&self.first_all.unwrap().into());
         }
         let qubit_presence = self.first_operation_involving_qubit.insert(qubit, node);
         self.first_parallel_block.insert(node);
 
         // Update the last layer in case the qubit has never been seen before
         if qubit_presence.is_none() {
-            // Update last_operation_involving_qubit and last_parallel_block
-            //  depending on first_all
+            // Update last_operation_involving_qubit depending on first_all
             if self.first_all.is_none() {
                 self.last_operation_involving_qubit.insert(qubit, node);
-                // TODO:BUG to execute only if all InvolvedQubits in the node were first timers
-                self.last_parallel_block.insert(node);
             } else {
                 self.last_operation_involving_qubit
                     .insert(qubit, self.first_all.unwrap());
-                self.last_parallel_block.insert(self.first_all.unwrap());
             }
         }
     }
