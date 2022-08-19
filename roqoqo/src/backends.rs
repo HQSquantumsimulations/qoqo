@@ -220,7 +220,7 @@ pub trait AsyncEvaluatingBackend: Sized {
     /// `RegisterResult` - The output registers written by the evaluated circuits.
     async fn async_run_circuit_iterator<'a>(
         &self,
-        circuit: impl Iterator<Item = &'a Operation>,
+        circuit: impl Iterator<Item = &'a Operation> + std::marker::Send,
     ) -> RegisterResult;
 
     /// Runs all circuits corresponding to one measurement with the backend.
