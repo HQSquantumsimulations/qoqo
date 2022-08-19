@@ -171,7 +171,7 @@ impl QuantumProgram {
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
                 )?;
-                backend.async_run_measurement(substituted_measurement).await
+                backend.async_run_measurement(&substituted_measurement).await
             }
             QuantumProgram::CheatedPauliZProduct{measurement, input_parameter_names } => {
                 if parameters.len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())})};
@@ -179,7 +179,7 @@ impl QuantumProgram {
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
                 )?;
-                backend.async_run_measurement(substituted_measurement).await
+                backend.async_run_measurement(&substituted_measurement).await
             }
             QuantumProgram::Cheated{measurement, input_parameter_names } => {
                 if parameters.len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())})};
@@ -187,7 +187,7 @@ impl QuantumProgram {
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
                 )?;
-                backend.async_run_measurement(substituted_measurement).await
+                backend.async_run_measurement(&substituted_measurement).await
             }
             _ => Err(RoqoqoBackendError::GenericError{msg: "A quantum programm returning classical registeres cannot be executed by `run` use `run_registers` instead".to_string()})
         }
@@ -218,7 +218,7 @@ impl QuantumProgram {
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
                 )?;
-                backend.async_run_measurement_registers(substituted_measurement).await
+                backend.async_run_measurement_registers(&substituted_measurement).await
             }
             _ => Err(RoqoqoBackendError::GenericError{msg: "A quantum programm returning expectation values cannot be executed by `run_registers` use `run` instead".to_string()})
         }
