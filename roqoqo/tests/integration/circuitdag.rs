@@ -407,7 +407,7 @@ fn test_blocking_predecessors() {
     assert!(dag.blocking_predecessors(&[a, b, c], &d).is_empty());
     assert!(dag.blocking_predecessors(&[a], &b).is_empty());
     assert!(dag.blocking_predecessors(&[], &c).is_empty());
-    assert_eq!(dag.blocking_predecessors(&[a,b], &d), vec![c]);
+    assert_eq!(dag.blocking_predecessors(&[a, b], &d), vec![c]);
 }
 
 #[test]

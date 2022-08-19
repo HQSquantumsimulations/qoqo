@@ -22,7 +22,7 @@ use roqoqo::ROQOQO_VERSION;
 fn new_circuitdag(py: Python) -> &PyCell<CircuitDagWrapper> {
     let circuitdag_type = py.get_type::<CircuitDagWrapper>();
     circuitdag_type
-        .call1((100,300))
+        .call1((100, 300))
         .unwrap()
         .cast_as::<PyCell<CircuitDagWrapper>>()
         .unwrap()

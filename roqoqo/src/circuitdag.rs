@@ -131,7 +131,12 @@ impl CircuitDag {
             for qubit in x {
                 self.update_from_qubit_back(node, qubit);
             }
-            if self.graph.neighbors_directed(node.into(), Incoming).next().is_none() {
+            if self
+                .graph
+                .neighbors_directed(node.into(), Incoming)
+                .next()
+                .is_none()
+            {
                 self.first_parallel_block.insert(node);
             }
         } else if let InvolvedQubits::All = node_involved_qubits {
@@ -153,8 +158,10 @@ impl CircuitDag {
             self.graph.update_edge(i.into(), node.into(), ());
             self.last_parallel_block.remove(&i);
         } else if self.last_all.is_some() {
-            self.graph.update_edge(self.last_all.unwrap().into(), node.into(), ());
-            self.last_parallel_block.remove(&self.last_all.unwrap().into());
+            self.graph
+                .update_edge(self.last_all.unwrap().into(), node.into(), ());
+            self.last_parallel_block
+                .remove(&self.last_all.unwrap().into());
         }
         let qubit_presence = self.last_operation_involving_qubit.insert(qubit, node);
         self.last_parallel_block.insert(node);
@@ -259,7 +266,12 @@ impl CircuitDag {
             for qubit in x {
                 self.update_from_qubit_front(node, qubit);
             }
-            if self.graph.neighbors_directed(node.into(), Outgoing).next().is_none() {
+            if self
+                .graph
+                .neighbors_directed(node.into(), Outgoing)
+                .next()
+                .is_none()
+            {
                 self.last_parallel_block.insert(node);
             }
         } else if let InvolvedQubits::All = node_involved_qubits {
@@ -281,8 +293,10 @@ impl CircuitDag {
             self.graph.update_edge(node.into(), i.into(), ());
             self.first_parallel_block.remove(&i);
         } else if self.first_all.is_some() {
-            self.graph.update_edge(node.into(), self.first_all.unwrap().into(), ());
-            self.first_parallel_block.remove(&self.first_all.unwrap().into());
+            self.graph
+                .update_edge(node.into(), self.first_all.unwrap().into(), ());
+            self.first_parallel_block
+                .remove(&self.first_all.unwrap().into());
         }
         let qubit_presence = self.first_operation_involving_qubit.insert(qubit, node);
         self.first_parallel_block.insert(node);
@@ -537,9 +551,9 @@ impl CircuitDag {
     ) -> Vec<NodeIndex<usize>> {
         let mut blocking_elements: Vec<NodeIndex<usize>> = vec![];
         let mut neighbor_iter = self
-                .graph
-                .neighbors_directed((*to_be_executed).into(), Incoming);
-        
+            .graph
+            .neighbors_directed((*to_be_executed).into(), Incoming);
+
         while let Some(nxt) = neighbor_iter.next() {
             if !already_executed.contains(&nxt.index()) {
                 blocking_elements.push(nxt.index());

@@ -13,7 +13,6 @@
 ///! Module containing the CircuitDag class that represents the Directed Acyclic Graph (DAG)
 ///! of a quantum circuit in qoqo.
 ///!
-
 use crate::{QoqoError, QOQO_VERSION};
 use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyIndexError, PyTypeError, PyValueError};
@@ -55,7 +54,7 @@ impl CircuitDagWrapper {
     /// Returns:
     ///     self: The new, empty CircuitDag.
     #[new]
-    pub fn new(node_number:usize, edge_number:usize) -> Self {
+    pub fn new(node_number: usize, edge_number: usize) -> Self {
         Self {
             internal: CircuitDag::with_capacity(node_number, edge_number),
         }
@@ -361,8 +360,7 @@ pub fn convert_into_circuitdag(input: &PyAny) -> Result<CircuitDag, QoqoError> {
             .extract::<Vec<u8>>()
             .map_err(|_| QoqoError::CannotExtractObject)?;
         deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractObject)
-    }
-    else {
+    } else {
         Err(QoqoError::VersionMismatch)
     }
 }
