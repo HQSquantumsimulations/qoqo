@@ -47,7 +47,7 @@ pub struct CircuitDag {
 #[derive(Debug)]
 pub struct ParallelBlocks<'a> {
     dag: &'a CircuitDag,
-    parallel_block: Vec<(NodeIndex<usize>, Operation)>,
+    parallel_block: Vec<NodeIndex<usize>>,
     already_executed: Vec<NodeIndex<usize>>,
 }
 
@@ -636,7 +636,7 @@ impl CircuitDag {
     pub fn parallel_blocks<'a>(&'a self) -> ParallelBlocks<'a> {
         ParallelBlocks {
             dag: self,
-            parallel_block: Vec::<(NodeIndex<usize>, Operation)>::new(),
+            parallel_block: Vec::<NodeIndex<usize>>::new(),
             already_executed: Vec::<NodeIndex<usize>>::new(),
         }
     }
@@ -754,26 +754,25 @@ impl From<CircuitDag> for Circuit {
 }
 
 impl<'a> Iterator for ParallelBlocks<'a> {
-    type Item = Vec<(NodeIndex<usize>, Operation)>;
+    type Item = Vec<NodeIndex<usize>>;
 
     fn next(&mut self) -> Option<Self::Item> {
         // First case
         if self.parallel_block.is_empty() && self.already_executed.is_empty() {
             for node in &self.dag.first_parallel_block {
-                let op: Operation = self.dag.graph.node_weight((*node).into()).unwrap().clone();
-                self.parallel_block.push((*node, op));
+                self.parallel_block.push(*node);
             }
             return Some(self.parallel_block.clone());
         }
 
         // Populate already_executed with current parallel_block
-        for (node, _) in &self.parallel_block {
+        for node in &self.parallel_block {
             self.already_executed.push(*node);
         }
 
-        let mut new_parallel_block: Vec<(NodeIndex<usize>, Operation)> = Vec::new();
+        let mut new_parallel_block: Vec<NodeIndex<usize>> = Vec::new();
         // Cycle through the current parallel block
-        for (node, _) in &self.parallel_block {
+        for node in &self.parallel_block {
             let mut neighbor_iter = self.dag.graph.neighbors_directed((*node).into(), Outgoing);
             // Cycle through its neighbors
             while let Some(nxt) = neighbor_iter.next() {
@@ -782,10 +781,9 @@ impl<'a> Iterator for ParallelBlocks<'a> {
                     .dag
                     .execution_blocked(self.already_executed.as_slice(), &nxt.index())
                     .is_empty()
-                    && !new_parallel_block.iter().any(|(id, _)| *id == nxt.index())
+                    && !new_parallel_block.iter().any(|id| *id == nxt.index())
                 {
-                    let op: Operation = self.dag.graph.node_weight(nxt).unwrap().clone();
-                    new_parallel_block.push((nxt.index(), op));
+                    new_parallel_block.push(nxt.index());
                 }
             }
         }

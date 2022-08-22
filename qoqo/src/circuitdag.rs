@@ -19,7 +19,7 @@ use crate::{QoqoError, QOQO_VERSION};
 use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyIndexError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
-use pyo3::types::{PyByteArray, PyType};
+use pyo3::types::PyByteArray;
 use roqoqo::{Circuit, CircuitDag, ROQOQO_VERSION};
 
 use crate::operations::{convert_operation_to_pyobject, convert_pyany_to_operation};
@@ -192,21 +192,11 @@ impl CircuitDagWrapper {
     ///
     /// Returns an Iterator over Vectors of references to the NodeIndices in the parallel block as well
     /// as references to the Operation in the blocks
-    pub fn parallel_blocks(&self) -> Vec<Vec<(usize, PyObject)>> {
-        let mut par_bl_vec: Vec<Vec<(usize, PyObject)>> = Vec::new();
+    pub fn parallel_blocks(&self) -> Vec<Vec<usize>> {
+        let mut par_bl_vec: Vec<Vec<usize>> = Vec::new();
 
         for block in self.internal.parallel_blocks() {
-            let inner: Vec<(usize, PyObject)> = block
-                .into_iter()
-                .map(|(index, op)| {
-                    (
-                        index,
-                        convert_operation_to_pyobject(op)
-                            .expect("Internal conversion error. But in qoqo"),
-                    )
-                })
-                .collect();
-            par_bl_vec.push(inner);
+            par_bl_vec.push(block.clone());
         }
 
         par_bl_vec
@@ -320,7 +310,7 @@ impl CircuitDagWrapper {
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to CircuitDag.
     #[staticmethod]
-    pub fn from_bincode(cls: &PyType, input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
         let bytes = input
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
