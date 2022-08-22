@@ -30,13 +30,14 @@ use super::InvolvedClassical;
 ///
 /// # Note
 ///
-/// Here, it is a measurement in terms of quantum mechanics. The obtained result of a $\textit{single}$ measurement will be either a `0` or a `1`.  
-/// In order to be able to derive probabilities in the $\textit{post-processing}$, the actual measurement needs to be repeated lots of times.
+/// Here, it is a measurement in terms of quantum mechanics. The obtained result of a single measurement will be either a `0` or a `1`.  
+/// In order to be able to derive probabilities in the post-processing, the actual measurement needs to be repeated lots of times.
 ///
 #[derive(
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
@@ -184,7 +185,7 @@ impl InvolveQubits for PragmaGetDensityMatrix {
 /// This PRAGMA measurement operation returns the vector of the occupation probabilities.
 ///
 /// Occupation probabilities in the context of this PRAGMA Operation are probabilities of finding the quantum
-/// register in each $\sigma_z$ basis state. The quantum register remains unchanged by this PRAGMA measurement operation.
+/// register in each σ^z basis state. The quantum register remains unchanged by this PRAGMA measurement operation.
 ///
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
@@ -322,15 +323,15 @@ impl InvolveQubits for PragmaGetPauliProduct {
     }
 }
 
-/// This PRAGMA measurement operation returns a measurement record for $N$ repeated measurements.
+/// This PRAGMA measurement operation returns a measurement record for N repeated measurements.
 ///
-#[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
+#[derive(Debug, Clone, PartialEq, Eq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaRepeatedMeasurement {
     /// The name of the classical readout register.
     readout: String,
-    /// The number of times $N$ to repeat the measurement.
+    /// The number of times N to repeat the measurement.
     number_measurements: usize,
     /// The mapping of qubits to indices in the readout register.
     qubit_mapping: Option<HashMap<usize, usize>>,

@@ -13,6 +13,8 @@
 #![deny(missing_docs)]
 #![deny(rustdoc::missing_crate_level_docs)]
 #![deny(missing_debug_implementations)]
+// Temporary allowing lint because of pyo3 implementation
+#![allow(clippy::borrow_deref_ref)]
 
 //! Qoqo quantum computing toolkit
 //!

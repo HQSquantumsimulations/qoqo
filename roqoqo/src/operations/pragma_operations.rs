@@ -38,6 +38,7 @@ use std::convert::TryFrom;
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperatePragma,
@@ -73,7 +74,7 @@ impl InvolveQubits for PragmaSetNumberOfMeasurements {
 ///
 /// # Example
 ///
-/// For instance, to initialize the $|\Psi^->$ Bell state, we pass the following `statevec` to
+/// For instance, to initialize the | Ψ- > Bell state, we pass the following `statevec` to
 /// the PragmaSetStateVector operation.
 ///
 /// ```
@@ -173,6 +174,7 @@ impl InvolveQubits for PragmaSetDensityMatrix {
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperatePragma,
@@ -362,6 +364,7 @@ const TAGS_PragmaSleep: &[&str; 4] = &[
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
@@ -389,6 +392,7 @@ const TAGS_PragmaActiveReset: &[&str; 4] = &[
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::OperateMultiQubit,
@@ -450,6 +454,7 @@ impl Substitute for PragmaStartDecompositionBlock {
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
@@ -759,22 +764,18 @@ impl OperatePragmaNoiseProba for PragmaRandomNoise {
 /// The general noise PRAGMA operation.
 ///
 /// This PRAGMA operation applies a noise term according to the given rates.
-/// The rates are represented by a 3x3 matrix:
-/// $$ M = \begin{pmatrix}
-/// a & b & c \\\\
-/// d & e & f \\\\
-/// g & h & j \\\\
-/// \end{pmatrix} $$
-/// where the coefficients correspond to the following summands
+/// The rates are represented by a 3x3 matrix,  where the coefficients correspond to the following summands
 /// expanded from the first term of the non-coherent part of the Lindblad equation:
-///     $$ \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
-///         L_0 = \sigma^{+} \\\\
-///         L_1 = \sigma^{-} \\\\
-///         L_3 = \sigma^{z}
-///     $$
-/// result{sigma_z, sigma_minus} = sigma_z (x) sigma_minus.T - 1/2 * (sigma_minus.T * sigma_z) (x) 1 - 1/2 * 1 (x) (sigma_minus.T * sigma_z).T
+///
+/// d/dt * ρ = Σ_{i,j=0}^{2} M_i,j * L_i * ρ * L†_j - 1/2 *  L†_j * L_i * ρ,
+///
+/// with L_0 = σ+, L_1 = σ- and L_3 = σ^z.
 ///
 /// Applying the Pragma with a given `gate_time` corresponds to applying the full time-evolution under the Lindblad equation for `gate_time` time.
+///
+///  Note: as long as gate times and decoherence rates are scaled inversely
+///  any kind of units can be used. However, we recommend using nanoseconds
+///  and inverse nanosecconds as units for gate times and decoherence rates.
 ///
 /// # Example
 ///
@@ -806,7 +807,6 @@ impl OperatePragmaNoiseProba for PragmaRandomNoise {
 ///     rates.clone(),
 /// );
 /// ```
-/// That will result into $.
 ///
 #[derive(
     Debug,
@@ -1009,7 +1009,7 @@ impl Substitute for PragmaConditional {
 ///
 /// Since this PRAGMA uses serde and bincode to store a representation of the wrapped
 /// operation internally it is only available when roqoqo is built with the `serialize` feature
-#[derive(Debug, Clone, PartialEq, roqoqo_derive::OperatePragma)]
+#[derive(Debug, Clone, PartialEq, Eq, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaChangeDevice {

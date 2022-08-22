@@ -10,7 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Qoqo basis rotation measurement.
+//! Qoqo PauliZ product measurement.
 
 use super::PauliZProductInputWrapper;
 use crate::CircuitWrapper;
@@ -26,7 +26,7 @@ use roqoqo::Circuit;
 use std::collections::HashMap;
 #[pyclass(name = "PauliZProduct", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
-/// Collected information for executing a basis rotation measurement.
+/// Collected information for executing a measurement of PauliZ product.
 pub struct PauliZProductWrapper {
     /// Internal storage of [roqoqo::PauliZProduct].
     pub internal: PauliZProduct,
@@ -42,7 +42,7 @@ impl PauliZProductWrapper {
     ///     input (PauliZProductInput): The additional input information required for measurement.
     ///
     /// Returns:
-    ///     PauliZProduct: The PauliZProduct containing the new basis rotation measurement.
+    ///     PauliZProduct: The PauliZProduct containing the new PauliZ product measurement.
     #[new]
     pub fn new(
         constant_circuit: Option<CircuitWrapper>,
@@ -63,7 +63,7 @@ impl PauliZProductWrapper {
         }
     }
 
-    /// Execute the basis rotation measurement.
+    /// Execute the PauliZ product measurement.
     ///
     /// Args:
     ///     input_bit_registers (dict[str, Union[list[list[int]], list[list[bool]]]]): The classical bit registers with the register name as key
@@ -75,7 +75,7 @@ impl PauliZProductWrapper {
     ///
     /// Raises:
     ///     RuntimeError: Unexpected repetition of key in bit_register.
-    ///     RuntimeError: Error evaluating basis rotation measurement.
+    ///     RuntimeError: Error evaluating PauliZ product measurement.
     pub fn evaluate(
         &mut self,
         input_bit_registers: Py<PyAny>,
@@ -115,7 +115,7 @@ impl PauliZProductWrapper {
             .evaluate(bit_registers, float_registers, complex_registers)
             .map_err(|x| {
                 PyRuntimeError::new_err(format!(
-                    "Error evaluating basis rotation measurement {:?}",
+                    "Error evaluating PauliZ product measurement {:?}",
                     x
                 ))
             })

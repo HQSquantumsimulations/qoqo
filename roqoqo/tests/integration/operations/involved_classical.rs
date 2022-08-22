@@ -17,7 +17,6 @@ use ndarray::array;
 use num_complex::Complex64;
 use qoqo_calculator::CalculatorFloat;
 use roqoqo::{operations::*, Circuit};
-#[cfg(feature = "serialize")]
 use std::collections::HashMap;
 use std::{collections::HashSet, f64::consts::PI};
 use test_case::test_case;

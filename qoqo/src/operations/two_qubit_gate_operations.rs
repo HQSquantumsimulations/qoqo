@@ -23,6 +23,7 @@ use std::collections::HashMap;
 
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[derive(Eq)]
 /// The controlled NOT quantum operation.
 ///
 /// .. math::
@@ -44,6 +45,7 @@ pub struct CNOT {
 
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[derive(Eq)]
 /// The controlled SWAP quantum operation.
 ///
 /// .. math::
@@ -65,6 +67,7 @@ pub struct SWAP {
 
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[derive(Eq)]
 /// The controlled ISwap quantum operation.
 ///
 /// .. math::
@@ -86,6 +89,7 @@ pub struct ISwap {
 
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[derive(Eq)]
 /// The controlled square root ISwap quantum operation.
 ///
 /// .. math::
@@ -107,6 +111,7 @@ pub struct SqrtISwap {
 
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[derive(Eq)]
 /// The controlled inverse square root ISwap quantum operation.
 ///
 /// .. math::
@@ -128,6 +133,7 @@ pub struct InvSqrtISwap {
 
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[derive(Eq)]
 /// The controlled fermionic SWAP gate.
 ///
 /// .. math::
@@ -149,6 +155,7 @@ pub struct FSwap {
 
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[derive(Eq)]
 /// The fixed phase MolmerSorensen XX gate. <http://arxiv.org/abs/1705.02771>
 ///
 /// .. math::
@@ -295,6 +302,7 @@ pub struct ControlledPhaseShift {
 
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[derive(Eq)]
 /// The controlled PauliY quantum operation
 ///
 /// .. math::
@@ -316,6 +324,7 @@ pub struct ControlledPauliY {
 
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[derive(Eq)]
 /// The controlled PauliZ quantum operation
 ///
 /// .. math::

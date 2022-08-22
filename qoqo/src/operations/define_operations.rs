@@ -18,6 +18,7 @@ use roqoqo::operations::*;
 use std::collections::HashMap;
 
 #[wrap(Operate, Define)]
+#[derive(Eq)]
 /// DefinitionFloat is the Definition for a Float type register.
 ///
 /// Args:
@@ -31,6 +32,7 @@ pub struct DefinitionFloat {
 }
 
 #[wrap(Operate, Define)]
+#[derive(Eq)]
 /// DefinitionComplex is the Definition for a Complex type register.
 ///
 /// Args:
@@ -44,6 +46,7 @@ pub struct DefinitionComplex {
 }
 
 #[wrap(Operate, Define)]
+#[derive(Eq)]
 /// DefinitionUsize is the Definition for an Integer type register.
 ///
 /// Args:
@@ -57,6 +60,7 @@ pub struct DefinitionUsize {
 }
 
 #[wrap(Operate, Define)]
+#[derive(Eq)]
 /// DefinitionBit is the Definition for a Bit type register.
 ///
 /// Args:
@@ -81,6 +85,7 @@ pub struct InputSymbolic {
 }
 
 #[wrap(Operate, Define)]
+#[derive(Eq)]
 /// InputBit sets a certain bit in an existing BitRegister of the circuit.
 ///
 /// Args:

@@ -15,7 +15,7 @@ use ndarray::{Array1, Array2};
 #[cfg(feature = "serialize")]
 use serde::{Deserialize, Serialize};
 
-/// Collected information for executing a basis rotation measurement.
+/// Collected information for executing a measurement of PauliZ product.
 #[derive(Debug, PartialEq, Clone)]
 // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
@@ -89,7 +89,7 @@ impl Measure for PauliZProduct {
 impl MeasureExpectationValues for PauliZProduct {
     // TODO add optional device later for use with flipped measurement
     #[allow(unused_variables)]
-    /// Executes the basis rotation measurement.
+    /// Executes the PauliZ product measurement.
     ///
     /// # Arguments
     ///
@@ -101,7 +101,7 @@ impl MeasureExpectationValues for PauliZProduct {
     ///
     /// * `Ok(Some(HashMap<String, f64>))` - The measurement has been evaluated successfully. The HashMap contains the measured expectation values.
     /// * `Ok(None)` - The measurement did not fail but is incomplete. A new round of measurements is needed
-    /// * `Err([RoqoqoError::PauliZProductMeasurementError])` - An error occured in basis rotation measurement.
+    /// * `Err([RoqoqoError::PauliZProductMeasurementError])` - An error occured in PauliZ product measurement.
     ///
     fn evaluate(
         &self,

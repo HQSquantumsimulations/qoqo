@@ -39,7 +39,7 @@ impl TestBackend {
     }
 
     fn run_measurement_registers(&self, measurement: Py<PyAny>) -> PyResult<Py<PyAny>> {
-        return Ok(measurement);
+        Ok(measurement)
     }
 }
 
@@ -85,7 +85,7 @@ fn test_basic_traits() {
             QuantumProgramWrapper::new(input, vec!["test".into()]).unwrap() == program_wrapper;
         assert!(helper_eq);
 
-        let helper_eq: bool = program_wrapper.clone() == program_wrapper;
+        let helper_eq: bool = program_wrapper == program_wrapper;
         assert!(helper_eq);
 
         assert_eq!(
@@ -361,7 +361,7 @@ fn test_copy_deepcopy() {
 
         let comparison_copy = bool::extract(
             copy_circ
-                .call_method1("__eq__", (&(*copy_deepcopy_param),))
+                .call_method1("__eq__", (copy_deepcopy_param,))
                 .unwrap(),
         )
         .unwrap();
@@ -470,7 +470,7 @@ fn test_value_error_bincode() {
             .cast_as::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
-        let program_clone = &(*program);
+        let program_clone = program;
         let serialised = program.call_method0("to_bincode").unwrap();
         let deserialised = program_clone
             .call_method1("from_bincode", (serialised,))
@@ -667,14 +667,14 @@ fn test_return_measurement_paulizproduct() {
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
-            .call_method1("add_pauliz_product", ("ro", tmp_vec.clone()))
+            .call_method1("add_pauliz_product", ("ro", tmp_vec))
             .unwrap();
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
         let br_type = py.get_type::<PauliZProductWrapper>();
         let measurement_input = br_type
-            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
             .cast_as::<PyCell<PauliZProductWrapper>>()
             .unwrap();

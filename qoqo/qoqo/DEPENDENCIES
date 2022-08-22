@@ -727,7 +727,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-bytemuck 1.10.0
+bytemuck 1.11.0
 https://github.com/Lokathor/bytemuck
 by Lokathor <zefria@gmail.com>
 A crate for mucking around with piles of bytes.
@@ -1313,7 +1313,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-indoc 1.0.6
+indoc 1.0.7
 https://github.com/dtolnay/indoc
 by David Tolnay <dtolnay@gmail.com>
 Indented document literals
@@ -1552,7 +1552,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-itoa 1.0.2
+itoa 1.0.3
 https://github.com/dtolnay/itoa
 by David Tolnay <dtolnay@gmail.com>
 Fast integer primitive to string conversion
@@ -1791,7 +1791,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-libc 0.2.126
+libc 0.2.131
 https://github.com/rust-lang/libc
 by The Rust Project Developers
 Raw FFI bindings to platform libraries like libc.
@@ -2008,7 +2008,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-libm 0.2.2
+libm 0.2.5
 https://github.com/rust-lang/libm
 by Jorge Aparicio <jorge@japaric.io>
 libm in pure Rust
@@ -2735,7 +2735,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-nalgebra 0.31.0
+nalgebra 0.31.1
 https://nalgebra.org
 by Sébastien Crozet <developer@crozet.re>
 General-purpose linear algebra library with transformations and statically-sized or dynamically-sized matrices.
@@ -2954,7 +2954,7 @@ Procedural macros for nalgebra
 License: Apache-2.0
 
 ====================================================
-ndarray 0.15.4
+ndarray 0.15.6
 https://github.com/rust-ndarray/ndarray
 by Ulrik Sverdrup "bluss", Jim Turner
 An n-dimensional array for general elements and for numerics. Lightweight array views and slicing; views support chunking and splitting.
@@ -4918,7 +4918,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-paste 1.0.7
+paste 1.0.8
 https://github.com/dtolnay/paste
 by David Tolnay <dtolnay@gmail.com>
 Macros for all your token pasting needs
@@ -5874,12 +5874,10 @@ SOFTWARE.
 
 
 ====================================================
-proc-macro2 1.0.40
+proc-macro2 1.0.43
 https://github.com/dtolnay/proc-macro2
 by David Tolnay <dtolnay@gmail.com>, Alex Crichton <alex@alexcrichton.com>
-A substitute implementation of the compiler's `proc_macro` API to decouple
-token-based libraries from the procedural macro use case.
-
+A substitute implementation of the compiler's `proc_macro` API to decouple token-based libraries from the procedural macro use case.
 License: MIT OR Apache-2.0
 ----------------------------------------------------
 LICENSE-APACHE:
@@ -7545,7 +7543,7 @@ LICENSE:
 
 
 ====================================================
-qoqo 1.0.0-alpha.5
+qoqo 1.1.0-beta.1
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoqo
@@ -7757,7 +7755,7 @@ LICENSE:
 
 
 ====================================================
-qoqo-macros 1.0.0-alpha.5
+qoqo-macros 1.1.0-beta.1
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -7968,7 +7966,7 @@ LICENSE:
 
 
 ====================================================
-qoqo_calculator 0.8.3
+qoqo_calculator 1.0.0
 https://github.com/HQSquantumsimulations/qoqo_calculator
 by HQS Quantum Simulations <info@quantumsimulations.de>
 qoqo-calculator is the calculator backend of the qoqo quantum computing toolkit by HQS Quantum Simulations
@@ -8180,7 +8178,7 @@ LICENSE:
 
 
 ====================================================
-qoqo_calculator_pyo3 0.8.3
+qoqo_calculator_pyo3 1.0.0
 https://github.com/HQSquantumsimulations/qoqo_calculator_pyo3
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Python interface to qoqo calculator, the calculator backend of the qoqo quantum computing toolkit by HQS Quantum Simulations
@@ -8392,7 +8390,7 @@ LICENSE:
 
 
 ====================================================
-quote 1.0.20
+quote 1.0.21
 https://github.com/dtolnay/quote
 by David Tolnay <dtolnay@gmail.com>
 Quasi-quoting macro quote!(...)
@@ -9810,7 +9808,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-redox_syscall 0.2.13
+redox_syscall 0.2.16
 https://gitlab.redox-os.org/redox-os/syscall
 by Jeremy Soller <jackpot51@gmail.com>
 A Rust library to access raw Redox system calls
@@ -9843,7 +9841,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-roqoqo 1.0.0-alpha.5
+roqoqo 1.1.0-beta.1
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
@@ -10055,7 +10053,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-derive 1.0.0-alpha.5
+roqoqo-derive 1.1.0-beta.1
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the roqoqo crate
 License: Apache-2.0
@@ -10266,7 +10264,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-test 1.0.0-alpha.5
+roqoqo-test 1.1.0-beta.1
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
@@ -10478,7 +10476,7 @@ LICENSE:
 
 
 ====================================================
-ryu 1.0.10
+ryu 1.0.11
 https://github.com/dtolnay/ryu
 by David Tolnay <dtolnay@gmail.com>
 Fast floating point to string conversion
@@ -10985,7 +10983,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-serde 1.0.139
+serde 1.0.143
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A generic serialization/deserialization framework
@@ -11224,7 +11222,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-serde_derive 1.0.139
+serde_derive 1.0.143
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Macros 1.1 implementation of #[derive(Serialize, Deserialize)]
@@ -11463,7 +11461,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-serde_json 1.0.82
+serde_json 1.0.83
 https://github.com/serde-rs/json
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A JSON serialization file format
@@ -11702,7 +11700,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-serde_test 1.0.139
+serde_test 1.0.143
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Token De/Serializer for testing De/Serialize implementations
@@ -11941,7 +11939,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-simba 0.7.1
+simba 0.7.2
 https://github.com/dimforge/simba
 by sebcrozet <developer@crozet.re>
 SIMD algebra for Rust
@@ -12394,7 +12392,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-syn 1.0.98
+syn 1.0.99
 https://github.com/dtolnay/syn
 by David Tolnay <dtolnay@gmail.com>
 Parser for Rust source code
@@ -12864,7 +12862,7 @@ Software.
 
 
 ====================================================
-test-case 2.1.0
+test-case 2.2.1
 https://github.com/frondeus/test-case
 by Marcin Sas-Szymanski <marcin.sas-szymanski@anixe.pl>, Wojciech Polak <frondeus@gmail.com>, Łukasz Biel <lukasz.p.biel@gmail.com>
 Provides #[test_case(...)] procedural macro attribute for generating parametrized test cases easily
@@ -12896,14 +12894,14 @@ SOFTWARE.
 
 
 ====================================================
-test-case-macros 2.1.0
+test-case-macros 2.2.1
 https://github.com/frondeus/test-case
 by Marcin Sas-Szymanski <marcin.sas-szymanski@anixe.pl>, Wojciech Polak <frondeus@gmail.com>, Łukasz Biel <lukasz.p.biel@gmail.com>
 Provides #[test_case(...)] procedural macro attribute for generating parametrized test cases easily
 License: MIT
 
 ====================================================
-thiserror 1.0.31
+thiserror 1.0.32
 https://github.com/dtolnay/thiserror
 by David Tolnay <dtolnay@gmail.com>
 derive(Error)
@@ -13142,7 +13140,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-thiserror-impl 1.0.31
+thiserror-impl 1.0.32
 https://github.com/dtolnay/thiserror
 by David Tolnay <dtolnay@gmail.com>
 Implementation detail of the `thiserror` crate
@@ -13624,7 +13622,7 @@ SOFTWARE.
 
 
 ====================================================
-unicode-ident 1.0.2
+unicode-ident 1.0.3
 https://github.com/dtolnay/unicode-ident
 by David Tolnay <dtolnay@gmail.com>
 Determine whether characters have the XID_Start or XID_Continue properties according to Unicode Standard Annex #31
@@ -13913,7 +13911,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-unindent 0.1.9
+unindent 0.1.10
 https://github.com/dtolnay/indoc
 by David Tolnay <dtolnay@gmail.com>
 Remove a column of leading whitespace from a string

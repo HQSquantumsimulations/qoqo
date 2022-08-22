@@ -1,6 +1,6 @@
 [package]
 name = "roqoqo"
-version = "1.1.0-alpha.1"
+version = "1.1.0-beta.1"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
@@ -11,7 +11,7 @@ repository = "https://github.com/HQSquantumsimulations/qoqo"
 documentation = "https://docs.rs/roqoqo/"
 readme = "../README.md"
 description = "Rust Quantum Computing Toolkit by HQS"
-include = ["src*", "build.rs", "katex.html", "LICENSE", "README.md"]
+include = ["src*", "build.rs", "LICENSE", "README.md"]
 
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -27,8 +27,8 @@ ndarray = { version = "0.15" }
 num-complex = { version = "0.4"}
 thiserror = "1.0"
 dyn-clone = {version="1.0", optional=true}
-qoqo_calculator = { version="0.8"}
-roqoqo-derive = {version="1.1.0-alpha.1", path="../roqoqo-derive"}
+qoqo_calculator = { version="1.0"}
+roqoqo-derive = {version="1.1.0-beta.1", path="../roqoqo-derive"}
 typetag = {version="0.2", optional=true}
 nalgebra = "0.31"
 # schemars = { version="0.8", features = ["num-complex", "ndarray"], optional=true }
@@ -51,7 +51,7 @@ proc-macro2 = "1.0"
 rand = {version="0.8"}
 
 [package.metadata.docs.rs]
-rustdoc-args = [ "--html-in-header", "katex.html", "--document-private-items" ]
+rustdoc-args = ["--document-private-items" ]
 
 [features]
 default = ["serialize"]
