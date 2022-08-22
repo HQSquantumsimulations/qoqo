@@ -645,7 +645,7 @@ impl CircuitDag {
         &self.commuting_operations
     }
 
-    /// Returns a reference to the HasSet containing the nodes in the first parallel block.
+    /// Returns a reference to the HashSet containing the nodes in the first parallel block.
     ///
     pub fn first_parallel_block(&self) -> &HashSet<usize> {
         &self.first_parallel_block

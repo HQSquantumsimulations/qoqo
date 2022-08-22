@@ -539,9 +539,102 @@ fn test_parallel_blocks() {
 }
 
 #[test]
-fn test_convert_into_circuitdag() {
-    let added_op = Operation::from(PauliX::new(0));
+fn test_getters_commuting_operations() {
     pyo3::prepare_freethreaded_python();
+    let commut_op = convert_operation_to_pyobject(Operation::from(
+        PragmaSetNumberOfMeasurements::new(3, "ro".to_string()),
+    ))
+    .unwrap();
+    Python::with_gil(|py| {
+        let dag = new_circuitdag(py);
+
+        let commut_vec = dag.call_method0("commuting_operations").unwrap();
+        assert_eq!(commut_vec.len().unwrap(), 0);
+
+        dag.call_method1("add_to_back", (commut_op.clone(),))
+            .unwrap();
+
+        let commut_vec = dag.call_method0("commuting_operations").unwrap();
+        assert_eq!(commut_vec.len().unwrap(), 1);
+    })
+}
+
+#[test]
+fn test_getters_parallel_blocks() {
+    pyo3::prepare_freethreaded_python();
+    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+    let paulix_1 = convert_operation_to_pyobject(Operation::from(PauliX::new(1))).unwrap();
+    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
+    Python::with_gil(|py| {
+        let dag = new_circuitdag(py);
+
+        let fpb = dag.call_method0("first_parallel_block").unwrap();
+        let lpb = dag.call_method0("last_parallel_block").unwrap();
+        assert_eq!(fpb.len().unwrap(), 0);
+        assert_eq!(lpb.len().unwrap(), 0);
+
+        dag.call_method1("add_to_back", (paulix_0.clone(),))
+            .unwrap();
+
+        let fpb = dag.call_method0("first_parallel_block").unwrap();
+        let lpb = dag.call_method0("last_parallel_block").unwrap();
+        assert_eq!(fpb.len().unwrap(), 1);
+        assert_eq!(lpb.len().unwrap(), 1);
+
+        dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
+        dag.call_method1("add_to_front", (paulix_1,)).unwrap();
+
+        let fpb = dag.call_method0("first_parallel_block").unwrap();
+        let lpb = dag.call_method0("last_parallel_block").unwrap();
+        assert_eq!(fpb.len().unwrap(), 2);
+        assert_eq!(lpb.len().unwrap(), 1);
+    })
+}
+
+#[test]
+fn test_getters_operation_involving_qubit() {
+    pyo3::prepare_freethreaded_python();
+    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+    Python::with_gil(|py| {
+        let dag = new_circuitdag(py);
+
+        let foiq = dag.call_method0("first_operation_involving_qubit").unwrap();
+        let loiq = dag.call_method0("last_operation_involving_qubit").unwrap();
+        assert_eq!(foiq.len().unwrap(), 0);
+        assert_eq!(loiq.len().unwrap(), 0);
+
+        dag.call_method1("add_to_back", (paulix_0.clone(),))
+            .unwrap();
+
+        let foiq = dag.call_method0("first_operation_involving_qubit").unwrap();
+        let loiq = dag.call_method0("last_operation_involving_qubit").unwrap();
+        assert_eq!(foiq.len().unwrap(), 1);
+        assert_eq!(loiq.len().unwrap(), 1);
+    })
+}
+
+#[test]
+fn test_getters_operations_involving_classical() {
+    pyo3::prepare_freethreaded_python();
+    let meas =
+        convert_operation_to_pyobject(Operation::from(MeasureQubit::new(0, "ro".to_string(), 0)))
+            .unwrap();
+    Python::with_gil(|py| {
+        let dag = new_circuitdag(py);
+
+        dag.call_method1("add_to_back", (meas,)).unwrap();
+
+        let foic = dag.call_method0("first_operation_involving_classical").unwrap();
+        let loic = dag.call_method0("last_operation_involving_classical").unwrap();
+        assert_eq!(foic.len().unwrap(), 1);
+        assert_eq!(loic.len().unwrap(), 1);
+    })
+}
+
+#[test]
+fn test_convert_into_circuitdag() {
+    pyo3::prepare_freethreaded_python();
+    let added_op = Operation::from(PauliX::new(0));
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(added_op).unwrap();
 

@@ -13,6 +13,8 @@
 ///! Module containing the CircuitDag class that represents the Directed Acyclic Graph (DAG)
 ///! of a quantum circuit in qoqo.
 ///!
+use std::collections::HashSet;
+
 use crate::{QoqoError, QOQO_VERSION};
 use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyIndexError, PyTypeError, PyValueError};
@@ -320,6 +322,80 @@ impl CircuitDagWrapper {
         Ok(Self {
             internal: deserialize(&bytes[..])
                 .map_err(|_| PyValueError::new_err("Input cannot be deserialized to CircuitDag"))?,
+        })
+    }
+
+    /// Returns the list of nodes of commuting operations in CircuitDag.
+    ///
+    /// Returns:
+    ///     list[usize]: The list of nodes of commuting operations.
+    pub fn commuting_operations(&self) -> Vec<usize> {
+        self.internal.commuting_operations().to_vec()
+    }
+
+    /// Returns a set containing the nodes in the first parallel block.
+    ///
+    /// Returns:
+    ///     set[usize]: The set of nodes in the first parallel block.
+    pub fn first_parallel_block(&self) -> HashSet<usize> {
+        self.internal.first_parallel_block().clone()
+    }
+
+    /// Returns a set containing the nodes in the last parallel block.
+    ///
+    /// Returns:
+    ///     set[usize]: The set of nodes in the last parallel block.
+    pub fn last_parallel_block(&self) -> HashSet<usize> {
+        self.internal.last_parallel_block().clone()
+    }
+
+    /// Returns a dictionary where a key represents a qubit and its value represents
+    /// the first node that involves that qubit.
+    ///
+    /// Returns:
+    ///     dict[usize, usize]: The dictionary of {qubit: node} elements.
+    pub fn first_operation_involving_qubit(&self) -> PyObject {
+        pyo3::prepare_freethreaded_python();
+        Python::with_gil(|py| -> PyObject {
+            self.internal.first_operation_involving_qubit().to_object(py)
+        })
+    }
+
+    /// Returns a dictionary where a key represents a qubit and its value represents
+    /// the last node that involves that qubit.
+    ///
+    /// Returns:
+    ///     dict[usize, usize]: The dictionary of {qubit: node} elements.
+    pub fn last_operation_involving_qubit(&self) -> PyObject {
+        pyo3::prepare_freethreaded_python();
+        Python::with_gil(|py| -> PyObject{
+            self.internal.last_operation_involving_qubit().to_object(py)
+        })
+    }
+
+    /// Returns a dictionary where a key is composed by the name and the size
+    /// of the classical register and its value represents the first node that involves that
+    /// register.
+    ///
+    /// Returns:
+    ///     dict[(str, usize), usize]: The dictionary of {(str, usize), usize} elements.
+    pub fn first_operation_involving_classical(&self) -> PyObject {
+        pyo3::prepare_freethreaded_python();
+        Python::with_gil(|py| -> PyObject{
+            self.internal.first_operation_involving_classical().to_object(py)
+        })
+    }
+
+    /// Returns a dictionary where a key is composed by the name and the size
+    /// of the classical register and its value represents the last node that involves that
+    /// register.
+    ///
+    /// Returns:
+    ///     dict[(str, usize), usize]: The dictionary of {(str, usize), usize} elements.
+    pub fn last_operation_involving_classical(&self) -> PyObject {
+        pyo3::prepare_freethreaded_python();
+        Python::with_gil(|py| -> PyObject{
+            self.internal.last_operation_involving_classical().to_object(py)
         })
     }
 }
