@@ -624,8 +624,12 @@ fn test_getters_operations_involving_classical() {
 
         dag.call_method1("add_to_back", (meas,)).unwrap();
 
-        let foic = dag.call_method0("first_operation_involving_classical").unwrap();
-        let loic = dag.call_method0("last_operation_involving_classical").unwrap();
+        let foic = dag
+            .call_method0("first_operation_involving_classical")
+            .unwrap();
+        let loic = dag
+            .call_method0("last_operation_involving_classical")
+            .unwrap();
         assert_eq!(foic.len().unwrap(), 1);
         assert_eq!(loic.len().unwrap(), 1);
     })
