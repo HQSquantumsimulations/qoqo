@@ -37,6 +37,7 @@ rand_distr = {version="0.4", optional=true}
 rand = { version = "0.8.4"}
 async-trait = {version = "0.1", optional = true}
 futures ={version = "0.3", optional=true}
+petgraph = "0.6.2"
 
 [dev-dependencies]
 serde_test = "1.0"
