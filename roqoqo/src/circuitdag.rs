@@ -534,10 +534,10 @@ impl CircuitDag {
 
     /// Checks which of the direct predecessors of an Operation in the CircuitDag blocks the execution.
     ///
-    /// # Warning
+    /// # Warning:
     ///
     /// This method can only be used to determine if an operation can be executed when `already_executed` is consistent.
-    /// When the list  `already_executed` is inconsistent (a n operation is reported as executed that could not have been executed yet)
+    /// When the list `already_executed` is inconsistent (an operation is reported as executed that could not have been executed yet)
     /// this method returning an empty vector does not imply that the `to_be_executed` operation can be executed.
     ///
     /// # Arguments:
@@ -564,7 +564,9 @@ impl CircuitDag {
         blocking_elements
     }
 
-    /// Returns a new front-layer after executing an operation from the current front layer.
+    /// Returns a new front layer after executing an operation from the current front layer.
+    /// A front layer is a set of Operations that are ready to be executed, because all required
+    /// predecessors in the graph have already been executed.
     ///
     /// Returns an error if operation to be executed is not in the current front layer.
     ///
@@ -730,6 +732,11 @@ impl From<Circuit> for CircuitDag {
 impl From<CircuitDag> for Circuit {
     fn from(dag: CircuitDag) -> Circuit {
         let mut circuit: Circuit = Circuit::new();
+
+        for com_op in dag.commuting_operations() {
+            let op = dag.get(*com_op).unwrap();
+            circuit.add_operation(op.clone());
+        }
 
         match toposort(&dag.graph, None) {
             Ok(order) => {

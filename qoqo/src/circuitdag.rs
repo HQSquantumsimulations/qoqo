@@ -53,6 +53,10 @@ impl Default for CircuitDagWrapper {
 impl CircuitDagWrapper {
     /// Create an empty CircuitDag.
     ///
+    /// Args:
+    ///     node_number (int): The node max capacity of the new CircuitDag.
+    ///     edge_number (int): The edge max capacity of the new CircuitDag.
+    ///
     /// Returns:
     ///     self: The new, empty CircuitDag.
     #[new]
@@ -63,6 +67,9 @@ impl CircuitDagWrapper {
     }
 
     /// Create a CircuitDag from a given Circuit;
+    ///
+    /// Args:
+    ///     circuit (Circuit): The Circuit to build the new CircuitDag from.
     ///
     /// Returns:
     ///     self: The new CircuitDag.
@@ -209,7 +216,7 @@ impl CircuitDagWrapper {
     /// the CircuitDag.
     ///
     /// Args:
-    ///     index (usize): The index of the node to get from the CircuitDag.
+    ///     index (int): The index of the node to get from the CircuitDag.
     ///
     /// Returns:
     ///     Operation: The Operation at the given index (if it exists).
@@ -301,8 +308,6 @@ impl CircuitDagWrapper {
         Ok(b)
     }
 
-    #[allow(unused_variables)]
-    #[classmethod]
     /// Convert the bincode representation of the CircuitDag to a CircuitDag using the [bincode] crate.
     ///
     /// Args:
@@ -314,6 +319,7 @@ impl CircuitDagWrapper {
     /// Raises:
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to CircuitDag.
+    #[staticmethod]
     pub fn from_bincode(cls: &PyType, input: &PyAny) -> PyResult<Self> {
         let bytes = input
             .extract::<Vec<u8>>()
@@ -328,7 +334,7 @@ impl CircuitDagWrapper {
     /// Returns the list of nodes of commuting operations in CircuitDag.
     ///
     /// Returns:
-    ///     list[usize]: The list of nodes of commuting operations.
+    ///     list[int]: The list of nodes of commuting operations.
     pub fn commuting_operations(&self) -> Vec<usize> {
         self.internal.commuting_operations().to_vec()
     }
@@ -336,7 +342,7 @@ impl CircuitDagWrapper {
     /// Returns a set containing the nodes in the first parallel block.
     ///
     /// Returns:
-    ///     set[usize]: The set of nodes in the first parallel block.
+    ///     set[int]: The set of nodes in the first parallel block.
     pub fn first_parallel_block(&self) -> HashSet<usize> {
         self.internal.first_parallel_block().clone()
     }
@@ -344,7 +350,7 @@ impl CircuitDagWrapper {
     /// Returns a set containing the nodes in the last parallel block.
     ///
     /// Returns:
-    ///     set[usize]: The set of nodes in the last parallel block.
+    ///     set[int]: The set of nodes in the last parallel block.
     pub fn last_parallel_block(&self) -> HashSet<usize> {
         self.internal.last_parallel_block().clone()
     }
@@ -353,11 +359,13 @@ impl CircuitDagWrapper {
     /// the first node that involves that qubit.
     ///
     /// Returns:
-    ///     dict[usize, usize]: The dictionary of {qubit: node} elements.
+    ///     dict[int, int]: The dictionary of {qubit: node} elements.
     pub fn first_operation_involving_qubit(&self) -> PyObject {
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| -> PyObject {
-            self.internal.first_operation_involving_qubit().to_object(py)
+            self.internal
+                .first_operation_involving_qubit()
+                .to_object(py)
         })
     }
 
@@ -365,10 +373,10 @@ impl CircuitDagWrapper {
     /// the last node that involves that qubit.
     ///
     /// Returns:
-    ///     dict[usize, usize]: The dictionary of {qubit: node} elements.
+    ///     dict[int, int]: The dictionary of {qubit: node} elements.
     pub fn last_operation_involving_qubit(&self) -> PyObject {
         pyo3::prepare_freethreaded_python();
-        Python::with_gil(|py| -> PyObject{
+        Python::with_gil(|py| -> PyObject {
             self.internal.last_operation_involving_qubit().to_object(py)
         })
     }
@@ -378,11 +386,13 @@ impl CircuitDagWrapper {
     /// register.
     ///
     /// Returns:
-    ///     dict[(str, usize), usize]: The dictionary of {(str, usize), usize} elements.
+    ///     dict[(str, int), int]: The dictionary of {(str, int), int} elements.
     pub fn first_operation_involving_classical(&self) -> PyObject {
         pyo3::prepare_freethreaded_python();
-        Python::with_gil(|py| -> PyObject{
-            self.internal.first_operation_involving_classical().to_object(py)
+        Python::with_gil(|py| -> PyObject {
+            self.internal
+                .first_operation_involving_classical()
+                .to_object(py)
         })
     }
 
@@ -391,11 +401,13 @@ impl CircuitDagWrapper {
     /// register.
     ///
     /// Returns:
-    ///     dict[(str, usize), usize]: The dictionary of {(str, usize), usize} elements.
+    ///     dict[(str, int), int]: The dictionary of {(str, int), int} elements.
     pub fn last_operation_involving_classical(&self) -> PyObject {
         pyo3::prepare_freethreaded_python();
-        Python::with_gil(|py| -> PyObject{
-            self.internal.last_operation_involving_classical().to_object(py)
+        Python::with_gil(|py| -> PyObject {
+            self.internal
+                .last_operation_involving_classical()
+                .to_object(py)
         })
     }
 }
