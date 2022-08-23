@@ -41,6 +41,8 @@ roqoqo provides:
 
 This software is still in the beta stage. Functions and documentation are not yet complete and breaking changes can occur.
 
+This project is partly supported by [PlanQK](https://planqk.de).
+
 ### Installation
 
 To use roqoqo in a Rust project simply add
