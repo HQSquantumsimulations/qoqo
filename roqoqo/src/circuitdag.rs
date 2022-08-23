@@ -19,7 +19,7 @@ use crate::{RoqoqoError, RoqoqoVersion};
 use petgraph::adj::NodeIndex;
 use petgraph::algo;
 use petgraph::algo::toposort;
-use petgraph::graph::Graph;
+use petgraph::graph::{Graph, Neighbors};
 use petgraph::visit::Dfs;
 use petgraph::Directed;
 use petgraph::Direction::{Incoming, Outgoing};
@@ -639,6 +639,12 @@ impl CircuitDag {
             parallel_block: Vec::<NodeIndex<usize>>::new(),
             already_executed: Vec::<NodeIndex<usize>>::new(),
         }
+    }
+
+    /// Returns an iterator over all successors in the CircuitDag of a given node.
+    /// 
+    pub fn successors(&self, node:NodeIndex<usize>) -> Neighbors<(), usize> {
+        self.graph.neighbors_directed(node.into(), Outgoing)
     }
 
     /// Returns a reference to the vector of commuting operations in CircuitDag.
