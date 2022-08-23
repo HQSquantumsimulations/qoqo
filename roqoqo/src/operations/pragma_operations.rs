@@ -768,7 +768,7 @@ impl OperatePragmaNoiseProba for PragmaRandomNoise {
 }
 
 /// The general noise PRAGMA operation.
-/// 
+///
 /// This PRAGMA operation applies a noise term according to the given rates.
 /// The rates are represented by a 3x3 matrix,  where the coefficients correspond to the following summands
 /// expanded from the first term of the non-coherent part of the Lindblad equation:
