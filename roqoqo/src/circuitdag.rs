@@ -642,8 +642,8 @@ impl CircuitDag {
     }
 
     /// Returns an iterator over all successors in the CircuitDag of a given node.
-    /// 
-    pub fn successors(&self, node:NodeIndex<usize>) -> Neighbors<(), usize> {
+    ///
+    pub fn successors(&self, node: NodeIndex<usize>) -> Neighbors<(), usize> {
         self.graph.neighbors_directed(node.into(), Outgoing)
     }
 

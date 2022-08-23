@@ -335,6 +335,19 @@ impl CircuitDagWrapper {
         })
     }
 
+    /// Returns the list of the successors of a given node in the CircuitDag.
+    ///
+    pub fn successors(&self, node: usize) -> Vec<usize> {
+        let mut iter = self.internal.successors(node);
+        let mut vec: Vec<usize> = Vec::new();
+
+        while let Some(nxt) = iter.next() {
+            vec.push(nxt.index())
+        }
+
+        vec
+    }
+
     /// Returns the list of nodes of commuting operations in CircuitDag.
     ///
     /// Returns:
