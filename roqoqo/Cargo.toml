@@ -1,6 +1,6 @@
 [package]
 name = "roqoqo"
-version = "1.0.0"
+version = "1.1.0-alpha.2"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
@@ -28,7 +28,7 @@ num-complex = { version = "0.4"}
 thiserror = "1.0"
 dyn-clone = {version="1.0", optional=true}
 qoqo_calculator = { version="1.0"}
-roqoqo-derive = {version="1.0.0", path="../roqoqo-derive"}
+roqoqo-derive = {version="1.1.0-alpha.2", path="../roqoqo-derive"}
 typetag = {version="0.2", optional=true}
 nalgebra = "0.31"
 # schemars = { version="0.8", features = ["num-complex", "ndarray"], optional=true }
@@ -37,6 +37,7 @@ rand_distr = {version="0.4", optional=true}
 rand = { version = "0.8.4"}
 async-trait = {version = "0.1", optional = true}
 futures ={version = "0.3", optional=true}
+petgraph = {version = "0.6.2", optional=true}
 
 [dev-dependencies]
 serde_test = "1.0"
@@ -55,7 +56,8 @@ rustdoc-args = ["--document-private-items" ]
 [features]
 default = ["serialize"]
 dynamic = ["typetag", "dyn-clone"]
-serialize = ["serde", "ndarray/serde", "num-complex/serde", "bincode"]
+serialize = ["serde", "ndarray/serde", "num-complex/serde", "bincode", "petgraph/serde-1"]
 overrotate = [ "rand_distr", "roqoqo-derive/overrotate"]
 async = ["async-trait", "futures"]
 # json_schema=["schemars", "serialize", "qoqo_calculator/json_schema"]
+circuitdag = ["petgraph"]

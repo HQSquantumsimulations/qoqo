@@ -622,3 +622,127 @@ fn input_symbolic_serde_compact() {
         ],
     );
 }
+
+/// Test InputBit inputs and involved qubits
+#[test]
+fn input_bit_inputs_qubits() {
+    let def = InputBit::new(String::from("test"), 1, false);
+
+    // Test inputs are correct
+    assert_eq!(def.name(), &String::from("test"));
+    assert_eq!(def.index(), &1);
+    assert_eq!(def.value(), &false);
+
+    // Test InvolveQubits trait
+    assert_eq!(def.involved_qubits(), InvolvedQubits::None);
+}
+
+/// Test InputBit standard derived traits (Debug, Clone, PartialEq)
+#[test]
+fn input_bit_simple_traits() {
+    let def = InputBit::new(String::from("test"), 1, true);
+
+    // Test Debug trait
+    assert_eq!(
+        format!("{:?}", def),
+        "InputBit { name: \"test\", index: 1, value: true }"
+    );
+
+    // Test Clone trait
+    assert_eq!(def.clone(), def);
+
+    // Test PartialEq trait
+    let def_0 = InputBit::new(String::from("test"), 1, true);
+    let def_1 = InputBit::new(String::from("test"), 2, false);
+    assert!(def_0 == def);
+    assert!(def == def_0);
+    assert!(def_1 != def);
+    assert!(def != def_1);
+}
+
+/// Test InputBit Operate trait
+#[test]
+fn input_bit_operate_trait() {
+    let def = InputBit::new(String::from("test"), 1, false);
+
+    // (1) Test tags function
+    let tags: &[&str; 3] = &["Operation", "Definition", "InputBit"];
+    assert_eq!(def.tags(), tags);
+
+    // (2) Test hqslang function
+    assert_eq!(def.hqslang(), String::from("InputBit"));
+
+    // (3) Test is_parametrized function
+    assert!(!def.is_parametrized());
+}
+
+/// Test InputBit Substitute trait
+#[test]
+fn input_bit_substitute_trait() {
+    let def = InputBit::new(String::from("test"), 1, true);
+    let def_test = InputBit::new(String::from("test"), 1, true);
+
+    // (1) Substitute parameters function
+    let mut substitution_dict: Calculator = Calculator::new();
+    substitution_dict.set_variable("test", 0.0);
+    let result = def_test
+        .substitute_parameters(&mut substitution_dict)
+        .unwrap();
+    assert_eq!(def, result);
+
+    // (2) Remap qubits function
+    let newqubit: usize = 2;
+    let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping_test.insert(0, newqubit);
+    qubit_mapping_test.insert(newqubit, 0);
+    let result = def.remap_qubits(&qubit_mapping_test).unwrap();
+    assert_eq!(result, def_test);
+}
+
+/// Test InputBit Serialization and Deserialization traits (readable)
+#[cfg(feature = "serialize")]
+#[test]
+fn input_bit_serde_readable() {
+    let def = InputBit::new(String::from("test"), 1, true);
+
+    assert_tokens(
+        &def.readable(),
+        &[
+            Token::Struct {
+                name: "InputBit",
+                len: 3,
+            },
+            Token::Str("name"),
+            Token::Str("test"),
+            Token::Str("index"),
+            Token::U64(1),
+            Token::Str("value"),
+            Token::Bool(true),
+            Token::StructEnd,
+        ],
+    );
+}
+
+/// Test InputBit Serialization and Deserialization traits (compact)
+#[cfg(feature = "serialize")]
+#[test]
+fn input_bit_serde_compact() {
+    let def = InputBit::new(String::from("test"), 1, true);
+
+    assert_tokens(
+        &def.compact(),
+        &[
+            Token::Struct {
+                name: "InputBit",
+                len: 3,
+            },
+            Token::Str("name"),
+            Token::Str("test"),
+            Token::Str("index"),
+            Token::U64(1),
+            Token::Str("value"),
+            Token::Bool(true),
+            Token::StructEnd,
+        ],
+    );
+}

@@ -17,7 +17,6 @@ What roqoqo is **not**:
 * A quantum circuit optimizer
 * A collection of quantum algorithms
 
-
 ## roqoqo
 
 [![Crates.io](https://img.shields.io/crates/v/roqoqo)](https://crates.io/crates/roqoqo)
@@ -41,6 +40,8 @@ roqoqo provides:
 * Serialize and deserialize support for `Circuit` and `QuantumProgram` via the serde crate.
 
 This software is still in the beta stage. Functions and documentation are not yet complete and breaking changes can occur.
+
+This project is partly supported by [PlanQK](https://planqk.de).
 
 ### Installation
 

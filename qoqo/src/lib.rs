@@ -41,6 +41,11 @@ pub use circuit::{convert_into_circuit, CircuitWrapper, OperationIteratorWrapper
 mod quantum_program;
 pub use quantum_program::{convert_into_quantum_program, QuantumProgramWrapper};
 
+#[cfg(feature = "circuitdag")]
+mod circuitdag;
+#[cfg(feature = "circuitdag")]
+pub use circuitdag::{convert_into_circuitdag, CircuitDagWrapper};
+
 /// qoqo version information, used for qoqo import/export checks
 pub const QOQO_VERSION: &str = env!("CARGO_PKG_VERSION");
 
@@ -96,6 +101,7 @@ pub enum QoqoBackendError {
 ///     :toctree: generated/
 ///
 ///     Circuit
+///     CircuitDag
 ///     QuantumProgram
 ///     operations
 ///     measurements
@@ -104,6 +110,8 @@ pub enum QoqoBackendError {
 fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<CircuitWrapper>()?;
     module.add_class::<QuantumProgramWrapper>()?;
+    #[cfg(feature = "circuitdag")]
+    module.add_class::<CircuitDagWrapper>()?;
     // module.add_class::<GenericChainWrapper>()?;
     // module.add_class::<GenericDeviceWrapper>()?;
     // module.add_class::<AllToAllDeviceWrapper>()?;

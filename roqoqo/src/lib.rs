@@ -303,6 +303,10 @@ mod circuit;
 pub use circuit::Circuit;
 #[doc(hidden)]
 pub use circuit::*;
+#[cfg(feature = "circuitdag")]
+mod circuitdag;
+#[cfg(feature = "circuitdag")]
+pub use circuitdag::CircuitDag;
 pub mod backends;
 pub mod devices;
 pub mod measurements;

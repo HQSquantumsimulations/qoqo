@@ -26,7 +26,7 @@ use num_complex::Complex64;
 use qoqo_calculator::{Calculator, CalculatorFloat};
 #[cfg(feature = "serialize")]
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::convert::TryFrom;
 
 /// This PRAGMA Operation sets the number of measurements of the circuit.
@@ -778,7 +778,6 @@ impl OperatePragmaNoiseProba for PragmaRandomNoise {
 /// where the indices i and j run from 0 to 2
 ///
 /// with L0 = σ+, L1 = σ- and L3 = σz.
-///
 /// Applying the Pragma with a given `gate_time` corresponds to applying the full time-evolution under the Lindblad equation for `gate_time` time.
 ///
 ///  Note: as long as gate times and decoherence rates are scaled inversely
@@ -976,6 +975,12 @@ impl InvolveQubits for PragmaConditional {
     /// Lists all involved qubits.
     fn involved_qubits(&self) -> InvolvedQubits {
         self.circuit.involved_qubits()
+    }
+
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        let mut new_set: HashSet<(String, usize)> = HashSet::new();
+        new_set.insert((self.condition_register.clone(), self.condition_index));
+        super::InvolvedClassical::Set(new_set)
     }
 }
 
