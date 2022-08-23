@@ -37,7 +37,7 @@ rand_distr = {version="0.4", optional=true}
 rand = { version = "0.8.4"}
 async-trait = {version = "0.1", optional = true}
 futures ={version = "0.3", optional=true}
-petgraph = "0.6.2"
+petgraph = {version = "0.6.2", optional=true}
 
 [dev-dependencies]
 serde_test = "1.0"
@@ -56,7 +56,8 @@ rustdoc-args = ["--document-private-items" ]
 [features]
 default = ["serialize"]
 dynamic = ["typetag", "dyn-clone"]
-serialize = ["serde", "ndarray/serde", "num-complex/serde", "bincode"]
+serialize = ["serde", "ndarray/serde", "num-complex/serde", "bincode", "petgraph/serde-1"]
 overrotate = [ "rand_distr", "roqoqo-derive/overrotate"]
 async = ["async-trait", "futures"]
 # json_schema=["schemars", "serialize", "qoqo_calculator/json_schema"]
+circuitdag = ["petgraph"]

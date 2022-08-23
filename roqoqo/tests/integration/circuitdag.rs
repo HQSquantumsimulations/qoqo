@@ -12,7 +12,7 @@
 
 use std::collections::HashSet;
 
-use roqoqo::operations::*;
+use roqoqo::{operations::*, RoqoqoError};
 use roqoqo::{Circuit, CircuitDag};
 
 use test_case::test_case;
@@ -46,6 +46,35 @@ fn add_operation_no_involved_qubits(operation1: Operation, operation2: Operation
     assert_eq!(dag.commuting_operations().get(1), front1.as_ref());
 }
 
+#[test]
+fn test_partial_eq() {
+    let mut dag1: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+    let mut dag2: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+    dag1.add_to_back(Operation::from(PauliX::new(0)));
+    dag2.add_to_back(Operation::from(PauliX::new(0)));
+    dag1.add_to_back(Operation::from(PauliY::new(0)));
+    dag2.add_to_back(Operation::from(PauliY::new(0)));
+    dag1.add_to_back(Operation::from(CNOT::new(0, 1)));
+    dag2.add_to_back(Operation::from(CNOT::new(0, 1)));
+
+    assert_eq!(dag1, dag2);
+
+    dag2.add_to_back(Operation::from(PauliZ::new(1)));
+
+    assert_ne!(dag1, dag2);
+
+    let mut dag1: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+    let mut dag2: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+    dag1.add_to_back(Operation::from(PauliX::new(0)));
+    dag2.add_to_back(Operation::from(PauliY::new(0)));
+    dag1.add_to_back(Operation::from(PauliY::new(0)));
+    dag2.add_to_back(Operation::from(PauliX::new(0)));
+
+    assert_ne!(dag1, dag2);
+}
+
 #[test_case(Operation::from(PauliX::new(0)), Operation::from(PauliY::new(1)))]
 #[test_case(Operation::from(PauliY::new(1)), Operation::from(PauliZ::new(2)))]
 #[test_case(Operation::from(CNOT::new(0, 1)), Operation::from(PauliX::new(1)))]
@@ -61,7 +90,7 @@ fn check_parallel_blocks_set(operation1: Operation, operation2: Operation) {
     dag.add_to_back(operation1.clone());
 
     assert!(dag.last_parallel_block().len() == 1);
-    assert!(dag.last_parallel_block().len() == 1);
+    assert!(dag.first_parallel_block().len() == 1);
 
     dag.add_to_front(operation2.clone());
     dag.add_to_back(operation1.clone());
@@ -110,8 +139,8 @@ fn check_parallel_blocks_mixed(operation1: Operation, operation2: Operation) {
     )));
     dag.add_to_front(operation2);
 
-    assert!(dag.last_parallel_block().len() == 1);
     assert!(dag.first_parallel_block().len() == 2);
+    assert!(dag.last_parallel_block().len() == 1);
 }
 
 #[test_case(Operation::from(PauliX::new(0)))]
@@ -332,4 +361,106 @@ fn test_pragma_conditional(op_vec: Vec<Operation>) {
 
     assert!(!dag.first_operation_involving_qubit().is_empty());
     assert!(!dag.last_operation_involving_qubit().is_empty());
+}
+
+#[test_case(Operation::from(PauliX::new(0)))]
+#[test_case(Operation::from(PauliZ::new(1)))]
+#[test_case(Operation::from(CNOT::new(0, 1)))]
+#[test_case(Operation::from(PauliY::new(2)))]
+fn test_get(operation: Operation) {
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+    let node = dag.add_to_back(operation.clone());
+
+    assert_eq!(dag.get(node.unwrap()).unwrap(), &operation);
+}
+
+#[test]
+fn test_execution_blocked() {
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+    let a = dag.add_to_back(Operation::from(PauliX::new(0))).unwrap();
+    let b = dag.add_to_back(Operation::from(PauliZ::new(0))).unwrap();
+    let c = dag.add_to_back(Operation::from(PauliY::new(1))).unwrap();
+    let d = dag.add_to_back(Operation::from(CNOT::new(0, 1))).unwrap();
+    let e = dag
+        .add_to_back(Operation::from(ControlledPauliZ::new(1, 2)))
+        .unwrap();
+
+    assert!(dag.execution_blocked(&[a, b, c], &d).is_empty());
+    assert_eq!(dag.execution_blocked(&[a, b, c], &e), vec![d]);
+    assert!(dag.execution_blocked(&[a, b, c, d], &e).is_empty());
+    assert!(dag.execution_blocked(&[d, e], &a).is_empty());
+    assert_eq!(dag.execution_blocked(&[d, e], &b), vec![a]);
+    assert_eq!(dag.execution_blocked(&[], &e), vec![a, b, c, d]);
+}
+
+#[test]
+fn test_blocking_predecessors() {
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+    let a = dag.add_to_back(Operation::from(PauliX::new(0))).unwrap();
+    let b = dag.add_to_back(Operation::from(PauliZ::new(0))).unwrap();
+    let c = dag.add_to_back(Operation::from(PauliY::new(1))).unwrap();
+    let d = dag.add_to_back(Operation::from(CNOT::new(0, 1))).unwrap();
+
+    assert!(dag.blocking_predecessors(&[a, b, c], &d).is_empty());
+    assert!(dag.blocking_predecessors(&[a], &b).is_empty());
+    assert!(dag.blocking_predecessors(&[], &c).is_empty());
+    assert_eq!(dag.blocking_predecessors(&[a, b], &d), vec![c]);
+}
+
+#[test]
+fn test_new_front_layer() {
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+    let a = dag.add_to_back(Operation::from(PauliX::new(0))).unwrap();
+    let b = dag.add_to_back(Operation::from(PauliZ::new(0))).unwrap();
+    let c = dag.add_to_back(Operation::from(PauliY::new(1))).unwrap();
+    let d = dag.add_to_back(Operation::from(CNOT::new(0, 1))).unwrap();
+    let e = dag
+        .add_to_back(Operation::from(ControlledPauliZ::new(1, 2)))
+        .unwrap();
+
+    assert_eq!(
+        dag.new_front_layer(&[a, b, c], &[d], &e),
+        Err(RoqoqoError::GenericError {
+            msg: "The Operation to be executed is not in the current front layer.".to_string(),
+        })
+    );
+    assert_eq!(dag.new_front_layer(&[], &[a], &a), Ok(vec![b]));
+    assert_eq!(dag.new_front_layer(&[a, c], &[b], &b), Ok(vec![d]));
+    assert_eq!(dag.new_front_layer(&[a], &[b], &b), Ok(vec![b]));
+    assert_eq!(dag.new_front_layer(&[a, b, c], &[d], &d), Ok(vec![e]));
+    assert_eq!(dag.new_front_layer(&[a, b, c, d], &[e], &e), Ok(vec![]));
+}
+
+#[test]
+fn test_parallel_block_iterator() {
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+    let a = dag.add_to_back(Operation::from(PauliX::new(0))).unwrap();
+    let b = dag.add_to_back(Operation::from(PauliZ::new(0))).unwrap();
+    let c = dag.add_to_back(Operation::from(PauliY::new(1))).unwrap();
+    let d = dag.add_to_back(Operation::from(PauliX::new(1))).unwrap();
+    let e = dag.add_to_back(Operation::from(CNOT::new(0, 1))).unwrap();
+
+    let mut par_bl = dag.parallel_blocks();
+
+    let vec = par_bl.next().unwrap();
+    for ind in vec {
+        assert!(ind == a || ind == c);
+    }
+
+    let vec = par_bl.next().unwrap();
+    for ind in vec {
+        assert!(ind == b || ind == d);
+    }
+
+    let vec = par_bl.next().unwrap();
+    for ind in vec {
+        assert!(ind == e);
+    }
+
+    assert!(par_bl.next().is_none());
 }

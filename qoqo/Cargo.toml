@@ -54,6 +54,7 @@ no-default-features = true
 [features]
 extension-module = ["pyo3/extension-module"]#, "qoqo_calculator_pyo3/extension-module"]
 default = ["extension-module"]
+circuitdag = ["roqoqo/circuitdag"]
 
 [package.metadata.maturin]
 requires-dist = ["numpy", "qoqo_calculator_pyo3>=0.8.3"]
