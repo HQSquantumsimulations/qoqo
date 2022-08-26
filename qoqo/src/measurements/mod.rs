@@ -11,7 +11,6 @@
 // limitations under the License.
 
 //! Qoqo measurements
-
 use pyo3::prelude::*;
 mod measurement_auxiliary_data_input;
 pub use measurement_auxiliary_data_input::{
@@ -27,6 +26,7 @@ mod classical_register_measurement;
 pub use classical_register_measurement::ClassicalRegisterWrapper;
 
 /// Measurements
+#[cfg(feature = "extension_module")]
 #[pymodule]
 pub fn measurements(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<PauliZProductInputWrapper>()?;

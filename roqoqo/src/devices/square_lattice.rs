@@ -9,6 +9,7 @@
 // License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
+
 use std::collections::HashMap;
 
 use super::Device;
@@ -19,40 +20,46 @@ use ndarray::Array2;
 ///
 #[derive(Clone, Debug, PartialEq, Default)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-pub struct AllToAllDevice {
-    number_qubits: usize,
+pub struct SquareLatticeDevice {
+    number_rows: usize,
+    number_columns: usize,
     generic_device: GenericDevice,
 }
 
-impl AllToAllDevice {
-    /// Creates a new AllToAllDevice.
+impl SquareLatticeDevice {
+    /// Creates a new SquareLatticeDevice.
+    ///
+    /// The lattice is indexed in row-major format qubit 0 -> row 0 column 0, qubit 1 -> row 0, column 1 ...
     ///
     /// # Arguments
     ///
-    /// * `number_qubits` - The number of qubits in the device.
+    /// * `number_rows` - The number_rows of the square lattice.
+    /// * `number_columns` - The number_columns of the square lattice
     /// * `single_qubit_gates` - A list of 'hqslang' names of single-qubit-gates supported by the device.
     /// * `two_qubit_gates` - A list of 'hqslang' names of basic two-qubit-gates supported by the device.
     /// * `default_gate_time`
     /// # Returns
     ///
-    /// An initiated AllToAllDevice with single and two-qubit gates and decoherence rates set to zero.
+    /// An initiated SquareLatticeDevice with single and two-qubit gates and decoherence rates set to zero.
     ///
     pub fn new(
-        number_qubits: usize,
+        number_rows: usize,
+        number_columns: usize,
         single_qubit_gates: &[String],
         two_qubit_gates: &[String],
         default_gate_time: f64,
     ) -> Self {
         // Initialization of single qubit gates with empty times
         let generic = GenericDevice {
-            number_qubits,
+            number_qubits: number_rows * number_columns,
             single_qubit_gates: HashMap::with_capacity(single_qubit_gates.len()),
             two_qubit_gates: HashMap::with_capacity(two_qubit_gates.len()),
             multi_qubit_gates: HashMap::new(),
-            decoherence_rates: HashMap::with_capacity(number_qubits),
+            decoherence_rates: HashMap::with_capacity(number_rows * number_columns),
         };
         let mut new = Self {
-            number_qubits,
+            number_rows,
+            number_columns,
             generic_device: generic,
         };
         for gate_name in single_qubit_gates {
@@ -63,8 +70,18 @@ impl AllToAllDevice {
         }
         new = new
             .set_all_qubit_decoherence_rates(Array2::zeros((3, 3)))
-            .expect("Internal bug in roqoqo devices.");
+            .expect("Internal bug");
         new
+    }
+
+    /// Returns the number of columns in the square lattice
+    pub fn number_columns(&self) -> usize {
+        self.number_columns
+    }
+
+    /// Returns the number of rows in the square lattice
+    pub fn number_rows(&self) -> usize {
+        self.number_rows
     }
 
     /// Function that allows to set a unifromg gate time per gate type for the single-qubit-gates.
@@ -76,7 +93,7 @@ impl AllToAllDevice {
     ///
     /// # Returns
     ///
-    /// An AllToAllDevice with updated gate times.
+    /// An SquareLatticeDevice with updated gate times.
     ///
     pub fn set_all_single_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
         if let Some(gate_times) = self.generic_device.single_qubit_gates.get_mut(gate) {
@@ -84,8 +101,8 @@ impl AllToAllDevice {
                 *gatetime = gate_time
             }
         } else {
-            let mut gatetimes: HashMap<usize, f64> = HashMap::with_capacity(self.number_qubits);
-            for qubit in 0..self.number_qubits {
+            let mut gatetimes: HashMap<usize, f64> = HashMap::with_capacity(self.number_qubits());
+            for qubit in 0..self.number_qubits() {
                 gatetimes.insert(qubit, gate_time);
             }
             self.generic_device
@@ -104,7 +121,7 @@ impl AllToAllDevice {
     ///
     /// # Returns
     ///
-    /// An AllToAllDevice with updated gate times.
+    /// An SquareLatticeDevice with updated gate times.
     ///
     pub fn set_all_two_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
         if let Some(gate_times) = self.generic_device.two_qubit_gates.get_mut(gate) {
@@ -113,12 +130,43 @@ impl AllToAllDevice {
             }
         } else {
             let mut gatetimes: HashMap<(usize, usize), f64> =
-                HashMap::with_capacity(self.number_qubits.pow(2));
-            for control in 0..self.number_qubits {
-                for target in 0..self.number_qubits {
-                    if control != target {
-                        gatetimes.insert((control, target), gate_time);
-                    }
+                HashMap::with_capacity(self.number_qubits() * 4);
+            // insert horizontal terms
+            for row in 0..self.number_rows() {
+                for column in 0..self.number_columns() - 1 {
+                    gatetimes.insert(
+                        (
+                            row * self.number_columns + column,
+                            row * self.number_columns + column + 1,
+                        ),
+                        gate_time,
+                    );
+                    gatetimes.insert(
+                        (
+                            row * self.number_columns + column + 1,
+                            row * self.number_columns + column,
+                        ),
+                        gate_time,
+                    );
+                }
+            }
+            // insert vertical terms
+            for row in 0..self.number_rows - 1 {
+                for column in 0..self.number_columns {
+                    gatetimes.insert(
+                        (
+                            row * self.number_columns + column,
+                            (row + 1) * self.number_columns + column,
+                        ),
+                        gate_time,
+                    );
+                    gatetimes.insert(
+                        (
+                            (row + 1) * self.number_columns + column,
+                            row * self.number_columns + column,
+                        ),
+                        gate_time,
+                    );
                 }
             }
             self.generic_device
@@ -135,6 +183,11 @@ impl AllToAllDevice {
     /// * `gate` - hqslang name of the single-qubit-gate.
     /// * `qubit` - The qubit for which the gate time is set
     /// * `gate_time` - gate time for the given gate.
+    ///
+    /// # Returns
+    ///
+    /// An SquareLatticeDevice with updated gate times or
+    ///
     pub fn set_single_qubit_gate_time(
         &mut self,
         gate: &str,
@@ -153,6 +206,11 @@ impl AllToAllDevice {
     /// * `control` - The control qubit for which the gate time is set
     /// * `target` - The target qubit for which the gate time is set
     /// * `gate_time` - gate time for the given gate.
+    ///
+    /// # Returns
+    ///
+    /// An SquareLatticeDevice with updated gate times or
+    ///
     pub fn set_two_qubit_gate_time(
         &mut self,
         gate: &str,
@@ -160,8 +218,26 @@ impl AllToAllDevice {
         target: usize,
         gate_time: f64,
     ) -> Result<(), RoqoqoError> {
-        self.generic_device
-            .set_two_qubit_gate_time(gate, control, target, gate_time)
+        let row_control: i64 = (control / self.number_columns)
+            .try_into()
+            .expect("Qubit number too large");
+        let column_control: i64 = (control % self.number_columns)
+            .try_into()
+            .expect("Qubit number too large");
+        let row_target: i64 = (target / self.number_columns)
+            .try_into()
+            .expect("Qubit number too large");
+        let column_target: i64 = (target % self.number_columns)
+            .try_into()
+            .expect("Qubit number too large");
+        if ((row_control as i64 - row_target as i64).abs() == 1 && column_control == column_target)
+            || (row_control == row_target && (column_control - column_target).abs() == 1)
+        {
+            self.generic_device
+                .set_two_qubit_gate_time(gate, control, target, gate_time)
+        } else {
+            Err(RoqoqoError::GenericError{msg: format!("Two qubit gate between psotions ({}, {}, qubit: {}) and ({}, {}, qubit:{}) not possible on SquareLattice", row_control, column_control, control, row_target, column_target, target)})
+        }
     }
 
     /// Setting the gate time of a mulit qubit gate.
@@ -171,6 +247,11 @@ impl AllToAllDevice {
     /// * `gate` - hqslang name of the multi-qubit-gate.
     /// * `qubits` - The qubits for which the gate time is set
     /// * `gate_time` - gate time for the given gate.
+    ///
+    /// # Returns
+    ///
+    /// An SquareLatticeDevice with updated gate times or
+    ///
     pub fn set_multi_qubit_gate_time(
         &mut self,
         gate: &str,
@@ -179,21 +260,6 @@ impl AllToAllDevice {
     ) -> Result<(), RoqoqoError> {
         self.generic_device
             .set_multi_qubit_gate_time(gate, qubits, gate_time)
-    }
-
-    /// Function to set the decoherence rates for one qubit in the device.
-    ///
-    /// # Arguments
-    ///
-    /// * `qubit` - The qubit for which the rate is set
-    /// * `rates` - decoherence rates for one qubit in the device, provided as a (3x3)-matrix.
-    pub fn set_qubit_decoherence_rates(
-        &mut self,
-        qubit: usize,
-        rates: Array2<f64>,
-    ) -> Result<(), RoqoqoError> {
-        self.generic_device
-            .set_qubit_decoherence_rates(qubit, rates)
     }
 
     /// Function to set the decoherence rates for all qubits in the device.
@@ -224,6 +290,21 @@ impl AllToAllDevice {
                 msg: "The input parameter `rates` needs to be a (3x3)-matrix.".to_string(),
             })
         }
+    }
+
+    /// Function to set the decoherence rates for one qubit in the device.
+    ///
+    /// # Arguments
+    ///
+    /// * `qubit` - The qubit for which the rate is set
+    /// * `rates` - decoherence rates for one qubit in the device, provided as a (3x3)-matrix.
+    pub fn set_qubit_decoherence_rates(
+        &mut self,
+        qubit: usize,
+        rates: Array2<f64>,
+    ) -> Result<(), RoqoqoError> {
+        self.generic_device
+            .set_qubit_decoherence_rates(qubit, rates)
     }
 
     /// Adds qubit damping to noise rates.
@@ -262,7 +343,7 @@ impl AllToAllDevice {
     ///
     /// * `damping` - The damping rates.
     pub fn add_damping_all(mut self, damping: f64) -> Self {
-        for qubit in 0..self.number_qubits {
+        for qubit in 0..self.number_qubits() {
             self.generic_device
                 .add_damping(qubit, damping)
                 .expect("Checked insertion fails");
@@ -276,7 +357,7 @@ impl AllToAllDevice {
     ///
     /// * `dephasing` - The dephasing rates.
     pub fn add_dephasing_all(mut self, dephasing: f64) -> Self {
-        for qubit in 0..self.number_qubits {
+        for qubit in 0..self.number_qubits() {
             self.generic_device
                 .add_dephasing(qubit, dephasing)
                 .expect("Checked insertion fails");
@@ -290,7 +371,7 @@ impl AllToAllDevice {
     ///
     /// * `depolarising` - The depolarising rates.
     pub fn add_depolarising_all(mut self, depolarising: f64) -> Self {
-        for qubit in 0..self.number_qubits {
+        for qubit in 0..self.number_qubits() {
             self.generic_device
                 .add_depolarising(qubit, depolarising)
                 .expect("Checked insertion fails");
@@ -299,11 +380,11 @@ impl AllToAllDevice {
     }
 }
 
-/// Implements Device trait for AllToAllDevice.
+/// Implements Device trait for SquareLatticeDevice.
 ///
 /// The Device trait defines standard functions available for roqoqo devices.
 ///
-impl Device for AllToAllDevice {
+impl Device for SquareLatticeDevice {
     /// Returns the number of qubits the device supports.
     ///
     /// # Returns
@@ -348,9 +429,22 @@ impl Device for AllToAllDevice {
 
     fn two_qubit_edges(&self) -> Vec<(usize, usize)> {
         let mut vector: Vec<(usize, usize)> = Vec::new();
-        for row in 0..self.number_qubits() {
-            for column in row + 1..self.number_qubits() {
-                vector.push((row, column));
+
+        for row in 0..self.number_rows {
+            for column in 0..self.number_columns - 1 {
+                vector.push((
+                    row * self.number_columns + column,
+                    row * self.number_columns + column + 1,
+                ));
+            }
+        }
+        // insert vertical terms
+        for row in 0..self.number_rows - 1 {
+            for column in 0..self.number_columns {
+                vector.push((
+                    row * self.number_columns + column,
+                    (row + 1) * self.number_columns + column,
+                ));
             }
         }
         vector
