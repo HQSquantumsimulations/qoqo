@@ -37,7 +37,6 @@ impl AllToAllDevice {
     /// # Returns
     ///
     /// * `Self` - An initiated AllToAllDevice with single and two-qubit gates and decoherence rates set to zero.
-    ///
     pub fn new(
         number_qubits: usize,
         single_qubit_gates: &[String],
@@ -68,7 +67,7 @@ impl AllToAllDevice {
         new
     }
 
-    /// Function that allows to set a unifromg gate time per gate type for the single-qubit-gates.
+    /// Function that allows to set a uniform gate time per gate type for the single-qubit-gates.
     ///
     /// # Arguments
     ///
@@ -105,8 +104,7 @@ impl AllToAllDevice {
     ///
     /// # Returns
     ///
-    /// An AllToAllDevice with updated gate times.
-    ///
+    /// `Self` - An AllToAllDevice with updated gate times.
     pub fn set_all_two_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
         if let Some(gate_times) = self.generic_device.two_qubit_gates.get_mut(gate) {
             for (_, gatetime) in gate_times.iter_mut() {
@@ -136,6 +134,11 @@ impl AllToAllDevice {
     /// * `gate` - hqslang name of the single-qubit-gate.
     /// * `qubit` - The qubit for which the gate time is set
     /// * `gate_time` - gate time for the given gate.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(())` - The gate time was correctly set and nothing is returned
+    /// * `Err(RoqoqoError::GenericError)` - Qubit set is larger than the number qubits in the device
     pub fn set_single_qubit_gate_time(
         &mut self,
         gate: &str,
@@ -154,6 +157,12 @@ impl AllToAllDevice {
     /// * `control` - The control qubit for which the gate time is set
     /// * `target` - The target qubit for which the gate time is set
     /// * `gate_time` - gate time for the given gate.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(())` - The gate time was correctly set and nothing is returned
+    /// * `Err(RoqoqoError::GenericError)` - Control qubit set is larger than the number qubits in the device
+    /// * `Err(RoqoqoError::GenericError)` - Target qubit set is larger than the number qubits in the device
     pub fn set_two_qubit_gate_time(
         &mut self,
         gate: &str,
@@ -172,6 +181,11 @@ impl AllToAllDevice {
     /// * `gate` - hqslang name of the multi-qubit-gate.
     /// * `qubits` - The qubits for which the gate time is set
     /// * `gate_time` - gate time for the given gate.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(())` - The gate time was correctly set and nothing is returned
+    /// * `Err(RoqoqoError::GenericError)` - A qubit in the qubits vector is larger than the number qubits in the device
     pub fn set_multi_qubit_gate_time(
         &mut self,
         gate: &str,
@@ -188,6 +202,11 @@ impl AllToAllDevice {
     ///
     /// * `qubit` - The qubit for which the rate is set
     /// * `rates` - decoherence rates for one qubit in the device, provided as a (3x3)-matrix.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(())` - The decoherence rate was correctly set and nothing is returned
+    /// * `Err(RoqoqoError::GenericError)` - Qubit set is larger than the number qubits in the device
     pub fn set_qubit_decoherence_rates(
         &mut self,
         qubit: usize,
@@ -207,7 +226,6 @@ impl AllToAllDevice {
     ///
     /// * `Ok(Self)` -  The device with updated decoherence rates.
     /// * `Err(RoqoqoError)` - The input parameter `rates` needs to be a (3x3)-matrix.
-    ///
     pub fn set_all_qubit_decoherence_rates(
         mut self,
         rates: Array2<f64>,
@@ -233,6 +251,11 @@ impl AllToAllDevice {
     ///
     /// * `qubit` - The qubit for which the damping is added
     /// * `damping` - The damping rates.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Self)` -  The device with updated damping.
+    /// * `Err(RoqoqoError::GenericError)` - Qubit set is larger than the number qubits in the device
     pub fn add_damping(&mut self, qubit: usize, damping: f64) -> Result<(), RoqoqoError> {
         self.generic_device.add_damping(qubit, damping)
     }
@@ -243,6 +266,11 @@ impl AllToAllDevice {
     ///
     /// * `qubit` - The qubit for which the dephasing is added
     /// * `dephasing` - The dephasing rates.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Self)` -  The device with updated dephasing.
+    /// * `Err(RoqoqoError::GenericError)` - Qubit set is larger than the number qubits in the device
     pub fn add_dephasing(&mut self, qubit: usize, dephasing: f64) -> Result<(), RoqoqoError> {
         self.generic_device.add_dephasing(qubit, dephasing)
     }
@@ -253,6 +281,11 @@ impl AllToAllDevice {
     ///
     /// * `qubit` - The qubit for which the depolarising noise is added
     /// * `depolarising` - The depolarising rates.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Self)` -  The device with updated depolarising.
+    /// * `Err(RoqoqoError::GenericError)` - Qubit set is larger than the number qubits in the device
     pub fn add_depolarising(&mut self, qubit: usize, depolarising: f64) -> Result<(), RoqoqoError> {
         self.generic_device.add_depolarising(qubit, depolarising)
     }
@@ -262,6 +295,10 @@ impl AllToAllDevice {
     /// # Arguments
     ///
     /// * `damping` - The damping rates.
+    ///
+    /// # Returns
+    ///
+    /// * `Self` - An AllToAllDevice with updated damping.
     pub fn add_damping_all(mut self, damping: f64) -> Self {
         for qubit in 0..self.number_qubits {
             self.generic_device
@@ -276,6 +313,10 @@ impl AllToAllDevice {
     /// # Arguments
     ///
     /// * `dephasing` - The dephasing rates.
+    ///
+    /// # Returns
+    ///
+    /// * `Self` - An AllToAllDevice with updated dephasing.
     pub fn add_dephasing_all(mut self, dephasing: f64) -> Self {
         for qubit in 0..self.number_qubits {
             self.generic_device
@@ -290,6 +331,10 @@ impl AllToAllDevice {
     /// # Arguments
     ///
     /// * `depolarising` - The depolarising rates.
+    ///
+    /// # Returns
+    ///
+    /// * `Self` - An AllToAllDevice with updated depolarising.
     pub fn add_depolarising_all(mut self, depolarising: f64) -> Self {
         for qubit in 0..self.number_qubits {
             self.generic_device
@@ -310,7 +355,6 @@ impl Device for AllToAllDevice {
     /// # Returns
     ///
     /// The number of qubits in the device.
-    ///
     fn number_qubits(&self) -> usize {
         self.generic_device.number_qubits
     }
@@ -338,7 +382,6 @@ impl Device for AllToAllDevice {
     ///
     /// * `Some<Array2<f64>>` - The decoherence rates.
     /// * `None` - The qubit is not part of the device.
-    ///
     fn qubit_decoherence_rates(&self, qubit: &usize) -> Option<Array2<f64>> {
         self.generic_device.qubit_decoherence_rates(qubit)
     }
