@@ -33,9 +33,10 @@ impl AllToAllDevice {
     /// * `single_qubit_gates` - A list of 'hqslang' names of single-qubit-gates supported by the device.
     /// * `two_qubit_gates` - A list of 'hqslang' names of basic two-qubit-gates supported by the device.
     /// * `default_gate_time`
+    ///
     /// # Returns
     ///
-    /// An initiated AllToAllDevice with single and two-qubit gates and decoherence rates set to zero.
+    /// * `Self` - An initiated AllToAllDevice with single and two-qubit gates and decoherence rates set to zero.
     ///
     pub fn new(
         number_qubits: usize,
