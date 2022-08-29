@@ -20,23 +20,23 @@
 //!
 //! Quantum Operation Quantum Operation
 //! Yes we use [reduplication](https://en.wikipedia.org/wiki/Reduplication)
-#[cfg(feature = "extension_module")]
+
 use pyo3::prelude::*;
-#[cfg(feature = "extension_module")]
+
 use pyo3::types::PyDict;
-#[cfg(feature = "extension_module")]
+
 use pyo3::wrap_pymodule;
 
 pub mod operations;
-#[cfg(feature = "extension_module")]
+
 use operations::*;
 
 pub mod measurements;
-#[cfg(feature = "extension_module")]
+
 use measurements::*;
 
 pub mod devices;
-#[cfg(feature = "extension_module")]
+
 use devices::*;
 
 mod circuit;
@@ -110,7 +110,7 @@ pub enum QoqoBackendError {
 ///     operations
 ///     measurements
 ///
-#[cfg(feature = "extension_module")]
+
 #[pymodule]
 fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<CircuitWrapper>()?;

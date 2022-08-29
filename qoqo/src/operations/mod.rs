@@ -111,7 +111,7 @@ use pyo3::prelude::*;
 ///    ComplexPMInteraction
 ///    MultiQubitMS
 #[pymodule]
-#[cfg(feature = "extension_module")]
+
 pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<SingleQubitGateWrapper>()?;
     m.add_class::<RotateZWrapper>()?;

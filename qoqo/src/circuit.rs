@@ -37,7 +37,7 @@ use crate::operations::{convert_operation_to_pyobject, convert_pyany_to_operatio
 /// The circuit struct behaves similar to a list and provides several standard
 /// functions of a Vec<Operation>, such as len(), is_empty(), get(), iter() and into_iter().
 ///
-#[cfg(feature = "extension_module")]
+
 #[pymodule]
 fn circuit(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<CircuitWrapper>()?;
