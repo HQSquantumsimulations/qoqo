@@ -567,8 +567,7 @@ pub fn devicewrapper(
             ///     qubit[int]: The qubit the gate acts on
             ///
             /// Returns:
-            ///     Option: Some<f64> for the gate time.
-            ///                      Or None if the gate is not available on the device.
+            ///     Option[float]: None if gate is not available
             ///
             pub fn single_qubit_gate_time(&self, hqslang: &str, qubit: usize) -> Option<f64> {
                 self.internal.single_qubit_gate_time(hqslang, &qubit)
@@ -582,8 +581,7 @@ pub fn devicewrapper(
             ///     target[int]: The target qubit the gate acts on.
             ///
             /// Returns:
-            ///     Option: Some<f64> for the gate time.
-            ///                      Or None if the gate is not available on the device.
+            ///     Option[float]: None if gate is not available
             ///
             pub fn two_qubit_gate_time(&self, hqslang: &str, control: usize, target: usize) -> Option<f64> {
                 self.internal
@@ -597,8 +595,7 @@ pub fn devicewrapper(
             ///     qubits[List[int]]: The qubits the gate acts on.
             ///
             /// Returns:
-            ///     Option: Some<f64> for the gate time.
-            ///                      Or None if the gate is not available on the device.
+            ///     Option[float]: None if gate is not available
             ///
             pub fn multi_qubit_gate_time(&self, hqslang: &str, qubits: Vec<usize>) -> Option<f64> {
                 self.internal.multi_qubit_gate_time(hqslang, &qubits)
@@ -607,9 +604,9 @@ pub fn devicewrapper(
             /// Set the gate time of a single qubit gate.
             ///
             /// Args:
-            ///     gate [str]: hqslang name of the single-qubit-gate.
-            ///     qubit [int]: The qubit for which the gate time is set
-            ///     gate_time [float]: The gate time for the given gate.
+            ///     gate (str): hqslang name of the single-qubit-gate.
+            ///     qubit (int): The qubit for which the gate time is set
+            ///     gate_time (float): The gate time for the given gate.
             pub fn set_single_qubit_gate_time(&mut self, gate: &str, qubit: usize, gate_time: f64) -> PyResult<()> {
                 self.internal.set_single_qubit_gate_time(gate, qubit, gate_time).map_err(|err|
                 PyValueError::new_err(format!("{:?}", err)))
@@ -618,10 +615,10 @@ pub fn devicewrapper(
             /// Set the gate time of a single qubit gate.
             ///
             /// Args:
-            ///     gate [str]: hqslang name of the single-qubit-gate.
-            ///     control [int]: The control qubit for which the gate time is set
-            ///     target [int]: The control qubit for which the gate time is set
-            ///     gate_time [float]: The gate time for the given gate.
+            ///     gate (str): hqslang name of the single-qubit-gate.
+            ///     control (int): The control qubit for which the gate time is set
+            ///     target (int): The control qubit for which the gate time is set
+            ///     gate_time (float): The gate time for the given gate.
             pub fn set_two_qubit_gate_time(&mut self, gate: &str, control: usize, target: usize, gate_time: f64) -> PyResult<()> {
                 self.internal.set_two_qubit_gate_time(gate, control, target, gate_time).map_err(|err|
                     PyValueError::new_err(format!("{:?}", err)))
@@ -631,9 +628,9 @@ pub fn devicewrapper(
             /// Set the gate time of a single qubit gate.
             ///
             /// Args:
-            ///     gate [str]: hqslang name of the single-qubit-gate.
-            ///     qubits [List[int]]: The qubits for which the gate time is set
-            ///     gate_time [float]: The gate time for the given gate.
+            ///     gate (str): hqslang name of the single-qubit-gate.
+            ///     qubits (int): The qubit for which the gate time is set
+            ///     gate_time (float): The gate time for the given gate.
             pub fn set_qubit_decoherence_rates(&mut self, qubit: usize, rates: PyReadonlyArray2<f64>) -> PyResult<()> {
                 let rates_matrix = rates.as_array().to_owned();
                 self.internal
@@ -646,9 +643,9 @@ pub fn devicewrapper(
             /// Set the gate time of a single qubit gate.
             ///
             /// Args:
-            ///     gate [str]: hqslang name of the single-qubit-gate.
-            ///     qubits [List[int]]: The qubits for which the gate time is set
-            ///     gate_time [float]: The gate time for the given gate.
+            ///     gate (str): hqslang name of the single-qubit-gate.
+            ///     qubits (List[int]): The qubits for which the gate time is set
+            ///     gate_time (float): The gate time for the given gate.
             pub fn set_multi_qubit_gate_time(&self, gate: &str, qubits: Vec<usize>, gate_time: f64) -> PyResult<()> {
                 self.internal.clone().set_multi_qubit_gate_time(gate, qubits, gate_time).map_err(|err|
                     PyValueError::new_err(format!("{:?}", err)))
@@ -657,7 +654,7 @@ pub fn devicewrapper(
             /// Return the matrix of the decoherence rates of the Lindblad equation.
             ///
             /// Args:
-            ///     qubit[int]: The qubit for which the rate matrix M is returned
+            ///     qubit (int): The qubit for which the rate matrix M is returned
             ///
             /// Returns:
             ///
@@ -678,8 +675,8 @@ pub fn devicewrapper(
             /// Adds single qubit damping to noise rates.
             ///
             /// Args:
-            ///     qubit[int]: The qubit for which the decoherence is added
-            ///     damping[float]: The damping rates.
+            ///     qubit (int): The qubit for which the decoherence is added
+            ///     damping (float): The damping rates.
             pub fn add_damping(&mut self, qubit: usize, damping: f64) -> PyResult<()> {
                 self.internal.add_damping(qubit,damping).map_err(|err| PyValueError::new_err(format!("Cannot add decoherence: {}",err)))
             }
@@ -687,8 +684,8 @@ pub fn devicewrapper(
              /// Adds single qubit dephasing to noise rates.
             ///
             /// Args:
-            ///     qubit[int]: The qubit for which the decoherence is added
-            ///     dephasing[float]: The dephasing rates.
+            ///     qubit (int): The qubit for which the decoherence is added
+            ///     dephasing (float): The dephasing rates.
             pub fn add_dephasing(&mut self, qubit: usize, dephasing: f64) -> PyResult<()> {
                 self.internal.add_dephasing(qubit,dephasing).map_err(|err| PyValueError::new_err(format!("Cannot add decoherence: {}",err)))
 
@@ -697,8 +694,8 @@ pub fn devicewrapper(
             /// Adds single qubit depolarising to noise rates.
             ///
             /// Args:
-            ///     qubit[int]: The qubit for which the decoherence is added
-            ///     depolarising[float]: The depolarising rates.
+            ///     qubit (int): The qubit for which the decoherence is added
+            ///     depolarising (float): The depolarising rates.
             pub fn add_depolarising(&mut self, qubit: usize, depolarising: f64) -> PyResult<()> {
                 self.internal.add_depolarising(qubit,depolarising).map_err(|err| PyValueError::new_err(format!("Cannot add decoherence: {}",err)))
             }
@@ -816,7 +813,6 @@ pub fn devicewrapper(
             /// Return the __richcmp__ magic method to perform rich comparison operations on mixed system.
             ///
             /// Args:
-            ///     self: The device wrapper object.
             ///     other: The object to compare self to.
             ///     op: Whether they should be equal or not.
             ///

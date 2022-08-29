@@ -19,15 +19,15 @@ use pyo3::prelude::*;
 use pyo3::types::{PyByteArray, PyType};
 use qoqo_macros::devicewrapper;
 use roqoqo::devices::{Device, GenericDevice};
-/// A generic square lattice device with only next-neighbours-connectivity.
+/// A generic device assuming all-to-all connectivity between all involved qubits.
 ///
 /// Args:
-///     number_rows (int): The fixed number of rows in device, needs to be the same for all layouts.
-///     number_columns (int): Fixed number of tweezers in each row, needs to be the same for all layouts.
-///     single_qubit_gates (List[str]): A list of 'hqslang' names of single-qubit-gates supported by the device.
-///     two_qubit_gate (str): The 'hqslang' name of the basic two-qubit-gate supported by the device.
+///     number_qubits (int): The number of qubits in the device
 ///
-#[pyclass(name = "SquareLatticeDevice", module = "devices")]
+/// Note:
+///     GenericDevice uses nested HashMaps to represent the most general device connectivity.
+///     The memory usage will be inefficient for devices with large qubit numbers.
+#[pyclass(name = "GenericDevice", module = "devices")]
 #[derive(Clone, Debug, PartialEq)]
 pub struct GenericDeviceWrapper {
     /// Internal storage of [roqoqo::devices::SquareLatticeDevice]
@@ -36,18 +36,7 @@ pub struct GenericDeviceWrapper {
 
 #[devicewrapper]
 impl GenericDeviceWrapper {
-    /// Create new geneeric device
-    ///
-    /// Args:
-    ///     number_rows (int): The fixed number of rows in device, needs to be the same for all layouts.
-    ///     number_columns (int): Fixed number of tweezers in each row, needs to be the same for all layouts.
-    ///     single_qubit_gates (List[str]): A list of 'hqslang' names of single-qubit-gates supported by the device.
-    ///     two_qubit_gates (List[str]): A list of 'hqslang' names of basic two-qubit-gates supported by the device.
-    ///     multi_qubit_gates (List[str]): A list of 'hqslang' names of basic multi-qubit-gate supported by the device.
-    ///
-    /// Returns:
-    ///     An initialized SquareLatticeDevice device with empty gate times and decoherence rates set to zero.
-    ///
+    /// Create new generic device
     #[new]
     pub fn new(number_qubits: usize) -> PyResult<Self> {
         Ok(Self {
