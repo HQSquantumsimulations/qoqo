@@ -17,20 +17,21 @@ use ndarray::Array2;
 use numpy::{PyArray2, PyReadonlyArray2, ToPyArray};
 use pyo3::exceptions::{PyTypeError, PyValueError};
 use pyo3::prelude::*;
-use pyo3::types::{PyByteArray, PyType};
+use pyo3::types::{PyByteArray};
 use qoqo_macros::devicewrapper;
 use roqoqo::devices::{Device, SquareLatticeDevice};
 
 /// A generic square lattice device with only next-neighbours-connectivity.
 ///
 /// Args:
-///     number_rows (int): The fixed number of rows in device, needs to be the same for all layouts.
-///     number_columns (int): Fixed number of tweezers in each row, needs to be the same for all layouts.
+///     number_rows (int): The fixed number of rows in device..
+///     number_columns (int): Fixed number of columns in device.
 ///     single_qubit_gates (List[str]): A list of 'hqslang' names of single-qubit-gates supported by the device.
 ///     two_qubit_gate (str): The 'hqslang' name of the basic two-qubit-gate supported by the device.
-///
+///     default_gate_time (float): The default startig gate time.
 #[pyclass(name = "SquareLatticeDevice", module = "devices")]
 #[derive(Clone, Debug, PartialEq)]
+#[pyo3(text_signature = "(number_rows, number_columns, single_qubit_gates, two_qubit_gates, default_gate_time)")]
 pub struct SquareLatticeDeviceWrapper {
     /// Internal storage of [roqoqo::devices::SquareLatticeDevice]
     pub internal: SquareLatticeDevice,
@@ -45,11 +46,10 @@ impl SquareLatticeDeviceWrapper {
     ///     number_columns (int): Fixed number of tweezers in each row, needs to be the same for all layouts.
     ///     single_qubit_gates (List[str]): A list of 'hqslang' names of single-qubit-gates supported by the device.
     ///     two_qubit_gates (List[str]): A list of 'hqslang' names of basic two-qubit-gates supported by the device.
-    ///     multi_qubit_gates (List[str]): A list of 'hqslang' names of basic multi-qubit-gate supported by the device.
+    ///     default_gate_time (float): The default startig gate time.
     ///
     /// Returns:
-    ///     An initialized SquareLatticeDevice device with empty gate times and decoherence rates set to zero.
-    ///
+    ///     SquareLatticeDevice
     #[new]
     pub fn new(
         number_rows: usize,
@@ -87,8 +87,7 @@ impl SquareLatticeDeviceWrapper {
         self.internal.number_columns()
     }
 
-    /// Function that allows to set the gate time for the two-qubit-gates
-    /// considered as connected in the selected device.
+    /// Set gate time of all two-qubit gates of specific type
     ///
     /// Args:
     ///     gate[str]: The hqslang name of the two-qubit-gate.
@@ -97,6 +96,7 @@ impl SquareLatticeDeviceWrapper {
     /// Returns:
     ///     A qoqo Device with updated gate times.
     ///
+    #[pyo3(text_signature = "(gate, gate_time)")]
     pub fn set_all_two_qubit_gate_times(&self, gate: &str, gate_time: f64) -> Self {
         Self {
             internal: self
@@ -106,16 +106,16 @@ impl SquareLatticeDeviceWrapper {
         }
     }
 
-    /// Function that allows to set the gate time for the two-qubit-gates
-    /// considered as connected in the selected device.
+    /// Set gate time of all single-qubit gates of specific type
     ///
     /// Args:
-    ///     gate[str]: The hqslang name of the two-qubit-gate.
-    ///     gate_time[f64]: Gate time for the given gate, valid for all qubits in the device.
+    ///     gate[str]: The hqslang name of the single-qubit-gate.
+    ///     gate_time[f64]: New gate time.
     ///
     /// Returns:
     ///     A qoqo Device with updated gate times.
     ///
+    #[pyo3(text_signature = "(gate, gate_time)")]
     pub fn set_all_single_qubit_gate_times(&self, gate: &str, gate_time: f64) -> Self {
         Self {
             internal: self
@@ -125,16 +125,17 @@ impl SquareLatticeDeviceWrapper {
         }
     }
 
-    /// Function to set the decoherence rates for all qubits in the SquareLatticeDevice device.
+    /// Set the decoherence rates for all qubits in the SquareLatticeDevice device.
     ///
     /// Args:
     ///     rates[2d array]: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
     ///
     /// Returns:
-    ///     self: SquareLatticeDevice with updated decoherence rates.
+    ///     SquareLatticeDevice
     ///
     /// Raises:
     ///     PyValueError: The input parameter `rates` needs to be a (3x3)-matrix.
+    #[pyo3(text_signature = "(rates)")]
     pub fn set_all_qubit_decoherence_rates(&self, rates: PyReadonlyArray2<f64>) -> PyResult<Self> {
         let rates_matrix = rates.as_array().to_owned();
         Ok(Self {
@@ -151,7 +152,11 @@ impl SquareLatticeDeviceWrapper {
     /// Adds qubit damping to noise rates.
     ///
     /// Args:
-    ///     daming[f64]: The damping rates.
+    ///     daming (float): The damping rates.
+    /// 
+    /// Returns:
+    ///     SquareLatticeDevice
+    #[pyo3(text_signature = "(damping)")]
     pub fn add_damping_all(&mut self, damping: f64) -> Self {
         Self {
             internal: self.internal.clone().add_damping_all(damping),
@@ -161,7 +166,11 @@ impl SquareLatticeDeviceWrapper {
     /// Adds qubit dephasing to noise rates.
     ///
     /// Args:
-    ///     dephasing[f64]: The dephasing rates.
+    ///     dephasing (float): The dephasing rates.
+    /// 
+    /// Returns:
+    ///     SquareLatticeDevice
+    #[pyo3(text_signature = "(dephasing)")]
     pub fn add_dephasing_all(&mut self, dephasing: f64) -> Self {
         Self {
             internal: self.internal.clone().add_dephasing_all(dephasing),
@@ -171,7 +180,11 @@ impl SquareLatticeDeviceWrapper {
     /// Adds qubit depolarising to noise rates.
     ///
     /// Args:
-    ///     depolarising[f64]: The depolarising rates.
+    ///     depolarising (float): The depolarising rates.
+    /// 
+    /// Returns:
+    ///     SquareLatticeDevice
+    #[pyo3(text_signature = "(depolarising)")]
     pub fn add_depolarising_all(&mut self, depolarising: f64) -> Self {
         Self {
             internal: self.internal.clone().add_depolarising_all(depolarising),

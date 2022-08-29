@@ -16,7 +16,7 @@ use ndarray::Array2;
 use numpy::{PyArray2, PyReadonlyArray2, ToPyArray};
 use pyo3::exceptions::{PyTypeError, PyValueError};
 use pyo3::prelude::*;
-use pyo3::types::{PyByteArray, PyType};
+use pyo3::types::{PyByteArray};
 use qoqo_macros::devicewrapper;
 use roqoqo::devices::{Device, GenericDevice};
 /// A generic device assuming all-to-all connectivity between all involved qubits.
@@ -28,6 +28,7 @@ use roqoqo::devices::{Device, GenericDevice};
 ///     GenericDevice uses nested HashMaps to represent the most general device connectivity.
 ///     The memory usage will be inefficient for devices with large qubit numbers.
 #[pyclass(name = "GenericDevice", module = "devices")]
+#[pyo3(text_signature = "(number_qubits)")]
 #[derive(Clone, Debug, PartialEq)]
 pub struct GenericDeviceWrapper {
     /// Internal storage of [roqoqo::devices::SquareLatticeDevice]

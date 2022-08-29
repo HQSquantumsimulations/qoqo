@@ -569,6 +569,9 @@ pub fn devicewrapper(
             /// Returns:
             ///     Option[float]: None if gate is not available
             ///
+            /// Raises:
+            ///     PyValueError: Qubit is not in device
+            #[pyo3(text_signature = "(gate, qubit)")]
             pub fn single_qubit_gate_time(&self, hqslang: &str, qubit: usize) -> Option<f64> {
                 self.internal.single_qubit_gate_time(hqslang, &qubit)
             }
@@ -582,7 +585,11 @@ pub fn devicewrapper(
             ///
             /// Returns:
             ///     Option[float]: None if gate is not available
+            /// 
+            /// Raises:
+            ///     PyValueError: Qubit is not in device
             ///
+            #[pyo3(text_signature = "(gate, control, target)")]
             pub fn two_qubit_gate_time(&self, hqslang: &str, control: usize, target: usize) -> Option<f64> {
                 self.internal
                     .two_qubit_gate_time(hqslang, &control, &target)
@@ -597,6 +604,9 @@ pub fn devicewrapper(
             /// Returns:
             ///     Option[float]: None if gate is not available
             ///
+            /// Raises:
+            ///     PyValueError: Qubit is not in device
+            #[pyo3(text_signature = "(gate, qubits)")]
             pub fn multi_qubit_gate_time(&self, hqslang: &str, qubits: Vec<usize>) -> Option<f64> {
                 self.internal.multi_qubit_gate_time(hqslang, &qubits)
             }
@@ -607,6 +617,10 @@ pub fn devicewrapper(
             ///     gate (str): hqslang name of the single-qubit-gate.
             ///     qubit (int): The qubit for which the gate time is set
             ///     gate_time (float): The gate time for the given gate.
+            /// 
+            /// Raises:
+            ///     PyValueError: Qubit is not in device
+            #[pyo3(text_signature = "(gate, qubit, gate_time)")]
             pub fn set_single_qubit_gate_time(&mut self, gate: &str, qubit: usize, gate_time: f64) -> PyResult<()> {
                 self.internal.set_single_qubit_gate_time(gate, qubit, gate_time).map_err(|err|
                 PyValueError::new_err(format!("{:?}", err)))
@@ -619,6 +633,10 @@ pub fn devicewrapper(
             ///     control (int): The control qubit for which the gate time is set
             ///     target (int): The control qubit for which the gate time is set
             ///     gate_time (float): The gate time for the given gate.
+            /// 
+            /// Raises:
+            ///     PyValueError: Qubit is not in device
+            #[pyo3(text_signature = "(qubit, control, targe, gate_time)")]
             pub fn set_two_qubit_gate_time(&mut self, gate: &str, control: usize, target: usize, gate_time: f64) -> PyResult<()> {
                 self.internal.set_two_qubit_gate_time(gate, control, target, gate_time).map_err(|err|
                     PyValueError::new_err(format!("{:?}", err)))
@@ -631,6 +649,10 @@ pub fn devicewrapper(
             ///     gate (str): hqslang name of the single-qubit-gate.
             ///     qubits (int): The qubit for which the gate time is set
             ///     gate_time (float): The gate time for the given gate.
+            /// 
+            /// Raises:
+            ///     PyValueError: Qubit is not in device
+            #[pyo3(text_signature = "(qubit, rates)")]
             pub fn set_qubit_decoherence_rates(&mut self, qubit: usize, rates: PyReadonlyArray2<f64>) -> PyResult<()> {
                 let rates_matrix = rates.as_array().to_owned();
                 self.internal
@@ -646,6 +668,10 @@ pub fn devicewrapper(
             ///     gate (str): hqslang name of the single-qubit-gate.
             ///     qubits (List[int]): The qubits for which the gate time is set
             ///     gate_time (float): The gate time for the given gate.
+            /// 
+            /// Raises:
+            ///     PyValueError: Qubits not in device
+            #[pyo3(text_signature = "(gate, qubits, gate_time)")]
             pub fn set_multi_qubit_gate_time(&self, gate: &str, qubits: Vec<usize>, gate_time: f64) -> PyResult<()> {
                 self.internal.clone().set_multi_qubit_gate_time(gate, qubits, gate_time).map_err(|err|
                     PyValueError::new_err(format!("{:?}", err)))
@@ -657,9 +683,9 @@ pub fn devicewrapper(
             ///     qubit (int): The qubit for which the rate matrix M is returned
             ///
             /// Returns:
+            ///     numpy.array: 3 by 3 numpy array of decoherence rates
             ///
-            /// Decoherence rates: a 2d array of real numbers
-            ///
+            #[pyo3(text_signature = "(qubit)")]
             fn qubit_decoherence_rates(&self, qubit: usize) -> Py<PyArray2<f64>> {
                 Python::with_gil(|py| -> Py<PyArray2<f64>> {
                     match self.internal.qubit_decoherence_rates(&qubit) {
@@ -677,6 +703,10 @@ pub fn devicewrapper(
             /// Args:
             ///     qubit (int): The qubit for which the decoherence is added
             ///     damping (float): The damping rates.
+            /// 
+            /// Raises:
+            ///     PyValueError: Qubit is not in device
+            #[pyo3(text_signature = "(qubit, damping)")]
             pub fn add_damping(&mut self, qubit: usize, damping: f64) -> PyResult<()> {
                 self.internal.add_damping(qubit,damping).map_err(|err| PyValueError::new_err(format!("Cannot add decoherence: {}",err)))
             }
@@ -686,6 +716,10 @@ pub fn devicewrapper(
             /// Args:
             ///     qubit (int): The qubit for which the decoherence is added
             ///     dephasing (float): The dephasing rates.
+            /// 
+            /// Raises:
+            ///     PyValueError: Qubit is not in device
+            #[pyo3(text_signature = "(qubit, dephasing)")]
             pub fn add_dephasing(&mut self, qubit: usize, dephasing: f64) -> PyResult<()> {
                 self.internal.add_dephasing(qubit,dephasing).map_err(|err| PyValueError::new_err(format!("Cannot add decoherence: {}",err)))
 
@@ -696,6 +730,10 @@ pub fn devicewrapper(
             /// Args:
             ///     qubit (int): The qubit for which the decoherence is added
             ///     depolarising (float): The depolarising rates.
+            /// 
+            /// Raises:
+            ///     PyValueError: Qubit is not in device
+            #[pyo3(text_signature = "(qubit, depolarising)")]
             pub fn add_depolarising(&mut self, qubit: usize, depolarising: f64) -> PyResult<()> {
                 self.internal.add_depolarising(qubit,depolarising).map_err(|err| PyValueError::new_err(format!("Cannot add decoherence: {}",err)))
             }
@@ -710,9 +748,8 @@ pub fn devicewrapper(
             ///     GenericDevice: The device in generic representation
             ///
             /// Note:
-            ///
-            /// GenericDevice uses nested HashMaps to represent the most general device connectivity.
-            /// The memory usage will be inefficient for devices with large qubit numbers.
+            ///     GenericDevice uses nested HashMaps to represent the most general device connectivity.
+            ///     The memory usage will be inefficient for devices with large qubit numbers.
             fn generic_device(&self) -> GenericDeviceWrapper {
                 GenericDeviceWrapper{ internal: self.internal.clone().into_generic_device()}
             }
@@ -720,7 +757,7 @@ pub fn devicewrapper(
             /// Returns a copy of the device (copy here produces a deepcopy).
             ///
             /// Returns:
-            /// A deep copy of self.
+            ///     A deep copy of self.
             ///
             pub fn __copy__(&self) -> Self {
                 self.clone()
@@ -729,7 +766,7 @@ pub fn devicewrapper(
             /// Creates deep copy of Device.
             ///
             /// Returns:
-            /// A deep copy of self.
+            ///     A deep copy of self.
             ///
             pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
                 self.clone()
@@ -777,8 +814,9 @@ pub fn devicewrapper(
             /// Raises:
             ///     TypeError: Input cannot be converted to byte array.
             ///     ValueError: Input cannot be deserialized to selected Device.
-            #[classmethod]
-            pub fn from_bincode(_cls: &PyType, input: &PyAny) -> PyResult<#ident> {
+            #[staticmethod]
+            #[pyo3(text_signature = "(input)")]
+            pub fn from_bincode(input: &PyAny) -> PyResult<#ident> {
                 let bytes = input
                     .extract::<Vec<u8>>()
                     .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
@@ -800,8 +838,9 @@ pub fn devicewrapper(
             ///
             /// Raises:
             ///     ValueError: Input cannot be deserialized to selected Device.
-            #[classmethod]
-            pub fn from_json(_cls: &PyType, input: &str) -> PyResult<#ident> {
+            #[staticmethod]
+            #[pyo3(text_signature = "(input)")]
+            pub fn from_json(input: &str) -> PyResult<#ident> {
                 Ok(#ident {
                     internal: serde_json::from_str(input).map_err(|_| {
                         PyValueError::new_err("Input cannot be deserialized to selected Device.")

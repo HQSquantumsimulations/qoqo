@@ -32,7 +32,7 @@ impl AllToAllDevice {
     /// * `number_qubits` - The number of qubits in the device.
     /// * `single_qubit_gates` - A list of 'hqslang' names of single-qubit-gates supported by the device.
     /// * `two_qubit_gates` - A list of 'hqslang' names of basic two-qubit-gates supported by the device.
-    /// * `default_gate_time`
+    /// * `default_gate_time` - The default gate time of all gates
     ///
     /// # Returns
     ///
