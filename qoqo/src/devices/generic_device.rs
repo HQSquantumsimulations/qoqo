@@ -27,7 +27,7 @@ use roqoqo::devices::{Device, GenericDevice};
 ///     single_qubit_gates (List[str]): A list of 'hqslang' names of single-qubit-gates supported by the device.
 ///     two_qubit_gate (str): The 'hqslang' name of the basic two-qubit-gate supported by the device.
 ///
-#[pyclass(name = "SquareLatticeDevice", module = "devices")]
+#[pyclass(name = "GenericDevice", module = "devices")]
 #[derive(Clone, Debug, PartialEq)]
 pub struct GenericDeviceWrapper {
     /// Internal storage of [roqoqo::devices::SquareLatticeDevice]
