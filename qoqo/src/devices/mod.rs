@@ -17,6 +17,7 @@
 //! * Actual hardware devices: These devices are provided by roqoqo backends and
 //! contain the necessary information for accessing the quantum computing hardware.
 //! The devices also encode a connectivity model.
+#[cfg(feature = "extension_module")]
 use pyo3::prelude::*;
 
 mod square_lattice;

@@ -11,6 +11,7 @@
 // limitations under the License.
 
 //! Qoqo measurements
+#[allow(unused_imports)] // reported unused import is wrong, compilation fails withour import
 use pyo3::prelude::*;
 mod measurement_auxiliary_data_input;
 pub use measurement_auxiliary_data_input::{

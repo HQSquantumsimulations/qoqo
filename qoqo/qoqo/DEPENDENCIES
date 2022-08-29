@@ -2972,7 +2972,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-lock_api 0.4.7
+lock_api 0.4.8
 https://github.com/Amanieu/parking_lot
 by Amanieu d'Antras <amanieu@gmail.com>
 Wrappers to create fully-featured Mutex and RwLock types. Compatible with no_std.
@@ -7079,7 +7079,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-pyo3 0.16.5
+pyo3 0.16.6
 https://github.com/pyo3/pyo3
 by PyO3 Project and Contributors <https://github.com/PyO3>
 Bindings to Python interpreter
@@ -7279,7 +7279,7 @@ LICENSE:
 
 
 ====================================================
-pyo3-build-config 0.16.5
+pyo3-build-config 0.16.6
 https://github.com/pyo3/pyo3
 by PyO3 Project and Contributors <https://github.com/PyO3>
 Build configuration for the PyO3 ecosystem
@@ -7479,7 +7479,7 @@ LICENSE:
 
 
 ====================================================
-pyo3-ffi 0.16.5
+pyo3-ffi 0.16.6
 https://github.com/pyo3/pyo3
 by PyO3 Project and Contributors <https://github.com/PyO3>
 Python-API bindings for the PyO3 ecosystem
@@ -8107,7 +8107,7 @@ docs/license.html_lib.
 
 
 ====================================================
-pyo3-macros 0.16.5
+pyo3-macros 0.16.6
 https://github.com/pyo3/pyo3
 by PyO3 Project and Contributors <https://github.com/PyO3>
 Proc macros for PyO3 package
@@ -8307,7 +8307,7 @@ LICENSE:
 
 
 ====================================================
-pyo3-macros-backend 0.16.5
+pyo3-macros-backend 0.16.6
 https://github.com/pyo3/pyo3
 by PyO3 Project and Contributors <https://github.com/PyO3>
 Code generation for PyO3 package

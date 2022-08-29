@@ -20,6 +20,7 @@
 //!
 //! Quantum Operation Quantum Operation
 //! Yes we use [reduplication](https://en.wikipedia.org/wiki/Reduplication)
+#[cfg(feature = "extension_module")]
 use pyo3::prelude::*;
 #[cfg(feature = "extension_module")]
 use pyo3::types::PyDict;

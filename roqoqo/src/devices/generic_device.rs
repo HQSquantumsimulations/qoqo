@@ -32,12 +32,15 @@ pub struct GenericDevice {
     /// Gate times for all single qubit gates
     pub single_qubit_gates: HashMap<String, HashMap<usize, f64>>,
     /// Gate times for all two qubit gates
-    pub two_qubit_gates: HashMap<String, HashMap<(usize, usize), f64>>,
+    pub two_qubit_gates: HashMap<String, TwoQubitGates>,
     /// Gate times for all multi qubit gates
     pub multi_qubit_gates: HashMap<String, HashMap<Vec<usize>, f64>>,
     /// Decoherence rates for all qubits
     pub decoherence_rates: HashMap<usize, Array2<f64>>,
 }
+
+type TwoQubitGates = HashMap<(usize, usize), f64>;
+type TwoQubitGatesVec = Vec<((usize, usize), f64)>;
 
 #[derive(Clone)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
@@ -47,7 +50,7 @@ struct GenericDeviceSerialize {
     /// Gate times for all single qubit gates
     single_qubit_gates: HashMap<String, Vec<(usize, f64)>>,
     /// Gate times for all two qubit gates
-    two_qubit_gates: HashMap<String, Vec<((usize, usize), f64)>>,
+    two_qubit_gates: HashMap<String, TwoQubitGatesVec>,
     /// Gate times for all multi qubit gates
     multi_qubit_gates: HashMap<String, Vec<(Vec<usize>, f64)>>,
     /// Decoherence rates for all qubits
@@ -57,7 +60,7 @@ struct GenericDeviceSerialize {
 
 impl From<GenericDeviceSerialize> for GenericDevice {
     fn from(value: GenericDeviceSerialize) -> Self {
-        let mut two_qubit_gates: HashMap<String, HashMap<(usize, usize), f64>> =
+        let mut two_qubit_gates: HashMap<String, TwoQubitGates> =
             HashMap::with_capacity(value.two_qubit_gates.len());
 
         let mut single_qubit_gates: HashMap<String, HashMap<usize, f64>> =
@@ -94,7 +97,7 @@ impl From<GenericDeviceSerialize> for GenericDevice {
 
 impl From<GenericDevice> for GenericDeviceSerialize {
     fn from(value: GenericDevice) -> Self {
-        let mut two_qubit_gates: HashMap<String, Vec<((usize, usize), f64)>> =
+        let mut two_qubit_gates: HashMap<String, TwoQubitGatesVec> =
             HashMap::with_capacity(value.two_qubit_gates.len());
 
         let mut single_qubit_gates: HashMap<String, Vec<(usize, f64)>> =
@@ -106,7 +109,7 @@ impl From<GenericDevice> for GenericDeviceSerialize {
             value.decoherence_rates.into_iter().collect();
 
         for (name, map) in value.two_qubit_gates.into_iter() {
-            let new_map: Vec<((usize, usize), f64)> = map.into_iter().collect();
+            let new_map: TwoQubitGatesVec = map.into_iter().collect();
             two_qubit_gates.insert(name, new_map);
         }
         for (name, map) in value.single_qubit_gates.into_iter() {
@@ -278,7 +281,7 @@ impl GenericDevice {
         rates: Array2<f64>,
     ) -> Result<(), RoqoqoError> {
         // Check if input matrix has the dimension (3x3)
-        let shape = &(*rates.shape());
+        let shape = rates.shape();
         if shape == [3, 3] {
             if qubit > self.number_qubits {
                 return Err(RoqoqoError::GenericError {
@@ -291,7 +294,7 @@ impl GenericDevice {
             let aa = self
                 .decoherence_rates
                 .entry(qubit)
-                .or_insert(Array2::zeros((3, 3)));
+                .or_insert_with(|| Array2::zeros((3, 3)));
             *aa = rates;
             Ok(())
         } else {
@@ -319,7 +322,7 @@ impl GenericDevice {
         let aa = self
             .decoherence_rates
             .entry(qubit)
-            .or_insert(Array2::zeros((3, 3)));
+            .or_insert_with(|| Array2::zeros((3, 3)));
         *aa = aa.clone() + array![[damping, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]];
         Ok(())
     }
@@ -342,7 +345,7 @@ impl GenericDevice {
         let aa = self
             .decoherence_rates
             .entry(qubit)
-            .or_insert(Array2::zeros((3, 3)));
+            .or_insert_with(|| Array2::zeros((3, 3)));
         *aa = aa.clone() + array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, dephasing]];
         Ok(())
     }
@@ -365,7 +368,7 @@ impl GenericDevice {
         let aa = self
             .decoherence_rates
             .entry(qubit)
-            .or_insert(Array2::zeros((3, 3)));
+            .or_insert_with(|| Array2::zeros((3, 3)));
         *aa = aa.clone()
             + array![
                 [depolarising / 2.0, 0.0, 0.0],
@@ -404,7 +407,7 @@ impl Device for GenericDevice {
 
         match self.multi_qubit_gates.get(&hqslang.to_string()) {
             Some(x) => {
-                let qubits: Vec<usize> = qubits.iter().copied().collect();
+                let qubits: Vec<usize> = qubits.to_vec();
                 x.get(&qubits).copied()
             }
             None => None,

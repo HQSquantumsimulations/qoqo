@@ -77,7 +77,7 @@ impl AllToAllDeviceWrapper {
     /// Returns:
     ///     A qoqo Device with updated gate times.
     ///
-    pub fn set_all_two_qubit_gate_times(&self, gate: &str, gate_time: f64) -> Self {
+    pub fn set_all_two_qubit_gate_times(&mut self, gate: &str, gate_time: f64) -> Self {
         Self {
             internal: self
                 .internal

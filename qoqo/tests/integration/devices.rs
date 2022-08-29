@@ -106,37 +106,6 @@ fn test_number_qubits(device: Py<PyAny>) {
     })
 }
 
-#[test_case(new_alltoalldevice(); "all_to_all")]
-#[test_case(new_genericdevice(); "generic")]
-#[test_case(new_genericlattice(); "lattice")]
-fn test_to_from_bincode(device: Py<PyAny>) {
-    pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
-        let serialised = device.call_method0(py, "to_bincode").unwrap();
-        let new = device.clone();
-        let deserialised = new
-            .call_method1(py, "from_bincode", (serialised.clone(),))
-            .unwrap();
-
-        let vec: Vec<u8> = Vec::new();
-        let deserialised_error = new.call_method1(py, "from_bincode", (vec,));
-        assert!(deserialised_error.is_err());
-
-        let deserialised_error = deserialised.call_method0(py, "from_bincode");
-        assert!(deserialised_error.is_err());
-
-        let serialised_error = serialised.call_method0(py, "to_bincode");
-        assert!(serialised_error.is_err());
-
-        let comparison: bool = deserialised
-            .call_method1(py, "__eq__", (device,))
-            .unwrap()
-            .extract(py)
-            .unwrap();
-        assert!(comparison);
-    });
-}
-
 // Test from_json and to_json for GenericGrid
 #[test_case(new_alltoalldevice(); "all_to_all")]
 #[test_case(new_genericdevice(); "generic")]
@@ -168,7 +137,95 @@ fn test_to_from_json(device: Py<PyAny>) {
     });
 }
 
+#[test_case(new_alltoalldevice(); "all_to_all")]
+#[test_case(new_genericdevice(); "generic")]
+#[test_case(new_genericlattice(); "lattice")]
+fn test_to_from_bincode(device: Py<PyAny>) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| -> () {
+        let serialised = device.call_method0(py, "to_bincode").unwrap();
+        let new = device.clone();
+        let deserialised = new
+            .call_method1(py, "from_bincode", (serialised.clone(),))
+            .unwrap();
+
+        let vec: Vec<u8> = Vec::new();
+        let deserialised_error = new.call_method1(py, "from_bincode", (vec,));
+        assert!(deserialised_error.is_err());
+
+        let deserialised_error = deserialised.call_method0(py, "from_bincode");
+        assert!(deserialised_error.is_err());
+
+        let serialised_error = serialised.call_method0(py, "to_bincode");
+        assert!(serialised_error.is_err());
+        let comparison: bool = deserialised
+            .call_method1(py, "__eq__", (device,))
+            .unwrap()
+            .extract(py)
+            .unwrap();
+        assert!(comparison);
+    });
+}
+
 // Test qubit_decoherence_rates() for GenericGrid
+#[test_case(new_alltoalldevice(); "all_to_all")]
+#[test_case(new_genericlattice(); "lattice")]
+fn test_decoherence_rates_all(device: Py<PyAny>) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        // reference matrix for an initialized deviced or a non-existing qubit
+
+        // test that invalid matrix format is not accepted
+        let pyarray_invalid: &PyArray2<f64> = pyarray![py, [1.0], [2.0], [3.0]];
+        let readonly_invalid = pyarray_invalid.readonly();
+        let error = device.call_method1(py, "set_all_qubit_decoherence_rates", (readonly_invalid,));
+        assert!(error.is_err());
+
+        let pyarray_testmatrix: Array2<f64> =
+            array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
+        let pyarray: &PyArray2<f64> =
+            pyarray![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
+        let readonly = pyarray.readonly();
+        let device = device
+            .call_method1(py, "set_all_qubit_decoherence_rates", (readonly,))
+            .unwrap();
+        // .cast_as::<PyCell<SquareLatticeDeviceWrapper>>(py)
+        // .unwrap();
+
+        // proper matrix returned for the available qubit after setting decoherence rates
+        let matrix_py2 = device
+            .call_method1(py, "qubit_decoherence_rates", (0_i64,))
+            .unwrap();
+        let matrix_test2 = matrix_py2
+            .cast_as::<PyArray2<f64>>(py)
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix_test2, pyarray_testmatrix);
+
+        let pyarray_testmatrix: Array2<f64> = array![
+            [1.0 + 10. + 100. / 2.0, 0.0, 0.0],
+            [0.0, 2.0 + 100.0 / 2.0, 0.0],
+            [0.0, 0.0, 3.0 + 100.0 / 4.0 + 1000.]
+        ];
+        let device = device.call_method1(py, "add_damping_all", (10.,)).unwrap();
+        let device = device
+            .call_method1(py, "add_depolarising_all", (100.,))
+            .unwrap();
+        let device = device
+            .call_method1(py, "add_dephasing_all", (1000.,))
+            .unwrap();
+
+        let matrix_py2 = device
+            .call_method1(py, "qubit_decoherence_rates", (0_i64,))
+            .unwrap();
+        let matrix_test2 = matrix_py2
+            .cast_as::<PyArray2<f64>>(py)
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix_test2, pyarray_testmatrix);
+    })
+}
+
 #[test_case(new_alltoalldevice(); "all_to_all")]
 #[test_case(new_genericdevice(); "generic")]
 #[test_case(new_genericlattice(); "lattice")]
@@ -213,6 +270,30 @@ fn test_decoherence_rates(device: Py<PyAny>) {
         // .unwrap();
 
         // proper matrix returned for the available qubit after setting decoherence rates
+        let matrix_py2 = device
+            .call_method1(py, "qubit_decoherence_rates", (0_i64,))
+            .unwrap();
+        let matrix_test2 = matrix_py2
+            .cast_as::<PyArray2<f64>>(py)
+            .unwrap()
+            .to_owned_array();
+        assert_eq!(matrix_test2, pyarray_testmatrix);
+
+        // testing add_damping, add_dephasing, add_depolarising
+
+        let pyarray_testmatrix: Array2<f64> = array![
+            [1.0 + 10. + 100. / 2.0, 0.0, 0.0],
+            [0.0, 2.0 + 100.0 / 2.0, 0.0],
+            [0.0, 0.0, 3.0 + 100.0 / 4.0 + 1000.]
+        ];
+        device.call_method1(py, "add_damping", (0, 10.)).unwrap();
+        device
+            .call_method1(py, "add_depolarising", (0, 100.))
+            .unwrap();
+        device
+            .call_method1(py, "add_dephasing", (0, 1000.))
+            .unwrap();
+
         let matrix_py2 = device
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
@@ -306,6 +387,72 @@ fn test_gatetimes(device: Py<PyAny>) {
             .extract::<Option<f64>>(py)
             .unwrap();
         assert_eq!(gate_time_test, None);
+    })
+}
+
+// Test gate_times for AllToAllDevice
+#[test_case(new_alltoalldevice(); "all_to_all")]
+#[test_case(new_genericlattice(); "lattice")]
+fn test_gatetimes_all(device: Py<PyAny>) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let gate_time = 0.5_f64;
+
+        // Test single qubit gate times
+        let device = device
+            .call_method1(
+                py,
+                "set_all_single_qubit_gate_times",
+                ("RotateZ", gate_time.clone()),
+            )
+            .unwrap();
+        // .cast_as::<PyCell<AllToAllDeviceWrapper>>(py)
+        // .unwrap();
+
+        // get the gate time for RotateZ on qubit 0
+        let gate_time_rotatez = device
+            .call_method1(py, "single_qubit_gate_time", ("RotateZ", 0_i64))
+            .unwrap()
+            .extract::<Option<f64>>(py)
+            .unwrap();
+
+        // get the gate time for RotateZ for a qubit not which is not in the device
+        let gate_time_none = device
+            .call_method1(py, "single_qubit_gate_time", ("RotateZ", 100_i64))
+            .unwrap()
+            .extract::<Option<f64>>(py)
+            .unwrap();
+
+        assert_eq!(gate_time_rotatez, Some(gate_time.clone()));
+        assert_eq!(gate_time_none, None);
+
+        // Test two qubit gate times
+        let device = device
+            .call_method1(
+                py,
+                "set_all_two_qubit_gate_times",
+                ("CNOT", gate_time.clone()),
+            )
+            .unwrap();
+        // .cast_as::<PyCell<AllToAllDeviceWrapper>>(py)
+        // .unwrap();
+
+        // get the gate time for RotateZ on qubit 0
+        let gate_time_cnot = device
+            .call_method1(py, "two_qubit_gate_time", ("CNOT", 0_i64, 1_i64))
+            .unwrap()
+            .extract::<Option<f64>>(py)
+            .unwrap();
+
+        // get the gate time for RotateZ for a qubit not which is not in the device
+        let gate_time_none2 = device
+            .call_method1(py, "two_qubit_gate_time", ("CNOT", 0_i64, 100_i64))
+            .unwrap()
+            .extract::<Option<f64>>(py)
+            .unwrap();
+
+        assert_eq!(gate_time_cnot, Some(gate_time.clone()));
+        assert_eq!(gate_time_none2, None);
     })
 }
 

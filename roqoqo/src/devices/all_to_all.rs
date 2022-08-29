@@ -212,7 +212,7 @@ impl AllToAllDevice {
         rates: Array2<f64>,
     ) -> Result<Self, RoqoqoError> {
         // Check if input matrix has the dimension (3x3)
-        let shape = &(*rates.shape());
+        let shape = rates.shape();
         if shape == [3, 3] {
             for qubit in 0..self.number_qubits() {
                 self.generic_device
