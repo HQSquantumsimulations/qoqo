@@ -46,7 +46,7 @@ nalgebra = "0.31"
 quote = "1.0"
 syn = { version = "1.0", features = ["full", "visit"] }
 proc-macro2 = "1.0"
-pyo3-build-config = "0.16"
+pyo3-build-config = "0.17"
 
 [package.metadata.docs.rs]
 no-default-features = true

@@ -476,7 +476,7 @@ dependencies = [
  "libc",
  "num-complex",
  "parking_lot",
- "pyo3-build-config",
+ "pyo3-build-config 0.16.6",
  "pyo3-ffi",
  "pyo3-macros",
  "unindent",
@@ -493,13 +493,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "pyo3-build-config"
+version = "0.17.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fc4cf18c20f4f09995f3554e6bcf9b09bd5e4d6b67c562fdfaafa644526ba479"
+dependencies = [
+ "once_cell",
+ "target-lexicon",
+]
+
+[[package]]
 name = "pyo3-ffi"
 version = "0.16.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ca882703ab55f54702d7bfe1189b41b0af10272389f04cae38fe4cd56c65f75f"
 dependencies = [
  "libc",
- "pyo3-build-config",
+ "pyo3-build-config 0.16.6",
 ]
 
 [[package]]
@@ -536,7 +546,7 @@ dependencies = [
  "numpy",
  "proc-macro2",
  "pyo3",
- "pyo3-build-config",
+ "pyo3-build-config 0.17.1",
  "qoqo-macros",
  "qoqo_calculator",
  "qoqo_calculator_pyo3",
@@ -577,7 +587,7 @@ checksum = "3fde8ca39f26f39f1955a109b57baf56ca19ae0bb5dfc0f2b02c9827210f3814"
 dependencies = [
  "num-complex",
  "pyo3",
- "pyo3-build-config",
+ "pyo3-build-config 0.16.6",
  "qoqo_calculator",
  "serde",
  "thiserror",
