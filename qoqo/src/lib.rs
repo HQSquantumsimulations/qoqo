@@ -20,20 +20,24 @@
 //!
 //! Quantum Operation Quantum Operation
 //! Yes we use [reduplication](https://en.wikipedia.org/wiki/Reduplication)
-
+#[cfg(feature = "extension_module")]
 use pyo3::prelude::*;
+#[cfg(feature = "extension_module")]
 use pyo3::types::PyDict;
+#[cfg(feature = "extension_module")]
 use pyo3::wrap_pymodule;
 
 pub mod operations;
+#[cfg(feature = "extension_module")]
 use operations::*;
 
 pub mod measurements;
+#[cfg(feature = "extension_module")]
 use measurements::*;
 
-// pub mod devices;
-// use devices::__PYO3_PYMODULE_DEF_DEVICES;
-// use devices::*;
+pub mod devices;
+#[cfg(feature = "extension_module")]
+use devices::*;
 
 mod circuit;
 pub use circuit::{convert_into_circuit, CircuitWrapper, OperationIteratorWrapper};
@@ -106,6 +110,7 @@ pub enum QoqoBackendError {
 ///     operations
 ///     measurements
 ///
+#[cfg(feature = "extension_module")]
 #[pymodule]
 fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<CircuitWrapper>()?;
@@ -119,8 +124,8 @@ fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_wrapped(wrapper)?;
     let wrapper2 = wrap_pymodule!(measurements);
     module.add_wrapped(wrapper2)?;
-    // let wrapper3 = wrap_pymodule!(devices);
-    // module.add_wrapped(wrapper3)?;
+    let wrapper3 = wrap_pymodule!(devices);
+    module.add_wrapped(wrapper3)?;
 
     // Adding nice imports corresponding to maturin example
     let system = PyModule::import(_py, "sys")?;

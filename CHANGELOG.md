@@ -6,6 +6,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 * Added `InputBit` to set bit in a (readout) bit register to a value.
 * Added `InvolvedClassical` functionality to return which classical register variables are involved in an operation
+* Added `CircuitDag` direct acyclical graph representation of `Circuit`
 
 ## v1.0.0
 

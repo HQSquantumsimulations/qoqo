@@ -536,7 +536,6 @@ pub fn devicewrapper(
             ///
             /// Returns:
             ///     int: The number of qubits.
-            ///
             pub fn number_qubits(&self) -> usize {
                 self.internal.number_qubits()
             }
@@ -605,51 +604,120 @@ pub fn devicewrapper(
                 self.internal.multi_qubit_gate_time(hqslang, &qubits)
             }
 
-            /// Function that allows to set one gate time for all qubits per gate for the single-qubit-gates.
+            /// Set the gate time of a single qubit gate.
             ///
             /// Args:
-            ///     gate[str]: The hqslang name of the single-qubit-gate.
-            ///     gate_time[f64]: Gate time for the given gate type, valid for all qubits in the device.
-            ///
-            /// Returns:
-            ///     A qoqo Device with updated gate times.
-            ///
-            pub fn set_all_single_qubit_gate_times(&self, gate: &str, gate_time: f64) -> Self {
-                Self {
-                    internal: self.internal.clone().set_all_single_qubit_gate_times(gate, gate_time)
-                }
+            ///     gate [str]: hqslang name of the single-qubit-gate.
+            ///     qubit [int]: The qubit for which the gate time is set
+            ///     gate_time [float]: The gate time for the given gate.
+            pub fn set_single_qubit_gate_time(&mut self, gate: &str, qubit: usize, gate_time: f64) -> PyResult<()> {
+                self.internal.set_single_qubit_gate_time(gate, qubit, gate_time).map_err(|err|
+                PyValueError::new_err(format!("{:?}", err)))
             }
 
-            /// Function that allows to set the gate time for the two-qubit-gates
-            /// considered as connected in the selected device.
+            /// Set the gate time of a single qubit gate.
             ///
             /// Args:
-            ///     gate[str]: The hqslang name of the two-qubit-gate.
-            ///     gate_time[f64]: Gate time for the given gate, valid for all qubits in the device.
-            ///
-            /// Returns:
-            ///     A qoqo Device with updated gate times.
-            ///
-            pub fn set_all_two_qubit_gate_times(&self, gate: &str, gate_time: f64) -> Self {
-                Self {
-                    internal: self.internal.clone().set_all_two_qubit_gate_times(gate, gate_time)
-                }
+            ///     gate [str]: hqslang name of the single-qubit-gate.
+            ///     control [int]: The control qubit for which the gate time is set
+            ///     target [int]: The control qubit for which the gate time is set
+            ///     gate_time [float]: The gate time for the given gate.
+            pub fn set_two_qubit_gate_time(&mut self, gate: &str, control: usize, target: usize, gate_time: f64) -> PyResult<()> {
+                self.internal.set_two_qubit_gate_time(gate, control, target, gate_time).map_err(|err|
+                    PyValueError::new_err(format!("{:?}", err)))
             }
 
-            /// Function that allows to set the gate time for the multi-qubit-gates in the Device,
-            /// when applied to any qubits in the device.
+
+            /// Set the gate time of a single qubit gate.
             ///
             /// Args:
-            ///     gate[str]: The hqslang name of the multi-qubit-gate.
-            ///     gate_time[f64]: Gate time for the given gate, valid for all qubits in the device.
+            ///     gate [str]: hqslang name of the single-qubit-gate.
+            ///     qubits [List[int]]: The qubits for which the gate time is set
+            ///     gate_time [float]: The gate time for the given gate.
+            pub fn set_qubit_decoherence_rates(&mut self, qubit: usize, rates: PyReadonlyArray2<f64>) -> PyResult<()> {
+                let rates_matrix = rates.as_array().to_owned();
+                self.internal
+                    .set_qubit_decoherence_rates(qubit, rates_matrix)
+                    .map_err(|err| {
+                        PyValueError::new_err(format!("Could not set rates: {}", err))
+                    })
+            }
+
+            /// Set the gate time of a single qubit gate.
+            ///
+            /// Args:
+            ///     gate [str]: hqslang name of the single-qubit-gate.
+            ///     qubits [List[int]]: The qubits for which the gate time is set
+            ///     gate_time [float]: The gate time for the given gate.
+            pub fn set_multi_qubit_gate_time(&self, gate: &str, qubits: Vec<usize>, gate_time: f64) -> PyResult<()> {
+                self.internal.clone().set_multi_qubit_gate_time(gate, qubits, gate_time).map_err(|err|
+                    PyValueError::new_err(format!("{:?}", err)))
+            }
+
+            /// Return the matrix of the decoherence rates of the Lindblad equation.
+            ///
+            /// Args:
+            ///     qubit[int]: The qubit for which the rate matrix M is returned
             ///
             /// Returns:
-            ///     A qoqo Device with updated gate times.
             ///
-            pub fn set_all_multi_qubit_gate_times(&self, gate: &str, gate_time: f64) -> Self {
-                Self {
-                    internal: self.internal.clone().set_all_multi_qubit_gate_times(gate, gate_time)
-                }
+            /// Decoherence rates: a 2d array of real numbers
+            ///
+            fn qubit_decoherence_rates(&self, qubit: usize) -> Py<PyArray2<f64>> {
+                Python::with_gil(|py| -> Py<PyArray2<f64>> {
+                    match self.internal.qubit_decoherence_rates(&qubit) {
+                        Some(matrix) => matrix.to_pyarray(py).to_owned(),
+                        None => {
+                            let matrix = Array2::<f64>::zeros((3, 3));
+                            matrix.to_pyarray(py).to_owned()
+                        }
+                    }
+                })
+            }
+
+            /// Adds single qubit damping to noise rates.
+            ///
+            /// Args:
+            ///     qubit[int]: The qubit for which the decoherence is added
+            ///     damping[float]: The damping rates.
+            pub fn add_damping(&mut self, qubit: usize, damping: f64) -> PyResult<()> {
+                self.internal.add_damping(qubit,damping).map_err(|err| PyValueError::new_err(format!("Cannot add decoherence: {}",err)))
+            }
+
+             /// Adds single qubit dephasing to noise rates.
+            ///
+            /// Args:
+            ///     qubit[int]: The qubit for which the decoherence is added
+            ///     dephasing[float]: The dephasing rates.
+            pub fn add_dephasing(&mut self, qubit: usize, dephasing: f64) -> PyResult<()> {
+                self.internal.add_dephasing(qubit,dephasing).map_err(|err| PyValueError::new_err(format!("Cannot add decoherence: {}",err)))
+
+            }
+
+            /// Adds single qubit depolarising to noise rates.
+            ///
+            /// Args:
+            ///     qubit[int]: The qubit for which the decoherence is added
+            ///     depolarising[float]: The depolarising rates.
+            pub fn add_depolarising(&mut self, qubit: usize, depolarising: f64) -> PyResult<()> {
+                self.internal.add_depolarising(qubit,depolarising).map_err(|err| PyValueError::new_err(format!("Cannot add decoherence: {}",err)))
+            }
+
+
+            /// Turns Device into GenericDevice
+            ///
+            /// Can be used as a generic interface for devices when a boxed dyn trait object cannot be used
+            /// (for example when the interface needs to be serialized)
+            ///
+            /// Returns:
+            ///     GenericDevice: The device in generic representation
+            ///
+            /// Note:
+            ///
+            /// GenericDevice uses nested HashMaps to represent the most general device connectivity.
+            /// The memory usage will be inefficient for devices with large qubit numbers.
+            fn generic_device(&self) -> GenericDeviceWrapper {
+                GenericDeviceWrapper{ internal: self.internal.clone().into_generic_device()}
             }
 
             /// Returns a copy of the device (copy here produces a deepcopy).
@@ -742,6 +810,37 @@ pub fn devicewrapper(
                         PyValueError::new_err("Input cannot be deserialized to selected Device.")
                     })?,
                 })
+            }
+
+
+            /// Return the __richcmp__ magic method to perform rich comparison operations on mixed system.
+            ///
+            /// Args:
+            ///     self: The device wrapper object.
+            ///     other: The object to compare self to.
+            ///     op: Whether they should be equal or not.
+            ///
+            /// Returns:
+            ///     bool
+            ///
+            /// Raises:
+            ///     NotImplementedError: Other comparison not implemented.
+            ///
+            fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
+                let other = #ident::from_pyany(other);
+                match op {
+                    pyo3::class::basic::CompareOp::Eq => match other {
+                        Ok(osystem) => Ok(self.internal == osystem),
+                        _ => Ok(false),
+                    },
+                    pyo3::class::basic::CompareOp::Ne => match other {
+                        Ok(osystem) => Ok(self.internal != osystem),
+                        _ => Ok(true),
+                    },
+                    _ => Err(pyo3::exceptions::PyNotImplementedError::new_err(
+                        "Other comparison not implemented",
+                    )),
+                }
             }
         }
     };
