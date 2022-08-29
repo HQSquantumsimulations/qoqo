@@ -585,7 +585,7 @@ pub fn devicewrapper(
             ///
             /// Returns:
             ///     Option[float]: None if gate is not available
-            /// 
+            ///
             /// Raises:
             ///     PyValueError: Qubit is not in device
             ///
@@ -617,7 +617,7 @@ pub fn devicewrapper(
             ///     gate (str): hqslang name of the single-qubit-gate.
             ///     qubit (int): The qubit for which the gate time is set
             ///     gate_time (float): The gate time for the given gate.
-            /// 
+            ///
             /// Raises:
             ///     PyValueError: Qubit is not in device
             #[pyo3(text_signature = "(gate, qubit, gate_time)")]
@@ -633,7 +633,7 @@ pub fn devicewrapper(
             ///     control (int): The control qubit for which the gate time is set
             ///     target (int): The control qubit for which the gate time is set
             ///     gate_time (float): The gate time for the given gate.
-            /// 
+            ///
             /// Raises:
             ///     PyValueError: Qubit is not in device
             #[pyo3(text_signature = "(qubit, control, targe, gate_time)")]
@@ -649,7 +649,7 @@ pub fn devicewrapper(
             ///     gate (str): hqslang name of the single-qubit-gate.
             ///     qubits (int): The qubit for which the gate time is set
             ///     gate_time (float): The gate time for the given gate.
-            /// 
+            ///
             /// Raises:
             ///     PyValueError: Qubit is not in device
             #[pyo3(text_signature = "(qubit, rates)")]
@@ -668,7 +668,7 @@ pub fn devicewrapper(
             ///     gate (str): hqslang name of the single-qubit-gate.
             ///     qubits (List[int]): The qubits for which the gate time is set
             ///     gate_time (float): The gate time for the given gate.
-            /// 
+            ///
             /// Raises:
             ///     PyValueError: Qubits not in device
             #[pyo3(text_signature = "(gate, qubits, gate_time)")]
@@ -703,7 +703,7 @@ pub fn devicewrapper(
             /// Args:
             ///     qubit (int): The qubit for which the decoherence is added
             ///     damping (float): The damping rates.
-            /// 
+            ///
             /// Raises:
             ///     PyValueError: Qubit is not in device
             #[pyo3(text_signature = "(qubit, damping)")]
@@ -716,7 +716,7 @@ pub fn devicewrapper(
             /// Args:
             ///     qubit (int): The qubit for which the decoherence is added
             ///     dephasing (float): The dephasing rates.
-            /// 
+            ///
             /// Raises:
             ///     PyValueError: Qubit is not in device
             #[pyo3(text_signature = "(qubit, dephasing)")]
@@ -730,7 +730,7 @@ pub fn devicewrapper(
             /// Args:
             ///     qubit (int): The qubit for which the decoherence is added
             ///     depolarising (float): The depolarising rates.
-            /// 
+            ///
             /// Raises:
             ///     PyValueError: Qubit is not in device
             #[pyo3(text_signature = "(qubit, depolarising)")]

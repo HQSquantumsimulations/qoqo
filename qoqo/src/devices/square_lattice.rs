@@ -17,7 +17,7 @@ use ndarray::Array2;
 use numpy::{PyArray2, PyReadonlyArray2, ToPyArray};
 use pyo3::exceptions::{PyTypeError, PyValueError};
 use pyo3::prelude::*;
-use pyo3::types::{PyByteArray};
+use pyo3::types::PyByteArray;
 use qoqo_macros::devicewrapper;
 use roqoqo::devices::{Device, SquareLatticeDevice};
 
@@ -31,7 +31,9 @@ use roqoqo::devices::{Device, SquareLatticeDevice};
 ///     default_gate_time (float): The default startig gate time.
 #[pyclass(name = "SquareLatticeDevice", module = "devices")]
 #[derive(Clone, Debug, PartialEq)]
-#[pyo3(text_signature = "(number_rows, number_columns, single_qubit_gates, two_qubit_gates, default_gate_time)")]
+#[pyo3(
+    text_signature = "(number_rows, number_columns, single_qubit_gates, two_qubit_gates, default_gate_time)"
+)]
 pub struct SquareLatticeDeviceWrapper {
     /// Internal storage of [roqoqo::devices::SquareLatticeDevice]
     pub internal: SquareLatticeDevice,
@@ -153,7 +155,7 @@ impl SquareLatticeDeviceWrapper {
     ///
     /// Args:
     ///     daming (float): The damping rates.
-    /// 
+    ///
     /// Returns:
     ///     SquareLatticeDevice
     #[pyo3(text_signature = "(damping)")]
@@ -167,7 +169,7 @@ impl SquareLatticeDeviceWrapper {
     ///
     /// Args:
     ///     dephasing (float): The dephasing rates.
-    /// 
+    ///
     /// Returns:
     ///     SquareLatticeDevice
     #[pyo3(text_signature = "(dephasing)")]
@@ -181,7 +183,7 @@ impl SquareLatticeDeviceWrapper {
     ///
     /// Args:
     ///     depolarising (float): The depolarising rates.
-    /// 
+    ///
     /// Returns:
     ///     SquareLatticeDevice
     #[pyo3(text_signature = "(depolarising)")]

@@ -17,7 +17,7 @@ use ndarray::Array2;
 use numpy::{PyArray2, PyReadonlyArray2, ToPyArray};
 use pyo3::exceptions::{PyTypeError, PyValueError};
 use pyo3::prelude::*;
-use pyo3::types::{PyByteArray};
+use pyo3::types::PyByteArray;
 use qoqo_macros::devicewrapper;
 use roqoqo::devices::{AllToAllDevice, Device};
 
@@ -131,7 +131,7 @@ impl AllToAllDeviceWrapper {
     ///
     /// Args:
     ///     daming[f64]: The damping rates.
-    /// 
+    ///
     /// Returns:
     ///     AllToAllDevice
     #[pyo3(text_signature = "(damping)")]
@@ -145,7 +145,7 @@ impl AllToAllDeviceWrapper {
     ///
     /// Args:
     ///     dephasing[f64]: The dephasing rates.
-    /// 
+    ///
     /// Returns:
     ///     AllToAllDevice
     #[pyo3(text_signature = "(dephasing)")]
@@ -160,7 +160,7 @@ impl AllToAllDeviceWrapper {
     ///
     /// Args:
     ///     depolarising (float): The depolarising rates.
-    /// 
+    ///
     /// Returns:
     ///     AllToAllDevice
     #[pyo3(text_signature = "(depolarising)")]
