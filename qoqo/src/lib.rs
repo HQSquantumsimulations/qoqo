@@ -22,18 +22,22 @@
 //! Yes we use [reduplication](https://en.wikipedia.org/wiki/Reduplication)
 
 use pyo3::prelude::*;
+
 use pyo3::types::PyDict;
+
 use pyo3::wrap_pymodule;
 
 pub mod operations;
+
 use operations::*;
 
 pub mod measurements;
+
 use measurements::*;
 
-// pub mod devices;
-// use devices::__PYO3_PYMODULE_DEF_DEVICES;
-// use devices::*;
+pub mod devices;
+
+use devices::*;
 
 mod circuit;
 pub use circuit::{convert_into_circuit, CircuitWrapper, OperationIteratorWrapper};
@@ -106,6 +110,7 @@ pub enum QoqoBackendError {
 ///     operations
 ///     measurements
 ///
+
 #[pymodule]
 fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<CircuitWrapper>()?;
@@ -119,8 +124,8 @@ fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_wrapped(wrapper)?;
     let wrapper2 = wrap_pymodule!(measurements);
     module.add_wrapped(wrapper2)?;
-    // let wrapper3 = wrap_pymodule!(devices);
-    // module.add_wrapped(wrapper3)?;
+    let wrapper3 = wrap_pymodule!(devices);
+    module.add_wrapped(wrapper3)?;
 
     // Adding nice imports corresponding to maturin example
     let system = PyModule::import(_py, "sys")?;

@@ -28,6 +28,7 @@ use crate::CircuitWrapper;
 /// Module containing the CircuitDag class that represents the Directed Acyclic Graph (DAG)
 /// of a quantum circuit in qoqo.
 ///
+
 #[pymodule]
 fn circuitdag(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<CircuitDagWrapper>()?;

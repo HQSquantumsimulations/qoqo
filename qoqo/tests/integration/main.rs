@@ -16,8 +16,8 @@ mod operations;
 #[cfg(test)]
 mod circuit;
 
-// #[cfg(test)]
-// mod devices;
+#[cfg(test)]
+mod devices;
 
 #[cfg(test)]
 #[cfg(feature = "circuitdag")]
