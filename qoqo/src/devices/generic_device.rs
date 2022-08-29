@@ -36,7 +36,7 @@ pub struct GenericDeviceWrapper {
 
 #[devicewrapper]
 impl GenericDeviceWrapper {
-    /// Create new geneeric device
+    /// Create new generic device
     ///
     /// Args:
     ///     number_rows (int): The fixed number of rows in device, needs to be the same for all layouts.
