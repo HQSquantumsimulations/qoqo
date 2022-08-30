@@ -418,7 +418,7 @@ fn test_singlequbitgate_substitute_parameters() {
     substitution_dict.set_variable("global_phase", PI);
     substitution_dict.set_variable("beta_r", 1.0);
     substitution_dict.set_variable("beta_i", -1.0);
-    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
+    let result = gate.substitute_parameters(&substitution_dict).unwrap();
     assert!(!result.is_parametrized());
     assert_eq!(result.alpha_r(), CalculatorFloat::from(0.0));
     assert_eq!(result.alpha_i(), CalculatorFloat::from(0.0));
@@ -1079,7 +1079,7 @@ fn test_rotatex_substitute_parameters() {
     assert!(gate.is_parametrized());
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
-    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
+    let result = gate.substitute_parameters(&substitution_dict).unwrap();
     assert!(!result.is_parametrized());
     assert_eq!(result.theta().clone(), CalculatorFloat::from(0.0));
 }
@@ -1118,7 +1118,7 @@ fn test_rotatex_substitute_parameters() {
 fn test_ineffective_substitute_parameters(gate: SingleQubitGateOperation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
-    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
+    let result = gate.substitute_parameters(&substitution_dict).unwrap();
     assert_eq!(result, gate);
 }
 
@@ -1130,7 +1130,7 @@ fn test_rotatey_substitute_parameters() {
     assert!(gate.is_parametrized());
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
-    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
+    let result = gate.substitute_parameters(&substitution_dict).unwrap();
     assert!(!result.is_parametrized());
     assert_eq!(result.theta().clone(), CalculatorFloat::from(0.0));
 }
@@ -1143,7 +1143,7 @@ fn test_rotatez_substitute_parameters() {
     assert!(gate.is_parametrized());
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
-    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
+    let result = gate.substitute_parameters(&substitution_dict).unwrap();
     assert!(!result.is_parametrized());
     assert_eq!(result.theta().clone(), CalculatorFloat::from(0.0));
 }
@@ -1163,7 +1163,7 @@ fn test_phaseshiftstate0_substitute_parameters(
     // assert!(gate.is_parametrized());
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
-    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
+    let result = gate.substitute_parameters(&substitution_dict).unwrap();
     // assert!(!result.is_parametrized());
     assert_eq!(result, testgate);
 }
@@ -1176,7 +1176,7 @@ fn test_phaseshiftstate1_substitute_parameters() {
     assert!(gate.is_parametrized());
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
-    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
+    let result = gate.substitute_parameters(&substitution_dict).unwrap();
     assert!(!result.is_parametrized());
     assert_eq!(result.theta().clone(), CalculatorFloat::from(0.0));
 }
@@ -1204,7 +1204,7 @@ fn test_rotatearoundsphericalaxis_substitute_parameters() {
     substitution_dict.set_variable("theta", 0.0);
     substitution_dict.set_variable("spherical_theta", PI);
     substitution_dict.set_variable("spherical_phi", PI / 2.0);
-    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
+    let result = gate.substitute_parameters(&substitution_dict).unwrap();
     assert!(!result.is_parametrized());
     assert_eq!(result.theta().clone(), CalculatorFloat::from(0.0));
     assert_eq!(result.spherical_theta().clone(), CalculatorFloat::from(PI));
@@ -1228,7 +1228,7 @@ fn test_rotatexy_substitute_parameters() {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
     substitution_dict.set_variable("phi", PI / 2.0);
-    let result = gate.substitute_parameters(&mut substitution_dict).unwrap();
+    let result = gate.substitute_parameters(&substitution_dict).unwrap();
     assert!(!result.is_parametrized());
     assert_eq!(result.theta().clone(), CalculatorFloat::from(0.0));
     assert_eq!(result.phi().clone(), CalculatorFloat::from(PI / 2.0));

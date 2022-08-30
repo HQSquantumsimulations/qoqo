@@ -37,13 +37,17 @@ This repository contains two components:
 
 roqoqo provides:
 
-* A circuit struct to represent quantum programs
-* Single-Qubit, Two-Qubit and Multi-Qubit Operations that can be executed (decomposed) on any universal quantum computer
-* PRAGMA Operations that only apply to certain hardware, simulators or annotate circuits with additional information
-* Classical Registers and Measurement operations to use with a quantum program
-* Measurement structs for evaluating observable measurements based on projective measurements from quantum hardware or simulator readouts
-* A Backend trait defining a standard for interfacing from qoqo to other toolkits, hardware and simulators that can return measured values
-* Serialize and deserialize support for circuits and measurement information via the serde crate.
+* A `Circuit` struct to represent quantum circuits
+* A `QuantumProgram` enum to represent quantum programs using different measurement methods
+* Structs representing single-qubit, two-qubit, multi-qubit and measurement operations that can be executed (decomposed) on any universal quantum computer
+* Structs representing so-called PRAGMA operations that only apply to certain hardware, simulators or annotate circuits with additional information
+* Enums that group operations based on the properties of operations (*e.g.* `Operation` for all operations or `SingleQubitGateOperation` for all unitary operations acting on a single qubit)
+* Support for symbolic variables
+* Readout based on classical registers
+* Measurement structs for evaluating observable measurements based on raw readout date returned by quantum computer backends
+* An `EvaluatingBackend` trait defining a standard for interfacing from qoqo to hardware and simulators that can return measured values
+* A `Device` trait defining a standard to obtain connectivity information and a noise model for quantum computing devices
+* Serialize and deserialize support for `Circuit` and `QuantumProgram` via the serde crate.
 
 This software is still in the beta stage. Functions and documentation are not yet complete and breaking changes can occur.
 
@@ -59,41 +63,41 @@ to the `[dependencies]` section of the project Cargo.toml.
 
 ## qoqo
 
-[![Documentation Status](https://readthedocs.org/projects/qoqo/badge/?version=latest)](https://qoqo.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://img.shields.io/badge/docs-read-blue)](https://hqsquantumsimulations.github.io/qoqo/)
 [![GitHub Workflow Status](https://github.com/HQSquantumsimulations/qoqo/workflows/ci_tests/badge.svg)](https://github.com/HQSquantumsimulations/qoqo/actions)
 [![PyPI](https://img.shields.io/pypi/v/qoqo)](https://pypi.org/project/qoqo/)
 [![PyPI - Format](https://img.shields.io/pypi/format/qoqo)](https://pypi.org/project/qoqo/)
 [![Crates.io](https://img.shields.io/crates/v/roqoqo)](https://crates.io/crates/qoqo)
 ![Crates.io](https://img.shields.io/crates/l/qoqo)
 
-qoqo provides a full python interface to the underlying roqoqo library, including:
+qoqo provides the Python interface to the underlying roqoqo library, including:
 
-* A circuit class to represent quantum programs
-* Single-Qubit, Two-Qubit and Multi-Qubit Operations that can be executed (decomposed) on any universal quantum computer
-* PRAGMA Operations that only apply to certain hardware, simulators or annotate circuits with additional information
-* Classical Register and Measurement operations to use with a quantum program
-* Measurement structs for evaluating observable measurements based on projective measurements from quantum hardware or simulator readouts
-* A QuantumProgram class combining circuits and measurement information in complete quantum programms with a simple interface
+* A `Circuit` class to represent quantum circuits
+* A `QuantumProgram` class to represent quantum programs 
+* Classes representing single-qubit, two-qubit, multi-qubit and measurement operations that can be executed (decomposed) on any universal quantum computer
+* Classes representing so-called PRAGMA operations that only apply to certain hardware, simulators or annotate circuits with additional information
+* Support for symbolic variables
+* Readout based on classical registers
+* Measurement classes for evaluating observable measurements based on raw readout date returned by quantum computer backends
 * Serialization to json and deserialization from json for circuits and measurement information. Serialization support can easily be expanded to other targets with the help of the serde crate.
 
 ### Installation
 
-On Linux and macOS on x86 precompiled packages can be found on PyPi and installed via
+On Linux, macOS and Windows on x86 precompiled packages can be found on PyPi and installed via
 
 ```shell
 pip install qoqo
 ```
 
-For other platforms we recommend using the source distribution from PyPi to build a python package for qoqo locally via pip. The install requires  the [maturin](https://github.com/PyO3/maturin) tool (also available via pip) and a working rust toolchain.
+If no pre-built python wheel is available for your architecture you can install qoqo from the source distribution using a rust toolchain (for example available via rustup) and maturin (also available via pip). After installing the rust toolchain and maturing run the same pip install command as above. In some cases on macOS it can be necessary to provide specific linker arguments as shown below:
 
 ```shell
-pip install qoqo
+# can be necessary on mscOS
+RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" pip install qoqo
 ```
 
-Alternatively one can check out the latest tagged version from github and use the [maturin](https://github.com/PyO3/maturin) tool to build a python package for qoqo locally and install it via pip.
-Please note that the package should be built from the top level directory of the workspace selecting the qoqo package with the `-m qoqo/Cargo.toml` option.
 ```shell
-maturin build -m qoqo/Cargo.toml  --release
+RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -m qoqo/Cargo.toml  --release
 pip install target/wheels/$NAME_OF_WHEEL
 ```
 
@@ -107,16 +111,16 @@ to the `[dependencies]` section of the project Cargo.toml.
 
 A source distribution now exists but requires a Rust install with a rust version > 1.47 and a maturin version { >= 0.12, <0.13 } in order to be built.
 
-
 ### Examples
 
 Since qoqo provides a full python interface to the underlying roqoqo library, there are examples for python users and for Rust users.
 
 For an expanded collection of examples please see the jupyter notebooks in the extra repository [qoqo_examples](https://github.com/HQSquantumsimulations/qoqo_examples). The qoqo examples require the qoqo_quest and qoqo_mock interfaces.
 
-* **qoqo examples**: For jupyter notebooks in **python**, please refer to [qoqo_examples/qoqo/](https://github.com/HQSquantumsimulations/qoqo_examples/tree/main/qoqo). 
+* **qoqo examples**: For jupyter notebooks in **python**, please refer to [qoqo_examples/qoqo/](https://github.com/HQSquantumsimulations/qoqo_examples/tree/main/qoqo).
 * **roqoqo examples**: The jupyter notebooks in **Rust** can be found in [qoqo_examples/roqoqo/notebooks/](https://github.com/HQSquantumsimulations/qoqo_examples/tree/main/roqoqo/notebooks). Alternatively, you can also find pure **Rust** versions of the examples in [qoqo_examples/roqoqo/standalone/](https://github.com/HQSquantumsimulations/qoqo_examples/tree/main/roqoqo/standalone)
 
+This project is partly supported by [PlanQK](https://planqk.de).
 
 ## Contributing
 
