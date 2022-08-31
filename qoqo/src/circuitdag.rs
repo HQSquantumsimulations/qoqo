@@ -28,7 +28,6 @@ use crate::CircuitWrapper;
 /// Module containing the CircuitDag class that represents the Directed Acyclic Graph (DAG)
 /// of a quantum circuit in qoqo.
 ///
-
 #[pymodule]
 fn circuitdag(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<CircuitDagWrapper>()?;
@@ -62,6 +61,7 @@ impl CircuitDagWrapper {
     /// Returns:
     ///     self: The new, empty CircuitDag.
     #[new]
+    #[args(node_number = "100", edge_number = "300")]
     pub fn new(node_number: usize, edge_number: usize) -> Self {
         Self {
             internal: CircuitDag::with_capacity(node_number, edge_number),
@@ -334,6 +334,19 @@ impl CircuitDagWrapper {
             internal: deserialize(&bytes[..])
                 .map_err(|_| PyValueError::new_err("Input cannot be deserialized to CircuitDag"))?,
         })
+    }
+
+    /// Returns the list of the successors of a given node in the CircuitDag.
+    ///
+    pub fn successors(&self, node: usize) -> Vec<usize> {
+        let mut iter = self.internal.successors(node);
+        let mut vec: Vec<usize> = Vec::new();
+
+        while let Some(nxt) = iter.next() {
+            vec.push(nxt.index())
+        }
+
+        vec
     }
 
     /// Returns the list of nodes of commuting operations in CircuitDag.

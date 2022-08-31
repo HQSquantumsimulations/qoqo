@@ -464,3 +464,21 @@ fn test_parallel_block_iterator() {
 
     assert!(par_bl.next().is_none());
 }
+
+#[test]
+fn test_successors() {
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+    let a = dag.add_to_back(Operation::from(PauliX::new(0))).unwrap();
+    let b = dag.add_to_back(Operation::from(PauliZ::new(0))).unwrap();
+    let c = dag.add_to_back(Operation::from(PauliY::new(1))).unwrap();
+    let d = dag.add_to_back(Operation::from(PauliX::new(1))).unwrap();
+
+    let mut iter = dag.successors(a);
+    assert_eq!(iter.next().unwrap(), b.into());
+    assert!(iter.next().is_none());
+
+    let mut iter = dag.successors(c);
+    assert_eq!(iter.next().unwrap(), d.into());
+    assert!(iter.next().is_none());
+}

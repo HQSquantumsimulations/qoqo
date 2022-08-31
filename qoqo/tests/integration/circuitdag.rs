@@ -22,7 +22,7 @@ use roqoqo::ROQOQO_VERSION;
 fn new_circuitdag(py: Python) -> &PyCell<CircuitDagWrapper> {
     let circuitdag_type = py.get_type::<CircuitDagWrapper>();
     circuitdag_type
-        .call1((100, 300))
+        .call0()
         .unwrap()
         .cast_as::<PyCell<CircuitDagWrapper>>()
         .unwrap()
@@ -535,6 +535,38 @@ fn test_parallel_blocks() {
             .unwrap();
             assert!(helper1);
         }
+    })
+}
+
+#[test]
+fn test_successors() {
+    pyo3::prepare_freethreaded_python();
+    let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
+    let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+    let paulix_1 = convert_operation_to_pyobject(Operation::from(PauliX::new(1))).unwrap();
+    Python::with_gil(|py| {
+        let dag = new_circuitdag(py);
+
+        let a = dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
+        let b = dag
+            .call_method1("add_to_back", (paulix_0.clone(),))
+            .unwrap();
+        let c = dag
+            .call_method1("add_to_back", (paulix_1.clone(),))
+            .unwrap();
+
+        let vec = dag.call_method1("successors", (a,)).unwrap();
+
+        let len_op: usize = usize::extract(vec.call_method0("__len__").unwrap()).unwrap();
+        assert_eq!(len_op, 2);
+
+        let el = vec.call_method1("__getitem__", (0,)).unwrap();
+        let comp = bool::extract(el.call_method1("__eq__", (c,)).unwrap()).unwrap();
+        assert!(comp);
+
+        let el = vec.call_method1("__getitem__", (1,)).unwrap();
+        let comp = bool::extract(el.call_method1("__eq__", (b,)).unwrap()).unwrap();
+        assert!(comp);
     })
 }
 
