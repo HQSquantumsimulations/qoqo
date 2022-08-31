@@ -437,7 +437,7 @@ impl Device for GenericDevice {
         vector
     }
 
-    fn into_generic_device(self) -> GenericDevice {
-        self
+    fn to_generic_device(&self) -> GenericDevice {
+        self.clone()
     }
 }

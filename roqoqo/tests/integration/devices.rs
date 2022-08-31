@@ -85,7 +85,7 @@ fn test_all_to_all() {
         assert!(test_edges.contains(&edge));
     }
 
-    let gen_dev = device.into_generic_device();
+    let gen_dev = device.to_generic_device();
     assert_eq!(gen_dev.two_qubit_edges().len(), 3);
 }
 
@@ -201,7 +201,7 @@ fn generic_device_works() {
         assert!(test_edges.contains(&edge));
     }
 
-    let gen_dev = device.clone().into_generic_device();
+    let gen_dev = device.clone().to_generic_device();
     assert_eq!(gen_dev, device);
 }
 
@@ -291,6 +291,6 @@ fn test_square_lattice() {
         assert!(test_edges.contains(&edge));
     }
 
-    let gen_dev = device.into_generic_device();
+    let gen_dev = device.to_generic_device();
     assert_eq!(gen_dev.two_qubit_edges().len(), 4);
 }

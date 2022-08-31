@@ -386,8 +386,8 @@ impl Device for AllToAllDevice {
         self.generic_device.qubit_decoherence_rates(qubit)
     }
 
-    fn into_generic_device(self) -> GenericDevice {
-        self.generic_device
+    fn to_generic_device(&self) -> GenericDevice {
+        self.generic_device.clone()
     }
 
     fn two_qubit_edges(&self) -> Vec<(usize, usize)> {
