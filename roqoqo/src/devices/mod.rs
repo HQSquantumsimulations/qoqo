@@ -172,5 +172,5 @@ pub trait Device {
     ///
     /// [crate::devices::GenericDevice] uses nested HashMaps to represent the most general device connectivity.
     /// The memory usage will be inefficient for devices with large qubit numbers.
-    fn into_generic_device(self) -> GenericDevice;
+    fn to_generic_device(&self) -> GenericDevice;
 }

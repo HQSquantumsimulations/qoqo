@@ -751,7 +751,7 @@ pub fn devicewrapper(
             ///     GenericDevice uses nested HashMaps to represent the most general device connectivity.
             ///     The memory usage will be inefficient for devices with large qubit numbers.
             fn generic_device(&self) -> GenericDeviceWrapper {
-                GenericDeviceWrapper{ internal: self.internal.clone().into_generic_device()}
+                GenericDeviceWrapper{ internal: self.internal.to_generic_device()}
             }
 
             /// Returns a copy of the device (copy here produces a deepcopy).
