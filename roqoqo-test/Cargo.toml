@@ -18,7 +18,7 @@ doctest = false
 crate-type = ["rlib"]
 
 [dependencies]
-qoqo_calculator = { version="1.0" }
+qoqo_calculator = { version="1.1" }
 roqoqo = {version="1.1.0-alpha.2", path="../roqoqo", features=["serialize"]}
 rand = "0.8"
 nalgebra = "0.31"

@@ -30,7 +30,7 @@ serde = { version = "1.0", features = ["derive"] }
 ndarray = "0.15"
 num-complex = "0.4"
 thiserror = "1.0"
-qoqo_calculator = { version="1.0" }
+qoqo_calculator = { version="1.1" }
 qoqo_calculator_pyo3 = {version="1.0", default-features=false}
 qoqo-macros = {version="1.1.0-alpha.2", path="../qoqo-macros"}
 roqoqo = {version="1.1.0-alpha.2", path="../roqoqo", features=["serialize", "overrotate"]}
