@@ -14,7 +14,6 @@
 #![deny(rustdoc::missing_crate_level_docs)]
 #![deny(missing_debug_implementations)]
 
-
 //! Qoqo quantum computing toolkit
 //!
 //! Quantum Operation Quantum Operation
