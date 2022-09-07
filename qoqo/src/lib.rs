@@ -13,8 +13,7 @@
 #![deny(missing_docs)]
 #![deny(rustdoc::missing_crate_level_docs)]
 #![deny(missing_debug_implementations)]
-// Temporary allowing lint because of pyo3 implementation
-#![allow(clippy::borrow_deref_ref)]
+
 
 //! Qoqo quantum computing toolkit
 //!
@@ -29,15 +28,9 @@ use pyo3::wrap_pymodule;
 
 pub mod operations;
 
-use operations::*;
-
 pub mod measurements;
 
-use measurements::*;
-
 pub mod devices;
-
-use devices::*;
 
 mod circuit;
 pub use circuit::{convert_into_circuit, CircuitWrapper, OperationIteratorWrapper};
@@ -120,11 +113,11 @@ fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     // module.add_class::<GenericChainWrapper>()?;
     // module.add_class::<GenericDeviceWrapper>()?;
     // module.add_class::<AllToAllDeviceWrapper>()?;
-    let wrapper = wrap_pymodule!(operations);
+    let wrapper = wrap_pymodule!(operations::operations);
     module.add_wrapped(wrapper)?;
-    let wrapper2 = wrap_pymodule!(measurements);
+    let wrapper2 = wrap_pymodule!(measurements::measurements);
     module.add_wrapped(wrapper2)?;
-    let wrapper3 = wrap_pymodule!(devices);
+    let wrapper3 = wrap_pymodule!(devices::devices);
     module.add_wrapped(wrapper3)?;
 
     // Adding nice imports corresponding to maturin example

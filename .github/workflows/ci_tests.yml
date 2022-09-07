@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main, '1.1.0']
+    branches: [main]
 
 jobs:
   test_pyproject_install:
@@ -116,7 +116,7 @@ jobs:
         with:
           maturin-version: latest
           command: build
-          manylinux: 2010
+          manylinux: 2014
           args: -i python${{ matrix.python.py }} --out wheels  -m qoqo/Cargo.toml --locked
       - name: test install
         run: |
