@@ -177,17 +177,17 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
 
         // test that invalid matrix format is not accepted
         let pyarray_invalid: &PyArray2<f64> = pyarray![py, [1.0], [2.0], [3.0]];
-        let readonly_invalid = pyarray_invalid.readonly();
-        let error = device.call_method1(py, "set_all_qubit_decoherence_rates", (readonly_invalid,));
+        // let readonly_invalid = pyarray_invalid.readonly();
+        let error = device.call_method1(py, "set_all_qubit_decoherence_rates", (pyarray_invalid,));
         assert!(error.is_err());
 
         let pyarray_testmatrix: Array2<f64> =
             array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
         let pyarray: &PyArray2<f64> =
             pyarray![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
-        let readonly = pyarray.readonly();
+        // let readonly = pyarray.readonly();
         let device = device
-            .call_method1(py, "set_all_qubit_decoherence_rates", (readonly,))
+            .call_method1(py, "set_all_qubit_decoherence_rates", (pyarray,))
             .unwrap();
         // .cast_as::<PyCell<SquareLatticeDeviceWrapper>>(py)
         // .unwrap();
@@ -254,17 +254,17 @@ fn test_decoherence_rates(device: Py<PyAny>) {
 
         // test that invalid matrix format is not accepted
         let pyarray_invalid: &PyArray2<f64> = pyarray![py, [1.0], [2.0], [3.0]];
-        let readonly_invalid = pyarray_invalid.readonly();
-        let error = device.call_method1(py, "set_qubit_decoherence_rates", (0, readonly_invalid));
+        // let readonly_invalid = pyarray_invalid.readonly();
+        let error = device.call_method1(py, "set_qubit_decoherence_rates", (0, pyarray_invalid));
         assert!(error.is_err());
 
         let pyarray_testmatrix: Array2<f64> =
             array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
         let pyarray: &PyArray2<f64> =
             pyarray![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
-        let readonly = pyarray.readonly();
+        // let readonly = pyarray.readonly();
         device
-            .call_method1(py, "set_qubit_decoherence_rates", (0, readonly))
+            .call_method1(py, "set_qubit_decoherence_rates", (0, pyarray))
             .unwrap();
         // .cast_as::<PyCell<SquareLatticeDeviceWrapper>>(py)
         // .unwrap();

@@ -13,6 +13,7 @@
 use ndarray::{arr2, array, Array1, Array2};
 use num_complex::Complex64;
 use numpy::PyArray2;
+use numpy::PyReadonlyArray1;
 use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::operations::*;
@@ -146,14 +147,10 @@ fn test_pyo3_inputs_setstatevector() {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_pragma).unwrap();
 
-        let to_statevector_op: Vec<Complex64> = Vec::extract(
-            operation
-                .call_method0(py, "statevector")
-                .unwrap()
-                .as_ref(py),
-        )
-        .unwrap();
-        let statevector_op: Array1<Complex64> = Array1::from(to_statevector_op);
+        let to_op: Py<PyAny> = operation.call_method0(py, "statevector").unwrap();
+
+        let to_statevector_op: PyReadonlyArray1<Complex64> = to_op.as_ref(py).extract().unwrap();
+        let statevector_op: Array1<Complex64> = to_statevector_op.to_owned_array();
         assert_eq!(statevector_op, statevector());
     })
 }
