@@ -848,6 +848,10 @@ pub fn devicewrapper(
                 })
             }
 
+            fn __repr__(&self) -> String{
+                format!("{:?}", self.internal)
+            }
+
 
             /// Return the __richcmp__ magic method to perform rich comparison operations on mixed system.
             ///
