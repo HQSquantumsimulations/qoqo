@@ -13,7 +13,7 @@
 use crate::{convert_into_circuit, CircuitWrapper};
 use ndarray::Array1;
 use num_complex::Complex64;
-use numpy::{PyArray1, PyArray2, PyReadonlyArray2, ToPyArray};
+use numpy::{PyArray1, PyArray2, PyReadonlyArray1, PyReadonlyArray2, ToPyArray};
 use pyo3::exceptions::{PyRuntimeError, PyTypeError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
@@ -68,8 +68,9 @@ pub struct PragmaSetStateVectorWrapper {
 insert_pyany_to_operation!(
     "PragmaSetStateVector" =>{
         let array = op.call_method0("statevector").expect("error extracting");
-        let statevec_casted: Vec<Complex64> = array.extract().unwrap();
-        let statevec_array: Array1<Complex64> = Array1::from(statevec_casted);
+        let statevec_casted: PyReadonlyArray1<Complex64> = array.extract().unwrap();
+        let statevec_array: Array1<Complex64> = statevec_casted.to_owned_array();
+        // let statevec_array: Array1<Complex64> = Array1::from(statevec_casted);
         Ok(PragmaSetStateVector::new(statevec_array).into())
     }
 );
@@ -94,13 +95,27 @@ impl PragmaSetStateVectorWrapper {
     /// Returns:
     ///     self: The new PragmaSetStateVector.
     #[new]
-    fn new(statevector: Py<PyAny>) -> Self {
-        let statevec_casted: Vec<Complex64> = Python::with_gil(|py| -> Vec<Complex64> {
-            Vec::extract(statevector.as_ref(py)).unwrap()
-        });
-        let statevec_array: Array1<Complex64> = Array1::from(statevec_casted);
-        Self {
-            internal: PragmaSetStateVector::new(statevec_array),
+    fn new(statevector: Py<PyAny>) -> PyResult<Self> {
+        let try_cast: PyResult<Array1<Complex64>> =
+            Python::with_gil(|py| -> PyResult<Array1<Complex64>> {
+                let extracted = PyReadonlyArray1::extract(statevector.as_ref(py))?;
+                let statevec: Array1<Complex64> = extracted.to_owned_array();
+                Ok(statevec)
+            });
+        match try_cast {
+            Ok(array) => Ok(Self {
+                internal: PragmaSetStateVector::new(array),
+            }),
+            Err(_) => {
+                let statevec_casted: Vec<Complex64> =
+                    Python::with_gil(|py| -> PyResult<Vec<Complex64>> {
+                        Vec::extract(statevector.as_ref(py))
+                    })?;
+                let statevec_array: Array1<Complex64> = Array1::from(statevec_casted);
+                Ok(Self {
+                    internal: PragmaSetStateVector::new(statevec_array),
+                })
+            }
         }
     }
 

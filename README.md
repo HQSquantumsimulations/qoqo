@@ -96,6 +96,11 @@ If no pre-built python wheel is available for your architecture you can install 
 RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" pip install qoqo
 ```
 
+```shell
+RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" maturin build -m qoqo/Cargo.toml  --release
+pip install target/wheels/$NAME_OF_WHEEL
+```
+
 When using qoqo in a rust project providing a python interface add
 
 ```TOML
@@ -114,6 +119,8 @@ For an expanded collection of examples please see the jupyter notebooks in the e
 
 * **qoqo examples**: For jupyter notebooks in **python**, please refer to [qoqo_examples/qoqo/](https://github.com/HQSquantumsimulations/qoqo_examples/tree/main/qoqo).
 * **roqoqo examples**: The jupyter notebooks in **Rust** can be found in [qoqo_examples/roqoqo/notebooks/](https://github.com/HQSquantumsimulations/qoqo_examples/tree/main/roqoqo/notebooks). Alternatively, you can also find pure **Rust** versions of the examples in [qoqo_examples/roqoqo/standalone/](https://github.com/HQSquantumsimulations/qoqo_examples/tree/main/roqoqo/standalone)
+
+This project is partly supported by [PlanQK](https://planqk.de).
 
 ## Contributing
 

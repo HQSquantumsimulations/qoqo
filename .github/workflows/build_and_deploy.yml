@@ -53,7 +53,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v4.1.0
+      - uses: actions/setup-python@v4.2.0
         with:
           python-version: ${{ matrix.python.py }}
       - name: linux wheels
@@ -61,7 +61,7 @@ jobs:
         with:
           maturin-version: latest
           command: build
-          manylinux: 2010
+          manylinux: 2014
           args: -i python${{ matrix.python.py }} --out wheels -m qoqo/Cargo.toml --release --locked
       - name: test install
         run: |
@@ -92,7 +92,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v4.1.0
+      - uses: actions/setup-python@v4.2.0
         with:
           python-version: ${{ matrix.python.py }}
       - name: linux wheels
@@ -133,7 +133,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v4.1.0
+      - uses: actions/setup-python@v4.2.0
         with:
           python-version: ${{ matrix.python.py }}
       - name: windows wheels
@@ -171,7 +171,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: actions/setup-python@v4.1.0
+      - uses: actions/setup-python@v4.2.0
         with:
           python-version: ${{ matrix.python.py }}
       - name: Install dependencies
@@ -194,11 +194,59 @@ jobs:
           name: py_wheels
           path: wheels
 
+  code_coverage_roqoqo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions-rs/toolchain@v1
+        with:
+            profile: minimal
+            toolchain: stable
+            components: llvm-tools-preview
+            override: true
+      - uses: taiki-e/install-action@cargo-llvm-cov
+      - run: |
+          cd roqoqo
+          cargo llvm-cov --no-default-features --lcov --output-path lcov_roqoqo.info
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          # token: ${{ secrets.CODECOV_TOKEN }}
+          files: lcov_roqoqo.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true
+  
+  code_coverage_qoqo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions-rs/toolchain@v1
+        with:
+            profile: minimal
+            toolchain: stable
+            components: llvm-tools-preview
+            override: true
+      - uses: taiki-e/install-action@cargo-llvm-cov
+      - run: |
+          cd qoqo
+          cargo llvm-cov --no-default-features --lcov --output-path lcov_qoqo.info
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          # token: ${{ secrets.CODECOV_TOKEN }}
+          files: lcov_qoqo.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true
+
   deploy:
       needs: [deploy_cratesio, build_maturin_builds_macos, build_maturin_builds_linux, build_maturin_builds_linux_src, build_maturin_builds_windows]
       runs-on: ubuntu-latest
       steps:
-      - uses: actions/setup-python@v4.1.0
+      - uses: actions/setup-python@v4.2.0
         with:
           python-version: ${{ matrix.python.py }}
       - uses: actions/download-artifact@v3

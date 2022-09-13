@@ -235,7 +235,7 @@ fn main() {
         use std::collections::HashMap;
         use ndarray::Array1;
         use num_complex::Complex64;
-        use numpy::PyArray2;
+        use numpy::{PyArray2, PyReadonlyArray1};
 
         /// Tries to convert a [roqoqo::operations::Operation] to a PyObject
         pub fn convert_operation_to_pyobject(operation: Operation) -> PyResult<PyObject> {

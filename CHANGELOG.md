@@ -2,48 +2,32 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
-## v1.0.0-beta.2
+## 1.1.0-alpha.1
+
+* Added `InputBit` to set bit in a (readout) bit register to a value.
+* Added `InvolvedClassical` functionality to return which classical register variables are involved in an operation
+* Added `CircuitDag` direct acyclical graph representation of `Circuit`
+
+## v1.0.0
+
+### Fixed v1.0.0
 
 * Fixed superoperator construction for general noise pragma
-
-## v1.0.0-alpha.5
-
 * Updated dependencies
-
-## v1.0.0-alpha.4
-
-### Fixed v1.0.0-alpha.4
-
 * `PragmaRepeatedMeasurement` now adds remapped qubits that are not previously in the qubit_mapping of the gate.
 
-## v1.0.0-alpha.3
-
-### Added v1.0.0-alpha.3
+### Added v1.0.0
 
 * Optional `async` feature including:
     1. AsyncEvaluatingBackend trait for backends that implement async evaluation (especially designed for Backends interfacing a Web-API)
     2. Measurements async evaluating the Future of a register measurement returned from a backend.
+* Device trait added in roqoqo.
+* Added unit tests for serialization of PragmaRepeatedMeasurement operations in a Circuit.
 
-### Changed v1.0.0-alpha.3
+### Changed v1.0.0
 
 * Make qubit_remapping more lenient only remapping values found in a HashMap skipping remapping for qubits not found in HashMap instead of returning an error.
-
-## v1.0.0-alpha.2
-
-* Updated to qoqo_calculator 0.8
-
-## v1.0.0-alpha.1
-
-* Device trait added in roqoqo.
-* Version updated to 1.0.0-alpha.1
-
-## Release 1.0.0-alpha
-
-prerelease package: documentation not yet complete and new functionalities might be added.
-
-* Removed user access to devices to avoid breaking changes in version 1.
-* Updated dependencies and README.
-* Added unit tests for serialization of PragmaRepeatedMeasurement operations in a Circuit.
+* Updated to qoqo_calculator 1.0
 * Removed DoUnitary class from qoqo since functionality replaced by QuantumProgram.
 
 ## v0.11.3

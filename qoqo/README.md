@@ -39,6 +39,8 @@ qoqo provides the Python interface to the underlying roqoqo library, including:
 * Measurement classes for evaluating observable measurements based on raw readout date returned by quantum computer backends
 * Serialization to json and deserialization from json for circuits and measurement information. Serialization support can easily be expanded to other targets with the help of the serde crate.
 
+This project is partly supported by [PlanQK](https://planqk.de).
+
 ### Installation
 
 On Linux, macOS and Windows on x86 precompiled packages can be found on PyPi and installed via
@@ -51,7 +53,7 @@ If no pre-built python wheel is available for your architecture you can install 
 
 ```shell
 # can be necessary on macOS
-RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" pip install qoqo
+pip install qoqo
 ```
 
 When using qoqo in a rust project providing a python interface add

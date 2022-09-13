@@ -13,8 +13,6 @@
 #![deny(missing_docs)]
 #![deny(rustdoc::missing_crate_level_docs)]
 #![deny(missing_debug_implementations)]
-// Temporary allowing lint because of pyo3 implementation
-#![allow(clippy::borrow_deref_ref)]
 
 //! Qoqo quantum computing toolkit
 //!
@@ -22,24 +20,27 @@
 //! Yes we use [reduplication](https://en.wikipedia.org/wiki/Reduplication)
 
 use pyo3::prelude::*;
+
 use pyo3::types::PyDict;
+
 use pyo3::wrap_pymodule;
 
 pub mod operations;
-use operations::*;
 
 pub mod measurements;
-use measurements::*;
 
-// pub mod devices;
-// use devices::__PYO3_PYMODULE_DEF_DEVICES;
-// use devices::*;
+pub mod devices;
 
 mod circuit;
 pub use circuit::{convert_into_circuit, CircuitWrapper, OperationIteratorWrapper};
 
 mod quantum_program;
 pub use quantum_program::{convert_into_quantum_program, QuantumProgramWrapper};
+
+#[cfg(feature = "circuitdag")]
+mod circuitdag;
+#[cfg(feature = "circuitdag")]
+pub use circuitdag::{convert_into_circuitdag, CircuitDagWrapper};
 
 /// qoqo version information, used for qoqo import/export checks
 pub const QOQO_VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -96,23 +97,27 @@ pub enum QoqoBackendError {
 ///     :toctree: generated/
 ///
 ///     Circuit
+///     CircuitDag
 ///     QuantumProgram
 ///     operations
 ///     measurements
 ///
+
 #[pymodule]
 fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<CircuitWrapper>()?;
     module.add_class::<QuantumProgramWrapper>()?;
+    #[cfg(feature = "circuitdag")]
+    module.add_class::<CircuitDagWrapper>()?;
     // module.add_class::<GenericChainWrapper>()?;
     // module.add_class::<GenericDeviceWrapper>()?;
     // module.add_class::<AllToAllDeviceWrapper>()?;
-    let wrapper = wrap_pymodule!(operations);
+    let wrapper = wrap_pymodule!(operations::operations);
     module.add_wrapped(wrapper)?;
-    let wrapper2 = wrap_pymodule!(measurements);
+    let wrapper2 = wrap_pymodule!(measurements::measurements);
     module.add_wrapped(wrapper2)?;
-    // let wrapper3 = wrap_pymodule!(devices);
-    // module.add_wrapped(wrapper3)?;
+    let wrapper3 = wrap_pymodule!(devices::devices);
+    module.add_wrapped(wrapper3)?;
 
     // Adding nice imports corresponding to maturin example
     let system = PyModule::import(_py, "sys")?;

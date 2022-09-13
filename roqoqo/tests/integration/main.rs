@@ -24,3 +24,7 @@ mod devices;
 
 #[cfg(test)]
 mod quantum_program;
+
+#[cfg(test)]
+#[cfg(feature = "circuitdag")]
+mod circuitdag;

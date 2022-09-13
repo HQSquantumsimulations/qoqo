@@ -30,7 +30,6 @@ include!(concat!(
     env!("OUT_DIR"),
     "/_auto_generated_operation_conversion.rs"
 ));
-
 use pyo3::prelude::*;
 
 /// Operations are the atomic instructions in any quantum program that can be represented by qoqo.
@@ -65,6 +64,7 @@ use pyo3::prelude::*;
 ///    DefinitionBit
 ///    DefinitionFloat
 ///    DefinitionComplex
+///    InputSymbolic
 ///    InputSymbolic
 ///    MeasureQubit
 ///    PragmaGetStateVector
@@ -111,6 +111,7 @@ use pyo3::prelude::*;
 ///    ComplexPMInteraction
 ///    MultiQubitMS
 #[pymodule]
+
 pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<SingleQubitGateWrapper>()?;
     m.add_class::<RotateZWrapper>()?;
@@ -131,6 +132,7 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<DefinitionFloatWrapper>()?;
     m.add_class::<DefinitionComplexWrapper>()?;
     m.add_class::<InputSymbolicWrapper>()?;
+    m.add_class::<InputBitWrapper>()?;
     m.add_class::<MeasureQubitWrapper>()?;
     m.add_class::<PragmaGetStateVectorWrapper>()?;
     m.add_class::<PragmaGetDensityMatrixWrapper>()?;

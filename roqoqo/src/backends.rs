@@ -220,7 +220,7 @@ pub trait AsyncEvaluatingBackend: Sized {
     /// `RegisterResult` - The output registers written by the evaluated circuits.
     async fn async_run_circuit_iterator<'a>(
         &self,
-        circuit: impl Iterator<Item = &'a Operation>,
+        circuit: impl Iterator<Item = &'a Operation> + std::marker::Send,
     ) -> RegisterResult;
 
     /// Runs all circuits corresponding to one measurement with the backend.
@@ -242,10 +242,10 @@ pub trait AsyncEvaluatingBackend: Sized {
     /// # Returns
     ///
     /// `RegisterResult` - The output registers written by the evaluated measurement circuits.
-    async fn async_run_measurement_registers<T>(&self, measurement: T) -> RegisterResult
+    async fn async_run_measurement_registers<T>(&self, measurement: &T) -> RegisterResult
     where
         T: Measure,
-        T: std::marker::Send,
+        T: std::marker::Sync,
     {
         let mut bit_registers: HashMap<String, BitOutputRegister> = HashMap::new();
         let mut float_registers: HashMap<String, FloatOutputRegister> = HashMap::new();
@@ -298,16 +298,15 @@ pub trait AsyncEvaluatingBackend: Sized {
     /// `Err(RoqoqoBackendError)` - The measurement run failed.
     async fn async_run_measurement<T>(
         &self,
-        measurement: T,
+        measurement: &T,
     ) -> Result<Option<HashMap<String, f64>>, RoqoqoBackendError>
     where
         T: MeasureExpectationValues,
-        T: std::marker::Send,
+        T: std::marker::Sync,
     {
         // Futures trick so that compiler recognizes that clone of measurement in send safe
-        let m = measurement.clone();
         let (bit_registers, float_registers, complex_registers) =
-            self.async_run_measurement_registers(m).await?;
+            self.async_run_measurement_registers(measurement).await?;
         Ok(measurement.evaluate(bit_registers, float_registers, complex_registers)?)
     }
 }
