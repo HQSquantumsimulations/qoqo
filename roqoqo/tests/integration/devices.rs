@@ -214,6 +214,62 @@ fn change_device_test() {
     let result = device.change_device("", &empty_serialisation);
     assert!(result.is_err());
 }
+#[test]
+fn all_to_all_generic() {
+    let mut generic_device = GenericDevice::new(2);
+    let all_to_all = AllToAllDevice::new(2, &["RotateZ".to_string()], &["CNOT".to_string()], 1.0);
+
+    generic_device
+        .set_single_qubit_gate_time("RotateZ", 0, 1.0)
+        .unwrap();
+    generic_device
+        .set_single_qubit_gate_time("RotateZ", 1, 1.0)
+        .unwrap();
+    generic_device
+        .set_two_qubit_gate_time("CNOT", 0, 1, 1.0)
+        .unwrap();
+    generic_device
+        .set_two_qubit_gate_time("CNOT", 1, 0, 1.0)
+        .unwrap();
+    // setting the decoherence rates directly
+    generic_device
+        .set_qubit_decoherence_rates(0, array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
+        .unwrap();
+    // setting the decoherence rates directly
+    generic_device
+        .set_qubit_decoherence_rates(1, array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
+        .unwrap();
+    assert_eq!(generic_device, all_to_all.to_generic_device());
+}
+
+#[test]
+fn square_lattice_generic() {
+    let mut generic_device = GenericDevice::new(2);
+    let square_lattice =
+        SquareLatticeDevice::new(1, 2, &["RotateZ".to_string()], &["CNOT".to_string()], 1.0);
+
+    generic_device
+        .set_single_qubit_gate_time("RotateZ", 0, 1.0)
+        .unwrap();
+    generic_device
+        .set_single_qubit_gate_time("RotateZ", 1, 1.0)
+        .unwrap();
+    generic_device
+        .set_two_qubit_gate_time("CNOT", 0, 1, 1.0)
+        .unwrap();
+    generic_device
+        .set_two_qubit_gate_time("CNOT", 1, 0, 1.0)
+        .unwrap();
+    // setting the decoherence rates directly
+    generic_device
+        .set_qubit_decoherence_rates(0, array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
+        .unwrap();
+    // setting the decoherence rates directly
+    generic_device
+        .set_qubit_decoherence_rates(1, array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
+        .unwrap();
+    assert_eq!(generic_device, square_lattice.to_generic_device());
+}
 
 #[test]
 fn test_square_lattice() {

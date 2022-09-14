@@ -1996,7 +1996,7 @@ fn test_pyo3_substitute_parameters(input_operation: Operation) {
         substitution_dict.set_variable("param", 1.0);
         substitution_dict.set_variable("param2", 0.0);
         let substitute_param = input_operation
-            .substitute_parameters(&mut substitution_dict)
+            .substitute_parameters(&substitution_dict)
             .unwrap();
         let test_operation = convert_operation_to_pyobject(substitute_param).unwrap();
 
@@ -2030,7 +2030,7 @@ fn test_pyo3_substitute_params_rotate(input_operation: Operation) {
         let mut substitution_dict: Calculator = Calculator::new();
         substitution_dict.set_variable("theta", 1.0);
         let substitute_param = input_operation
-            .substitute_parameters(&mut substitution_dict)
+            .substitute_parameters(&substitution_dict)
             .unwrap();
         let test_operation = convert_operation_to_pyobject(substitute_param).unwrap();
 

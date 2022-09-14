@@ -12,13 +12,41 @@
 
 use std::collections::HashSet;
 
-use roqoqo::{operations::*, RoqoqoError};
+use roqoqo::{
+    operations::{self, *},
+    RoqoqoError,
+};
 use roqoqo::{Circuit, CircuitDag};
 
 use test_case::test_case;
 
 static DEFAULT_NODE_NUMBER: usize = 10;
 static DEFAULT_EDGE_NUMBER: usize = 30;
+
+/// Test conversion
+#[test]
+fn test_conversion() {
+    let mut circuit = Circuit::new();
+    circuit += operations::DefinitionBit::new("rb".to_string(), 10, true);
+    circuit += operations::DefinitionFloat::new("rf".to_string(), 10, true);
+    circuit += operations::DefinitionComplex::new("rc".to_string(), 10, true);
+    circuit += operations::RotateX::new(0, 1.0.into());
+    circuit += operations::CNOT::new(0, 1);
+    circuit += operations::MultiQubitMS::new(vec![0, 1, 2], 1.0.into());
+    circuit += operations::PauliZ::new(0);
+    circuit += operations::PragmaRepeatedMeasurement::new("rb".to_string(), 10, None);
+    circuit += operations::PragmaGetDensityMatrix::new("rc".to_string(), None);
+    circuit += operations::PragmaGetStateVector::new("rc".to_string(), None);
+    let dag = CircuitDag::from(circuit.clone());
+    let test_circuit = Circuit::from(dag);
+    assert_eq!(circuit.operations(), test_circuit.operations());
+    for op in circuit.definitions() {
+        assert!(test_circuit.definitions().contains(op))
+    }
+    for op in test_circuit.definitions() {
+        assert!(circuit.definitions().contains(op))
+    }
+}
 
 /// Test adding an operation that doesn't involve qubits.
 ///
@@ -36,12 +64,12 @@ fn add_operation_no_involved_qubits(operation1: Operation, operation2: Operation
     let back1 = dag.add_to_back(operation1.clone());
 
     assert!(operation1.involved_qubits() == InvolvedQubits::None);
-    assert_eq!(dag.commuting_operations().get(0), back1.as_ref());
+    assert_eq!(dag.commuting_operations().first(), back1.as_ref());
 
     dag.add_to_front(Operation::from(PauliY::new(0)));
     dag.add_to_back(Operation::from(CNOT::new(0, 1)));
 
-    let front1 = dag.add_to_front(operation2.clone());
+    let front1 = dag.add_to_front(operation2);
 
     assert_eq!(dag.commuting_operations().get(1), front1.as_ref());
 }
@@ -92,8 +120,8 @@ fn check_parallel_blocks_set(operation1: Operation, operation2: Operation) {
     assert!(dag.last_parallel_block().len() == 1);
     assert!(dag.first_parallel_block().len() == 1);
 
-    dag.add_to_front(operation2.clone());
-    dag.add_to_back(operation1.clone());
+    dag.add_to_front(operation2);
+    dag.add_to_back(operation1);
 
     if inv_qubits_1.len() == 2 {
         assert!(dag.last_parallel_block().len() == 1);
@@ -107,15 +135,15 @@ fn check_parallel_blocks_set(operation1: Operation, operation2: Operation) {
 fn check_parallel_blocks_all(operation: Operation) {
     let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
 
-    assert!(dag.last_parallel_block().len() == 0);
-    assert!(dag.first_parallel_block().len() == 0);
+    assert!(dag.last_parallel_block().is_empty());
+    assert!(dag.first_parallel_block().is_empty());
 
     dag.add_to_back(operation.clone());
 
     assert!(dag.first_parallel_block().len() == 1);
     assert!(dag.last_parallel_block().len() == 1);
 
-    dag.add_to_front(operation.clone());
+    dag.add_to_front(operation);
 
     assert!(dag.first_parallel_block().len() == 1);
     assert!(dag.last_parallel_block().len() == 1);
@@ -174,7 +202,7 @@ fn check_involved_classical_none(operation: Operation) {
     assert!(dag.first_operation_involving_classical().is_empty());
     assert!(dag.last_operation_involving_classical().is_empty());
 
-    dag.add_to_back(operation.clone());
+    dag.add_to_back(operation);
 
     assert!(dag.first_operation_involving_classical().is_empty());
     assert!(dag.last_operation_involving_classical().is_empty());
@@ -230,7 +258,7 @@ fn check_involved_classical_set(operation1: Operation, operation2: Operation) {
 fn test_is_definition_classical_populate(operation: Operation) {
     let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
 
-    let node = dag.add_to_back(operation.clone());
+    let node = dag.add_to_back(operation);
 
     assert!(!dag.first_operation_involving_classical().is_empty());
     assert!(!dag.last_operation_involving_classical().is_empty());
@@ -323,8 +351,7 @@ fn check_involved_classical_all(operation: Operation) {
             new_back.as_ref()
         );
         assert_ne!(
-            dag.last_operation_involving_classical()
-                .get(&(x.clone(), 1)),
+            dag.last_operation_involving_classical().get(&(x, 1)),
             back.as_ref()
         );
     }
@@ -338,8 +365,7 @@ fn check_involved_classical_all(operation: Operation) {
             new_front.as_ref()
         );
         assert_ne!(
-            dag.first_operation_involving_classical()
-                .get(&(x.clone(), 1)),
+            dag.first_operation_involving_classical().get(&(x, 1)),
             front.as_ref()
         );
     }
@@ -357,7 +383,7 @@ fn test_pragma_conditional(op_vec: Vec<Operation>) {
     let operation: Operation =
         Operation::from(PragmaConditional::new("to".to_string(), 2, circuit));
 
-    dag.add_to_back(operation.clone());
+    dag.add_to_back(operation);
 
     assert!(!dag.first_operation_involving_qubit().is_empty());
     assert!(!dag.last_operation_involving_qubit().is_empty());

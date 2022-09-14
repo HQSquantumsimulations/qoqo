@@ -191,7 +191,7 @@ pub trait InvolveQubits {
 /// let mut substitution_dict: Calculator = Calculator::new();
 /// substitution_dict.set_variable("sub", 0.0);
 /// let result = rotatez
-///     .substitute_parameters(&mut substitution_dict)
+///     .substitute_parameters(&substitution_dict)
 ///     .unwrap();
 /// assert_eq!(result, RotateZ::new(0, CalculatorFloat::from(0.0)));
 /// // 2) The remap_qubits function remaps all qubits in the Operation and its inputs

@@ -850,10 +850,10 @@ fn test_two_qubitgates_debug(message: &'static str, gate: Operation) {
     Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)),
     Operation::from(PhaseShiftedControlledZ::new(1, 0, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 fn test_twoqubitgates_partialeq(gate1: Operation, gate2: Operation) {
-    assert!(gate1.clone() == gate1);
-    assert!(gate1 == gate1.clone());
-    assert!(gate2 != gate1);
-    assert!(gate1 != gate2);
+    assert!(gate1 == gate1);
+    assert_eq!(gate1, gate1.clone());
+    assert_ne!(gate2, gate1);
+    assert_ne!(gate1, gate2);
 }
 
 /// Test powerfc function for Rotate gates
@@ -1062,10 +1062,10 @@ fn test_kakdecomposition_partialeq() {
     };
 
     // comparison
-    assert!(gate1.clone() == gate1);
-    assert!(gate1 == gate1.clone());
-    assert!(gate2 != gate1);
-    assert!(gate1 != gate2);
+    assert!(gate1 == gate1);
+    assert_eq!(gate1, gate1.clone());
+    assert_ne!(gate2, gate1);
+    assert_ne!(gate1, gate2);
 }
 
 #[test]

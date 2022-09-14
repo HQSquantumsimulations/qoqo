@@ -116,15 +116,11 @@ fn test_copy() {
         let empty_dag_copy = empty_dag.call_method0("__copy__").unwrap();
 
         let full_dag_comparison =
-            bool::extract(dag_copy.call_method1("__eq__", (&(*dag),)).unwrap()).unwrap();
+            bool::extract(dag_copy.call_method1("__eq__", (dag,)).unwrap()).unwrap();
         assert!(full_dag_comparison);
 
-        let empty_dag_comparison = bool::extract(
-            empty_dag_copy
-                .call_method1("__eq__", (&(*empty_dag),))
-                .unwrap(),
-        )
-        .unwrap();
+        let empty_dag_comparison =
+            bool::extract(empty_dag_copy.call_method1("__eq__", (empty_dag,)).unwrap()).unwrap();
         assert!(empty_dag_comparison);
     })
 }
@@ -487,7 +483,7 @@ fn test_parallel_blocks() {
         let par_bl = dag.call_method0("parallel_blocks").unwrap();
 
         let vec0 = par_bl.get_item(0).unwrap();
-        for el in vec0.call0() {
+        if let Ok(el) = vec0.call0() {
             let helper1 = bool::extract(
                 el.get_item(0)
                     .unwrap()
@@ -506,7 +502,7 @@ fn test_parallel_blocks() {
         }
 
         let vec1 = par_bl.get_item(1).unwrap();
-        for el in vec1.call0() {
+        if let Ok(el) = vec1.call0() {
             let helper1 = bool::extract(
                 el.get_item(0)
                     .unwrap()
@@ -525,7 +521,7 @@ fn test_parallel_blocks() {
         }
 
         let vec2 = par_bl.get_item(2).unwrap();
-        for el in vec2.call0() {
+        if let Ok(el) = vec2.call0() {
             let helper1 = bool::extract(
                 el.get_item(0)
                     .unwrap()
