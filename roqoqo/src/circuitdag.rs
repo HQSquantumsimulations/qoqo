@@ -820,7 +820,7 @@ mod tests {
 
         assert!(dag.graph.node_count() == 1);
 
-        dag.add_to_front(operation.clone());
+        dag.add_to_front(operation);
         dag.add_to_back(Operation::from(CNOT::new(0, 1)));
 
         assert!(dag.graph.node_count() == 3);
@@ -833,11 +833,11 @@ mod tests {
             CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
 
         dag.add_to_back(operation1.clone());
-        dag.add_to_front(operation2.clone());
+        dag.add_to_front(operation2);
 
         assert!(dag.graph.node_count() == 2);
 
-        dag.add_to_back(operation1.clone());
+        dag.add_to_back(operation1);
 
         assert!(dag.graph.node_count() == 3);
     }
@@ -864,8 +864,8 @@ mod tests {
             false,
         )));
 
-        let ind1 = dag.add_to_back(operation1.clone());
-        let ind2 = dag.add_to_back(operation2.clone());
+        let ind1 = dag.add_to_back(operation1);
+        let ind2 = dag.add_to_back(operation2);
 
         assert!(dag
             .graph
@@ -882,7 +882,7 @@ mod tests {
         assert!(dag.last_all.is_none());
 
         let ind_back = dag.add_to_back(operation.clone());
-        let ind_front = dag.add_to_front(operation.clone());
+        let ind_front = dag.add_to_front(operation);
 
         assert!(dag.first_all.is_some());
         assert!(dag.last_all.is_some());
@@ -938,7 +938,7 @@ mod tests {
         assert_ne!(dag.first_operation_involving_qubit().get(&0), back.as_ref());
 
         let new_front_all = dag.add_to_front(operation.clone());
-        let new_back_all = dag.add_to_back(operation.clone());
+        let new_back_all = dag.add_to_back(operation);
 
         assert!(dag
             .graph

@@ -183,8 +183,7 @@ impl CircuitDagWrapper {
         current_front_layer: Vec<usize>,
         to_be_executed: usize,
     ) -> PyResult<Vec<usize>> {
-        Ok(self
-            .internal
+        self.internal
             .new_front_layer(
                 already_executed.as_slice(),
                 current_front_layer.as_slice(),
@@ -194,7 +193,7 @@ impl CircuitDagWrapper {
                 PyValueError::new_err(
                     "The Operation to be executed is not in the current front layer.".to_string(),
                 )
-            })?)
+            })
     }
 
     /// Returns an iterator over the possible parallel blocks in circuit that can be executed simultaneously
