@@ -1574,10 +1574,10 @@ fn test_singlequbitgates_partialeq(
     gate1: SingleQubitGateOperation,
     gate2: SingleQubitGateOperation,
 ) {
-    assert!(gate1.clone() == gate1);
-    assert!(gate1 == gate1.clone());
-    assert!(gate2 != gate1);
-    assert!(gate1 != gate2);
+    assert_eq!(gate1, gate1);
+    assert_eq!(gate1, gate1.clone());
+    assert_ne!(gate2, gate1);
+    assert_ne!(gate1, gate2);
 }
 
 /// Test SingleQubitGate multiplication for SingleQubitGate

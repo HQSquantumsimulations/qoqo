@@ -40,10 +40,10 @@ fn test_conversion() {
     let dag = CircuitDag::from(circuit.clone());
     let test_circuit = Circuit::from(dag.clone());
     assert_eq!(circuit.operations(), test_circuit.operations());
-    for op in circuit.definitions(){
+    for op in circuit.definitions() {
         assert!(test_circuit.definitions().contains(op))
     }
-    for op in test_circuit.definitions(){
+    for op in test_circuit.definitions() {
         assert!(circuit.definitions().contains(op))
     }
 }

@@ -164,8 +164,7 @@ impl CircuitDag {
         } else if let Some(la) = self.last_all {
             self.graph
                 .update_edge(self.last_all.unwrap().into(), node.into(), ());
-            self.last_parallel_block
-                .remove(&la);
+            self.last_parallel_block.remove(&la);
         }
         let qubit_presence = self.last_operation_involving_qubit.insert(qubit, node);
         self.last_parallel_block.insert(node);
@@ -299,8 +298,7 @@ impl CircuitDag {
         } else if let Some(fa) = self.first_all {
             self.graph
                 .update_edge(node.into(), self.first_all.unwrap().into(), ());
-            self.first_parallel_block
-                .remove(&fa);
+            self.first_parallel_block.remove(&fa);
         }
         let qubit_presence = self.first_operation_involving_qubit.insert(qubit, node);
         self.first_parallel_block.insert(node);
@@ -600,7 +598,6 @@ impl CircuitDag {
 
             // Boolean needed for end of graph case
             let empty: bool = neighbor_iter.clone().next().is_none();
-           
 
             // Already_executed vector extension for execution_blocked() compatibility
             let mut extended_a_e: Vec<NodeIndex<usize>> = Vec::from(already_executed);
@@ -634,7 +631,7 @@ impl CircuitDag {
     ///
     /// Returns an Iterator over Vectors of references to the NodeIndices in the parallel block as well
     /// as references to the Operation in the blocks
-    pub fn parallel_blocks(& self) -> ParallelBlocks {
+    pub fn parallel_blocks(&self) -> ParallelBlocks {
         ParallelBlocks {
             dag: self,
             parallel_block: Vec::<NodeIndex<usize>>::new(),

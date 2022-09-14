@@ -192,7 +192,7 @@ impl CircuitDagWrapper {
             )
             .map_err(|_| {
                 PyValueError::new_err(
-                    "The Operation to be executed is not in the current front layer.".to_string()
+                    "The Operation to be executed is not in the current front layer.".to_string(),
                 )
             })?)
     }
