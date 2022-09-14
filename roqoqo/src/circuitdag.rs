@@ -235,12 +235,20 @@ impl CircuitDag {
         let node = self.graph.add_node(operation.clone());
 
         // InvolvedQubits: push to commuting_operations or start the add to front process
-        if let (InvolvedQubits::None, InvolvedClassical::None) =
-            (operation.involved_qubits(), operation.involved_classical())
-        {
-            self.commuting_operations.push(node.index());
-        } else {
-            self.add_to_front_involved(node.index());
+        match operation {
+            Operation::DefinitionBit(_) => self.commuting_operations.push(node.index()),
+            Operation::DefinitionFloat(_) => self.commuting_operations.push(node.index()),
+            Operation::DefinitionUsize(_) => self.commuting_operations.push(node.index()),
+            Operation::DefinitionComplex(_) => self.commuting_operations.push(node.index()),
+            _ => {
+                if let (InvolvedQubits::None, InvolvedClassical::None) =
+                    (operation.involved_qubits(), operation.involved_classical())
+                {
+                    self.commuting_operations.push(node.index());
+                } else {
+                    self.add_to_front_involved(node.index());
+                }
+            }
         }
 
         // InvolvedClassical: populate for the first time the classical register data
