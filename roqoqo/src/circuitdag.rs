@@ -57,10 +57,6 @@ impl PartialEq for CircuitDag {
         let edges = |_: &(), _: &()| true;
         algo::is_isomorphic_matching(&self.graph, &other.graph, nodes, edges)
     }
-
-    fn ne(&self, other: &Self) -> bool {
-        return !self.eq(other);
-    }
 }
 
 impl CircuitDag {
@@ -97,12 +93,20 @@ impl CircuitDag {
         let node = self.graph.add_node(operation.clone());
 
         // InvolvedQubits: push to commuting_operations or start the add to back process
-        if let (InvolvedQubits::None, InvolvedClassical::None) =
-            (operation.involved_qubits(), operation.involved_classical())
-        {
-            self.commuting_operations.push(node.index());
-        } else {
-            self.add_to_back_involved(node.index());
+        match operation {
+            Operation::DefinitionBit(_) => self.commuting_operations.push(node.index()),
+            Operation::DefinitionFloat(_) => self.commuting_operations.push(node.index()),
+            Operation::DefinitionUsize(_) => self.commuting_operations.push(node.index()),
+            Operation::DefinitionComplex(_) => self.commuting_operations.push(node.index()),
+            _ => {
+                if let (InvolvedQubits::None, InvolvedClassical::None) =
+                    (operation.involved_qubits(), operation.involved_classical())
+                {
+                    self.commuting_operations.push(node.index());
+                } else {
+                    self.add_to_back_involved(node.index());
+                }
+            }
         }
 
         // InvolvedClassical: populate for the first time the classical register data
@@ -157,11 +161,11 @@ impl CircuitDag {
         if let Some(&i) = self.last_operation_involving_qubit.get(&qubit) {
             self.graph.update_edge(i.into(), node.into(), ());
             self.last_parallel_block.remove(&i);
-        } else if self.last_all.is_some() {
+        } else if let Some(la) = self.last_all {
             self.graph
                 .update_edge(self.last_all.unwrap().into(), node.into(), ());
             self.last_parallel_block
-                .remove(&self.last_all.unwrap().into());
+                .remove(&la);
         }
         let qubit_presence = self.last_operation_involving_qubit.insert(qubit, node);
         self.last_parallel_block.insert(node);
@@ -292,11 +296,11 @@ impl CircuitDag {
         if let Some(&i) = self.first_operation_involving_qubit.get(&qubit) {
             self.graph.update_edge(node.into(), i.into(), ());
             self.first_parallel_block.remove(&i);
-        } else if self.first_all.is_some() {
+        } else if let Some(fa) = self.first_all {
             self.graph
                 .update_edge(node.into(), self.first_all.unwrap().into(), ());
             self.first_parallel_block
-                .remove(&self.first_all.unwrap().into());
+                .remove(&fa);
         }
         let qubit_presence = self.first_operation_involving_qubit.insert(qubit, node);
         self.first_parallel_block.insert(node);
@@ -550,11 +554,11 @@ impl CircuitDag {
         to_be_executed: &NodeIndex<usize>,
     ) -> Vec<NodeIndex<usize>> {
         let mut blocking_elements: Vec<NodeIndex<usize>> = vec![];
-        let mut neighbor_iter = self
+        let neighbor_iter = self
             .graph
             .neighbors_directed((*to_be_executed).into(), Incoming);
 
-        while let Some(nxt) = neighbor_iter.next() {
+        for nxt in neighbor_iter {
             if !already_executed.contains(&nxt.index()) {
                 blocking_elements.push(nxt.index());
             }
@@ -590,22 +594,19 @@ impl CircuitDag {
         } else {
             let mut current_front_layer = current_front_layer.to_vec();
             let mut added: bool = false;
-            let mut neighbor_iter = self
+            let neighbor_iter = self
                 .graph
                 .neighbors_directed((*to_be_executed).into(), Outgoing);
 
             // Boolean needed for end of graph case
-            let mut check_emptiness = neighbor_iter.clone();
-            let mut empty: bool = false;
-            if let None = check_emptiness.next() {
-                empty = true;
-            }
+            let empty: bool = neighbor_iter.clone().next().is_none();
+           
 
             // Already_executed vector extension for execution_blocked() compatibility
             let mut extended_a_e: Vec<NodeIndex<usize>> = Vec::from(already_executed);
             extended_a_e.push(*to_be_executed);
             // Cycle through each neighbor of to_be_executed
-            while let Some(nxt) = neighbor_iter.next() {
+            for nxt in neighbor_iter {
                 // Push the neighbor into the current front layer if it is not execution blocked
                 //  by any other node
                 if self
@@ -633,7 +634,7 @@ impl CircuitDag {
     ///
     /// Returns an Iterator over Vectors of references to the NodeIndices in the parallel block as well
     /// as references to the Operation in the blocks
-    pub fn parallel_blocks<'a>(&'a self) -> ParallelBlocks<'a> {
+    pub fn parallel_blocks(& self) -> ParallelBlocks {
         ParallelBlocks {
             dag: self,
             parallel_block: Vec::<NodeIndex<usize>>::new(),
@@ -725,7 +726,7 @@ impl From<Circuit> for CircuitDag {
             _roqoqo_version: RoqoqoVersion,
         };
 
-        for operation in circuit.operations() {
+        for operation in circuit.iter() {
             new_dag.add_to_back(operation.clone());
         }
 
@@ -738,11 +739,6 @@ impl From<Circuit> for CircuitDag {
 impl From<CircuitDag> for Circuit {
     fn from(dag: CircuitDag) -> Circuit {
         let mut circuit: Circuit = Circuit::new();
-
-        for com_op in dag.commuting_operations() {
-            let op = dag.get(*com_op).unwrap();
-            circuit.add_operation(op.clone());
-        }
 
         match toposort(&dag.graph, None) {
             Ok(order) => {
@@ -779,9 +775,9 @@ impl<'a> Iterator for ParallelBlocks<'a> {
         let mut new_parallel_block: Vec<NodeIndex<usize>> = Vec::new();
         // Cycle through the current parallel block
         for node in &self.parallel_block {
-            let mut neighbor_iter = self.dag.graph.neighbors_directed((*node).into(), Outgoing);
+            let neighbor_iter = self.dag.graph.neighbors_directed((*node).into(), Outgoing);
             // Cycle through its neighbors
-            while let Some(nxt) = neighbor_iter.next() {
+            for nxt in neighbor_iter {
                 // Add the neighbor to the new parallel block if ready to be executed and has not been pushed before
                 if self
                     .dag

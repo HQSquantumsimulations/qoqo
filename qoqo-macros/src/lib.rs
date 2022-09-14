@@ -754,6 +754,21 @@ pub fn devicewrapper(
                 GenericDeviceWrapper{ internal: self.internal.to_generic_device()}
             }
 
+            /// Turns Device into GenericDevice
+            ///
+            /// Can be used as a generic interface for devices when a boxed dyn trait object cannot be used
+            /// (for example when the interface needs to be serialized)
+            ///
+            /// Returns:
+            ///     GenericDevice: The device in generic representation
+            ///
+            /// Note:
+            ///     GenericDevice uses nested HashMaps to represent the most general device connectivity.
+            ///     The memory usage will be inefficient for devices with large qubit numbers.
+            fn to_generic_device(&self) -> GenericDeviceWrapper {
+                GenericDeviceWrapper{ internal: self.internal.to_generic_device()}
+            }
+
             /// Returns a copy of the device (copy here produces a deepcopy).
             ///
             /// Returns:

@@ -12,13 +12,41 @@
 
 use std::collections::HashSet;
 
-use roqoqo::{operations::*, RoqoqoError};
+use roqoqo::{
+    operations::{self, *},
+    RoqoqoError,
+};
 use roqoqo::{Circuit, CircuitDag};
 
 use test_case::test_case;
 
 static DEFAULT_NODE_NUMBER: usize = 10;
 static DEFAULT_EDGE_NUMBER: usize = 30;
+
+/// Test conversion
+#[test]
+fn test_conversion() {
+    let mut circuit = Circuit::new();
+    circuit += operations::DefinitionBit::new("rb".to_string(), 10, true);
+    circuit += operations::DefinitionFloat::new("rf".to_string(), 10, true);
+    circuit += operations::DefinitionComplex::new("rc".to_string(), 10, true);
+    circuit += operations::RotateX::new(0, 1.0.into());
+    circuit += operations::CNOT::new(0, 1);
+    circuit += operations::MultiQubitMS::new(vec![0, 1, 2], 1.0.into());
+    circuit += operations::PauliZ::new(0);
+    circuit += operations::PragmaRepeatedMeasurement::new("rb".to_string(), 10, None);
+    circuit += operations::PragmaGetDensityMatrix::new("rc".to_string(), None);
+    circuit += operations::PragmaGetStateVector::new("rc".to_string(), None);
+    let dag = CircuitDag::from(circuit.clone());
+    let test_circuit = Circuit::from(dag.clone());
+    assert_eq!(circuit.operations(), test_circuit.operations());
+    for op in circuit.definitions(){
+        assert!(test_circuit.definitions().contains(op))
+    }
+    for op in test_circuit.definitions(){
+        assert!(circuit.definitions().contains(op))
+    }
+}
 
 /// Test adding an operation that doesn't involve qubits.
 ///
