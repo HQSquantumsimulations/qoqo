@@ -119,6 +119,21 @@ impl PauliZProductInputWrapper {
                 PyRuntimeError::new_err(format!("Failed to add symbolic expectation value {:?}", x))
             })
     }
+
+    /// Implement __repr__ magic method
+    pub fn __repr__(&self) -> String {
+        format!("{:?}", self.internal)
+    }
+
+    /// Return a copy of the Object (copy here produces a deepcopy).
+    pub fn __copy__(&self) -> Self {
+        self.clone()
+    }
+
+    /// Return a deep copy of the Object.
+    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+        self.clone()
+    }
 }
 
 #[pyclass(name = "CheatedPauliZProductInput", module = "qoqo.measurements")]
@@ -213,6 +228,21 @@ impl CheatedPauliZProductInputWrapper {
                 PyRuntimeError::new_err(format!("Failed to add symbolic expectation value {:?}", x))
             })
     }
+
+    /// Implement __repr__ magic method
+    pub fn __repr__(&self) -> String {
+        format!("{:?}", self.internal)
+    }
+
+    /// Return a copy of the Object (copy here produces a deepcopy).
+    pub fn __copy__(&self) -> Self {
+        self.clone()
+    }
+
+    /// Return a deep copy of the Object.
+    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+        self.clone()
+    }
 }
 
 #[pyclass(name = "CheatedInput", module = "qoqo.measurements")]
@@ -271,5 +301,20 @@ impl CheatedInputWrapper {
                     x
                 ))
             })
+    }
+
+    /// Implement __repr__ magic method
+    pub fn __repr__(&self) -> String {
+        format!("{:?}", self.internal)
+    }
+
+    /// Return a copy of the Object (copy here produces a deepcopy).
+    pub fn __copy__(&self) -> Self {
+        self.clone()
+    }
+
+    /// Return a deep copy of the Object.
+    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+        self.clone()
     }
 }

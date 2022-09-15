@@ -18,7 +18,6 @@ use bincode::serialize;
 use pyo3::exceptions::{PyRuntimeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
-use pyo3::types::PyType;
 use roqoqo::measurements::PauliZProduct;
 use roqoqo::prelude::*;
 use roqoqo::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
@@ -219,12 +218,26 @@ impl PauliZProductWrapper {
     ///
     /// Raises:
     ///     RuntimeError: Cannot deserialize string to PauliZProduct.
-    #[allow(unused_variables)]
-    #[classmethod]
-    pub fn from_json(cls: &PyType, json_string: &str) -> PyResult<Self> {
+    #[staticmethod]
+    pub fn from_json(json_string: &str) -> PyResult<Self> {
         Ok(Self {
             internal: serde_json::from_str(json_string)
                 .map_err(|_| PyValueError::new_err("Cannot deserialize string to PauliZProduct"))?,
         })
+    }
+
+    /// Implement __repr__ magic method
+    pub fn __repr__(&self) -> String {
+        format!("{:?}", self.internal)
+    }
+
+    /// Return a copy of the Object (copy here produces a deepcopy).
+    pub fn __copy__(&self) -> Self {
+        self.clone()
+    }
+
+    /// Return a deep copy of the Object.
+    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+        self.clone()
     }
 }
