@@ -1040,7 +1040,7 @@ fn test_inputs_phaseshiftedcontrolledz() {
 #[test]
 fn test_inputs_phaseshiftedcontrolledphase() {
     let gate = PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_4, CalculatorFloat::FRAC_PI_2);
-    // TODO: missing .theta()
+    assert_eq!(gate.theta(), &CalculatorFloat::FRAC_PI_4);
     assert_eq!(gate.phi(), &CalculatorFloat::FRAC_PI_2);
 }
 

@@ -2160,6 +2160,7 @@ impl OperateTwoQubitGate for PhaseShiftedControlledZ {
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
+    roqoqo_derive::Rotate,
 )]
 pub struct PhaseShiftedControlledPhase {
     /// The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the phase-shift on the target qubit.
