@@ -261,6 +261,9 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
 #[test_case(GateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ_pi_4")]
 #[test_case(GateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::ZERO)); "PhaseShiftedControlledZ_zero")]
 #[test_case(GateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from(1.33))); "PhaseShiftedControlledZ_1_33")]
+#[test_case(GateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_4, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase_pi_4_pi_4")]
+#[test_case(GateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase_zero_pi_4")]
+#[test_case(GateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::from(1.33))); "PhaseShiftedControlledPhase_pi_2_1_33")]
 fn test_twoqubitgates_unitarity(gate: GateOperation) {
     let result: Result<Array2<Complex64>, RoqoqoError> = gate.unitary_matrix();
     let result_array: Array2<Complex64> = result.unwrap();
@@ -301,6 +304,7 @@ fn test_twoqubitgates_unitarity(gate: GateOperation) {
 #[test_case(Operation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
 #[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ_pi_4")]
+#[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase_pi_2_pi_4")]
 fn test_twoqubitgates_clone(gate1: Operation) {
     let gate2 = gate1.clone();
     assert_eq!(gate2, gate1);
@@ -327,6 +331,7 @@ fn test_twoqubitgates_clone(gate1: Operation) {
 #[test_case(TwoQubitGateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
 #[test_case(TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
+//#[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase_pi_2_pi_4")]
 fn test_qubits_twoqubitgates(gate: TwoQubitGateOperation) {
     let control: &usize = gate.control();
     assert_eq!(control, &0);
@@ -360,6 +365,7 @@ fn test_qubits_twoqubitgates(gate: TwoQubitGateOperation) {
 #[test_case(Operation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
 #[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ_pi_4")]
+#[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase_pi_2_pi_4")]
 fn test_is_parametrized_false(gate: Operation) {
     let bool_parameter = gate.is_parametrized();
     assert!(!bool_parameter);
@@ -376,7 +382,8 @@ fn test_is_parametrized_false(gate: Operation) {
 #[test_case(Operation::from(Bogoliubov::new(0, 1,CalculatorFloat::from("parameter1"), CalculatorFloat::from("parameter2"))); "Bogoliubov")]
 #[test_case(Operation::from(PMInteraction::new(0, 1, CalculatorFloat::from("parameter"))); "PMInteraction")]
 #[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from("parameter1"), CalculatorFloat::from("parameter2"))); "ComplexPMInteraction")]
-#[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from("phi"))); "PhaseShiftedControlledZ_pi_4")]
+#[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from("phi"))); "PhaseShiftedControlledZ")]
+#[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from("phi"))); "PhaseShiftedControlledPhase")]
 fn test_is_parametrized_true(gate: Operation) {
     let bool_parameter = gate.is_parametrized();
     assert!(bool_parameter);
@@ -406,6 +413,7 @@ fn test_is_parametrized_true(gate: Operation) {
 #[test_case("PMInteraction", Operation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
 #[test_case("ComplexPMInteraction", Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case("PhaseShiftedControlledZ", Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from("phi"))); "PhaseShiftedControlledZ")]
+#[test_case("PhaseShiftedControlledPhase", Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from("phi"))); "PhaseShiftedControlledPhase")]
 fn test_twoqubitgateoperations_hqslang(name: &'static str, gate: Operation) {
     assert!(!gate.hqslang().is_empty());
     assert_eq!(gate.hqslang(), name);
@@ -474,6 +482,9 @@ fn test_twoqubitgateoperations_hqslang(name: &'static str, gate: Operation) {
 #[test_case(
     GateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)),
     GateOperation::from(PhaseShiftedControlledZ::new(1, 0, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
+#[test_case(
+    GateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_4, CalculatorFloat::FRAC_PI_2)),
+    GateOperation::from(PhaseShiftedControlledPhase::new(1, 0, CalculatorFloat::FRAC_PI_4, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
 fn remap_qubits_result(gate: GateOperation, test_gate: GateOperation) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 1);
@@ -503,6 +514,7 @@ fn remap_qubits_result(gate: GateOperation, test_gate: GateOperation) {
 #[test_case(GateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
 #[test_case(GateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(GateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
+#[test_case(GateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_4, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase")]
 fn remap_qubits_error0(gate: GateOperation) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(1, 0);
@@ -531,6 +543,7 @@ fn remap_qubits_error0(gate: GateOperation) {
 #[test_case(GateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
 #[test_case(GateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(GateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
+#[test_case(GateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_4, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase")]
 fn remap_qubits_error1(gate: GateOperation) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 2);
@@ -711,6 +724,14 @@ fn remap_qubits_error1(gate: GateOperation) {
         "PhaseShiftedControlledZ",
         ],
     Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
+#[test_case(
+    vec![
+        "Operation",
+        "GateOperation",
+        "TwoQubitGateOperation",
+        "PhaseShiftedControlledPhase",
+        ],
+    Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_4, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase")]
 pub fn test_tags(tags: Vec<&str>, gate: Operation) {
     let range = 0..tags.len();
     for i in range {
@@ -781,6 +802,9 @@ pub fn test_tags(tags: Vec<&str>, gate: Operation) {
 #[test_case(
     "PhaseShiftedControlledZ(PhaseShiftedControlledZ { control: 1, target: 0, phi: Float(-1.0) })",
     Operation::from(PhaseShiftedControlledZ::new(1, 0, CalculatorFloat::from(-1.0))); "PhaseShiftedControlledZ")]
+#[test_case(
+    "PhaseShiftedControlledPhase(PhaseShiftedControlledPhase { control: 1, target: 0, theta: Float(-1.0), phi: Float(-1.0) })",
+    Operation::from(PhaseShiftedControlledPhase::new(1, 0, CalculatorFloat::from(-1.0), CalculatorFloat::from(-1.0))); "PhaseShiftedControlledPhase")]
 fn test_two_qubitgates_debug(message: &'static str, gate: Operation) {
     assert_eq!(format!("{:?}", gate), message);
 }
@@ -849,6 +873,9 @@ fn test_two_qubitgates_debug(message: &'static str, gate: Operation) {
 #[test_case(
     Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)),
     Operation::from(PhaseShiftedControlledZ::new(1, 0, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
+#[test_case(
+    Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)),
+    Operation::from(PhaseShiftedControlledPhase::new(1, 0, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase")]
 fn test_twoqubitgates_partialeq(gate1: Operation, gate2: Operation) {
     assert!(gate1 == gate1);
     assert_eq!(gate1, gate1.clone());
@@ -897,6 +924,7 @@ fn test_rotate_powercf(gate: Rotation, gate2: Rotation) {
 #[test_case(Operation::from(ControlledPauliY::new(0, 1)); "ControlledPauliY")]
 #[test_case(Operation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
+#[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_4, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
 fn test_ineffective_substitute_parameters(gate: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
@@ -929,6 +957,8 @@ fn test_ineffective_substitute_parameters(gate: Operation) {
             Operation::from(Bogoliubov::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::from(-1.0))); "Bogoliubov")]
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from("theta"))),
             Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::ZERO)); "PhaseShiftedControlledZ")]
+#[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::FRAC_PI_2)),
+            Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
 fn test_substitute_parameters(gate: Operation, gate2: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
@@ -951,6 +981,7 @@ fn test_substitute_parameters(gate: Operation, gate2: Operation) {
 #[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(Operation::from(Bogoliubov::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(-1.0))); "Bogoliubov")]
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from("theta"))); "PhaseShiftedControlledZ")]
+#[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
 fn test_substitute_parameters_error(gate: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("error", 0.0);
@@ -1004,6 +1035,13 @@ fn test_inputs_pminteraction_complexpminteraction() {
 fn test_inputs_phaseshiftedcontrolledz() {
     let gate = PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI);
     assert_eq!(gate.phi(), &CalculatorFloat::PI);
+}
+
+#[test]
+fn test_inputs_phaseshiftedcontrolledphase() {
+    let gate = PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_4, CalculatorFloat::FRAC_PI_2);
+    // TODO: missing .theta()
+    assert_eq!(gate.phi(), &CalculatorFloat::FRAC_PI_2);
 }
 
 #[test]
