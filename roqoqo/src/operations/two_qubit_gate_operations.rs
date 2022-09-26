@@ -2167,9 +2167,9 @@ pub struct PhaseShiftedControlledPhase {
     control: usize,
     /// The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
     target: usize,
-    /// The single qubit rotation angle θ.
+    /// The phase rotation θ.
     theta: CalculatorFloat,
-    /// The phase rotation φ.
+    /// The single qubit phase φ.
     phi: CalculatorFloat,
 }
 
