@@ -2148,3 +2148,79 @@ impl OperateTwoQubitGate for PhaseShiftedControlledZ {
         }
     }
 }
+
+/// Implements the phase-shifted controlled PhaseShift gate.
+///
+#[allow(clippy::upper_case_acronyms)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateTwoQubit,
+)]
+pub struct PhaseShiftedControlledPhase {
+    /// The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the phase-shift on the target qubit.
+    control: usize,
+    /// The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
+    target: usize,
+    /// The single qubit rotation angle θ.
+    theta: CalculatorFloat,
+    /// The phase rotation φ.
+    phi: CalculatorFloat,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_PhaseShiftedControlledPhase: &[&str; 4] = &[
+    "Operation",
+    "GateOperation",
+    "TwoQubitGateOperation",
+    "PhaseShiftedControlledPhase",
+];
+
+/// Trait for all Operations acting with a unitary gate on a set of qubits.
+impl OperateGate for PhaseShiftedControlledPhase {
+    /// Returns unitary matrix of the gate.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Array2<Complex64>)` - The unitary matrix representation of the gate.
+    /// * `Err(RoqoqoError)` - The conversion of parameters to f64 failed.
+    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
+        // exp(i*x) = cos(x)+i*sin(x)
+        let phi: f64 = f64::try_from(self.phi.clone())?;
+        let theta: f64 = f64::try_from(self.theta.clone())?;
+        let cos: f64 = phi.cos();
+        let sin: f64 = phi.sin();
+        let cos2: f64 = (2.0 * phi - theta).cos();
+        let sin2: f64 = (2.0 * phi - theta).sin();
+        Ok(array![
+            [
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(cos, sin),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(cos, sin),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(cos2, sin2)
+            ],
+        ])
+    }
+}
