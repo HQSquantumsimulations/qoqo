@@ -550,6 +550,6 @@ pub struct PhaseShiftedControlledZ {
 pub struct PhaseShiftedControlledPhase {
     control: usize,
     target: usize,
-    theta: CalculatorFLoat,
+    theta: CalculatorFloat,
     phi: CalculatorFloat,
 }

@@ -2162,6 +2162,8 @@ impl OperateTwoQubitGate for PhaseShiftedControlledZ {
     roqoqo_derive::OperateTwoQubit,
     roqoqo_derive::Rotate,
 )]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PhaseShiftedControlledPhase {
     /// The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the phase-shift on the target qubit.
     control: usize,
