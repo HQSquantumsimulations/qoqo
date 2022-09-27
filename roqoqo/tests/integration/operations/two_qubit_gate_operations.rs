@@ -128,6 +128,9 @@ fn kak_sigma_matrix(
 #[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ_pi")]
 #[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::ZERO)); "PhaseShiftedControlledZ_zero")]
 #[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from(PI/(-3.0)))); "PhaseShiftedControlledZ")]
+#[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase_pi_pi_2")]
+#[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::PI)); "PhaseShiftedControlledPhase_zero_pi")]
+#[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_4, CalculatorFloat::ZERO)); "PhaseShiftedControlledPhase_pi_4_zero")]
 fn test_kakdecomposition(gate: TwoQubitGateOperation) {
     // k vector
     let k = gate.kak_decomposition().k_vector;
@@ -331,7 +334,7 @@ fn test_twoqubitgates_clone(gate1: Operation) {
 #[test_case(TwoQubitGateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
 #[test_case(TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
-//#[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase_pi_2_pi_4")]
+#[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase_pi_2_pi_4")]
 fn test_qubits_twoqubitgates(gate: TwoQubitGateOperation) {
     let control: &usize = gate.control();
     assert_eq!(control, &0);
