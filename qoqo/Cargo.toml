@@ -56,8 +56,3 @@ extension-module = ["pyo3/extension-module"]#, "qoqo_calculator_pyo3/extension-m
 default = ["extension-module"]
 circuitdag = ["roqoqo/circuitdag"]
 
-[package.metadata.maturin]
-requires-dist = ["numpy", "qoqo_calculator_pyo3>=1.1.0"]
-maintainer = "HQS Quantum Simulations GmbH"
-maintainer-email = "info@quantumsimulations.de"
-requires-python = ">=3.7"
