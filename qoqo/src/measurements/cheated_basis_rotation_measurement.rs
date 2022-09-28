@@ -239,4 +239,29 @@ impl CheatedPauliZProductWrapper {
     pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
         self.clone()
     }
+
+    /// Return the __richcmp__ magic method to perform rich comparison operations on QuantumProgram.
+    ///
+    /// Args:
+    ///     other: The object to compare self to.
+    ///     op: Type of comparison.
+    ///
+    /// Returns:
+    ///     Whether the two operations compared evaluated to True or False
+    ///
+    /// Raises:
+    ///     NotImplementedError: Other comparison not implemented
+    fn __richcmp__(
+        &self,
+        other: CheatedPauliZProductWrapper,
+        op: pyo3::class::basic::CompareOp,
+    ) -> PyResult<bool> {
+        match op {
+            pyo3::class::basic::CompareOp::Eq => Ok(self.internal == other.internal),
+            pyo3::class::basic::CompareOp::Ne => Ok(self.internal != other.internal),
+            _ => Err(pyo3::exceptions::PyNotImplementedError::new_err(
+                "Other comparison not implemented",
+            )),
+        }
+    }
 }

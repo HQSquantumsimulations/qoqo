@@ -130,6 +130,20 @@ impl PauliZProductInputWrapper {
         self.clone()
     }
 
+    fn __richcmp__(
+        &self,
+        other: PauliZProductInputWrapper,
+        op: pyo3::class::basic::CompareOp,
+    ) -> PyResult<bool> {
+        match op {
+            pyo3::class::basic::CompareOp::Eq => Ok(self.internal == other.internal),
+            pyo3::class::basic::CompareOp::Ne => Ok(self.internal != other.internal),
+            _ => Err(pyo3::exceptions::PyNotImplementedError::new_err(
+                "Other comparison not implemented",
+            )),
+        }
+    }
+
     /// Return a deep copy of the Object.
     pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
         self.clone()
@@ -243,6 +257,20 @@ impl CheatedPauliZProductInputWrapper {
     pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
         self.clone()
     }
+
+    fn __richcmp__(
+        &self,
+        other: CheatedPauliZProductInputWrapper,
+        op: pyo3::class::basic::CompareOp,
+    ) -> PyResult<bool> {
+        match op {
+            pyo3::class::basic::CompareOp::Eq => Ok(self.internal == other.internal),
+            pyo3::class::basic::CompareOp::Ne => Ok(self.internal != other.internal),
+            _ => Err(pyo3::exceptions::PyNotImplementedError::new_err(
+                "Other comparison not implemented",
+            )),
+        }
+    }
 }
 
 #[pyclass(name = "CheatedInput", module = "qoqo.measurements")]
@@ -316,5 +344,18 @@ impl CheatedInputWrapper {
     /// Return a deep copy of the Object.
     pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
         self.clone()
+    }
+    fn __richcmp__(
+        &self,
+        other: CheatedInputWrapper,
+        op: pyo3::class::basic::CompareOp,
+    ) -> PyResult<bool> {
+        match op {
+            pyo3::class::basic::CompareOp::Eq => Ok(self.internal == other.internal),
+            pyo3::class::basic::CompareOp::Ne => Ok(self.internal != other.internal),
+            _ => Err(pyo3::exceptions::PyNotImplementedError::new_err(
+                "Other comparison not implemented",
+            )),
+        }
     }
 }
