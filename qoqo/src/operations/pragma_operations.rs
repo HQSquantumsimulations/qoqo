@@ -41,6 +41,18 @@ struct PragmaSetNumberOfMeasurements {
     readout: String,
 }
 
+#[wrap(Operate, OperatePragma)]
+/// This PRAGMA measurement operation returns the statevector of a quantum register.
+///
+/// Args:
+///     repetitions (CalculatorFloat): The number of repetitions as a symbolic float. At evaluation the floor of any float value is taken
+///     circuit (Circuit): The Circuit that is looped.
+///
+pub struct PragmaLoop {
+    repetitions: CalculatorFloat,
+    circuit: Circuit,
+}
+
 /// Module containing the PragmaSetStateVector class.
 #[pymodule]
 fn pragma_set_statevector(_py: Python, module: &PyModule) -> PyResult<()> {
