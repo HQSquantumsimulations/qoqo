@@ -247,3 +247,84 @@ fn test_measurement_type() {
         assert_eq!(measurement_type.to_string(), "ClassicalRegister");
     })
 }
+
+#[test]
+fn test_pyo3_format_repr() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let format_repr = "ClassicalRegister { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }] }";
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs))
+            .unwrap()
+            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .unwrap();
+        let to_format = br.call_method1("__format__", ("",)).unwrap();
+        let format_op: &str = <&str>::extract(to_format).unwrap();
+        let to_repr = br.call_method0("__repr__").unwrap();
+        let repr_op: &str = <&str>::extract(to_repr).unwrap();
+        assert_eq!(format_op, format_repr);
+        assert_eq!(repr_op, format_repr);
+    })
+}
+
+#[test]
+fn test_pyo3_copy_deepcopy() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs))
+            .unwrap()
+            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .unwrap();
+        let copy_op = br.call_method0("__copy__").unwrap();
+        let deepcopy_op = br.call_method1("__deepcopy__", ("",)).unwrap();
+        let copy_deepcopy_param = br;
+
+        let comparison_copy = bool::extract(
+            copy_op
+                .call_method1("__eq__", (copy_deepcopy_param,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_copy);
+        let comparison_deepcopy = bool::extract(
+            deepcopy_op
+                .call_method1("__eq__", (copy_deepcopy_param,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_deepcopy);
+    })
+}
+
+#[test]
+fn test_pyo3_richcmp() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
+        let br_one = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone()))
+            .unwrap()
+            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .unwrap();
+        let arg: Option<CircuitWrapper> = None;
+        let br_two = br_type
+            .call1((arg, circs))
+            .unwrap()
+            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(br_one.call_method1("__eq__", (br_two,)).unwrap()).unwrap();
+        assert!(!comparison);
+
+        let comparison = bool::extract(br_one.call_method1("__ne__", (br_two,)).unwrap()).unwrap();
+        assert!(comparison);
+
+        let comparison = br_one.call_method1("__ge__", (br_two,));
+        assert!(comparison.is_err());
+    })
+}
