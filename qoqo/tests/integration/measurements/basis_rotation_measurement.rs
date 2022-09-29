@@ -799,3 +799,121 @@ fn test_return_input() {
         assert_eq!(format!("{:?}", input_returned), format!("{:?}", input));
     })
 }
+
+#[test]
+fn test_pyo3_format_repr() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let format_repr = "PauliZProduct { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: PauliZProductInput { pauli_product_qubit_masks: {\"ro\": {0: []}}, number_qubits: 3, number_pauli_products: 1, measured_exp_vals: {}, use_flipped_measurement: false } }";
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
+        let input = input_type
+            .call1((3, false))
+            .unwrap()
+            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .unwrap();
+        let tmp_vec: Vec<usize> = Vec::new();
+        let _ = input
+            .call_method1("add_pauliz_product", ("ro", tmp_vec))
+            .unwrap();
+
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+
+        let br_type = py.get_type::<PauliZProductWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs, input))
+            .unwrap()
+            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .unwrap();
+        let to_format = br.call_method1("__format__", ("",)).unwrap();
+        let format_op: &str = <&str>::extract(to_format).unwrap();
+        let to_repr = br.call_method0("__repr__").unwrap();
+        let repr_op: &str = <&str>::extract(to_repr).unwrap();
+        assert_eq!(format_op, format_repr);
+        assert_eq!(repr_op, format_repr);
+    })
+}
+
+#[test]
+fn test_pyo3_copy_deepcopy() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
+        let input = input_type
+            .call1((3, false))
+            .unwrap()
+            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .unwrap();
+        let tmp_vec: Vec<usize> = Vec::new();
+        let _ = input
+            .call_method1("add_pauliz_product", ("ro", tmp_vec))
+            .unwrap();
+
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+
+        let br_type = py.get_type::<PauliZProductWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs, input))
+            .unwrap()
+            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .unwrap();
+        let copy_op = br.call_method0("__copy__").unwrap();
+        let deepcopy_op = br.call_method1("__deepcopy__", ("",)).unwrap();
+        let copy_deepcopy_param = br;
+
+        let comparison_copy = bool::extract(
+            copy_op
+                .call_method1("__eq__", (copy_deepcopy_param,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_copy);
+        let comparison_deepcopy = bool::extract(
+            deepcopy_op
+                .call_method1("__eq__", (copy_deepcopy_param,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_deepcopy);
+    })
+}
+
+#[test]
+fn test_pyo3_richcmp() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
+        let input = input_type
+            .call1((3, false))
+            .unwrap()
+            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .unwrap();
+        let tmp_vec: Vec<usize> = Vec::new();
+        let _ = input
+            .call_method1("add_pauliz_product", ("ro", tmp_vec))
+            .unwrap();
+
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+
+        let br_type = py.get_type::<PauliZProductWrapper>();
+        let br_one = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .unwrap()
+            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .unwrap();
+
+        let arg: Option<CircuitWrapper> = None;
+        let br_two = br_type
+            .call1((arg, circs, input))
+            .unwrap()
+            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(br_one.call_method1("__eq__", (br_two,)).unwrap()).unwrap();
+        assert!(!comparison);
+
+        let comparison = bool::extract(br_one.call_method1("__ne__", (br_two,)).unwrap()).unwrap();
+        assert!(comparison);
+
+        let comparison = br_one.call_method1("__ge__", (br_two,));
+        assert!(comparison.is_err());
+    })
+}
