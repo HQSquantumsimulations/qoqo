@@ -44,8 +44,8 @@ fn test_to_single_qubit_gate_symbolic(operation: SingleQubitGateOperation) {
         operation.beta_i(),
         operation.global_phase(),
     );
-    let gate_test: SingleQubitGate = operation.clone().to_single_qubit_gate();
-    assert_eq!(gate.clone(), gate_test);
+    let gate_test: SingleQubitGate = operation.to_single_qubit_gate();
+    assert_eq!(gate, gate_test);
 }
 
 /// Test 'to_single_qubit_gate()` for all SingleQubitGateOperations

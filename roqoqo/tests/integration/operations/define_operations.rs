@@ -685,9 +685,7 @@ fn input_bit_substitute_trait() {
     // (1) Substitute parameters function
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("test", 0.0);
-    let result = def_test
-        .substitute_parameters(&mut substitution_dict)
-        .unwrap();
+    let result = def_test.substitute_parameters(&substitution_dict).unwrap();
     assert_eq!(def, result);
 
     // (2) Remap qubits function

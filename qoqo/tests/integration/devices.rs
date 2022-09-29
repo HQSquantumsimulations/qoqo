@@ -112,7 +112,7 @@ fn test_number_qubits(device: Py<PyAny>) {
 #[test_case(new_genericlattice(); "lattice")]
 fn test_to_from_json(device: Py<PyAny>) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let serialised = device.call_method0(py, "to_json").unwrap();
         let new = device.clone();
         let deserialised = new
@@ -142,7 +142,7 @@ fn test_to_from_json(device: Py<PyAny>) {
 #[test_case(new_genericlattice(); "lattice")]
 fn test_to_from_bincode(device: Py<PyAny>) {
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| -> () {
+    Python::with_gil(|py| {
         let serialised = device.call_method0(py, "to_bincode").unwrap();
         let new = device.clone();
         let deserialised = new
@@ -316,11 +316,7 @@ fn test_gatetimes(device: Py<PyAny>) {
 
         // Test single qubit gate times
         device
-            .call_method1(
-                py,
-                "set_single_qubit_gate_time",
-                ("RotateZ", 0, gate_time.clone()),
-            )
+            .call_method1(py, "set_single_qubit_gate_time", ("RotateZ", 0, gate_time))
             .unwrap();
         // .cast_as::<PyCell<AllToAllDeviceWrapper>>(py)
         // .unwrap();
@@ -339,16 +335,12 @@ fn test_gatetimes(device: Py<PyAny>) {
             .extract::<Option<f64>>(py)
             .unwrap();
 
-        assert_eq!(gate_time_rotatez, Some(gate_time.clone()));
+        assert_eq!(gate_time_rotatez, Some(gate_time));
         assert_eq!(gate_time_none, None);
 
         // Test two qubit gate times
         device
-            .call_method1(
-                py,
-                "set_two_qubit_gate_time",
-                ("CNOT", 0, 1, gate_time.clone()),
-            )
+            .call_method1(py, "set_two_qubit_gate_time", ("CNOT", 0, 1, gate_time))
             .unwrap();
         // .cast_as::<PyCell<AllToAllDeviceWrapper>>(py)
         // .unwrap();
@@ -367,7 +359,7 @@ fn test_gatetimes(device: Py<PyAny>) {
             .extract::<Option<f64>>(py)
             .unwrap();
 
-        assert_eq!(gate_time_cnot, Some(gate_time.clone()));
+        assert_eq!(gate_time_cnot, Some(gate_time));
         assert_eq!(gate_time_none2, None);
 
         // Test multi qubit gate times
@@ -375,7 +367,7 @@ fn test_gatetimes(device: Py<PyAny>) {
             .call_method1(
                 py,
                 "set_multi_qubit_gate_time",
-                ("MultiQubitMS", vec![0, 1, 2], gate_time.clone()),
+                ("MultiQubitMS", vec![0, 1, 2], gate_time),
             )
             .unwrap();
         // .cast_as::<PyCell<AllToAllDeviceWrapper>>(py)
@@ -403,7 +395,7 @@ fn test_gatetimes_all(device: Py<PyAny>) {
             .call_method1(
                 py,
                 "set_all_single_qubit_gate_times",
-                ("RotateZ", gate_time.clone()),
+                ("RotateZ", gate_time),
             )
             .unwrap();
         // .cast_as::<PyCell<AllToAllDeviceWrapper>>(py)
@@ -423,16 +415,12 @@ fn test_gatetimes_all(device: Py<PyAny>) {
             .extract::<Option<f64>>(py)
             .unwrap();
 
-        assert_eq!(gate_time_rotatez, Some(gate_time.clone()));
+        assert_eq!(gate_time_rotatez, Some(gate_time));
         assert_eq!(gate_time_none, None);
 
         // Test two qubit gate times
         let device = device
-            .call_method1(
-                py,
-                "set_all_two_qubit_gate_times",
-                ("CNOT", gate_time.clone()),
-            )
+            .call_method1(py, "set_all_two_qubit_gate_times", ("CNOT", gate_time))
             .unwrap();
         // .cast_as::<PyCell<AllToAllDeviceWrapper>>(py)
         // .unwrap();
@@ -451,7 +439,7 @@ fn test_gatetimes_all(device: Py<PyAny>) {
             .extract::<Option<f64>>(py)
             .unwrap();
 
-        assert_eq!(gate_time_cnot, Some(gate_time.clone()));
+        assert_eq!(gate_time_cnot, Some(gate_time));
         assert_eq!(gate_time_none2, None);
     })
 }
@@ -463,7 +451,7 @@ fn test_derive_generic_device() {
     let wrapper = GenericDeviceWrapper { internal: device };
 
     // Test Clone and PartialEq
-    assert!(wrapper.clone() == wrapper);
+    assert!(wrapper == wrapper);
 }
 
 #[test]
@@ -473,7 +461,7 @@ fn test_derive_all_to_all() {
     let wrapper = AllToAllDeviceWrapper { internal: device };
 
     // Test Clone and PartialEq
-    assert!(wrapper.clone() == wrapper);
+    assert!(wrapper == wrapper);
 }
 
 #[test]
@@ -483,7 +471,7 @@ fn test_derive_squate_lattice() {
     let wrapper = SquareLatticeDeviceWrapper { internal: device };
 
     // Test Clone and PartialEq
-    assert!(wrapper.clone() == wrapper);
+    assert!(wrapper == wrapper);
 }
 
 #[test_case(new_alltoalldevice(), vec![(0,1), (0,2), (0,3), (1,2), (1,3), (2,3)]; "all_to_all")]

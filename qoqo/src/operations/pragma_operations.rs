@@ -41,6 +41,18 @@ struct PragmaSetNumberOfMeasurements {
     readout: String,
 }
 
+#[wrap(Operate, OperatePragma)]
+/// This PRAGMA measurement operation returns the statevector of a quantum register.
+///
+/// Args:
+///     repetitions (CalculatorFloat): The number of repetitions as a symbolic float. At evaluation the floor of any float value is taken
+///     circuit (Circuit): The Circuit that is looped.
+///
+pub struct PragmaLoop {
+    repetitions: CalculatorFloat,
+    circuit: Circuit,
+}
+
 /// Module containing the PragmaSetStateVector class.
 #[pymodule]
 fn pragma_set_statevector(_py: Python, module: &PyModule) -> PyResult<()> {
@@ -98,10 +110,32 @@ impl PragmaSetStateVectorWrapper {
     fn new(statevector: Py<PyAny>) -> PyResult<Self> {
         let try_cast: PyResult<Array1<Complex64>> =
             Python::with_gil(|py| -> PyResult<Array1<Complex64>> {
-                let extracted = PyReadonlyArray1::extract(statevector.as_ref(py))?;
+                let extracted: PyReadonlyArray1<Complex64> = statevector.as_ref(py).extract()?;
                 let statevec: Array1<Complex64> = extracted.to_owned_array();
                 Ok(statevec)
             });
+        let try_cast = try_cast.or_else(|_| {
+            Python::with_gil(|py| -> PyResult<Array1<Complex64>> {
+                let extracted: PyReadonlyArray1<f64> = statevector.as_ref(py).extract()?;
+                let statevec: Array1<f64> = extracted.to_owned_array();
+                let statevec: Array1<Complex64> = statevec
+                    .into_iter()
+                    .map(|f| Complex64::new(f, 0.0))
+                    .collect();
+                Ok(statevec)
+            })
+        });
+        let try_cast = try_cast.or_else(|_| {
+            Python::with_gil(|py| -> PyResult<Array1<Complex64>> {
+                let extracted: PyReadonlyArray1<isize> = statevector.as_ref(py).extract()?;
+                let statevec: Array1<isize> = extracted.to_owned_array();
+                let statevec: Array1<Complex64> = statevec
+                    .into_iter()
+                    .map(|f| Complex64::new(f as f64, 0.0))
+                    .collect();
+                Ok(statevec)
+            })
+        });
         match try_cast {
             Ok(array) => Ok(Self {
                 internal: PragmaSetStateVector::new(array),

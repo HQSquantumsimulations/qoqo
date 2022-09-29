@@ -183,18 +183,17 @@ impl CircuitDagWrapper {
         current_front_layer: Vec<usize>,
         to_be_executed: usize,
     ) -> PyResult<Vec<usize>> {
-        Ok(self
-            .internal
+        self.internal
             .new_front_layer(
                 already_executed.as_slice(),
                 current_front_layer.as_slice(),
                 &to_be_executed,
             )
             .map_err(|_| {
-                PyValueError::new_err(format!(
-                    "The Operation to be executed is not in the current front layer."
-                ))
-            })?)
+                PyValueError::new_err(
+                    "The Operation to be executed is not in the current front layer.".to_string(),
+                )
+            })
     }
 
     /// Returns an iterator over the possible parallel blocks in circuit that can be executed simultaneously
@@ -339,14 +338,7 @@ impl CircuitDagWrapper {
     /// Returns the list of the successors of a given node in the CircuitDag.
     ///
     pub fn successors(&self, node: usize) -> Vec<usize> {
-        let mut iter = self.internal.successors(node);
-        let mut vec: Vec<usize> = Vec::new();
-
-        while let Some(nxt) = iter.next() {
-            vec.push(nxt.index())
-        }
-
-        vec
+        self.internal.successors(node).map(|n| n.index()).collect()
     }
 
     /// Returns the list of nodes of commuting operations in CircuitDag.

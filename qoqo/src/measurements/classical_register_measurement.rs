@@ -17,7 +17,6 @@ use bincode::serialize;
 use pyo3::exceptions::{PyRuntimeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
-use pyo3::types::PyType;
 use roqoqo::measurements::ClassicalRegister;
 use roqoqo::prelude::*;
 use roqoqo::Circuit;
@@ -146,13 +145,51 @@ impl ClassicalRegisterWrapper {
     ///
     /// Raises:
     ///     PyRuntimeError: Cannot deserialize string to ClassicalRegister.
-    #[allow(unused_variables)]
-    #[classmethod]
-    pub fn from_json(cls: &PyType, json_string: &str) -> PyResult<Self> {
+    #[staticmethod]
+    pub fn from_json(json_string: &str) -> PyResult<Self> {
         Ok(Self {
             internal: serde_json::from_str(json_string).map_err(|_| {
                 PyValueError::new_err("Cannot deserialize string to ClassicalRegister")
             })?,
         })
+    }
+
+    /// Implement __repr__ magic method
+    pub fn __repr__(&self) -> String {
+        format!("{:?}", self.internal)
+    }
+
+    /// Return a copy of the Object (copy here produces a deepcopy).
+    pub fn __copy__(&self) -> Self {
+        self.clone()
+    }
+
+    /// Return a deep copy of the Object.
+    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+        self.clone()
+    }
+    /// Return the __richcmp__ magic method to perform rich comparison operations on QuantumProgram.
+    ///
+    /// Args:
+    ///     other: The object to compare self to.
+    ///     op: Type of comparison.
+    ///
+    /// Returns:
+    ///     Whether the two operations compared evaluated to True or False
+    ///
+    /// Raises:
+    ///     NotImplementedError: Other comparison not implemented
+    fn __richcmp__(
+        &self,
+        other: ClassicalRegisterWrapper,
+        op: pyo3::class::basic::CompareOp,
+    ) -> PyResult<bool> {
+        match op {
+            pyo3::class::basic::CompareOp::Eq => Ok(self.internal == other.internal),
+            pyo3::class::basic::CompareOp::Ne => Ok(self.internal != other.internal),
+            _ => Err(pyo3::exceptions::PyNotImplementedError::new_err(
+                "Other comparison not implemented",
+            )),
+        }
     }
 }

@@ -2,6 +2,15 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.1.0-beta.3
+
+* Added rich comparison for Python interface of Measurements
+* Added PragmaLoop
+
+## 1.1.0-beta.1
+
+* Allowed creating PragmaSetStateVector from float or integer numpy arrays.
+
 ## 1.1.0-alpha.1
 
 * Added `InputBit` to set bit in a (readout) bit register to a value.
