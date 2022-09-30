@@ -43,6 +43,7 @@ petgraph = {version = "0.6.2", optional=true}
 serde_test = "1.0"
 test-case = "2.0"
 serde_json = "1.0"
+test_qoqo_1_0 = {package= "roqoqo", version="1.0.0"}
 
 [build-dependencies]
 quote = "1.0"

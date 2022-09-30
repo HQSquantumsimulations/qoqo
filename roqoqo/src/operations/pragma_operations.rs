@@ -1104,6 +1104,7 @@ pub struct PragmaLoop {
     /// The Circuit that is looped.
     circuit: Circuit,
 }
+impl super::ImplementedIn1point1 for PragmaLoop {}
 
 #[allow(non_upper_case_globals)]
 const TAGS_PragmaLoop: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaLoop"];
