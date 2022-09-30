@@ -275,7 +275,8 @@ jobs:
           default: true
       - uses: Swatinem/rust-cache@v2.0.0
       - run: |
-          cargo test --doc --package=roqoqo --locked
+          cd roqoqo
+          cargo test --doc --locked
 
   code_coverage_roqoqo:
     runs-on: ubuntu-latest
