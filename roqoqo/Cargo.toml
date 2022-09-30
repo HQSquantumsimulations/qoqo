@@ -1,6 +1,6 @@
 [package]
 name = "roqoqo"
-version = "1.1.0-beta.3"
+version = "1.1.0-beta.4"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
@@ -28,7 +28,7 @@ num-complex = { version = "0.4"}
 thiserror = "1.0"
 dyn-clone = {version="1.0", optional=true}
 qoqo_calculator = { version="1.1"}
-roqoqo-derive = {version="1.1.0-beta.3", path="../roqoqo-derive"}
+roqoqo-derive = {version="1.1.0-beta.4", path="../roqoqo-derive"}
 typetag = {version="0.2", optional=true}
 nalgebra = "0.31"
 # schemars = { version="0.8", features = ["num-complex", "ndarray"], optional=true }
@@ -43,6 +43,7 @@ petgraph = {version = "0.6.2", optional=true}
 serde_test = "1.0"
 test-case = "2.0"
 serde_json = "1.0"
+test_qoqo_1_0 = {package= "roqoqo", version="1.0.0"}
 
 [build-dependencies]
 quote = "1.0"

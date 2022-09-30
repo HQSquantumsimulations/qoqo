@@ -698,6 +698,9 @@ pub trait OperateMultiQubitGate:
 
 // Implementing DynOperation for storing dynamic operations from extern crates in trait object
 
+/// Marker trait to show that some operation has been implemented in roqoqo 1.1.0
+pub(crate) trait ImplementedIn1point1: Operate {}
+
 #[cfg(feature = "dynamic")]
 /// A wrapper for Operate trait objects.
 ///
