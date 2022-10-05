@@ -61,6 +61,7 @@ qoqo.operations
       PragmaGetPauliProduct
       PragmaGetStateVector
       PragmaGlobalPhase
+      PragmaLoop
       PragmaOverrotation
       PragmaRandomNoise
       PragmaRepeatGate

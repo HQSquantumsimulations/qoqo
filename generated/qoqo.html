@@ -16,6 +16,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -50,6 +51,35 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/qoqo.operations.html">qoqo.operations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/qoqo.measurements.html">qoqo.measurements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/qoqo.QuantumProgram.html">qoqo.QuantumProgram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#qoqo.Circuit"><code class="docutils literal notranslate"><span class="pre">Circuit</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.Circuit.add"><code class="docutils literal notranslate"><span class="pre">Circuit.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.Circuit.count_occurences"><code class="docutils literal notranslate"><span class="pre">Circuit.count_occurences()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.Circuit.definitions"><code class="docutils literal notranslate"><span class="pre">Circuit.definitions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.Circuit.filter_by_tag"><code class="docutils literal notranslate"><span class="pre">Circuit.filter_by_tag()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.Circuit.from_bincode"><code class="docutils literal notranslate"><span class="pre">Circuit.from_bincode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.Circuit.from_json"><code class="docutils literal notranslate"><span class="pre">Circuit.from_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.Circuit.get"><code class="docutils literal notranslate"><span class="pre">Circuit.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.Circuit.get_operation_types"><code class="docutils literal notranslate"><span class="pre">Circuit.get_operation_types()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.Circuit.get_slice"><code class="docutils literal notranslate"><span class="pre">Circuit.get_slice()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.Circuit.operations"><code class="docutils literal notranslate"><span class="pre">Circuit.operations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.Circuit.overrotate"><code class="docutils literal notranslate"><span class="pre">Circuit.overrotate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.Circuit.remap_qubits"><code class="docutils literal notranslate"><span class="pre">Circuit.remap_qubits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.Circuit.substitute_parameters"><code class="docutils literal notranslate"><span class="pre">Circuit.substitute_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.Circuit.to_bincode"><code class="docutils literal notranslate"><span class="pre">Circuit.to_bincode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.Circuit.to_json"><code class="docutils literal notranslate"><span class="pre">Circuit.to_json()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#qoqo.QuantumProgram"><code class="docutils literal notranslate"><span class="pre">QuantumProgram</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.QuantumProgram.from_bincode"><code class="docutils literal notranslate"><span class="pre">QuantumProgram.from_bincode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.QuantumProgram.from_json"><code class="docutils literal notranslate"><span class="pre">QuantumProgram.from_json()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.QuantumProgram.input_parameter_names"><code class="docutils literal notranslate"><span class="pre">QuantumProgram.input_parameter_names()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.QuantumProgram.measurement"><code class="docutils literal notranslate"><span class="pre">QuantumProgram.measurement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.QuantumProgram.run"><code class="docutils literal notranslate"><span class="pre">QuantumProgram.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.QuantumProgram.run_registers"><code class="docutils literal notranslate"><span class="pre">QuantumProgram.run_registers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.QuantumProgram.to_bincode"><code class="docutils literal notranslate"><span class="pre">QuantumProgram.to_bincode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.QuantumProgram.to_json"><code class="docutils literal notranslate"><span class="pre">QuantumProgram.to_json()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

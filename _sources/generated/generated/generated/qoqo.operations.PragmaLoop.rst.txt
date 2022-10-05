@@ -1,0 +1,30 @@
+qoqo.operations.PragmaLoop
+==========================
+
+.. currentmodule:: qoqo.operations
+
+.. autoclass:: PragmaLoop
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PragmaLoop.__init__
+      ~PragmaLoop.circuit
+      ~PragmaLoop.hqslang
+      ~PragmaLoop.involved_qubits
+      ~PragmaLoop.is_parametrized
+      ~PragmaLoop.remap_qubits
+      ~PragmaLoop.repetitions
+      ~PragmaLoop.substitute_parameters
+      ~PragmaLoop.tags
+   
+   
+
+   
+   
+   
