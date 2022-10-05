@@ -241,6 +241,8 @@ pub struct InputBit {
     value: bool,
 }
 
+impl super::ImplementedIn1point1 for InputBit {}
+
 #[allow(non_upper_case_globals)]
 const TAGS_InputBit: &[&str; 3] = &["Operation", "Definition", "InputBit"];
 
