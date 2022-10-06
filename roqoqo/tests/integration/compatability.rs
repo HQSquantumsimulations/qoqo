@@ -10,26 +10,30 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use bincode;
-use roqoqo;
-use test_case::test_case;
-use test_qoqo_1_0;
-
-#[test_case(test_qoqo_1_0::operations::Hadamard::new(0).into(); "Hadamard")]
-#[test_case(test_qoqo_1_0::operations::ControlledPhaseShift::new(0,1, 0.1.into()).into(); "ControlledPhase")]
-#[test_case(test_qoqo_1_0::operations::VariableMSXX::new(0,1, 0.1.into()).into(); "VariableMSXX")]
+// use bincode;
+// use roqoqo;
 #[cfg(feature = "serialize")]
-fn test_bincode_compatability(operation: test_qoqo_1_0::operations::Operation) {
-    let mut test_circuit = test_qoqo_1_0::Circuit::new();
+use test_case::test_case;
+// use test_roqoqo_1_0;
+
+#[cfg(feature = "serialize")]
+#[test_case(test_roqoqo_1_0::operations::Hadamard::new(0).into(); "Hadamard")]
+#[cfg(feature = "serialize")]
+#[test_case(test_roqoqo_1_0::operations::ControlledPhaseShift::new(0,1, 0.1.into()).into(); "ControlledPhase")]
+#[cfg(feature = "serialize")]
+#[test_case(test_roqoqo_1_0::operations::VariableMSXX::new(0,1, 0.1.into()).into(); "VariableMSXX")]
+#[cfg(feature = "serialize")]
+fn test_bincode_compatability(operation: test_roqoqo_1_0::operations::Operation) {
+    let mut test_circuit = test_roqoqo_1_0::Circuit::new();
     test_circuit += operation;
 
-    let test_measurement_input = test_qoqo_1_0::measurements::PauliZProductInput::new(3, false);
-    let test_measurement = test_qoqo_1_0::measurements::PauliZProduct {
+    let test_measurement_input = test_roqoqo_1_0::measurements::PauliZProductInput::new(3, false);
+    let test_measurement = test_roqoqo_1_0::measurements::PauliZProduct {
         constant_circuit: Some(test_circuit.clone()),
         circuits: vec![test_circuit],
         input: test_measurement_input,
     };
-    let test_program = test_qoqo_1_0::QuantumProgram::PauliZProduct {
+    let test_program = test_roqoqo_1_0::QuantumProgram::PauliZProduct {
         measurement: test_measurement,
         input_parameter_names: vec!["test".to_string()],
     };
