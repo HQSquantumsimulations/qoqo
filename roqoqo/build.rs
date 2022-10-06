@@ -52,7 +52,7 @@ struct Visitor {
     multi_qubit_gate_operations: Vec<Ident>,
     // Operations that have only been introduced in roqoqoq 1.1.0
     // These operations will only be added at end of automatically created enums
-    // to maintain compatability with bincode encoding
+    // to maintain compatibility with bincode encoding
     roqoqo_1_1_operations: Vec<Ident>,
 }
 
