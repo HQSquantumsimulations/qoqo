@@ -536,7 +536,7 @@ pub struct PhaseShiftedControlledZ {
 ///         1 & 0 & 0 & 0 \\\\
 ///         0 & e^{i \phi} & 0 & 0 \\\\
 ///         0 & 0 & e^{i \phi} & 0 \\\\
-///         0 & 0 & 0 & e^{i(2\cdot\phi - \theta)}
+///         0 & 0 & 0 & e^{i(2\cdot\phi + \theta)}
 ///         \end{pmatrix}
 ///
 /// Args:
