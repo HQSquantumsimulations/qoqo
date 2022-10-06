@@ -2088,8 +2088,8 @@ impl OperateGate for PhaseShiftedControlledZ {
         let phi: f64 = f64::try_from(self.phi.clone())?;
         let cos: f64 = phi.cos();
         let sin: f64 = phi.sin();
-        let cos2: f64 = (2.0 * phi - PI).cos();
-        let sin2: f64 = (2.0 * phi - PI).sin();
+        let cos2: f64 = (2.0 * phi + PI).cos();
+        let sin2: f64 = (2.0 * phi + PI).sin();
         Ok(array![
             [
                 Complex64::new(1.0, 0.0),
@@ -2197,8 +2197,8 @@ impl OperateGate for PhaseShiftedControlledPhase {
         let theta: f64 = f64::try_from(self.theta.clone())?;
         let cos: f64 = phi.cos();
         let sin: f64 = phi.sin();
-        let cos2: f64 = (2.0 * phi - theta).cos();
-        let sin2: f64 = (2.0 * phi - theta).sin();
+        let cos2: f64 = (2.0 * phi + theta).cos();
+        let sin2: f64 = (2.0 * phi + theta).sin();
         Ok(array![
             [
                 Complex64::new(1.0, 0.0),
