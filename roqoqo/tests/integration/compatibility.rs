@@ -12,18 +12,18 @@
 
 // use bincode;
 // use roqoqo;
-#[cfg(feature = "serialize")]
+#[cfg(feature = "compatibility")]
 use test_case::test_case;
 // use test_roqoqo_1_0;
 
-#[cfg(feature = "serialize")]
+#[cfg(feature = "compatibility")]
 #[test_case(test_roqoqo_1_0::operations::Hadamard::new(0).into(); "Hadamard")]
-#[cfg(feature = "serialize")]
+#[cfg(feature = "compatibility")]
 #[test_case(test_roqoqo_1_0::operations::ControlledPhaseShift::new(0,1, 0.1.into()).into(); "ControlledPhase")]
-#[cfg(feature = "serialize")]
+#[cfg(feature = "compatibility")]
 #[test_case(test_roqoqo_1_0::operations::VariableMSXX::new(0,1, 0.1.into()).into(); "VariableMSXX")]
-#[cfg(feature = "serialize")]
-fn test_bincode_compatability(operation: test_roqoqo_1_0::operations::Operation) {
+#[cfg(feature = "compatibility")]
+fn test_bincode_compatibility(operation: test_roqoqo_1_0::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_0::Circuit::new();
     test_circuit += operation;
 

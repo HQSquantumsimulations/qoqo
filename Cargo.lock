@@ -564,7 +564,7 @@ dependencies = [
  "qoqo_calculator",
  "qoqo_calculator_pyo3",
  "quote",
- "roqoqo 1.1.0-beta.6",
+ "roqoqo",
  "serde",
  "serde_json",
  "syn",
@@ -672,26 +672,6 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6b298dab631f5cd4dbb92811398f20accde321f56b96347de413fd888965144c"
-dependencies = [
- "bincode",
- "nalgebra",
- "ndarray",
- "num-complex",
- "proc-macro2",
- "qoqo_calculator",
- "quote",
- "rand",
- "roqoqo-derive 1.0.0",
- "serde",
- "syn",
- "thiserror",
-]
-
-[[package]]
-name = "roqoqo"
 version = "1.1.0-beta.6"
 dependencies = [
  "async-trait",
@@ -707,9 +687,7 @@ dependencies = [
  "quote",
  "rand",
  "rand_distr",
- "roqoqo 1.0.0",
- "roqoqo-derive 1.0.0",
- "roqoqo-derive 1.1.0-beta.6",
+ "roqoqo-derive",
  "serde",
  "serde_json",
  "serde_test",
@@ -717,17 +695,6 @@ dependencies = [
  "test-case",
  "thiserror",
  "typetag",
-]
-
-[[package]]
-name = "roqoqo-derive"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c799726c6f2553b8145b671b57494efdc6a1bd2c84fcbf7e8313f09982fe5060"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]
@@ -749,7 +716,7 @@ dependencies = [
  "qoqo_calculator",
  "quote",
  "rand",
- "roqoqo 1.1.0-beta.6",
+ "roqoqo",
  "syn",
 ]
 
