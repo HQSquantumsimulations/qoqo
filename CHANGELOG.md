@@ -2,6 +2,10 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.1.0-beta.5
+
+* Fixed github pipelines
+
 ## 1.1.0-beta.4
 
 * Fixed compatibility tests
