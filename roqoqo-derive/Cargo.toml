@@ -19,7 +19,7 @@ doctest = false
 proc-macro2 = "1.0"
 syn = { version = "1.0", features = ["full", "visit"] }
 quote = "1.0"
-test_roqoqo_derive_1_0 = {package= "roqoqo-derive", version="=1.0.0"}
+test_roqoqo_derive_1_0 = {package= "roqoqo-derive", version="=1.0.0", optional=true}
 
 [features]
 default = []
