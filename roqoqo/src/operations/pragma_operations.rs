@@ -29,6 +29,8 @@ use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
 use std::convert::TryFrom;
 
+use super::InvolvedClassical;
+
 /// This PRAGMA Operation sets the number of measurements of the circuit.
 ///
 /// This is used for backends that allow setting the number of tries. However, setting the number of
@@ -1088,5 +1090,76 @@ impl Substitute for PragmaChangeDevice {
     /// Substitutes symbolic parameters in clone of the operation.
     fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
         Ok(self.clone())
+    }
+}
+
+/// This PRAGMA repeats a circuit .
+///
+#[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct PragmaLoop {
+    /// The name of the classical readout register.
+    repetitions: CalculatorFloat,
+    /// The Circuit that is looped.
+    circuit: Circuit,
+}
+impl super::ImplementedIn1point1 for PragmaLoop {}
+
+#[allow(non_upper_case_globals)]
+const TAGS_PragmaLoop: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaLoop"];
+
+/// Implements [Substitute] trait allowing to replace symbolic parameters and to perform qubit mappings.
+impl Substitute for PragmaLoop {
+    /// Remaps qubits in operations in clone of the operation.
+    fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        let new_circuit = self.circuit.remap_qubits(mapping)?;
+        Ok(PragmaLoop::new(self.repetitions.clone(), new_circuit))
+    }
+
+    /// Substitutes symbolic parameters in clone of the operation.
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
+        let new_repetitions = calculator.parse_get(self.repetitions.clone())?;
+        let new_circuit = self.circuit.substitute_parameters(calculator)?;
+        Ok(PragmaLoop::new(new_repetitions.into(), new_circuit))
+    }
+}
+
+// Implements the InvolveQubits trait for PragmaLoop.
+impl InvolveQubits for PragmaLoop {
+    /// Lists all involved qubits (here: All).
+    fn involved_qubits(&self) -> InvolvedQubits {
+        self.circuit.involved_qubits()
+    }
+
+    fn involved_classical(&self) -> InvolvedClassical {
+        let mut involved = InvolvedClassical::None;
+        for op in self.circuit.iter() {
+            let tmp_involved = op.involved_classical();
+            match &tmp_involved {
+                InvolvedClassical::All(x) => {
+                    return InvolvedClassical::All(x.clone());
+                }
+                InvolvedClassical::AllQubits(x) => {
+                    return InvolvedClassical::AllQubits(x.clone());
+                }
+                InvolvedClassical::None => (),
+                InvolvedClassical::Set(x) => match involved {
+                    InvolvedClassical::All(y) => {
+                        return InvolvedClassical::All(y);
+                    }
+                    InvolvedClassical::AllQubits(y) => {
+                        return InvolvedClassical::AllQubits(y);
+                    }
+                    InvolvedClassical::None => involved = tmp_involved,
+                    InvolvedClassical::Set(y) => {
+                        let mut combined = x.clone();
+                        combined.extend(y);
+                        involved = InvolvedClassical::Set(combined)
+                    }
+                },
+            }
+        }
+        involved
     }
 }
