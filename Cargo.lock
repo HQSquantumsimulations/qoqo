@@ -708,6 +708,7 @@ dependencies = [
  "rand",
  "rand_distr",
  "roqoqo 1.0.0",
+ "roqoqo-derive 1.0.0",
  "roqoqo-derive 1.1.0-beta.7",
  "serde",
  "serde_json",
@@ -735,7 +736,6 @@ version = "1.1.0-beta.7"
 dependencies = [
  "proc-macro2",
  "quote",
- "roqoqo-derive 1.0.0",
  "syn",
 ]
 
