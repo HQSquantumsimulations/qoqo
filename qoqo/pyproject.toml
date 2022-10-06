@@ -1,6 +1,6 @@
 [project]
 name = "qoqo"
-version = "1.1.0-beta.7"
+version = "1.1.0-beta.8"
 dependencies = [
   'numpy',
   'qoqo_calculator_pyo3>=1.1.0',
