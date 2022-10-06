@@ -24,6 +24,129 @@ use roqoqo::Circuit;
 #[cfg(feature = "serialize")]
 use serde_test::{assert_tokens, Configure, Token};
 use std::collections::{HashMap, HashSet};
+
+/// Test PragmaSetNumberOfMeasurements inputs and involved qubits
+#[test]
+fn pragma_loop_inputs_qubits() {
+    let pragma = PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::new());
+
+    // Test inputs are correct
+    assert_eq!(pragma.repetitions(), &CalculatorFloat::from("number_t"));
+    assert_eq!(pragma.circuit(), &Circuit::new());
+
+    // Test InvolveQubits trait
+    assert_eq!(pragma.involved_qubits(), InvolvedQubits::None);
+}
+
+/// Test PragmaSetNumberOfMeasurements standard derived traits (Debug, Clone, PartialEq)
+#[test]
+fn pragma_loop_simple_traits() {
+    let pragma = PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::new());
+    // Test Debug trait
+    assert_eq!(
+        format!("{:?}", pragma),
+        "PragmaLoop { repetitions: Str(\"number_t\"), circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"
+    );
+
+    // Test Clone trait
+    assert_eq!(pragma.clone(), pragma);
+
+    // Test PartialEq trait
+    let pragma_0 = PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::new());
+    let pragma_1 = PragmaLoop::new(CalculatorFloat::from(1.0), Circuit::new());
+    assert!(pragma_0 == pragma);
+    assert!(pragma == pragma_0);
+    assert!(pragma_1 != pragma);
+    assert!(pragma != pragma_1);
+}
+
+/// Test PragmaSetNumberOfMeasurements Operate trait
+#[test]
+fn pragma_loop_operate_trait() {
+    let pragma = PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::new());
+
+    // (1) Test tags function
+    let tags: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaLoop"];
+    assert_eq!(pragma.tags(), tags);
+
+    // (2) Test hqslang function
+    assert_eq!(pragma.hqslang(), String::from("PragmaLoop"));
+
+    // (3) Test is_parametrized function
+    assert!(!pragma.is_parametrized());
+}
+
+/// Test PragmaSetNumberOfMeasurements Substitute trait
+#[test]
+fn pragma_loop_substitute_trait() {
+    let mut circuit = Circuit::new();
+    circuit += RotateX::new(0, "ro".into());
+    let pragma_test = PragmaLoop::new(CalculatorFloat::from("number_t"), circuit);
+    let mut circuit_subbed = Circuit::new();
+    circuit_subbed += RotateX::new(0, 0.0.into());
+    let pragma = PragmaLoop::new(CalculatorFloat::from(1.0), circuit_subbed);
+    // (1) Substitute parameters function
+    let mut substitution_dict: Calculator = Calculator::new();
+    substitution_dict.set_variable("ro", 0.0);
+    substitution_dict.set_variable("number_t", 1.0);
+    let result = pragma_test
+        .substitute_parameters(&substitution_dict)
+        .unwrap();
+    assert_eq!(result, pragma);
+
+    let mut circuit_subbed = Circuit::new();
+    circuit_subbed += RotateX::new(2, "ro".into());
+    let pragma = PragmaLoop::new(CalculatorFloat::from("number_t"), circuit_subbed);
+    // (2) Remap qubits function
+    let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
+    let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
+    assert_eq!(result, pragma);
+}
+
+/// Test PragmaSetNumberOfMeasurements Serialization and Deserialization traits (readable)
+#[cfg(feature = "serialize")]
+#[test]
+fn pragma_loop_serde_readable() {
+    let pragma_serialization = PragmaSetNumberOfMeasurements::new(1, String::from("ro"));
+    assert_tokens(
+        &pragma_serialization.readable(),
+        &[
+            Token::Struct {
+                name: "PragmaSetNumberOfMeasurements",
+                len: 2,
+            },
+            Token::Str("number_measurements"),
+            Token::U64(1),
+            Token::Str("readout"),
+            Token::Str("ro"),
+            Token::StructEnd,
+        ],
+    );
+}
+
+/// Test PragmaSetNumberOfMeasurements Serialization and Deserialization traits (compact)
+#[cfg(feature = "serialize")]
+#[test]
+fn pragma_loop_serde_compact() {
+    let pragma_serialization = PragmaSetNumberOfMeasurements::new(1, String::from("ro"));
+    assert_tokens(
+        &pragma_serialization.compact(),
+        &[
+            Token::Struct {
+                name: "PragmaSetNumberOfMeasurements",
+                len: 2,
+            },
+            Token::Str("number_measurements"),
+            Token::U64(1),
+            Token::Str("readout"),
+            Token::Str("ro"),
+            Token::StructEnd,
+        ],
+    );
+}
+
 /// Test PragmaSetNumberOfMeasurements inputs and involved qubits
 #[test]
 fn pragma_set_number_of_measurements_inputs_qubits() {
