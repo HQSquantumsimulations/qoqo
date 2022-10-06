@@ -550,7 +550,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "1.1.0-beta.7"
+version = "1.1.0-beta.8"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -564,7 +564,7 @@ dependencies = [
  "qoqo_calculator",
  "qoqo_calculator_pyo3",
  "quote",
- "roqoqo 1.1.0-beta.7",
+ "roqoqo 1.1.0-beta.8",
  "serde",
  "serde_json",
  "syn",
@@ -574,7 +574,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "1.1.0-beta.7"
+version = "1.1.0-beta.8"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -692,7 +692,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.1.0-beta.7"
+version = "1.1.0-beta.8"
 dependencies = [
  "async-trait",
  "bincode",
@@ -708,7 +708,8 @@ dependencies = [
  "rand",
  "rand_distr",
  "roqoqo 1.0.0",
- "roqoqo-derive 1.1.0-beta.7",
+ "roqoqo-derive 1.0.0",
+ "roqoqo-derive 1.1.0-beta.8",
  "serde",
  "serde_json",
  "serde_test",
@@ -731,17 +732,16 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "1.1.0-beta.7"
+version = "1.1.0-beta.8"
 dependencies = [
  "proc-macro2",
  "quote",
- "roqoqo-derive 1.0.0",
  "syn",
 ]
 
 [[package]]
 name = "roqoqo-test"
-version = "1.1.0-beta.7"
+version = "1.1.0-beta.8"
 dependencies = [
  "nalgebra",
  "ndarray",
@@ -749,7 +749,7 @@ dependencies = [
  "qoqo_calculator",
  "quote",
  "rand",
- "roqoqo 1.1.0-beta.7",
+ "roqoqo 1.1.0-beta.8",
  "syn",
 ]
 
