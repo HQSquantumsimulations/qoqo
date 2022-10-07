@@ -2516,7 +2516,7 @@ limitations under the License.
 
 
 ====================================================
-itoa 1.0.3
+itoa 1.0.4
 https://github.com/dtolnay/itoa
 by David Tolnay <dtolnay@gmail.com>
 Fast integer primitive to string conversion
@@ -8777,7 +8777,7 @@ LICENSE:
 
 
 ====================================================
-qoqo 1.1.0-beta.9
+qoqo 1.1.0-beta.10
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoqo
@@ -8989,7 +8989,7 @@ LICENSE:
 
 
 ====================================================
-qoqo-macros 1.1.0-beta.9
+qoqo-macros 1.1.0-beta.10
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -11061,7 +11061,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-roqoqo 1.1.0-beta.9
+roqoqo 1.1.0-beta.10
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
@@ -11273,7 +11273,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-derive 1.1.0-beta.9
+roqoqo-derive 1.1.0-beta.10
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the roqoqo crate
 License: Apache-2.0
@@ -11484,7 +11484,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-test 1.1.0-beta.9
+roqoqo-test 1.1.0-beta.10
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
@@ -13612,7 +13612,7 @@ limitations under the License.
 
 
 ====================================================
-syn 1.0.101
+syn 1.0.102
 https://github.com/dtolnay/syn
 by David Tolnay <dtolnay@gmail.com>
 Parser for Rust source code
@@ -16068,7 +16068,7 @@ limitations under the License.
 
 
 ====================================================
-wide 0.7.4
+wide 0.7.5
 https://github.com/Lokathor/wide
 by Lokathor <zefria@gmail.com>
 A crate to help you go wide.
