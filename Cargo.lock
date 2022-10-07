@@ -242,9 +242,9 @@ dependencies = [
 
 [[package]]
 name = "itoa"
-version = "1.0.3"
+version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6c8af84674fe1f223a982c933a0ee1086ac4d4052aa0fb8060c12c6ad838e754"
+checksum = "4217ad341ebadf8d8e724e264f13e593e0648f5b3e94b3896a5df283be015ecc"
 
 [[package]]
 name = "libc"
@@ -550,7 +550,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "1.1.0-beta.9"
+version = "1.1.0-beta.10"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -564,7 +564,7 @@ dependencies = [
  "qoqo_calculator",
  "qoqo_calculator_pyo3",
  "quote",
- "roqoqo 1.1.0-beta.9",
+ "roqoqo",
  "serde",
  "serde_json",
  "syn",
@@ -574,7 +574,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "1.1.0-beta.9"
+version = "1.1.0-beta.10"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -672,26 +672,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.0.0"
-source = "git+https://github.com/HQSquantumsimulations/qoqo.git?tag=v1.0.0#b76d8e0796c922c6280bb7ff3cebfc7e243977e3"
-dependencies = [
- "bincode",
- "nalgebra",
- "ndarray",
- "num-complex",
- "proc-macro2",
- "qoqo_calculator",
- "quote",
- "rand",
- "roqoqo-derive 1.0.0",
- "serde",
- "syn",
- "thiserror",
-]
-
-[[package]]
-name = "roqoqo"
-version = "1.1.0-beta.9"
+version = "1.1.0-beta.10"
 dependencies = [
  "async-trait",
  "bincode",
@@ -706,8 +687,7 @@ dependencies = [
  "quote",
  "rand",
  "rand_distr",
- "roqoqo 1.0.0",
- "roqoqo-derive 1.1.0-beta.9",
+ "roqoqo-derive",
  "serde",
  "serde_json",
  "serde_test",
@@ -719,17 +699,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "1.0.0"
-source = "git+https://github.com/HQSquantumsimulations/qoqo.git?tag=v1.0.0#b76d8e0796c922c6280bb7ff3cebfc7e243977e3"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
-name = "roqoqo-derive"
-version = "1.1.0-beta.9"
+version = "1.1.0-beta.10"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -738,7 +708,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "1.1.0-beta.9"
+version = "1.1.0-beta.10"
 dependencies = [
  "nalgebra",
  "ndarray",
@@ -746,7 +716,7 @@ dependencies = [
  "qoqo_calculator",
  "quote",
  "rand",
- "roqoqo 1.1.0-beta.9",
+ "roqoqo",
  "syn",
 ]
 
@@ -841,9 +811,9 @@ checksum = "a507befe795404456341dfab10cef66ead4c041f62b8b11bbb92bffe5d0953e0"
 
 [[package]]
 name = "syn"
-version = "1.0.101"
+version = "1.0.102"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e90cde112c4b9690b8cbe810cba9ddd8bc1d7472e2cae317b69e9438c1cba7d2"
+checksum = "3fcd952facd492f9be3ef0d0b7032a6e442ee9b361d4acc2b1d0c4aaa5f613a1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -954,9 +924,9 @@ checksum = "9c8d87e72b64a3b4db28d11ce29237c246188f4f51057d65a7eab63b7987e423"
 
 [[package]]
 name = "wide"
-version = "0.7.4"
+version = "0.7.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b3aba2d1dac31ac7cae82847ac5b8be822aee8f99a4e100f279605016b185c5f"
+checksum = "ae41ecad2489a1655c8ef8489444b0b113c0a0c795944a3572a0931cf7d2525c"
 dependencies = [
  "bytemuck",
  "safe_arch",
