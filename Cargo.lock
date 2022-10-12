@@ -248,9 +248,9 @@ checksum = "4217ad341ebadf8d8e724e264f13e593e0648f5b3e94b3896a5df283be015ecc"
 
 [[package]]
 name = "libc"
-version = "0.2.134"
+version = "0.2.135"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "329c933548736bc49fd575ee68c89e8be4d260064184389a5b77517cddd99ffb"
+checksum = "68783febc7782c6c5cb401fbda4de5a9898be1762314da0bb2c10ced61f18b0c"
 
 [[package]]
 name = "libm"
@@ -550,7 +550,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "1.1.0-beta.10"
+version = "1.1.0-beta.11"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -574,7 +574,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "1.1.0-beta.10"
+version = "1.1.0-beta.11"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -672,7 +672,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.1.0-beta.10"
+version = "1.1.0-beta.11"
 dependencies = [
  "async-trait",
  "bincode",
@@ -699,7 +699,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "1.1.0-beta.10"
+version = "1.1.0-beta.11"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -708,7 +708,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "1.1.0-beta.10"
+version = "1.1.0-beta.11"
 dependencies = [
  "nalgebra",
  "ndarray",
@@ -763,9 +763,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.85"
+version = "1.0.86"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e55a28e3aaef9d5ce0506d0a14dbba8054ddc7e499ef522dd8b26859ec9d4a44"
+checksum = "41feea4228a6f1cd09ec7a3593a682276702cd67b5273544757dae23c096f074"
 dependencies = [
  "itoa",
  "ryu",
@@ -900,9 +900,9 @@ dependencies = [
 
 [[package]]
 name = "unicode-ident"
-version = "1.0.4"
+version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dcc811dc4066ac62f84f11307873c4850cb653bfa9b1719cee2bd2204a4bc5dd"
+checksum = "6ceab39d59e4c9499d4e5a8ee0e2735b891bb7308ac83dfb4e80cad195c9f6f3"
 
 [[package]]
 name = "unindent"
