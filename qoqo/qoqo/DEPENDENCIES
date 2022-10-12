@@ -2755,7 +2755,7 @@ limitations under the License.
 
 
 ====================================================
-libc 0.2.134
+libc 0.2.135
 https://github.com/rust-lang/libc
 by The Rust Project Developers
 Raw FFI bindings to platform libraries like libc.
@@ -8777,7 +8777,7 @@ LICENSE:
 
 
 ====================================================
-qoqo 1.1.0-beta.10
+qoqo 1.1.0-beta.12
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoqo
@@ -8989,7 +8989,7 @@ LICENSE:
 
 
 ====================================================
-qoqo-macros 1.1.0-beta.10
+qoqo-macros 1.1.0-beta.12
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -11061,7 +11061,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-roqoqo 1.1.0-beta.10
+roqoqo 1.1.0-beta.12
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
@@ -11273,7 +11273,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-derive 1.1.0-beta.10
+roqoqo-derive 1.1.0-beta.12
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the roqoqo crate
 License: Apache-2.0
@@ -11484,7 +11484,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-test 1.1.0-beta.10
+roqoqo-test 1.1.0-beta.12
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
@@ -12681,7 +12681,7 @@ limitations under the License.
 
 
 ====================================================
-serde_json 1.0.85
+serde_json 1.0.86
 https://github.com/serde-rs/json
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A JSON serialization file format
@@ -14842,7 +14842,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 ====================================================
-unicode-ident 1.0.4
+unicode-ident 1.0.5
 https://github.com/dtolnay/unicode-ident
 by David Tolnay <dtolnay@gmail.com>
 Determine whether characters have the XID_Start or XID_Continue properties according to Unicode Standard Annex #31
