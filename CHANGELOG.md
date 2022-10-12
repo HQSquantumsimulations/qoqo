@@ -2,6 +2,10 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.1.0-beta.11
+
+* Fixed nalgebra version to 0.30
+
 ## 1.1.0-beta.10
 
 * Temporarily removed compatibility tests in order to release
