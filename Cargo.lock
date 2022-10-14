@@ -242,15 +242,15 @@ dependencies = [
 
 [[package]]
 name = "itoa"
-version = "1.0.3"
+version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6c8af84674fe1f223a982c933a0ee1086ac4d4052aa0fb8060c12c6ad838e754"
+checksum = "4217ad341ebadf8d8e724e264f13e593e0648f5b3e94b3896a5df283be015ecc"
 
 [[package]]
 name = "libc"
-version = "0.2.134"
+version = "0.2.135"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "329c933548736bc49fd575ee68c89e8be4d260064184389a5b77517cddd99ffb"
+checksum = "68783febc7782c6c5cb401fbda4de5a9898be1762314da0bb2c10ced61f18b0c"
 
 [[package]]
 name = "libm"
@@ -294,9 +294,9 @@ dependencies = [
 
 [[package]]
 name = "nalgebra"
-version = "0.31.1"
+version = "0.30.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e9e0a04ce089f9401aac565c740ed30c46291260f27d4911fdbaa6ca65fa3044"
+checksum = "4fb2d0de08694bed883320212c18ee3008576bfe8c306f4c3c4a58b4876998be"
 dependencies = [
  "approx",
  "matrixmultiply",
@@ -550,7 +550,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "1.1.0-beta.6"
+version = "1.1.0-beta.12"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -564,7 +564,7 @@ dependencies = [
  "qoqo_calculator",
  "qoqo_calculator_pyo3",
  "quote",
- "roqoqo 1.1.0-beta.6",
+ "roqoqo",
  "serde",
  "serde_json",
  "syn",
@@ -574,7 +574,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "1.1.0-beta.6"
+version = "1.1.0-beta.12"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -672,27 +672,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6b298dab631f5cd4dbb92811398f20accde321f56b96347de413fd888965144c"
-dependencies = [
- "bincode",
- "nalgebra",
- "ndarray",
- "num-complex",
- "proc-macro2",
- "qoqo_calculator",
- "quote",
- "rand",
- "roqoqo-derive 1.0.0",
- "serde",
- "syn",
- "thiserror",
-]
-
-[[package]]
-name = "roqoqo"
-version = "1.1.0-beta.6"
+version = "1.1.0-beta.12"
 dependencies = [
  "async-trait",
  "bincode",
@@ -707,9 +687,7 @@ dependencies = [
  "quote",
  "rand",
  "rand_distr",
- "roqoqo 1.0.0",
- "roqoqo-derive 1.0.0",
- "roqoqo-derive 1.1.0-beta.6",
+ "roqoqo-derive",
  "serde",
  "serde_json",
  "serde_test",
@@ -721,18 +699,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c799726c6f2553b8145b671b57494efdc6a1bd2c84fcbf7e8313f09982fe5060"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
-name = "roqoqo-derive"
-version = "1.1.0-beta.6"
+version = "1.1.0-beta.12"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -741,7 +708,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "1.1.0-beta.6"
+version = "1.1.0-beta.12"
 dependencies = [
  "nalgebra",
  "ndarray",
@@ -749,7 +716,7 @@ dependencies = [
  "qoqo_calculator",
  "quote",
  "rand",
- "roqoqo 1.1.0-beta.6",
+ "roqoqo",
  "syn",
 ]
 
@@ -796,9 +763,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.85"
+version = "1.0.86"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e55a28e3aaef9d5ce0506d0a14dbba8054ddc7e499ef522dd8b26859ec9d4a44"
+checksum = "41feea4228a6f1cd09ec7a3593a682276702cd67b5273544757dae23c096f074"
 dependencies = [
  "itoa",
  "ryu",
@@ -844,9 +811,9 @@ checksum = "a507befe795404456341dfab10cef66ead4c041f62b8b11bbb92bffe5d0953e0"
 
 [[package]]
 name = "syn"
-version = "1.0.101"
+version = "1.0.102"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e90cde112c4b9690b8cbe810cba9ddd8bc1d7472e2cae317b69e9438c1cba7d2"
+checksum = "3fcd952facd492f9be3ef0d0b7032a6e442ee9b361d4acc2b1d0c4aaa5f613a1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -933,9 +900,9 @@ dependencies = [
 
 [[package]]
 name = "unicode-ident"
-version = "1.0.4"
+version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dcc811dc4066ac62f84f11307873c4850cb653bfa9b1719cee2bd2204a4bc5dd"
+checksum = "6ceab39d59e4c9499d4e5a8ee0e2735b891bb7308ac83dfb4e80cad195c9f6f3"
 
 [[package]]
 name = "unindent"
@@ -957,9 +924,9 @@ checksum = "9c8d87e72b64a3b4db28d11ce29237c246188f4f51057d65a7eab63b7987e423"
 
 [[package]]
 name = "wide"
-version = "0.7.4"
+version = "0.7.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b3aba2d1dac31ac7cae82847ac5b8be822aee8f99a4e100f279605016b185c5f"
+checksum = "ae41ecad2489a1655c8ef8489444b0b113c0a0c795944a3572a0931cf7d2525c"
 dependencies = [
  "bytemuck",
  "safe_arch",
