@@ -71,7 +71,7 @@ jobs:
           python-version: ${{ matrix.python.py }}
       - run: |
           python -m pip install numpy
-          cargo test --workspace --no-default-features --locked  # --features="compatibility"
+          cargo test --workspace --no-default-features --locked --features="compatibility"
           cargo fmt --all -- --check
 
   cargo-deny:

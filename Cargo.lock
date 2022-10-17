@@ -309,6 +309,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "nalgebra"
+version = "0.31.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "da388c517f7c8540918d00f7aed9864c1ead01a14a0cc21513b171857119de12"
+dependencies = [
+ "approx",
+ "matrixmultiply",
+ "nalgebra-macros",
+ "num-complex",
+ "num-rational",
+ "num-traits",
+ "simba",
+ "typenum",
+]
+
+[[package]]
 name = "nalgebra-macros"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -550,10 +566,10 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "1.1.0-beta.12"
+version = "1.1.0-beta.13"
 dependencies = [
  "bincode",
- "nalgebra",
+ "nalgebra 0.30.1",
  "ndarray",
  "num-complex",
  "numpy",
@@ -564,7 +580,7 @@ dependencies = [
  "qoqo_calculator",
  "qoqo_calculator_pyo3",
  "quote",
- "roqoqo",
+ "roqoqo 1.1.0-beta.13",
  "serde",
  "serde_json",
  "syn",
@@ -574,7 +590,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "1.1.0-beta.12"
+version = "1.1.0-beta.13"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -672,13 +688,32 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.1.0-beta.12"
+version = "1.0.0"
+source = "git+https://github.com/HQSquantumsimulations/qoqo.git?tag=v1.0.0#b76d8e0796c922c6280bb7ff3cebfc7e243977e3"
+dependencies = [
+ "bincode",
+ "nalgebra 0.31.2",
+ "ndarray",
+ "num-complex",
+ "proc-macro2",
+ "qoqo_calculator",
+ "quote",
+ "rand",
+ "roqoqo-derive 1.0.0",
+ "serde",
+ "syn",
+ "thiserror",
+]
+
+[[package]]
+name = "roqoqo"
+version = "1.1.0-beta.13"
 dependencies = [
  "async-trait",
  "bincode",
  "dyn-clone",
  "futures",
- "nalgebra",
+ "nalgebra 0.30.1",
  "ndarray",
  "num-complex",
  "petgraph",
@@ -687,7 +722,8 @@ dependencies = [
  "quote",
  "rand",
  "rand_distr",
- "roqoqo-derive",
+ "roqoqo 1.0.0",
+ "roqoqo-derive 1.1.0-beta.13",
  "serde",
  "serde_json",
  "serde_test",
@@ -699,7 +735,17 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "1.1.0-beta.12"
+version = "1.0.0"
+source = "git+https://github.com/HQSquantumsimulations/qoqo.git?tag=v1.0.0#b76d8e0796c922c6280bb7ff3cebfc7e243977e3"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "roqoqo-derive"
+version = "1.1.0-beta.13"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -708,15 +754,15 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "1.1.0-beta.12"
+version = "1.1.0-beta.13"
 dependencies = [
- "nalgebra",
+ "nalgebra 0.30.1",
  "ndarray",
  "proc-macro2",
  "qoqo_calculator",
  "quote",
  "rand",
- "roqoqo",
+ "roqoqo 1.1.0-beta.13",
  "syn",
 ]
 
