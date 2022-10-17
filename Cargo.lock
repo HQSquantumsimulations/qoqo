@@ -689,7 +689,8 @@ dependencies = [
 [[package]]
 name = "roqoqo"
 version = "1.0.0"
-source = "git+https://github.com/HQSquantumsimulations/qoqo.git?tag=v1.0.0#b76d8e0796c922c6280bb7ff3cebfc7e243977e3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6b298dab631f5cd4dbb92811398f20accde321f56b96347de413fd888965144c"
 dependencies = [
  "bincode",
  "nalgebra 0.31.2",
@@ -736,7 +737,8 @@ dependencies = [
 [[package]]
 name = "roqoqo-derive"
 version = "1.0.0"
-source = "git+https://github.com/HQSquantumsimulations/qoqo.git?tag=v1.0.0#b76d8e0796c922c6280bb7ff3cebfc7e243977e3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c799726c6f2553b8145b671b57494efdc6a1bd2c84fcbf7e8313f09982fe5060"
 dependencies = [
  "proc-macro2",
  "quote",

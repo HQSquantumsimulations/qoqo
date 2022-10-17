@@ -10,19 +10,67 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use std::collections::HashMap;
+
 // use bincode;
 // use roqoqo;
-#[cfg(feature = "compatibility")]
+// #[cfg(feature = "compatibility")]
 use test_case::test_case;
-// use test_roqoqo_1_0;
+use test_roqoqo_1_0;
 
-#[cfg(feature = "compatibility")]
+// #[cfg(feature = "compatibility")]
 #[test_case(test_roqoqo_1_0::operations::Hadamard::new(0).into(); "Hadamard")]
-#[cfg(feature = "compatibility")]
 #[test_case(test_roqoqo_1_0::operations::ControlledPhaseShift::new(0,1, 0.1.into()).into(); "ControlledPhase")]
-#[cfg(feature = "compatibility")]
 #[test_case(test_roqoqo_1_0::operations::VariableMSXX::new(0,1, 0.1.into()).into(); "VariableMSXX")]
-#[cfg(feature = "compatibility")]
+#[test_case(test_roqoqo_1_0::operations::CNOT::new(0,1).into(); "CNOT")]
+#[test_case(test_roqoqo_1_0::operations::ControlledPauliY::new(0,1).into(); "ControlledPauliY")]
+#[test_case(test_roqoqo_1_0::operations::ControlledPauliZ::new(0,1).into(); "ControlledPauliZ")]
+#[test_case(test_roqoqo_1_0::operations::ControlledPhaseShift::new(0,1, 1.0.into()).into(); "ControlledPhaseShift")]
+#[test_case(test_roqoqo_1_0::operations::PhaseShiftedControlledZ::new(0,1, 1.0.into()).into(); "PhaseShiftedControlledZ")]
+#[test_case(test_roqoqo_1_0::operations::PauliZ::new(0).into(); "PauliZ")]
+#[test_case(test_roqoqo_1_0::operations::PauliX::new(0).into(); "PauliX")]
+#[test_case(test_roqoqo_1_0::operations::PauliY::new(0).into(); "PauliY")]
+#[test_case(test_roqoqo_1_0::operations::SqrtPauliX::new(0).into(); "SqrtPauliX")]
+#[test_case(test_roqoqo_1_0::operations::InvSqrtPauliX::new(0).into(); "InvSqrtPauliX")]
+#[test_case(test_roqoqo_1_0::operations::SGate::new(0).into(); "SGate")]
+#[test_case(test_roqoqo_1_0::operations::TGate::new(0).into(); "TGate")]
+#[test_case(test_roqoqo_1_0::operations::PhaseShiftState1::new(0, 1.0.into()).into(); "PhaseShiftState1")]
+#[test_case(test_roqoqo_1_0::operations::PhaseShiftState0::new(0, 1.0.into()).into(); "PhaseShiftState0")]
+#[test_case(test_roqoqo_1_0::operations::RotateAroundSphericalAxis::new(0, 1.0.into(), 1.0.into(), 1.0.into()).into(); "RotateAroundSphericalAxis")]
+#[test_case(test_roqoqo_1_0::operations::PragmaSetNumberOfMeasurements::new(10, "ro".to_string()).into(); "PragmaSetNumberOfMeasurements")]
+#[test_case(test_roqoqo_1_0::operations::PragmaRepeatGate::new(10).into(); "PragmaRepeatGate")]
+#[test_case(test_roqoqo_1_0::operations::PragmaOverrotation::new("RotateZ".to_string(), vec![0], 1.0, 1.0).into(); "PragmaOverrotation")]
+#[test_case(test_roqoqo_1_0::operations::PragmaBoostNoise::new(1.0.into()).into(); "PragmaBoostNoise")]
+#[test_case(test_roqoqo_1_0::operations::PragmaStopParallelBlock::new(vec![0], 1.0.into()).into(); "PragmaStopParallelBlock")]
+#[test_case(test_roqoqo_1_0::operations::PragmaGlobalPhase::new(1.0.into()).into(); "PragmaGlobalPhase")]
+#[test_case(test_roqoqo_1_0::operations::PragmaStartDecompositionBlock::new(vec![0], HashMap::new()).into(); "PragmaStartDecompositionBlock")]
+#[test_case(test_roqoqo_1_0::operations::PragmaStopDecompositionBlock::new(vec![0]).into(); "PragmaStopDecompositionBlock")]
+#[test_case(test_roqoqo_1_0::operations::PragmaSleep::new(vec![0], 1.0.into()).into(); "PragmaSleep")]
+#[test_case(test_roqoqo_1_0::operations::RotateXY::new(0,1.0.into(), 0.1.into()).into(); "RotateXY")]
+#[test_case(test_roqoqo_1_0::operations::RotateZ::new(0, 0.1.into()).into(); "RotateZ")]
+#[test_case(test_roqoqo_1_0::operations::RotateX::new(0, 0.1.into()).into(); "RotateX")]
+#[test_case(test_roqoqo_1_0::operations::RotateY::new(0, 0.1.into()).into(); "RotateY")]
+#[test_case(test_roqoqo_1_0::operations::SingleQubitGate::new(0, 1.0.into(), 0.0.into(), 0.0.into(), 0.0.into(), 0.0.into(),).into(); "SingleQubitGate")]
+#[test_case(test_roqoqo_1_0::operations::DefinitionBit::new("ro".to_string(), 1, false).into(); "DefinitionBit")]
+#[test_case(test_roqoqo_1_0::operations::DefinitionComplex::new("ro".to_string(), 1, true).into(); "DefinitionComplex")]
+#[test_case(test_roqoqo_1_0::operations::DefinitionUsize::new("ro".to_string(), 1, true).into(); "DefinitionUsize")]
+#[test_case(test_roqoqo_1_0::operations::DefinitionFloat::new("ro".to_string(), 1, true).into(); "DefinitionFloat")]
+#[test_case(test_roqoqo_1_0::operations::InputSymbolic::new("ro".to_string(), 1.0).into(); "InputSymbolic")]
+#[test_case(test_roqoqo_1_0::operations::MeasureQubit::new(0,"ro".to_string(), 1).into(); "MeasureQubit")]
+#[test_case(test_roqoqo_1_0::operations::PragmaGetStateVector::new("ro".to_string(), None).into(); "PragmaGetStateVector")]
+#[test_case(test_roqoqo_1_0::operations::PragmaGetDensityMatrix::new("ro".to_string(), None).into(); "PragmaGetDensityMatrix")]
+#[test_case(test_roqoqo_1_0::operations::PragmaGetOccupationProbability::new("ro".to_string(), None).into(); "PragmaGetOccupationProbability")]
+#[test_case(test_roqoqo_1_0::operations::PragmaGetPauliProduct::new(std::collections::HashMap::new(),"ro".to_string(), test_roqoqo_1_0::Circuit::new()).into(); "PragmaGetPauliProduct")]
+#[test_case(test_roqoqo_1_0::operations::PragmaRepeatedMeasurement::new("ro".to_string(), 10, None).into(); "PragmaRepeatedMeasurement")]
+#[test_case(test_roqoqo_1_0::operations::PragmaDepolarising::new(0,1.0.into(), 1.0.into()).into(); "PragmaDepolarising")]
+#[test_case(test_roqoqo_1_0::operations::PragmaDamping::new(0,1.0.into(), 1.0.into()).into(); "PragmaDamping")]
+#[test_case(test_roqoqo_1_0::operations::PragmaDephasing::new(0,1.0.into(), 1.0.into()).into(); "PragmaDephasing")]
+#[test_case(test_roqoqo_1_0::operations::PragmaRandomNoise::new(0,1.0.into(), 1.0.into(), 1.0.into()).into(); "PragmaRandomNoise")]
+#[test_case(test_roqoqo_1_0::operations::PragmaActiveReset::new(0).into(); "PragmaActiveReset")]
+#[test_case(test_roqoqo_1_0::operations::PragmaConditional::new("ro".to_string(),0, test_roqoqo_1_0::Circuit::new()).into(); "PragmaConditional")]
+#[test_case(test_roqoqo_1_0::operations::MultiQubitMS::new(vec![0,2,3], 1.0.into()).into(); "MultiQubitMS")]
+#[test_case(test_roqoqo_1_0::operations::MultiQubitZZ::new(vec![0,2,3], 1.0.into()).into(); "MultiQubitZZ")]
+
 fn test_bincode_compatibility(operation: test_roqoqo_1_0::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_0::Circuit::new();
     test_circuit += operation;

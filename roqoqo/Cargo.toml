@@ -38,7 +38,7 @@ rand = { version = "0.8.4"}
 async-trait = {version = "0.1", optional = true}
 futures ={version = "0.3", optional=true}
 petgraph = {version = "0.6.2", optional=true}
-test_roqoqo_1_0 = {package = "roqoqo", version="=1.0.0", optional=true, git="https://github.com/HQSquantumsimulations/qoqo.git", tag="v1.0.0"}
+test_roqoqo_1_0 = {package = "roqoqo", version="=1.0.0", optional=true}
 # test_roqoqo_derive_1_0 = {package= "roqoqo-derive", version="=1.0.0", optional=true}
 
 [dev-dependencies]
