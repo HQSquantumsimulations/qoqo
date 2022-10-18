@@ -8,7 +8,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 * Fixed nalgebra version to 0.30
 
-### Added v 1.1.0
+### Added v1.1.0
 
 * Added 1.0.0 compatibility tests
 * Added rich comparison for Python interface of Measurements
