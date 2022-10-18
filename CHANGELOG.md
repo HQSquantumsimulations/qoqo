@@ -2,37 +2,18 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
-## 1.1.0-beta.12
+## 1.1.0
+
+### Changed v1.1.0
 
 * Fixed nalgebra version to 0.30
 
-## 1.1.0-beta.10
+### Added v 1.1.0
 
-* Temporarily removed compatibility tests in order to release
-
-## 1.1.0-beta.9
-
-* Fixed github pipeline deploy
-
-## 1.1.0-beta.5
-
-* Fixed github pipeline deploy qoqo coverage
-
-## 1.1.0-beta.4
-
-* Fixed compatibility tests
-
-## 1.1.0-beta.3
-
+* Added 1.0.0 compatibility tests
 * Added rich comparison for Python interface of Measurements
 * Added PragmaLoop
-
-## 1.1.0-beta.1
-
 * Allowed creating PragmaSetStateVector from float or integer numpy arrays.
-
-## 1.1.0-alpha.1
-
 * Added `InputBit` to set bit in a (readout) bit register to a value.
 * Added `InvolvedClassical` functionality to return which classical register variables are involved in an operation
 * Added `CircuitDag` direct acyclical graph representation of `Circuit`
