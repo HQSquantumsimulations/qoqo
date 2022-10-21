@@ -734,8 +734,6 @@ dependencies = [
  "quote",
  "rand",
  "rand_distr",
- "roqoqo 1.0.0",
- "roqoqo-derive 1.0.0",
  "roqoqo-derive 1.2.0-alpha.1",
  "serde",
  "serde_json",
