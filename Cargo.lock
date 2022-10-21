@@ -68,12 +68,12 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
 name = "compatibility_test"
-version = "1.1.0"
+version = "1.2.0-alpha.1"
 dependencies = [
  "bincode",
  "qoqo_calculator",
  "roqoqo 1.0.0",
- "roqoqo 1.1.0",
+ "roqoqo 1.2.0-alpha.1",
  "test-case",
 ]
 
@@ -577,7 +577,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "1.1.0"
+version = "1.2.0-alpha.1"
 dependencies = [
  "bincode",
  "nalgebra 0.30.1",
@@ -591,7 +591,7 @@ dependencies = [
  "qoqo_calculator",
  "qoqo_calculator_pyo3",
  "quote",
- "roqoqo 1.1.0",
+ "roqoqo 1.2.0-alpha.1",
  "serde",
  "serde_json",
  "syn",
@@ -601,7 +601,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "1.1.0"
+version = "1.2.0-alpha.1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -719,7 +719,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.1.0"
+version = "1.2.0-alpha.1"
 dependencies = [
  "async-trait",
  "bincode",
@@ -734,7 +734,7 @@ dependencies = [
  "quote",
  "rand",
  "rand_distr",
- "roqoqo-derive 1.1.0",
+ "roqoqo-derive 1.2.0-alpha.1",
  "serde",
  "serde_json",
  "serde_test",
@@ -757,7 +757,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "1.1.0"
+version = "1.2.0-alpha.1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -766,7 +766,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "1.1.0"
+version = "1.2.0-alpha.1"
 dependencies = [
  "nalgebra 0.30.1",
  "ndarray",
@@ -774,7 +774,7 @@ dependencies = [
  "qoqo_calculator",
  "quote",
  "rand",
- "roqoqo 1.1.0",
+ "roqoqo 1.2.0-alpha.1",
  "syn",
 ]
 

@@ -2,6 +2,10 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.2.0-alpha.1
+
+* Preparing for 1.2.0
+
 ## 1.1.0
 
 ### Changed v1.1.0
