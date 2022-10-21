@@ -695,7 +695,7 @@ dependencies = [
  "qoqo_calculator",
  "quote",
  "rand",
- "roqoqo-derive 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "roqoqo-derive 1.0.0",
  "serde",
  "syn",
  "thiserror",
@@ -718,6 +718,8 @@ dependencies = [
  "quote",
  "rand",
  "rand_distr",
+ "roqoqo 1.0.0",
+ "roqoqo-derive 1.0.0",
  "roqoqo-derive 1.1.0",
  "serde",
  "serde_json",
@@ -730,7 +732,9 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "1.1.0"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c799726c6f2553b8145b671b57494efdc6a1bd2c84fcbf7e8313f09982fe5060"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -740,8 +744,6 @@ dependencies = [
 [[package]]
 name = "roqoqo-derive"
 version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "061f43730ca0bfaf7c96813f1a833a0dfba4e12f9d41a5aa5fb8281c7bc38888"
 dependencies = [
  "proc-macro2",
  "quote",
