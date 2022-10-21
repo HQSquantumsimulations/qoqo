@@ -1560,7 +1560,7 @@ limitations under the License.
 
 
 ====================================================
-getrandom 0.2.7
+getrandom 0.2.8
 https://github.com/rust-random/getrandom
 by The Rand Project Developers
 A small cross-platform library for retrieving random data from system source
@@ -5889,7 +5889,7 @@ limitations under the License.
 
 
 ====================================================
-parking_lot_core 0.9.3
+parking_lot_core 0.9.4
 https://github.com/Amanieu/parking_lot
 by Amanieu d'Antras <amanieu@gmail.com>
 An advanced API for creating custom synchronization primitives.
@@ -12845,7 +12845,7 @@ limitations under the License.
 
 
 ====================================================
-serde 1.0.145
+serde 1.0.146
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A generic serialization/deserialization framework
@@ -13084,7 +13084,7 @@ limitations under the License.
 
 
 ====================================================
-serde_derive 1.0.145
+serde_derive 1.0.146
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Macros 1.1 implementation of #[derive(Serialize, Deserialize)]
@@ -13323,7 +13323,7 @@ limitations under the License.
 
 
 ====================================================
-serde_json 1.0.86
+serde_json 1.0.87
 https://github.com/serde-rs/json
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A JSON serialization file format
@@ -13562,7 +13562,7 @@ limitations under the License.
 
 
 ====================================================
-serde_test 1.0.145
+serde_test 1.0.146
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Token De/Serializer for testing De/Serialize implementations
@@ -14254,7 +14254,7 @@ limitations under the License.
 
 
 ====================================================
-syn 1.0.102
+syn 1.0.103
 https://github.com/dtolnay/syn
 by David Tolnay <dtolnay@gmail.com>
 Parser for Rust source code
@@ -16732,13 +16732,13 @@ Permission is granted to anyone to use this software for any purpose, including 
 
 
 ====================================================
-windows-sys 0.36.1
+windows-sys 0.42.0
 https://github.com/microsoft/windows-rs
 by Microsoft
 Rust for Windows
 License: MIT OR Apache-2.0
 ----------------------------------------------------
-license-apache:
+license-apache-2.0:
 
                                  Apache License
                            Version 2.0, January 2004
@@ -16969,35 +16969,49 @@ license-mit:
 
 
 ====================================================
-windows_aarch64_msvc 0.36.1
+windows_aarch64_gnullvm 0.42.0
 https://github.com/microsoft/windows-rs
 by Microsoft
 Code gen support for the windows crate
 License: MIT OR Apache-2.0
 
 ====================================================
-windows_i686_gnu 0.36.1
+windows_aarch64_msvc 0.42.0
 https://github.com/microsoft/windows-rs
 by Microsoft
 Code gen support for the windows crate
 License: MIT OR Apache-2.0
 
 ====================================================
-windows_i686_msvc 0.36.1
+windows_i686_gnu 0.42.0
 https://github.com/microsoft/windows-rs
 by Microsoft
 Code gen support for the windows crate
 License: MIT OR Apache-2.0
 
 ====================================================
-windows_x86_64_gnu 0.36.1
+windows_i686_msvc 0.42.0
 https://github.com/microsoft/windows-rs
 by Microsoft
 Code gen support for the windows crate
 License: MIT OR Apache-2.0
 
 ====================================================
-windows_x86_64_msvc 0.36.1
+windows_x86_64_gnu 0.42.0
+https://github.com/microsoft/windows-rs
+by Microsoft
+Code gen support for the windows crate
+License: MIT OR Apache-2.0
+
+====================================================
+windows_x86_64_gnullvm 0.42.0
+https://github.com/microsoft/windows-rs
+by Microsoft
+Code gen support for the windows crate
+License: MIT OR Apache-2.0
+
+====================================================
+windows_x86_64_msvc 0.42.0
 https://github.com/microsoft/windows-rs
 by Microsoft
 Code gen support for the windows crate

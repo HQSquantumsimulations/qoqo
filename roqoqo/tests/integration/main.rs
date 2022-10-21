@@ -26,5 +26,8 @@ mod devices;
 mod quantum_program;
 
 #[cfg(test)]
+mod compatability;
+
+#[cfg(test)]
 #[cfg(feature = "circuitdag")]
 mod circuitdag;
