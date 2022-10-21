@@ -2175,6 +2175,8 @@ pub struct PhaseShiftedControlledPhase {
     phi: CalculatorFloat,
 }
 
+impl super::ImplementedIn1point2 for PhaseShiftedControlledPhase {}
+
 #[allow(non_upper_case_globals)]
 const TAGS_PhaseShiftedControlledPhase: &[&str; 4] = &[
     "Operation",
