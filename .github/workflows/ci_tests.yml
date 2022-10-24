@@ -19,7 +19,7 @@ jobs:
         profile: minimal
         toolchain: stable
         default: true
-    - uses: Swatinem/rust-cache@v2.0.0
+    - uses: Swatinem/rust-cache@v2.0.1
     - name: Install dependencies
       run: |
         pip install maturin pytest numpy
@@ -37,7 +37,7 @@ jobs:
           profile: minimal
           toolchain: stable
           components: clippy
-      - uses: Swatinem/rust-cache@v2.0.0
+      - uses: Swatinem/rust-cache@v2.0.1
       - run: cargo clippy -- -D warnings
 
   unittests_check:
@@ -65,7 +65,7 @@ jobs:
           target: ${{ matrix.combinations.rust }}
           default: true
           components: rustfmt
-      - uses: Swatinem/rust-cache@v2.0.0
+      - uses: Swatinem/rust-cache@v2.0.1
       - uses: actions/setup-python@v4.2.0
         with:
           python-version: ${{ matrix.python.py }}
@@ -90,7 +90,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: Swatinem/rust-cache@v2.0.0
+      - uses: Swatinem/rust-cache@v2.0.1
       - run: |
           cd ./compatibility_test/
           cargo test
@@ -128,7 +128,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: Swatinem/rust-cache@v2.0.0
+      - uses: Swatinem/rust-cache@v2.0.1
       - uses: actions/setup-python@v4.2.0
         with:
           python-version: ${{ matrix.python.py }}
@@ -162,7 +162,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: Swatinem/rust-cache@v2.0.0
+      - uses: Swatinem/rust-cache@v2.0.1
       - uses: actions/setup-python@v4.2.0
         with:
           python-version: ${{ matrix.python.py }}
@@ -198,7 +198,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: Swatinem/rust-cache@v2.0.0
+      - uses: Swatinem/rust-cache@v2.0.1
       - uses: actions/setup-python@v4.2.0
         with:
           python-version: ${{ matrix.python.py }}
@@ -231,7 +231,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: Swatinem/rust-cache@v2.0.0
+      - uses: Swatinem/rust-cache@v2.0.1
       - uses: actions/setup-python@v4.1.0
         with:
           python-version: ${{ matrix.python.py }}
@@ -269,7 +269,7 @@ jobs:
           toolchain: stable
           target: ${{ matrix.combinations.rust }}
           default: true
-      - uses: Swatinem/rust-cache@v2.0.0
+      - uses: Swatinem/rust-cache@v2.0.1
       - uses: actions/setup-python@v4.1.0
         with:
           python-version: ${{ matrix.python.py }}
@@ -294,7 +294,7 @@ jobs:
           toolchain: stable
           target: x86_64-unknown-linux-gnu
           default: true
-      - uses: Swatinem/rust-cache@v2.0.0
+      - uses: Swatinem/rust-cache@v2.0.1
       - run: |
           cd roqoqo
           cargo test --doc --locked
@@ -309,7 +309,7 @@ jobs:
             toolchain: stable
             components: llvm-tools-preview
             override: true
-      - uses: Swatinem/rust-cache@v2.0.0
+      - uses: Swatinem/rust-cache@v2.0.1
       - uses: actions/setup-python@v4.1.0
         with:
           python-version: 3.9
