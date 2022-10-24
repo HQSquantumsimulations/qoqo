@@ -526,30 +526,3 @@ pub struct PhaseShiftedControlledZ {
     target: usize,
     phi: CalculatorFloat,
 }
-
-/// Implements the phase-shifted controlled PhaseShift gate.
-///
-/// The unitary matrix representation is:
-///
-/// .. math::
-///     U = \begin{pmatrix}
-///         1 & 0 & 0 & 0 \\\\
-///         0 & e^{i \phi} & 0 & 0 \\\\
-///         0 & 0 & e^{i \phi} & 0 \\\\
-///         0 & 0 & 0 & e^{i(2\cdot\phi + \theta)}
-///         \end{pmatrix}
-///
-/// Args:
-///     control (int): The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the phase-shift on the target qubit.
-///     target (int):: The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
-///     theta (CalculatorFloat): The phase rotation $\theta$.
-///     phi (CalculatorFloat): The single qubit phase $\phi$.
-///
-#[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, Rotate, OperateGate, OperateTwoQubitGate)]
-pub struct PhaseShiftedControlledPhase {
-    control: usize,
-    target: usize,
-    theta: CalculatorFloat,
-    phi: CalculatorFloat,
-}
