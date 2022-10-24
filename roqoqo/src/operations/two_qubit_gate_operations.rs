@@ -2088,8 +2088,8 @@ impl OperateGate for PhaseShiftedControlledZ {
         let phi: f64 = f64::try_from(self.phi.clone())?;
         let cos: f64 = phi.cos();
         let sin: f64 = phi.sin();
-        let cos2: f64 = (2.0 * phi - PI).cos();
-        let sin2: f64 = (2.0 * phi - PI).sin();
+        let cos2: f64 = (2.0 * phi + PI).cos();
+        let sin2: f64 = (2.0 * phi + PI).sin();
         Ok(array![
             [
                 Complex64::new(1.0, 0.0),
@@ -2142,6 +2142,117 @@ impl OperateTwoQubitGate for PhaseShiftedControlledZ {
                 CalculatorFloat::ZERO,
                 CalculatorFloat::ZERO,
                 CalculatorFloat::FRAC_PI_4,
+            ],
+            circuit_before: Some(circuit_b),
+            circuit_after: Some(circuit_a),
+        }
+    }
+}
+
+/// Implements the phase-shifted controlled PhaseShift gate.
+///
+#[allow(clippy::upper_case_acronyms)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateTwoQubit,
+    roqoqo_derive::Rotate,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct PhaseShiftedControlledPhase {
+    /// The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the phase-shift on the target qubit.
+    control: usize,
+    /// The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
+    target: usize,
+    /// The phase rotation θ.
+    theta: CalculatorFloat,
+    /// The single qubit phase φ.
+    phi: CalculatorFloat,
+}
+
+impl super::ImplementedIn1point2 for PhaseShiftedControlledPhase {}
+
+#[allow(non_upper_case_globals)]
+const TAGS_PhaseShiftedControlledPhase: &[&str; 4] = &[
+    "Operation",
+    "GateOperation",
+    "TwoQubitGateOperation",
+    "PhaseShiftedControlledPhase",
+];
+
+/// Trait for all Operations acting with a unitary gate on a set of qubits.
+impl OperateGate for PhaseShiftedControlledPhase {
+    /// Returns unitary matrix of the gate.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Array2<Complex64>)` - The unitary matrix representation of the gate.
+    /// * `Err(RoqoqoError)` - The conversion of parameters to f64 failed.
+    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
+        // exp(i*x) = cos(x)+i*sin(x)
+        let phi: f64 = f64::try_from(self.phi.clone())?;
+        let theta: f64 = f64::try_from(self.theta.clone())?;
+        let cos: f64 = phi.cos();
+        let sin: f64 = phi.sin();
+        let cos2: f64 = (2.0 * phi + theta).cos();
+        let sin2: f64 = (2.0 * phi + theta).sin();
+        Ok(array![
+            [
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(cos, sin),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(cos, sin),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(cos2, sin2)
+            ],
+        ])
+    }
+}
+
+/// Trait for all gate operations acting on exactly two qubits.
+impl OperateTwoQubitGate for PhaseShiftedControlledPhase {
+    /// Returns [KakDecomposition] of the gate.
+    ///
+    /// # Returns
+    ///
+    /// * struct `KakDecomposition { global_phase, k_vector, circuit_before, circuit_after }`
+    fn kak_decomposition(&self) -> KakDecomposition {
+        let mut circuit_b = Circuit::new();
+        circuit_b += RotateZ::new(self.control, self.theta.clone() / 2.0);
+        circuit_b += RotateZ::new(self.target, self.theta.clone() / 2.0);
+
+        let mut circuit_a = Circuit::new();
+        circuit_a += RotateZ::new(self.control, self.phi.clone());
+        circuit_a += RotateZ::new(self.target, self.phi.clone());
+
+        let g: CalculatorFloat = self.theta.clone() / 4.0 + self.phi.clone();
+        KakDecomposition {
+            global_phase: g,
+            k_vector: [
+                CalculatorFloat::ZERO,
+                CalculatorFloat::ZERO,
+                self.theta.clone() / 4.0,
             ],
             circuit_before: Some(circuit_b),
             circuit_after: Some(circuit_a),
