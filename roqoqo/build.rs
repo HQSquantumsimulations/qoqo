@@ -54,6 +54,10 @@ struct Visitor {
     // These operations will only be added at end of automatically created enums
     // to maintain compatibility with bincode encoding
     roqoqo_1_1_operations: Vec<Ident>,
+    // Operations that have only been introduced in roqoqoq 1.2.0
+    // These operations will only be added at end of automatically created enums
+    // to maintain compatibility with bincode encoding
+    roqoqo_1_2_operations: Vec<Ident>,
 }
 
 impl Visitor {
@@ -74,6 +78,7 @@ impl Visitor {
             two_qubit_gate_operations: Vec::new(),
             multi_qubit_gate_operations: Vec::new(),
             roqoqo_1_1_operations: Vec::new(),
+            roqoqo_1_2_operations: Vec::new(),
         }
     }
 }
@@ -221,6 +226,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 if trait_name.as_str() == "ImplementedIn1point1" {
                     self.roqoqo_1_1_operations.push(id.clone());
                 }
+                if trait_name.as_str() == "ImplementedIn1point2" {
+                    self.roqoqo_1_2_operations.push(id.clone());
+                }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());
                 }
@@ -271,7 +279,7 @@ fn main() {
         .operations
         .clone()
         .into_iter()
-        .filter(|v| !vis.roqoqo_1_1_operations.contains(v))
+       .filter(|v| !vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v))
         .map(|v| {
             let msg = format!("Variant for {}", v);
             quote! {
@@ -281,8 +289,20 @@ fn main() {
         });
     let operations_quotes_1_1 = vis
         .operations
+        .clone()
         .into_iter()
-        .filter(|v| vis.roqoqo_1_1_operations.contains(v))
+        .filter(|v| vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v))
+        .map(|v| {
+            let msg = format!("Variant for {}", v);
+            quote! {
+            #[allow(clippy::upper_case_acronyms)]
+            #[doc = #msg]
+            #v(#v)}
+        });
+    let operations_quotes_1_2 = vis
+        .operations
+        .into_iter()
+        .filter(|v| vis.roqoqo_1_2_operations.contains(v))
         .map(|v| {
             let msg = format!("Variant for {}", v);
             quote! {
@@ -317,7 +337,7 @@ fn main() {
         .pragma_operations
         .clone()
         .into_iter()
-        .filter(|v| !vis.roqoqo_1_1_operations.contains(v))
+        .filter(|v| !vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v))
         .map(|v| {
             let msg = format!("Variant for {}", v);
             quote! {
@@ -327,8 +347,19 @@ fn main() {
     // Construct TokenStreams for variants of pragma enum
     let pragma_operations_quotes_1_1 = vis
         .pragma_operations
+        .clone()
         .into_iter()
-        .filter(|v| vis.roqoqo_1_1_operations.contains(v))
+        .filter(|v| vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v))
+        .map(|v| {
+            let msg = format!("Variant for {}", v);
+            quote! {
+            #[doc = #msg]
+            #v(#v)}
+        });
+    let pragma_operations_quotes_1_2 = vis
+        .pragma_operations
+        .into_iter()
+        .filter(|v| vis.roqoqo_1_2_operations.contains(v))
         .map(|v| {
             let msg = format!("Variant for {}", v);
             quote! {
@@ -370,7 +401,7 @@ fn main() {
         .definitions
         .clone()
         .into_iter()
-        .filter(|v| !vis.roqoqo_1_1_operations.contains(v))
+        .filter(|v| !vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v))
         .map(|v| {
             let msg = format!("Variant for {}", v);
             quote! {
@@ -380,8 +411,20 @@ fn main() {
     // Construct TokenStreams for variants of definition enum
     let definitions_quotes_1_1 = vis
         .definitions
+        .clone()
         .into_iter()
-        .filter(|v| vis.roqoqo_1_1_operations.contains(v))
+        .filter(|v| vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v))
+        .map(|v| {
+            let msg = format!("Variant for {}", v);
+            quote! {
+                #[doc = #msg]
+            #v(#v)}
+        });
+    // Construct TokenStreams for variants of definition enum
+    let definitions_quotes_1_2 = vis
+        .definitions
+        .into_iter()
+        .filter(|v| vis.roqoqo_1_2_operations.contains(v))
         .map(|v| {
             let msg = format!("Variant for {}", v);
             quote! {
@@ -430,7 +473,8 @@ fn main() {
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum Operation {
             #(#operations_quotes),* ,
-            #(#operations_quotes_1_1),*
+            #(#operations_quotes_1_1),* ,
+            #(#operations_quotes_1_2),*
         }
 
         /// Enum of all Operations implementing [OperateSingleQubit]
@@ -463,7 +507,8 @@ fn main() {
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         pub enum PragmaOperation {
             #(#pragma_operations_quotes),* ,
-            #(#pragma_operations_quotes_1_1),*
+            #(#pragma_operations_quotes_1_1),* ,
+            #(#pragma_operations_quotes_1_2),*
         }
 
         /// Enum of all Operations implementing [OperatePragmaNoise]
@@ -505,7 +550,8 @@ fn main() {
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum Definition {
             #(#definitions_quotes),* ,
-            #(#definitions_quotes_1_1),*
+            #(#definitions_quotes_1_1),* ,
+            #(#definitions_quotes_1_2),*
         }
 
         /// Enum of all Operations implementing [OperateConstantGate]

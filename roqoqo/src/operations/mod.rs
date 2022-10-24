@@ -701,6 +701,9 @@ pub trait OperateMultiQubitGate:
 /// Marker trait to show that some operation has been implemented in roqoqo 1.1.0
 pub(crate) trait ImplementedIn1point1: Operate {}
 
+/// Marker trait to show that some operation has been implemented in roqoqo 1.2.0
+pub(crate) trait ImplementedIn1point2: Operate {}
+
 #[cfg(feature = "dynamic")]
 /// A wrapper for Operate trait objects.
 ///
