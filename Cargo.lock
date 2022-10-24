@@ -67,17 +67,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "compatibility_test"
-version = "1.2.0-alpha.1"
-dependencies = [
- "bincode",
- "qoqo_calculator",
- "roqoqo 1.0.0",
- "roqoqo 1.2.0-alpha.1",
- "test-case",
-]
-
-[[package]]
 name = "ctor"
 version = "0.1.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -575,7 +564,7 @@ dependencies = [
  "qoqo_calculator",
  "qoqo_calculator_pyo3",
  "quote",
- "roqoqo 1.2.0-alpha.1",
+ "roqoqo",
  "serde",
  "serde_json",
  "syn",
@@ -683,26 +672,6 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6b298dab631f5cd4dbb92811398f20accde321f56b96347de413fd888965144c"
-dependencies = [
- "bincode",
- "nalgebra",
- "ndarray",
- "num-complex",
- "proc-macro2",
- "qoqo_calculator",
- "quote",
- "rand",
- "roqoqo-derive 1.1.0",
- "serde",
- "syn",
- "thiserror",
-]
-
-[[package]]
-name = "roqoqo"
 version = "1.2.0-alpha.1"
 dependencies = [
  "async-trait",
@@ -718,7 +687,7 @@ dependencies = [
  "quote",
  "rand",
  "rand_distr",
- "roqoqo-derive 1.2.0-alpha.1",
+ "roqoqo-derive",
  "serde",
  "serde_json",
  "serde_test",
@@ -726,17 +695,6 @@ dependencies = [
  "test-case",
  "thiserror",
  "typetag",
-]
-
-[[package]]
-name = "roqoqo-derive"
-version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "061f43730ca0bfaf7c96813f1a833a0dfba4e12f9d41a5aa5fb8281c7bc38888"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]
@@ -758,7 +716,7 @@ dependencies = [
  "qoqo_calculator",
  "quote",
  "rand",
- "roqoqo 1.2.0-alpha.1",
+ "roqoqo",
  "syn",
 ]
 
