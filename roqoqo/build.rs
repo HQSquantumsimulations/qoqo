@@ -271,7 +271,7 @@ fn main() {
         .operations
         .clone()
         .into_iter()
-       .filter(|v| !vis.roqoqo_1_1_operations.contains(v))
+        .filter(|v| !vis.roqoqo_1_1_operations.contains(v))
         .map(|v| {
             let msg = format!("Variant for {}", v);
             quote! {
