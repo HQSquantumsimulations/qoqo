@@ -74,6 +74,27 @@ jobs:
           cargo test --workspace --no-default-features --locked
           cargo fmt --all -- --check
 
+  unittests_check_compatibility:
+    name: unittests_check-${{ matrix.combinations.runs_on }}
+    runs-on: ${{ matrix.combinations.runs_on }}
+    strategy:
+      matrix:
+        combinations: [
+          { runs_on: "ubuntu-latest",  rust: "x86_64-unknown-linux-gnu" },
+        ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          target: ${{ matrix.combinations.rust }}
+          default: true
+      - uses: Swatinem/rust-cache@v2.0.0
+      - run: |
+          cd ./compatibility_test/
+          cargo test
+
   cargo-deny:
     runs-on: ubuntu-latest
     steps:
