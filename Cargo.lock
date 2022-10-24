@@ -67,17 +67,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "compatibility_test"
-version = "1.2.0-alpha.1"
-dependencies = [
- "bincode",
- "qoqo_calculator",
- "roqoqo 1.0.0",
- "roqoqo 1.2.0-alpha.1",
- "test-case",
-]
-
-[[package]]
 name = "ctor"
 version = "0.1.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -259,9 +248,9 @@ checksum = "4217ad341ebadf8d8e724e264f13e593e0648f5b3e94b3896a5df283be015ecc"
 
 [[package]]
 name = "libc"
-version = "0.2.135"
+version = "0.2.136"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "68783febc7782c6c5cb401fbda4de5a9898be1762314da0bb2c10ced61f18b0c"
+checksum = "55edcf6c0bb319052dea84732cf99db461780fd5e8d3eb46ab6ff312ab31f197"
 
 [[package]]
 name = "libm"
@@ -301,22 +290,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5aa361d4faea93603064a027415f07bd8e1d5c88c9fbf68bf56a285428fd79ce"
 dependencies = [
  "autocfg",
-]
-
-[[package]]
-name = "nalgebra"
-version = "0.30.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4fb2d0de08694bed883320212c18ee3008576bfe8c306f4c3c4a58b4876998be"
-dependencies = [
- "approx",
- "matrixmultiply",
- "nalgebra-macros",
- "num-complex",
- "num-rational",
- "num-traits",
- "simba",
- "typenum",
 ]
 
 [[package]]
@@ -580,7 +553,7 @@ name = "qoqo"
 version = "1.2.0-alpha.1"
 dependencies = [
  "bincode",
- "nalgebra 0.30.1",
+ "nalgebra",
  "ndarray",
  "num-complex",
  "numpy",
@@ -591,7 +564,7 @@ dependencies = [
  "qoqo_calculator",
  "qoqo_calculator_pyo3",
  "quote",
- "roqoqo 1.2.0-alpha.1",
+ "roqoqo",
  "serde",
  "serde_json",
  "syn",
@@ -699,33 +672,13 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6b298dab631f5cd4dbb92811398f20accde321f56b96347de413fd888965144c"
-dependencies = [
- "bincode",
- "nalgebra 0.31.2",
- "ndarray",
- "num-complex",
- "proc-macro2",
- "qoqo_calculator",
- "quote",
- "rand",
- "roqoqo-derive 1.0.0",
- "serde",
- "syn",
- "thiserror",
-]
-
-[[package]]
-name = "roqoqo"
 version = "1.2.0-alpha.1"
 dependencies = [
  "async-trait",
  "bincode",
  "dyn-clone",
  "futures",
- "nalgebra 0.30.1",
+ "nalgebra",
  "ndarray",
  "num-complex",
  "petgraph",
@@ -734,7 +687,7 @@ dependencies = [
  "quote",
  "rand",
  "rand_distr",
- "roqoqo-derive 1.2.0-alpha.1",
+ "roqoqo-derive",
  "serde",
  "serde_json",
  "serde_test",
@@ -742,17 +695,6 @@ dependencies = [
  "test-case",
  "thiserror",
  "typetag",
-]
-
-[[package]]
-name = "roqoqo-derive"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c799726c6f2553b8145b671b57494efdc6a1bd2c84fcbf7e8313f09982fe5060"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]
@@ -768,13 +710,13 @@ dependencies = [
 name = "roqoqo-test"
 version = "1.2.0-alpha.1"
 dependencies = [
- "nalgebra 0.30.1",
+ "nalgebra",
  "ndarray",
  "proc-macro2",
  "qoqo_calculator",
  "quote",
  "rand",
- "roqoqo 1.2.0-alpha.1",
+ "roqoqo",
  "syn",
 ]
 
@@ -801,18 +743,18 @@ checksum = "d29ab0c6d3fc0ee92fe66e2d99f700eab17a8d57d1c1d3b748380fb20baa78cd"
 
 [[package]]
 name = "serde"
-version = "1.0.146"
+version = "1.0.147"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6df50b7a60a0ad48e1b42eb38373eac8ff785d619fb14db917b4e63d5439361f"
+checksum = "d193d69bae983fc11a79df82342761dfbf28a99fc8d203dca4c3c1b590948965"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.146"
+version = "1.0.147"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a714fd32ba1d66047ce7d53dabd809e9922d538f9047de13cc4cffca47b36205"
+checksum = "4f1d362ca8fc9c3e3a7484440752472d68a6caa98f1ab81d99b5dfe517cec852"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -832,9 +774,9 @@ dependencies = [
 
 [[package]]
 name = "serde_test"
-version = "1.0.146"
+version = "1.0.147"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "15e7018257a3ef78bdfda9ac60f00a374913f7e019b0dde98d281d28f75e2bc2"
+checksum = "641666500e4e6fba7b91b73651a375cb53579468ab3c38389289b802797cad94"
 dependencies = [
  "serde",
 ]
