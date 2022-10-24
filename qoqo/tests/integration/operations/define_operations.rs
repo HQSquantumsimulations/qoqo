@@ -263,7 +263,6 @@ fn test_pyo3_name(input_definition: Operation) {
 #[test_case(Operation::from(DefinitionUsize::new(String::from("ro"), 1, false)); "DefinitionUsize")]
 #[test_case(Operation::from(DefinitionBit::new(String::from("ro"), 1, false)); "DefinitionBit")]
 fn test_pyo3_length(input_definition: Operation) {
-    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let length_op: &usize =
@@ -279,7 +278,6 @@ fn test_pyo3_length(input_definition: Operation) {
 #[test_case(Operation::from(DefinitionUsize::new(String::from("ro"), 1, false)); "DefinitionUsize")]
 #[test_case(Operation::from(DefinitionBit::new(String::from("ro"), 1, false)); "DefinitionBit")]
 fn test_pyo3_is_output(input_definition: Operation) {
-    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         assert!(
@@ -349,7 +347,6 @@ fn test_pyo3_input_bit_value() {
 #[test_case(Operation::from(InputSymbolic::new(String::from("ro"), 1.0)); "InputSymbolic")]
 #[test_case(Operation::from(InputBit::new(String::from("ro"), 1, true)); "InputBit")]
 fn test_pyo3_involved_qubits(input_definition: Operation) {
-    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let involved_op: HashSet<String> = HashSet::extract(
@@ -387,7 +384,6 @@ fn test_pyo3_format_repr(input_definition: Operation, format_repr: &str) {
 /// Test InputSymbolic format and repr functions
 #[test]
 fn test_pyo3_input_symbolic_format_repr() {
-    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(Operation::from(InputSymbolic::new(
             String::from("ro"),
@@ -413,7 +409,6 @@ fn test_pyo3_input_symbolic_format_repr() {
 #[test_case(Operation::from(InputSymbolic::new(String::from("ro"), 1.0)); "InputSymbolic")]
 #[test_case(Operation::from(InputBit::new(String::from("ro"), 1, true)); "InputBit")]
 fn test_pyo3_copy_deepcopy(input_definition: Operation) {
-    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let copy_op = operation.call_method0(py, "__copy__").unwrap();
@@ -482,7 +477,6 @@ fn test_pyo3_hqslang(input_definition: Operation, hqslang_param: String) {
 #[test_case(Operation::from(InputSymbolic::new(String::from("ro"), 1.0)); "InputSymbolic")]
 #[test_case(Operation::from(InputBit::new(String::from("ro"), 1, true)); "InputBit")]
 fn test_pyo3_is_parametrized(input_definition: Operation) {
-    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         assert!(!bool::extract(
@@ -503,7 +497,6 @@ fn test_pyo3_is_parametrized(input_definition: Operation) {
 #[test_case(Operation::from(InputSymbolic::new(String::from("ro"), 1.0)); "InputSymbolic")]
 #[test_case(Operation::from(InputBit::new(String::from("ro"), 1, true)); "InputBit")]
 fn test_pyo3_substitute_parameters(input_definition: Operation) {
-    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let mut substitution_dict: HashMap<&str, f64> = HashMap::new();
