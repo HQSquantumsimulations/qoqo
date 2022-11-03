@@ -279,7 +279,9 @@ fn main() {
         .operations
         .clone()
         .into_iter()
-        .filter(|v| !vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v))
+        .filter(|v| {
+            !vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v)
+        })
         .map(|v| {
             let msg = format!("Variant for {}", v);
             quote! {
@@ -337,7 +339,9 @@ fn main() {
         .pragma_operations
         .clone()
         .into_iter()
-        .filter(|v| !vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v))
+        .filter(|v| {
+            !vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v)
+        })
         .map(|v| {
             let msg = format!("Variant for {}", v);
             quote! {
@@ -401,7 +405,9 @@ fn main() {
         .definitions
         .clone()
         .into_iter()
-        .filter(|v| !vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v))
+        .filter(|v| {
+            !vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v)
+        })
         .map(|v| {
             let msg = format!("Variant for {}", v);
             quote! {
