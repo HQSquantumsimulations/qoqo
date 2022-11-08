@@ -508,3 +508,17 @@ fn test_successors() {
     assert_eq!(iter.next().unwrap(), d.into());
     assert!(iter.next().is_none());
 }
+
+#[test]
+fn test_petgraph() {
+    let mut dag: CircuitDag = CircuitDag::with_capacity(DEFAULT_NODE_NUMBER, DEFAULT_EDGE_NUMBER);
+
+    let a = dag.add_to_back(Operation::from(PauliX::new(0))).unwrap();
+
+    let petgraph = dag.petgraph();
+
+    assert_eq!(
+        petgraph.node_weight(a.into()).unwrap(),
+        &Operation::from(PauliX::new(0))
+    );
+}

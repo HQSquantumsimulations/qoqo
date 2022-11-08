@@ -707,6 +707,12 @@ impl CircuitDag {
     pub fn get(&self, node: NodeIndex<usize>) -> Option<&Operation> {
         self.graph.node_weight(node.into())
     }
+
+    /// Returns a reference to the underlying Petgraph Graph class.
+    ///
+    pub fn petgraph(&self) -> &Graph<Operation, (), Directed, usize> {
+        &self.graph
+    }
 }
 
 /// Creates a new CircuitDag from a given Circuit.
