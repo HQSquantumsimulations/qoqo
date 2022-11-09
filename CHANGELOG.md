@@ -5,6 +5,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 ## 1.2.0-alpha.1
 
 * Preparing for 1.2.0 and updated nalgebra to 0.31
+* Added Petgraph's getter for Circuitdag
 
 ## 1.1.0
 
