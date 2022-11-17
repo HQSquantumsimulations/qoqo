@@ -12,22 +12,20 @@
 # the License.
 import pytest
 import sys
-import numpy as np
-import numpy.testing as npt
 from qoqo import operations as ops
 from qoqo import Circuit
-from typing import List
 
 
 @pytest.mark.parametrize(
     'measurement',
     [(ops.MeasureQubit(qubit=0, readout='ro', readout_index=0), int, 0),
      (ops.PragmaRepeatedMeasurement(readout='ro', number_measurements=10), int, 0),
-     (ops.PragmaGetPauliProduct(qubit_paulis={0: 1, 1: 2}, readout='ro', circuit=Circuit()), float, 1),
+     (ops.PragmaGetPauliProduct(
+        qubit_paulis={0: 1, 1: 2}, readout='ro', circuit=Circuit()), float, 1),
      (ops.PragmaGetOccupationProbability(readout='ro', circuit=Circuit()), float, 1),
      (ops.PragmaGetStateVector(readout='ro', circuit=Circuit()), complex, 2),
      (ops.PragmaGetDensityMatrix(readout='ro', circuit=Circuit()), complex, 2),
-    ])
+     ])
 def test_circuit(measurement):
     """Test building a circuit"""
     circuit = Circuit()
@@ -37,6 +35,7 @@ def test_circuit(measurement):
     circuit += ops.PauliX(qubit=0)
     circuit += measurement[0]
     assert len(circuit) > 0
+
 
 if __name__ == '__main__':
     pytest.main(sys.argv)

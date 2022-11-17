@@ -257,6 +257,12 @@ fn test_decoherence_rates(device: Py<PyAny>) {
         // let readonly_invalid = pyarray_invalid.readonly();
         let error = device.call_method1(py, "set_qubit_decoherence_rates", (0, pyarray_invalid));
         assert!(error.is_err());
+        let error = device.call_method1(py, "add_damping", (20, 1));
+        assert!(error.is_err());
+        let error = device.call_method1(py, "add_dephasing", (20, 1));
+        assert!(error.is_err());
+        let error = device.call_method1(py, "add_depolarising", (20, 1));
+        assert!(error.is_err());
 
         let pyarray_testmatrix: Array2<f64> =
             array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
