@@ -917,38 +917,36 @@ fn test_rotatey_abp(theta: f64, cos: f64, sin: f64) {
     CalculatorFloat::from(0),
     CalculatorFloat::from(0),
     CalculatorFloat::from(0),
-    1.0, 0.0, 0.0, 0.0, 0.0; "theta = 0")]
+    (1.0, 0.0), (0.0, 0.0), 0.0; "theta = 0")]
 #[test_case(
     CalculatorFloat::from(PI),
     CalculatorFloat::from(0),
     CalculatorFloat::from(0),
-    0.0, -1.0, 0.0, 0.0, 0.0; "theta = PI")]
+    (0.0, -1.0), (0.0, 0.0), 0.0; "theta = PI")]
 #[test_case(
     CalculatorFloat::from(PI),
     CalculatorFloat::from(PI / 2.0),
     CalculatorFloat::from(0),
-    0.0, 0.0, 0.0, -1.0, 0.0; "theta_sp = PI/2")]
+    (0.0, 0.0), (0.0, -1.0), 0.0; "theta_sp = PI/2")]
 #[test_case(
     CalculatorFloat::from(PI),
     CalculatorFloat::from(PI / 2.0),
     CalculatorFloat::from(PI / 2.0),
-    0.0, 0.0, 1.0, 0.0, 0.0; "phi = PI/2")]
+    (0.0, 0.0), (1.0, 0.0), 0.0; "phi = PI/2")]
 fn test_rotatearoundsphericalaxis_abp(
     theta: CalculatorFloat,
     spherical_theta: CalculatorFloat,
     spherical_phi: CalculatorFloat,
-    alpha_r: f64,
-    alpha_i: f64,
-    beta_r: f64,
-    beta_i: f64,
+    alpha: (f64, f64),
+    beta: (f64, f64),
     global_phase: f64,
 ) {
     let gate = RotateAroundSphericalAxis::new(0, theta, spherical_theta, spherical_phi);
     // verify alpha, beta, global_phase as per definition
-    assert!((f64::try_from(gate.alpha_r()).unwrap() - alpha_r).abs() < EPSILON);
-    assert!((f64::try_from(gate.alpha_i()).unwrap() - alpha_i).abs() < EPSILON);
-    assert!((f64::try_from(gate.beta_r()).unwrap() - beta_r).abs() < EPSILON);
-    assert!((f64::try_from(gate.beta_i()).unwrap() - beta_i).abs() < EPSILON);
+    assert!((f64::try_from(gate.alpha_r()).unwrap() - alpha.0).abs() < EPSILON);
+    assert!((f64::try_from(gate.alpha_i()).unwrap() - alpha.1).abs() < EPSILON);
+    assert!((f64::try_from(gate.beta_r()).unwrap() - beta.0).abs() < EPSILON);
+    assert!((f64::try_from(gate.beta_i()).unwrap() - beta.1).abs() < EPSILON);
     assert_eq!(CalculatorFloat::from(global_phase), gate.global_phase());
 }
 
