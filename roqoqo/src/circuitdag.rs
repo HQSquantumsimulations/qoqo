@@ -26,6 +26,30 @@ use petgraph::Direction::{Incoming, Outgoing};
 
 /// Represents the Direct Acyclic Graph (DAG) of a Circuit.
 ///
+/// The order of execution of the operations contained in a quantum circuit matters.
+/// A CircuitDag instance of a roqoqo's Circuit shows the dependency of all the operations
+/// in the circuit.
+///
+/// For CircuitDag, the following functions are defined:
+/// * `with_capacity(node_number, edge_number)`: creates an empty CircuitDag with estimated capacity
+/// * `add_to_back(operation)`: adds an Operation to the back of the CircuitDag
+/// * `add_to_front(operation)`: adds an Operation to the front of the CircuitDag
+/// * `execution_blocked(already_executed_indices, index)`: returns the blocking elements of the execution of an Operation, the scope is just the whole graph
+/// * `blocking_predecessors(already_executed_indices, index)`: returns the blocking elements of the execution of an Operation, the scope is just the Operation's predecessors
+/// * `new_front_layer(already_executed_indices, front_layer_indices, index)`: given an Operation index, computes a new front layer when considering that Operation as executed
+/// * `parallel_blocks()`: returns an iterator over the possible parallel blocks in circuit that can be executed simultaneously
+/// * `successors(index)`: returns an iterator over all successors in the CircuitDag of a given node
+/// * `commuting_operators()`: returns a reference to the vector of commuting operations in CircuitDag
+/// * `first_parallel_block()`: returns a reference to the HashSet containing the nodes in the first parallel block
+/// * `last_parallel_block()`: returns a reference to the HashSet containing the nodes in the last parallel block
+/// * `first_operation_involving_qubit()`: returns a reference to the HashMap where a key represents a qubit and its value represents the first node that involves that qubit
+/// * `last_operation_involving_qubit()`: returns a reference to the HashMap where a key represents a qubit and its value represents the last node that involves that qubit
+/// * `first_operation_involving_classical()`: returns a reference to the HashMap where a key is composed by the name and the size of the classical register and its value represents the first node that involves that register
+/// * `last_operation_involving_classical()`: returns a reference to the HashMap where a key is composed by the name and the size of the classical register and its value represents the last node that involves that register
+/// * `get(index)`: returns a reference to the Operation contained in the indexed CircuitDag's node
+///
+/// Note: operations PragmaStartDecompositionBlock and PragmaStopDecompositionBlock are considered part of the graph.
+///
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct CircuitDag {
