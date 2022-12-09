@@ -47,6 +47,7 @@ qoqo.operations
       PauliZ
       PhaseShiftState0
       PhaseShiftState1
+      PhaseShiftedControlledPhase
       PhaseShiftedControlledZ
       PragmaActiveReset
       PragmaBoostNoise
