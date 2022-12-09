@@ -217,7 +217,8 @@ fn change_device_test() {
 #[test]
 fn all_to_all_generic() {
     let mut generic_device = GenericDevice::new(2);
-    let mut all_to_all = AllToAllDevice::new(2, &["RotateZ".to_string()], &["CNOT".to_string()], 1.0);
+    let mut all_to_all =
+        AllToAllDevice::new(2, &["RotateZ".to_string()], &["CNOT".to_string()], 1.0);
 
     generic_device
         .set_single_qubit_gate_time("RotateZ", 0, 1.0)
@@ -241,9 +242,24 @@ fn all_to_all_generic() {
         .unwrap();
     assert_eq!(generic_device, all_to_all.to_generic_device());
 
-    assert_eq!(all_to_all.add_damping(10, 0.1), Err(RoqoqoError::GenericError { msg: "Qubit 10 out of range for device of size 2".into() }));
-    assert_eq!(all_to_all.add_depolarising(10, 0.1), Err(RoqoqoError::GenericError { msg: "Qubit 10 out of range for device of size 2".into() }));
-    assert_eq!(all_to_all.add_dephasing(10, 0.1), Err(RoqoqoError::GenericError { msg: "Qubit 10 out of range for device of size 2".into() }));
+    assert_eq!(
+        all_to_all.add_damping(10, 0.1),
+        Err(RoqoqoError::GenericError {
+            msg: "Qubit 10 out of range for device of size 2".into()
+        })
+    );
+    assert_eq!(
+        all_to_all.add_depolarising(10, 0.1),
+        Err(RoqoqoError::GenericError {
+            msg: "Qubit 10 out of range for device of size 2".into()
+        })
+    );
+    assert_eq!(
+        all_to_all.add_dephasing(10, 0.1),
+        Err(RoqoqoError::GenericError {
+            msg: "Qubit 10 out of range for device of size 2".into()
+        })
+    );
 }
 
 #[test]
@@ -354,7 +370,22 @@ fn test_square_lattice() {
     let gen_dev = device.to_generic_device();
     assert_eq!(gen_dev.two_qubit_edges().len(), 4);
 
-    assert_eq!(device.add_damping(10, 0.1), Err(RoqoqoError::GenericError { msg: "Qubit 10 out of range for device of size 4".into() }));
-    assert_eq!(device.add_depolarising(10, 0.1), Err(RoqoqoError::GenericError { msg: "Qubit 10 out of range for device of size 4".into() }));
-    assert_eq!(device.add_dephasing(10, 0.1), Err(RoqoqoError::GenericError { msg: "Qubit 10 out of range for device of size 4".into() }));
+    assert_eq!(
+        device.add_damping(10, 0.1),
+        Err(RoqoqoError::GenericError {
+            msg: "Qubit 10 out of range for device of size 4".into()
+        })
+    );
+    assert_eq!(
+        device.add_depolarising(10, 0.1),
+        Err(RoqoqoError::GenericError {
+            msg: "Qubit 10 out of range for device of size 4".into()
+        })
+    );
+    assert_eq!(
+        device.add_dephasing(10, 0.1),
+        Err(RoqoqoError::GenericError {
+            msg: "Qubit 10 out of range for device of size 4".into()
+        })
+    );
 }
