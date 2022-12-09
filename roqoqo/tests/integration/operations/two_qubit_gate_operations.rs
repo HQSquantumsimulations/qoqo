@@ -1,4 +1,4 @@
-// Copyright © 2021 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2022 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -880,7 +880,7 @@ fn test_two_qubitgates_debug(message: &'static str, gate: Operation) {
     Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)),
     Operation::from(PhaseShiftedControlledPhase::new(1, 0, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase")]
 fn test_twoqubitgates_partialeq(gate1: Operation, gate2: Operation) {
-    assert!(gate1 == gate1);
+    assert!(gate1 == gate1.clone());
     assert_eq!(gate1, gate1.clone());
     assert_ne!(gate2, gate1);
     assert_ne!(gate1, gate2);

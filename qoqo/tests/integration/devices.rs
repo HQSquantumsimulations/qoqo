@@ -1,4 +1,4 @@
-// Copyright © 2021 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2022 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -256,6 +256,12 @@ fn test_decoherence_rates(device: Py<PyAny>) {
         let pyarray_invalid: &PyArray2<f64> = pyarray![py, [1.0], [2.0], [3.0]];
         // let readonly_invalid = pyarray_invalid.readonly();
         let error = device.call_method1(py, "set_qubit_decoherence_rates", (0, pyarray_invalid));
+        assert!(error.is_err());
+        let error = device.call_method1(py, "add_damping", (20, 1));
+        assert!(error.is_err());
+        let error = device.call_method1(py, "add_dephasing", (20, 1));
+        assert!(error.is_err());
+        let error = device.call_method1(py, "add_depolarising", (20, 1));
         assert!(error.is_err());
 
         let pyarray_testmatrix: Array2<f64> =
