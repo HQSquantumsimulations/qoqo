@@ -58,7 +58,12 @@ fn operate_qubits_struct(_ds: DataStruct, ident: Ident) -> TokenStream {
     // let fields_with_type = extract_fields_with_types(ds).into_iter();
     quote! {
         #[automatically_derived]
-        impl SupportedVersion for #ident{}
+        impl SupportedVersion for #ident{
+
+            fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+                (1, 0, 0)
+            }
+        }
 
     }
 }

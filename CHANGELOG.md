@@ -6,7 +6,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 * Activated circuitdag feature by default
 * Modified serialization roqoqo version to use lowest compatible version
-* Relaxed compatibility check for Python arguments to allow backward compatibility
+* Relaxed compatability check for Python arguments to allow backward compatability
 
 ## 1.2.0-alpha.2
 
