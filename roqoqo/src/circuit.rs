@@ -10,11 +10,14 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::operations::{Define, InvolveQubits, InvolvedQubits, Operate, Operation, Substitute};
+use crate::operations::{
+    Define, InvolveQubits, InvolvedQubits, Operate, Operation, Substitute, SupportedVersion,
+};
 #[cfg(feature = "overrotate")]
 use crate::operations::{Rotate, Rotation};
 use crate::RoqoqoError;
 use crate::RoqoqoVersion;
+use crate::RoqoqoVersionSerializable;
 use qoqo_calculator::Calculator;
 #[cfg(feature = "overrotate")]
 use std::convert::TryFrom;
@@ -83,6 +86,8 @@ use std::{
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "serialize", serde(try_from = "CircuitSerializable"))]
+#[cfg_attr(feature = "serialize", serde(into = "CircuitSerializable"))]
 pub struct Circuit {
     /// Definitions in the quantum circuit, must be unique.
     definitions: Vec<Operation>,
@@ -90,6 +95,45 @@ pub struct Circuit {
     operations: Vec<Operation>,
     /// The roqoqo version.
     _roqoqo_version: RoqoqoVersion,
+}
+
+#[cfg(feature = "serialize")]
+#[derive(Clone, PartialEq, Debug, Default)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serialize", serde(rename = "Circuit"))]
+struct CircuitSerializable {
+    /// Definitions in the quantum circuit, must be unique.
+    definitions: Vec<Operation>,
+    /// Operations of the quantum circuit, do not have to be unique.
+    operations: Vec<Operation>,
+    /// The roqoqo version.
+    _roqoqo_version: RoqoqoVersionSerializable,
+}
+
+impl TryFrom<CircuitSerializable> for Circuit {
+    type Error = RoqoqoError;
+    fn try_from(value: CircuitSerializable) -> Result<Self, Self::Error> {
+        Ok(Circuit {
+            definitions: value.definitions,
+            operations: value.operations,
+            _roqoqo_version: RoqoqoVersion,
+        })
+    }
+}
+
+impl From<Circuit> for CircuitSerializable {
+    fn from(value: Circuit) -> Self {
+        let min_version = value.minimum_supported_roqoqo_version();
+        let current_version = RoqoqoVersionSerializable {
+            major_version: min_version.0,
+            minor_version: min_version.1,
+        };
+        Self {
+            definitions: value.definitions,
+            operations: value.operations,
+            _roqoqo_version: current_version,
+        }
+    }
 }
 
 impl Circuit {
@@ -805,5 +849,16 @@ impl Iterator for OperationIterator {
             Some(x) => Some(x),
             None => self.operation_iter.next(),
         }
+    }
+}
+
+impl crate::operations::SupportedVersion for Circuit {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        let mut current_minimum_version = (1, 0, 0);
+        for op in self.iter() {
+            let comparison_version = op.minimum_supported_roqoqo_version();
+            crate::update_roqoqo_version(&mut current_minimum_version, comparison_version);
+        }
+        current_minimum_version
     }
 }

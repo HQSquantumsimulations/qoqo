@@ -84,3 +84,18 @@ impl Measure for ClassicalRegister {
         })
     }
 }
+
+impl crate::operations::SupportedVersion for ClassicalRegister {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        let mut current_minimum_version = (1, 0, 0);
+        if let Some(circuit) = self.constant_circuit() {
+            let comparison_version = circuit.minimum_supported_roqoqo_version();
+            crate::update_roqoqo_version(&mut current_minimum_version, comparison_version);
+        }
+        for circuit in self.circuits.iter() {
+            let comparison_version = circuit.minimum_supported_roqoqo_version();
+            crate::update_roqoqo_version(&mut current_minimum_version, comparison_version);
+        }
+        current_minimum_version
+    }
+}

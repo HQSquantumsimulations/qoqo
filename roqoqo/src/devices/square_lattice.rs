@@ -231,7 +231,7 @@ impl SquareLatticeDevice {
         let column_target: i64 = (target % self.number_columns)
             .try_into()
             .expect("Qubit number too large");
-        if ((row_control as i64 - row_target as i64).abs() == 1 && column_control == column_target)
+        if ((row_control - row_target).abs() == 1 && column_control == column_target)
             || (row_control == row_target && (column_control - column_target).abs() == 1)
         {
             self.generic_device
@@ -451,3 +451,5 @@ impl Device for SquareLatticeDevice {
         vector
     }
 }
+
+impl crate::operations::SupportedVersion for SquareLatticeDevice {}

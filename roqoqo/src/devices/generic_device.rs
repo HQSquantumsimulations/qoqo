@@ -441,3 +441,5 @@ impl Device for GenericDevice {
         self.clone()
     }
 }
+
+impl crate::operations::SupportedVersion for GenericDevice {}

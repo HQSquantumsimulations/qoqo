@@ -31,6 +31,9 @@ pub use multi_qubit_gate_operations::*;
 mod involved_classical;
 pub use involved_classical::*;
 
+mod supported_version;
+pub use supported_version::*;
+
 // Test InvolvedQubits clone
 #[test]
 fn test_involved_qubits_clone() {

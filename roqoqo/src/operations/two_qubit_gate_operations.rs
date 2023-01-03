@@ -22,6 +22,8 @@ use rand_distr::{Distribution, Normal};
 use std::convert::TryFrom;
 use std::f64::consts::PI;
 
+use super::SupportedVersion;
+
 /// The KAK decomposition of a two-qubit gate.
 ///
 /// Each two-qubit gate can be described by a KAK decomposition (<http://arxiv.org/abs/quant-ph/0507171>).
@@ -54,6 +56,7 @@ pub struct KakDecomposition {
     PartialEq,
     Eq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -152,6 +155,7 @@ impl OperateTwoQubitGate for CNOT {
     PartialEq,
     Eq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -243,6 +247,7 @@ impl OperateTwoQubitGate for SWAP {
     PartialEq,
     Eq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -335,6 +340,7 @@ impl OperateTwoQubitGate for ISwap {
     PartialEq,
     Eq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -430,6 +436,7 @@ impl OperateTwoQubitGate for FSwap {
     PartialEq,
     Eq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -521,6 +528,7 @@ impl OperateTwoQubitGate for SqrtISwap {
     PartialEq,
     Eq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -613,6 +621,7 @@ impl OperateTwoQubitGate for InvSqrtISwap {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -710,6 +719,7 @@ impl OperateTwoQubitGate for XY {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -811,6 +821,7 @@ impl OperateTwoQubitGate for ControlledPhaseShift {
     PartialEq,
     Eq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -909,6 +920,7 @@ impl OperateTwoQubitGate for ControlledPauliY {
     PartialEq,
     Eq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -1003,6 +1015,7 @@ impl OperateTwoQubitGate for ControlledPauliZ {
     PartialEq,
     Eq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -1093,6 +1106,7 @@ impl OperateTwoQubitGate for MolmerSorensenXX {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -1190,6 +1204,7 @@ impl OperateTwoQubitGate for VariableMSXX {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -1298,6 +1313,7 @@ impl OperateTwoQubitGate for GivensRotation {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -1407,6 +1423,7 @@ impl OperateTwoQubitGate for GivensRotationLittleEndian {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -1523,6 +1540,7 @@ impl OperateTwoQubitGate for Qsim {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -1628,6 +1646,7 @@ impl OperateTwoQubitGate for Fsim {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -1740,6 +1759,7 @@ impl OperateTwoQubitGate for SpinInteraction {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -1851,6 +1871,7 @@ impl OperateTwoQubitGate for Bogoliubov {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -1947,6 +1968,7 @@ impl OperateTwoQubitGate for PMInteraction {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -2052,6 +2074,7 @@ impl OperateTwoQubitGate for ComplexPMInteraction {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateTwoQubit,
@@ -2173,6 +2196,11 @@ pub struct PhaseShiftedControlledPhase {
     theta: CalculatorFloat,
     /// The single qubit phase φ.
     phi: CalculatorFloat,
+}
+impl SupportedVersion for PhaseShiftedControlledPhase {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 2, 0)
+    }
 }
 
 impl super::ImplementedIn1point2 for PhaseShiftedControlledPhase {}
