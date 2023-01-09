@@ -14,6 +14,7 @@ use std::collections::{HashMap, HashSet};
 
 use crate::operations::*;
 use crate::Circuit;
+use crate::RoqoqoVersionSerializable;
 use crate::{RoqoqoError, RoqoqoVersion};
 
 use petgraph::adj::NodeIndex;
@@ -64,6 +65,67 @@ pub struct CircuitDag {
     pub(crate) first_operation_involving_classical: HashMap<(String, usize), NodeIndex<usize>>,
     pub(crate) last_operation_involving_classical: HashMap<(String, usize), NodeIndex<usize>>,
     _roqoqo_version: RoqoqoVersion,
+}
+
+#[cfg(feature = "serialize")]
+#[derive(Clone, Debug, Default)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serialize", serde(rename = "CircuitDag"))]
+struct CircuitDagSerializable {
+    graph: Graph<Operation, (), Directed, usize>,
+    commuting_operations: Vec<NodeIndex<usize>>,
+    first_parallel_block: HashSet<NodeIndex<usize>>,
+    last_parallel_block: HashSet<NodeIndex<usize>>,
+    first_all: Option<NodeIndex<usize>>,
+    last_all: Option<NodeIndex<usize>>,
+    first_operation_involving_qubit: HashMap<usize, NodeIndex<usize>>,
+    last_operation_involving_qubit: HashMap<usize, NodeIndex<usize>>,
+    first_operation_involving_classical: HashMap<(String, usize), NodeIndex<usize>>,
+    last_operation_involving_classical: HashMap<(String, usize), NodeIndex<usize>>,
+    /// The roqoqo version.
+    _roqoqo_version: RoqoqoVersionSerializable,
+}
+
+impl TryFrom<CircuitDagSerializable> for CircuitDag {
+    type Error = RoqoqoError;
+    fn try_from(value: CircuitDagSerializable) -> Result<Self, Self::Error> {
+        Ok(CircuitDag {
+            _roqoqo_version: RoqoqoVersion,
+            graph: value.graph,
+            commuting_operations: value.commuting_operations,
+            first_parallel_block: value.first_parallel_block,
+            last_parallel_block: value.last_parallel_block,
+            first_all: value.first_all,
+            last_all: value.last_all,
+            first_operation_involving_qubit: value.first_operation_involving_qubit,
+            last_operation_involving_qubit: value.last_operation_involving_qubit,
+            first_operation_involving_classical: value.first_operation_involving_classical,
+            last_operation_involving_classical: value.last_operation_involving_classical,
+        })
+    }
+}
+
+impl From<CircuitDag> for CircuitDagSerializable {
+    fn from(value: CircuitDag) -> Self {
+        let min_version = value.minimum_supported_roqoqo_version();
+        let current_version = RoqoqoVersionSerializable {
+            major_version: min_version.0,
+            minor_version: min_version.1,
+        };
+        Self {
+            _roqoqo_version: current_version,
+            graph: value.graph,
+            commuting_operations: value.commuting_operations,
+            first_parallel_block: value.first_parallel_block,
+            last_parallel_block: value.last_parallel_block,
+            first_all: value.first_all,
+            last_all: value.last_all,
+            first_operation_involving_qubit: value.first_operation_involving_qubit,
+            last_operation_involving_qubit: value.last_operation_involving_qubit,
+            first_operation_involving_classical: value.first_operation_involving_classical,
+            last_operation_involving_classical: value.last_operation_involving_classical,
+        }
+    }
 }
 
 /// Iterator over all possible parallel executable blocks of a Circuit.
@@ -825,6 +887,18 @@ impl<'a> Iterator for ParallelBlocks<'a> {
             return None;
         }
         Some(new_parallel_block)
+    }
+}
+
+impl crate::operations::SupportedVersion for CircuitDag {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        let mut current_minimum_version = (1, 0, 0);
+        for index in self.graph.node_indices() {
+            let node_op = self.get(index.index()).unwrap();
+            let comparison_version = node_op.minimum_supported_roqoqo_version();
+            crate::update_roqoqo_version(&mut current_minimum_version, comparison_version);
+        }
+        current_minimum_version
     }
 }
 

@@ -1,4 +1,5 @@
 Cargo.lock
+compatibility_test/target/*
 */Cargo.lock
 target/*
 *__pycache__*

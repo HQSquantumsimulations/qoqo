@@ -126,6 +126,19 @@ impl From<RoqoqoVersion> for RoqoqoVersionSerializable {
     }
 }
 
+#[inline]
+fn update_roqoqo_version(
+    current_minimum_version: &mut (u32, u32, u32),
+    comparison_version: (u32, u32, u32),
+) {
+    if current_minimum_version.0 < comparison_version.0
+        || current_minimum_version.1 < comparison_version.1
+        || current_minimum_version.2 < comparison_version.2
+    {
+        *current_minimum_version = comparison_version;
+    }
+}
+
 /// Errors that can occur in roqoqo.
 #[derive(Error, Debug, PartialEq)]
 pub enum RoqoqoError {

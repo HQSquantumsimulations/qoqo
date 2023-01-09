@@ -248,3 +248,22 @@ impl Display for QuantumProgram {
         write!(f, "{}", s)
     }
 }
+
+impl crate::operations::SupportedVersion for QuantumProgram {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        match self {
+            QuantumProgram::PauliZProduct { measurement, .. } => {
+                measurement.minimum_supported_roqoqo_version()
+            }
+            QuantumProgram::CheatedPauliZProduct { measurement, .. } => {
+                measurement.minimum_supported_roqoqo_version()
+            }
+            QuantumProgram::Cheated { measurement, .. } => {
+                measurement.minimum_supported_roqoqo_version()
+            }
+            QuantumProgram::ClassicalRegister { measurement, .. } => {
+                measurement.minimum_supported_roqoqo_version()
+            }
+        }
+    }
+}

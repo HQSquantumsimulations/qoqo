@@ -23,6 +23,7 @@ mod operate;
 mod operate_n_qubit;
 mod operate_unitary;
 mod substitute;
+mod supported_version;
 
 /// Array of field names that are reserved for use with specific traits
 const RESERVED_FIELDS: &[&str; 11] = &[
@@ -65,6 +66,13 @@ pub fn derive_operate_try_from_enum(input: proc_macro::TokenStream) -> proc_macr
 pub fn derive_substitute(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let parsed_input = parse_macro_input!(input as DeriveInput);
     substitute::dispatch_struct_enum(parsed_input).into()
+}
+
+/// Derive macro for the [roqoqo::SupportedVersion] trait
+#[proc_macro_derive(SupportedVersion)]
+pub fn derive_supported_version(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    supported_version::dispatch_struct_enum(parsed_input).into()
 }
 
 /// Derive macro for the [roqoqo::OperateSingleQubit] trait

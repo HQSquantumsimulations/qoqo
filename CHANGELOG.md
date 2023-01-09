@@ -2,9 +2,15 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.2.0-alpha.3
+
+* Activated circuitdag feature by default
+* Modified serialization roqoqo version to use lowest compatible version
+* Relaxed compatibility check for Python arguments to allow backward compatibility
+
 ## 1.2.0-alpha.2
 
-* Added CircuitDag documentation 
+* Added CircuitDag documentation
 * Added PhaseShiftedControlledPhase to qoqo
 * Updated dependencies
 

@@ -1,6 +1,6 @@
 [package]
 name = "roqoqo-test"
-version = "1.2.0-alpha.2"
+version = "1.2.0-alpha.3"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
@@ -19,7 +19,7 @@ crate-type = ["rlib"]
 
 [dependencies]
 qoqo_calculator = { version="1.1" }
-roqoqo = {version="1.2.0-alpha.2", path="../roqoqo", features=["serialize"]}
+roqoqo = {version="1.2.0-alpha.3", path="../roqoqo", features=["serialize"]}
 rand = "0.8"
 nalgebra = "0.31"
 ndarray = { version = "0.15" }

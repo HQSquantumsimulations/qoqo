@@ -35,6 +35,8 @@ use std::collections::HashSet;
 
 use crate::operations::{Define, InvolveQubits, InvolvedQubits, Operate, RoqoqoError, Substitute};
 
+use super::SupportedVersion;
+
 /// DefinitionFloat is the Definition for a floating point type register.
 ///
 #[derive(
@@ -42,6 +44,7 @@ use crate::operations::{Define, InvolveQubits, InvolvedQubits, Operate, RoqoqoEr
     Clone,
     PartialEq,
     Eq,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::Define,
@@ -77,6 +80,7 @@ impl InvolveQubits for DefinitionFloat {
     Clone,
     PartialEq,
     Eq,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::Define,
@@ -116,6 +120,7 @@ impl InvolveQubits for DefinitionComplex {
     Clone,
     PartialEq,
     Eq,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::Define,
@@ -153,6 +158,7 @@ impl InvolveQubits for DefinitionUsize {
     Clone,
     PartialEq,
     Eq,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::Define,
@@ -189,6 +195,7 @@ impl InvolveQubits for DefinitionBit {
     Debug,
     Clone,
     PartialEq,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::Define,
@@ -239,6 +246,12 @@ pub struct InputBit {
     index: usize,
     /// The value the bit is set to
     value: bool,
+}
+
+impl SupportedVersion for InputBit {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 1, 0)
+    }
 }
 
 impl super::ImplementedIn1point1 for InputBit {}

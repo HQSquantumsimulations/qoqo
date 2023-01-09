@@ -81,10 +81,24 @@ pub enum InvolvedClassical {
     Set(HashSet<(String, usize)>),
 }
 
+/// Trait for returning minimum roqoqo version for which a operation is supported
+pub trait SupportedVersion {
+    /// Returns the minimum roqoqo version that supports the operation.
+    ///
+    /// Expects a semver version string. Returns the major and minor version
+    /// already converted to unsigned integers and the optionla extension of the
+    /// version string.
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 0, 0)
+    }
+}
+
 #[cfg(feature = "dynamic")]
 /// Universal basic trait for all operations of roqoqo.
 #[cfg_attr(feature = "dynamic", typetag::serde(tag = "Operate"))]
-pub trait Operate: InvolveQubits + SubstituteDyn + DynClone + std::fmt::Debug + Send {
+pub trait Operate:
+    InvolveQubits + SubstituteDyn + DynClone + std::fmt::Debug + Send + SupportedVersion
+{
     /// Returns tags classifying the type of operation.
     ///
     /// Used for type based dispatch in ffi interfaces.
@@ -128,7 +142,9 @@ pub trait Operate: InvolveQubits + SubstituteDyn + DynClone + std::fmt::Debug + 
 /// assert!(!rotatez_not_param.is_parametrized());
 /// ```
 ///
-pub trait Operate: InvolveQubits + Substitute + Clone + std::fmt::Debug + Send {
+pub trait Operate:
+    InvolveQubits + Substitute + Clone + std::fmt::Debug + Send + SupportedVersion
+{
     /// Returns tags classifying the type of the operation.
     ///
     /// Used for type based dispatch in ffi interfaces.
@@ -295,7 +311,9 @@ pub trait OperateTwoQubit: Operate + InvolveQubits + Substitute + Clone + Partia
 /// assert_eq!(multi_ms.qubits(), &vec![0, 1, 3]);
 /// ```
 ///
-pub trait OperateMultiQubit: Operate + InvolveQubits + Substitute + Clone + PartialEq {
+pub trait OperateMultiQubit:
+    Operate + InvolveQubits + Substitute + Clone + PartialEq + SupportedVersion
+{
     /// Returns vector of qubits operation is acting on in descending order of significance
     fn qubits(&self) -> &Vec<usize>;
 }
@@ -304,7 +322,10 @@ pub trait OperateMultiQubit: Operate + InvolveQubits + Substitute + Clone + Part
 ///
 /// PRAGMA Operations are unphysical in terms of quantum mechanics and are meant to be used for simulation purposes only, i.e. to run on simulation backends.
 ///
-pub trait OperatePragma: Operate + InvolveQubits + Substitute + Clone + PartialEq {}
+pub trait OperatePragma:
+    Operate + InvolveQubits + Substitute + Clone + PartialEq + SupportedVersion
+{
+}
 
 /// Trait for PRAGMA Operations that are not necessary available on all universal quantum hardware, that indicate noise.
 ///
@@ -336,7 +357,7 @@ pub trait OperatePragma: Operate + InvolveQubits + Substitute + Clone + PartialE
 /// ```
 ///
 pub trait OperatePragmaNoise:
-    Operate + InvolveQubits + Substitute + Clone + PartialEq + OperatePragma
+    Operate + InvolveQubits + Substitute + Clone + PartialEq + OperatePragma + SupportedVersion
 {
     /// Returns superoperator matrix of the Operation.
     fn superoperator(&self) -> Result<Array2<f64>, RoqoqoError>;
@@ -361,7 +382,14 @@ pub trait OperatePragmaNoise:
 /// ```
 ///
 pub trait OperatePragmaNoiseProba:
-    Operate + InvolveQubits + Substitute + Clone + PartialEq + OperatePragma + OperatePragmaNoise
+    Operate
+    + InvolveQubits
+    + Substitute
+    + Clone
+    + PartialEq
+    + OperatePragma
+    + OperatePragmaNoise
+    + SupportedVersion
 {
     /// Returns the probability of the gate, based on its gate_time and rate.
     fn probability(&self) -> CalculatorFloat;
@@ -383,7 +411,9 @@ pub trait OperatePragmaNoiseProba:
 /// assert_eq!(paulix.unitary_matrix().unwrap(), matrix);
 /// ```
 ///
-pub trait OperateGate: Operate + InvolveQubits + Substitute + Clone + PartialEq {
+pub trait OperateGate:
+    Operate + InvolveQubits + Substitute + Clone + PartialEq + SupportedVersion
+{
     /// Returns unitary matrix of the gate.
     fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError>;
 }
@@ -402,7 +432,9 @@ pub trait OperateGate: Operate + InvolveQubits + Substitute + Clone + PartialEq 
 /// assert_eq!(rotatex.powercf(CalculatorFloat::from(1.5)), RotateX::new(0, 3.0.into()));
 /// ```
 ///
-pub trait Rotate: OperateGate + Operate + InvolveQubits + Substitute + Clone + PartialEq {
+pub trait Rotate:
+    OperateGate + Operate + InvolveQubits + Substitute + Clone + PartialEq + SupportedVersion
+{
     /// Returns rotation parameter theta.
     fn theta(&self) -> &CalculatorFloat;
     /// Returns the gate to the power of `power`.`
@@ -452,7 +484,9 @@ pub trait Rotate: OperateGate + Operate + InvolveQubits + Substitute + Clone + P
 /// assert_eq!(definition.name(), &"ro".to_string());
 /// ```
 ///
-pub trait Define: Operate + InvolveQubits + Substitute + Clone + PartialEq {
+pub trait Define:
+    Operate + InvolveQubits + Substitute + Clone + PartialEq + SupportedVersion
+{
     /// Returns name of definition operation.
     fn name(&self) -> &String;
 }
@@ -466,7 +500,7 @@ pub trait Define: Operate + InvolveQubits + Substitute + Clone + PartialEq {
 /// ```
 ///
 pub trait OperateConstantGate:
-    OperateGate + Operate + InvolveQubits + Substitute + Clone + PartialEq
+    OperateGate + Operate + InvolveQubits + Substitute + Clone + PartialEq + SupportedVersion
 {
     /// Returns true when unitary operation U is self inverse U*U = I.
     fn inverse(&self) -> GateOperation;
@@ -514,6 +548,7 @@ pub trait OperateSingleQubitGate:
     + Clone
     + PartialEq
     + OperateSingleQubit
+    + SupportedVersion
     + std::fmt::Debug
 {
     /// Returns alpha_r parameter of operation.
@@ -658,7 +693,14 @@ pub trait OperateSingleQubitGate:
 /// ```
 ///
 pub trait OperateTwoQubitGate:
-    Operate + OperateGate + OperateTwoQubit + InvolveQubits + Substitute + Clone + PartialEq
+    Operate
+    + OperateGate
+    + OperateTwoQubit
+    + InvolveQubits
+    + Substitute
+    + Clone
+    + PartialEq
+    + SupportedVersion
 {
     /// Returns [KakDecomposition] of two qubit gate.
     fn kak_decomposition(&self) -> KakDecomposition;
@@ -690,7 +732,14 @@ pub trait OperateTwoQubitGate:
 /// ```
 ///
 pub trait OperateMultiQubitGate:
-    Operate + OperateGate + OperateMultiQubit + InvolveQubits + Substitute + Clone + PartialEq
+    Operate
+    + OperateGate
+    + OperateMultiQubit
+    + InvolveQubits
+    + Substitute
+    + Clone
+    + PartialEq
+    + SupportedVersion
 {
     /// Returns a decomposition of the multi-qubit operation using a circuit with two-qubit-operations.
     fn circuit(&self) -> crate::Circuit;
@@ -727,6 +776,14 @@ impl Operate for DynOperation {
         self.0.is_parametrized()
     }
 }
+
+#[cfg(feature = "dynamic")]
+impl SupportedVersion for DynOperation {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        self.0.minimum_supported_roqoqo_version()
+    }
+}
+
 #[cfg(feature = "dynamic")]
 impl InvolveQubits for DynOperation {
     fn involved_qubits(&self) -> InvolvedQubits {
