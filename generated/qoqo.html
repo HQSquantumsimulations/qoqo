@@ -1,16 +1,37 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="English" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
   <title>qoqo &mdash; qoqo 0.0 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
@@ -18,23 +39,43 @@
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="../_static/js/theme.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="qoqo.Circuit" href="generated/qoqo.Circuit.html" />
     <link rel="prev" title="qoqo documentation" href="../modules.html" /> 
 </head>
 
-<body class="wy-body-for-nav"> 
+<body class="wy-body-for-nav">
+
+   
   <div class="wy-grid-for-nav">
+    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+          
+
+          
             <a href="../index.html" class="icon icon-home"> qoqo
+          
+
+          
           </a>
+
+          
+            
+            
               <div class="version">
                 0.0
               </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -42,7 +83,18 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../modules.html">qoqo documentation</a><ul class="current">
@@ -69,6 +121,28 @@
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.Circuit.to_json"><code class="docutils literal notranslate"><span class="pre">Circuit.to_json()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#qoqo.CircuitDag"><code class="docutils literal notranslate"><span class="pre">CircuitDag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.add_to_back"><code class="docutils literal notranslate"><span class="pre">CircuitDag.add_to_back()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.add_to_front"><code class="docutils literal notranslate"><span class="pre">CircuitDag.add_to_front()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.blocking_predecessors"><code class="docutils literal notranslate"><span class="pre">CircuitDag.blocking_predecessors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.commuting_operations"><code class="docutils literal notranslate"><span class="pre">CircuitDag.commuting_operations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.execution_blocked"><code class="docutils literal notranslate"><span class="pre">CircuitDag.execution_blocked()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.first_operation_involving_classical"><code class="docutils literal notranslate"><span class="pre">CircuitDag.first_operation_involving_classical()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.first_operation_involving_qubit"><code class="docutils literal notranslate"><span class="pre">CircuitDag.first_operation_involving_qubit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.first_parallel_block"><code class="docutils literal notranslate"><span class="pre">CircuitDag.first_parallel_block()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.from_bincode"><code class="docutils literal notranslate"><span class="pre">CircuitDag.from_bincode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.from_circuit"><code class="docutils literal notranslate"><span class="pre">CircuitDag.from_circuit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.get"><code class="docutils literal notranslate"><span class="pre">CircuitDag.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.last_operation_involving_classical"><code class="docutils literal notranslate"><span class="pre">CircuitDag.last_operation_involving_classical()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.last_operation_involving_qubit"><code class="docutils literal notranslate"><span class="pre">CircuitDag.last_operation_involving_qubit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.last_parallel_block"><code class="docutils literal notranslate"><span class="pre">CircuitDag.last_parallel_block()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.new_front_layer"><code class="docutils literal notranslate"><span class="pre">CircuitDag.new_front_layer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.parallel_blocks"><code class="docutils literal notranslate"><span class="pre">CircuitDag.parallel_blocks()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.successors"><code class="docutils literal notranslate"><span class="pre">CircuitDag.successors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.to_bincode"><code class="docutils literal notranslate"><span class="pre">CircuitDag.to_bincode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.CircuitDag.to_circuit"><code class="docutils literal notranslate"><span class="pre">CircuitDag.to_circuit()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#qoqo.QuantumProgram"><code class="docutils literal notranslate"><span class="pre">QuantumProgram</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.QuantumProgram.from_bincode"><code class="docutils literal notranslate"><span class="pre">QuantumProgram.from_bincode()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.QuantumProgram.from_json"><code class="docutils literal notranslate"><span class="pre">QuantumProgram.from_json()</span></code></a></li>
@@ -86,31 +160,73 @@
 </li>
 </ul>
 
+            
+          
         </div>
+        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">qoqo</a>
+        
       </nav>
 
+
       <div class="wy-nav-content">
+        
         <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
-          <li class="breadcrumb-item"><a href="../modules.html">qoqo documentation</a></li>
-      <li class="breadcrumb-item active">qoqo</li>
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../modules.html">qoqo documentation</a> &raquo;</li>
+        
+      <li>qoqo</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
+        
+          
             <a href="../_sources/generated/qoqo.rst.txt" rel="nofollow"> View page source</a>
+          
+        
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-             
+            
   
 <style>
 /* CSS overrides for sphinx_rtd_theme */
@@ -136,7 +252,7 @@
 }
 </style>
 <section id="module-qoqo">
-<span id="qoqo"></span><h1>qoqo<a class="headerlink" href="#module-qoqo" title="Permalink to this heading"></a></h1>
+<span id="qoqo"></span><h1>qoqo<a class="headerlink" href="#module-qoqo" title="Permalink to this heading">¶</a></h1>
 <p>Qoqo</p>
 <div class="line-block">
 <div class="line">Quantum Operation Quantum Operation</div>
@@ -144,10 +260,6 @@
 </div>
 <p>qoqo is the HQS python package to represent quantum circuits.</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.Circuit" title="qoqo.Circuit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Circuit</span></code></a></p></td>
 <td><p>Circuit of Operations.</p></td>
@@ -165,30 +277,29 @@
 </table>
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.Circuit" title="qoqo.Circuit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Circuit</span></code></a></p></td>
 <td><p>Circuit of Operations.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.QuantumProgram" title="qoqo.QuantumProgram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QuantumProgram</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.CircuitDag" title="qoqo.CircuitDag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CircuitDag</span></code></a>(node_number, edge_number, /)</p></td>
+<td><p>Represents the Direct Acyclic Graph (DAG) of a Circuit.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.QuantumProgram" title="qoqo.QuantumProgram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QuantumProgram</span></code></a></p></td>
 <td><p>Represents a quantum program evaluating measurements based on a one or more free float parameters.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="qoqo.Circuit">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.</span></span><span class="sig-name descname"><span class="pre">Circuit</span></span><a class="headerlink" href="#qoqo.Circuit" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.</span></span><span class="sig-name descname"><span class="pre">Circuit</span></span><a class="headerlink" href="#qoqo.Circuit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Circuit of Operations.</p>
 <p>A quantum program is represented as a linear sequence of Operations.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.Circuit.add">
-<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.add" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.add" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add an Operation to Circuit.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>op</strong> (<em>Operation</em>) -- The Operation to add to the Circuit.</p>
 </dd>
 </dl>
@@ -196,16 +307,16 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.Circuit.count_occurences">
-<span class="sig-name descname"><span class="pre">count_occurences</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.count_occurences" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">count_occurences</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.count_occurences" title="Permalink to this definition">¶</a></dt>
 <dd><p>Count the number of occurences of a set of operation tags in the circuit.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>operations</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- List of operation tags that should be counted.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The number of occurences of these operation tags.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
@@ -213,14 +324,14 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.Circuit.definitions">
-<span class="sig-name descname"><span class="pre">definitions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.definitions" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">definitions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.definitions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of definitions in the Circuit.</p>
 <p>Definitions need to be unique.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A vector of the definitions in the Circuit.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>list[Operation]</p>
 </dd>
 </dl>
@@ -228,16 +339,16 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.Circuit.filter_by_tag">
-<span class="sig-name descname"><span class="pre">filter_by_tag</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.filter_by_tag" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">filter_by_tag</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.filter_by_tag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of operations with given tag.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>tag</strong> (<em>str</em>) -- tag by which to filter operations.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A vector of the operations with the specified tag in the Circuit.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list[Operation]</p>
 </dd>
 </dl>
@@ -245,19 +356,19 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.Circuit.from_bincode">
-<span class="sig-name descname"><span class="pre">from_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.from_bincode" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">from_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.from_bincode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the bincode representation of the Circuit to a Circuit using the [bincode] crate.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>input</strong> (<em>ByteArray</em>) -- The serialized Circuit (in [bincode] form).</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The deserialized Circuit.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#qoqo.Circuit" title="qoqo.Circuit">Circuit</a></p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>TypeError</strong> -- Input cannot be converted to byte array.</p></li>
 <li><p><strong>ValueError</strong> -- Input cannot be deserialized to Circuit.</p></li>
@@ -268,19 +379,19 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.Circuit.from_json">
-<span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.from_json" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.from_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the json representation of a Circuit to a Circuit.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>input</strong> (<em>str</em>) -- The serialized Circuit in json form.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The deserialized Circuit.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#qoqo.Circuit" title="qoqo.Circuit">Circuit</a></p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> -- Input cannot be deserialized to Circuit.</p>
 </dd>
 </dl>
@@ -288,19 +399,19 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.Circuit.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.get" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a copy of the Operation at a certain index of the Circuit.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>index</strong> (<em>int</em>) -- The index of the Operation to get in the Circuit.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The operation at the given index (if it exists).</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Operation</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>IndexError</strong> -- Index out of range.</p>
 </dd>
 </dl>
@@ -308,13 +419,13 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.Circuit.get_operation_types">
-<span class="sig-name descname"><span class="pre">get_operation_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.get_operation_types" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_operation_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.get_operation_types" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of the hqslang names of all operations occuring in the circuit.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The operation types in the Circuit.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>set[str]</p>
 </dd>
 </dl>
@@ -322,22 +433,22 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.Circuit.get_slice">
-<span class="sig-name descname"><span class="pre">get_slice</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.get_slice" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_slice</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.get_slice" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the copy of a slice of the Circuit.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>start</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) -- The starting index of the slice (inclusive).</p></li>
 <li><p><strong>stop</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) -- The stopping index of the slice (exclusive).</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The slice of the operations in the Circuit with the specified indices.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#qoqo.Circuit" title="qoqo.Circuit">Circuit</a></p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>IndexError</strong> -- Stop index smaller than start index.</p></li>
 <li><p><strong>IndexError</strong> -- Stop index out of range.</p></li>
@@ -349,13 +460,13 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.Circuit.operations">
-<span class="sig-name descname"><span class="pre">operations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.operations" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">operations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.operations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of all operations in the Circuit.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A vector of the operations in the Circuit.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>list[Operation]</p>
 </dd>
 </dl>
@@ -363,16 +474,16 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.Circuit.overrotate">
-<span class="sig-name descname"><span class="pre">overrotate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.overrotate" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">overrotate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.overrotate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return clone of the circuit with all overrotation Pragmas applied.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Circuit with the overrotation applied</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#qoqo.Circuit" title="qoqo.Circuit">Circuit</a></p>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>RuntimeError</strong> -- Error applying PragmaOverrotation in circuit.</p>
 </dd>
 </dl>
@@ -392,19 +503,19 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.Circuit.remap_qubits">
-<span class="sig-name descname"><span class="pre">remap_qubits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.remap_qubits" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">remap_qubits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.remap_qubits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remap qubits in operations in clone of Circuit.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>mapping</strong> (<em>dict</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) -- The dictionary containing the {qubit: qubit} mapping to use in the Circuit.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The Circuit with the qubits remapped.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>self</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>RuntimeError</strong> -- The qubit remapping failed.</p>
 </dd>
 </dl>
@@ -412,19 +523,19 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.Circuit.substitute_parameters">
-<span class="sig-name descname"><span class="pre">substitute_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.substitute_parameters" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">substitute_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.substitute_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Substitute the symbolic parameters in a clone of the Circuit according to the substitution_parameters input.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>substitution_parameters</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) -- The dictionary containing the substitutions to use in the Circuit.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The Circuit with the parameters substituted.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>self</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>RuntimeError</strong> -- The parameter substitution failed.</p>
 </dd>
 </dl>
@@ -432,16 +543,16 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.Circuit.to_bincode">
-<span class="sig-name descname"><span class="pre">to_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.to_bincode" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.to_bincode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the bincode representation of the Circuit using the [bincode] crate.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The serialized Circuit (in [bincode] form).</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>ByteArray</p>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize Circuit to bytes.</p>
 </dd>
 </dl>
@@ -449,16 +560,16 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.Circuit.to_json">
-<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.to_json" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the json representation of the Circuit.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The serialized form of Circuit.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize Circuit to json.</p>
 </dd>
 </dl>
@@ -467,8 +578,304 @@
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="qoqo.CircuitDag">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.</span></span><span class="sig-name descname"><span class="pre">CircuitDag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_number</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents the Direct Acyclic Graph (DAG) of a Circuit.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.add_to_back">
+<span class="sig-name descname"><span class="pre">add_to_back</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.add_to_back" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an Operation to the back of the CircuitDag, if necessary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>op</strong> (<em>Operation</em>) -- The Operation to add to the back of the CircuitDag.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> -- The Python Object cannot be converted to Operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.add_to_front">
+<span class="sig-name descname"><span class="pre">add_to_front</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.add_to_front" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an Operation to the front of the CircuitDag, if necessary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>op</strong> (<em>Operation</em>) -- The Operation to add to the front of the CircuitDag.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> -- The Python Object cannot be converted to Operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.blocking_predecessors">
+<span class="sig-name descname"><span class="pre">blocking_predecessors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">already_executed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_be_executed</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.blocking_predecessors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks which of the direct predecessors of an Operation in the CircuitDag blocks the execution.</p>
+<p>Warning:
+This method can only be used to determine if an operation can be executed when <cite>already_executed</cite> is consistent.
+When the list  <cite>already_executed</cite> is inconsistent (a n operation is reported as executed that could not have been executed yet)
+this method returning an empty vector does not imply that the <cite>to_be_executed</cite> operation can be executed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>already_executed</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) -- List of NodeIndices of Nodes that have already been executed in the Circuit.</p></li>
+<li><p><strong>to_be_executed</strong> (<em>int</em>) -- NodeIndex of the Operation that should be executed next.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List containing the sorted blocking elements.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.commuting_operations">
+<span class="sig-name descname"><span class="pre">commuting_operations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.commuting_operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of nodes of commuting operations in CircuitDag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The list of nodes of commuting operations.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.execution_blocked">
+<span class="sig-name descname"><span class="pre">execution_blocked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">already_executed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_be_executed</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.execution_blocked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if executing an operation is blocked by any not-yet executed operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>already_executed</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) -- List of NodeIndices of Nodes that have already been executed in the Circuit.</p></li>
+<li><p><strong>to_be_executed</strong> (<em>int</em>) -- NodeIndex of the operation that should be executed next.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List containing the sorted blocking elements.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.first_operation_involving_classical">
+<span class="sig-name descname"><span class="pre">first_operation_involving_classical</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.first_operation_involving_classical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary where a key is composed by the name and the size
+of the classical register and its value represents the first node that involves that
+register.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The dictionary of {(str, int), int} elements.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[(str, int), int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.first_operation_involving_qubit">
+<span class="sig-name descname"><span class="pre">first_operation_involving_qubit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.first_operation_involving_qubit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary where a key represents a qubit and its value represents
+the first node that involves that qubit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The dictionary of {qubit: node} elements.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.first_parallel_block">
+<span class="sig-name descname"><span class="pre">first_parallel_block</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.first_parallel_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set containing the nodes in the first parallel block.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The set of nodes in the first parallel block.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>set[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.from_bincode">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_bincode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.from_bincode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the bincode representation of the CircuitDag to a CircuitDag using the [bincode] crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>ByteArray</em>) -- The serialized CircuitDag (in [bincode] form).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The deserialized CircuitDag.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#qoqo.CircuitDag" title="qoqo.CircuitDag">CircuitDag</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> -- Input cannot be converted to byte array.</p></li>
+<li><p><strong>ValueError</strong> -- Input cannot be deserialized to CircuitDag.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.from_circuit">
+<span class="sig-name descname"><span class="pre">from_circuit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.from_circuit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a CircuitDag from a given Circuit;</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>circuit</strong> (<a class="reference internal" href="#qoqo.Circuit" title="qoqo.Circuit"><em>Circuit</em></a>) -- The Circuit to build the new CircuitDag from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The new CircuitDag.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a NodeIndex, returns the Operation contained in the node of
+the CircuitDag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) -- The index of the node to get from the CircuitDag.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Operation at the given index (if it exists).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Operation</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>IndexError</strong> -- Index out of range.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.last_operation_involving_classical">
+<span class="sig-name descname"><span class="pre">last_operation_involving_classical</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.last_operation_involving_classical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary where a key is composed by the name and the size
+of the classical register and its value represents the last node that involves that
+register.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The dictionary of {(str, int), int} elements.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[(str, int), int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.last_operation_involving_qubit">
+<span class="sig-name descname"><span class="pre">last_operation_involving_qubit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.last_operation_involving_qubit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary where a key represents a qubit and its value represents
+the last node that involves that qubit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The dictionary of {qubit: node} elements.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.last_parallel_block">
+<span class="sig-name descname"><span class="pre">last_parallel_block</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.last_parallel_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set containing the nodes in the last parallel block.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The set of nodes in the last parallel block.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>set[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.new_front_layer">
+<span class="sig-name descname"><span class="pre">new_front_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">already_executed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_front_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_be_executed</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.new_front_layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new front-layer after executing an operation from the current front layer.</p>
+<p>Returns an error if operation to be executed is not in the current front layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>already_executed</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) -- List of NodeIndices of Nodes that have already been executed in the Circuit.</p></li>
+<li><p><strong>current_front_layer</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) -- List of NodeIndices in the current front layer ready to be executed if physically possible.</p></li>
+<li><p><strong>to_be_executed</strong> (<em>int</em>) -- NodeIndex of the operation that should be executed next.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.parallel_blocks">
+<span class="sig-name descname"><span class="pre">parallel_blocks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.parallel_blocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator over the possible parallel blocks in circuit that can be executed simultaneously</p>
+<p>Returns an Iterator over Vectors of references to the NodeIndices in the parallel block as well
+as references to the Operation in the blocks</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.successors">
+<span class="sig-name descname"><span class="pre">successors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.successors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of the successors of a given node in the CircuitDag.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.to_bincode">
+<span class="sig-name descname"><span class="pre">to_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.to_bincode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the bincode representation of the CircuitDag using the [bincode] crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized CircuitDag (in [bincode] form).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ByteArray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize CircuitDag to bytes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.CircuitDag.to_circuit">
+<span class="sig-name descname"><span class="pre">to_circuit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.CircuitDag.to_circuit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the CircuitDag into a Circuit.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="qoqo.QuantumProgram">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.</span></span><span class="sig-name descname"><span class="pre">QuantumProgram</span></span><a class="headerlink" href="#qoqo.QuantumProgram" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.</span></span><span class="sig-name descname"><span class="pre">QuantumProgram</span></span><a class="headerlink" href="#qoqo.QuantumProgram" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents a quantum program evaluating measurements based on a one or more free float parameters.</p>
 <p>The main use of QuantumProgram is to contain a Measurements implementing [crate::measurements::Measure]
 that measures expectation values or output registers of [crate::Circuit] quantum circuits that contain
@@ -481,19 +888,19 @@ in classical computing that can be called with a set of parameters and returns a
 It is the intended way to interface between normal program code and roqoqo based quantum programs.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.QuantumProgram.from_bincode">
-<span class="sig-name descname"><span class="pre">from_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.from_bincode" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">from_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.from_bincode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the bincode representation of the QuantumProgram to a QuantumProgram using the [bincode] crate.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>input</strong> (<em>ByteArray</em>) -- The serialized QuantumProgram (in [bincode] form).</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The deserialized QuantumProgram.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#qoqo.QuantumProgram" title="qoqo.QuantumProgram">QuantumProgram</a></p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>TypeError</strong> -- Input cannot be converted to byte array.</p></li>
 <li><p><strong>ValueError</strong> -- Input cannot be deserialized to QuantumProgram.</p></li>
@@ -504,19 +911,19 @@ It is the intended way to interface between normal program code and roqoqo based
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.QuantumProgram.from_json">
-<span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.from_json" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.from_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the json representation of a QuantumProgram to a QuantumProgram.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>input</strong> (<em>str</em>) -- The serialized QuantumProgram in json form.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The deserialized QuantumProgram.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#qoqo.QuantumProgram" title="qoqo.QuantumProgram">QuantumProgram</a></p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>ValueError</strong> -- Input cannot be deserialized to QuantumProgram.</p>
 </dd>
 </dl>
@@ -524,10 +931,10 @@ It is the intended way to interface between normal program code and roqoqo based
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.QuantumProgram.input_parameter_names">
-<span class="sig-name descname"><span class="pre">input_parameter_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.input_parameter_names" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">input_parameter_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.input_parameter_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the input_parameter_names attribute of the qoqo QuantumProgram.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List of input parameter names.</p>
 </dd>
 </dl>
@@ -535,10 +942,10 @@ It is the intended way to interface between normal program code and roqoqo based
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.QuantumProgram.measurement">
-<span class="sig-name descname"><span class="pre">measurement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.measurement" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">measurement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.measurement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the measurement attribute of the QuantumProgram as Python object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>PyObject corresponding to the qoqo measurement type of the QuantumProgram,
 i.e. PauliZProduct, CheatedPauliZProduct, Cheated or ClassicalRegister.</p>
 </dd>
@@ -547,12 +954,12 @@ i.e. PauliZProduct, CheatedPauliZProduct, Cheated or ClassicalRegister.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.QuantumProgram.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.run" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the QuantumProgram and returns expectation values.</p>
 <p>Runs the quantum programm for a given set of parameters passed in the same order as the parameters
 listed in <cite>input_parameter_names</cite> and returns expectation values.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>backend</strong> (<em>Backend</em>) -- The backend the program is executed on.</p></li>
 <li><p><strong>parameters</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em>) -- List of float  parameters of the function call in order of <cite>input_parameter_names</cite></p></li>
@@ -563,7 +970,7 @@ listed in <cite>input_parameter_names</cite> and returns expectation values.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.QuantumProgram.run_registers">
-<span class="sig-name descname"><span class="pre">run_registers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.run_registers" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">run_registers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.run_registers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the QuantumProgram and returns the classical registers of the quantum program.</p>
 <p>Runs the quantum programm for a given set of parameters passed in the same order as the parameters
 listed in <cite>input_parameter_names</cite> and returns the classical register output.
@@ -571,7 +978,7 @@ The classical registers usually contain a record of measurement values for the r
 of a [crate::Circuit] quantum circuit for real quantum hardware
 or the readout of the statevector or the density matrix for simulators.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>backend</strong> (<em>Backend</em>) -- The backend the program is executed on.</p></li>
 <li><p><strong>parameters</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em>) -- List of float  parameters of the function call in order of <cite>input_parameter_names</cite></p></li>
@@ -582,16 +989,16 @@ or the readout of the statevector or the density matrix for simulators.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.QuantumProgram.to_bincode">
-<span class="sig-name descname"><span class="pre">to_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.to_bincode" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.to_bincode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the bincode representation of the QuantumProgram using the [bincode] crate.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The serialized QuantumProgram (in [bincode] form).</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>ByteArray</p>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize QuantumProgram to bytes.</p>
 </dd>
 </dl>
@@ -599,16 +1006,16 @@ or the readout of the statevector or the density matrix for simulators.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.QuantumProgram.to_json">
-<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.to_json" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the json representation of the QuantumProgram.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The serialized form of QuantumProgram.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize QuantumProgram to json.</p>
 </dd>
 </dl>
@@ -620,33 +1027,50 @@ or the readout of the statevector or the density matrix for simulators.</p>
 
 
            </div>
+           
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../modules.html" class="btn btn-neutral float-left" title="qoqo documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="generated/qoqo.Circuit.html" class="btn btn-neutral float-right" title="qoqo.Circuit" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../modules.html" class="btn btn-neutral float-left" title="qoqo documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, HQS Quantum Simulations GmbH.</p>
-  </div>
+    <p>
+        &#169; Copyright 2021, HQS Quantum Simulations GmbH.
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
         </div>
       </div>
+
     </section>
+
   </div>
-  <script>
+  
+
+  <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
