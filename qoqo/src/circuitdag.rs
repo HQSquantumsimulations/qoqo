@@ -375,7 +375,6 @@ impl CircuitDagWrapper {
     ///     dict[int, int]: The dictionary of {qubit: node} elements.
     #[pyo3(text_signature = "($self)")]
     pub fn first_operation_involving_qubit(&self) -> PyObject {
-        pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| -> PyObject {
             self.internal
                 .first_operation_involving_qubit()
@@ -390,7 +389,6 @@ impl CircuitDagWrapper {
     ///     dict[int, int]: The dictionary of {qubit: node} elements.
     #[pyo3(text_signature = "($self)")]
     pub fn last_operation_involving_qubit(&self) -> PyObject {
-        pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| -> PyObject {
             self.internal.last_operation_involving_qubit().to_object(py)
         })
@@ -404,7 +402,6 @@ impl CircuitDagWrapper {
     ///     dict[(str, int), int]: The dictionary of {(str, int), int} elements.
     #[pyo3(text_signature = "($self)")]
     pub fn first_operation_involving_classical(&self) -> PyObject {
-        pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| -> PyObject {
             self.internal
                 .first_operation_involving_classical()
@@ -420,7 +417,6 @@ impl CircuitDagWrapper {
     ///     dict[(str, int), int]: The dictionary of {(str, int), int} elements.
     #[pyo3(text_signature = "($self)")]
     pub fn last_operation_involving_classical(&self) -> PyObject {
-        pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| -> PyObject {
             self.internal
                 .last_operation_involving_classical()
