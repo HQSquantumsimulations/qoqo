@@ -400,3 +400,5 @@ impl Device for AllToAllDevice {
         vector
     }
 }
+
+impl crate::operations::SupportedVersion for AllToAllDevice {}

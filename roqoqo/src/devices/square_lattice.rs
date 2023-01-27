@@ -451,3 +451,5 @@ impl Device for SquareLatticeDevice {
         vector
     }
 }
+
+impl crate::operations::SupportedVersion for SquareLatticeDevice {}

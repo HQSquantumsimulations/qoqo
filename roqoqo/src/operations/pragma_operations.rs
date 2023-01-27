@@ -15,7 +15,7 @@
 
 use crate::operations::{
     InvolveQubits, InvolvedQubits, Operate, OperateMultiQubit, OperatePragma, OperatePragmaNoise,
-    OperatePragmaNoiseProba, OperateSingleQubit, RoqoqoError, Substitute,
+    OperatePragmaNoiseProba, OperateSingleQubit, RoqoqoError, Substitute, SupportedVersion,
 };
 use crate::Circuit;
 #[cfg(feature = "serialize")]
@@ -41,6 +41,7 @@ use super::InvolvedClassical;
     Clone,
     PartialEq,
     Eq,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperatePragma,
@@ -98,6 +99,7 @@ impl InvolveQubits for PragmaSetNumberOfMeasurements {
     Debug,
     Clone,
     PartialEq,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperatePragma,
@@ -145,6 +147,7 @@ impl InvolveQubits for PragmaSetStateVector {
     Debug,
     Clone,
     PartialEq,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperatePragma,
@@ -177,6 +180,7 @@ impl InvolveQubits for PragmaSetDensityMatrix {
     Clone,
     PartialEq,
     Eq,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperatePragma,
@@ -212,6 +216,7 @@ impl InvolveQubits for PragmaRepeatGate {
     Debug,
     Clone,
     PartialEq,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::InvolveQubits,
@@ -246,6 +251,7 @@ const TAGS_PragmaOverrotation: &[&str; 4] = &[
     Debug,
     Clone,
     PartialEq,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperatePragma,
@@ -275,6 +281,7 @@ impl InvolveQubits for PragmaBoostNoise {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateMultiQubit,
@@ -306,6 +313,7 @@ const TAGS_PragmaStopParallelBlock: &[&str; 4] = &[
     Debug,
     Clone,
     PartialEq,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperatePragma,
@@ -338,6 +346,7 @@ impl InvolveQubits for PragmaGlobalPhase {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateMultiQubit,
@@ -368,6 +377,7 @@ const TAGS_PragmaSleep: &[&str; 4] = &[
     PartialEq,
     Eq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
@@ -396,6 +406,7 @@ const TAGS_PragmaActiveReset: &[&str; 4] = &[
     PartialEq,
     Eq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::OperateMultiQubit,
     roqoqo_derive::OperatePragma,
@@ -458,6 +469,7 @@ impl Substitute for PragmaStartDecompositionBlock {
     PartialEq,
     Eq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateMultiQubit,
@@ -493,6 +505,7 @@ const TAGS_PragmaStopDecompositionBlock: &[&str; 4] = &[
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
@@ -563,6 +576,7 @@ impl OperatePragmaNoiseProba for PragmaDamping {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
@@ -630,6 +644,7 @@ impl OperatePragmaNoiseProba for PragmaDepolarising {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
@@ -701,6 +716,7 @@ impl OperatePragmaNoiseProba for PragmaDephasing {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
@@ -822,6 +838,7 @@ impl OperatePragmaNoiseProba for PragmaRandomNoise {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
@@ -957,7 +974,14 @@ impl OperatePragmaNoise for PragmaGeneralNoise {
 ///
 /// This PRAGMA executes a circuit when the condition bit/bool stored in a [crate::registers::BitRegister] is true.
 ///
-#[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::SupportedVersion,
+    roqoqo_derive::Operate,
+    roqoqo_derive::OperatePragma,
+)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaConditional {
@@ -1018,7 +1042,9 @@ impl Substitute for PragmaConditional {
 ///
 /// Since this PRAGMA uses serde and bincode to store a representation of the wrapped
 /// operation internally it is only available when roqoqo is built with the `serialize` feature
-#[derive(Debug, Clone, PartialEq, Eq, roqoqo_derive::OperatePragma)]
+#[derive(
+    Debug, Clone, PartialEq, Eq, roqoqo_derive::SupportedVersion, roqoqo_derive::OperatePragma,
+)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaChangeDevice {
@@ -1105,6 +1131,12 @@ pub struct PragmaLoop {
     circuit: Circuit,
 }
 impl super::ImplementedIn1point1 for PragmaLoop {}
+
+impl SupportedVersion for PragmaLoop {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 1, 0)
+    }
+}
 
 #[allow(non_upper_case_globals)]
 const TAGS_PragmaLoop: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaLoop"];

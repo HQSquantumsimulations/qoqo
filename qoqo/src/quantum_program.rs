@@ -46,6 +46,39 @@ pub struct QuantumProgramWrapper {
     pub internal: QuantumProgram,
 }
 
+impl QuantumProgramWrapper {
+    /// Extracts a QuantumProgram from a QuantumProgramWrapper python object.
+    ///
+    /// When working with qoqo and other rust based python packages compiled separately
+    /// a downcast will not detect that two QuantumProgramWrapper objects are compatible.
+    /// Provides a custom function to convert qoqo QuantumPrograms between different Python packages.
+    ///
+    /// # Arguments:
+    ///
+    /// `input` - The Python object that should be casted to a [roqoqo::QuantumProgram]
+    pub fn from_pyany(input: Py<PyAny>) -> PyResult<QuantumProgram> {
+        Python::with_gil(|py| -> PyResult<QuantumProgram> {
+            let input = input.as_ref(py);
+            if let Ok(try_downcast) = input.extract::<QuantumProgramWrapper>() {
+                Ok(try_downcast.internal)
+            } else {
+                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+                PyTypeError::new_err("Python object cannot be converted to qoqo QuantumProgram: Cast to binary representation failed".to_string())
+            })?;
+                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+                PyTypeError::new_err("Python object cannot be converted to qoqo QuantumProgram: Cast to binary representation failed".to_string())
+            })?;
+                deserialize(&bytes[..]).map_err(|err| {
+                    PyTypeError::new_err(format!(
+                    "Python object cannot be converted to qoqo QuantumProgram: Deserialization failed: {}",
+                    err
+                ))
+                })
+            }
+        })
+    }
+}
+
 #[pymethods]
 impl QuantumProgramWrapper {
     /// Create a QuantumProgram.
@@ -431,34 +464,34 @@ pub fn convert_into_quantum_program(input: &PyAny) -> Result<QuantumProgram, Qoq
     }
     // Everything that follows tries to extract the quantum program when two separately
     // compiled python packages are involved
-    let get_version = input
-        .call_method0("_qoqo_versions")
+    // let get_version = input
+    //     .call_method0("_qoqo_versions")
+    //     .map_err(|_| QoqoError::CannotExtractObject)?;
+    // let version = get_version
+    //     .extract::<(&str, &str)>()
+    //     .map_err(|_| QoqoError::CannotExtractObject)?;
+    // let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+    // let mut qsplit = QOQO_VERSION.split('.').take(2);
+    // let rver = format!(
+    //     "{}.{}",
+    //     rsplit.next().expect("ROQOQO_VERSION badly formatted"),
+    //     rsplit.next().expect("ROQOQO_VERSION badly formatted")
+    // );
+    // let qver = format!(
+    //     "{}.{}",
+    //     qsplit.next().expect("QOQO_VERSION badly formatted"),
+    //     qsplit.next().expect("QOQO_VERSION badly formatted")
+    // );
+    // let test_version: (&str, &str) = (rver.as_str(), qver.as_str());
+    // if version == test_version {
+    let get_bytes = input
+        .call_method0("to_bincode")
         .map_err(|_| QoqoError::CannotExtractObject)?;
-    let version = get_version
-        .extract::<(&str, &str)>()
+    let bytes = get_bytes
+        .extract::<Vec<u8>>()
         .map_err(|_| QoqoError::CannotExtractObject)?;
-    let mut rsplit = ROQOQO_VERSION.split('.').take(2);
-    let mut qsplit = QOQO_VERSION.split('.').take(2);
-    let rver = format!(
-        "{}.{}",
-        rsplit.next().expect("ROQOQO_VERSION badly formatted"),
-        rsplit.next().expect("ROQOQO_VERSION badly formatted")
-    );
-    let qver = format!(
-        "{}.{}",
-        qsplit.next().expect("QOQO_VERSION badly formatted"),
-        qsplit.next().expect("QOQO_VERSION badly formatted")
-    );
-    let test_version: (&str, &str) = (rver.as_str(), qver.as_str());
-    if version == test_version {
-        let get_bytes = input
-            .call_method0("to_bincode")
-            .map_err(|_| QoqoError::CannotExtractObject)?;
-        let bytes = get_bytes
-            .extract::<Vec<u8>>()
-            .map_err(|_| QoqoError::CannotExtractObject)?;
-        deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractObject)
-    } else {
-        Err(QoqoError::VersionMismatch)
-    }
+    deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractObject)
+    // } else {
+    //     Err(QoqoError::VersionMismatch)
+    // }
 }

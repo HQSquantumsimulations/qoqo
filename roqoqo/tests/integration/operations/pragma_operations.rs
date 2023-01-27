@@ -2941,21 +2941,6 @@ fn pragma_conditional_substitute_trait() {
 #[test]
 fn pragma_conditional_serde_readable() {
     let pragma_serialization = PragmaConditional::new(String::from("ro"), 1, Circuit::default());
-    use roqoqo::ROQOQO_VERSION;
-    use std::str::FromStr;
-    let mut rsplit = ROQOQO_VERSION.split('.').take(2);
-    let major_version = u32::from_str(
-        rsplit
-            .next()
-            .expect("Internal error: Version not conforming to semver"),
-    )
-    .expect("Internal error: Major version is not unsigned integer.");
-    let minor_version = u32::from_str(
-        rsplit
-            .next()
-            .expect("Internal error: Version not conforming to semver"),
-    )
-    .expect("Internal error: Minor version is not unsigned integer.");
     assert_tokens(
         &pragma_serialization.readable(),
         &[
@@ -2984,9 +2969,9 @@ fn pragma_conditional_serde_readable() {
                 len: 2,
             },
             Token::Str("major_version"),
-            Token::U32(major_version),
+            Token::U32(1),
             Token::Str("minor_version"),
-            Token::U32(minor_version),
+            Token::U32(0),
             Token::StructEnd,
             Token::StructEnd,
             Token::StructEnd,
@@ -2999,21 +2984,6 @@ fn pragma_conditional_serde_readable() {
 #[test]
 fn pragma_conditional_serde_compact() {
     let pragma_serialization = PragmaConditional::new(String::from("ro"), 1, Circuit::default());
-    use roqoqo::ROQOQO_VERSION;
-    use std::str::FromStr;
-    let mut rsplit = ROQOQO_VERSION.split('.').take(2);
-    let major_version = u32::from_str(
-        rsplit
-            .next()
-            .expect("Internal error: Version not conforming to semver"),
-    )
-    .expect("Internal error: Major version is not unsigned integer.");
-    let minor_version = u32::from_str(
-        rsplit
-            .next()
-            .expect("Internal error: Version not conforming to semver"),
-    )
-    .expect("Internal error: Minor version is not unsigned integer.");
     assert_tokens(
         &pragma_serialization.readable(),
         &[
@@ -3042,9 +3012,9 @@ fn pragma_conditional_serde_compact() {
                 len: 2,
             },
             Token::Str("major_version"),
-            Token::U32(major_version),
+            Token::U32(1),
             Token::Str("minor_version"),
-            Token::U32(minor_version),
+            Token::U32(0),
             Token::StructEnd,
             Token::StructEnd,
             Token::StructEnd,

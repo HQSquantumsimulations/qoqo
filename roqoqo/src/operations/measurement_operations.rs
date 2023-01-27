@@ -15,13 +15,13 @@
 use qoqo_calculator::Calculator;
 use std::collections::{HashMap, HashSet};
 
+use super::InvolvedClassical;
+use super::SupportedVersion;
 use crate::operations::{
     InvolveQubits, InvolvedQubits, Operate, OperatePragma, OperateSingleQubit, RoqoqoError,
     Substitute,
 };
 use crate::Circuit;
-
-use super::InvolvedClassical;
 
 /// Measurement gate operation.
 ///
@@ -38,6 +38,7 @@ use super::InvolvedClassical;
     Clone,
     PartialEq,
     Eq,
+    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
@@ -72,7 +73,14 @@ const TAGS_MeasureQubit: &[&str; 3] = &["Operation", "Measurement", "MeasureQubi
 
 /// This PRAGMA measurement operation returns the statevector of a quantum register.
 ///
-#[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::SupportedVersion,
+    roqoqo_derive::Operate,
+    roqoqo_derive::OperatePragma,
+)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGetStateVector {
@@ -125,7 +133,14 @@ impl InvolveQubits for PragmaGetStateVector {
 
 /// This PRAGMA measurement operation returns the density matrix of a quantum register.
 ///
-#[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::SupportedVersion,
+    roqoqo_derive::Operate,
+    roqoqo_derive::OperatePragma,
+)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGetDensityMatrix {
@@ -187,7 +202,14 @@ impl InvolveQubits for PragmaGetDensityMatrix {
 /// Occupation probabilities in the context of this PRAGMA Operation are probabilities of finding the quantum
 /// register in each σ^z basis state. The quantum register remains unchanged by this PRAGMA measurement operation.
 ///
-#[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::SupportedVersion,
+    roqoqo_derive::Operate,
+    roqoqo_derive::OperatePragma,
+)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGetOccupationProbability {
@@ -250,7 +272,14 @@ impl InvolveQubits for PragmaGetOccupationProbability {
 /// a Rotate to another basis. It performs all of the operation on a clone of the quantum register,
 /// so that the actual quantum register remains unchanged.
 ///
-#[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::SupportedVersion,
+    roqoqo_derive::Operate,
+    roqoqo_derive::OperatePragma,
+)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGetPauliProduct {
@@ -325,7 +354,15 @@ impl InvolveQubits for PragmaGetPauliProduct {
 
 /// This PRAGMA measurement operation returns a measurement record for N repeated measurements.
 ///
-#[derive(Debug, Clone, PartialEq, Eq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    Eq,
+    roqoqo_derive::SupportedVersion,
+    roqoqo_derive::Operate,
+    roqoqo_derive::OperatePragma,
+)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaRepeatedMeasurement {

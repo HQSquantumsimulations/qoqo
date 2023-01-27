@@ -398,3 +398,9 @@ impl CheatedInput {
         Ok(())
     }
 }
+
+impl crate::operations::SupportedVersion for CheatedInput {}
+
+impl crate::operations::SupportedVersion for CheatedPauliZProductInput {}
+
+impl crate::operations::SupportedVersion for PauliZProductInput {}

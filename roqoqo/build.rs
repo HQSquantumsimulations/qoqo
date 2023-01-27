@@ -474,7 +474,7 @@ fn main() {
         //use crate::operations::*;
 
         /// Enum of all Operations implementing [Operate]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, Substitute)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, Substitute, SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum Operation {
@@ -484,7 +484,7 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperateSingleQubit]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateSingleQubit)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateSingleQubit, SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum SingleQubitOperation {
@@ -492,7 +492,7 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperateTwoQubit]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateTwoQubit)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateTwoQubit,  SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum TwoQubitOperation {
@@ -500,7 +500,7 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperateMultiQubit]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateMultiQubit)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateMultiQubit,  SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum MultiQubitOperation {
@@ -508,7 +508,7 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperatePragma]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperatePragma)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperatePragma,  SupportedVersion)]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         pub enum PragmaOperation {
@@ -518,7 +518,7 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperatePragmaNoise]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperatePragma, OperatePragmaNoise)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperatePragma, OperatePragmaNoise,  SupportedVersion)]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         pub enum PragmaNoiseOperation {
@@ -526,7 +526,7 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperatePragmaNoiseProba]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperatePragma, OperatePragmaNoise, OperatePragmaNoiseProba)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperatePragma, OperatePragmaNoise, OperatePragmaNoiseProba,  SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum PragmaNoiseProbaOperation {
@@ -534,7 +534,7 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperateGate]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate,  SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum GateOperation {
@@ -543,7 +543,7 @@ fn main() {
 
         /// Enum of all Operations implementing [Rotate]
         #[allow(clippy::upper_case_acronyms)]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, Rotate)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, Rotate,  SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum Rotation {
@@ -551,7 +551,7 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [Define]
-        #[derive(Debug, Clone, PartialEq,InvolveQubits, Operate, OperateTryFromEnum, Substitute, Define)]
+        #[derive(Debug, Clone, PartialEq,InvolveQubits, Operate, OperateTryFromEnum, Substitute, Define,  SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum Definition {
@@ -561,7 +561,7 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperateConstantGate]
-        #[derive(Debug, Clone, PartialEq, Eq,InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateConstantGate)]
+        #[derive(Debug, Clone, PartialEq, Eq,InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateConstantGate,  SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum ConstantGateOperation {
@@ -569,7 +569,7 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperateSingleQubitGate]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateSingleQubit, OperateSingleQubitGate)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateSingleQubit, OperateSingleQubitGate,  SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum SingleQubitGateOperation {
@@ -577,7 +577,7 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperateTwoQubitGate]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateTwoQubit, OperateTwoQubitGate)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateTwoQubit, OperateTwoQubitGate,  SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum TwoQubitGateOperation {
@@ -585,7 +585,7 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperateMultiQubitGate]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateMultiQubit, OperateMultiQubitGate)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateMultiQubit, OperateMultiQubitGate,  SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum MultiQubitGateOperation {

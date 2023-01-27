@@ -59,6 +59,39 @@ impl Default for CircuitWrapper {
     }
 }
 
+impl CircuitWrapper {
+    /// Extracts a Circuit from a CircuitWrapper python object.
+    ///
+    /// When working with qoqo and other rust based python packages compiled separately
+    /// a downcast will not detect that two CircuitWrapper objects are compatible.
+    /// Provides a custom function to convert qoqo Circuits between different Python packages.
+    ///
+    /// # Arguments:
+    ///
+    /// `input` - The Python object that should be casted to a [roqoqo::Circuit]
+    pub fn from_pyany(input: Py<PyAny>) -> PyResult<Circuit> {
+        Python::with_gil(|py| -> PyResult<Circuit> {
+            let input = input.as_ref(py);
+            if let Ok(try_downcast) = input.extract::<CircuitWrapper>() {
+                Ok(try_downcast.internal)
+            } else {
+                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+                PyTypeError::new_err("Python object cannot be converted to qoqo Circuit: Cast to binary representation failed".to_string())
+            })?;
+                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+                PyTypeError::new_err("Python object cannot be converted to qoqo Circuit: Cast to binary representation failed".to_string())
+            })?;
+                deserialize(&bytes[..]).map_err(|err| {
+                    PyTypeError::new_err(format!(
+                    "Python object cannot be converted to qoqo Circuit: Deserialization failed: {}",
+                    err
+                ))
+                })
+            }
+        })
+    }
+}
+
 #[pymethods]
 impl CircuitWrapper {
     /// Create an empty quantum Circuit.
@@ -460,10 +493,7 @@ impl CircuitWrapper {
     /// Raises:
     ///     NotImplementedError: Other comparison not implemented
     fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
-        let other = Python::with_gil(|py| -> Result<Circuit, QoqoError> {
-            let other_ref = other.as_ref(py);
-            crate::convert_into_circuit(other_ref)
-        });
+        let other = Self::from_pyany(other);
         match op {
             pyo3::class::basic::CompareOp::Eq => match other {
                 Ok(circ) => Ok(self.internal == circ),
@@ -616,36 +646,36 @@ pub fn convert_into_circuit(input: &PyAny) -> Result<Circuit, QoqoError> {
     }
     // Everything that follows tries to extract the circuit when two separately
     // compiled python packages are involved
-    let get_version = input
-        .call_method0("_qoqo_versions")
+    // let get_version = input
+    //     .call_method0("_qoqo_versions")
+    //     .map_err(|_| QoqoError::CannotExtractObject)?;
+    // let version = get_version
+    //     .extract::<(&str, &str)>()
+    //     .map_err(|_| QoqoError::CannotExtractObject)?;
+    // let mut rsplit = ROQOQO_VERSION.split('.').take(2);
+    // let mut qsplit = QOQO_VERSION.split('.').take(2);
+    // let rver = format!(
+    //     "{}.{}",
+    //     rsplit.next().expect("ROQOQO_VERSION badly formatted"),
+    //     rsplit.next().expect("ROQOQO_VERSION badly formatted")
+    // );
+    // let qver = format!(
+    //     "{}.{}",
+    //     qsplit.next().expect("QOQO_VERSION badly formatted"),
+    //     qsplit.next().expect("QOQO_VERSION badly formatted")
+    // );
+    // let test_version: (&str, &str) = (rver.as_str(), qver.as_str());
+    // if version == test_version {
+    let get_bytes = input
+        .call_method0("to_bincode")
         .map_err(|_| QoqoError::CannotExtractObject)?;
-    let version = get_version
-        .extract::<(&str, &str)>()
+    let bytes = get_bytes
+        .extract::<Vec<u8>>()
         .map_err(|_| QoqoError::CannotExtractObject)?;
-    let mut rsplit = ROQOQO_VERSION.split('.').take(2);
-    let mut qsplit = QOQO_VERSION.split('.').take(2);
-    let rver = format!(
-        "{}.{}",
-        rsplit.next().expect("ROQOQO_VERSION badly formatted"),
-        rsplit.next().expect("ROQOQO_VERSION badly formatted")
-    );
-    let qver = format!(
-        "{}.{}",
-        qsplit.next().expect("QOQO_VERSION badly formatted"),
-        qsplit.next().expect("QOQO_VERSION badly formatted")
-    );
-    let test_version: (&str, &str) = (rver.as_str(), qver.as_str());
-    if version == test_version {
-        let get_bytes = input
-            .call_method0("to_bincode")
-            .map_err(|_| QoqoError::CannotExtractObject)?;
-        let bytes = get_bytes
-            .extract::<Vec<u8>>()
-            .map_err(|_| QoqoError::CannotExtractObject)?;
-        deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractObject)
-    } else {
-        Err(QoqoError::VersionMismatch)
-    }
+    deserialize(&bytes[..]).map_err(|_| QoqoError::CannotExtractObject)
+    // } else {
+    //     Err(QoqoError::VersionMismatch)
+    // }
 }
 
 /// Iterator for iterating over Operations in a Circuit.

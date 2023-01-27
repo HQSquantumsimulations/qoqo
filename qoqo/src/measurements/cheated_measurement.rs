@@ -15,7 +15,7 @@
 use super::CheatedInputWrapper;
 use crate::CircuitWrapper;
 use bincode::serialize;
-use pyo3::exceptions::{PyRuntimeError, PyValueError};
+use pyo3::exceptions::{PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
 use roqoqo::measurements::Cheated;
@@ -44,22 +44,45 @@ impl CheatedWrapper {
     ///     Cheated: The new measurement.
     #[new]
     pub fn new(
-        constant_circuit: Option<CircuitWrapper>,
-        circuits: Vec<CircuitWrapper>,
-        input: CheatedInputWrapper,
-    ) -> Self {
-        let new_circuits: Vec<Circuit> = circuits.into_iter().map(|c| c.internal).collect();
+        constant_circuit: Option<Py<PyAny>>,
+        circuits: Vec<Py<PyAny>>,
+        input: Py<PyAny>,
+    ) -> PyResult<Self> {
+        let mut new_circuits: Vec<Circuit> = Vec::new();
+        for c in circuits.into_iter() {
+            let tmp_c = CircuitWrapper::from_pyany(c).map_err(|err| {
+                PyTypeError::new_err(format!(
+                    "`circuits` argument is not a list of qoqo Circuits: {}",
+                    err
+                ))
+            })?;
+            new_circuits.push(tmp_c)
+        }
         let new_constant: Option<Circuit> = match constant_circuit {
             None => None,
-            Some(c) => Some(c.internal),
+            Some(c) => {
+                let tmp_c = CircuitWrapper::from_pyany(c).map_err(|err| {
+                    PyTypeError::new_err(format!(
+                        "`constant_circuit` argument is not None or a qoqo Circuit: {}",
+                        err
+                    ))
+                })?;
+                Some(tmp_c)
+            }
         };
-        Self {
+        let input = CheatedInputWrapper::from_pyany(input).map_err(|err| {
+            PyTypeError::new_err(format!(
+                "`input` argument is not a qoqo CheatedInput: {}",
+                err
+            ))
+        })?;
+        Ok(Self {
             internal: Cheated {
+                input,
                 constant_circuit: new_constant,
                 circuits: new_circuits,
-                input: input.internal,
             },
-        }
+        })
     }
 
     /// Execute the cheated measurement.

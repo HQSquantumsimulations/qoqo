@@ -1,4 +1,6 @@
 Cargo.lock
+compatibility_test/target/*
+*/Cargo.lock
 target/*
 */docs/_build*
 */docs/generated*
