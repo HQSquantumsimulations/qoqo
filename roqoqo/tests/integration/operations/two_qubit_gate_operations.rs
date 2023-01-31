@@ -165,8 +165,8 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
         CalculatorFloat::ZERO,
     );
 
-    if circuit_before != None {
-        let operations_before: Vec<Operation> = circuit_before.unwrap().operations().clone();
+    if let Some(circ) = circuit_before {
+        let operations_before: Vec<Operation> = circ.operations().clone();
         let range = 0..operations_before.len();
         for i in range {
             let element: SingleQubitGateOperation =
@@ -205,8 +205,8 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
         CalculatorFloat::ZERO,
     );
 
-    if circuit_after != None {
-        let operations_after: Vec<Operation> = circuit_after.unwrap().operations().clone();
+    if let Some(circ) = circuit_after {
+        let operations_after: Vec<Operation> = circ.operations().clone();
         let range = 0..operations_after.len();
         for i in range {
             let element: SingleQubitGateOperation = operations_after[i].clone().try_into().unwrap();
