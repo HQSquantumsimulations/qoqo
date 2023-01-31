@@ -4,3 +4,9 @@ compatibility_test/target/*
 target/*
 */docs/_build*
 */docs/generated*
+*__pycache__*
+*.mypy_cache*
+*.egg-info*
+*.DS_Store
+*.ipynb_checkpoints*
+*.vscode*
