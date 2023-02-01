@@ -207,7 +207,7 @@ jobs:
       - uses: taiki-e/install-action@cargo-llvm-cov
       - run: |
           cd roqoqo
-          cargo llvm-cov --no-default-features --lcov --output-path lcov_roqoqo.info
+          cargo llvm-cov --no-default-features --lcov --output-path lcov_roqoqo.info --features="circuitdag"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:

@@ -17,6 +17,7 @@ use crate::operations::{
 use crate::operations::{Rotate, Rotation};
 use crate::RoqoqoError;
 use crate::RoqoqoVersion;
+#[cfg(feature = "serialize")]
 use crate::RoqoqoVersionSerializable;
 use qoqo_calculator::Calculator;
 #[cfg(feature = "overrotate")]
@@ -854,7 +855,7 @@ impl Iterator for OperationIterator {
     }
 }
 
-impl crate::operations::SupportedVersion for Circuit {
+impl SupportedVersion for Circuit {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         let mut current_minimum_version = (1, 0, 0);
         for op in self.iter() {

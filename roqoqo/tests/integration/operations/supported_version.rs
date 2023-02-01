@@ -46,14 +46,14 @@ use test_case::test_case;
 #[test_case(operations::TwoQubitGateOperation::from(operations::PhaseShiftedControlledZ::new(1,0, 3.0.into())); "PhaseShifterControlledZ")]
 fn test_version_1_0_0_two_qubit_gate(operation: operations::TwoQubitGateOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 0, 0));
-    let op = operations::Operation::try_from(operation.clone()).unwrap();
+    let op = operations::Operation::try_from(operation).unwrap();
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 0, 0));
 }
 
 #[test_case(operations::TwoQubitGateOperation::from(operations::PhaseShiftedControlledPhase::new(1,0, 3.0.into(), 2.0.into())); "PhaseShiftedControlledPhase")]
 fn test_version_1_2_0_two_qubit_gate(operation: operations::TwoQubitGateOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 2, 0));
-    let op = operations::Operation::try_from(operation.clone()).unwrap();
+    let op = operations::Operation::try_from(operation).unwrap();
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 2, 0));
 }
 
@@ -74,14 +74,14 @@ fn test_version_1_2_0_two_qubit_gate(operation: operations::TwoQubitGateOperatio
 #[test_case(operations::SingleQubitGateOperation::from(operations::SingleQubitGate::new(0,0.5.into(),  0.5.into(), 0.5.into(), 0.5.into(), 0.5.into()));"SingleQubitGate")]
 fn test_version_1_0_0_single_qubit_gate(operation: operations::SingleQubitGateOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 0, 0));
-    let op = operations::Operation::try_from(operation.clone()).unwrap();
+    let op = operations::Operation::try_from(operation).unwrap();
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 0, 0));
 }
 
 #[test_case(operations::MultiQubitGateOperation::from(operations::MultiQubitMS::new(vec![0,1,2,3], 1.0.into())); "MultiQubitMS")]
 fn test_version_1_0_0_multi_qubit_gate(operation: operations::MultiQubitGateOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 0, 0));
-    let op = operations::Operation::try_from(operation.clone()).unwrap();
+    let op = operations::Operation::try_from(operation).unwrap();
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 0, 0));
 }
 
@@ -150,7 +150,7 @@ fn test_version_circuit(circuit: roqoqo::Circuit, version: (u32, u32, u32)) {
     assert_eq!(measurement.minimum_supported_roqoqo_version(), version);
 
     let program = QuantumProgram::PauliZProduct {
-        measurement: measurement,
+        measurement,
         input_parameter_names: vec![],
     };
     assert_eq!(program.minimum_supported_roqoqo_version(), version);
@@ -170,7 +170,7 @@ fn test_version_circuit(circuit: roqoqo::Circuit, version: (u32, u32, u32)) {
     assert_eq!(measurement.minimum_supported_roqoqo_version(), version);
 
     let program = QuantumProgram::CheatedPauliZProduct {
-        measurement: measurement,
+        measurement,
         input_parameter_names: vec![],
     };
     assert_eq!(program.minimum_supported_roqoqo_version(), version);
@@ -190,7 +190,7 @@ fn test_version_circuit(circuit: roqoqo::Circuit, version: (u32, u32, u32)) {
     assert_eq!(measurement.minimum_supported_roqoqo_version(), version);
 
     let program = QuantumProgram::Cheated {
-        measurement: measurement,
+        measurement,
         input_parameter_names: vec![],
     };
     assert_eq!(program.minimum_supported_roqoqo_version(), version);
@@ -202,12 +202,12 @@ fn test_version_circuit(circuit: roqoqo::Circuit, version: (u32, u32, u32)) {
     assert_eq!(measurement.minimum_supported_roqoqo_version(), version);
     let measurement = ClassicalRegister {
         constant_circuit: None,
-        circuits: vec![circuit.clone()],
+        circuits: vec![circuit],
     };
     assert_eq!(measurement.minimum_supported_roqoqo_version(), version);
 
     let program = QuantumProgram::ClassicalRegister {
-        measurement: measurement,
+        measurement,
         input_parameter_names: vec![],
     };
     assert_eq!(program.minimum_supported_roqoqo_version(), version);
