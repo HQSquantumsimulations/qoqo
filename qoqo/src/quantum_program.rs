@@ -91,34 +91,34 @@ impl QuantumProgramWrapper {
     ///     self: The new .
     #[new]
     pub fn new(measurement: &PyAny, input_parameter_names: Vec<String>) -> PyResult<Self> {
-        if let Ok(try_downcast) = measurement.extract::<PauliZProductWrapper>() {
+        if let Ok(try_downcast) = PauliZProductWrapper::from_pyany(measurement.into()) {
             return Ok(Self {
                 internal: QuantumProgram::PauliZProduct {
-                    measurement: try_downcast.internal,
+                    measurement: try_downcast,
                     input_parameter_names,
                 },
             });
         }
-        if let Ok(try_downcast) = measurement.extract::<CheatedPauliZProductWrapper>() {
+        if let Ok(try_downcast) = CheatedPauliZProductWrapper::from_pyany(measurement.into()) {
             return Ok(Self {
                 internal: QuantumProgram::CheatedPauliZProduct {
-                    measurement: try_downcast.internal,
+                    measurement: try_downcast,
                     input_parameter_names,
                 },
             });
         }
-        if let Ok(try_downcast) = measurement.extract::<CheatedWrapper>() {
+        if let Ok(try_downcast) = CheatedWrapper::from_pyany(measurement.into()) {
             return Ok(Self {
                 internal: QuantumProgram::Cheated {
-                    measurement: try_downcast.internal,
+                    measurement: try_downcast,
                     input_parameter_names,
                 },
             });
         }
-        if let Ok(try_downcast) = measurement.extract::<ClassicalRegisterWrapper>() {
+        if let Ok(try_downcast) = ClassicalRegisterWrapper::from_pyany(measurement.into()) {
             return Ok(Self {
                 internal: QuantumProgram::ClassicalRegister {
-                    measurement: try_downcast.internal,
+                    measurement: try_downcast,
                     input_parameter_names,
                 },
             });

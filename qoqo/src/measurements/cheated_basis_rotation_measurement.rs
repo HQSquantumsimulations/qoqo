@@ -14,7 +14,7 @@
 
 use super::CheatedPauliZProductInputWrapper;
 use crate::CircuitWrapper;
-use bincode::serialize;
+use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
@@ -286,5 +286,38 @@ impl CheatedPauliZProductWrapper {
                 "Other comparison not implemented",
             )),
         }
+    }
+}
+
+impl CheatedPauliZProductWrapper {
+    /// Extracts a CheatedPauliZProduct from a CheatedPauliZProductWrapper python object.
+    ///
+    /// When working with qoqo and other rust based python packages compiled separately
+    /// a downcast will not detect that two CheatedPauliZProductWrapper objects are compatible.
+    /// Provides a custom function to convert qoqo CheatedPauliZProducts between different Python packages.
+    ///
+    /// # Arguments:
+    ///
+    /// `input` - The Python object that should be casted to a [roqoqo::CheatedPauliZProduct]
+    pub fn from_pyany(input: Py<PyAny>) -> PyResult<CheatedPauliZProduct> {
+        Python::with_gil(|py| -> PyResult<CheatedPauliZProduct> {
+            let input = input.as_ref(py);
+            if let Ok(try_downcast) = input.extract::<CheatedPauliZProductWrapper>() {
+                Ok(try_downcast.internal)
+            } else {
+                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+                PyTypeError::new_err("Python object cannot be converted to qoqo CheatedPauliZProduct: Cast to binary representation failed".to_string())
+            })?;
+                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+                PyTypeError::new_err("Python object cannot be converted to qoqo CheatedPauliZProduct: Cast to binary representation failed".to_string())
+            })?;
+                deserialize(&bytes[..]).map_err(|err| {
+                    PyTypeError::new_err(format!(
+                    "Python object cannot be converted to qoqo CheatedPauliZProduct: Deserialization failed: {}",
+                    err
+                ))
+                })
+            }
+        })
     }
 }
