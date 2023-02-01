@@ -110,6 +110,7 @@ struct CircuitSerializable {
     _roqoqo_version: RoqoqoVersionSerializable,
 }
 
+#[cfg(feature = "serialize")]
 impl TryFrom<CircuitSerializable> for Circuit {
     type Error = RoqoqoError;
     fn try_from(value: CircuitSerializable) -> Result<Self, Self::Error> {
@@ -121,6 +122,7 @@ impl TryFrom<CircuitSerializable> for Circuit {
     }
 }
 
+#[cfg(feature = "serialize")]
 impl From<Circuit> for CircuitSerializable {
     fn from(value: Circuit) -> Self {
         let min_version = value.minimum_supported_roqoqo_version();
