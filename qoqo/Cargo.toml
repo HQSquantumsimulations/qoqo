@@ -40,7 +40,7 @@ serde_json = "1.0"
 
 [dev-dependencies]
 test-case = "2.0"
-nalgebra = "0.31"
+nalgebra = "0.32"
 
 [build-dependencies]
 quote = "1.0"
