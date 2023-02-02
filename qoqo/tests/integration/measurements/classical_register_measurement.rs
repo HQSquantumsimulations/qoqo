@@ -177,6 +177,42 @@ fn test_to_from_json() {
     })
 }
 
+/// Test to_bincode and from_bincode functions
+#[test]
+fn test_to_from_bincode() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs))
+            .unwrap()
+            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .unwrap();
+
+        let new_br = br;
+        let serialised = br.call_method0("to_bincode").unwrap();
+        let deserialised = new_br
+            .call_method1("from_bincode", (serialised,))
+            .unwrap()
+            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .unwrap();
+        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
+
+        let deserialised_error =
+            new_br.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));
+        assert!(deserialised_error.is_err());
+
+        let deserialised_error =
+            new_br.call_method1("from_bincode", (bincode::serialize(&vec![0]).unwrap(),));
+        assert!(deserialised_error.is_err());
+
+        let serialised_error = serialised.call_method0("to_bincode");
+        assert!(serialised_error.is_err());
+    })
+}
+
 /// Test substitute_parameters
 #[test]
 fn test_substitute_parameters() {

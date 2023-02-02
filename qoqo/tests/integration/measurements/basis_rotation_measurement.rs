@@ -601,6 +601,54 @@ fn test_internal_to_bincode() {
     })
 }
 
+/// Test to_bincode and from_bincode functions
+#[test]
+fn test_to_from_bincode() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let input_type = py.get_type::<PauliZProductInputWrapper>();
+        let input = input_type
+            .call1((3, false))
+            .unwrap()
+            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .unwrap();
+        let tmp_vec: Vec<usize> = Vec::new();
+        let _ = input
+            .call_method1("add_pauliz_product", ("ro", tmp_vec))
+            .unwrap();
+
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+
+        let br_type = py.get_type::<PauliZProductWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs, input))
+            .unwrap()
+            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .unwrap();
+
+        let new_br = br;
+
+        let serialised = br.call_method0("to_bincode").unwrap();
+        let deserialised = new_br
+            .call_method1("from_bincode", (serialised,))
+            .unwrap()
+            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .unwrap();
+        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
+
+        let deserialised_error =
+            new_br.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));
+        assert!(deserialised_error.is_err());
+
+        let deserialised_error =
+            new_br.call_method1("from_bincode", (bincode::serialize(&vec![0]).unwrap(),));
+        assert!(deserialised_error.is_err());
+
+        let serialised_error = serialised.call_method0("to_bincode");
+        assert!(serialised_error.is_err());
+    })
+}
+
 /// Test to_json and from_json functions
 #[test]
 fn test_to_from_json() {

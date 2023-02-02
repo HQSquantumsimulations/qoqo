@@ -17,7 +17,7 @@ use crate::CircuitWrapper;
 use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
-use pyo3::types::PyByteArray;
+use pyo3::types::{PyByteArray, PyType};
 use roqoqo::measurements::Cheated;
 use roqoqo::prelude::*;
 use roqoqo::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
@@ -219,6 +219,47 @@ impl CheatedWrapper {
             PyByteArray::new(py, &serialized[..]).into()
         });
         Ok(("Cheated", b))
+    }
+
+    /// Return the bincode representation of the Cheated using the [bincode] crate.
+    ///
+    /// Returns:
+    ///     ByteArray: The serialized Cheated (in [bincode] form).
+    ///
+    /// Raises:
+    ///     ValueError: Cannot serialize Cheated to bytes.
+    pub fn to_bincode(&self) -> PyResult<Py<PyByteArray>> {
+        let serialized = serialize(&self.internal)
+            .map_err(|_| PyValueError::new_err("Cannot serialize Cheated to bytes"))?;
+        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+            PyByteArray::new(py, &serialized[..]).into()
+        });
+        Ok(b)
+    }
+
+    #[allow(unused_variables)]
+    #[classmethod]
+    /// Convert the bincode representation of the Cheated to a Cheated using the [bincode] crate.
+    ///
+    /// Args:
+    ///     input (ByteArray): The serialized Cheated (in [bincode] form).
+    ///
+    /// Returns:
+    ///     Cheated: The deserialized Cheated.
+    ///
+    /// Raises:
+    ///     TypeError: Input cannot be converted to byte array.
+    ///     ValueError: Input cannot be deserialized to Cheated.
+    pub fn from_bincode(cls: &PyType, input: &PyAny) -> PyResult<Self> {
+        let bytes = input
+            .extract::<Vec<u8>>()
+            .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
+
+        Ok(Self {
+            internal: deserialize(&bytes[..]).map_err(|_| {
+                PyValueError::new_err("Input cannot be deserialized to Cheated")
+            })?,
+        })
     }
 
     /// Serialize the Cheated measurement to json form.
