@@ -215,7 +215,7 @@ fn test_to_from_bincode() {
         let serialised_error = serialised.call_method0("to_bincode");
         assert!(serialised_error.is_err());
 
-        // testing that 'from_bincode' can be called directly on a circuitdag (python classmethod)
+        // testing that 'from_bincode' can be called directly on a circuitdag (python staticmethod)
         let circuitdag_type = py.get_type::<CircuitDagWrapper>();
         let deserialised_py = circuitdag_type
             .call_method1("from_bincode", (serialised,))

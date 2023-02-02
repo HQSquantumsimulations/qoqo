@@ -2,6 +2,11 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.2.3
+
+* Modified the downcast method for measurements passed to the QuantumProgram in qoqo
+* Added to_bincode and from_bincode methods to all measurements in qoqo
+
 ## 1.2.2
 
 * Removed references to `pyo3::prepare_freethreaded_python();` outside of tests

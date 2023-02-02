@@ -320,7 +320,7 @@ fn test_to_from_bincode() {
         let serialised_error = serialised.call_method0("to_bincode");
         assert!(serialised_error.is_err());
 
-        // testing that 'from_bincode' can be called directly on a circuit (python classmethod)
+        // testing that 'from_bincode' can be called directly on a circuit (python staticmethod)
         let circuit_type = py.get_type::<CircuitWrapper>();
         let deserialised_py = circuit_type
             .call_method1("from_bincode", (serialised,))
@@ -402,7 +402,7 @@ fn test_to_from_json() {
         let deserialised_error = deserialised.call_method0("from_json");
         assert!(deserialised_error.is_err());
 
-        // testing that 'from_json' can be called directly on a circuit (python classmethod)
+        // testing that 'from_json' can be called directly on a circuit (python staticmethod)
         let circuit_type = py.get_type::<CircuitWrapper>();
         let deserialised_py = circuit_type
             .call_method1("from_json", (serialised,))

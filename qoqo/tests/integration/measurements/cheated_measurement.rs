@@ -365,6 +365,59 @@ fn test_internal_to_bincode() {
     })
 }
 
+/// Test to_bincode and from_bincode functions
+#[test]
+fn test_to_from_bincode() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let input_type = py.get_type::<CheatedInputWrapper>();
+        let input = input_type
+            .call1((3,))
+            .unwrap()
+            .cast_as::<PyCell<CheatedInputWrapper>>()
+            .unwrap();
+        let test_matrix = vec![
+            (0, 0, Complex64::new(1.0, 0.0)),
+            (0, 1, Complex64::new(0.0, 0.0)),
+            (1, 0, Complex64::new(0.0, 0.0)),
+            (1, 1, Complex64::new(-1.0, 0.0)),
+        ];
+        let _ = input
+            .call_method1("add_operator_exp_val", ("test_diagonal", test_matrix, "ro"))
+            .unwrap();
+
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+
+        let br_type = py.get_type::<CheatedWrapper>();
+        let br = br_type
+            .call1((Some(CircuitWrapper::new()), circs, input))
+            .unwrap()
+            .cast_as::<PyCell<CheatedWrapper>>()
+            .unwrap();
+
+        let new_br = br;
+
+        let serialised = br.call_method0("to_bincode").unwrap();
+        let deserialised = new_br
+            .call_method1("from_bincode", (serialised,))
+            .unwrap()
+            .cast_as::<PyCell<CheatedWrapper>>()
+            .unwrap();
+        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
+
+        let deserialised_error =
+            new_br.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));
+        assert!(deserialised_error.is_err());
+
+        let deserialised_error =
+            new_br.call_method1("from_bincode", (bincode::serialize(&vec![0]).unwrap(),));
+        assert!(deserialised_error.is_err());
+
+        let serialised_error = serialised.call_method0("to_bincode");
+        assert!(serialised_error.is_err());
+    })
+}
+
 /// Test to_json and from_json functions
 #[test]
 fn test_to_from_json() {
