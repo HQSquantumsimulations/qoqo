@@ -365,8 +365,7 @@ impl QuantumProgramWrapper {
         Ok(b)
     }
 
-    #[allow(unused_variables)]
-    #[classmethod]
+    #[staticmethod]
     /// Convert the bincode representation of the QuantumProgram to a QuantumProgram using the [bincode] crate.
     ///
     /// Args:
@@ -378,7 +377,7 @@ impl QuantumProgramWrapper {
     /// Raises:
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to QuantumProgram.
-    pub fn from_bincode(cls: &PyType, input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
         let bytes = input
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
@@ -413,9 +412,8 @@ impl QuantumProgramWrapper {
     ///
     /// Raises:
     ///     ValueError: Input cannot be deserialized to QuantumProgram.
-    #[allow(unused_variables)]
-    #[classmethod]
-    fn from_json(cls: &PyType, input: &str) -> PyResult<Self> {
+    #[staticmethod]
+    fn from_json(input: &str) -> PyResult<Self> {
         Ok(Self {
             internal: serde_json::from_str(input).map_err(|_| {
                 PyValueError::new_err("Input cannot be deserialized to QuantumProgram")

@@ -264,8 +264,7 @@ impl CircuitWrapper {
         Ok(b)
     }
 
-    #[allow(unused_variables)]
-    #[classmethod]
+    #[staticmethod]
     /// Convert the bincode representation of the Circuit to a Circuit using the [bincode] crate.
     ///
     /// Args:
@@ -277,7 +276,7 @@ impl CircuitWrapper {
     /// Raises:
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to Circuit.
-    pub fn from_bincode(cls: &PyType, input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
         let bytes = input
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
@@ -301,8 +300,7 @@ impl CircuitWrapper {
         Ok(serialized)
     }
 
-    #[allow(unused_variables)]
-    #[classmethod]
+    #[staticmethod]
     /// Convert the json representation of a Circuit to a Circuit.
     ///
     /// Args:
@@ -313,7 +311,7 @@ impl CircuitWrapper {
     ///
     /// Raises:
     ///     ValueError: Input cannot be deserialized to Circuit.
-    pub fn from_json(cls: &PyType, json_string: &str) -> PyResult<Self> {
+    pub fn from_json(json_string: &str) -> PyResult<Self> {
         Ok(Self {
             internal: serde_json::from_str(json_string)
                 .map_err(|_| PyValueError::new_err("Input cannot be deserialized to Circuit"))?,

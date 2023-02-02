@@ -238,8 +238,7 @@ impl PauliZProductWrapper {
         Ok(b)
     }
 
-    #[allow(unused_variables)]
-    #[classmethod]
+    #[staticmethod]
     /// Convert the bincode representation of the PauliZProduct to a PauliZProduct using the [bincode] crate.
     ///
     /// Args:
@@ -251,7 +250,7 @@ impl PauliZProductWrapper {
     /// Raises:
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to PauliZProduct.
-    pub fn from_bincode(cls: &PyType, input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
         let bytes = input
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
