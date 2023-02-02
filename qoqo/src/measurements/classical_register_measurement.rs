@@ -16,7 +16,7 @@ use crate::CircuitWrapper;
 use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
-use pyo3::types::{PyByteArray, PyType};
+use pyo3::types::PyByteArray;
 use roqoqo::measurements::ClassicalRegister;
 use roqoqo::prelude::*;
 use roqoqo::Circuit;

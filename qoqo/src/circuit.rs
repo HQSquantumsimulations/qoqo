@@ -23,7 +23,6 @@ use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyIndexError, PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
-use pyo3::types::PyType;
 use roqoqo::prelude::*;
 use roqoqo::{Circuit, OperationIterator, ROQOQO_VERSION};
 use std::collections::HashSet;

@@ -17,7 +17,7 @@ use crate::CircuitWrapper;
 use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
-use pyo3::types::{PyByteArray, PyType};
+use pyo3::types::PyByteArray;
 use roqoqo::measurements::Cheated;
 use roqoqo::prelude::*;
 use roqoqo::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
@@ -255,9 +255,8 @@ impl CheatedWrapper {
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
         Ok(Self {
-            internal: deserialize(&bytes[..]).map_err(|_| {
-                PyValueError::new_err("Input cannot be deserialized to Cheated")
-            })?,
+            internal: deserialize(&bytes[..])
+                .map_err(|_| PyValueError::new_err("Input cannot be deserialized to Cheated"))?,
         })
     }
 

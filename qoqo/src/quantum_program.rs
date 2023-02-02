@@ -20,8 +20,6 @@ use bincode::{deserialize, serialize};
 use pyo3::exceptions::{PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
-use pyo3::types::PyType;
-use roqoqo::measurements;
 use roqoqo::measurements::Measure;
 use roqoqo::QuantumProgram;
 use roqoqo::ROQOQO_VERSION;
@@ -123,33 +121,10 @@ impl QuantumProgramWrapper {
                 },
             });
         }
-        // Everything that follows tries to extract the circuit when two separately
-        // compiled python packages are involved
-        let get_measurement_internal = measurement
-        .call_method0("_internal_to_bincode")
-        .map_err(|_| PyTypeError::new_err("measurement is not of type Measurement. Are you using different versions of roqoqo?"))?;
-        let (name, encoded) = get_measurement_internal
-            .extract::<(&str, &[u8])>()
-            .map_err(|_| PyTypeError::new_err("measurement is not of type Measurement. Are you using different versions of roqoqo?"))?;
-        match name {
-            "PauliZProduct" => {
-                let measure: measurements::PauliZProduct = deserialize(encoded).map_err(|_| PyTypeError::new_err("measurement is not of type Measurement. Are you using different versions of roqoqo?"))?;
-                Ok( Self{internal: QuantumProgram::PauliZProduct{measurement: measure, input_parameter_names}})
-            },
-            "CheatedPauliZProduct" => {
-                let measure: measurements::CheatedPauliZProduct = deserialize(encoded).map_err(|_| PyTypeError::new_err("measurement is not of type Measurement. Are you using different versions of roqoqo?"))?;
-                Ok( Self{internal: QuantumProgram::CheatedPauliZProduct{measurement: measure, input_parameter_names}})
-            },
-            "Cheated" => {
-                let measure: measurements::Cheated = deserialize(encoded).map_err(|_| PyTypeError::new_err("measurement is not of type Measurement. Are you using different versions of roqoqo?"))?;
-                Ok( Self{internal: QuantumProgram::Cheated{measurement: measure, input_parameter_names}})
-            }
-            "ClassicalRegister" => {
-                let measure: measurements::ClassicalRegister = deserialize(encoded).map_err(|_| PyTypeError::new_err("measurement is not of type Measurement. Are you using different versions of roqoqo?"))?;
-                Ok( Self{internal: QuantumProgram::ClassicalRegister{measurement: measure, input_parameter_names}})
-            }
-            _ => Err(PyTypeError::new_err("measurement is not of type Measurement. Are you using different versions of roqoqo?"))
-        }
+
+        Err(PyTypeError::new_err(
+            "measurement is not of type Measurement. Are you using different versions of roqoqo?",
+        ))
     }
 
     /// Returns the measurement attribute of the QuantumProgram as Python object.
