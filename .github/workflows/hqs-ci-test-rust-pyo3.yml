@@ -7,10 +7,10 @@ on:
 
 jobs:
   linting:
-    uses: HQSquantumsimulations/.github/workflows/reusable_linting_rust_pyo3.yml@main
+    uses: nfwvogt/dummyrepo/.github/workflows/reusable_linting_rust_pyo3.yml@main
 
   unittests:
-    uses: HQSquantumsimulations/.github/workflows/reusable_unittests_rust_pyo3.yml@main
+    uses: nfwvogt/dummyrepo/.github/workflows/reusable_unittests_rust_pyo3.yml@main
     with:
       # Run tests also on windows runners
       windows: false
@@ -19,7 +19,7 @@ jobs:
       rust_package_name: "roqoqo"
 
   build_tests:
-    uses: HQSquantumsimulations/.github/workflows/reusable_build_tests_rust_pyo3.yml@main
+    uses: nfwvogt/dummyrepo/.github/workflows/reusable_build_tests_rust_pyo3.yml@main
     with: 
       # Run tests also on windows runners
       windows: false
