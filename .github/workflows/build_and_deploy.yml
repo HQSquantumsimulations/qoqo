@@ -4,6 +4,12 @@
 name: build_and_deploy
 
 on:
+  workflow_dispatch:
+    inputs:
+      tags:
+          description: 'Test scenario tags'
+          required: false
+          type: boolean
   release:
     types: [created]
 
@@ -21,30 +27,19 @@ jobs:
       run: |
         cargo login ${{ secrets.CRATES_IO_API_TOKEN }}
         cargo publish --manifest-path=roqoqo-derive/Cargo.toml
-        sleep 30
+        sleep 60
         cargo publish --manifest-path=roqoqo/Cargo.toml
-        sleep 30
+        sleep 60
         cargo publish --manifest-path=qoqo-macros/Cargo.toml
-        sleep 30
+        sleep 60
         cargo publish --manifest-path=qoqo/Cargo.toml
-        sleep 30
+        sleep 60
         cargo publish --manifest-path=roqoqo-test/Cargo.toml
 
   build_maturin_builds_linux:
     needs: deploy_cratesio
-    name: maturin_build-${{ matrix.combinations.runs_on }}
-    runs-on: ${{ matrix.combinations.runs_on }}
-    strategy:
-      matrix:
-        combinations: [
-          { runs_on: 'ubuntu-latest',  rust: "x86_64-unknown-linux-gnu" },
-        ]
-        python: [
-            {py: '3.7', interpreter: "python3.7"},
-            {py: '3.8', interpreter: "python3.8"},
-            {py: '3.9', interpreter: "python3.9"},
-            {py: '3.10', interpreter: "python3.10"}
-        ]
+    name: maturin_build-linux
+    runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
@@ -55,17 +50,14 @@ jobs:
           default: true
       - uses: actions/setup-python@v4.2.0
         with:
-          python-version: ${{ matrix.python.py }}
+          python-version: '3.10'
       - name: linux wheels
         uses: messense/maturin-action@v1
         with:
           maturin-version: latest
           command: build
           manylinux: 2014
-          args: -i python${{ matrix.python.py }} --out wheels -m qoqo/Cargo.toml --release --locked
-      - name: test install
-        run: |
-          pip install wheels/* --force-reinstall
+          args: --find-interpreters --out wheels -m qoqo/Cargo.toml --release --locked
       - name: store artifact
         uses: actions/upload-artifact@v3
         with:
@@ -123,7 +115,8 @@ jobs:
             {py: '3.7', interpreter: "python3.7"},
             {py: '3.8', interpreter: "python3.8"},
             {py: '3.9', interpreter: "python3.9"},
-            {py: '3.10', interpreter: "python3.10"}  
+            {py: '3.10', interpreter: "python3.10"},
+            {py: '3.11', interpreter: "python3.11"},
         ]
     steps:
       - uses: actions/checkout@v3
@@ -161,7 +154,8 @@ jobs:
             {py: '3.7', interpreter: "python3.7"},
             {py: '3.8', interpreter: "python3.8"},
             {py: '3.9', interpreter: "python3.9"},
-            {py: '3.10', interpreter: "python3.10"}
+            {py: '3.10', interpreter: "python3.10"},
+            {py: '3.11', interpreter: "python3.11"},
         ]
     steps:
       - uses: actions/checkout@v3

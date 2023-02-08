@@ -33,7 +33,7 @@ fn test_returning_circuits() {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -54,7 +54,7 @@ fn test_returning_circuits() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let circuits: Vec<CircuitWrapper> = br.call_method0("circuits").unwrap().extract().unwrap();
@@ -107,7 +107,7 @@ fn test_py03_evaluate_bool(
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -163,7 +163,7 @@ fn test_py03_evaluate_bool(
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let mut measured_registers: HashMap<String, BitOutputRegister> = HashMap::new();
@@ -221,7 +221,7 @@ fn test_py03_evaluate_usize(
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -277,7 +277,7 @@ fn test_py03_evaluate_usize(
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let mut measured_registers: HashMap<String, Vec<Vec<usize>>> = HashMap::new();
@@ -328,7 +328,7 @@ fn test_evaluate_symbolic(register: Vec<Vec<bool>>, constant: f64) {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -359,7 +359,7 @@ fn test_evaluate_symbolic(register: Vec<Vec<bool>>, constant: f64) {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let mut measured_registers: HashMap<String, BitOutputRegister> = HashMap::new();
@@ -397,7 +397,7 @@ fn test_py03_evaluate_error0() {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -419,7 +419,7 @@ fn test_py03_evaluate_error0() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let measured_registers: HashMap<String, BitOutputRegister> = HashMap::new();
@@ -450,7 +450,7 @@ fn test_pyo3_copy() {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -471,7 +471,7 @@ fn test_pyo3_copy() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
         let br_clone = br;
 
@@ -507,7 +507,7 @@ fn test_pyo3_debug() {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -520,7 +520,7 @@ fn test_pyo3_debug() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
         let br_wrapper = br.extract::<PauliZProductWrapper>().unwrap();
 
@@ -563,7 +563,7 @@ fn test_internal_to_bincode() {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -576,7 +576,7 @@ fn test_internal_to_bincode() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let mut roqoqo_bri = PauliZProductInput::new(3, false);
@@ -610,7 +610,7 @@ fn test_to_from_bincode() {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -623,7 +623,7 @@ fn test_to_from_bincode() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let new_br = br;
@@ -632,7 +632,7 @@ fn test_to_from_bincode() {
         let deserialised = new_br
             .call_method1("from_bincode", (serialised,))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
@@ -659,7 +659,7 @@ fn test_to_from_json() {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -672,7 +672,7 @@ fn test_to_from_json() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let new_br = br;
@@ -680,7 +680,7 @@ fn test_to_from_json() {
         let deserialised = new_br
             .call_method1("from_json", (serialised,))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
@@ -707,7 +707,7 @@ fn test_substitute_parameters() {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -728,7 +728,7 @@ fn test_substitute_parameters() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let mut map: HashMap<String, f64> = HashMap::<String, f64>::new();
@@ -736,7 +736,7 @@ fn test_substitute_parameters() {
         let br_sub = br
             .call_method1("substitute_parameters", (map,))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let br_wrapper = br.extract::<PauliZProductWrapper>().unwrap();
@@ -755,7 +755,7 @@ fn test_substitute_parameters_error() {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -776,7 +776,7 @@ fn test_substitute_parameters_error() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let map: HashMap<String, f64> = HashMap::<String, f64>::new();
@@ -793,7 +793,7 @@ fn test_measurement_type() {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -806,7 +806,7 @@ fn test_measurement_type() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let measurement_type = br.call_method0("measurement_type").unwrap();
@@ -822,7 +822,7 @@ fn test_return_input() {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -835,13 +835,13 @@ fn test_return_input() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let input_returned = br
             .call_method0("input")
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
 
         assert_eq!(format!("{:?}", input_returned), format!("{:?}", input));
@@ -857,7 +857,7 @@ fn test_pyo3_format_repr() {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -870,7 +870,7 @@ fn test_pyo3_format_repr() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
         let to_format = br.call_method1("__format__", ("",)).unwrap();
         let format_op: &str = <&str>::extract(to_format).unwrap();
@@ -889,7 +889,7 @@ fn test_pyo3_copy_deepcopy() {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -902,7 +902,7 @@ fn test_pyo3_copy_deepcopy() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
         let copy_op = br.call_method0("__copy__").unwrap();
         let deepcopy_op = br.call_method1("__deepcopy__", ("",)).unwrap();
@@ -933,7 +933,7 @@ fn test_pyo3_richcmp() {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -946,14 +946,14 @@ fn test_pyo3_richcmp() {
         let br_one = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let arg: Option<CircuitWrapper> = None;
         let br_two = br_type
             .call1((arg, circs, input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
         let comparison = bool::extract(br_one.call_method1("__eq__", (br_two,)).unwrap()).unwrap();
         assert!(!comparison);

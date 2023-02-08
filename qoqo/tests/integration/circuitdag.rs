@@ -24,7 +24,7 @@ fn new_circuitdag(py: Python) -> &PyCell<CircuitDagWrapper> {
     circuitdag_type
         .call0()
         .unwrap()
-        .cast_as::<PyCell<CircuitDagWrapper>>()
+        .downcast::<PyCell<CircuitDagWrapper>>()
         .unwrap()
 }
 
@@ -33,7 +33,7 @@ fn new_circuit(py: Python) -> &PyCell<CircuitWrapper> {
     circuit_type
         .call0()
         .unwrap()
-        .cast_as::<PyCell<CircuitWrapper>>()
+        .downcast::<PyCell<CircuitWrapper>>()
         .unwrap()
 }
 
@@ -244,7 +244,7 @@ fn test_from_circuit() {
         let dag = dag
             .call_method1("from_circuit", (circuit,))
             .unwrap()
-            .cast_as::<PyCell<CircuitDagWrapper>>()
+            .downcast::<PyCell<CircuitDagWrapper>>()
             .unwrap();
 
         let comp_op = dag.call_method1("get", (0,)).unwrap();

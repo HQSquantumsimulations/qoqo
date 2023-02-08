@@ -35,12 +35,12 @@ fn convert_cf_to_pyobject(
         CalculatorFloat::Float(x) => parameter_type
             .call1((x,))
             .unwrap()
-            .cast_as::<PyCell<CalculatorFloatWrapper>>()
+            .downcast::<PyCell<CalculatorFloatWrapper>>()
             .unwrap(),
         CalculatorFloat::Str(x) => parameter_type
             .call1((x,))
             .unwrap()
-            .cast_as::<PyCell<CalculatorFloatWrapper>>()
+            .downcast::<PyCell<CalculatorFloatWrapper>>()
             .unwrap(),
     }
 }
@@ -110,7 +110,7 @@ fn new_circuit(py: Python) -> &PyCell<CircuitWrapper> {
     circuit_type
         .call0()
         .unwrap()
-        .cast_as::<PyCell<CircuitWrapper>>()
+        .downcast::<PyCell<CircuitWrapper>>()
         .unwrap()
 }
 
@@ -198,7 +198,7 @@ fn test_pyo3_inputs_setdensitymatrix() {
         let to_operators_py = operation.call_method0(py, "density_matrix").unwrap();
         let to_operators_op = to_operators_py
             .as_ref(py)
-            .cast_as::<PyArray2<Complex64>>()
+            .downcast::<PyArray2<Complex64>>()
             .unwrap();
         let densmat_array = to_operators_op.readonly().as_array().to_owned();
 
@@ -509,7 +509,7 @@ fn test_pyo3_inputs_generalnoise() {
         let to_operators_py = operation.call_method0(py, "rates").unwrap();
         let to_operators_op = to_operators_py
             .as_ref(py)
-            .cast_as::<PyArray2<f64>>()
+            .downcast::<PyArray2<f64>>()
             .unwrap();
         let operators_op = to_operators_op.readonly().as_array().to_owned();
         assert_eq!(operators_op, operators());
@@ -1300,7 +1300,7 @@ fn test_pyo3_noise_superoperator_damping() {
 
         let to_superop_op = operation.call_method0(py, "superoperator").unwrap();
         let superop_op = to_superop_op
-            .cast_as::<PyArray2<f64>>(py)
+            .downcast::<PyArray2<f64>>(py)
             .unwrap()
             .to_owned_array();
 
@@ -1334,7 +1334,7 @@ fn test_pyo3_noise_superoperator_depolarising() {
 
         let to_superop_op = operation.call_method0(py, "superoperator").unwrap();
         let superop_op = to_superop_op
-            .cast_as::<PyArray2<f64>>(py)
+            .downcast::<PyArray2<f64>>(py)
             .unwrap()
             .to_owned_array();
 
@@ -1366,7 +1366,7 @@ fn test_pyo3_noise_superoperator_dephasing() {
 
         let to_superop_op = operation.call_method0(py, "superoperator").unwrap();
         let superop_op = to_superop_op
-            .cast_as::<PyArray2<f64>>(py)
+            .downcast::<PyArray2<f64>>(py)
             .unwrap()
             .to_owned_array();
 
@@ -1399,7 +1399,7 @@ fn test_pyo3_noise_superoperator_randomnoise() {
 
         let to_superop_op = operation.call_method0(py, "superoperator").unwrap();
         let superop_op = to_superop_op
-            .cast_as::<PyArray2<f64>>(py)
+            .downcast::<PyArray2<f64>>(py)
             .unwrap()
             .to_owned_array();
 
@@ -1597,7 +1597,7 @@ fn test_pyo3_new_set_number_of_measurements() {
         let new_op = operation
             .call1((1, "ro".to_string()))
             .unwrap()
-            .cast_as::<PyCell<PragmaSetNumberOfMeasurementsWrapper>>()
+            .downcast::<PyCell<PragmaSetNumberOfMeasurementsWrapper>>()
             .unwrap();
 
         let input_definition =
@@ -1613,7 +1613,7 @@ fn test_pyo3_new_set_number_of_measurements() {
         let new_op_diff = operation
             .call1((2, "ro".to_string()))
             .unwrap()
-            .cast_as::<PyCell<PragmaSetNumberOfMeasurementsWrapper>>()
+            .downcast::<PyCell<PragmaSetNumberOfMeasurementsWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff
             .extract::<PragmaSetNumberOfMeasurementsWrapper>()
@@ -1644,7 +1644,7 @@ fn test_pyo3_new_set_statevector() {
         let new_op = operation
             .call1((statevector_op_0,))
             .unwrap()
-            .cast_as::<PyCell<PragmaSetStateVectorWrapper>>()
+            .downcast::<PyCell<PragmaSetStateVectorWrapper>>()
             .unwrap();
 
         let comparison_copy = bool::extract(
@@ -1665,7 +1665,7 @@ fn test_pyo3_new_set_statevector() {
         let new_op_diff = operation
             .call1((statevector_op_1,))
             .unwrap()
-            .cast_as::<PyCell<PragmaSetStateVectorWrapper>>()
+            .downcast::<PyCell<PragmaSetStateVectorWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff
             .extract::<PragmaSetStateVectorWrapper>()
@@ -1696,7 +1696,7 @@ fn test_pyo3_new_set_densitymatrix() {
         let new_op = operation
             .call1((densmat_op_0,))
             .unwrap()
-            .cast_as::<PyCell<PragmaSetDensityMatrixWrapper>>()
+            .downcast::<PyCell<PragmaSetDensityMatrixWrapper>>()
             .unwrap();
 
         let comparison_copy = bool::extract(
@@ -1717,7 +1717,7 @@ fn test_pyo3_new_set_densitymatrix() {
         let new_op_diff = operation
             .call1((densmat_op_1,))
             .unwrap()
-            .cast_as::<PyCell<PragmaSetDensityMatrixWrapper>>()
+            .downcast::<PyCell<PragmaSetDensityMatrixWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff
             .extract::<PragmaSetDensityMatrixWrapper>()
@@ -1743,7 +1743,7 @@ fn test_pyo3_new_repeated_gate() {
         let new_op = operation
             .call1((2,))
             .unwrap()
-            .cast_as::<PyCell<PragmaRepeatGateWrapper>>()
+            .downcast::<PyCell<PragmaRepeatGateWrapper>>()
             .unwrap();
 
         let input_definition = Operation::from(PragmaRepeatGate::new(2));
@@ -1756,7 +1756,7 @@ fn test_pyo3_new_repeated_gate() {
         let new_op_diff = operation
             .call1((3,))
             .unwrap()
-            .cast_as::<PyCell<PragmaRepeatGateWrapper>>()
+            .downcast::<PyCell<PragmaRepeatGateWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaRepeatGateWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
@@ -1781,7 +1781,7 @@ fn test_pyo3_new_overrotation() {
         let new_op = operation
             .call1(("RotateX", vec![0], 0.03, 0.001))
             .unwrap()
-            .cast_as::<PyCell<PragmaOverrotationWrapper>>()
+            .downcast::<PyCell<PragmaOverrotationWrapper>>()
             .unwrap();
         let input_definition = Operation::from(PragmaOverrotation::new(
             "RotateX".to_string(),
@@ -1810,7 +1810,7 @@ fn test_pyo3_new_overrotation() {
         let new_op_diff = operation
             .call1(("RotateX", vec![1], 0.03, 0.001))
             .unwrap()
-            .cast_as::<PyCell<PragmaOverrotationWrapper>>()
+            .downcast::<PyCell<PragmaOverrotationWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaOverrotationWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
@@ -1835,7 +1835,7 @@ fn test_pyo3_new_boost_noise() {
         let new_op = operation
             .call1((0.003,))
             .unwrap()
-            .cast_as::<PyCell<PragmaBoostNoiseWrapper>>()
+            .downcast::<PyCell<PragmaBoostNoiseWrapper>>()
             .unwrap();
         let input_definition = Operation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.003)));
         let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
@@ -1853,7 +1853,7 @@ fn test_pyo3_new_boost_noise() {
         let new_op_diff = operation
             .call1((0.001,))
             .unwrap()
-            .cast_as::<PyCell<PragmaBoostNoiseWrapper>>()
+            .downcast::<PyCell<PragmaBoostNoiseWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaBoostNoiseWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
@@ -1878,7 +1878,7 @@ fn test_pyo3_new_stop() {
         let new_op = operation
             .call1((vec![0], 0.0000001))
             .unwrap()
-            .cast_as::<PyCell<PragmaStopParallelBlockWrapper>>()
+            .downcast::<PyCell<PragmaStopParallelBlockWrapper>>()
             .unwrap();
         let input_definition = Operation::from(PragmaStopParallelBlock::new(
             vec![0],
@@ -1899,7 +1899,7 @@ fn test_pyo3_new_stop() {
         let new_op_diff = operation
             .call1((vec![1], 0.0000001))
             .unwrap()
-            .cast_as::<PyCell<PragmaStopParallelBlockWrapper>>()
+            .downcast::<PyCell<PragmaStopParallelBlockWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff
             .extract::<PragmaStopParallelBlockWrapper>()
@@ -1931,7 +1931,7 @@ fn test_pyo3_new_global_phase() {
         let new_op = operation
             .call1((0.003,))
             .unwrap()
-            .cast_as::<PyCell<PragmaGlobalPhaseWrapper>>()
+            .downcast::<PyCell<PragmaGlobalPhaseWrapper>>()
             .unwrap();
         let input_definition =
             Operation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.003)));
@@ -1950,7 +1950,7 @@ fn test_pyo3_new_global_phase() {
         let new_op_diff = operation
             .call1((0.001,))
             .unwrap()
-            .cast_as::<PyCell<PragmaGlobalPhaseWrapper>>()
+            .downcast::<PyCell<PragmaGlobalPhaseWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaGlobalPhaseWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
@@ -1975,7 +1975,7 @@ fn test_pyo3_new_sleep() {
         let new_op = operation
             .call1((vec![0], 0.0000001))
             .unwrap()
-            .cast_as::<PyCell<PragmaSleepWrapper>>()
+            .downcast::<PyCell<PragmaSleepWrapper>>()
             .unwrap();
 
         let input_definition =
@@ -1995,7 +1995,7 @@ fn test_pyo3_new_sleep() {
         let new_op_diff = operation
             .call1((vec![1], 0.0000001))
             .unwrap()
-            .cast_as::<PyCell<PragmaSleepWrapper>>()
+            .downcast::<PyCell<PragmaSleepWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaSleepWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
@@ -2024,7 +2024,7 @@ fn test_pyo3_new_active_reset() {
         let new_op = operation
             .call1((0,))
             .unwrap()
-            .cast_as::<PyCell<PragmaActiveResetWrapper>>()
+            .downcast::<PyCell<PragmaActiveResetWrapper>>()
             .unwrap();
 
         let input_definition = Operation::from(PragmaActiveReset::new(0));
@@ -2037,7 +2037,7 @@ fn test_pyo3_new_active_reset() {
         let new_op_diff = operation
             .call1((1,))
             .unwrap()
-            .cast_as::<PyCell<PragmaActiveResetWrapper>>()
+            .downcast::<PyCell<PragmaActiveResetWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaActiveResetWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
@@ -2061,7 +2061,7 @@ fn test_pyo3_new_start_decomposition_block() {
         let new_op = operation
             .call1((vec![0], reordering()))
             .unwrap()
-            .cast_as::<PyCell<PragmaStartDecompositionBlockWrapper>>()
+            .downcast::<PyCell<PragmaStartDecompositionBlockWrapper>>()
             .unwrap();
 
         let input_definition =
@@ -2077,7 +2077,7 @@ fn test_pyo3_new_start_decomposition_block() {
         let new_op_diff = operation
             .call1((vec![1], reordering()))
             .unwrap()
-            .cast_as::<PyCell<PragmaStartDecompositionBlockWrapper>>()
+            .downcast::<PyCell<PragmaStartDecompositionBlockWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff
             .extract::<PragmaStartDecompositionBlockWrapper>()
@@ -2103,7 +2103,7 @@ fn test_pyo3_new_stop_decomposition_block() {
         let new_op = operation
             .call1((vec![0],))
             .unwrap()
-            .cast_as::<PyCell<PragmaStopDecompositionBlockWrapper>>()
+            .downcast::<PyCell<PragmaStopDecompositionBlockWrapper>>()
             .unwrap();
 
         let input_definition = Operation::from(PragmaStopDecompositionBlock::new(vec![0]));
@@ -2118,7 +2118,7 @@ fn test_pyo3_new_stop_decomposition_block() {
         let new_op_diff = operation
             .call1((vec![1],))
             .unwrap()
-            .cast_as::<PyCell<PragmaStopDecompositionBlockWrapper>>()
+            .downcast::<PyCell<PragmaStopDecompositionBlockWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff
             .extract::<PragmaStopDecompositionBlockWrapper>()
@@ -2145,7 +2145,7 @@ fn test_pyo3_new_damping() {
         let new_op = operation
             .call1((0, 0.005, 0.02))
             .unwrap()
-            .cast_as::<PyCell<PragmaDampingWrapper>>()
+            .downcast::<PyCell<PragmaDampingWrapper>>()
             .unwrap();
         let input_definition = Operation::from(PragmaDamping::new(
             0,
@@ -2170,7 +2170,7 @@ fn test_pyo3_new_damping() {
         let new_op_diff = operation
             .call1((1, 0.005, 0.02))
             .unwrap()
-            .cast_as::<PyCell<PragmaDampingWrapper>>()
+            .downcast::<PyCell<PragmaDampingWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaDampingWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
@@ -2195,7 +2195,7 @@ fn test_pyo3_new_depolarising() {
         let new_op = operation
             .call1((0, 0.005, 0.02))
             .unwrap()
-            .cast_as::<PyCell<PragmaDepolarisingWrapper>>()
+            .downcast::<PyCell<PragmaDepolarisingWrapper>>()
             .unwrap();
         let input_definition = Operation::from(PragmaDepolarising::new(
             0,
@@ -2220,7 +2220,7 @@ fn test_pyo3_new_depolarising() {
         let new_op_diff = operation
             .call1((1, 0.005, 0.02))
             .unwrap()
-            .cast_as::<PyCell<PragmaDepolarisingWrapper>>()
+            .downcast::<PyCell<PragmaDepolarisingWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaDepolarisingWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
@@ -2245,7 +2245,7 @@ fn test_pyo3_new_dephasing() {
         let new_op = operation
             .call1((0, 0.005, 0.02))
             .unwrap()
-            .cast_as::<PyCell<PragmaDephasingWrapper>>()
+            .downcast::<PyCell<PragmaDephasingWrapper>>()
             .unwrap();
         let input_definition = Operation::from(PragmaDephasing::new(
             0,
@@ -2270,7 +2270,7 @@ fn test_pyo3_new_dephasing() {
         let new_op_diff = operation
             .call1((1, 0.005, 0.02))
             .unwrap()
-            .cast_as::<PyCell<PragmaDephasingWrapper>>()
+            .downcast::<PyCell<PragmaDephasingWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaDephasingWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
@@ -2295,7 +2295,7 @@ fn test_pyo3_new_randomnoise() {
         let new_op = operation
             .call1((0, 0.005, 0.02, 0.01))
             .unwrap()
-            .cast_as::<PyCell<PragmaRandomNoiseWrapper>>()
+            .downcast::<PyCell<PragmaRandomNoiseWrapper>>()
             .unwrap();
         let input_definition = Operation::from(PragmaRandomNoise::new(
             0,
@@ -2324,7 +2324,7 @@ fn test_pyo3_new_randomnoise() {
         let new_op_diff = operation
             .call1((1, 0.005, 0.02, 0.01))
             .unwrap()
-            .cast_as::<PyCell<PragmaRandomNoiseWrapper>>()
+            .downcast::<PyCell<PragmaRandomNoiseWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaRandomNoiseWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
@@ -2357,7 +2357,7 @@ fn test_pyo3_new_general_noise() {
         let new_op = operation
             .call1((0, 0.005, operators_op.clone()))
             .unwrap()
-            .cast_as::<PyCell<PragmaGeneralNoiseWrapper>>()
+            .downcast::<PyCell<PragmaGeneralNoiseWrapper>>()
             .unwrap();
 
         let comparison_copy = bool::extract(
@@ -2382,7 +2382,7 @@ fn test_pyo3_new_general_noise() {
         let new_op_diff = operation
             .call1((1, 0.005, operators_op))
             .unwrap()
-            .cast_as::<PyCell<PragmaGeneralNoiseWrapper>>()
+            .downcast::<PyCell<PragmaGeneralNoiseWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaGeneralNoiseWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
@@ -2406,7 +2406,7 @@ fn test_pyo3_new_conditional() {
         let new_op = operation
             .call1(("ro".to_string(), 0, new_circuit(py)))
             .unwrap()
-            .cast_as::<PyCell<PragmaConditionalWrapper>>()
+            .downcast::<PyCell<PragmaConditionalWrapper>>()
             .unwrap();
 
         let input_definition =
@@ -2420,7 +2420,7 @@ fn test_pyo3_new_conditional() {
         let new_op_diff = operation
             .call1(("ro".to_string(), 2, new_circuit(py)))
             .unwrap()
-            .cast_as::<PyCell<PragmaConditionalWrapper>>()
+            .downcast::<PyCell<PragmaConditionalWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaConditionalWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
@@ -2444,7 +2444,7 @@ fn test_pyo3_new_loop() {
         let new_op = operation
             .call1(("number_t".to_string(), new_circuit(py)))
             .unwrap()
-            .cast_as::<PyCell<PragmaLoopWrapper>>()
+            .downcast::<PyCell<PragmaLoopWrapper>>()
             .unwrap();
 
         let input_definition = Operation::from(PragmaLoop::new("number_t".into(), Circuit::new()));
@@ -2457,7 +2457,7 @@ fn test_pyo3_new_loop() {
         let new_op_diff = operation
             .call1(("ro".to_string(), new_circuit(py)))
             .unwrap()
-            .cast_as::<PyCell<PragmaLoopWrapper>>()
+            .downcast::<PyCell<PragmaLoopWrapper>>()
             .unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaLoopWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;

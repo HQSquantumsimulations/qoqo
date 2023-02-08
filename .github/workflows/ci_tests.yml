@@ -1,8 +1,12 @@
 name: ci_tests
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+    inputs:
+      tags:
+          description: 'Test scenario tags'
+          required: false
+          type: boolean
   pull_request:
     branches: [main]
 
@@ -188,7 +192,9 @@ jobs:
             {py: '3.7', interpreter: "python3.7"},
             {py: '3.8', interpreter: "python3.8"},
             {py: '3.9', interpreter: "python3.9"},
-            {py: '3.10', interpreter: "python3.10"}
+            {py: '3.10', interpreter: "python3.10"},
+            {py: '3.11', interpreter: "python3.11"},
+
         ]
     steps:
       - uses: actions/checkout@v3
@@ -221,7 +227,8 @@ jobs:
             {py: '3.7', interpreter: "python3.7"},
             {py: '3.8', interpreter: "python3.8"},
             {py: '3.9', interpreter: "python3.9"},
-            {py: '3.10', interpreter: "python3.10"}
+            {py: '3.10', interpreter: "python3.10"},
+            {py: '3.11', interpreter: "python3.11"}
         ]
     steps:
       - uses: actions/checkout@v3

@@ -30,7 +30,7 @@ fn new_circuit(py: Python) -> &PyCell<CircuitWrapper> {
     circuit_type
         .call0()
         .unwrap()
-        .cast_as::<PyCell<CircuitWrapper>>()
+        .downcast::<PyCell<CircuitWrapper>>()
         .unwrap()
 }
 
@@ -43,7 +43,7 @@ fn populate_circuit_rotatex(
     let rotatex_type = py.get_type::<RotateXWrapper>();
     for i in start..stop {
         let new_rotatex_0 = rotatex_type.call1((i, i)).unwrap();
-        // .cast_as::<PyCell<RotateXWrapper>>()
+        // .downcast::<PyCell<RotateXWrapper>>()
         // .unwrap();
         circuit.call_method1("add", (new_rotatex_0,)).unwrap();
     }
@@ -340,7 +340,7 @@ fn test_value_error_bincode() {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -353,7 +353,7 @@ fn test_value_error_bincode() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let new_br = br;
@@ -361,7 +361,7 @@ fn test_value_error_bincode() {
         let deserialised = new_br
             .call_method1("from_json", (serialised,))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let new = new_circuit(py);
@@ -596,12 +596,12 @@ fn test_filter_by_tag() {
         let rotatex_0 = rotatex_type
             .call1((0, 0))
             .unwrap()
-            .cast_as::<PyCell<RotateXWrapper>>()
+            .downcast::<PyCell<RotateXWrapper>>()
             .unwrap();
         let rotatex_1 = rotatex_type
             .call1((1, 1))
             .unwrap()
-            .cast_as::<PyCell<RotateXWrapper>>()
+            .downcast::<PyCell<RotateXWrapper>>()
             .unwrap();
 
         let comp_op = circuit.call_method1("filter_by_tag", ("RotateX",)).unwrap();
@@ -665,7 +665,7 @@ fn test_fmt_circuititerator() {
         let circuit_iter = new_circuit
             .call_method0("__iter__")
             .unwrap()
-            .cast_as::<PyCell<OperationIteratorWrapper>>()
+            .downcast::<PyCell<OperationIteratorWrapper>>()
             .unwrap();
 
         let fmt = "RefCell { value: OperationIteratorWrapper { internal: OperationIterator { definition_iter: IntoIter([]), operation_iter: IntoIter([RotateX(RotateX { qubit: 0, theta: Float(0.0) }), RotateX(RotateX { qubit: 1, theta: Float(1.0) })]) } } }";
@@ -808,24 +808,24 @@ fn test_iter() {
         let new_rotatex_0 = rotatex_type
             .call1((0, 0))
             .unwrap()
-            .cast_as::<PyCell<RotateXWrapper>>()
+            .downcast::<PyCell<RotateXWrapper>>()
             .unwrap();
         let new_rotatex_1 = rotatex_type
             .call1((1, 1))
             .unwrap()
-            .cast_as::<PyCell<RotateXWrapper>>()
+            .downcast::<PyCell<RotateXWrapper>>()
             .unwrap();
         let new_rotatex_2 = rotatex_type
             .call1((2, 2))
             .unwrap()
-            .cast_as::<PyCell<RotateXWrapper>>()
+            .downcast::<PyCell<RotateXWrapper>>()
             .unwrap();
         let comparison_vec = vec![new_rotatex_0, new_rotatex_1, new_rotatex_2];
 
         let t = new_circuit
             .call_method0("__iter__")
             .unwrap()
-            .cast_as::<PyCell<OperationIteratorWrapper>>()
+            .downcast::<PyCell<OperationIteratorWrapper>>()
             .unwrap();
 
         let range = 0_usize..3_usize;
@@ -952,7 +952,7 @@ fn test_circuit_overrotate() {
         let circuit_overrotated = circuit
             .call_method0("overrotate")
             .unwrap()
-            .cast_as::<PyCell<CircuitWrapper>>()
+            .downcast::<PyCell<CircuitWrapper>>()
             .unwrap();
 
         assert_ne!(

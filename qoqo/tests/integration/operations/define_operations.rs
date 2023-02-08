@@ -25,7 +25,7 @@ fn test_pyo3_new_definition_float() {
         let new_op = operation
             .call1(("ro".to_string(), 1, false))
             .unwrap()
-            .cast_as::<PyCell<DefinitionFloatWrapper>>()
+            .downcast::<PyCell<DefinitionFloatWrapper>>()
             .unwrap();
 
         let input_definition = Operation::from(DefinitionFloat::new(String::from("ro"), 1, false));
@@ -38,7 +38,7 @@ fn test_pyo3_new_definition_float() {
         let new_op_diff = operation
             .call1(("ro".to_string(), 1, true))
             .unwrap()
-            .cast_as::<PyCell<DefinitionFloatWrapper>>()
+            .downcast::<PyCell<DefinitionFloatWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<DefinitionFloatWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -62,7 +62,7 @@ fn test_pyo3_new_definition_complex() {
         let new_op = operation
             .call1(("ro".to_string(), 1, false))
             .unwrap()
-            .cast_as::<PyCell<DefinitionComplexWrapper>>()
+            .downcast::<PyCell<DefinitionComplexWrapper>>()
             .unwrap();
 
         let input_definition =
@@ -76,7 +76,7 @@ fn test_pyo3_new_definition_complex() {
         let new_op_diff = operation
             .call1(("ro".to_string(), 1, true))
             .unwrap()
-            .cast_as::<PyCell<DefinitionComplexWrapper>>()
+            .downcast::<PyCell<DefinitionComplexWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<DefinitionComplexWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -100,7 +100,7 @@ fn test_pyo3_new_definition_usize() {
         let new_op = operation
             .call1(("ro".to_string(), 1, false))
             .unwrap()
-            .cast_as::<PyCell<DefinitionUsizeWrapper>>()
+            .downcast::<PyCell<DefinitionUsizeWrapper>>()
             .unwrap();
 
         let input_definition = Operation::from(DefinitionUsize::new(String::from("ro"), 1, false));
@@ -113,7 +113,7 @@ fn test_pyo3_new_definition_usize() {
         let new_op_diff = operation
             .call1(("ro".to_string(), 1, true))
             .unwrap()
-            .cast_as::<PyCell<DefinitionUsizeWrapper>>()
+            .downcast::<PyCell<DefinitionUsizeWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<DefinitionUsizeWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -137,7 +137,7 @@ fn test_pyo3_new_definition_bit() {
         let new_op = operation
             .call1(("ro".to_string(), 1, false))
             .unwrap()
-            .cast_as::<PyCell<DefinitionBitWrapper>>()
+            .downcast::<PyCell<DefinitionBitWrapper>>()
             .unwrap();
 
         let input_definition = Operation::from(DefinitionBit::new(String::from("ro"), 1, false));
@@ -150,7 +150,7 @@ fn test_pyo3_new_definition_bit() {
         let new_op_diff = operation
             .call1(("ro".to_string(), 1, true))
             .unwrap()
-            .cast_as::<PyCell<DefinitionBitWrapper>>()
+            .downcast::<PyCell<DefinitionBitWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<DefinitionBitWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -174,7 +174,7 @@ fn test_pyo3_new_input_symbolic() {
         let new_op = operation
             .call1(("ro".to_string(), 1.0))
             .unwrap()
-            .cast_as::<PyCell<InputSymbolicWrapper>>()
+            .downcast::<PyCell<InputSymbolicWrapper>>()
             .unwrap();
 
         let input_definition = Operation::from(InputSymbolic::new(String::from("ro"), 1.0));
@@ -187,7 +187,7 @@ fn test_pyo3_new_input_symbolic() {
         let new_op_diff = operation
             .call1(("ro".to_string(), 2.0))
             .unwrap()
-            .cast_as::<PyCell<InputSymbolicWrapper>>()
+            .downcast::<PyCell<InputSymbolicWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<InputSymbolicWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -211,7 +211,7 @@ fn test_pyo3_new_input_bit() {
         let new_op = operation
             .call1(("ro".to_string(), 1, false))
             .unwrap()
-            .cast_as::<PyCell<InputBitWrapper>>()
+            .downcast::<PyCell<InputBitWrapper>>()
             .unwrap();
 
         let input_definition = Operation::from(InputBit::new(String::from("ro"), 1, false));
@@ -224,7 +224,7 @@ fn test_pyo3_new_input_bit() {
         let new_op_diff = operation
             .call1(("ro".to_string(), 2, false))
             .unwrap()
-            .cast_as::<PyCell<InputBitWrapper>>()
+            .downcast::<PyCell<InputBitWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<InputBitWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;

@@ -48,7 +48,7 @@ fn create_measurement(py: Python) -> &PyCell<CheatedPauliZProductWrapper> {
     let input = input_type
         .call0()
         .unwrap()
-        .cast_as::<PyCell<CheatedPauliZProductInputWrapper>>()
+        .downcast::<PyCell<CheatedPauliZProductInputWrapper>>()
         .unwrap();
     let _ = input.call_method1("add_pauliz_product", ("ro",)).unwrap();
 
@@ -60,7 +60,7 @@ fn create_measurement(py: Python) -> &PyCell<CheatedPauliZProductWrapper> {
     br_type
         .call1((Some(CircuitWrapper::new()), circs.clone(), input))
         .unwrap()
-        .cast_as::<PyCell<CheatedPauliZProductWrapper>>()
+        .downcast::<PyCell<CheatedPauliZProductWrapper>>()
         .unwrap()
 }
 
@@ -74,7 +74,7 @@ fn test_basic_traits() {
         let program = program_type
             .call1((input, vec!["test".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
         let program_wrapper = program.extract::<QuantumProgramWrapper>().unwrap();
 
@@ -104,7 +104,7 @@ fn test_new_run_br() {
         let input_instance = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let _ = input_instance
             .call_method1("add_pauliz_product", ("ro", vec![0]))
@@ -118,14 +118,14 @@ fn test_new_run_br() {
         let input = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input_instance))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type
             .call1((input, vec!["test".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
         let program_wrapper = program.extract::<QuantumProgramWrapper>().unwrap();
 
@@ -166,7 +166,7 @@ fn test_new_run_cheated_br() {
         let input_instance = input_type
             .call0()
             .unwrap()
-            .cast_as::<PyCell<CheatedPauliZProductInputWrapper>>()
+            .downcast::<PyCell<CheatedPauliZProductInputWrapper>>()
             .unwrap();
         let _ = input_instance
             .call_method1("add_pauliz_product", ("ro",))
@@ -180,14 +180,14 @@ fn test_new_run_cheated_br() {
         let input = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input_instance))
             .unwrap()
-            .cast_as::<PyCell<CheatedPauliZProductWrapper>>()
+            .downcast::<PyCell<CheatedPauliZProductWrapper>>()
             .unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type
             .call1((input, vec!["test".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
         let program_wrapper = program.extract::<QuantumProgramWrapper>().unwrap();
 
@@ -230,7 +230,7 @@ fn test_new_run_cheated() {
         let input_instance = input_type
             .call1((2,))
             .unwrap()
-            .cast_as::<PyCell<CheatedInputWrapper>>()
+            .downcast::<PyCell<CheatedInputWrapper>>()
             .unwrap();
 
         let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
@@ -241,14 +241,14 @@ fn test_new_run_cheated() {
         let input = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input_instance))
             .unwrap()
-            .cast_as::<PyCell<CheatedWrapper>>()
+            .downcast::<PyCell<CheatedWrapper>>()
             .unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type
             .call1((input, vec!["test".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
         let program_wrapper = program.extract::<QuantumProgramWrapper>().unwrap();
 
@@ -292,14 +292,14 @@ fn test_new_run_classical_register() {
         let input = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type
             .call1((input, vec!["test".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
         let program_wrapper = program.extract::<QuantumProgramWrapper>().unwrap();
 
@@ -352,7 +352,7 @@ fn test_copy_deepcopy() {
         let program = program_type
             .call1((input, vec!["test".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
         let copy_circ = program.call_method0("__copy__").unwrap();
@@ -386,7 +386,7 @@ fn test_qoqo_versions() {
         let program = program_type
             .call1((input, vec!["test".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
         let mut rsplit = ROQOQO_VERSION.split('.').take(2);
@@ -418,7 +418,7 @@ fn test_to_from_bincode() {
         let program = program_type
             .call1((input, vec!["test".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
         // testing 'to_bincode' and 'from_bincode' functions
@@ -426,7 +426,7 @@ fn test_to_from_bincode() {
         let new = program_type
             .call1((input, vec!["new".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
         let deserialised = new.call_method1("from_bincode", (serialised,)).unwrap();
         let comparison =
@@ -467,7 +467,7 @@ fn test_value_error_bincode() {
         let program = program_type
             .call1((input, vec!["test".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
         let program_clone = program;
@@ -475,13 +475,13 @@ fn test_value_error_bincode() {
         let deserialised = program_clone
             .call_method1("from_bincode", (serialised,))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
         let new = program_type
             .call1((input, vec!["new".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
         let deserialised_error = new.call_method1("from_bincode", (deserialised,));
         assert!(deserialised_error.is_err());
@@ -498,7 +498,7 @@ fn test_to_from_json() {
         let program = program_type
             .call1((input, vec!["test".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
         // testing 'from_json' and 'to_json' functions
@@ -506,7 +506,7 @@ fn test_to_from_json() {
         let new = program_type
             .call1((input, vec!["new".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
         let deserialised = new.call_method1("from_json", (serialised,)).unwrap();
         let comparison =
@@ -548,12 +548,12 @@ fn test_richcmp() {
         let program_one = program_type
             .call1((input, vec!["one".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
         let program_two = program_type
             .call1((input, vec!["two".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
         let operation1 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
@@ -596,7 +596,7 @@ fn test_convert_into_program() {
         let program = program_type
             .call1((input, vec!["one".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
         let comparison = program.call_method1("convert_into_quantum_program", (operation.clone(),));
         assert!(comparison.is_err());
@@ -618,7 +618,7 @@ fn test_return_measurement_cheatedpaulizproduct() {
         let input = input_type
             .call0()
             .unwrap()
-            .cast_as::<PyCell<CheatedPauliZProductInputWrapper>>()
+            .downcast::<PyCell<CheatedPauliZProductInputWrapper>>()
             .unwrap();
         let _ = input.call_method1("add_pauliz_product", ("ro",)).unwrap();
 
@@ -630,20 +630,20 @@ fn test_return_measurement_cheatedpaulizproduct() {
         let measurement_input = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap()
-            .cast_as::<PyCell<CheatedPauliZProductWrapper>>()
+            .downcast::<PyCell<CheatedPauliZProductWrapper>>()
             .unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type
             .call1((measurement_input, vec!["test".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
         let measurement_returned = program
             .call_method0("measurement")
             .unwrap()
-            .cast_as::<PyCell<CheatedPauliZProductWrapper>>()
+            .downcast::<PyCell<CheatedPauliZProductWrapper>>()
             .unwrap();
 
         assert_eq!(
@@ -663,7 +663,7 @@ fn test_return_measurement_paulizproduct() {
         let input = input_type
             .call1((3, false))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductInputWrapper>>()
+            .downcast::<PyCell<PauliZProductInputWrapper>>()
             .unwrap();
         let tmp_vec: Vec<usize> = Vec::new();
         let _ = input
@@ -676,20 +676,20 @@ fn test_return_measurement_paulizproduct() {
         let measurement_input = br_type
             .call1((Some(CircuitWrapper::new()), circs, input))
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type
             .call1((measurement_input, vec!["test".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
         let measurement_returned = program
             .call_method0("measurement")
             .unwrap()
-            .cast_as::<PyCell<PauliZProductWrapper>>()
+            .downcast::<PyCell<PauliZProductWrapper>>()
             .unwrap();
 
         assert_eq!(
@@ -709,7 +709,7 @@ fn test_return_measurement_cheated() {
         let input = input_type
             .call1((3,))
             .unwrap()
-            .cast_as::<PyCell<CheatedInputWrapper>>()
+            .downcast::<PyCell<CheatedInputWrapper>>()
             .unwrap();
         let test_matrix = vec![
             (0, 0, Complex64::new(1.0, 0.0)),
@@ -729,20 +729,20 @@ fn test_return_measurement_cheated() {
         let measurement_input = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap()
-            .cast_as::<PyCell<CheatedWrapper>>()
+            .downcast::<PyCell<CheatedWrapper>>()
             .unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type
             .call1((measurement_input, vec!["test".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
         let measurement_returned = program
             .call_method0("measurement")
             .unwrap()
-            .cast_as::<PyCell<CheatedWrapper>>()
+            .downcast::<PyCell<CheatedWrapper>>()
             .unwrap();
 
         assert_eq!(
@@ -766,20 +766,20 @@ fn test_return_measurement_classicalreg() {
         let measurement_input = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type
             .call1((measurement_input, vec!["test".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
         let measurement_returned = program
             .call_method0("measurement")
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
 
         assert_eq!(
@@ -799,7 +799,7 @@ fn test_input_parameter_names() {
         let input = input_type
             .call0()
             .unwrap()
-            .cast_as::<PyCell<CheatedPauliZProductInputWrapper>>()
+            .downcast::<PyCell<CheatedPauliZProductInputWrapper>>()
             .unwrap();
         let _ = input.call_method1("add_pauliz_product", ("ro",)).unwrap();
 
@@ -811,14 +811,14 @@ fn test_input_parameter_names() {
         let measurement_input = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap()
-            .cast_as::<PyCell<CheatedPauliZProductWrapper>>()
+            .downcast::<PyCell<CheatedPauliZProductWrapper>>()
             .unwrap();
 
         let program_type = py.get_type::<QuantumProgramWrapper>();
         let program = program_type
             .call1((measurement_input, vec!["test".to_string()]))
             .unwrap()
-            .cast_as::<PyCell<QuantumProgramWrapper>>()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
             .unwrap();
 
         let params_returned = program.call_method0("input_parameter_names").unwrap();

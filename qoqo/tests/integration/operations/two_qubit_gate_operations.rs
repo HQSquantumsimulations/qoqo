@@ -44,12 +44,12 @@ fn convert_cf_to_pyobject(
         CalculatorFloat::Float(x) => parameter_type
             .call1((x,))
             .unwrap()
-            .cast_as::<PyCell<CalculatorFloatWrapper>>()
+            .downcast::<PyCell<CalculatorFloatWrapper>>()
             .unwrap(),
         CalculatorFloat::Str(x) => parameter_type
             .call1((x,))
             .unwrap()
-            .cast_as::<PyCell<CalculatorFloatWrapper>>()
+            .downcast::<PyCell<CalculatorFloatWrapper>>()
             .unwrap(),
     }
 }
@@ -472,7 +472,7 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let py_result = operation.call_method0(py, "unitary_matrix").unwrap();
         let result_matrix = py_result
-            .cast_as::<PyArray2<Complex64>>(py)
+            .downcast::<PyArray2<Complex64>>(py)
             .unwrap()
             .to_owned_array();
 
@@ -789,7 +789,7 @@ fn test_new_cnot(input_operation: Operation, arguments: (u32, u32), method: &str
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<CNOTWrapper>>()
+            .downcast::<PyCell<CNOTWrapper>>()
             .unwrap();
 
         let comparison = bool::extract(
@@ -805,7 +805,7 @@ fn test_new_cnot(input_operation: Operation, arguments: (u32, u32), method: &str
         let new_op_diff = operation_type
             .call1((1, 2))
             .unwrap()
-            .cast_as::<PyCell<CNOTWrapper>>()
+            .downcast::<PyCell<CNOTWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<CNOTWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -831,7 +831,7 @@ fn test_new_swap(input_operation: Operation, arguments: (u32, u32), method: &str
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<SWAPWrapper>>()
+            .downcast::<PyCell<SWAPWrapper>>()
             .unwrap();
 
         let comparison = bool::extract(
@@ -847,7 +847,7 @@ fn test_new_swap(input_operation: Operation, arguments: (u32, u32), method: &str
         let new_op_diff = operation_type
             .call1((1, 2))
             .unwrap()
-            .cast_as::<PyCell<SWAPWrapper>>()
+            .downcast::<PyCell<SWAPWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<SWAPWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -873,7 +873,7 @@ fn test_new_iswap(input_operation: Operation, arguments: (u32, u32), method: &st
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<ISwapWrapper>>()
+            .downcast::<PyCell<ISwapWrapper>>()
             .unwrap();
 
         let comparison = bool::extract(
@@ -889,7 +889,7 @@ fn test_new_iswap(input_operation: Operation, arguments: (u32, u32), method: &st
         let new_op_diff = operation_type
             .call1((1, 2))
             .unwrap()
-            .cast_as::<PyCell<ISwapWrapper>>()
+            .downcast::<PyCell<ISwapWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<ISwapWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -915,7 +915,7 @@ fn test_new_fswap(input_operation: Operation, arguments: (u32, u32), method: &st
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<FSwapWrapper>>()
+            .downcast::<PyCell<FSwapWrapper>>()
             .unwrap();
 
         let comparison = bool::extract(
@@ -931,7 +931,7 @@ fn test_new_fswap(input_operation: Operation, arguments: (u32, u32), method: &st
         let new_op_diff = operation_type
             .call1((1, 2))
             .unwrap()
-            .cast_as::<PyCell<FSwapWrapper>>()
+            .downcast::<PyCell<FSwapWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<FSwapWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -957,7 +957,7 @@ fn test_new_sqrtiswap(input_operation: Operation, arguments: (u32, u32), method:
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<SqrtISwapWrapper>>()
+            .downcast::<PyCell<SqrtISwapWrapper>>()
             .unwrap();
 
         let comparison = bool::extract(
@@ -973,7 +973,7 @@ fn test_new_sqrtiswap(input_operation: Operation, arguments: (u32, u32), method:
         let new_op_diff = operation_type
             .call1((1, 2))
             .unwrap()
-            .cast_as::<PyCell<SqrtISwapWrapper>>()
+            .downcast::<PyCell<SqrtISwapWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<SqrtISwapWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -999,7 +999,7 @@ fn test_new_invsqrtiswap(input_operation: Operation, arguments: (u32, u32), meth
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<InvSqrtISwapWrapper>>()
+            .downcast::<PyCell<InvSqrtISwapWrapper>>()
             .unwrap();
 
         let comparison = bool::extract(
@@ -1015,7 +1015,7 @@ fn test_new_invsqrtiswap(input_operation: Operation, arguments: (u32, u32), meth
         let new_op_diff = operation_type
             .call1((1, 2))
             .unwrap()
-            .cast_as::<PyCell<InvSqrtISwapWrapper>>()
+            .downcast::<PyCell<InvSqrtISwapWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<InvSqrtISwapWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -1041,7 +1041,7 @@ fn test_new_controlledpauliy(input_operation: Operation, arguments: (u32, u32), 
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<ControlledPauliYWrapper>>()
+            .downcast::<PyCell<ControlledPauliYWrapper>>()
             .unwrap();
 
         let comparison = bool::extract(
@@ -1057,7 +1057,7 @@ fn test_new_controlledpauliy(input_operation: Operation, arguments: (u32, u32), 
         let new_op_diff = operation_type
             .call1((1, 2))
             .unwrap()
-            .cast_as::<PyCell<ControlledPauliYWrapper>>()
+            .downcast::<PyCell<ControlledPauliYWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<ControlledPauliYWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -1083,7 +1083,7 @@ fn test_new_controlledpauliz(input_operation: Operation, arguments: (u32, u32), 
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<ControlledPauliZWrapper>>()
+            .downcast::<PyCell<ControlledPauliZWrapper>>()
             .unwrap();
 
         let comparison = bool::extract(
@@ -1099,7 +1099,7 @@ fn test_new_controlledpauliz(input_operation: Operation, arguments: (u32, u32), 
         let new_op_diff = operation_type
             .call1((1, 2))
             .unwrap()
-            .cast_as::<PyCell<ControlledPauliZWrapper>>()
+            .downcast::<PyCell<ControlledPauliZWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<ControlledPauliZWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -1125,7 +1125,7 @@ fn test_new_molmersorensenxx(input_operation: Operation, arguments: (u32, u32), 
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<MolmerSorensenXXWrapper>>()
+            .downcast::<PyCell<MolmerSorensenXXWrapper>>()
             .unwrap();
 
         let comparison = bool::extract(
@@ -1141,7 +1141,7 @@ fn test_new_molmersorensenxx(input_operation: Operation, arguments: (u32, u32), 
         let new_op_diff = operation_type
             .call1((1, 2))
             .unwrap()
-            .cast_as::<PyCell<MolmerSorensenXXWrapper>>()
+            .downcast::<PyCell<MolmerSorensenXXWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<MolmerSorensenXXWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -1168,7 +1168,7 @@ fn test_new_xy(input_operation: Operation, arguments: (u32, u32, f64), method: &
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<XYWrapper>>()
+            .downcast::<PyCell<XYWrapper>>()
             .unwrap();
         let comparison = bool::extract(
             operation
@@ -1189,7 +1189,7 @@ fn test_new_xy(input_operation: Operation, arguments: (u32, u32, f64), method: &
         let new_op_diff = operation_type
             .call1((1, 2, 0.0))
             .unwrap()
-            .cast_as::<PyCell<XYWrapper>>()
+            .downcast::<PyCell<XYWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<XYWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -1220,7 +1220,7 @@ fn test_new_controlledphaseshift(
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<ControlledPhaseShiftWrapper>>()
+            .downcast::<PyCell<ControlledPhaseShiftWrapper>>()
             .unwrap();
         let comparison = bool::extract(
             operation
@@ -1243,7 +1243,7 @@ fn test_new_controlledphaseshift(
         let new_op_diff = operation_type
             .call1((1, 2, 0.0))
             .unwrap()
-            .cast_as::<PyCell<ControlledPhaseShiftWrapper>>()
+            .downcast::<PyCell<ControlledPhaseShiftWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff
             .extract::<ControlledPhaseShiftWrapper>()
@@ -1272,7 +1272,7 @@ fn test_new_variablemsxx(input_operation: Operation, arguments: (u32, u32, f64),
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<VariableMSXXWrapper>>()
+            .downcast::<PyCell<VariableMSXXWrapper>>()
             .unwrap();
         let comparison = bool::extract(
             operation
@@ -1293,7 +1293,7 @@ fn test_new_variablemsxx(input_operation: Operation, arguments: (u32, u32, f64),
         let new_op_diff = operation_type
             .call1((1, 2, 0.0))
             .unwrap()
-            .cast_as::<PyCell<VariableMSXXWrapper>>()
+            .downcast::<PyCell<VariableMSXXWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<VariableMSXXWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -1320,7 +1320,7 @@ fn test_new_pminteraction(input_operation: Operation, arguments: (u32, u32, f64)
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<PMInteractionWrapper>>()
+            .downcast::<PyCell<PMInteractionWrapper>>()
             .unwrap();
         let comparison = bool::extract(
             operation
@@ -1341,7 +1341,7 @@ fn test_new_pminteraction(input_operation: Operation, arguments: (u32, u32, f64)
         let new_op_diff = operation_type
             .call1((1, 2, 0.0))
             .unwrap()
-            .cast_as::<PyCell<PMInteractionWrapper>>()
+            .downcast::<PyCell<PMInteractionWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<PMInteractionWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -1372,7 +1372,7 @@ fn test_new_givensrotation(
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<GivensRotationWrapper>>()
+            .downcast::<PyCell<GivensRotationWrapper>>()
             .unwrap();
         let comparison = bool::extract(
             operation
@@ -1397,7 +1397,7 @@ fn test_new_givensrotation(
         let new_op_diff = operation_type
             .call1((1, 2, 0.0, 0.0))
             .unwrap()
-            .cast_as::<PyCell<GivensRotationWrapper>>()
+            .downcast::<PyCell<GivensRotationWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<GivensRotationWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -1428,7 +1428,7 @@ fn test_new_givensrotationlittleendian(
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<GivensRotationLittleEndianWrapper>>()
+            .downcast::<PyCell<GivensRotationLittleEndianWrapper>>()
             .unwrap();
         let comparison = bool::extract(
             operation
@@ -1455,7 +1455,7 @@ fn test_new_givensrotationlittleendian(
         let new_op_diff = operation_type
             .call1((1, 2, 0.0, 0.0))
             .unwrap()
-            .cast_as::<PyCell<GivensRotationLittleEndianWrapper>>()
+            .downcast::<PyCell<GivensRotationLittleEndianWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff
             .extract::<GivensRotationLittleEndianWrapper>()
@@ -1484,7 +1484,7 @@ fn test_new_bogoliubov(input_operation: Operation, arguments: (u32, u32, f64, f6
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<BogoliubovWrapper>>()
+            .downcast::<PyCell<BogoliubovWrapper>>()
             .unwrap();
         let comparison = bool::extract(
             operation
@@ -1509,7 +1509,7 @@ fn test_new_bogoliubov(input_operation: Operation, arguments: (u32, u32, f64, f6
         let new_op_diff = operation_type
             .call1((1, 2, 0.0, 0.0))
             .unwrap()
-            .cast_as::<PyCell<BogoliubovWrapper>>()
+            .downcast::<PyCell<BogoliubovWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<BogoliubovWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -1540,7 +1540,7 @@ fn test_new_complexpminteraction(
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<ComplexPMInteractionWrapper>>()
+            .downcast::<PyCell<ComplexPMInteractionWrapper>>()
             .unwrap();
         let comparison = bool::extract(
             operation
@@ -1567,7 +1567,7 @@ fn test_new_complexpminteraction(
         let new_op_diff = operation_type
             .call1((1, 2, 0.0, 0.0))
             .unwrap()
-            .cast_as::<PyCell<ComplexPMInteractionWrapper>>()
+            .downcast::<PyCell<ComplexPMInteractionWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff
             .extract::<ComplexPMInteractionWrapper>()
@@ -1596,7 +1596,7 @@ fn test_new_qsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<QsimWrapper>>()
+            .downcast::<PyCell<QsimWrapper>>()
             .unwrap();
         let comparison = bool::extract(
             operation
@@ -1625,7 +1625,7 @@ fn test_new_qsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64
         let new_op_diff = operation_type
             .call1((1, 2, 0.0, 0.0, 0.0))
             .unwrap()
-            .cast_as::<PyCell<QsimWrapper>>()
+            .downcast::<PyCell<QsimWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<QsimWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -1652,7 +1652,7 @@ fn test_new_fsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<FsimWrapper>>()
+            .downcast::<PyCell<FsimWrapper>>()
             .unwrap();
         let comparison = bool::extract(
             operation
@@ -1681,7 +1681,7 @@ fn test_new_fsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64
         let new_op_diff = operation_type
             .call1((1, 2, 0.0, 0.0, 0.0))
             .unwrap()
-            .cast_as::<PyCell<FsimWrapper>>()
+            .downcast::<PyCell<FsimWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<FsimWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -1712,7 +1712,7 @@ fn test_new_spininteraction(
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<SpinInteractionWrapper>>()
+            .downcast::<PyCell<SpinInteractionWrapper>>()
             .unwrap();
 
         let comparison = bool::extract(
@@ -1742,7 +1742,7 @@ fn test_new_spininteraction(
         let new_op_diff = operation_type
             .call1((1, 2, 0.0, 0.0, 0.0))
             .unwrap()
-            .cast_as::<PyCell<SpinInteractionWrapper>>()
+            .downcast::<PyCell<SpinInteractionWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<SpinInteractionWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -1773,7 +1773,7 @@ fn test_new_phaseshiftedcontrolledz(
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<PhaseShiftedControlledZWrapper>>()
+            .downcast::<PyCell<PhaseShiftedControlledZWrapper>>()
             .unwrap();
         let comparison = bool::extract(
             operation
@@ -1796,7 +1796,7 @@ fn test_new_phaseshiftedcontrolledz(
         let new_op_diff = operation_type
             .call1((1, 2, 0.0))
             .unwrap()
-            .cast_as::<PyCell<PhaseShiftedControlledZWrapper>>()
+            .downcast::<PyCell<PhaseShiftedControlledZWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff
             .extract::<PhaseShiftedControlledZWrapper>()
@@ -1829,7 +1829,7 @@ fn test_new_phaseshiftedcontrolledphase(
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<PhaseShiftedControlledPhaseWrapper>>()
+            .downcast::<PyCell<PhaseShiftedControlledPhaseWrapper>>()
             .unwrap();
         let comparison = bool::extract(
             operation
@@ -1852,7 +1852,7 @@ fn test_new_phaseshiftedcontrolledphase(
         let new_op_diff = operation_type
             .call1((1, 2, 0.0, 0.0))
             .unwrap()
-            .cast_as::<PyCell<PhaseShiftedControlledPhaseWrapper>>()
+            .downcast::<PyCell<PhaseShiftedControlledPhaseWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff
             .extract::<PhaseShiftedControlledPhaseWrapper>()
