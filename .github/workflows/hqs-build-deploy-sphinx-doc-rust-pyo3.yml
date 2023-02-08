@@ -1,0 +1,15 @@
+name: HQS build Sphinx docs for rust pyo3 repos
+
+on:
+  workflow_dispatch:
+  release:
+    types: [created]
+
+jobs:
+
+  publish_documentation:
+    uses: HQSquantumsimulations/reusable_workflows/.github/workflows/reusable_unittests_rust_pyo3.yml@main
+    with: 
+      py_interface_folder: "qoqo"
+      py_docs_folder: "qoqo/docs"
+    secrets: inherit
