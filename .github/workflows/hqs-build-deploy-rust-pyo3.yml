@@ -1,0 +1,63 @@
+name: HQS build and deploy for rust pyo3 repos
+
+on:
+  workflow_dispatch:
+  release:
+    types: [created]
+
+jobs:
+
+  deploy_cratesio:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: Swatinem/rust-cache@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        default: true
+    - name: setup cargo
+      run: |
+        cargo login ${{ secrets.CRATES_IO_API_TOKEN }}
+        cargo publish --manifest-path=roqoqo-derive/Cargo.toml
+        sleep 45
+        cargo publish --manifest-path=roqoqo/Cargo.toml
+        sleep 45
+        cargo publish --manifest-path=qoqo-macros/Cargo.toml
+        sleep 45
+        cargo publish --manifest-path=qoqo/Cargo.toml
+        sleep 45
+        cargo publish --manifest-path=roqoqo-test/Cargo.toml
+
+# Build linux wheels and upload them to PyPi
+  build_maturin_builds_linux:
+    name: maturin_build-linux
+    needs: deploy_cratesio
+    uses: HQSquantumsimulations/reusable_workflows/.github/workflows/reusable_build_maturin_linux.yml@main
+    with: 
+      py_interface_folder: "qoqo"
+      deploy: true
+      # Whether to build for aarch64. Can fail if there are C/C++ dependencies
+      build_for_arm: true
+    secrets: inherit
+
+# Build macos wheels and upload them to PyPi
+  build_maturin_builds_macos:
+    name: maturin_build-macos
+    needs: deploy_cratesio
+    uses: HQSquantumsimulations/reusable_workflows/.github/workflows/reusable_build_maturin_macos.yml@main
+    with: 
+      py_interface_folder: "qoqo"
+      deploy: true
+    secrets: inherit
+
+# Build windows wheels and upload them to PyPi
+  build_maturin_builds_windows:
+    name: maturin_build-windows
+    needs: deploy_cratesio
+    uses: HQSquantumsimulations/reusable_workflows/.github/workflows/reusable_build_maturin_windows.yml@main
+    with: 
+      py_interface_folder: "qoqo"
+      deploy: true
+    secrets: inherit
