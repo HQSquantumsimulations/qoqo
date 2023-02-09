@@ -43,8 +43,6 @@ fn populate_circuit_rotatex(
     let rotatex_type = py.get_type::<RotateXWrapper>();
     for i in start..stop {
         let new_rotatex_0 = rotatex_type.call1((i, i)).unwrap();
-        // .downcast::<PyCell<RotateXWrapper>>()
-        // .unwrap();
         circuit.call_method1("add", (new_rotatex_0,)).unwrap();
     }
 }

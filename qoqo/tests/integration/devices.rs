@@ -27,8 +27,6 @@ fn new_alltoalldevice() -> Py<PyAny> {
             (number_qubits, single_qubit_gates, two_qubit_gates, 1.0);
         let device_type = py.get_type::<AllToAllDeviceWrapper>();
         device_type.call1(arguments).unwrap().into()
-        // .downcast::<PyCell<PyAny>>()
-        // .unwrap()
     })
 }
 
@@ -39,8 +37,6 @@ fn new_genericdevice() -> Py<PyAny> {
         let arguments = (number_qubits,);
         let device_type = py.get_type::<GenericDeviceWrapper>();
         device_type.call1(arguments).unwrap().into()
-        // .downcast::<PyCell<PyAny>>()
-        // .unwrap()
     })
 }
 
