@@ -62,7 +62,7 @@ fn new_circuit(py: Python) -> &PyCell<CircuitWrapper> {
     circuit_type
         .call0()
         .unwrap()
-        .cast_as::<PyCell<CircuitWrapper>>()
+        .downcast::<PyCell<CircuitWrapper>>()
         .unwrap()
 }
 
@@ -509,7 +509,7 @@ fn test_pyo3_new_set_number_of_measurements() {
         let new_op = operation
             .call1((0, "ro".to_string(), 1))
             .unwrap()
-            .cast_as::<PyCell<MeasureQubitWrapper>>()
+            .downcast::<PyCell<MeasureQubitWrapper>>()
             .unwrap();
 
         let input_definition = Operation::from(MeasureQubit::new(0, String::from("ro"), 1));
@@ -522,7 +522,7 @@ fn test_pyo3_new_set_number_of_measurements() {
         let new_op_diff = operation
             .call1((1, "ro".to_string(), 1))
             .unwrap()
-            .cast_as::<PyCell<MeasureQubitWrapper>>()
+            .downcast::<PyCell<MeasureQubitWrapper>>()
             .unwrap();
         let meas_wrapper_diff = new_op_diff.extract::<MeasureQubitWrapper>().unwrap();
         let helper_ne: bool = meas_wrapper_diff != meas_wrapper;
@@ -546,7 +546,7 @@ fn test_pyo3_new_get_statevector() {
         let new_op = operation
             .call1(("ro".to_string(), Option::<CircuitWrapper>::None))
             .unwrap()
-            .cast_as::<PyCell<PragmaGetStateVectorWrapper>>()
+            .downcast::<PyCell<PragmaGetStateVectorWrapper>>()
             .unwrap();
 
         let input_definition = Operation::from(PragmaGetStateVector::new(String::from("ro"), None));
@@ -559,7 +559,7 @@ fn test_pyo3_new_get_statevector() {
         let new_op_diff = operation
             .call1(("ro2".to_string(), new_circuit(py)))
             .unwrap()
-            .cast_as::<PyCell<PragmaGetStateVectorWrapper>>()
+            .downcast::<PyCell<PragmaGetStateVectorWrapper>>()
             .unwrap();
         let meas_wrapper_diff = new_op_diff
             .extract::<PragmaGetStateVectorWrapper>()
@@ -585,7 +585,7 @@ fn test_pyo3_new_get_density_matrix() {
         let new_op = operation
             .call1(("ro".to_string(), Option::<CircuitWrapper>::None))
             .unwrap()
-            .cast_as::<PyCell<PragmaGetDensityMatrixWrapper>>()
+            .downcast::<PyCell<PragmaGetDensityMatrixWrapper>>()
             .unwrap();
 
         let input_definition =
@@ -599,7 +599,7 @@ fn test_pyo3_new_get_density_matrix() {
         let new_op_diff = operation
             .call1(("ro2".to_string(), new_circuit(py)))
             .unwrap()
-            .cast_as::<PyCell<PragmaGetDensityMatrixWrapper>>()
+            .downcast::<PyCell<PragmaGetDensityMatrixWrapper>>()
             .unwrap();
         let meas_wrapper_diff = new_op_diff
             .extract::<PragmaGetDensityMatrixWrapper>()
@@ -625,7 +625,7 @@ fn test_pyo3_new_get_occupation_proba() {
         let new_op = operation
             .call1(("ro".to_string(), Option::<CircuitWrapper>::None))
             .unwrap()
-            .cast_as::<PyCell<PragmaGetOccupationProbabilityWrapper>>()
+            .downcast::<PyCell<PragmaGetOccupationProbabilityWrapper>>()
             .unwrap();
 
         let input_definition = Operation::from(PragmaGetOccupationProbability::new(
@@ -643,7 +643,7 @@ fn test_pyo3_new_get_occupation_proba() {
         let new_op_diff = operation
             .call1(("ro2".to_string(), new_circuit(py)))
             .unwrap()
-            .cast_as::<PyCell<PragmaGetOccupationProbabilityWrapper>>()
+            .downcast::<PyCell<PragmaGetOccupationProbabilityWrapper>>()
             .unwrap();
         let meas_wrapper_diff = new_op_diff
             .extract::<PragmaGetOccupationProbabilityWrapper>()
@@ -669,7 +669,7 @@ fn test_pyo3_new_get_pauli_product() {
         let new_op = operation
             .call1((create_qubit_mapping(), "ro".to_string(), new_circuit(py)))
             .unwrap()
-            .cast_as::<PyCell<PragmaGetPauliProductWrapper>>()
+            .downcast::<PyCell<PragmaGetPauliProductWrapper>>()
             .unwrap();
 
         let input_definition = Operation::from(PragmaGetPauliProduct::new(
@@ -686,7 +686,7 @@ fn test_pyo3_new_get_pauli_product() {
         let new_op_diff = operation
             .call1((create_qubit_mapping(), "ro2".to_string(), new_circuit(py)))
             .unwrap()
-            .cast_as::<PyCell<PragmaGetPauliProductWrapper>>()
+            .downcast::<PyCell<PragmaGetPauliProductWrapper>>()
             .unwrap();
         let meas_wrapper_diff = new_op_diff
             .extract::<PragmaGetPauliProductWrapper>()
@@ -712,7 +712,7 @@ fn test_pyo3_new_repeated_measurement() {
         let new_op = operation
             .call1(("ro".to_string(), 1, Some(create_qubit_mapping())))
             .unwrap()
-            .cast_as::<PyCell<PragmaRepeatedMeasurementWrapper>>()
+            .downcast::<PyCell<PragmaRepeatedMeasurementWrapper>>()
             .unwrap();
 
         let input_definition = Operation::from(PragmaRepeatedMeasurement::new(
@@ -731,7 +731,7 @@ fn test_pyo3_new_repeated_measurement() {
         let new_op_diff = operation
             .call1(("ro".to_string(), 2, Some(create_qubit_mapping())))
             .unwrap()
-            .cast_as::<PyCell<PragmaRepeatedMeasurementWrapper>>()
+            .downcast::<PyCell<PragmaRepeatedMeasurementWrapper>>()
             .unwrap();
         let meas_wrapper_diff = new_op_diff
             .extract::<PragmaRepeatedMeasurementWrapper>()

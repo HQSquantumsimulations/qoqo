@@ -27,8 +27,6 @@ fn new_alltoalldevice() -> Py<PyAny> {
             (number_qubits, single_qubit_gates, two_qubit_gates, 1.0);
         let device_type = py.get_type::<AllToAllDeviceWrapper>();
         device_type.call1(arguments).unwrap().into()
-        // .cast_as::<PyCell<PyAny>>()
-        // .unwrap()
     })
 }
 
@@ -39,8 +37,6 @@ fn new_genericdevice() -> Py<PyAny> {
         let arguments = (number_qubits,);
         let device_type = py.get_type::<GenericDeviceWrapper>();
         device_type.call1(arguments).unwrap().into()
-        // .cast_as::<PyCell<PyAny>>()
-        // .unwrap()
     })
 }
 
@@ -61,7 +57,7 @@ fn new_genericlattice() -> Py<PyAny> {
         );
         let device_type = py.get_type::<SquareLatticeDeviceWrapper>();
         device_type.call1(arguments).unwrap().into()
-        // .cast_as::<PyCell<PyAny>>()
+        // .downcast::<PyCell<PyAny>>()
         // .unwrap()
     })
 }
@@ -189,7 +185,7 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
         let device = device
             .call_method1(py, "set_all_qubit_decoherence_rates", (pyarray,))
             .unwrap();
-        // .cast_as::<PyCell<SquareLatticeDeviceWrapper>>(py)
+        // .downcast::<PyCell<SquareLatticeDeviceWrapper>>(py)
         // .unwrap();
 
         // proper matrix returned for the available qubit after setting decoherence rates
@@ -197,7 +193,7 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
         let matrix_test2 = matrix_py2
-            .cast_as::<PyArray2<f64>>(py)
+            .downcast::<PyArray2<f64>>(py)
             .unwrap()
             .to_owned_array();
         assert_eq!(matrix_test2, pyarray_testmatrix);
@@ -219,7 +215,7 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
         let matrix_test2 = matrix_py2
-            .cast_as::<PyArray2<f64>>(py)
+            .downcast::<PyArray2<f64>>(py)
             .unwrap()
             .to_owned_array();
         assert_eq!(matrix_test2, pyarray_testmatrix);
@@ -238,7 +234,7 @@ fn test_decoherence_rates(device: Py<PyAny>) {
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
         let matrix_test = matrix_py
-            .cast_as::<PyArray2<f64>>(py)
+            .downcast::<PyArray2<f64>>(py)
             .unwrap()
             .to_owned_array();
         assert_eq!(matrix_test, matrix_zeros_py);
@@ -247,7 +243,7 @@ fn test_decoherence_rates(device: Py<PyAny>) {
             .call_method1(py, "qubit_decoherence_rates", (100_i64,))
             .unwrap();
         let matrix2_test = matrix2_py
-            .cast_as::<PyArray2<f64>>(py)
+            .downcast::<PyArray2<f64>>(py)
             .unwrap()
             .to_owned_array();
         assert_eq!(matrix2_test, matrix_zeros_py);
@@ -272,7 +268,7 @@ fn test_decoherence_rates(device: Py<PyAny>) {
         device
             .call_method1(py, "set_qubit_decoherence_rates", (0, pyarray))
             .unwrap();
-        // .cast_as::<PyCell<SquareLatticeDeviceWrapper>>(py)
+        // .downcast::<PyCell<SquareLatticeDeviceWrapper>>(py)
         // .unwrap();
 
         // proper matrix returned for the available qubit after setting decoherence rates
@@ -280,7 +276,7 @@ fn test_decoherence_rates(device: Py<PyAny>) {
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
         let matrix_test2 = matrix_py2
-            .cast_as::<PyArray2<f64>>(py)
+            .downcast::<PyArray2<f64>>(py)
             .unwrap()
             .to_owned_array();
         assert_eq!(matrix_test2, pyarray_testmatrix);
@@ -304,7 +300,7 @@ fn test_decoherence_rates(device: Py<PyAny>) {
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
         let matrix_test2 = matrix_py2
-            .cast_as::<PyArray2<f64>>(py)
+            .downcast::<PyArray2<f64>>(py)
             .unwrap()
             .to_owned_array();
         assert_eq!(matrix_test2, pyarray_testmatrix);
@@ -324,7 +320,7 @@ fn test_gatetimes(device: Py<PyAny>) {
         device
             .call_method1(py, "set_single_qubit_gate_time", ("RotateZ", 0, gate_time))
             .unwrap();
-        // .cast_as::<PyCell<AllToAllDeviceWrapper>>(py)
+        // .downcast::<PyCell<AllToAllDeviceWrapper>>(py)
         // .unwrap();
 
         // get the gate time for RotateZ on qubit 0
@@ -348,7 +344,7 @@ fn test_gatetimes(device: Py<PyAny>) {
         device
             .call_method1(py, "set_two_qubit_gate_time", ("CNOT", 0, 1, gate_time))
             .unwrap();
-        // .cast_as::<PyCell<AllToAllDeviceWrapper>>(py)
+        // .downcast::<PyCell<AllToAllDeviceWrapper>>(py)
         // .unwrap();
 
         // get the gate time for RotateZ on qubit 0
@@ -376,7 +372,7 @@ fn test_gatetimes(device: Py<PyAny>) {
                 ("MultiQubitMS", vec![0, 1, 2], gate_time),
             )
             .unwrap();
-        // .cast_as::<PyCell<AllToAllDeviceWrapper>>(py)
+        // .downcast::<PyCell<AllToAllDeviceWrapper>>(py)
         // .unwrap();
 
         let gate_time_test = device
@@ -404,7 +400,7 @@ fn test_gatetimes_all(device: Py<PyAny>) {
                 ("RotateZ", gate_time),
             )
             .unwrap();
-        // .cast_as::<PyCell<AllToAllDeviceWrapper>>(py)
+        // .downcast::<PyCell<AllToAllDeviceWrapper>>(py)
         // .unwrap();
 
         // get the gate time for RotateZ on qubit 0
@@ -428,7 +424,7 @@ fn test_gatetimes_all(device: Py<PyAny>) {
         let device = device
             .call_method1(py, "set_all_two_qubit_gate_times", ("CNOT", gate_time))
             .unwrap();
-        // .cast_as::<PyCell<AllToAllDeviceWrapper>>(py)
+        // .downcast::<PyCell<AllToAllDeviceWrapper>>(py)
         // .unwrap();
 
         // get the gate time for RotateZ on qubit 0

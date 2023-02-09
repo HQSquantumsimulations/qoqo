@@ -32,7 +32,7 @@ fn test_returning_circuits() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
 
         let circuits: Vec<CircuitWrapper> = br.call_method0("circuits").unwrap().extract().unwrap();
@@ -61,7 +61,7 @@ fn test_pyo3_copy() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
         let br_clone = br;
 
@@ -98,7 +98,7 @@ fn test_pyo3_debug() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
         let br_wrapper = br.extract::<ClassicalRegisterWrapper>().unwrap();
 
@@ -121,7 +121,7 @@ fn test_internal_to_bincode() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
 
         let circs: Vec<Circuit> = vec![Circuit::new()];
@@ -152,7 +152,7 @@ fn test_to_from_json() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
 
         let new_br = br;
@@ -160,7 +160,7 @@ fn test_to_from_json() {
         let deserialised = new_br
             .call_method1("from_json", (serialised,))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
@@ -188,7 +188,7 @@ fn test_to_from_bincode() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
 
         let new_br = br;
@@ -196,7 +196,7 @@ fn test_to_from_bincode() {
         let deserialised = new_br
             .call_method1("from_bincode", (serialised,))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
@@ -225,7 +225,7 @@ fn test_substitute_parameters() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
 
         let mut map: HashMap<String, f64> = HashMap::<String, f64>::new();
@@ -233,7 +233,7 @@ fn test_substitute_parameters() {
         let br_sub = br
             .call_method1("substitute_parameters", (map,))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
 
         let br_wrapper = br.extract::<ClassicalRegisterWrapper>().unwrap();
@@ -255,7 +255,7 @@ fn test_substitute_parameters_error() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
 
         let map: HashMap<String, f64> = HashMap::<String, f64>::new();
@@ -276,7 +276,7 @@ fn test_measurement_type() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
 
         let measurement_type = br.call_method0("measurement_type").unwrap();
@@ -294,7 +294,7 @@ fn test_pyo3_format_repr() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
         let to_format = br.call_method1("__format__", ("",)).unwrap();
         let format_op: &str = <&str>::extract(to_format).unwrap();
@@ -314,7 +314,7 @@ fn test_pyo3_copy_deepcopy() {
         let br = br_type
             .call1((Some(CircuitWrapper::new()), circs))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
         let copy_op = br.call_method0("__copy__").unwrap();
         let deepcopy_op = br.call_method1("__deepcopy__", ("",)).unwrap();
@@ -346,13 +346,13 @@ fn test_pyo3_richcmp() {
         let br_one = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
         let arg: Option<CircuitWrapper> = None;
         let br_two = br_type
             .call1((arg, circs))
             .unwrap()
-            .cast_as::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
         let comparison = bool::extract(br_one.call_method1("__eq__", (br_two,)).unwrap()).unwrap();
         assert!(!comparison);

@@ -43,6 +43,7 @@ impl CheatedWrapper {
     /// Returns:
     ///     Cheated: The new measurement.
     #[new]
+    #[pyo3(signature=(constant_circuit, circuits, input))]
     pub fn new(
         constant_circuit: Option<Py<PyAny>>,
         circuits: Vec<Py<PyAny>>,

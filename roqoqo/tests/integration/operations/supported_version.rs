@@ -118,6 +118,7 @@ fn test_version_1_1_0_pragmas(operation: operations::Operation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 1, 0));
 }
 
+#[cfg(feature = "circuitdag")]
 #[test_case(roqoqo::Circuit::from_iter(vec![
     operations::Operation::from(operations::DefinitionBit::new("ro".to_string(), 2, true))
 ].into_iter()), (1, 0, 0); "1 0 0")]

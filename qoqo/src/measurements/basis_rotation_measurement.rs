@@ -43,6 +43,7 @@ impl PauliZProductWrapper {
     /// Returns:
     ///     PauliZProduct: The PauliZProduct containing the new PauliZ product measurement.
     #[new]
+    #[pyo3(signature=(constant_circuit, circuits, input))]
     pub fn new(
         constant_circuit: Option<Py<PyAny>>,
         circuits: Vec<Py<PyAny>>,

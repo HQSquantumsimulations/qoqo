@@ -38,12 +38,12 @@ fn convert_cf_to_pyobject(
         CalculatorFloat::Float(x) => parameter_type
             .call1((x,))
             .unwrap()
-            .cast_as::<PyCell<CalculatorFloatWrapper>>()
+            .downcast::<PyCell<CalculatorFloatWrapper>>()
             .unwrap(),
         CalculatorFloat::Str(x) => parameter_type
             .call1((x,))
             .unwrap()
-            .cast_as::<PyCell<CalculatorFloatWrapper>>()
+            .downcast::<PyCell<CalculatorFloatWrapper>>()
             .unwrap(),
     }
 }
@@ -59,7 +59,7 @@ fn test_new_multi_qubit_ms(input_operation: Operation, arguments: (Vec<u32>, f64
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .cast_as::<PyCell<MultiQubitMSWrapper>>()
+            .downcast::<PyCell<MultiQubitMSWrapper>>()
             .unwrap();
         let comparison = bool::extract(
             operation
@@ -80,7 +80,7 @@ fn test_new_multi_qubit_ms(input_operation: Operation, arguments: (Vec<u32>, f64
         let new_op_diff = operation_type
             .call1((vec![1, 2], 0.0))
             .unwrap()
-            .cast_as::<PyCell<MultiQubitMSWrapper>>()
+            .downcast::<PyCell<MultiQubitMSWrapper>>()
             .unwrap();
         let def_wrapper_diff = new_op_diff.extract::<MultiQubitMSWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
@@ -256,7 +256,7 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let py_result = operation.call_method0(py, "unitary_matrix").unwrap();
         let result_matrix = py_result
-            .cast_as::<PyArray2<Complex64>>(py)
+            .downcast::<PyArray2<Complex64>>(py)
             .unwrap()
             .to_owned_array();
 

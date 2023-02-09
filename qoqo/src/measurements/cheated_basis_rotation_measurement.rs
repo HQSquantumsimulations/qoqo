@@ -43,6 +43,7 @@ impl CheatedPauliZProductWrapper {
     /// Returns:
     ///     self: The CheatedPauliZProduct containing the new cheated PauliZ product measurement.
     #[new]
+    #[pyo3(signature=(constant_circuit, circuits, input))]
     pub fn new(
         constant_circuit: Option<Py<PyAny>>,
         circuits: Vec<Py<PyAny>>,

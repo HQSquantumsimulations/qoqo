@@ -342,7 +342,7 @@ insert_pyany_to_operation!(
         let density_matrix = op.call_method0("density_matrix")
                       .map_err(|_| QoqoError::ConversionError)?;
 
-        let density_matrix_op = density_matrix.cast_as::<PyArray2<Complex64>>().unwrap();
+        let density_matrix_op = density_matrix.downcast::<PyArray2<Complex64>>().unwrap();
         let densmat_array = density_matrix_op.readonly().as_array().to_owned();
         Ok(PragmaSetDensityMatrix::new(densmat_array).into())
     }
@@ -935,7 +935,7 @@ insert_pyany_to_operation!(
 
         let array = op.call_method0("rates")
                       .map_err(|_| QoqoError::ConversionError)?;
-        let rates_array = array.cast_as::<PyArray2<f64>>().unwrap();
+        let rates_array = array.downcast::<PyArray2<f64>>().unwrap();
         let rates = rates_array.readonly().as_array().to_owned();
 
         Ok(PragmaGeneralNoise::new(qubit, gate_time, rates).into())

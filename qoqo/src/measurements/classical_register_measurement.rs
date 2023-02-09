@@ -40,6 +40,7 @@ impl ClassicalRegisterWrapper {
     /// Returns:
     ///     ClassicalRegister: The new register.
     #[new]
+    #[pyo3(signature=(constant_circuit, circuits))]
     pub fn new(constant_circuit: Option<Py<PyAny>>, circuits: Vec<Py<PyAny>>) -> PyResult<Self> {
         let mut new_circuits: Vec<Circuit> = Vec::new();
         for c in circuits.into_iter() {

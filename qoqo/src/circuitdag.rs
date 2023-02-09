@@ -94,7 +94,7 @@ impl CircuitDagWrapper {
     /// Returns:
     ///     self: The new, empty CircuitDag.
     #[new]
-    #[args(node_number = "100", edge_number = "300")]
+    #[pyo3(signature=(node_number = 100, edge_number = 300))]
     pub fn new(node_number: usize, edge_number: usize) -> Self {
         Self {
             internal: CircuitDag::with_capacity(node_number, edge_number),
