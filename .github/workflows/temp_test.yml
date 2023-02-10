@@ -9,7 +9,6 @@ jobs:
 # Build macos wheels and upload them to PyPi
   build_maturin_builds_macos:
     name: maturin_build-macos
-    needs: deploy_cratesio
     uses: HQSquantumsimulations/reusable_workflows/.github/workflows/reusable_build_maturin_macos.yml@main
     with: 
       py_interface_folder: "qoqo_calculator_pyo3"
