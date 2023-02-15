@@ -15,5 +15,3 @@ jobs:
       # Try to build python wheels with universal2 for arm and x86
       universal2: true
       deploy: false
-
-
