@@ -2,6 +2,11 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.2.5
+
+* Updated to pyo3 0.18.1
+
+
 ## 1.2.4
 
 * Updated to pyo3 0.18, qoqo_calculator 1.1.1 and nalgebra 0.32
