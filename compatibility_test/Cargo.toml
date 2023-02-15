@@ -21,7 +21,7 @@ publish = false
 [dependencies]
 test_roqoqo_1_0 = {package = "roqoqo", version="=1.0.0"}
 test_roqoqo_derive_1_0 = {package = "roqoqo-derive", version="=1.0.0"}
-qoqo_calculator = { version="1.1.1" }
+qoqo_calculator = { version="1.1" }
 roqoqo = {version="1.2.5", path="../roqoqo", features=["serialize", "overrotate"]}
 bincode = {version="1.3"}
 
