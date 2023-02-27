@@ -1,23 +1,7 @@
-name: reusable_build_maturin_macos
+name: manual_build_maturin_macos
 
 on:
   workflow_dispatch:
-    inputs:
-      py_interface_folder:
-        description: "Location of the py interface folder"
-        required: true
-        type: string
-      deploy:
-        description: "Determines if build python wheels should be deployed to PyPi"
-        required: false
-        default: false
-        type: boolean
-      universal2:
-        description: "Build python wheels with universal2 flag"
-        required: false
-        default: true
-        type: boolean
-  workflow_call:
     inputs:
       py_interface_folder:
         description: "Location of the py interface folder"
