@@ -2311,7 +2311,7 @@ pub struct ControlledX {
 }
 impl SupportedVersion for ControlledX {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 2, 0)
+        (1, 2, 5)
     }
 }
 
@@ -2402,7 +2402,7 @@ pub struct ControlledXY {
 }
 impl SupportedVersion for ControlledXY {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 2, 0)
+        (1, 2, 5)
     }
 }
 
