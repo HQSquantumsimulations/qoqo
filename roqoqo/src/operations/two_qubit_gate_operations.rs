@@ -2287,3 +2287,185 @@ impl OperateTwoQubitGate for PhaseShiftedControlledPhase {
         }
     }
 }
+
+/// Implements the controlled RotateX operation.
+#[allow(clippy::upper_case_acronyms)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateTwoQubit,
+    roqoqo_derive::Rotate,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+pub struct ControlledX {
+    /// The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the phase-shift on the target qubit.
+    control: usize,
+    /// The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
+    target: usize,
+    /// The angle θ of the rotation, in the interval from 0 to 2 * 2π.
+    theta: CalculatorFloat,
+}
+impl SupportedVersion for ControlledX {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 2, 0)
+    }
+}
+
+impl super::ImplementedIn1point2 for ControlledX {}
+
+#[allow(non_upper_case_globals)]
+const TAGS_ControlledX: &[&str; 4] = &[
+    "Operation",
+    "GateOperation",
+    "TwoQubitGateOperation",
+    "ControlledX",
+];
+
+/// Trait for all Operations acting with a unitary gate on a set of qubits.
+impl OperateGate for ControlledX {
+    /// Returns unitary matrix of the gate.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Array2<Complex64>)` - The unitary matrix representation of the gate.
+    /// * `Err(RoqoqoError)` - The conversion of parameters to f64 failed.
+    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
+        let c: f64 = (f64::try_from(self.theta.clone())? / 2.0).cos();
+        let s: f64 = (f64::try_from(self.theta.clone())? / 2.0).sin();
+        Ok(array![
+            [
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(c, 0.0),
+                Complex64::new(0.0, -1.0 * s)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, -1.0 * s),
+                Complex64::new(c, 0.0)
+            ]
+        ])
+    }
+}
+
+/// Trait for all gate operations acting on exactly two qubits.
+impl OperateTwoQubitGate for ControlledX {
+    /// Returns [KakDecomposition] of the gate.
+    ///
+    /// # Returns
+    ///
+    /// * struct `KakDecomposition { global_phase, k_vector, circuit_before, circuit_after }`
+    fn kak_decomposition(&self) -> KakDecomposition {
+        todo!()
+    }
+}
+
+/// Implements the controlled RotateX operation.
+#[allow(clippy::upper_case_acronyms)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateTwoQubit,
+    roqoqo_derive::Rotate,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+pub struct ControlledXY {
+    /// The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the phase-shift on the target qubit.
+    control: usize,
+    /// The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
+    target: usize,
+    /// The angle θ of the rotation, in the interval from 0 to 2 * 2π.
+    theta: CalculatorFloat,
+    /// The rotation axis, in spherical coordinates φ gives the angle in the x-y plane.
+    phi: CalculatorFloat,
+}
+impl SupportedVersion for ControlledXY {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 2, 0)
+    }
+}
+
+impl super::ImplementedIn1point2 for ControlledXY {}
+
+#[allow(non_upper_case_globals)]
+const TAGS_ControlledXY: &[&str; 4] = &[
+    "Operation",
+    "GateOperation",
+    "TwoQubitGateOperation",
+    "ControlledXY",
+];
+
+/// Trait for all Operations acting with a unitary gate on a set of qubits.
+impl OperateGate for ControlledXY {
+    /// Returns unitary matrix of the gate.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Array2<Complex64>)` - The unitary matrix representation of the gate.
+    /// * `Err(RoqoqoError)` - The conversion of parameters to f64 failed.
+    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
+        let c: f64 = (f64::try_from(self.theta.clone())? / 2.0).cos();
+        let s: f64 = (f64::try_from(self.theta.clone())? / 2.0).sin();
+        let vx: f64 = (f64::try_from(self.phi.clone())?).cos();
+        let vy: f64 = (f64::try_from(self.phi.clone())?).sin();
+        Ok(array![
+            [
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(c, 0.0),
+                Complex64::new(-1.0 * s * vy, -1.0 * s * vx)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(s * vy, -1.0 * s * vx),
+                Complex64::new(c, 0.0)
+            ]
+        ])
+    }
+}
+
+/// Trait for all gate operations acting on exactly two qubits.
+impl OperateTwoQubitGate for ControlledXY {
+    /// Returns [KakDecomposition] of the gate.
+    ///
+    /// # Returns
+    ///
+    /// * struct `KakDecomposition { global_phase, k_vector, circuit_before, circuit_after }`
+    fn kak_decomposition(&self) -> KakDecomposition {
+        todo!()
+    }
+}

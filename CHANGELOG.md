@@ -2,6 +2,10 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## Unrelease
+
+* Added ControlledX, ControlledXY to qoqo
+
 ## 1.2.5
 
 * Updated to pyo3 0.18.1
