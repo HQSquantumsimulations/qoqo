@@ -52,6 +52,10 @@ pub use single_qubit_gate_operations::*;
 #[doc(hidden)]
 mod two_qubit_gate_operations;
 pub use two_qubit_gate_operations::*;
+/// COllection of roqoqo three qubit gate operations.
+#[doc(hidden)]
+mod three_qubit_gate_operations;
+pub use three_qubit_gate_operations::*;
 
 include!(concat!(env!("OUT_DIR"), "/_auto_generated_operations.rs"));
 
