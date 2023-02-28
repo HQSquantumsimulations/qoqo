@@ -10,6 +10,8 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::prelude::*;
+
 use qoqo_calculator::CalculatorFloat;
 
 /// Implements the double-controlled PauliZ gate.
@@ -22,7 +24,11 @@ use qoqo_calculator::CalculatorFloat;
     Clone,
     PartialEq,
     // roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
+    // roqoqo_derive::Operate,
+    // roqoqo_derive::Substitute,
 )]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct ControlledControlledPauliZ {
     /// The index of the first controlling qubit of the operation.
     control_0: usize,
@@ -42,7 +48,11 @@ pub struct ControlledControlledPauliZ {
     Clone,
     PartialEq,
     // roqoqo_derive::InvolveQubits,
+    roqoqo_derive::SupportedVersion,
+    // roqoqo_derive::Operate,
+    // roqoqo_derive::Substitute,
 )]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct ControlledControlledPhaseShift {
     /// The index of the first controlling qubit of the operation.
     control_0: usize,
