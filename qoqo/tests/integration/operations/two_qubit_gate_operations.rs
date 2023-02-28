@@ -18,11 +18,12 @@ use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
     BogoliubovWrapper, CNOTWrapper, ComplexPMInteractionWrapper, ControlledPauliYWrapper,
-    ControlledPauliZWrapper, ControlledPhaseShiftWrapper, ControlledXWrapper, ControlledXYWrapper,
-    FSwapWrapper, FsimWrapper, GivensRotationLittleEndianWrapper, GivensRotationWrapper,
-    ISwapWrapper, InvSqrtISwapWrapper, MolmerSorensenXXWrapper, PMInteractionWrapper,
-    PhaseShiftedControlledPhaseWrapper, PhaseShiftedControlledZWrapper, QsimWrapper, SWAPWrapper,
-    SpinInteractionWrapper, SqrtISwapWrapper, VariableMSXXWrapper, XYWrapper,
+    ControlledPauliZWrapper, ControlledPhaseShiftWrapper, ControlledRotateXWrapper,
+    ControlledRotateXYWrapper, FSwapWrapper, FsimWrapper, GivensRotationLittleEndianWrapper,
+    GivensRotationWrapper, ISwapWrapper, InvSqrtISwapWrapper, MolmerSorensenXXWrapper,
+    PMInteractionWrapper, PhaseShiftedControlledPhaseWrapper, PhaseShiftedControlledZWrapper,
+    QsimWrapper, SWAPWrapper, SpinInteractionWrapper, SqrtISwapWrapper, VariableMSXXWrapper,
+    XYWrapper,
 };
 
 use qoqo_calculator::CalculatorFloat;
@@ -77,8 +78,8 @@ fn convert_cf_to_pyobject(
 #[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 #[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
-#[test_case(Operation::from(ControlledX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledX")]
-#[test_case(Operation::from(ControlledXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledXY")]
+#[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
+#[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -280,17 +281,19 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
         "Operation",
         "GateOperation",
         "TwoQubitGateOperation",
-        "ControlledX",
+        "Rotation",
+        "ControlledRotateX",
         ],
-    Operation::from(ControlledX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledX")]
+    Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(
     vec![
         "Operation",
         "GateOperation",
         "TwoQubitGateOperation",
-        "ControlledXY",
+        "Rotation",
+        "ControlledRotateXY",
         ],
-    Operation::from(ControlledXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledXY")]
+    Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
 fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -330,8 +333,8 @@ fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
 #[test_case("ComplexPMInteraction", Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case("PhaseShiftedControlledZ", Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 #[test_case("PhaseShiftedControlledPhase", Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
-#[test_case("ControlledX", Operation::from(ControlledX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledX")]
-#[test_case("ControlledXY", Operation::from(ControlledXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledXY")]
+#[test_case("ControlledRotateX", Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
+#[test_case("ControlledRotateXY", Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -365,8 +368,8 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
 #[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 #[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
-#[test_case(Operation::from(ControlledX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledX")]
-#[test_case(Operation::from(ControlledXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledXY")]
+#[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
+#[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
 fn test_pyo3_remapqubits(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -427,8 +430,8 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 #[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 #[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
-#[test_case(Operation::from(ControlledX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledX")]
-#[test_case(Operation::from(ControlledXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledXY")]
+#[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
+#[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
@@ -457,8 +460,8 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
 #[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from("test"), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::from("test"))); "PhaseShiftedControlledZ")]
 #[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::from("test"), CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
-#[test_case(Operation::from(ControlledX::new(0, 1, CalculatorFloat::from("test"))); "ControlledX")]
-#[test_case(Operation::from(ControlledXY::new(0, 1, CalculatorFloat::from("test"), CalculatorFloat::from("test"))); "ControlledXY")]
+#[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::from("test"))); "ControlledRotateX")]
+#[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::from("test"), CalculatorFloat::from("test"))); "ControlledRotateXY")]
 fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -492,8 +495,8 @@ fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
 #[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 #[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
-#[test_case(Operation::from(ControlledX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledX")]
-#[test_case(Operation::from(ControlledXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledXY")]
+#[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
+#[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
 fn test_pyo3_unitarymatrix(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -582,11 +585,11 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
     "PhaseShiftedControlledPhase { control: 0, target: 1, theta: Float(3.141592653589793), phi: Float(3.141592653589793) }",
     Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::PI)); "PhaseShiftedControlledPhase")]
 #[test_case(
-    "ControlledX { control: 0, target: 1, theta: Float(3.141592653589793) }",
-    Operation::from(ControlledX::new(0, 1, CalculatorFloat::PI)); "ControlledX")]
+    "ControlledRotateX { control: 0, target: 1, theta: Float(3.141592653589793) }",
+    Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::PI)); "ControlledRotateX")]
 #[test_case(
-    "ControlledXY { control: 0, target: 1, theta: Float(3.141592653589793), phi: Float(3.141592653589793) }",
-    Operation::from(ControlledXY::new(0, 1, CalculatorFloat::PI, CalculatorFloat::PI)); "ControlledXY")]
+    "ControlledRotateXY { control: 0, target: 1, theta: Float(3.141592653589793), phi: Float(3.141592653589793) }",
+    Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::PI, CalculatorFloat::PI)); "ControlledRotateXY")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -623,8 +626,8 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
 #[test_case(Operation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
 #[test_case(Operation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
 #[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
-#[test_case(Operation::from(ControlledX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledX")]
-#[test_case(Operation::from(ControlledXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledXY")]
+#[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
+#[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -719,12 +722,12 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 #[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::from("test"), CalculatorFloat::PI)),
             Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::PI));
             "PhaseShiftedControlledPhase")]
-#[test_case(Operation::from(ControlledX::new(0, 1, CalculatorFloat::from("test"))),
-            Operation::from(ControlledX::new(0, 1, CalculatorFloat::from(1.0)));
-            "ControlledX")]
-#[test_case(Operation::from(ControlledXY::new(0, 1, CalculatorFloat::from("test"), CalculatorFloat::PI)),
-            Operation::from(ControlledXY::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::PI));
-            "ControlledXY")]
+#[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::from("test"))),
+            Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::from(1.0)));
+            "ControlledRotateX")]
+#[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::from("test"), CalculatorFloat::PI)),
+            Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::PI));
+            "ControlledRotateXY")]
 fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -773,8 +776,8 @@ fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
             "PhaseShiftedControlledZ")]
 #[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::from("test"), CalculatorFloat::PI));
             "PhaseShiftedControlledPhase")]
-#[test_case(Operation::from(ControlledX::new(0, 1, CalculatorFloat::from("test"))); "ControlledX")]
-#[test_case(Operation::from(ControlledXY::new(0, 1, CalculatorFloat::from("test"), CalculatorFloat::PI)); "ControlledXY")]
+#[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::from("test"))); "ControlledRotateX")]
+#[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::from("test"), CalculatorFloat::PI)); "ControlledRotateXY")]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -802,6 +805,12 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 #[test_case(Operation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))),
             Operation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::from(0.005 * 1.5), CalculatorFloat::from(0.02)));
             "GivensRotationLittleEndian")]
+#[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::from(0.005))),
+            Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::from(0.005 * 1.5)));
+            "ControlledRotateX")]
+#[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))),
+            Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::from(0.005 * 1.5), CalculatorFloat::from(0.02)));
+            "ControlledRotateXY")]
 fn test_pyo3_powercf(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1913,19 +1922,23 @@ fn test_new_phaseshiftedcontrolledphase(
     })
 }
 
-/// Test new() function for ControlledX
-#[test_case(Operation::from(ControlledX::new(0, 1, CalculatorFloat::from(0.0))), (0, 1, 0.0), "__eq__"; "ControlledX_eq")]
-#[test_case(Operation::from(ControlledX::new(2, 1, CalculatorFloat::from(0.0))), (0, 1, 0.0), "__ne__"; "ControlledX_ne")]
-fn test_new_controlledx(input_operation: Operation, arguments: (u32, u32, f64), method: &str) {
+/// Test new() function for ControlledRotateX
+#[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::from(0.0))), (0, 1, 0.0), "__eq__"; "ControlledRotateX_eq")]
+#[test_case(Operation::from(ControlledRotateX::new(2, 1, CalculatorFloat::from(0.0))), (0, 1, 0.0), "__ne__"; "ControlledRotateX_ne")]
+fn test_new_controlledrotatex(
+    input_operation: Operation,
+    arguments: (u32, u32, f64),
+    method: &str,
+) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialization, no errors
-        let operation_type = py.get_type::<ControlledXWrapper>();
+        let operation_type = py.get_type::<ControlledRotateXWrapper>();
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .downcast::<PyCell<ControlledXWrapper>>()
+            .downcast::<PyCell<ControlledRotateXWrapper>>()
             .unwrap();
         let comparison = bool::extract(
             operation
@@ -1942,13 +1955,13 @@ fn test_new_controlledx(input_operation: Operation, arguments: (u32, u32, f64), 
         assert!(result_ref.is_err());
 
         // Testing PartialEq, Clone and Debug
-        let def_wrapper = operation_py.extract::<ControlledXWrapper>().unwrap();
+        let def_wrapper = operation_py.extract::<ControlledRotateXWrapper>().unwrap();
         let new_op_diff = operation_type
             .call1((1, 2, 0.0))
             .unwrap()
-            .downcast::<PyCell<ControlledXWrapper>>()
+            .downcast::<PyCell<ControlledRotateXWrapper>>()
             .unwrap();
-        let def_wrapper_diff = new_op_diff.extract::<ControlledXWrapper>().unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<ControlledRotateXWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
         let helper_eq: bool = def_wrapper == def_wrapper.clone();
@@ -1956,15 +1969,15 @@ fn test_new_controlledx(input_operation: Operation, arguments: (u32, u32, f64), 
 
         assert_eq!(
             format!("{:?}", def_wrapper_diff),
-            "ControlledXWrapper { internal: ControlledX { control: 1, target: 2, theta: Float(0.0) } }"
+            "ControlledRotateXWrapper { internal: ControlledRotateX { control: 1, target: 2, theta: Float(0.0) } }"
         );
     })
 }
 
-/// Test new() function for ControlledXY
-#[test_case(Operation::from(ControlledXY::new(0, 1, CalculatorFloat::from(0.0), CalculatorFloat::from(0.0))), (0, 1, 0.0, 0.0), "__eq__"; "ControlledXY_eq")]
-#[test_case(Operation::from(ControlledXY::new(2, 1, CalculatorFloat::from(0.0), CalculatorFloat::from(0.0))), (0, 1, 0.0, 0.0), "__ne__"; "ControlledXY_ne")]
-fn test_new_controlledxy(
+/// Test new() function for ControlledRotateXY
+#[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::from(0.0), CalculatorFloat::from(0.0))), (0, 1, 0.0, 0.0), "__eq__"; "ControlledRotateXY_eq")]
+#[test_case(Operation::from(ControlledRotateXY::new(2, 1, CalculatorFloat::from(0.0), CalculatorFloat::from(0.0))), (0, 1, 0.0, 0.0), "__ne__"; "ControlledRotateXY_ne")]
+fn test_new_controlledrotatexy(
     input_operation: Operation,
     arguments: (u32, u32, f64, f64),
     method: &str,
@@ -1973,11 +1986,11 @@ fn test_new_controlledxy(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialization, no errors
-        let operation_type = py.get_type::<ControlledXYWrapper>();
+        let operation_type = py.get_type::<ControlledRotateXYWrapper>();
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .downcast::<PyCell<ControlledXYWrapper>>()
+            .downcast::<PyCell<ControlledRotateXYWrapper>>()
             .unwrap();
         let comparison = bool::extract(
             operation
@@ -1994,13 +2007,13 @@ fn test_new_controlledxy(
         assert!(result_ref.is_err());
 
         // Testing PartialEq, Clone and Debug
-        let def_wrapper = operation_py.extract::<ControlledXYWrapper>().unwrap();
+        let def_wrapper = operation_py.extract::<ControlledRotateXYWrapper>().unwrap();
         let new_op_diff = operation_type
             .call1((1, 2, 0.0, 0.0))
             .unwrap()
-            .downcast::<PyCell<ControlledXYWrapper>>()
+            .downcast::<PyCell<ControlledRotateXYWrapper>>()
             .unwrap();
-        let def_wrapper_diff = new_op_diff.extract::<ControlledXYWrapper>().unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<ControlledRotateXYWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
         let helper_eq: bool = def_wrapper == def_wrapper.clone();
@@ -2008,7 +2021,7 @@ fn test_new_controlledxy(
 
         assert_eq!(
             format!("{:?}", def_wrapper_diff),
-            "ControlledXYWrapper { internal: ControlledXY { control: 1, target: 2, theta: Float(0.0), phi: Float(0.0) } }"
+            "ControlledRotateXYWrapper { internal: ControlledRotateXY { control: 1, target: 2, theta: Float(0.0), phi: Float(0.0) } }"
         );
     })
 }
@@ -2081,11 +2094,11 @@ fn test_new_controlledxy(
     Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)),
     Operation::from(PhaseShiftedControlledPhase::new(1, 0, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
 #[test_case(
-    Operation::from(ControlledX::new(0, 1, CalculatorFloat::FRAC_PI_2)),
-    Operation::from(ControlledX::new(1, 0, CalculatorFloat::FRAC_PI_2)); "ControlledX")]
+    Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)),
+    Operation::from(ControlledRotateX::new(1, 0, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(
-    Operation::from(ControlledXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::PI)),
-    Operation::from(ControlledXY::new(1, 0, CalculatorFloat::FRAC_PI_2, CalculatorFloat::PI)); "ControlledXY")]
+    Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::PI)),
+    Operation::from(ControlledRotateXY::new(1, 0, CalculatorFloat::FRAC_PI_2, CalculatorFloat::PI)); "ControlledRotateXY")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {

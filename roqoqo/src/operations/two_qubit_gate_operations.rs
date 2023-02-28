@@ -2301,7 +2301,7 @@ impl OperateTwoQubitGate for PhaseShiftedControlledPhase {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-pub struct ControlledX {
+pub struct ControlledRotateX {
     /// The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the phase-shift on the target qubit.
     control: usize,
     /// The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
@@ -2309,24 +2309,25 @@ pub struct ControlledX {
     /// The angle θ of the rotation, in the interval from 0 to 2 * 2π.
     theta: CalculatorFloat,
 }
-impl SupportedVersion for ControlledX {
+impl SupportedVersion for ControlledRotateX {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 2, 5)
     }
 }
 
-impl super::ImplementedIn1point2 for ControlledX {}
+impl super::ImplementedIn1point2 for ControlledRotateX {}
 
 #[allow(non_upper_case_globals)]
-const TAGS_ControlledX: &[&str; 4] = &[
+const TAGS_ControlledRotateX: &[&str; 5] = &[
     "Operation",
     "GateOperation",
     "TwoQubitGateOperation",
-    "ControlledX",
+    "Rotation",
+    "ControlledRotateX",
 ];
 
 /// Trait for all Operations acting with a unitary gate on a set of qubits.
-impl OperateGate for ControlledX {
+impl OperateGate for ControlledRotateX {
     /// Returns unitary matrix of the gate.
     ///
     /// # Returns
@@ -2366,7 +2367,7 @@ impl OperateGate for ControlledX {
 }
 
 /// Trait for all gate operations acting on exactly two qubits.
-impl OperateTwoQubitGate for ControlledX {
+impl OperateTwoQubitGate for ControlledRotateX {
     /// Returns [KakDecomposition] of the gate.
     ///
     /// # Returns
@@ -2390,7 +2391,7 @@ impl OperateTwoQubitGate for ControlledX {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-pub struct ControlledXY {
+pub struct ControlledRotateXY {
     /// The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the phase-shift on the target qubit.
     control: usize,
     /// The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
@@ -2400,24 +2401,25 @@ pub struct ControlledXY {
     /// The rotation axis, in spherical coordinates φ gives the angle in the x-y plane.
     phi: CalculatorFloat,
 }
-impl SupportedVersion for ControlledXY {
+impl SupportedVersion for ControlledRotateXY {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 2, 5)
     }
 }
 
-impl super::ImplementedIn1point2 for ControlledXY {}
+impl super::ImplementedIn1point2 for ControlledRotateXY {}
 
 #[allow(non_upper_case_globals)]
-const TAGS_ControlledXY: &[&str; 4] = &[
+const TAGS_ControlledRotateXY: &[&str; 5] = &[
     "Operation",
     "GateOperation",
     "TwoQubitGateOperation",
-    "ControlledXY",
+    "Rotation",
+    "ControlledRotateXY",
 ];
 
 /// Trait for all Operations acting with a unitary gate on a set of qubits.
-impl OperateGate for ControlledXY {
+impl OperateGate for ControlledRotateXY {
     /// Returns unitary matrix of the gate.
     ///
     /// # Returns
@@ -2459,7 +2461,7 @@ impl OperateGate for ControlledXY {
 }
 
 /// Trait for all gate operations acting on exactly two qubits.
-impl OperateTwoQubitGate for ControlledXY {
+impl OperateTwoQubitGate for ControlledRotateXY {
     /// Returns [KakDecomposition] of the gate.
     ///
     /// # Returns

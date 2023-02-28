@@ -554,11 +554,10 @@ pub struct PhaseShiftedControlledPhase {
     phi: CalculatorFloat,
 }
 
-
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(Operate, OperateTwoQubit, Rotate, OperateGate, OperateTwoQubitGate)]
 /// Implements the controlled RotateX operation.
-/// 
+///
 /// The unitary matrix representation is:
 ///
 /// .. math::
@@ -573,17 +572,16 @@ pub struct PhaseShiftedControlledPhase {
 ///     control (int): The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the Rotatex Operation on the target qubit.
 ///     target (int):: The index of the least significant qubit in the unitary representation. Here, the qubit RotateX Operation is applied to.
 ///     theta (CalculatorFloat): The angle $\theta$ of the rotation.
-pub struct ControlledX {
+pub struct ControlledRotateX {
     control: usize,
     target: usize,
     theta: CalculatorFloat,
 }
 
-
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(Operate, OperateTwoQubit, Rotate, OperateGate, OperateTwoQubitGate)]
 /// Implements the controlled RotateXY operation.
-/// 
+///
 /// The unitary matrix representation is:
 ///
 /// .. math::
@@ -599,7 +597,7 @@ pub struct ControlledX {
 ///     target (int):: The index of the least significant qubit in the unitary representation. Here, the qubit RotateX Operation is applied to.
 ///     theta (CalculatorFloat): The angle $\theta$ of the rotation.
 ///     phi (CalculatorFloat): The rotation axis, in spherical coordinates :math:`\phi_{sph}`  gives the angle in the x-y plane.
-pub struct ControlledXY {
+pub struct ControlledRotateXY {
     control: usize,
     target: usize,
     theta: CalculatorFloat,

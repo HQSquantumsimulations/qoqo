@@ -182,8 +182,8 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<ComplexPMInteractionWrapper>()?;
     m.add_class::<PhaseShiftedControlledZWrapper>()?;
     m.add_class::<PhaseShiftedControlledPhaseWrapper>()?;
-    m.add_class::<ControlledXWrapper>()?;
-    m.add_class::<ControlledXYWrapper>()?;
+    m.add_class::<ControlledRotateXWrapper>()?;
+    m.add_class::<ControlledRotateXYWrapper>()?;
     m.add_class::<PhaseShiftState0Wrapper>()?;
     m.add_class::<PhaseShiftState1Wrapper>()?;
     m.add_class::<MultiQubitMSWrapper>()?;
