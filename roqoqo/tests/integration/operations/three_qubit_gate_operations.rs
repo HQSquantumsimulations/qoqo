@@ -12,12 +12,36 @@
 
 //! Integration test for public API of three qubit gate operations
 
+use nalgebra::DMatrix;
+use ndarray::Array2;
+use num_complex::Complex64;
 use qoqo_calculator::{Calculator, CalculatorFloat};
-use roqoqo::operations::*;
 use roqoqo::RoqoqoError::QubitMappingError;
+use roqoqo::{operations::*, RoqoqoError};
 
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
+
+// helper function to convert a two-dimensional ndarray to a 8x8 matrix
+// output can be used to be converted into a nalgebra matrix with `na::DMatrix::from()`
+fn convert_matrix(customarray: Array2<Complex64>) -> DMatrix<Complex64> {
+    let dim = customarray.dim();
+    DMatrix::<Complex64>::from_iterator(dim.0, dim.1, customarray.t().iter().cloned())
+}
+
+// helper function to convert a complex 8x8 matrix to a matrix with real absolute values
+fn convert_normsqr(customarray: DMatrix<Complex64>) -> Vec<f64> {
+    let mut overall_vec: Vec<[f64; 8]> = Vec::new();
+    for i in [0, 8, 16, 24, 32, 40, 48, 56].iter() {
+        let mut this_vec: Vec<f64> = Vec::new();
+        for j in 0..8 {
+            this_vec.push(customarray[i + j].norm());
+        }
+        let this_vec_to_array: [f64; 8] = this_vec.try_into().unwrap();
+        overall_vec.push(this_vec_to_array);
+    }
+    overall_vec.concat()
+}
 
 #[test]
 fn test_circuit() {
@@ -31,8 +55,19 @@ fn test_circuit() {
 // Test unitary matrix for ThreeQubitGate Operations
 #[test_case(GateOperation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(GateOperation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
-fn test_three_qubit_gate_unitarity(_gate: GateOperation) {
-    todo!()
+fn test_three_qubit_gate_unitarity(gate: GateOperation) {
+    let result: Result<Array2<Complex64>, RoqoqoError> = gate.unitary_matrix();
+    let result_array: Array2<Complex64> = result.unwrap();
+    // check unitarity with nalgebra
+    // convert ndarray into nalgebra matrix
+    let result_matrix: DMatrix<Complex64> = convert_matrix(result_array);
+    // calculate matrix product A*A_dagger
+    let product = result_matrix.clone() * result_matrix.adjoint();
+    // convert complex matrix product into real matrix by taking the absolute value of the complex number, which should be sufficient if the matrix is unitary.
+    let matrix_norm: DMatrix<f64> =
+        DMatrix::<f64>::from_vec(8, 8, convert_normsqr(product).to_vec());
+    let epsilon = 1e-12;
+    assert!(matrix_norm.is_identity(epsilon));
 }
 
 //
