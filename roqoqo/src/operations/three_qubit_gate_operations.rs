@@ -23,16 +23,16 @@ use qoqo_calculator::CalculatorFloat;
     Debug,
     Clone,
     PartialEq,
-    // roqoqo_derive::InvolveQubits,
+    roqoqo_derive::InvolveQubits,
     roqoqo_derive::SupportedVersion,
     // roqoqo_derive::Operate,
     // roqoqo_derive::Substitute,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct ControlledControlledPauliZ {
-    /// The index of the first controlling qubit of the operation.
+    /// The index of the most significant qubit in the unitary representation. Here, the first controlling qubit of the operation.
     control_0: usize,
-    /// The index of the second controlling qubit of the operation.
+    /// The index of the second most significant qubit in the unitary representation. Here, the second controlling qubit of the operation.
     control_1: usize,
     /// The index of the least significant qubit in the unitary representation. Here, the qubit PauliZ is applied to.
     target: usize,
@@ -47,16 +47,16 @@ pub struct ControlledControlledPauliZ {
     Debug,
     Clone,
     PartialEq,
-    // roqoqo_derive::InvolveQubits,
+    roqoqo_derive::InvolveQubits,
     roqoqo_derive::SupportedVersion,
     // roqoqo_derive::Operate,
     // roqoqo_derive::Substitute,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct ControlledControlledPhaseShift {
-    /// The index of the first controlling qubit of the operation.
+    /// The index of the most significant qubit in the unitary representation. Here, the first controlling qubit of the operation.
     control_0: usize,
-    /// The index of the second controlling qubit of the operation.
+    /// The index of the second most significant qubit in the unitary representation. Here, the second controlling qubit of the operation.
     control_1: usize,
     /// The index of the least significant qubit in the unitary representation. Here, the qubit the phase-shift is applied to.
     target: usize,
