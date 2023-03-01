@@ -11,6 +11,7 @@
 // limitations under the License.
 
 use crate::prelude::*;
+// use crate::Circuit;
 
 use qoqo_calculator::CalculatorFloat;
 
@@ -25,8 +26,9 @@ use qoqo_calculator::CalculatorFloat;
     PartialEq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::SupportedVersion,
-    // roqoqo_derive::Operate,
-    // roqoqo_derive::Substitute,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateThreeQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct ControlledControlledPauliZ {
@@ -36,6 +38,26 @@ pub struct ControlledControlledPauliZ {
     control_1: usize,
     /// The index of the least significant qubit in the unitary representation. Here, the qubit PauliZ is applied to.
     target: usize,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_ControlledControlledPauliZ: &[&str; 4] = &[
+    "Operation",
+    "GateOperation",
+    "ThreeQubitGateOperation",
+    "ControlledControlledPauliZ",
+];
+
+impl OperateGate for ControlledControlledPauliZ {
+    fn unitary_matrix(&self) -> Result<ndarray::Array2<num_complex::Complex64>, RoqoqoError> {
+        todo!()
+    }
+}
+
+impl OperateThreeQubitGate for ControlledControlledPauliZ {
+    fn circuit(&self) -> crate::Circuit {
+        todo!()
+    }
 }
 
 /// Implements the double-controlled PhaseShift gate.
@@ -49,8 +71,9 @@ pub struct ControlledControlledPauliZ {
     PartialEq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::SupportedVersion,
-    // roqoqo_derive::Operate,
-    // roqoqo_derive::Substitute,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateThreeQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct ControlledControlledPhaseShift {
@@ -62,4 +85,24 @@ pub struct ControlledControlledPhaseShift {
     target: usize,
     /// The rotation angle θ.
     theta: CalculatorFloat,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_ControlledControlledPhaseShift: &[&str; 4] = &[
+    "Operation",
+    "GateOperation",
+    "ThreeQubitGateOperation",
+    "ControlledControlledPhaseShift",
+];
+
+impl OperateGate for ControlledControlledPhaseShift {
+    fn unitary_matrix(&self) -> Result<ndarray::Array2<num_complex::Complex64>, RoqoqoError> {
+        todo!()
+    }
+}
+
+impl OperateThreeQubitGate for ControlledControlledPhaseShift {
+    fn circuit(&self) -> crate::Circuit {
+        todo!()
+    }
 }

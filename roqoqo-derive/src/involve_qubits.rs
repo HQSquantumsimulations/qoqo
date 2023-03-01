@@ -149,7 +149,7 @@ fn involve_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             panic!("When deriving InvolveQubits for a three-qubit operation, control_0 and control_1 fields are not compatible with qubits fields");
         };
         // Creating a function that puts qubits `control_0`, `control_1` and `target` into the InvolvedQubits HashSet
-        quote!{
+        quote! {
             /// Implements [InvolveQubits] trait for the qubits involved in this Operation.
             #[automatically_derived]
             impl InvolveQubits for #ident{
