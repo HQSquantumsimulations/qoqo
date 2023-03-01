@@ -27,9 +27,11 @@ mod operate;
 // mod operate_unitary;
 
 /// Array of field names that are reserved for use with specific traits
-const RESERVED_FIELDS: &[&str; 11] = &[
+const RESERVED_FIELDS: &[&str; 13] = &[
     "qubit",
     "control",
+    "control_0",
+    "control_1",
     "target",
     "theta",
     "qubits",
@@ -292,12 +294,12 @@ pub fn wrap(
     };
     let operate_two_qubit_quote = if attribute_arguments.contains("OperateTwoQubit") {
         quote! {
-            /// Returns contol qubit of the two-qubit operation
-            pub fn control(&self) -> usize{
+            /// Returns control qubit of the two-qubit operation
+            pub fn control(&self) -> usize {
                 self.internal.control().clone()
             }
             /// Returns target qubit of the two-qubit operation
-            pub fn target(&self) -> usize{
+            pub fn target(&self) -> usize {
                 self.internal.target().clone()
             }
         }
@@ -314,6 +316,37 @@ pub fn wrap(
     // } else {
     //     TokenStream::new()
     // };
+    let operate_three_qubit_quote = if attribute_arguments.contains("OperateThreeQubit") {
+        quote! {
+            /// Returns control_0 qubit of the three-qubit operation
+            pub fn control_0(&self) -> usize {
+                self.internal.control_0().clone()
+            }
+            /// Returns control_1 qubit of the three-qubit operation
+            pub fn control_1(&self) -> usize {
+                self.internal.control_1().clone()
+            }
+            /// Returns target qubit of the three-qubit operation
+            pub fn target(&self) -> usize {
+                self.internal.target().clone()
+            }
+        }
+    } else {
+        TokenStream::new()
+    };
+    let operate_three_qubit_gate_quote = if attribute_arguments.contains("OperateThreeQubitGate") {
+        quote! {
+            /// Returns circuit implementing the ThreeQubitGateOperation
+            ///
+            /// Returns:
+            ///     Circuit
+            pub fn circuit(&self) -> CircuitWrapper {
+                CircuitWrapper { internal: self.internal.circuit().clone() }
+            }
+        }
+    } else {
+        TokenStream::new()
+    };
     let operate_gate_quote = if attribute_arguments.contains("OperateGate") {
         quote! {
             /// Return unitary matrix of gate.
@@ -402,6 +435,8 @@ pub fn wrap(
             #operate_single_qubit_gate_quote
             #operate_two_qubit_quote
             // #operate_two_qubit_gate_quote
+            #operate_three_qubit_quote
+            #operate_three_qubit_gate_quote
             #operate_multi_qubit_quote
             #operate_multi_qubit_gate_quote
             #operate_gate_quote
