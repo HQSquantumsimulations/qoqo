@@ -15,6 +15,9 @@ use crate::prelude::*;
 
 use qoqo_calculator::CalculatorFloat;
 
+#[cfg(feature = "overrotate")]
+use rand_distr::{Distribution, Normal};
+
 /// Implements the double-controlled PauliZ gate.
 ///
 /// The double-controlled PauliZ applies a PauliZ unitary to the `target` qubit
@@ -74,6 +77,7 @@ impl OperateThreeQubitGate for ControlledControlledPauliZ {
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateThreeQubit,
+    roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct ControlledControlledPhaseShift {
@@ -88,10 +92,11 @@ pub struct ControlledControlledPhaseShift {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_ControlledControlledPhaseShift: &[&str; 4] = &[
+const TAGS_ControlledControlledPhaseShift: &[&str; 5] = &[
     "Operation",
     "GateOperation",
     "ThreeQubitGateOperation",
+    "Rotation",
     "ControlledControlledPhaseShift",
 ];
 
