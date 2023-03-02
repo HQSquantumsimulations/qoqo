@@ -24,6 +24,8 @@ mod measurement_operations;
 pub use measurement_operations::*;
 mod two_qubit_gate_operations;
 pub use two_qubit_gate_operations::*;
+mod three_qubit_gate_operations;
+pub use three_qubit_gate_operations::*;
 mod multi_qubit_gate_operations;
 pub use multi_qubit_gate_operations::*;
 include!(concat!(
@@ -100,6 +102,8 @@ use pyo3::prelude::*;
 ///    ControlledPhaseShift
 ///    ControlledPauliY
 ///    ControlledPauliZ
+///    ControlledControlledPauliZ
+///    ControlledControlledPhaseShift
 ///    MolmerSorensenXX
 ///    VariableMSXX
 ///    GivensRotation
@@ -184,6 +188,8 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<PhaseShiftedControlledPhaseWrapper>()?;
     m.add_class::<PhaseShiftState0Wrapper>()?;
     m.add_class::<PhaseShiftState1Wrapper>()?;
+    m.add_class::<ControlledControlledPauliZWrapper>()?;
+    m.add_class::<ControlledControlledPhaseShiftWrapper>()?;
     m.add_class::<MultiQubitMSWrapper>()?;
     m.add_class::<MultiQubitZZWrapper>()?;
     Ok(())

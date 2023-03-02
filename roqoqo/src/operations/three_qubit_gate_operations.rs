@@ -29,6 +29,7 @@ use rand_distr::{Distribution, Normal};
     Debug,
     Clone,
     PartialEq,
+    Eq,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
