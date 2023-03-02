@@ -13,12 +13,12 @@
 use num_complex::Complex64;
 use numpy::{PyArray2, ToPyArray};
 
+use pyo3::exceptions::{PyRuntimeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PySet;
-use pyo3::exceptions::{PyRuntimeError, PyValueError};
 
 use qoqo_calculator::CalculatorFloat;
-use qoqo_calculator_pyo3::convert_into_calculator_float;
+use qoqo_calculator_pyo3::{convert_into_calculator_float, CalculatorFloatWrapper};
 
 use roqoqo::operations::*;
 
@@ -31,7 +31,24 @@ use qoqo_macros::*;
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(Operate, OperateThreeQubit, OperateGate, OperateThreeQubitGate)]
 #[derive(Eq)]
-/// TODO
+/// Implements the double-controlled PauliZ gate.
+///
+/// .. math::
+///     U = \begin{pmatrix}
+///         1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & 0 & -1
+///         \end{pmatrix}
+///
+/// Args:
+///     control_0 (int): The index of the most significant qubit in the unitary representation. Here, the first controlling qubit of the operation.
+///     control_1 (int): The index of the second most significant qubit in the unitary representation. Here, the second controlling qubit of the operation.
+///     target (int): The index of the least significant qubit in the unitary representation. Here, the qubit PauliZ is applied to.
 pub struct ControlledControlledPauliZ {
     control_0: usize,
     control_1: usize,
@@ -39,8 +56,26 @@ pub struct ControlledControlledPauliZ {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateThreeQubit, OperateGate, OperateThreeQubitGate)]
-/// TODO
+#[wrap(Operate, OperateThreeQubit, Rotate, OperateGate, OperateThreeQubitGate)]
+/// Implements the double-controlled PhaseShift gate.
+///
+/// .. math::
+///     U = \begin{pmatrix}
+///         1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & 0 & e^{i \theta}
+///         \end{pmatrix}
+///
+/// Args:
+///     control_0 (int): The index of the most significant qubit in the unitary representation. Here, the first controlling qubit of the operation.
+///     control_1 (int): The index of the second most significant qubit in the unitary representation. Here, the second controlling qubit of the operation.
+///     target (int): The index of the least significant qubit in the unitary representation. Here, the qubit the phase-shift is applied to.
+///     theta (float): The rotation angle θ.
 pub struct ControlledControlledPhaseShift {
     control_0: usize,
     control_1: usize,

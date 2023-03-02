@@ -30,3 +30,6 @@ pub use single_qubit_gate_operations::*;
 
 mod two_qubit_gate_operations;
 pub use two_qubit_gate_operations::*;
+
+mod three_qubit_gate_operations;
+pub use three_qubit_gate_operations::*;

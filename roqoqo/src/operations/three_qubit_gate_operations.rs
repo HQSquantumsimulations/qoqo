@@ -10,8 +10,10 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use super::ControlledPhaseShift;
+use super::CNOT;
 use crate::prelude::*;
-// use crate::Circuit;
+use crate::Circuit;
 use ndarray::{array, Array2};
 use num_complex::Complex64;
 
@@ -148,9 +150,17 @@ impl OperateGate for ControlledControlledPauliZ {
     }
 }
 
+/// Trait for all gate operations acting on exactly three qubits.
 impl OperateThreeQubitGate for ControlledControlledPauliZ {
-    fn circuit(&self) -> crate::Circuit {
-        todo!()
+    fn circuit(&self) -> Circuit {
+        let mut circuit = Circuit::new();
+        circuit += CNOT::new(self.control_0, self.target);
+        circuit +=
+            ControlledPhaseShift::new(self.control_1, self.target, -CalculatorFloat::FRAC_PI_2);
+        circuit += CNOT::new(self.control_0, self.target);
+        circuit +=
+            ControlledPhaseShift::new(self.control_1, self.target, CalculatorFloat::FRAC_PI_2);
+        circuit
     }
 }
 
@@ -287,8 +297,14 @@ impl OperateGate for ControlledControlledPhaseShift {
     }
 }
 
+/// Trait for all gate operations acting on exactly three qubits.
 impl OperateThreeQubitGate for ControlledControlledPhaseShift {
-    fn circuit(&self) -> crate::Circuit {
-        todo!()
+    fn circuit(&self) -> Circuit {
+        let mut circuit = Circuit::new();
+        circuit += CNOT::new(self.control_0, self.target);
+        circuit += ControlledPhaseShift::new(self.control_1, self.target, -self.theta.clone());
+        circuit += CNOT::new(self.control_0, self.target);
+        circuit += ControlledPhaseShift::new(self.control_1, self.target, self.theta.clone());
+        circuit
     }
 }

@@ -17,7 +17,7 @@ use ndarray::Array2;
 use num_complex::Complex64;
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::RoqoqoError::QubitMappingError;
-use roqoqo::{operations::*, RoqoqoError};
+use roqoqo::{operations::*, Circuit, RoqoqoError};
 
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
@@ -44,8 +44,31 @@ fn convert_normsqr(customarray: DMatrix<Complex64>) -> Vec<f64> {
 }
 
 #[test]
-fn test_circuit() {
-    todo!()
+fn test_circuit_controlledcontrolledpauliz() {
+    let op = ControlledControlledPauliZ::new(0, 1, 2);
+    let c = op.circuit();
+
+    let mut circuit = Circuit::new();
+    circuit += CNOT::new(0, 2);
+    circuit += ControlledPhaseShift::new(1, 2, -CalculatorFloat::FRAC_PI_2);
+    circuit += CNOT::new(0, 2);
+    circuit += ControlledPhaseShift::new(1, 2, CalculatorFloat::FRAC_PI_2);
+
+    assert_eq!(c, circuit);
+}
+
+#[test]
+fn test_circuit_controlledcontrolledphaseshift() {
+    let op = ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::PI);
+    let c = op.circuit();
+
+    let mut circuit = Circuit::new();
+    circuit += CNOT::new(0, 2);
+    circuit += ControlledPhaseShift::new(1, 2, -CalculatorFloat::PI);
+    circuit += CNOT::new(0, 2);
+    circuit += ControlledPhaseShift::new(1, 2, CalculatorFloat::PI);
+
+    assert_eq!(c, circuit);
 }
 
 //
