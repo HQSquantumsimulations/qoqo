@@ -10,7 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Integration test for public API of single qubit gate operations
+//! Integration test for public API of two qubit gate operations
 
 use nalgebra as na;
 use ndarray::{array, Array2};

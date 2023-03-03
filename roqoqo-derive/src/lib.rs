@@ -89,6 +89,13 @@ pub fn derive_operate_two_qubit(input: proc_macro::TokenStream) -> proc_macro::T
     operate_n_qubit::dispatch_struct_enum_two_qubit(parsed_input).into()
 }
 
+/// Derive macro for the [roqoqo::OperateThreeQubit] trait
+#[proc_macro_derive(OperateThreeQubit)]
+pub fn derive_operate_three_qubit(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    operate_n_qubit::dispatch_struct_enum_three_qubit(parsed_input).into()
+}
+
 /// Derive macro for the [roqoqo::OperateMultiQubit] trait
 #[proc_macro_derive(OperateMultiQubit)]
 pub fn derive_operate_multi_qubit(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
@@ -159,6 +166,13 @@ pub fn derive_operate_single_qubit_gate(input: proc_macro::TokenStream) -> proc_
 pub fn derive_operate_two_qubit_gate(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let parsed_input = parse_macro_input!(input as DeriveInput);
     operate_unitary::dispatch_struct_enum_two_qubit_gate(parsed_input).into()
+}
+
+/// Derive macro for the [roqoqo::OperateThreeQubitGate] trait
+#[proc_macro_derive(OperateThreeQubitGate)]
+pub fn derive_operate_three_qubit_gate(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    operate_unitary::dispatch_struct_enum_three_qubit_gate(parsed_input).into()
 }
 
 /// Derive macro for the [roqoqo::OperateMultiQubitGate] trait

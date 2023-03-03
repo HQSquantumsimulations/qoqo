@@ -52,6 +52,10 @@ pub use single_qubit_gate_operations::*;
 #[doc(hidden)]
 mod two_qubit_gate_operations;
 pub use two_qubit_gate_operations::*;
+/// Collection of roqoqo three qubit gate operations.
+#[doc(hidden)]
+mod three_qubit_gate_operations;
+pub use three_qubit_gate_operations::*;
 
 include!(concat!(env!("OUT_DIR"), "/_auto_generated_operations.rs"));
 
@@ -299,6 +303,26 @@ pub trait OperateTwoQubit: Operate + InvolveQubits + Substitute + Clone + Partia
     fn target(&self) -> &usize;
     /// Returns `control` qubit of two qubit Operation.
     fn control(&self) -> &usize;
+}
+
+/// Trait for Operations acting on exactly three qubits.
+///
+/// # Example
+/// ```
+/// use roqoqo::operations::{ControlledControlledPauliZ, OperateThreeQubit}
+/// let ccz = ControlledControlledPauliZ::new(0, 1, 2);
+/// assert_eq!(ccz.control_0(), &0_usize);
+/// assert_eq!(ccz.control_1(), &1_usize);
+/// assert_eq!(ccz.target(), &2_usize);
+/// ```
+///
+pub trait OperateThreeQubit: Operate + InvolveQubits + Substitute + Clone + PartialEq {
+    /// Returns `target` qubit of three qubit Operation.
+    fn target(&self) -> &usize;
+    /// Returns `control_0` qubit of three qubit Operation.
+    fn control_0(&self) -> &usize;
+    /// Returns `control_1` qubit of three qubit Operation.
+    fn control_1(&self) -> &usize;
 }
 
 /// Trait for operations acting on multiple (more than two) qubits.
@@ -704,6 +728,23 @@ pub trait OperateTwoQubitGate:
 {
     /// Returns [KakDecomposition] of two qubit gate.
     fn kak_decomposition(&self) -> KakDecomposition;
+}
+
+/// Trat for all Operations operating on or affecting exactly three qubits.
+///
+/// TODO: example
+pub trait OperateThreeQubitGate:
+    Operate
+    + OperateGate
+    + OperateThreeQubit
+    + InvolveQubits
+    + Substitute
+    + Clone
+    + PartialEq
+    + SupportedVersion
+{
+    /// Returns a decomposition of the three-qubit operation using a circuit with two-qubit-operations.
+    fn circuit(&self) -> crate::Circuit;
 }
 
 /// Trait for all Operations operating on or affecting more than two qubits.
