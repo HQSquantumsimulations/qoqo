@@ -2374,24 +2374,25 @@ impl OperateTwoQubitGate for ControlledRotateX {
     ///
     /// * struct `KakDecomposition { global_phase, k_vector, circuit_before, circuit_after }`
     fn kak_decomposition(&self) -> KakDecomposition {
-        let mut circuit_b = Circuit::new();
-        circuit_b += RotateZ::new(self.control, CalculatorFloat::FRAC_PI_2);
-        circuit_b += RotateY::new(self.control, CalculatorFloat::FRAC_PI_2);
-        circuit_b += RotateX::new(self.target, self.theta.clone() / 2.0);
+        todo!()
+        // let mut circuit_b = Circuit::new();
+        // circuit_b += RotateZ::new(self.control, CalculatorFloat::FRAC_PI_2);
+        // circuit_b += RotateY::new(self.control, CalculatorFloat::FRAC_PI_2);
+        // circuit_b += RotateX::new(self.target, self.theta.clone() / 2.0);
 
-        let mut circuit_a = Circuit::new();
-        circuit_a += RotateY::new(self.control, self.theta.clone() / 2.0 * (-1.0));
+        // let mut circuit_a = Circuit::new();
+        // circuit_a += RotateY::new(self.control, self.theta.clone() / 2.0 * (-1.0));
 
-        KakDecomposition {
-            global_phase: CalculatorFloat::ZERO,
-            k_vector: [
-                self.theta.clone() / 4.0,
-                CalculatorFloat::ZERO,
-                CalculatorFloat::ZERO,
-            ],
-            circuit_before: Some(circuit_b),
-            circuit_after: Some(circuit_a),
-        }
+        // KakDecomposition {
+        //     global_phase: CalculatorFloat::ZERO,
+        //     k_vector: [
+        //         self.theta.clone() / 4.0,
+        //         CalculatorFloat::ZERO,
+        //         CalculatorFloat::ZERO,
+        //     ],
+        //     circuit_before: Some(circuit_b),
+        //     circuit_after: Some(circuit_a),
+        // }
     }
 }
 
