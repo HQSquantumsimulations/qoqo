@@ -2376,18 +2376,17 @@ impl OperateTwoQubitGate for ControlledRotateX {
     fn kak_decomposition(&self) -> KakDecomposition {
         let mut circuit_b = Circuit::new();
         circuit_b += Hadamard::new(self.target);
-        circuit_b += RotateZ::new(self.control, self.theta.clone());
-        circuit_b += RotateZ::new(self.target, self.theta.clone());
+        circuit_b += RotateZ::new(self.target, self.theta.clone() / 2.0);
 
         let mut circuit_a = Circuit::new();
         circuit_a += Hadamard::new(self.target);
 
         KakDecomposition {
-            global_phase: self.theta.clone() / 2.0,
+            global_phase: CalculatorFloat::ZERO,
             k_vector: [
                 CalculatorFloat::ZERO,
                 CalculatorFloat::ZERO,
-                self.theta.clone() / 2.0,
+                self.theta.clone() / 4.0,
             ],
             circuit_before: Some(circuit_b),
             circuit_after: Some(circuit_a),
@@ -2488,19 +2487,18 @@ impl OperateTwoQubitGate for ControlledRotateXY {
         let mut circuit_b = Circuit::new();
         circuit_b += RotateZ::new(self.target, -self.phi.clone());
         circuit_b += Hadamard::new(self.target);
-        circuit_b += RotateZ::new(self.control, self.theta.clone());
-        circuit_b += RotateZ::new(self.target, self.theta.clone());
+        circuit_b += RotateZ::new(self.target, self.theta.clone() / 2.0);
 
         let mut circuit_a = Circuit::new();
         circuit_a += Hadamard::new(self.target);
         circuit_a += RotateZ::new(self.target, self.phi.clone());
 
         KakDecomposition {
-            global_phase: self.theta.clone() / 2.0,
+            global_phase: CalculatorFloat::ZERO,
             k_vector: [
                 CalculatorFloat::ZERO,
                 CalculatorFloat::ZERO,
-                self.theta.clone() / 2.0,
+                self.theta.clone() / 4.0,
             ],
             circuit_before: Some(circuit_b),
             circuit_after: Some(circuit_a),
