@@ -2374,25 +2374,24 @@ impl OperateTwoQubitGate for ControlledRotateX {
     ///
     /// * struct `KakDecomposition { global_phase, k_vector, circuit_before, circuit_after }`
     fn kak_decomposition(&self) -> KakDecomposition {
-        todo!()
-        // let mut circuit_b = Circuit::new();
-        // circuit_b += RotateZ::new(self.control, CalculatorFloat::FRAC_PI_2);
-        // circuit_b += RotateY::new(self.control, CalculatorFloat::FRAC_PI_2);
-        // circuit_b += RotateX::new(self.target, self.theta.clone() / 2.0);
+        let mut circuit_b = Circuit::new();
+        circuit_b += Hadamard::new(self.target);
+        circuit_b += RotateZ::new(self.control, self.theta.clone());
+        circuit_b += RotateZ::new(self.target, self.theta.clone());
 
-        // let mut circuit_a = Circuit::new();
-        // circuit_a += RotateY::new(self.control, self.theta.clone() / 2.0 * (-1.0));
+        let mut circuit_a = Circuit::new();
+        circuit_a += Hadamard::new(self.target);
 
-        // KakDecomposition {
-        //     global_phase: CalculatorFloat::ZERO,
-        //     k_vector: [
-        //         self.theta.clone() / 4.0,
-        //         CalculatorFloat::ZERO,
-        //         CalculatorFloat::ZERO,
-        //     ],
-        //     circuit_before: Some(circuit_b),
-        //     circuit_after: Some(circuit_a),
-        // }
+        KakDecomposition {
+            global_phase: self.theta.clone() / 2.0,
+            k_vector: [
+                CalculatorFloat::ZERO,
+                CalculatorFloat::ZERO,
+                self.theta.clone() / 2.0,
+            ],
+            circuit_before: Some(circuit_b),
+            circuit_after: Some(circuit_a),
+        }
     }
 }
 
@@ -2486,6 +2485,25 @@ impl OperateTwoQubitGate for ControlledRotateXY {
     ///
     /// * struct `KakDecomposition { global_phase, k_vector, circuit_before, circuit_after }`
     fn kak_decomposition(&self) -> KakDecomposition {
-        todo!()
+        let mut circuit_b = Circuit::new();
+        circuit_b += RotateZ::new(self.target, -self.phi.clone());
+        circuit_b += Hadamard::new(self.target);
+        circuit_b += RotateZ::new(self.control, self.theta.clone());
+        circuit_b += RotateZ::new(self.target, self.theta.clone());
+
+        let mut circuit_a = Circuit::new();
+        circuit_a += Hadamard::new(self.target);
+        circuit_a += RotateZ::new(self.target, self.phi.clone());
+
+        KakDecomposition {
+            global_phase: self.theta.clone() / 2.0,
+            k_vector: [
+                CalculatorFloat::ZERO,
+                CalculatorFloat::ZERO,
+                self.theta.clone() / 2.0,
+            ],
+            circuit_before: Some(circuit_b),
+            circuit_after: Some(circuit_a),
+        }
     }
 }

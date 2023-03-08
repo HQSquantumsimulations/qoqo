@@ -131,9 +131,12 @@ fn kak_sigma_matrix(
 #[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase_pi_pi_2")]
 #[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::PI)); "PhaseShiftedControlledPhase_zero_pi")]
 #[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_4, CalculatorFloat::ZERO)); "PhaseShiftedControlledPhase_pi_4_zero")]
-// #[test_case(TwoQubitGateOperation::from(ControlledRotateX::new(0, 1, CalculatorFloat::ZERO)); "ControlledRotateX_zero")]
-// #[test_case(TwoQubitGateOperation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_4)); "ControlledRotateX_pi_4")]
-// #[test_case(TwoQubitGateOperation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX_pi_2")]
+#[test_case(TwoQubitGateOperation::from(ControlledRotateX::new(0, 1, CalculatorFloat::ZERO)); "ControlledRotateX_zero")]
+#[test_case(TwoQubitGateOperation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_4)); "ControlledRotateX_pi_4")]
+#[test_case(TwoQubitGateOperation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX_pi_2")]
+#[test_case(TwoQubitGateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY_zero_pi_4")]
+#[test_case(TwoQubitGateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_4, CalculatorFloat::ZERO)); "ControlledRotateXY_pi_4_zero")]
+#[test_case(TwoQubitGateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_2)); "ControlledRotateXY_pi_2_pi_2")]
 fn test_kakdecomposition(gate: TwoQubitGateOperation) {
     // k vector
     let k = gate.kak_decomposition().k_vector;
