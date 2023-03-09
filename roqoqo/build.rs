@@ -62,6 +62,10 @@ struct Visitor {
     // These operations will only be added at end of automatically created enums
     // to maintain compatibility with bincode encoding
     roqoqo_1_2_operations: Vec<Ident>,
+    // Operations that have only been introduced in roqoqoq 1.3.0
+    // These operations will only be added at end of automatically created enums
+    // to maintain compatibility with bincode encoding
+    roqoqo_1_3_operations: Vec<Ident>,
 }
 
 impl Visitor {
@@ -85,6 +89,7 @@ impl Visitor {
             multi_qubit_gate_operations: Vec::new(),
             roqoqo_1_1_operations: Vec::new(),
             roqoqo_1_2_operations: Vec::new(),
+            roqoqo_1_3_operations: Vec::new(),
         }
     }
 }
@@ -244,6 +249,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 }
                 if trait_name.as_str() == "ImplementedIn1point2" {
                     self.roqoqo_1_2_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "ImplementedIn1point3" {
+                    self.roqoqo_1_3_operations.push(id.clone());
                 }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());

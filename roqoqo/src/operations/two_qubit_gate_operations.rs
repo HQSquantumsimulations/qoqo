@@ -2315,7 +2315,7 @@ impl SupportedVersion for ControlledRotateX {
     }
 }
 
-impl super::ImplementedIn1point2 for ControlledRotateX {}
+impl super::ImplementedIn1point3 for ControlledRotateX {}
 
 #[allow(non_upper_case_globals)]
 const TAGS_ControlledRotateX: &[&str; 5] = &[
@@ -2423,7 +2423,8 @@ impl SupportedVersion for ControlledRotateXY {
     }
 }
 
-impl super::ImplementedIn1point2 for ControlledRotateXY {}
+//
+impl super::ImplementedIn1point3 for ControlledRotateXY {}
 
 #[allow(non_upper_case_globals)]
 const TAGS_ControlledRotateXY: &[&str; 5] = &[
