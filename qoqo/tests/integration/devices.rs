@@ -23,8 +23,9 @@ fn new_alltoalldevice() -> Py<PyAny> {
         let number_qubits = 4;
         let single_qubit_gates = ["RotateX".to_string(), "RotateZ".to_string()];
         let two_qubit_gates = ["CNOT".to_string()];
-        let arguments: (usize, [String; 2], [String; 1], f64) =
-            (number_qubits, single_qubit_gates, two_qubit_gates, 1.0);
+        let three_qubit_gates = [];
+        let arguments: (usize, [String; 2], [String; 1], [String; 0],f64) =
+            (number_qubits, single_qubit_gates, two_qubit_gates, three_qubit_gates, 1.0);
         let device_type = py.get_type::<AllToAllDeviceWrapper>();
         device_type.call1(arguments).unwrap().into()
     })
@@ -48,11 +49,13 @@ fn new_genericlattice() -> Py<PyAny> {
         let number_columns: usize = 2;
         let single_qubit_gates = ["RotateX".to_string(), "RotateZ".to_string()];
         let two_qubit_gates = ["CNOT".to_string()];
-        let arguments = (
+        let three_qubit_gates = [];
+        let arguments: (usize, usize, [String; 2], [String; 1], [String; 0], f64) = (
             number_rows,
             number_columns,
             single_qubit_gates,
             two_qubit_gates,
+            three_qubit_gates,
             1.0,
         );
         let device_type = py.get_type::<SquareLatticeDeviceWrapper>();
