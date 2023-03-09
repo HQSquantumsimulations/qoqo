@@ -32,7 +32,7 @@ use roqoqo::devices::{Device, SquareLatticeDevice};
 #[pyclass(name = "SquareLatticeDevice", module = "devices")]
 #[derive(Clone, Debug, PartialEq)]
 #[pyo3(
-    text_signature = "(number_rows, number_columns, single_qubit_gates, two_qubit_gates, default_gate_time)"
+    text_signature = "(number_rows, number_columns, single_qubit_gates, two_qubit_gates, three_qubit_gates, default_gate_time)"
 )]
 pub struct SquareLatticeDeviceWrapper {
     /// Internal storage of [roqoqo::devices::SquareLatticeDevice]
@@ -58,6 +58,7 @@ impl SquareLatticeDeviceWrapper {
         number_columns: usize,
         single_qubit_gates: Vec<String>,
         two_qubit_gates: Vec<String>,
+        three_qubit_gates: Vec<String>,
         default_gate_time: f64,
     ) -> PyResult<Self> {
         Ok(Self {
@@ -66,6 +67,7 @@ impl SquareLatticeDeviceWrapper {
                 number_columns,
                 &single_qubit_gates,
                 &two_qubit_gates,
+                &three_qubit_gates,
                 default_gate_time,
             ),
         })
