@@ -630,6 +630,26 @@ pub fn devicewrapper(
                     .two_qubit_gate_time(hqslang, &control, &target)
             }
 
+            /// Returns the gate time of a three qubit operation if the three qubit operation is available on device.
+            ///
+            /// Args:
+            ///     hqslang[str]: The hqslang name of a single qubit gate.
+            ///     control_0[int]: The control_0 qubit the gate acts on.
+            ///     control_1[int]: The control_1 qubit the gate acts on.
+            ///     target[int]: The target qubit the gate acts on.
+            ///
+            /// Returns:
+            ///     Option[float]: None if gate is not available
+            ///
+            /// Raises:
+            ///     PyValueError: Qubit is not in device
+            ///
+            #[pyo3(text_signature = "(gate, control_0, control_1, target")]
+            pub fn three_qubit_gate_time(&self, hqslang: &str, control_0: usize, control_1: usize, target: usize) -> Option<f64> {
+                self.internal
+                    .three_qubit_gate_time(hqslang, &control_0, &control_1, &target)
+            }
+
             /// Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
             ///
             /// Args:
@@ -661,7 +681,7 @@ pub fn devicewrapper(
                 PyValueError::new_err(format!("{:?}", err)))
             }
 
-            /// Set the gate time of a single qubit gate.
+            /// Set the gate time of a two qubit gate.
             ///
             /// Args:
             ///     gate (str): hqslang name of the single-qubit-gate.
@@ -671,9 +691,26 @@ pub fn devicewrapper(
             ///
             /// Raises:
             ///     PyValueError: Qubit is not in device
-            #[pyo3(text_signature = "(qubit, control, targe, gate_time)")]
+            #[pyo3(text_signature = "(qubit, control, target, gate_time)")]
             pub fn set_two_qubit_gate_time(&mut self, gate: &str, control: usize, target: usize, gate_time: f64) -> PyResult<()> {
                 self.internal.set_two_qubit_gate_time(gate, control, target, gate_time).map_err(|err|
+                    PyValueError::new_err(format!("{:?}", err)))
+            }
+
+            /// Set the gate time of a three qubit gate.
+            ///
+            /// Args:
+            ///     gate (str): hqslang name of the single-qubit-gate.
+            ///     control_0 (int): The control_0 qubit for which the gate time is set
+            ///     control_1 (int): The control_1 qubit for which the gate time is set
+            ///     target (int): The control qubit for which the gate time is set
+            ///     gate_time (float): The gate time for the given gate.
+            ///
+            /// Raises:
+            ///     PyValueError: Qubit is not in device
+            #[pyo3(text_signature = "(qubit, control_0, control_1, target, gate_time)")]
+            pub fn set_three_qubit_gate_time(&mut self, gate: &str, control_0: usize, control_1: usize, target: usize, gate_time: f64) -> PyResult<()> {
+                self.internal.set_three_qubit_gate_time(gate, control_0, control_1, target, gate_time).map_err(|err|
                     PyValueError::new_err(format!("{:?}", err)))
             }
 

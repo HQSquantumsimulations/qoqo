@@ -16,7 +16,8 @@ use roqoqo::{devices::*, RoqoqoError};
 
 #[test]
 fn test_all_to_all() {
-    let mut device = AllToAllDevice::new(3, &["RotateX".to_string()], &["CNOT".to_string()], &[], 0.1);
+    let mut device =
+        AllToAllDevice::new(3, &["RotateX".to_string()], &["CNOT".to_string()], &[], 0.1);
     assert_eq!(
         device.qubit_decoherence_rates(&0),
         Some(array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
@@ -265,8 +266,14 @@ fn all_to_all_generic() {
 #[test]
 fn square_lattice_generic() {
     let mut generic_device = GenericDevice::new(2);
-    let square_lattice =
-        SquareLatticeDevice::new(1, 2, &["RotateZ".to_string()], &["CNOT".to_string()], &[], 1.0);
+    let square_lattice = SquareLatticeDevice::new(
+        1,
+        2,
+        &["RotateZ".to_string()],
+        &["CNOT".to_string()],
+        &[],
+        1.0,
+    );
 
     generic_device
         .set_single_qubit_gate_time("RotateZ", 0, 1.0)
@@ -293,8 +300,14 @@ fn square_lattice_generic() {
 
 #[test]
 fn test_square_lattice() {
-    let mut device =
-        SquareLatticeDevice::new(2, 2, &["RotateX".to_string()], &["CNOT".to_string()], &[], 0.1);
+    let mut device = SquareLatticeDevice::new(
+        2,
+        2,
+        &["RotateX".to_string()],
+        &["CNOT".to_string()],
+        &[],
+        0.1,
+    );
     assert_eq!(
         device.qubit_decoherence_rates(&0),
         Some(array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])

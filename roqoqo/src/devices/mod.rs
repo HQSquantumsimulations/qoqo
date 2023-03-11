@@ -90,7 +90,13 @@ pub trait Device {
     /// * `Some<f64>` - The gate time.
     /// * `None` - The gate is not available on the device.
     ///
-    fn three_qubit_gate_time(&self, hqslang: &str, control_0: &usize, control_1: &usize, target: &usize) -> Option<f64>;
+    fn three_qubit_gate_time(
+        &self,
+        hqslang: &str,
+        control_0: &usize,
+        control_1: &usize,
+        target: &usize,
+    ) -> Option<f64>;
 
     /// Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
     ///

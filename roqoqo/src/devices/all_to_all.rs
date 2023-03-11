@@ -398,8 +398,15 @@ impl Device for AllToAllDevice {
             .two_qubit_gate_time(hqslang, control, target)
     }
 
-    fn three_qubit_gate_time(&self, hqslang: &str, control_0: &usize, control_1: &usize, target: &usize) -> Option<f64> {
-        self.generic_device.three_qubit_gate_time(hqslang, control_0, control_1, target)
+    fn three_qubit_gate_time(
+        &self,
+        hqslang: &str,
+        control_0: &usize,
+        control_1: &usize,
+        target: &usize,
+    ) -> Option<f64> {
+        self.generic_device
+            .three_qubit_gate_time(hqslang, control_0, control_1, target)
     }
 
     fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {

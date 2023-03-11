@@ -294,7 +294,9 @@ impl GenericDevice {
         }
         match self.three_qubit_gates.get_mut(gate) {
             Some(gate_times) => {
-                let gatetime = gate_times.entry((control_0, control_1, target)).or_insert(gate_time);
+                let gatetime = gate_times
+                    .entry((control_0, control_1, target))
+                    .or_insert(gate_time);
                 *gatetime = gate_time;
             }
             None => {
