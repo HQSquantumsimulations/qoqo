@@ -2423,7 +2423,6 @@ impl SupportedVersion for ControlledRotateXY {
     }
 }
 
-//
 impl super::ImplementedIn1point3 for ControlledRotateXY {}
 
 #[allow(non_upper_case_globals)]
