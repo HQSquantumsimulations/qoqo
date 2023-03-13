@@ -732,7 +732,21 @@ pub trait OperateTwoQubitGate:
 
 /// Trat for all Operations operating on or affecting exactly three qubits.
 ///
-/// TODO: example
+/// # Example
+/// ```
+/// use roqoqo::operations::{CNOT, ControlledPhaseShift}
+/// use roqoqo::Circuit;
+/// use qoqo_calculator::CalculatorFloat;
+/// 
+/// let ccpz = ControlledControlledPauliZ::new(0, 1, 2);
+/// let mut circuit = Circuit::new();
+/// circuit += CNOT::new(0, 2);
+/// circuit += ControlledPhaseShift::new(1, 2, -CalculatorFloat::FRAC_PI_2);
+/// circuit += CNOT::new(0, 2);
+/// circuit += ControleldPhaseShift::new(1, 2, CalculatorFloat::FRAC_PI_2);
+///
+/// assert_eq!(ccpz.circuit(), circuit);
+/// ```
 pub trait OperateThreeQubitGate:
     Operate
     + OperateGate

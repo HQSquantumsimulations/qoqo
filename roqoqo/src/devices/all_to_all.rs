@@ -97,7 +97,7 @@ impl AllToAllDevice {
         self
     }
 
-    /// Function that allows to set a unifromg gate time per gate type for the two-qubit-gates.
+    /// Function that allows to set a uniform gate time per gate type for the two-qubit-gates.
     ///
     /// # Arguments
     ///
