@@ -121,7 +121,6 @@ impl MeasureExpectationValues for PauliZProduct {
             for (name, pauli_product_mask) in self.input.pauli_product_qubit_masks.iter() {
                 let mut measurement_correction_factor: Vec<f64> =
                     (0..self.input.number_pauli_products)
-                        .into_iter()
                         .map(|_| 1.0)
                         .collect();
                 for (pp_index, indices) in pauli_product_mask.iter() {
