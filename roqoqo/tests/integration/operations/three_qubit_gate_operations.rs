@@ -12,6 +12,7 @@
 
 //! Integration test for public API of three qubit gate operations
 
+use super::convert_matrix;
 use nalgebra::DMatrix;
 use ndarray::Array2;
 use num_complex::Complex64;
@@ -22,12 +23,6 @@ use roqoqo::{operations::*, Circuit, RoqoqoError};
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
 
-// helper function to convert a two-dimensional ndarray to a 8x8 matrix
-// output can be used to be converted into a nalgebra matrix with `na::DMatrix::from()`
-fn convert_matrix(customarray: Array2<Complex64>) -> DMatrix<Complex64> {
-    let dim = customarray.dim();
-    DMatrix::<Complex64>::from_iterator(dim.0, dim.1, customarray.t().iter().cloned())
-}
 
 // helper function to convert a complex 8x8 matrix to a matrix with real absolute values
 fn convert_normsqr(customarray: DMatrix<Complex64>) -> Vec<f64> {
@@ -215,7 +210,7 @@ fn test_three_qubitgates_debug(message: &'static str, gate: Operation) {
 #[test_case(
     Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))),
     Operation::from(ControlledControlledPhaseShift::new(1, 0, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
-fn test_twoqubitgates_partialeq(gate1: Operation, gate2: Operation) {
+fn test_threequbitgates_partialeq(gate1: Operation, gate2: Operation) {
     assert!(gate1 == gate1.clone());
     assert_eq!(gate1, gate1.clone());
     assert_ne!(gate2, gate1);

@@ -13,7 +13,8 @@
 use ndarray::Array2;
 use num_complex::Complex64;
 use numpy::PyArray2;
-use qoqo_calculator_pyo3::CalculatorFloatWrapper;
+
+use super::convert_cf_to_pyobject;
 
 use std::collections::HashMap;
 
@@ -31,25 +32,6 @@ use roqoqo::{operations::*, Circuit, RoqoqoError};
 
 use test_case::test_case;
 
-// helper function to convert CalculatorFloat into a python object
-fn convert_cf_to_pyobject(
-    py: Python,
-    parameter: CalculatorFloat,
-) -> &PyCell<CalculatorFloatWrapper> {
-    let parameter_type = py.get_type::<CalculatorFloatWrapper>();
-    match parameter {
-        CalculatorFloat::Float(x) => parameter_type
-            .call1((x,))
-            .unwrap()
-            .downcast::<PyCell<CalculatorFloatWrapper>>()
-            .unwrap(),
-        CalculatorFloat::Str(x) => parameter_type
-            .call1((x,))
-            .unwrap()
-            .downcast::<PyCell<CalculatorFloatWrapper>>()
-            .unwrap(),
-    }
-}
 
 #[test_case(Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]

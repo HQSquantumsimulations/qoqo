@@ -10,6 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use super::convert_cf_to_pyobject;
 use ndarray::Array2;
 use num_complex::Complex64;
 use numpy::PyArray2;
@@ -27,7 +28,6 @@ use qoqo::operations::{
 };
 
 use qoqo_calculator::CalculatorFloat;
-use qoqo_calculator_pyo3::CalculatorFloatWrapper;
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
 use roqoqo::RoqoqoError;
@@ -35,25 +35,6 @@ use std::collections::HashMap;
 use std::convert::TryInto;
 use test_case::test_case;
 
-// helper function to convert CalculatorFloat into a python object
-fn convert_cf_to_pyobject(
-    py: Python,
-    parameter: CalculatorFloat,
-) -> &PyCell<CalculatorFloatWrapper> {
-    let parameter_type = py.get_type::<CalculatorFloatWrapper>();
-    match parameter {
-        CalculatorFloat::Float(x) => parameter_type
-            .call1((x,))
-            .unwrap()
-            .downcast::<PyCell<CalculatorFloatWrapper>>()
-            .unwrap(),
-        CalculatorFloat::Str(x) => parameter_type
-            .call1((x,))
-            .unwrap()
-            .downcast::<PyCell<CalculatorFloatWrapper>>()
-            .unwrap(),
-    }
-}
 
 /// Test is_parametrized = false for TwoQubitGate Operations
 #[test_case(Operation::from(CNOT::new(0, 1)); "CNOT")]

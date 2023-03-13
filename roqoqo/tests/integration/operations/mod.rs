@@ -37,6 +37,18 @@ pub use involved_classical::*;
 mod supported_version;
 pub use supported_version::*;
 
+use nalgebra as na;
+use ndarray::Array2;
+use num_complex::Complex64;
+
+// Helper function to convert a two-dimensional ndarray to a NxM matrix (N, M depending on the vector)
+// The output can be used to be converted into a nalgebra matrix with `na::Matrix4::from()`
+// for a 4x4 matrix or `na::DMatrix::from()` for a more general matrix
+pub fn convert_matrix(customarray: Array2<Complex64>) -> na::DMatrix<Complex64> {
+    let dim = customarray.dim();
+    na::DMatrix::<Complex64>::from_iterator(dim.0, dim.1, customarray.t().iter().cloned())
+}
+
 // Test InvolvedQubits clone
 #[test]
 fn test_involved_qubits_clone() {

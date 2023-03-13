@@ -12,6 +12,7 @@
 
 //! Integration test for public API of two qubit gate operations
 
+use super::convert_matrix;
 use nalgebra as na;
 use ndarray::{array, Array2};
 use num_complex::Complex64;
@@ -26,12 +27,6 @@ use std::convert::TryInto;
 use std::f64::consts::PI;
 use test_case::test_case;
 
-// helper function to convert a two-dimensional ndarray to a 4x4 matrix
-// output can be used to be converted into a nalgebra matrix with `na::Matrix4::from()`
-fn convert_matrix(customarray: Array2<Complex64>) -> na::DMatrix<Complex64> {
-    let dim = customarray.dim();
-    na::DMatrix::<Complex64>::from_iterator(dim.0, dim.1, customarray.t().iter().cloned())
-}
 
 // helper function to convert a complex matrix to a matrix with real absolute values
 fn convert_normsqr(customarray: na::DMatrix<Complex64>) -> [[f64; 4]; 4] {

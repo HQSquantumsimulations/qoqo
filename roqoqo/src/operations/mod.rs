@@ -730,7 +730,7 @@ pub trait OperateTwoQubitGate:
     fn kak_decomposition(&self) -> KakDecomposition;
 }
 
-/// Trat for all Operations operating on or affecting exactly three qubits.
+/// Trait for all Operations operating on or affecting exactly three qubits.
 ///
 /// # Example
 /// ```
