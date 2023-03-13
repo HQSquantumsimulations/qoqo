@@ -509,7 +509,7 @@ fn test_derive_all_to_all() {
 }
 
 #[test]
-fn test_derive_squate_lattice() {
+fn test_derive_square_lattice() {
     let device = SquareLatticeDevice::default();
 
     let wrapper = SquareLatticeDeviceWrapper { internal: device };

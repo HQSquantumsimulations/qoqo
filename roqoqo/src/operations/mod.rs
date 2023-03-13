@@ -743,7 +743,7 @@ pub trait OperateTwoQubitGate:
 /// circuit += CNOT::new(0, 2);
 /// circuit += ControlledPhaseShift::new(1, 2, -CalculatorFloat::FRAC_PI_2);
 /// circuit += CNOT::new(0, 2);
-/// circuit += ControleldPhaseShift::new(1, 2, CalculatorFloat::FRAC_PI_2);
+/// circuit += ControlledPhaseShift::new(1, 2, CalculatorFloat::FRAC_PI_2);
 ///
 /// assert_eq!(ccpz.circuit(), circuit);
 /// ```
