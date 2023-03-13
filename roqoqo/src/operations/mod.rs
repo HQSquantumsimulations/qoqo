@@ -734,7 +734,7 @@ pub trait OperateTwoQubitGate:
 ///
 /// # Example
 /// ```
-/// use roqoqo::operations::{CNOT, ControlledPhaseShift};
+/// use roqoqo::operations::{CNOT, ControlledPhaseShift, ControlledControlledPauliZ};
 /// use roqoqo::Circuit;
 /// use qoqo_calculator::CalculatorFloat;
 ///
