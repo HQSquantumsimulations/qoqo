@@ -309,7 +309,7 @@ pub trait OperateTwoQubit: Operate + InvolveQubits + Substitute + Clone + Partia
 ///
 /// # Example
 /// ```
-/// use roqoqo::operations::{ControlledControlledPauliZ, OperateThreeQubit}
+/// use roqoqo::operations::{ControlledControlledPauliZ, OperateThreeQubit};
 /// let ccz = ControlledControlledPauliZ::new(0, 1, 2);
 /// assert_eq!(ccz.control_0(), &0_usize);
 /// assert_eq!(ccz.control_1(), &1_usize);
@@ -734,7 +734,7 @@ pub trait OperateTwoQubitGate:
 ///
 /// # Example
 /// ```
-/// use roqoqo::operations::{CNOT, ControlledPhaseShift}
+/// use roqoqo::operations::{CNOT, ControlledPhaseShift};
 /// use roqoqo::Circuit;
 /// use qoqo_calculator::CalculatorFloat;
 ///
