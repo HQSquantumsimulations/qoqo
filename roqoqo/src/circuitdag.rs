@@ -1089,7 +1089,6 @@ mod tests {
         circuit
             .iter()
             .enumerate()
-            .into_iter()
             .for_each(|(ind, oper)| {
                 assert_eq!(*oper, *dag.graph.node_weight(ind.into()).unwrap());
             });
