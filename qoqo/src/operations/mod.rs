@@ -102,6 +102,8 @@ use pyo3::prelude::*;
 ///    ControlledPhaseShift
 ///    ControlledPauliY
 ///    ControlledPauliZ
+///    ControlledRotateX
+///    ControlledRotateXY
 ///    ControlledControlledPauliZ
 ///    ControlledControlledPhaseShift
 ///    MolmerSorensenXX
