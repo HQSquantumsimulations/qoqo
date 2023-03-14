@@ -308,7 +308,9 @@ fn main() {
         .clone()
         .into_iter()
         .filter(|v| {
-            !vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v)
+            !vis.roqoqo_1_1_operations.contains(v)
+                && !vis.roqoqo_1_2_operations.contains(v)
+                && !vis.roqoqo_1_3_operations.contains(v)
         })
         .map(|v| {
             let msg = format!("Variant for {}", v);
@@ -321,7 +323,11 @@ fn main() {
         .operations
         .clone()
         .into_iter()
-        .filter(|v| vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v))
+        .filter(|v| {
+            vis.roqoqo_1_1_operations.contains(v)
+                && !vis.roqoqo_1_2_operations.contains(v)
+                && !vis.roqoqo_1_3_operations.contains(v)
+        })
         .map(|v| {
             let msg = format!("Variant for {}", v);
             quote! {
@@ -331,8 +337,28 @@ fn main() {
         });
     let operations_quotes_1_2 = vis
         .operations
+        .clone()
         .into_iter()
-        .filter(|v| vis.roqoqo_1_2_operations.contains(v))
+        .filter(|v| {
+            !vis.roqoqo_1_1_operations.contains(v)
+                && vis.roqoqo_1_2_operations.contains(v)
+                && !vis.roqoqo_1_3_operations.contains(v)
+        })
+        .map(|v| {
+            let msg = format!("Variant for {}", v);
+            quote! {
+            #[allow(clippy::upper_case_acronyms)]
+            #[doc = #msg]
+            #v(#v)}
+        });
+    let operations_quotes_1_3 = vis
+        .operations
+        .into_iter()
+        .filter(|v| {
+            !vis.roqoqo_1_1_operations.contains(v)
+                && !vis.roqoqo_1_2_operations.contains(v)
+                && vis.roqoqo_1_3_operations.contains(v)
+        })
         .map(|v| {
             let msg = format!("Variant for {}", v);
             quote! {
@@ -524,7 +550,8 @@ fn main() {
         pub enum Operation {
             #(#operations_quotes),* ,
             #(#operations_quotes_1_1),* ,
-            #(#operations_quotes_1_2),*
+            #(#operations_quotes_1_2),* ,
+            #(#operations_quotes_1_3),* ,
         }
 
         /// Enum of all Operations implementing [OperateSingleQubit]
