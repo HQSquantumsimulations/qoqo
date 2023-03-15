@@ -23,7 +23,7 @@ use pyo3::prelude::*;
 use qoqo::{
     operations::{
         convert_operation_to_pyobject, ControlledControlledPauliZWrapper,
-        ControlledControlledPhaseShiftWrapper,
+        ControlledControlledPhaseShiftWrapper, ToffoliWrapper,
     },
     CircuitWrapper,
 };
@@ -66,6 +66,14 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
         "ControlledControlledPhaseShift",
         ],
     Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(
+    vec![
+        "Operation",
+        "GateOperation",
+        "ThreeQubitGateOperation",
+        "Toffoli",
+        ],
+    Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -81,6 +89,7 @@ fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
 
 #[test_case("ControlledControlledPauliZ", Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case("ControlledControlledPhaseShift", Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case("Toffoli", Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -93,6 +102,7 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
 
 #[test_case(Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 fn test_pyo3_remapqubits(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -139,6 +149,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 
 #[test_case(Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
@@ -166,6 +177,7 @@ fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
 
 #[test_case(Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 fn test_pyo3_unitarymatrix(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -191,6 +203,9 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
 #[test_case(
     "ControlledControlledPhaseShift { control_0: 1, control_1: 0, target: 2, theta: Float(-1.0) }",
     Operation::from(ControlledControlledPhaseShift::new(1, 0, 2, CalculatorFloat::from(-1.0))); "ControlledControlledPhaseShift")]
+#[test_case(
+    "Toffoli { control_0: 1, control_1: 0, target: 2 }",
+    Operation::from(Toffoli::new(1, 0, 2)); "Toffoli")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -206,6 +221,7 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
 
 #[test_case(Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -237,6 +253,8 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
             Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from("test"))),
             Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(1.0))); "ControlledControlledPhaseShift")]
+#[test_case(Operation::from(Toffoli::new(0, 1, 2)),
+            Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -352,8 +370,8 @@ fn test_new_controlledcontrolledpauliz(
     })
 }
 
-#[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.0))), (0 ,1, 2, 0.0), "__eq__"; "ControlleControlledPhaseShift_eq")]
-#[test_case(Operation::from(ControlledControlledPhaseShift::new(2, 1, 0, CalculatorFloat::from(0.0))), (0 ,1, 2, 0.0), "__ne__"; "ControlleControlledPhaseShift_ne")]
+#[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.0))), (0, 1, 2, 0.0), "__eq__"; "ControlleControlledPhaseShift_eq")]
+#[test_case(Operation::from(ControlledControlledPhaseShift::new(2, 1, 0, CalculatorFloat::from(0.0))), (0, 1, 2, 0.0), "__ne__"; "ControlleControlledPhaseShift_ne")]
 fn test_new_controlledcontrolledphaseshift(
     input_operation: Operation,
     arguments: (u32, u32, u32, f64),
@@ -411,6 +429,57 @@ fn test_new_controlledcontrolledphaseshift(
     })
 }
 
+#[test_case(Operation::from(Toffoli::new(0, 1, 2)), (0, 1, 2), "__eq__"; "Toffoli_eq")]
+#[test_case(Operation::from(Toffoli::new(2, 1, 0)), (0, 1, 2), "__ne__"; "Toffoli_ne")]
+fn test_new_toffoli(input_operation: Operation, arguments: (u32, u32, u32), method: &str) {
+    let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<ToffoliWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .downcast::<PyCell<ToffoliWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        // Error initialisation
+        let result = operation_type.call1((0, 1, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+
+        let result = operation_type.call1((0, vec!["fails"], 2));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py.extract::<ToffoliWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2, 3))
+            .unwrap()
+            .downcast::<PyCell<ToffoliWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<ToffoliWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "ToffoliWrapper { internal: Toffoli { control_0: 1, control_1: 2, target: 3 } }"
+        );
+    })
+}
+
 #[test]
 fn test_circuit_pyo3_controlledcontrolledpauliz() {
     pyo3::prepare_freethreaded_python();
@@ -451,6 +520,36 @@ fn test_circuit_pyo3_controlledcontrolledphaseshift() {
         circuit += ControlledPhaseShift::new(1, 2, -CalculatorFloat::PI);
         circuit += CNOT::new(0, 2);
         circuit += ControlledPhaseShift::new(0, 2, CalculatorFloat::PI);
+
+        assert_eq!(result_circuit.internal, circuit);
+    });
+}
+
+#[test]
+fn test_circuit_pyo3_toffoli() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let input_operation = Operation::from(Toffoli::new(0, 1, 2));
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let py_result = operation.call_method0(py, "circuit").unwrap();
+        let result_circuit: CircuitWrapper = py_result.extract(py).unwrap();
+
+        let mut circuit = Circuit::new();
+        circuit += Hadamard::new(2);
+        circuit += CNOT::new(1, 2);
+        circuit += RotateZ::new(2, -CalculatorFloat::FRAC_PI_4);
+        circuit += CNOT::new(0, 2);
+        circuit += TGate::new(2);
+        circuit += CNOT::new(1, 2);
+        circuit += RotateZ::new(2, -CalculatorFloat::FRAC_PI_4);
+        circuit += CNOT::new(0, 2);
+        circuit += TGate::new(1);
+        circuit += TGate::new(2);
+        circuit += Hadamard::new(2);
+        circuit += CNOT::new(0, 1);
+        circuit += TGate::new(0);
+        circuit += RotateZ::new(1, -CalculatorFloat::FRAC_PI_4);
+        circuit += CNOT::new(0, 1);
 
         assert_eq!(result_circuit.internal, circuit);
     });
