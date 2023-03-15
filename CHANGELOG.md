@@ -5,7 +5,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 ## Unreleased
 
 * Added Three-qubit gates support
-* Added ControlledRotateX, ControlledRotateXY, ControlledControlledPauliZ, ControlledControlledPhaseShift to qoqo
+* Added ControlledRotateX, ControlledRotateXY, ControlledControlledPauliZ, ControlledControlledPhaseShift, Toffoli to qoqo
 
 ## 1.2.5
 
