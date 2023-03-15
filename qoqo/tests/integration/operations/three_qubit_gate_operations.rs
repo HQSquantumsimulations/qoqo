@@ -32,9 +32,9 @@ use roqoqo::{operations::*, Circuit, RoqoqoError};
 
 use test_case::test_case;
 
-
 #[test_case(Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -421,10 +421,11 @@ fn test_circuit_pyo3_controlledcontrolledpauliz() {
         let result_circuit: CircuitWrapper = py_result.extract(py).unwrap();
 
         let mut circuit = Circuit::new();
+        circuit += ControlledPhaseShift::new(1, 2, CalculatorFloat::FRAC_PI_2);
         circuit += CNOT::new(0, 2);
         circuit += ControlledPhaseShift::new(1, 2, -CalculatorFloat::FRAC_PI_2);
         circuit += CNOT::new(0, 2);
-        circuit += ControlledPhaseShift::new(1, 2, CalculatorFloat::FRAC_PI_2);
+        circuit += ControlledPhaseShift::new(0, 2, CalculatorFloat::FRAC_PI_2);
 
         assert_eq!(result_circuit.internal, circuit);
     });
@@ -445,10 +446,11 @@ fn test_circuit_pyo3_controlledcontrolledphaseshift() {
         let result_circuit: CircuitWrapper = py_result.extract(py).unwrap();
 
         let mut circuit = Circuit::new();
+        circuit += ControlledPhaseShift::new(1, 2, CalculatorFloat::PI);
         circuit += CNOT::new(0, 2);
         circuit += ControlledPhaseShift::new(1, 2, -CalculatorFloat::PI);
         circuit += CNOT::new(0, 2);
-        circuit += ControlledPhaseShift::new(1, 2, CalculatorFloat::PI);
+        circuit += ControlledPhaseShift::new(0, 2, CalculatorFloat::PI);
 
         assert_eq!(result_circuit.internal, circuit);
     });

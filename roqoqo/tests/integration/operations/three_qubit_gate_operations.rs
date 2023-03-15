@@ -43,10 +43,11 @@ fn test_circuit_controlledcontrolledpauliz() {
     let c = op.circuit();
 
     let mut circuit = Circuit::new();
+    circuit += ControlledPhaseShift::new(1, 2, CalculatorFloat::FRAC_PI_2);
     circuit += CNOT::new(0, 2);
     circuit += ControlledPhaseShift::new(1, 2, -CalculatorFloat::FRAC_PI_2);
     circuit += CNOT::new(0, 2);
-    circuit += ControlledPhaseShift::new(1, 2, CalculatorFloat::FRAC_PI_2);
+    circuit += ControlledPhaseShift::new(0, 2, CalculatorFloat::FRAC_PI_2);
 
     assert_eq!(c, circuit);
 }
@@ -57,10 +58,11 @@ fn test_circuit_controlledcontrolledphaseshift() {
     let c = op.circuit();
 
     let mut circuit = Circuit::new();
+    circuit += ControlledPhaseShift::new(1, 2, CalculatorFloat::PI);
     circuit += CNOT::new(0, 2);
     circuit += ControlledPhaseShift::new(1, 2, -CalculatorFloat::PI);
     circuit += CNOT::new(0, 2);
-    circuit += ControlledPhaseShift::new(1, 2, CalculatorFloat::PI);
+    circuit += ControlledPhaseShift::new(0, 2, CalculatorFloat::PI);
 
     assert_eq!(c, circuit);
 }
