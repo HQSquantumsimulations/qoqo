@@ -23,7 +23,6 @@ use roqoqo::{operations::*, Circuit, RoqoqoError};
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
 
-
 // helper function to convert a complex 8x8 matrix to a matrix with real absolute values
 fn convert_normsqr(customarray: DMatrix<Complex64>) -> Vec<f64> {
     let mut overall_vec: Vec<[f64; 8]> = Vec::new();
@@ -66,6 +65,31 @@ fn test_circuit_controlledcontrolledphaseshift() {
     assert_eq!(c, circuit);
 }
 
+#[test]
+fn test_circuit_toffoli() {
+    let op = Toffoli::new(0, 1, 2);
+    let c = op.circuit();
+
+    let mut circuit = Circuit::new();
+    circuit += Hadamard::new(2);
+    circuit += CNOT::new(1, 2);
+    circuit += RotateZ::new(2, -CalculatorFloat::FRAC_PI_4);
+    circuit += CNOT::new(0, 2);
+    circuit += TGate::new(2);
+    circuit += CNOT::new(1, 2);
+    circuit += RotateZ::new(2, -CalculatorFloat::FRAC_PI_4);
+    circuit += CNOT::new(0, 2);
+    circuit += TGate::new(1);
+    circuit += TGate::new(2);
+    circuit += Hadamard::new(2);
+    circuit += CNOT::new(0, 1);
+    circuit += TGate::new(0);
+    circuit += RotateZ::new(1, -CalculatorFloat::FRAC_PI_4);
+    circuit += CNOT::new(0, 1);
+
+    assert_eq!(c, circuit);
+}
+
 //
 // Test Unitary Matrix for ThreeQubit Gates
 //
@@ -73,6 +97,7 @@ fn test_circuit_controlledcontrolledphaseshift() {
 // Test unitary matrix for ThreeQubitGate Operations
 #[test_case(GateOperation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(GateOperation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(GateOperation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 fn test_three_qubit_gate_unitarity(gate: GateOperation) {
     let result: Result<Array2<Complex64>, RoqoqoError> = gate.unitary_matrix();
     let result_array: Array2<Complex64> = result.unwrap();
@@ -95,6 +120,7 @@ fn test_three_qubit_gate_unitarity(gate: GateOperation) {
 /// Test clone function for ThreeQubitGate Operations
 #[test_case(Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 fn test_twoqubitgates_clone(gate1: Operation) {
     let gate2 = gate1.clone();
     assert_eq!(gate2, gate1);
@@ -102,6 +128,7 @@ fn test_twoqubitgates_clone(gate1: Operation) {
 
 #[test_case(ThreeQubitGateOperation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(ThreeQubitGateOperation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(ThreeQubitGateOperation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 fn test_qubits_threequbitgates(gate: ThreeQubitGateOperation) {
     let control_0: &usize = gate.control_0();
     assert_eq!(control_0, &0);
@@ -119,6 +146,7 @@ fn test_qubits_threequbitgates(gate: ThreeQubitGateOperation) {
 
 #[test_case(Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 fn test_is_parametrized_false(gate: Operation) {
     let bool_parameter = gate.is_parametrized();
     assert!(!bool_parameter);
@@ -132,6 +160,7 @@ fn test_is_parametrized_true(gate: Operation) {
 
 #[test_case("ControlledControlledPauliZ", Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case("ControlledControlledPhaseShift", Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case("Toffoli", Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 fn test_threequbitgateoperations_hqslang(name: &'static str, gate: Operation) {
     assert!(!gate.hqslang().is_empty());
     assert_eq!(gate.hqslang(), name);
@@ -143,6 +172,9 @@ fn test_threequbitgateoperations_hqslang(name: &'static str, gate: Operation) {
 #[test_case(
     GateOperation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))),
     GateOperation::from(ControlledControlledPhaseShift::new(1, 2, 0, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(
+    GateOperation::from(Toffoli::new(0, 1, 2)),
+    GateOperation::from(Toffoli::new(1, 2, 0)); "Toffoli")]
 fn remap_qubits_result(gate: GateOperation, test_gate: GateOperation) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 1);
@@ -154,6 +186,7 @@ fn remap_qubits_result(gate: GateOperation, test_gate: GateOperation) {
 
 #[test_case(GateOperation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(GateOperation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(GateOperation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 fn remap_qubits_error0(gate: GateOperation) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(1, 0);
@@ -163,6 +196,7 @@ fn remap_qubits_error0(gate: GateOperation) {
 
 #[test_case(GateOperation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(GateOperation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(GateOperation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 fn remap_qubits_error1(gate: GateOperation) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 2);
@@ -187,6 +221,14 @@ fn remap_qubits_error1(gate: GateOperation) {
         "ControlledControlledPhaseShift",
         ],
     Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(
+    vec![
+        "Operation",
+        "GateOperation",
+        "ThreeQubitGateOperation",
+        "Toffoli",
+        ],
+    Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 pub fn test_tags(tags: Vec<&str>, gate: Operation) {
     let range = 0..tags.len();
     for i in range {
@@ -200,6 +242,9 @@ pub fn test_tags(tags: Vec<&str>, gate: Operation) {
 #[test_case(
     "ControlledControlledPhaseShift(ControlledControlledPhaseShift { control_0: 1, control_1: 0, target: 2, theta: Float(-1.0) })",
     Operation::from(ControlledControlledPhaseShift::new(1, 0, 2, CalculatorFloat::from(-1.0))); "ControlledControlledPhaseShift")]
+#[test_case(
+    "Toffoli(Toffoli { control_0: 1, control_1: 0, target: 2 })",
+    Operation::from(Toffoli::new(1, 0, 2)); "Toffoli")]
 fn test_three_qubitgates_debug(message: &'static str, gate: Operation) {
     assert_eq!(format!("{:?}", gate), message);
 }
@@ -210,6 +255,9 @@ fn test_three_qubitgates_debug(message: &'static str, gate: Operation) {
 #[test_case(
     Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))),
     Operation::from(ControlledControlledPhaseShift::new(1, 0, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(
+    Operation::from(Toffoli::new(0, 1, 2)),
+    Operation::from(Toffoli::new(1, 0, 2)); "Toffoli")]
 fn test_threequbitgates_partialeq(gate1: Operation, gate2: Operation) {
     assert!(gate1 == gate1.clone());
     assert_eq!(gate1, gate1.clone());
@@ -228,6 +276,7 @@ fn test_rotate_powercf(gate: Rotation, gate2: Rotation) {
 
 #[test_case(Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 fn test_ineffective_substitute_parameters(gate: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
@@ -269,4 +318,12 @@ fn test_inputs_controlledcontrolledphaseshift() {
     assert_eq!(gate.control_1(), &1);
     assert_eq!(gate.target(), &2);
     assert_eq!(gate.theta(), &CalculatorFloat::from(0.2));
+}
+
+#[test]
+fn test_inputs_toffoli() {
+    let gate = Toffoli::new(0, 1, 2);
+    assert_eq!(gate.control_0(), &0);
+    assert_eq!(gate.control_1(), &1);
+    assert_eq!(gate.target(), &2);
 }

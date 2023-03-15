@@ -82,3 +82,29 @@ pub struct ControlledControlledPhaseShift {
     target: usize,
     theta: CalculatorFloat,
 }
+
+#[allow(clippy::upper_case_acronyms)]
+#[wrap(Operate, OperateThreeQubit, OperateGate, OperateThreeQubitGate)]
+/// Implements Toffoli gate.
+///
+/// .. math::
+///     U = \begin{pmatrix}
+///         1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & 1 & 0
+///         \end{pmatrix}
+///
+/// Args:
+///     control_0 (int): The index of the most significant qubit in the unitary representation. Here, the first controlling qubit of the operation.
+///     control_1 (int): The index of the second most significant qubit in the unitary representation. Here, the second controlling qubit of the operation.
+///     target (int): The index of the least significant qubit in the unitary representation. Here, the qubit the PauliX gate is applied to.
+pub struct Toffoli {
+    control_0: usize,
+    control_1: usize,
+    target: usize,
+}

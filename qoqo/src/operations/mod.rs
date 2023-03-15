@@ -106,6 +106,7 @@ use pyo3::prelude::*;
 ///    ControlledRotateXY
 ///    ControlledControlledPauliZ
 ///    ControlledControlledPhaseShift
+///    Toffoli
 ///    MolmerSorensenXX
 ///    VariableMSXX
 ///    GivensRotation
@@ -194,6 +195,7 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<PhaseShiftState1Wrapper>()?;
     m.add_class::<ControlledControlledPauliZWrapper>()?;
     m.add_class::<ControlledControlledPhaseShiftWrapper>()?;
+    m.add_class::<ToffoliWrapper>()?;
     m.add_class::<MultiQubitMSWrapper>()?;
     m.add_class::<MultiQubitZZWrapper>()?;
     Ok(())
