@@ -48,7 +48,7 @@ impl SquareLatticeDevice {
         number_columns: usize,
         single_qubit_gates: &[String],
         two_qubit_gates: &[String],
-        three_qubit_gates: &[String],
+        // three_qubit_gates: &[String],
         default_gate_time: f64,
     ) -> Self {
         // Initialization of single qubit gates with empty times
@@ -56,7 +56,7 @@ impl SquareLatticeDevice {
             number_qubits: number_rows * number_columns,
             single_qubit_gates: HashMap::with_capacity(single_qubit_gates.len()),
             two_qubit_gates: HashMap::with_capacity(two_qubit_gates.len()),
-            three_qubit_gates: HashMap::with_capacity(three_qubit_gates.len()),
+            // three_qubit_gates: HashMap::with_capacity(three_qubit_gates.len()),
             multi_qubit_gates: HashMap::new(),
             decoherence_rates: HashMap::with_capacity(number_rows * number_columns),
         };
@@ -243,31 +243,31 @@ impl SquareLatticeDevice {
         }
     }
 
-    /// Setting the gate time of a three qubit gate.
-    ///
-    /// # Arguments
-    ///
-    /// * `gate` - hqslang name of the two-qubit-gate.
-    /// * `control_0` - The control_0 qubit for which the gate time is set.
-    /// * `control_1` - The control_1 qubit for which the gate time is set.
-    /// * `target` - The target qubit for which the gate time is set.
-    /// * `gate_time` - The gate time for the given gate.
-    ///
-    /// # Returns
-    ///
-    /// A SquareLatticeDevice with updated gate times.
-    ///
-    pub fn set_three_qubit_gate_time(
-        &mut self,
-        gate: &str,
-        control_0: usize,
-        control_1: usize,
-        target: usize,
-        gate_time: f64,
-    ) -> Result<(), RoqoqoError> {
-        self.generic_device
-            .set_three_qubit_gate_time(gate, control_0, control_1, target, gate_time)
-    }
+    // /// Setting the gate time of a three qubit gate.
+    // ///
+    // /// # Arguments
+    // ///
+    // /// * `gate` - hqslang name of the two-qubit-gate.
+    // /// * `control_0` - The control_0 qubit for which the gate time is set.
+    // /// * `control_1` - The control_1 qubit for which the gate time is set.
+    // /// * `target` - The target qubit for which the gate time is set.
+    // /// * `gate_time` - The gate time for the given gate.
+    // ///
+    // /// # Returns
+    // ///
+    // /// A SquareLatticeDevice with updated gate times.
+    // ///
+    // pub fn set_three_qubit_gate_time(
+    //     &mut self,
+    //     gate: &str,
+    //     control_0: usize,
+    //     control_1: usize,
+    //     target: usize,
+    //     gate_time: f64,
+    // ) -> Result<(), RoqoqoError> {
+    //     self.generic_device
+    //         .set_three_qubit_gate_time(gate, control_0, control_1, target, gate_time)
+    // }
 
     /// Setting the gate time of a mulit qubit gate.
     ///
@@ -433,16 +433,16 @@ impl Device for SquareLatticeDevice {
             .two_qubit_gate_time(hqslang, control, target)
     }
 
-    fn three_qubit_gate_time(
-        &self,
-        hqslang: &str,
-        control_0: &usize,
-        control_1: &usize,
-        target: &usize,
-    ) -> Option<f64> {
-        self.generic_device
-            .three_qubit_gate_time(hqslang, control_0, control_1, target)
-    }
+    // fn three_qubit_gate_time(
+    //     &self,
+    //     hqslang: &str,
+    //     control_0: &usize,
+    //     control_1: &usize,
+    //     target: &usize,
+    // ) -> Option<f64> {
+    //     self.generic_device
+    //         .three_qubit_gate_time(hqslang, control_0, control_1, target)
+    // }
 
     fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
         self.generic_device.multi_qubit_gate_time(hqslang, qubits)

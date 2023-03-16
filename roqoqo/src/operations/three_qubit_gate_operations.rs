@@ -303,14 +303,11 @@ impl OperateGate for ControlledControlledPhaseShift {
 impl OperateThreeQubitGate for ControlledControlledPhaseShift {
     fn circuit(&self) -> Circuit {
         let mut circuit = Circuit::new();
-        circuit +=
-            ControlledPhaseShift::new(self.control_1, self.target, self.theta().clone());
+        circuit += ControlledPhaseShift::new(self.control_1, self.target, self.theta().clone());
         circuit += CNOT::new(self.control_0, self.target);
-        circuit +=
-            ControlledPhaseShift::new(self.control_1, self.target, -self.theta().clone());
+        circuit += ControlledPhaseShift::new(self.control_1, self.target, -self.theta().clone());
         circuit += CNOT::new(self.control_0, self.target);
-        circuit +=
-            ControlledPhaseShift::new(self.control_0, self.target, self.theta.clone());
+        circuit += ControlledPhaseShift::new(self.control_0, self.target, self.theta.clone());
         circuit
     }
 }

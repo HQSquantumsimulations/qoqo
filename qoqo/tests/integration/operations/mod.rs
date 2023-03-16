@@ -38,7 +38,6 @@ use pyo3::prelude::*;
 use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::CalculatorFloatWrapper;
 
-
 // helper function to convert CalculatorFloat into a python object
 pub fn convert_cf_to_pyobject(
     py: Python,

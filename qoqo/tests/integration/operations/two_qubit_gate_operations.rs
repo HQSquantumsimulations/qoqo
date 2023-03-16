@@ -35,7 +35,6 @@ use std::collections::HashMap;
 use std::convert::TryInto;
 use test_case::test_case;
 
-
 /// Test is_parametrized = false for TwoQubitGate Operations
 #[test_case(Operation::from(CNOT::new(0, 1)); "CNOT")]
 #[test_case(Operation::from(SWAP::new(0, 1)); "SWAP")]

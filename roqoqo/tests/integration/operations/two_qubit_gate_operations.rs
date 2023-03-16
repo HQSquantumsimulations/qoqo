@@ -27,7 +27,6 @@ use std::convert::TryInto;
 use std::f64::consts::PI;
 use test_case::test_case;
 
-
 // helper function to convert a complex matrix to a matrix with real absolute values
 fn convert_normsqr(customarray: na::DMatrix<Complex64>) -> [[f64; 4]; 4] {
     let mut overall_vec: Vec<[f64; 4]> = Vec::new();

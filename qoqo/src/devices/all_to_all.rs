@@ -55,7 +55,7 @@ impl AllToAllDeviceWrapper {
         number_qubits: usize,
         single_qubit_gates: Vec<String>,
         two_qubit_gates: Vec<String>,
-        three_qubit_gates: Vec<String>,
+        // three_qubit_gates: Vec<String>,
         default_gate_time: f64,
     ) -> PyResult<Self> {
         Ok(Self {
@@ -63,7 +63,7 @@ impl AllToAllDeviceWrapper {
                 number_qubits,
                 &single_qubit_gates,
                 &two_qubit_gates,
-                &three_qubit_gates,
+                // &three_qubit_gates,
                 default_gate_time,
             ),
         })
