@@ -11,9 +11,7 @@
 // limitations under the License.
 
 use roqoqo::operations::*;
-use roqoqo::prelude::*;
 
-use test_roqoqo_1_2;
 use test_roqoqo_1_2::backends::EvaluatingBackend;
 
 use qoqo_calculator::CalculatorFloat;
@@ -22,7 +20,6 @@ use roqoqo_quest::Backend;
 
 use ndarray::{array, Array1};
 use num_complex::{Complex, Complex64};
-use serde_json;
 use test_case::test_case;
 
 // helper function
@@ -47,17 +44,10 @@ fn test_circuits_3q(iteration: (bool, bool, bool), value: usize) {
     // Preparing matrices for later simulation
     let c0: Complex64 = Complex::new(0.0, 0.0);
     let c1: Complex64 = Complex::new(1.0, 0.0);
-    let empty: Array1<Complex64> = array![c0, c0, c0, c0, c0, c0, c0, c0];
-    let mut final_matrix: Array1<Complex64> = empty.clone();
-    for val in 0..8 {
-        if value == val {
-            final_matrix[val] = c1;
-        }
-    }
+    let mut final_matrix: Array1<Complex64> = array![c0, c0, c0, c0, c0, c0, c0, c0];
+    final_matrix[value] = c1;
     let final_matrix_ccz = final_matrix.dot(&unitary_ccz);
     let final_matrix_ccps = final_matrix.dot(&unitary_ccps);
-    // let final_matrix_ccz = unitary_ccz.dot(&final_matrix);
-    // let final_matrix_ccps = unitary_ccps.dot(&final_matrix);
 
     // Serializing .circuit()
     let ccz_circuit = ccz.circuit();
@@ -67,13 +57,13 @@ fn test_circuits_3q(iteration: (bool, bool, bool), value: usize) {
 
     // Preparing initial vector
     let mut initial_state = test_roqoqo_1_2::Circuit::new();
-    if iteration.2 {
+    if iteration.0 {
         initial_state += test_roqoqo_1_2::operations::PauliX::new(2);
     }
     if iteration.1 {
         initial_state += test_roqoqo_1_2::operations::PauliX::new(1);
     }
-    if iteration.0 {
+    if iteration.2 {
         initial_state += test_roqoqo_1_2::operations::PauliX::new(0);
     }
 
@@ -114,8 +104,6 @@ fn test_circuits_3q(iteration: (bool, bool, bool), value: usize) {
     ) {
         assert!(is_close(*el1, el2));
     }
-    // assert_eq!(result_ccz["out"][0], final_matrix_ccz.iter().cloned().collect::<Vec<Complex64>>());
-    // assert_eq!(result_ccps["out"][0], final_matrix_ccps.iter().cloned().collect::<Vec<Complex64>>());
 }
 
 #[test_case((false, false, false), 0)]
@@ -131,4 +119,73 @@ fn test_circuits_mq(iteration: (bool, bool, bool), value: usize) {
     let mqms = MultiQubitMS::new([0, 1, 2].to_vec(), CalculatorFloat::from(0.3));
     let unitary_mqzz = mqzz.unitary_matrix().unwrap();
     let unitary_mqms = mqms.unitary_matrix().unwrap();
+
+    // Preparing matrices for later simulation
+    let c0: Complex64 = Complex::new(0.0, 0.0);
+    let c1: Complex64 = Complex::new(1.0, 0.0);
+    let empty: Array1<Complex64> = array![c0, c0, c0, c0, c0, c0, c0, c0];
+    let mut final_matrix: Array1<Complex64> = empty;
+    for val in 0..8 {
+        if value == val {
+            final_matrix[val] = c1;
+        }
+    }
+    let final_matrix_mqzz = final_matrix.dot(&unitary_mqzz);
+    let final_matrix_mqms = final_matrix.dot(&unitary_mqms);
+
+    // Serializing .circuit()
+    let mqzz_circuit = mqzz.circuit();
+    let mqms_circuit = mqms.circuit();
+    let json_mqzz_circuit = serde_json::to_string(&mqzz_circuit).unwrap();
+    let json_mqms_circuit = serde_json::to_string(&mqms_circuit).unwrap();
+
+    // Preparing initial ve<ctor
+    let mut initial_state = test_roqoqo_1_2::Circuit::new();
+    if iteration.0 {
+        initial_state += test_roqoqo_1_2::operations::PauliX::new(2);
+    }
+    if iteration.1 {
+        initial_state += test_roqoqo_1_2::operations::PauliX::new(1);
+    }
+    if iteration.2 {
+        initial_state += test_roqoqo_1_2::operations::PauliX::new(0);
+    }
+
+    // Building initial vector -> .circuit() -> PragmaGetStateVector
+    let mut circuit_mqzz_fromj = test_roqoqo_1_2::Circuit::new();
+    circuit_mqzz_fromj += initial_state.clone();
+    circuit_mqzz_fromj +=
+        serde_json::from_str::<test_roqoqo_1_2::Circuit>(&json_mqzz_circuit).unwrap();
+    circuit_mqzz_fromj +=
+        test_roqoqo_1_2::operations::DefinitionComplex::new("out".to_string(), 3, true);
+    circuit_mqzz_fromj +=
+        test_roqoqo_1_2::operations::PragmaGetStateVector::new("out".to_string(), None);
+    let mut circuit_mqms_fromj = test_roqoqo_1_2::Circuit::new();
+    circuit_mqms_fromj += initial_state.clone();
+    circuit_mqms_fromj +=
+        serde_json::from_str::<test_roqoqo_1_2::Circuit>(&json_mqms_circuit).unwrap();
+    circuit_mqms_fromj +=
+        test_roqoqo_1_2::operations::DefinitionComplex::new("out".to_string(), 3, true);
+    circuit_mqms_fromj +=
+        test_roqoqo_1_2::operations::PragmaGetStateVector::new("out".to_string(), None);
+
+    // Get results from circuits()
+    let backend = Backend::new(3);
+    let (_, _, result_mqzz) = backend.run_circuit(&circuit_mqzz_fromj).unwrap();
+    let (_, _, result_mqms) = backend.run_circuit(&circuit_mqms_fromj).unwrap();
+
+    for (el1, el2) in result_mqzz["out"][0]
+        .iter()
+        .zip(final_matrix_mqzz.iter().cloned().collect::<Vec<Complex64>>())
+    {
+        assert!(is_close(*el1, el2));
+    }
+    for (el1, el2) in result_mqms["out"][0].iter().zip(
+        final_matrix_mqms
+            .iter()
+            .cloned()
+            .collect::<Vec<Complex64>>(),
+    ) {
+        assert!(is_close(*el1, el2));
+    }
 }
