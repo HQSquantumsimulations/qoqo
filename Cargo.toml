@@ -5,7 +5,6 @@ members = [
     "roqoqo-test",
     "qoqo",
     "qoqo-macros",
-    "compatibility_test_sim",
 ]
 
 [profile.release]

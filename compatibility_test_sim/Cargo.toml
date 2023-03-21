@@ -16,7 +16,7 @@ publish = false
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-# [workspace]
+[workspace]
 
 [dependencies]
 test_roqoqo_1_2 = {package = "roqoqo", features=["serialize"], version="=1.2.5"}
