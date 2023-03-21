@@ -491,9 +491,9 @@ fn test_circuit_pyo3_controlledcontrolledpauliz() {
 
         let mut circuit = Circuit::new();
         circuit += ControlledPhaseShift::new(1, 2, CalculatorFloat::FRAC_PI_2);
-        circuit += CNOT::new(0, 2);
+        circuit += CNOT::new(0, 1);
         circuit += ControlledPhaseShift::new(1, 2, -CalculatorFloat::FRAC_PI_2);
-        circuit += CNOT::new(0, 2);
+        circuit += CNOT::new(0, 1);
         circuit += ControlledPhaseShift::new(0, 2, CalculatorFloat::FRAC_PI_2);
 
         assert_eq!(result_circuit.internal, circuit);
@@ -515,11 +515,11 @@ fn test_circuit_pyo3_controlledcontrolledphaseshift() {
         let result_circuit: CircuitWrapper = py_result.extract(py).unwrap();
 
         let mut circuit = Circuit::new();
-        circuit += ControlledPhaseShift::new(1, 2, CalculatorFloat::PI);
-        circuit += CNOT::new(0, 2);
-        circuit += ControlledPhaseShift::new(1, 2, -CalculatorFloat::PI);
-        circuit += CNOT::new(0, 2);
-        circuit += ControlledPhaseShift::new(0, 2, CalculatorFloat::PI);
+        circuit += ControlledPhaseShift::new(1, 2, CalculatorFloat::PI / 2.0);
+        circuit += CNOT::new(0, 1);
+        circuit += ControlledPhaseShift::new(1, 2, -CalculatorFloat::PI / 2.0);
+        circuit += CNOT::new(0, 1);
+        circuit += ControlledPhaseShift::new(0, 2, CalculatorFloat::PI / 2.0);
 
         assert_eq!(result_circuit.internal, circuit);
     });
