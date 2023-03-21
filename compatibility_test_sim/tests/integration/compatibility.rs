@@ -169,10 +169,12 @@ fn test_circuits_mq(iteration: (bool, bool, bool), value: usize) {
     let (_, _, result_mqzz) = backend.run_circuit(&circuit_mqzz_fromj).unwrap();
     let (_, _, result_mqms) = backend.run_circuit(&circuit_mqms_fromj).unwrap();
 
-    for (el1, el2) in result_mqzz["out"][0]
-        .iter()
-        .zip(final_matrix_mqzz.iter().cloned().collect::<Vec<Complex64>>())
-    {
+    for (el1, el2) in result_mqzz["out"][0].iter().zip(
+        final_matrix_mqzz
+            .iter()
+            .cloned()
+            .collect::<Vec<Complex64>>(),
+    ) {
         assert!(is_close(*el1, el2));
     }
     for (el1, el2) in result_mqms["out"][0].iter().zip(
