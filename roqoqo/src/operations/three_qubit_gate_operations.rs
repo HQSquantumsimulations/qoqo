@@ -156,10 +156,10 @@ impl OperateThreeQubitGate for ControlledControlledPauliZ {
         let mut circuit = Circuit::new();
         circuit +=
             ControlledPhaseShift::new(self.control_1, self.target, CalculatorFloat::FRAC_PI_2);
-        circuit += CNOT::new(self.control_0, self.target);
+        circuit += CNOT::new(self.control_0, self.control_1);
         circuit +=
             ControlledPhaseShift::new(self.control_1, self.target, -CalculatorFloat::FRAC_PI_2);
-        circuit += CNOT::new(self.control_0, self.target);
+        circuit += CNOT::new(self.control_0, self.control_1);
         circuit +=
             ControlledPhaseShift::new(self.control_0, self.target, CalculatorFloat::FRAC_PI_2);
         circuit
@@ -303,11 +303,11 @@ impl OperateGate for ControlledControlledPhaseShift {
 impl OperateThreeQubitGate for ControlledControlledPhaseShift {
     fn circuit(&self) -> Circuit {
         let mut circuit = Circuit::new();
-        circuit += ControlledPhaseShift::new(self.control_1, self.target, self.theta().clone());
-        circuit += CNOT::new(self.control_0, self.target);
-        circuit += ControlledPhaseShift::new(self.control_1, self.target, -self.theta().clone());
-        circuit += CNOT::new(self.control_0, self.target);
-        circuit += ControlledPhaseShift::new(self.control_0, self.target, self.theta.clone());
+        circuit += ControlledPhaseShift::new(self.control_1, self.target, self.theta.clone() / 2.0);
+        circuit += CNOT::new(self.control_0, self.control_1);
+        circuit += ControlledPhaseShift::new(self.control_1, self.target, -self.theta.clone() / 2.0);
+        circuit += CNOT::new(self.control_0, self.control_1);
+        circuit += ControlledPhaseShift::new(self.control_0, self.target, self.theta.clone() / 2.0);
         circuit
     }
 }
