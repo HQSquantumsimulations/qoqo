@@ -298,7 +298,7 @@ fn test_pyo3_circuit_ms() {
         circuit += Hadamard::new(2);
         circuit += CNOT::new(0, 1);
         circuit += CNOT::new(1, 2);
-        circuit += RotateZ::new(2, CalculatorFloat::from(0.5));
+        circuit += RotateZ::new(2, CalculatorFloat::from(1.0));
         circuit += CNOT::new(1, 2);
         circuit += CNOT::new(0, 1);
         circuit += Hadamard::new(0);
