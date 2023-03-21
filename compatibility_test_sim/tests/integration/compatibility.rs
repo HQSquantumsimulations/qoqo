@@ -123,13 +123,8 @@ fn test_circuits_mq(iteration: (bool, bool, bool), value: usize) {
     // Preparing matrices for later simulation
     let c0: Complex64 = Complex::new(0.0, 0.0);
     let c1: Complex64 = Complex::new(1.0, 0.0);
-    let empty: Array1<Complex64> = array![c0, c0, c0, c0, c0, c0, c0, c0];
-    let mut final_matrix: Array1<Complex64> = empty;
-    for val in 0..8 {
-        if value == val {
-            final_matrix[val] = c1;
-        }
-    }
+    let mut final_matrix: Array1<Complex64> = array![c0, c0, c0, c0, c0, c0, c0, c0];
+    final_matrix[value] = c1;
     let final_matrix_mqzz = final_matrix.dot(&unitary_mqzz);
     let final_matrix_mqms = final_matrix.dot(&unitary_mqms);
 
