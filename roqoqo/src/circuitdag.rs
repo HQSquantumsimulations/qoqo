@@ -1086,12 +1086,8 @@ mod tests {
 
         assert_eq!(circuit.len(), dag.graph.node_count());
 
-        circuit
-            .iter()
-            .enumerate()
-            .into_iter()
-            .for_each(|(ind, oper)| {
-                assert_eq!(*oper, *dag.graph.node_weight(ind.into()).unwrap());
-            });
+        circuit.iter().enumerate().for_each(|(ind, oper)| {
+            assert_eq!(*oper, *dag.graph.node_weight(ind.into()).unwrap());
+        });
     }
 }

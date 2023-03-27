@@ -95,7 +95,7 @@ impl AllToAllDevice {
         self
     }
 
-    /// Function that allows to set a unifromg gate time per gate type for the two-qubit-gates.
+    /// Function that allows to set a uniform gate time per gate type for the two-qubit-gates.
     ///
     /// # Arguments
     ///
@@ -154,8 +154,8 @@ impl AllToAllDevice {
     /// # Arguments
     ///
     /// * `gate` - hqslang name of the two-qubit-gate.
-    /// * `control` - The control qubit for which the gate time is set
-    /// * `target` - The target qubit for which the gate time is set
+    /// * `control` - The control qubit for which the gate time is set.
+    /// * `target` - The target qubit for which the gate time is set.
     /// * `gate_time` - gate time for the given gate.
     ///
     /// # Returns
@@ -173,6 +173,34 @@ impl AllToAllDevice {
         self.generic_device
             .set_two_qubit_gate_time(gate, control, target, gate_time)
     }
+
+    // /// Setting the gate time of a two qubit gate.
+    // ///
+    // /// # Arguments
+    // ///
+    // /// * `gate` - hqslang name of the two-qubit-gate.
+    // /// * `control_0` - The control_0 qubit for which the gate time is set.
+    // /// * `control_1` - The control_1 qubit for which the gate time is set.
+    // /// * `target` - The target qubit for which the gate time is set.
+    // /// * `gate_time` - gate time for the given gate.
+    // ///
+    // /// # Returns
+    // ///
+    // /// * `Ok(())` - The gate time was correctly set and nothing is returned
+    // /// * `Err(RoqoqoError::GenericError)` - Control_0 qubit set is larger than the number qubits in the device
+    // /// * `Err(RoqoqoError::GenericError)` - Control_1 qubit set is larger than the number qubits in the device
+    // /// * `Err(RoqoqoError::GenericError)` - Target qubit set is larger than the number qubits in the device
+    // pub fn set_three_qubit_gate_time(
+    //     &mut self,
+    //     gate: &str,
+    //     control_0: usize,
+    //     control_1: usize,
+    //     target: usize,
+    //     gate_time: f64,
+    // ) -> Result<(), RoqoqoError> {
+    //     self.generic_device
+    //         .set_three_qubit_gate_time(gate, control_0, control_1, target, gate_time)
+    // }
 
     /// Setting the gate time of a mulit qubit gate.
     ///
@@ -367,6 +395,17 @@ impl Device for AllToAllDevice {
         self.generic_device
             .two_qubit_gate_time(hqslang, control, target)
     }
+
+    // fn three_qubit_gate_time(
+    //     &self,
+    //     hqslang: &str,
+    //     control_0: &usize,
+    //     control_1: &usize,
+    //     target: &usize,
+    // ) -> Option<f64> {
+    //     self.generic_device
+    //         .three_qubit_gate_time(hqslang, control_0, control_1, target)
+    // }
 
     fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
         self.generic_device.multi_qubit_gate_time(hqslang, qubits)

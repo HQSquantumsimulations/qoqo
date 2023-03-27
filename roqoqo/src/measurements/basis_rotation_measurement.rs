@@ -120,10 +120,7 @@ impl MeasureExpectationValues for PauliZProduct {
             flipped_and_extension = vec![(false, ""), (true, "_flipped")];
             for (name, pauli_product_mask) in self.input.pauli_product_qubit_masks.iter() {
                 let mut measurement_correction_factor: Vec<f64> =
-                    (0..self.input.number_pauli_products)
-                        .into_iter()
-                        .map(|_| 1.0)
-                        .collect();
+                    (0..self.input.number_pauli_products).map(|_| 1.0).collect();
                 for (pp_index, indices) in pauli_product_mask.iter() {
                     if !indices.is_empty() {
                         for i in indices {

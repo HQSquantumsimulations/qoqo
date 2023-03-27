@@ -70,6 +70,8 @@ fn involve_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
     // Bool values that show if there is a qubit field, control field etc. in the struct
     let mut qubit: bool = false;
     let mut control: bool = false;
+    let mut control_0: bool = false;
+    let mut control_1: bool = false;
     let mut target: bool = false;
     let mut qubits: bool = false;
 
@@ -99,6 +101,20 @@ fn involve_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     panic!("Field control must have type usize")
                 }
             }
+            "control_0" => {
+                if type_string == Some("usize".to_string()) {
+                    control_0 = true;
+                } else {
+                    panic!("Field control_0 must have type usize")
+                }
+            }
+            "control_1" => {
+                if type_string == Some("usize".to_string()) {
+                    control_1 = true;
+                } else {
+                    panic!("Field control_1 must have type usize")
+                }
+            }
             "qubits" => {
                 qubits = true;
             }
@@ -118,6 +134,31 @@ fn involve_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 fn involved_qubits(&self ) -> InvolvedQubits {
                     let mut new_hash_set: std::collections::HashSet<usize> = std::collections::HashSet::new();
                     new_hash_set.insert(self.qubit);
+                    InvolvedQubits::Set(new_hash_set)
+                }
+            }
+        }
+    } else if control_0 || control_1 {
+        if control {
+            panic!("When deriving InvolveQubits for a three-qubit operation, control field must not be present")
+        }
+        if !(control_0 && control_1 && target) {
+            panic!("When deriving InvolveQubits for a three-qubit operation control_0, control_1 and target have to be present");
+        };
+        if qubits {
+            panic!("When deriving InvolveQubits for a three-qubit operation, control_0 and control_1 fields are not compatible with qubits fields");
+        };
+        // Creating a function that puts qubits `control_0`, `control_1` and `target` into the InvolvedQubits HashSet
+        quote! {
+            /// Implements [InvolveQubits] trait for the qubits involved in this Operation.
+            #[automatically_derived]
+            impl InvolveQubits for #ident{
+                /// Returns a list of all involed qubits.
+                fn involved_qubits(&self ) -> InvolvedQubits {
+                    let mut new_hash_set: std::collections::HashSet<usize> = std::collections::HashSet::new();
+                    new_hash_set.insert(self.control_0);
+                    new_hash_set.insert(self.control_1);
+                    new_hash_set.insert(self.target);
                     InvolvedQubits::Set(new_hash_set)
                 }
             }

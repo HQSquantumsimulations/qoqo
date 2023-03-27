@@ -30,3 +30,30 @@ pub use single_qubit_gate_operations::*;
 
 mod two_qubit_gate_operations;
 pub use two_qubit_gate_operations::*;
+
+mod three_qubit_gate_operations;
+pub use three_qubit_gate_operations::*;
+
+use pyo3::prelude::*;
+use qoqo_calculator::CalculatorFloat;
+use qoqo_calculator_pyo3::CalculatorFloatWrapper;
+
+// helper function to convert CalculatorFloat into a python object
+pub fn convert_cf_to_pyobject(
+    py: Python,
+    parameter: CalculatorFloat,
+) -> &PyCell<CalculatorFloatWrapper> {
+    let parameter_type = py.get_type::<CalculatorFloatWrapper>();
+    match parameter {
+        CalculatorFloat::Float(x) => parameter_type
+            .call1((x,))
+            .unwrap()
+            .downcast::<PyCell<CalculatorFloatWrapper>>()
+            .unwrap(),
+        CalculatorFloat::Str(x) => parameter_type
+            .call1((x,))
+            .unwrap()
+            .downcast::<PyCell<CalculatorFloatWrapper>>()
+            .unwrap(),
+    }
+}

@@ -527,6 +527,8 @@ pub struct PhaseShiftedControlledZ {
     phi: CalculatorFloat,
 }
 
+#[allow(clippy::upper_case_acronyms)]
+#[wrap(Operate, OperateTwoQubit, Rotate, OperateGate, OperateTwoQubitGate)]
 /// Implements the phase-shifted controlled PhaseShift gate.
 ///
 /// The unitary matrix representation is:
@@ -545,9 +547,57 @@ pub struct PhaseShiftedControlledZ {
 ///     theta (CalculatorFloat): The phase rotation $\theta$.
 ///     phi (CalculatorFloat): The single qubit phase $\phi$.
 ///
+pub struct PhaseShiftedControlledPhase {
+    control: usize,
+    target: usize,
+    theta: CalculatorFloat,
+    phi: CalculatorFloat,
+}
+
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(Operate, OperateTwoQubit, Rotate, OperateGate, OperateTwoQubitGate)]
-pub struct PhaseShiftedControlledPhase {
+/// Implements the controlled RotateX operation.
+///
+/// The unitary matrix representation is:
+///
+/// .. math::
+///     U = /begin{pmatrix}
+///         1 & 0 & 0 & 0 \\\\
+///         0 & 1 & 0 & 0 \\\\
+///         0 & 0 & \cos(\frac{\theta}{2}) & -i \sin(\frac{\theta}{2}) \\\\
+///         0 & 0 & -i \sin(\frac{\theta}{2}) & \cos(\frac{\theta}{2})
+///         \end{pmatrix}
+///
+/// Args:
+///     control (int): The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the Rotatex Operation on the target qubit.
+///     target (int):: The index of the least significant qubit in the unitary representation. Here, the qubit RotateX Operation is applied to.
+///     theta (CalculatorFloat): The angle $\theta$ of the rotation.
+pub struct ControlledRotateX {
+    control: usize,
+    target: usize,
+    theta: CalculatorFloat,
+}
+
+#[allow(clippy::upper_case_acronyms)]
+#[wrap(Operate, OperateTwoQubit, Rotate, OperateGate, OperateTwoQubitGate)]
+/// Implements the controlled RotateXY operation.
+///
+/// The unitary matrix representation is:
+///
+/// .. math::
+///     U = /begin{pmatrix}
+///         1 & 0 & 0 & 0 \\\\
+///         0 & 1 & 0 & 0 \\\\
+///         0 & 0 & \cos(\frac{\theta}{2}) & -i e^{-i \phi} \sin(\frac{\theta}{2}) \\\\
+///         0 & 0 & -i e^{-i \phi} \sin(\frac{\theta}{2}) & \cos(\frac{\theta}{2})
+///         \end{pmatrix}
+///
+/// Args:
+///     control (int): The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the Rotatex Operation on the target qubit.
+///     target (int):: The index of the least significant qubit in the unitary representation. Here, the qubit RotateX Operation is applied to.
+///     theta (CalculatorFloat): The angle $\theta$ of the rotation.
+///     phi (CalculatorFloat): The rotation axis, in spherical coordinates :math:`\phi_{sph}`  gives the angle in the x-y plane.
+pub struct ControlledRotateXY {
     control: usize,
     target: usize,
     theta: CalculatorFloat,

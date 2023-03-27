@@ -28,6 +28,8 @@ struct Visitor {
     single_qubit_operations: Vec<Ident>,
     // Identifiers of structs belonging to TwoQubitOperation enum
     two_qubit_operations: Vec<Ident>,
+    // Identifiers of structs belonging to ThreeQubitOperation enum
+    three_qubit_operations: Vec<Ident>,
     // Identifiers of structs belonging to MultiQubitOperation enum
     multi_qubit_operations: Vec<Ident>,
     // Identifiers of structs belonging to PragmaOperation enum
@@ -48,6 +50,8 @@ struct Visitor {
     single_qubit_gate_operations: Vec<Ident>,
     // Identifiers of structs belonging to TwoQubitGateOperation enum
     two_qubit_gate_operations: Vec<Ident>,
+    // Identifiers of structs belonging to ThreeQubitGateOperation enum
+    three_qubit_gate_operations: Vec<Ident>,
     // Identifiers of structs belonging to MultiQubitGateOperation enum
     multi_qubit_gate_operations: Vec<Ident>,
     // Operations that have only been introduced in roqoqoq 1.1.0
@@ -58,6 +62,10 @@ struct Visitor {
     // These operations will only be added at end of automatically created enums
     // to maintain compatibility with bincode encoding
     roqoqo_1_2_operations: Vec<Ident>,
+    // Operations that have only been introduced in roqoqoq 1.3.0
+    // These operations will only be added at end of automatically created enums
+    // to maintain compatibility with bincode encoding
+    roqoqo_1_3_operations: Vec<Ident>,
 }
 
 impl Visitor {
@@ -66,6 +74,7 @@ impl Visitor {
             operations: Vec::new(),
             single_qubit_operations: Vec::new(),
             two_qubit_operations: Vec::new(),
+            three_qubit_operations: Vec::new(),
             multi_qubit_operations: Vec::new(),
             pragma_operations: Vec::new(),
             pragma_noise_operations: Vec::new(),
@@ -76,9 +85,11 @@ impl Visitor {
             constant_gate_operations: Vec::new(),
             single_qubit_gate_operations: Vec::new(),
             two_qubit_gate_operations: Vec::new(),
+            three_qubit_gate_operations: Vec::new(),
             multi_qubit_gate_operations: Vec::new(),
             roqoqo_1_1_operations: Vec::new(),
             roqoqo_1_2_operations: Vec::new(),
+            roqoqo_1_3_operations: Vec::new(),
         }
     }
 }
@@ -143,6 +154,11 @@ impl<'ast> Visit<'ast> for Visitor {
                     self.two_qubit_operations.push(i.ident.clone());
                 }
                 if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateThreeQubit")
+                {
+                    self.three_qubit_operations.push(i.ident.clone());
+                }
+                if parsed_arguments.contains("Operate")
                     && parsed_arguments.contains("OperateMultiQubit")
                 {
                     self.multi_qubit_operations.push(i.ident.clone());
@@ -188,6 +204,11 @@ impl<'ast> Visit<'ast> for Visitor {
                 {
                     self.two_qubit_gate_operations.push(i.ident.clone());
                 }
+                if parsed_arguments.contains("OperateGate")
+                    && parsed_arguments.contains("OperateThreeQubit")
+                {
+                    self.three_qubit_gate_operations.push(i.ident.clone());
+                }
                 if parsed_arguments.contains("OperateMultiQubitGate") {
                     self.multi_qubit_gate_operations.push(i.ident.clone());
                 }
@@ -229,6 +250,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 if trait_name.as_str() == "ImplementedIn1point2" {
                     self.roqoqo_1_2_operations.push(id.clone());
                 }
+                if trait_name.as_str() == "ImplementedIn1point3" {
+                    self.roqoqo_1_3_operations.push(id.clone());
+                }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());
                 }
@@ -237,6 +261,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 }
                 if trait_name.as_str() == "OperateTwoQubitGate" {
                     self.two_qubit_gate_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateThreeQubitGate" {
+                    self.three_qubit_gate_operations.push(id.clone());
                 }
                 if trait_name.as_str() == "OperatePragmaNoise" {
                     self.pragma_noise_operations.push(id.clone());
@@ -257,6 +284,7 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/single_qubit_gate_operations.rs",
     "src/operations/pragma_operations.rs",
     "src/operations/two_qubit_gate_operations.rs",
+    "src/operations/three_qubit_gate_operations.rs",
     "src/operations/multi_qubit_gate_operations.rs",
     "src/operations/measurement_operations.rs",
     "src/operations/define_operations.rs",
@@ -280,7 +308,9 @@ fn main() {
         .clone()
         .into_iter()
         .filter(|v| {
-            !vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v)
+            !vis.roqoqo_1_1_operations.contains(v)
+                && !vis.roqoqo_1_2_operations.contains(v)
+                && !vis.roqoqo_1_3_operations.contains(v)
         })
         .map(|v| {
             let msg = format!("Variant for {}", v);
@@ -293,7 +323,11 @@ fn main() {
         .operations
         .clone()
         .into_iter()
-        .filter(|v| vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v))
+        .filter(|v| {
+            vis.roqoqo_1_1_operations.contains(v)
+                && !vis.roqoqo_1_2_operations.contains(v)
+                && !vis.roqoqo_1_3_operations.contains(v)
+        })
         .map(|v| {
             let msg = format!("Variant for {}", v);
             quote! {
@@ -303,8 +337,28 @@ fn main() {
         });
     let operations_quotes_1_2 = vis
         .operations
+        .clone()
         .into_iter()
-        .filter(|v| vis.roqoqo_1_2_operations.contains(v))
+        .filter(|v| {
+            !vis.roqoqo_1_1_operations.contains(v)
+                && vis.roqoqo_1_2_operations.contains(v)
+                && !vis.roqoqo_1_3_operations.contains(v)
+        })
+        .map(|v| {
+            let msg = format!("Variant for {}", v);
+            quote! {
+            #[allow(clippy::upper_case_acronyms)]
+            #[doc = #msg]
+            #v(#v)}
+        });
+    let operations_quotes_1_3 = vis
+        .operations
+        .into_iter()
+        .filter(|v| {
+            !vis.roqoqo_1_1_operations.contains(v)
+                && !vis.roqoqo_1_2_operations.contains(v)
+                && vis.roqoqo_1_3_operations.contains(v)
+        })
         .map(|v| {
             let msg = format!("Variant for {}", v);
             quote! {
@@ -321,6 +375,14 @@ fn main() {
     });
     // Construct TokenStreams for variants of operation enum
     let two_qubit_operations_quotes = vis.two_qubit_operations.into_iter().map(|v| {
+        let msg = format!("Variant for {}", v);
+        quote! {
+        #[allow(clippy::upper_case_acronyms)]
+        #[doc = #msg]
+        #v(#v)}
+    });
+    // Construct TokenStreams for variants of operation enum
+    let three_qubit_operations_quotes = vis.three_qubit_operations.into_iter().map(|v| {
         let msg = format!("Variant for {}", v);
         quote! {
         #[allow(clippy::upper_case_acronyms)]
@@ -462,6 +524,14 @@ fn main() {
         #v(#v)}
     });
     // Construct TokenStreams for variants of operation enum
+    let three_qubit_gate_operations_quote = vis.three_qubit_gate_operations.into_iter().map(|v| {
+        let msg = format!("Variant for {}", v);
+        quote! {
+        #[allow(clippy::upper_case_acronyms)]
+        #[doc = #msg]
+        #v(#v)}
+    });
+    // Construct TokenStreams for variants of operation enum
     let multi_qubit_gate_operations_quote = vis.multi_qubit_gate_operations.into_iter().map(|v| {
         let msg = format!("Variant for {}", v);
         quote! {
@@ -480,7 +550,8 @@ fn main() {
         pub enum Operation {
             #(#operations_quotes),* ,
             #(#operations_quotes_1_1),* ,
-            #(#operations_quotes_1_2),*
+            #(#operations_quotes_1_2),* ,
+            #(#operations_quotes_1_3),* ,
         }
 
         /// Enum of all Operations implementing [OperateSingleQubit]
@@ -497,6 +568,14 @@ fn main() {
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum TwoQubitOperation {
             #(#two_qubit_operations_quotes),*
+        }
+
+        /// Enum of all Operations implementing [OperateThreeQubit]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateThreeQubit,  SupportedVersion)]
+        #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+        pub enum ThreeQubitOperation {
+            #(#three_qubit_operations_quotes),*
         }
 
         /// Enum of all Operations implementing [OperateMultiQubit]
@@ -582,6 +661,14 @@ fn main() {
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         pub enum TwoQubitGateOperation {
             #(#two_qubit_gate_operations_quote),*
+        }
+
+        /// Enum of all Operations implementing [OperateThreeQubitGate]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateThreeQubit, OperateThreeQubitGate,  SupportedVersion)]
+        #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+        pub enum ThreeQubitGateOperation {
+            #(#three_qubit_gate_operations_quote),*
         }
 
         /// Enum of all Operations implementing [OperateMultiQubitGate]
