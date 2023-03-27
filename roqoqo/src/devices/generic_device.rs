@@ -43,8 +43,6 @@ pub struct GenericDevice {
 
 type TwoQubitGates = HashMap<(usize, usize), f64>;
 type TwoQubitGatesVec = Vec<((usize, usize), f64)>;
-// type ThreeQubitGates = HashMap<(usize, usize, usize), f64>;
-// type ThreeQubitGatesVec = Vec<((usize, usize, usize), f64)>;
 
 #[derive(Clone)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
@@ -55,8 +53,6 @@ struct GenericDeviceSerialize {
     single_qubit_gates: HashMap<String, Vec<(usize, f64)>>,
     /// Gate times for all two qubit gates
     two_qubit_gates: HashMap<String, TwoQubitGatesVec>,
-    /// Gate times for all three qubit gates
-    // three_qubit_gates: HashMap<String, ThreeQubitGatesVec>,
     /// Gate times for all multi qubit gates
     multi_qubit_gates: HashMap<String, Vec<(Vec<usize>, f64)>>,
     /// Decoherence rates for all qubits
@@ -68,8 +64,6 @@ impl From<GenericDeviceSerialize> for GenericDevice {
     fn from(value: GenericDeviceSerialize) -> Self {
         let mut two_qubit_gates: HashMap<String, TwoQubitGates> =
             HashMap::with_capacity(value.two_qubit_gates.len());
-        // let mut three_qubit_gates: HashMap<String, ThreeQubitGates> =
-        //     HashMap::with_capacity(value.three_qubit_gates.len());
         let mut single_qubit_gates: HashMap<String, HashMap<usize, f64>> =
             HashMap::with_capacity(value.two_qubit_gates.len());
         let mut multi_qubit_gates: HashMap<String, HashMap<Vec<usize>, f64>> =
@@ -86,10 +80,6 @@ impl From<GenericDeviceSerialize> for GenericDevice {
             let new_map: HashMap<usize, f64> = map.into_iter().collect();
             single_qubit_gates.insert(name, new_map);
         }
-        // for (name, map) in value.three_qubit_gates.into_iter() {
-        //     let new_map: HashMap<(usize, usize, usize), f64> = map.into_iter().collect();
-        //     three_qubit_gates.insert(name, new_map);
-        // }
         for (name, map) in value.multi_qubit_gates.into_iter() {
             let new_map: HashMap<Vec<usize>, f64> = map.into_iter().collect();
             multi_qubit_gates.insert(name, new_map);
@@ -99,7 +89,6 @@ impl From<GenericDeviceSerialize> for GenericDevice {
             number_qubits: value.number_qubits,
             single_qubit_gates,
             two_qubit_gates,
-            // three_qubit_gates,
             multi_qubit_gates,
             decoherence_rates,
         };
@@ -111,8 +100,6 @@ impl From<GenericDevice> for GenericDeviceSerialize {
     fn from(value: GenericDevice) -> Self {
         let mut two_qubit_gates: HashMap<String, TwoQubitGatesVec> =
             HashMap::with_capacity(value.two_qubit_gates.len());
-        // let mut three_qubit_gates: HashMap<String, ThreeQubitGatesVec> =
-        //     HashMap::with_capacity(value.three_qubit_gates.len());
         let mut single_qubit_gates: HashMap<String, Vec<(usize, f64)>> =
             HashMap::with_capacity(value.two_qubit_gates.len());
         let mut multi_qubit_gates: HashMap<String, Vec<(Vec<usize>, f64)>> =
@@ -129,10 +116,6 @@ impl From<GenericDevice> for GenericDeviceSerialize {
             let new_map: Vec<(usize, f64)> = map.into_iter().collect();
             single_qubit_gates.insert(name, new_map);
         }
-        // for (name, map) in value.three_qubit_gates.into_iter() {
-        //     let new_map: ThreeQubitGatesVec = map.into_iter().collect();
-        //     three_qubit_gates.insert(name, new_map);
-        // }
         for (name, map) in value.multi_qubit_gates.into_iter() {
             let new_map: Vec<(Vec<usize>, f64)> = map.into_iter().collect();
             multi_qubit_gates.insert(name, new_map);
@@ -142,7 +125,6 @@ impl From<GenericDevice> for GenericDeviceSerialize {
             number_qubits: value.number_qubits,
             single_qubit_gates,
             two_qubit_gates,
-            // three_qubit_gates,
             multi_qubit_gates,
             decoherence_rates,
             _roqoqo_version: RoqoqoVersion,
@@ -164,7 +146,6 @@ impl GenericDevice {
             number_qubits,
             single_qubit_gates: HashMap::new(),
             two_qubit_gates: HashMap::new(),
-            // three_qubit_gates: HashMap::new(),
             multi_qubit_gates: HashMap::new(),
             decoherence_rates: HashMap::new(),
         }
