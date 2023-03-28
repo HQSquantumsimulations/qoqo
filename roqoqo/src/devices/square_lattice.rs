@@ -241,31 +241,31 @@ impl SquareLatticeDevice {
         }
     }
 
-    // /// Setting the gate time of a three qubit gate.
-    // ///
-    // /// # Arguments
-    // ///
-    // /// * `gate` - hqslang name of the two-qubit-gate.
-    // /// * `control_0` - The control_0 qubit for which the gate time is set.
-    // /// * `control_1` - The control_1 qubit for which the gate time is set.
-    // /// * `target` - The target qubit for which the gate time is set.
-    // /// * `gate_time` - The gate time for the given gate.
-    // ///
-    // /// # Returns
-    // ///
-    // /// A SquareLatticeDevice with updated gate times.
-    // ///
-    // pub fn set_three_qubit_gate_time(
-    //     &mut self,
-    //     gate: &str,
-    //     control_0: usize,
-    //     control_1: usize,
-    //     target: usize,
-    //     gate_time: f64,
-    // ) -> Result<(), RoqoqoError> {
-    //     self.generic_device
-    //         .set_three_qubit_gate_time(gate, control_0, control_1, target, gate_time)
-    // }
+    /// Setting the gate time of a three qubit gate.
+    ///
+    /// # Arguments
+    ///
+    /// * `gate` - hqslang name of the two-qubit-gate.
+    /// * `control_0` - The control_0 qubit for which the gate time is set.
+    /// * `control_1` - The control_1 qubit for which the gate time is set.
+    /// * `target` - The target qubit for which the gate time is set.
+    /// * `gate_time` - The gate time for the given gate.
+    ///
+    /// # Returns
+    ///
+    /// A SquareLatticeDevice with updated gate times.
+    ///
+    pub fn set_three_qubit_gate_time(
+        &mut self,
+        gate: &str,
+        control_0: usize,
+        control_1: usize,
+        target: usize,
+        gate_time: f64,
+    ) -> Result<(), RoqoqoError> {
+        self.generic_device
+            .set_three_qubit_gate_time(gate, control_0, control_1, target, gate_time)
+    }
 
     /// Setting the gate time of a mulit qubit gate.
     ///
@@ -431,16 +431,16 @@ impl Device for SquareLatticeDevice {
             .two_qubit_gate_time(hqslang, control, target)
     }
 
-    // fn three_qubit_gate_time(
-    //     &self,
-    //     hqslang: &str,
-    //     control_0: &usize,
-    //     control_1: &usize,
-    //     target: &usize,
-    // ) -> Option<f64> {
-    //     self.generic_device
-    //         .three_qubit_gate_time(hqslang, control_0, control_1, target)
-    // }
+    fn three_qubit_gate_time(
+        &self,
+        hqslang: &str,
+        control_0: &usize,
+        control_1: &usize,
+        target: &usize,
+    ) -> Option<f64> {
+        self.generic_device
+            .three_qubit_gate_time(hqslang, control_0, control_1, target)
+    }
 
     fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
         self.generic_device.multi_qubit_gate_time(hqslang, qubits)
