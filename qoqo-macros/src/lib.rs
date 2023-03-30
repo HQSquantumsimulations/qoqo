@@ -691,7 +691,7 @@ pub fn devicewrapper(
             ///
             /// Raises:
             ///     PyValueError: Qubit is not in device
-            #[pyo3(text_signature = "(qubit, control, target, gate_time)")]
+            #[pyo3(text_signature = "(gate, control, target, gate_time)")]
             pub fn set_two_qubit_gate_time(&mut self, gate: &str, control: usize, target: usize, gate_time: f64) -> PyResult<()> {
                 self.internal.set_two_qubit_gate_time(gate, control, target, gate_time).map_err(|err|
                     PyValueError::new_err(format!("{:?}", err)))
@@ -708,7 +708,7 @@ pub fn devicewrapper(
             ///
             /// Raises:
             ///     PyValueError: Qubit is not in device
-            #[pyo3(text_signature = "(qubit, control_0, control_1, target, gate_time)")]
+            #[pyo3(text_signature = "(gate, control_0, control_1, target, gate_time)")]
             pub fn set_three_qubit_gate_time(&mut self, gate: &str, control_0: usize, control_1: usize, target: usize, gate_time: f64) -> PyResult<()> {
                 self.internal.set_three_qubit_gate_time(gate, control_0, control_1, target, gate_time).map_err(|err|
                     PyValueError::new_err(format!("{:?}", err)))
