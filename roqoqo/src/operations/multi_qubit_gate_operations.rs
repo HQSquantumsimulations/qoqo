@@ -155,7 +155,7 @@ impl OperateMultiQubitGate for MultiQubitZZ {
         for q in self.qubits[1..].iter() {
             circuit += operations::CNOT::new(*q - 1, *q);
         }
-        circuit += operations::RotateZ::new(dim - 1, self.theta.clone());
+        circuit += operations::RotateZ::new(dim - 1, self.theta.clone() / 2);
         for q in self.qubits[1..].iter() {
             circuit += operations::CNOT::new(dim - *q - 1, dim - *q);
         }

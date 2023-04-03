@@ -306,7 +306,7 @@ fn test_circuit_multi_zz(qubits: Vec<usize>) {
         let mut comparison_circuit = Circuit::new();
 
         comparison_circuit += CNOT::new(0, 1);
-        comparison_circuit += RotateZ::new(1, CalculatorFloat::FRAC_PI_2);
+        comparison_circuit += RotateZ::new(1, CalculatorFloat::FRAC_PI_4);
         comparison_circuit += CNOT::new(0, 1);
 
         assert!(c == comparison_circuit);
@@ -316,7 +316,7 @@ fn test_circuit_multi_zz(qubits: Vec<usize>) {
 
         comparison_circuit += CNOT::new(0, 1);
         comparison_circuit += CNOT::new(1, 2);
-        comparison_circuit += RotateZ::new(2, CalculatorFloat::FRAC_PI_2);
+        comparison_circuit += RotateZ::new(2, CalculatorFloat::FRAC_PI_4);
         comparison_circuit += CNOT::new(1, 2);
         comparison_circuit += CNOT::new(0, 1);
 
