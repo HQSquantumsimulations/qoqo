@@ -32,7 +32,7 @@ fn test_circuit_multi_ms(qubits: Vec<usize>) {
         comparison_circuit += Hadamard::new(0);
         comparison_circuit += Hadamard::new(1);
         comparison_circuit += CNOT::new(0, 1);
-        comparison_circuit += RotateZ::new(1, CalculatorFloat::FRAC_PI_2);
+        comparison_circuit += RotateZ::new(1, CalculatorFloat::FRAC_PI_4);
         comparison_circuit += CNOT::new(0, 1);
         comparison_circuit += Hadamard::new(0);
         comparison_circuit += Hadamard::new(1);
@@ -45,7 +45,7 @@ fn test_circuit_multi_ms(qubits: Vec<usize>) {
         comparison_circuit += Hadamard::new(2);
         comparison_circuit += CNOT::new(0, 1);
         comparison_circuit += CNOT::new(1, 2);
-        comparison_circuit += RotateZ::new(2, CalculatorFloat::FRAC_PI_2);
+        comparison_circuit += RotateZ::new(2, CalculatorFloat::FRAC_PI_4);
         comparison_circuit += CNOT::new(1, 2);
         comparison_circuit += CNOT::new(0, 1);
         comparison_circuit += Hadamard::new(0);

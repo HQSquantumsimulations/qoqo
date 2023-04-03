@@ -41,7 +41,6 @@ impl AllToAllDevice {
         number_qubits: usize,
         single_qubit_gates: &[String],
         two_qubit_gates: &[String],
-        // three_qubit_gates: &[String],
         default_gate_time: f64,
     ) -> Self {
         // Initialization of single qubit gates with empty times
@@ -49,7 +48,6 @@ impl AllToAllDevice {
             number_qubits,
             single_qubit_gates: HashMap::with_capacity(single_qubit_gates.len()),
             two_qubit_gates: HashMap::with_capacity(two_qubit_gates.len()),
-            // three_qubit_gates: HashMap::with_capacity(three_qubit_gates.len()),
             multi_qubit_gates: HashMap::new(),
             decoherence_rates: HashMap::with_capacity(number_qubits),
         };
