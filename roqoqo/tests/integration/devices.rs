@@ -73,13 +73,13 @@ fn test_all_to_all() {
     device.set_two_qubit_gate_time("CNOT", 0, 1, 0.5).unwrap();
     assert_eq!(device.two_qubit_gate_time("CNOT", &0, &1), Some(0.5f64));
 
-    // device
-    //     .set_three_qubit_gate_time("ControlledControlledPauliZ", 0, 1, 2, 0.5_f64)
-    //     .unwrap();
-    // assert_eq!(
-    //     device.three_qubit_gate_time("ControlledControlledPauliZ", &0, &1, &2),
-    //     Some(0.5_f64)
-    // );
+    device
+        .set_three_qubit_gate_time("ControlledControlledPauliZ", 0, 1, 2, 0.5_f64)
+        .unwrap();
+    assert_eq!(
+        device.three_qubit_gate_time("ControlledControlledPauliZ", &0, &1, &2),
+        Some(0.5_f64)
+    );
 
     device
         .set_single_qubit_gate_time("RotateX", 2, 0.07)
@@ -120,21 +120,21 @@ fn generic_device_works() {
     assert!(device.set_two_qubit_gate_time("CNOT", 30, 2, 0.5).is_err());
     assert!(device.set_two_qubit_gate_time("CNOT", 2, 20, 0.5).is_err());
 
-    // device
-    //     .set_three_qubit_gate_time("ControlledControlledPauliZ", 0, 1, 2, 0.5)
-    //     .unwrap();
-    // device
-    //     .set_three_qubit_gate_time("ControlledControlledPauliZ", 2, 1, 0, 0.5)
-    //     .unwrap();
-    // device
-    //     .set_three_qubit_gate_time("ControlledControlledPhaseShift", 0, 1, 2, 0.5)
-    //     .unwrap();
-    // assert!(device
-    //     .set_three_qubit_gate_time("ControlledControlledPauliZ", 25, 1, 11, 0.5)
-    //     .is_err());
-    // assert!(device
-    //     .set_three_qubit_gate_time("ControlledControlledPhaseShift", 21, 14, 12, 0.5)
-    //     .is_err());
+    device
+        .set_three_qubit_gate_time("ControlledControlledPauliZ", 0, 1, 2, 0.5)
+        .unwrap();
+    device
+        .set_three_qubit_gate_time("ControlledControlledPauliZ", 2, 1, 0, 0.5)
+        .unwrap();
+    device
+        .set_three_qubit_gate_time("ControlledControlledPhaseShift", 0, 1, 2, 0.5)
+        .unwrap();
+    assert!(device
+        .set_three_qubit_gate_time("ControlledControlledPauliZ", 25, 1, 11, 0.5)
+        .is_err());
+    assert!(device
+        .set_three_qubit_gate_time("ControlledControlledPhaseShift", 21, 14, 12, 0.5)
+        .is_err());
 
     device
         .set_multi_qubit_gate_time("MultiQubitMS", vec![0, 1, 2], 0.8)
@@ -204,18 +204,18 @@ fn generic_device_works() {
     assert_eq!(device.two_qubit_gate_time("CNOT", &0, &3), None);
     assert_eq!(device.two_qubit_gate_time("CZ", &0, &1), None);
 
-    // assert_eq!(
-    //     device.three_qubit_gate_time("ControlledControlledPauliZ", &0, &1, &2),
-    //     Some(0.5)
-    // );
-    // assert_eq!(
-    //     device.three_qubit_gate_time("ControlledControlledPauliZ", &2, &1, &0),
-    //     Some(0.5)
-    // );
-    // assert_eq!(
-    //     device.three_qubit_gate_time("ControlledControlledPhaseShift", &0, &1, &2),
-    //     Some(0.5)
-    // );
+    assert_eq!(
+        device.three_qubit_gate_time("ControlledControlledPauliZ", &0, &1, &2),
+        Some(0.5)
+    );
+    assert_eq!(
+        device.three_qubit_gate_time("ControlledControlledPauliZ", &2, &1, &0),
+        Some(0.5)
+    );
+    assert_eq!(
+        device.three_qubit_gate_time("ControlledControlledPhaseShift", &0, &1, &2),
+        Some(0.5)
+    );
 
     assert_eq!(
         device.multi_qubit_gate_time("MultiQubitMS", &[0, 1, 2]),
@@ -269,9 +269,6 @@ fn all_to_all_generic() {
     generic_device
         .set_two_qubit_gate_time("CNOT", 1, 0, 1.0)
         .unwrap();
-    // generic_device
-    //     .set_three_qubit_gate_time("ControlledControlledPauliZ", 0, 1, 2, 1.0)
-    //     .unwrap();
     // setting the decoherence rates directly
     generic_device
         .set_qubit_decoherence_rates(0, array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
@@ -320,9 +317,6 @@ fn square_lattice_generic() {
     generic_device
         .set_two_qubit_gate_time("CNOT", 1, 0, 1.0)
         .unwrap();
-    // generic_device
-    //     .set_three_qubit_gate_time("ControlledControlledPauliZ", 0, 1, 2, 1.0)
-    //     .unwrap();
     // setting the decoherence rates directly
     generic_device
         .set_qubit_decoherence_rates(0, array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
@@ -382,13 +376,13 @@ fn test_square_lattice() {
     assert_eq!(device.single_qubit_gate_time("RotateX", &0), Some(0.2f64));
     assert_eq!(device.two_qubit_gate_time("CNOT", &0, &1), Some(0.2f64));
 
-    // device
-    //     .set_three_qubit_gate_time("ControlledControlledPauliZ", 0, 1, 2, 0.8)
-    //     .unwrap();
-    // assert_eq!(
-    //     device.three_qubit_gate_time("ControlledControlledPauliZ", &0, &1, &2),
-    //     Some(0.8),
-    // );
+    device
+        .set_three_qubit_gate_time("ControlledControlledPauliZ", 0, 1, 2, 0.8)
+        .unwrap();
+    assert_eq!(
+        device.three_qubit_gate_time("ControlledControlledPauliZ", &0, &1, &2),
+        Some(0.8),
+    );
 
     device
         .set_multi_qubit_gate_time("MultiQubitMS", vec![0, 1, 2], 0.8)

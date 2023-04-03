@@ -54,7 +54,6 @@ fn new_genericlattice() -> Py<PyAny> {
         let number_columns: usize = 2;
         let single_qubit_gates = ["RotateX".to_string(), "RotateZ".to_string()];
         let two_qubit_gates = ["CNOT".to_string()];
-        // let three_qubit_gates = ["ControlledControlledPauliZ".to_string()];
         let arguments: (usize, usize, [String; 2], [String; 1], f64) = (
             number_rows,
             number_columns,
@@ -372,39 +371,39 @@ fn test_gatetimes(device: Py<PyAny>) {
         assert_eq!(gate_time_cnot, Some(gate_time));
         assert_eq!(gate_time_none2, None);
 
-        // // Test three qubit gate times
-        // device
-        //     .call_method1(
-        //         py,
-        //         "set_three_qubit_gate_time",
-        //         ("ControlledControlledPauliZ", 0, 1, 2, gate_time),
-        //     )
-        //     .unwrap();
+        // Test three qubit gate times
+        device
+            .call_method1(
+                py,
+                "set_three_qubit_gate_time",
+                ("ControlledControlledPauliZ", 0, 1, 2, gate_time),
+            )
+            .unwrap();
 
-        // // get the gate time for CCZs on qubit 0 1 2
-        // let gate_time_ccz = device
-        //     .call_method1(
-        //         py,
-        //         "three_qubit_gate_time",
-        //         ("ControlledControlledPauliZ", 0_i64, 1_i64, 2_i64),
-        //     )
-        //     .unwrap()
-        //     .extract::<Option<f64>>(py)
-        //     .unwrap();
+        // get the gate time for CCZs on qubit 0 1 2
+        let gate_time_ccz = device
+            .call_method1(
+                py,
+                "three_qubit_gate_time",
+                ("ControlledControlledPauliZ", 0_i64, 1_i64, 2_i64),
+            )
+            .unwrap()
+            .extract::<Option<f64>>(py)
+            .unwrap();
 
-        // // get the gate time for CCZ for a qubit not which is not in the device
-        // let gate_time_none3 = device
-        //     .call_method1(
-        //         py,
-        //         "three_qubit_gate_time",
-        //         ("ControlledControlledPauliZ", 0_i64, 4_i64, 100_i64),
-        //     )
-        //     .unwrap()
-        //     .extract::<Option<f64>>(py)
-        //     .unwrap();
+        // get the gate time for CCZ for a qubit not which is not in the device
+        let gate_time_none3 = device
+            .call_method1(
+                py,
+                "three_qubit_gate_time",
+                ("ControlledControlledPauliZ", 0_i64, 4_i64, 100_i64),
+            )
+            .unwrap()
+            .extract::<Option<f64>>(py)
+            .unwrap();
 
-        // assert_eq!(gate_time_ccz, Some(gate_time));
-        // assert_eq!(gate_time_none3, None);
+        assert_eq!(gate_time_ccz, Some(gate_time));
+        assert_eq!(gate_time_none3, None);
 
         // Test multi qubit gate times
         device

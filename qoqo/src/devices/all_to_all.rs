@@ -153,7 +153,6 @@ impl AllToAllDeviceWrapper {
     /// Returns:
     ///     AllToAllDevice
     #[pyo3(text_signature = "(dephasing)")]
-
     pub fn add_dephasing_all(&mut self, dephasing: f64) -> Self {
         Self {
             internal: self.internal.clone().add_dephasing_all(dephasing),
