@@ -46,8 +46,8 @@ fn test_circuits_3q(iteration: (bool, bool, bool), value: usize) {
     let c1: Complex64 = Complex::new(1.0, 0.0);
     let mut final_matrix: Array1<Complex64> = array![c0, c0, c0, c0, c0, c0, c0, c0];
     final_matrix[value] = c1;
-    let final_matrix_ccz = final_matrix.dot(&unitary_ccz);
-    let final_matrix_ccps = final_matrix.dot(&unitary_ccps);
+    let final_matrix_ccz = unitary_ccz.dot(&final_matrix);
+    let final_matrix_ccps = unitary_ccps.dot(&final_matrix);
 
     // Serializing .circuit()
     let ccz_circuit = ccz.circuit();
@@ -125,8 +125,8 @@ fn test_circuits_mq(iteration: (bool, bool, bool), value: usize) {
     let c1: Complex64 = Complex::new(1.0, 0.0);
     let mut final_matrix: Array1<Complex64> = array![c0, c0, c0, c0, c0, c0, c0, c0];
     final_matrix[value] = c1;
-    let final_matrix_mqzz = final_matrix.dot(&unitary_mqzz);
-    let final_matrix_mqms = final_matrix.dot(&unitary_mqms);
+    let final_matrix_mqzz = unitary_mqzz.dot(&final_matrix);
+    let final_matrix_mqms = unitary_mqms.dot(&final_matrix);
 
     // Serializing .circuit()
     let mqzz_circuit = mqzz.circuit();
