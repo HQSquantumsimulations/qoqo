@@ -33,8 +33,6 @@ pub struct GenericDevice {
     pub single_qubit_gates: HashMap<String, HashMap<usize, f64>>,
     /// Gate times for all two qubit gates
     pub two_qubit_gates: HashMap<String, TwoQubitGates>,
-    /// Gate times for all three qubit gates
-    // pub three_qubit_gates: HashMap<String, ThreeQubitGates>,
     /// Gate times for all multi qubit gates
     pub multi_qubit_gates: HashMap<String, HashMap<Vec<usize>, f64>>,
     /// Decoherence rates for all qubits
@@ -43,8 +41,6 @@ pub struct GenericDevice {
 
 type TwoQubitGates = HashMap<(usize, usize), f64>;
 type TwoQubitGatesVec = Vec<((usize, usize), f64)>;
-// type ThreeQubitGates = HashMap<(usize, usize, usize), f64>;
-// type ThreeQubitGatesVec = Vec<((usize, usize, usize), f64)>;
 
 #[derive(Clone)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
@@ -148,7 +144,6 @@ impl GenericDevice {
             number_qubits,
             single_qubit_gates: HashMap::new(),
             two_qubit_gates: HashMap::new(),
-            // three_qubit_gates: HashMap::new(),
             multi_qubit_gates: HashMap::new(),
             decoherence_rates: HashMap::new(),
         }
