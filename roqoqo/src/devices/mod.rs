@@ -33,7 +33,9 @@
 
 use std::collections::HashSet;
 
-use crate::{prelude::InvolveQubits, Circuit, RoqoqoBackendError};
+use crate::RoqoqoBackendError;
+#[cfg(feature = "unstable_qoqo_devices")]
+use crate::{prelude::InvolveQubits, Circuit};
 use ndarray::Array2;
 mod generic_device;
 pub use generic_device::GenericDevice;
