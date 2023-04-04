@@ -14,7 +14,7 @@ use std::collections::HashMap;
 
 use super::Device;
 use crate::RoqoqoError;
-use crate::RoqoqoVersion;
+use crate::RoqoqoVersionSerializable;
 use ndarray::{array, Array2};
 /// A generic device assuming all-to-all connectivity between all involved qubits.
 ///
@@ -55,7 +55,7 @@ struct GenericDeviceSerialize {
     multi_qubit_gates: HashMap<String, Vec<(Vec<usize>, f64)>>,
     /// Decoherence rates for all qubits
     decoherence_rates: Vec<(usize, Array2<f64>)>,
-    _roqoqo_version: RoqoqoVersion,
+    _roqoqo_version: RoqoqoVersionSerializable,
 }
 
 impl From<GenericDeviceSerialize> for GenericDevice {
@@ -118,6 +118,10 @@ impl From<GenericDevice> for GenericDeviceSerialize {
             let new_map: Vec<(Vec<usize>, f64)> = map.into_iter().collect();
             multi_qubit_gates.insert(name, new_map);
         }
+        let current_version = RoqoqoVersionSerializable {
+            major_version: 1,
+            minor_version: 1,
+        };
 
         let new_device: GenericDeviceSerialize = GenericDeviceSerialize {
             number_qubits: value.number_qubits,
@@ -125,7 +129,7 @@ impl From<GenericDevice> for GenericDeviceSerialize {
             two_qubit_gates,
             multi_qubit_gates,
             decoherence_rates,
-            _roqoqo_version: RoqoqoVersion,
+            _roqoqo_version: current_version,
         };
         new_device
     }

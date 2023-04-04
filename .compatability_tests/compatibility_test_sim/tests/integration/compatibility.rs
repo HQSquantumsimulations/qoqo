@@ -170,8 +170,6 @@ fn test_circuits_mq(iteration: (bool, bool, bool), value: usize) {
     let (_, _, result_mqzz) = backend.run_circuit(&circuit_mqzz_fromj).unwrap();
     let (_, _, result_mqms) = backend.run_circuit(&circuit_mqms_fromj).unwrap();
 
-    let mqzz_state_vector = Array1::<Complex64>::from_iter(result_mqzz["out"][0].iter().cloned());
-    let mqms_state_vector = Array1::<Complex64>::from_iter(result_mqms["out"][0].iter().cloned());
 
     for (el1, el2) in result_mqzz["out"][0].iter().zip(
         final_matrix_mqzz
