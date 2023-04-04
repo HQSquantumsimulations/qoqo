@@ -120,7 +120,7 @@ impl From<GenericDevice> for GenericDeviceSerialize {
         }
         let current_version = RoqoqoVersionSerializable {
             major_version: 1,
-            minor_version: 0,
+            minor_version: 1,
         };
 
         let new_device: GenericDeviceSerialize = GenericDeviceSerialize {
