@@ -2,10 +2,18 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
-## Unreleased
+## 1.3.0
+
+### Added in 1.3.0
 
 * Added Three-qubit gates support
 * Added ControlledRotateX, ControlledRotateXY, ControlledControlledPauliZ, ControlledControlledPhaseShift, Toffoli to qoqo
+* Added device function to return all gate names
+* Added unstable QoqoDevice feature. Prototype for future qoqo devices without stability guarantees.
+
+## Fixed in 1.3.0
+
+* Wrong angle in circuit decomposition of MultiQubitZZ and MultiQubitMS
 
 ## 1.2.5
 

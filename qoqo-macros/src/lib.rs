@@ -841,6 +841,33 @@ pub fn devicewrapper(
                 GenericDeviceWrapper{ internal: self.internal.to_generic_device()}
             }
 
+    /// Returns the names of a single qubit operations available on the device.
+    ///
+    /// Returns:
+    ///     List[strt]: The list of gate names.
+    pub fn single_qubit_gate_names(&self) -> Vec<String>{
+        self.internal.single_qubit_gate_names()
+    }
+
+    /// Returns the names of a two qubit operations available on the device.
+    ///
+    /// Returns:
+    ///     List[strt]: The list of gate names.
+    pub fn two_qubit_gate_names(&self) -> Vec<String>{
+        self.internal.two_qubit_gate_names()
+    }
+
+    /// Returns the names of a mutli qubit operations available on the device.
+    ///
+    /// The list of names also includes the three qubit gate operations.
+    ///
+    /// Returns:
+    ///     List[strt]: The list of gate names.
+    ///
+    pub fn multi_qubit_gate_names(&self) -> Vec<String>{
+        self.internal.multi_qubit_gate_names()
+    }
+
             /// Returns a copy of the device (copy here produces a deepcopy).
             ///
             /// Returns:

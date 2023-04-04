@@ -202,7 +202,7 @@ impl AllToAllDevice {
             .set_three_qubit_gate_time(gate, control_0, control_1, target, gate_time)
     }
 
-    /// Setting the gate time of a mulit qubit gate.
+    /// Setting the gate time of a multi qubit gate.
     ///
     /// # Arguments
     ///
@@ -437,6 +437,86 @@ impl Device for AllToAllDevice {
             }
         }
         vector
+    }
+    fn single_qubit_gate_names(&self) -> Vec<String> {
+        self.generic_device
+            .single_qubit_gates
+            .keys()
+            .cloned()
+            .collect()
+    }
+
+    fn two_qubit_gate_names(&self) -> Vec<String> {
+        self.generic_device
+            .two_qubit_gates
+            .keys()
+            .cloned()
+            .collect()
+    }
+
+    fn multi_qubit_gate_names(&self) -> Vec<String> {
+        self.generic_device
+            .multi_qubit_gates
+            .keys()
+            .cloned()
+            .collect()
+    }
+}
+
+#[cfg(feature = "unstable_qoqo_devices")]
+impl crate::devices::QoqoDevice for AllToAllDevice {
+    fn longest_chains(&self) -> Vec<Vec<usize>> {
+        vec![(0..self.number_qubits).collect()]
+    }
+
+    fn longest_closed_chains(&self) -> Vec<Vec<usize>> {
+        vec![(0..self.number_qubits).collect()]
+    }
+
+    fn single_qubit_gate_time(&self, hqslang: &str, qubit: &usize) -> Option<f64> {
+        Device::single_qubit_gate_time(self, hqslang, qubit)
+    }
+
+    fn two_qubit_gate_time(&self, hqslang: &str, control: &usize, target: &usize) -> Option<f64> {
+        Device::two_qubit_gate_time(self, hqslang, control, target)
+    }
+
+    fn three_qubit_gate_time(
+        &self,
+        hqslang: &str,
+        control_0: &usize,
+        control_1: &usize,
+        target: &usize,
+    ) -> Option<f64> {
+        Device::three_qubit_gate_time(self, hqslang, control_0, control_1, target)
+    }
+
+    fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
+        Device::multi_qubit_gate_time(self, hqslang, qubits)
+    }
+
+    fn qubit_decoherence_rates(&self, qubit: &usize) -> Option<Array2<f64>> {
+        Device::qubit_decoherence_rates(self, qubit)
+    }
+
+    fn number_qubits(&self) -> usize {
+        Device::number_qubits(self)
+    }
+
+    fn two_qubit_edges(&self) -> Vec<(usize, usize)> {
+        Device::two_qubit_edges(self)
+    }
+
+    fn single_qubit_gate_names(&self) -> Vec<String> {
+        Device::single_qubit_gate_names(self)
+    }
+
+    fn two_qubit_gate_names(&self) -> Vec<String> {
+        Device::two_qubit_gate_names(self)
+    }
+
+    fn multi_qubit_gate_names(&self) -> Vec<String> {
+        Device::multi_qubit_gate_names(self)
     }
 }
 
