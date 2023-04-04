@@ -39,6 +39,7 @@ use rand_distr::{Distribution, Normal};
     roqoqo_derive::OperateThreeQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+
 pub struct ControlledControlledPauliZ {
     /// The index of the most significant qubit in the unitary representation. Here, the first controlling qubit of the operation.
     control_0: usize,
@@ -47,6 +48,7 @@ pub struct ControlledControlledPauliZ {
     /// The index of the least significant qubit in the unitary representation. Here, the qubit PauliZ is applied to.
     target: usize,
 }
+impl super::ImplementedIn1point3 for ControlledControlledPauliZ {}
 
 #[allow(non_upper_case_globals)]
 const TAGS_ControlledControlledPauliZ: &[&str; 4] = &[
@@ -193,6 +195,7 @@ pub struct ControlledControlledPhaseShift {
     /// The rotation angle θ.
     theta: CalculatorFloat,
 }
+impl super::ImplementedIn1point3 for ControlledControlledPhaseShift {}
 
 #[allow(non_upper_case_globals)]
 const TAGS_ControlledControlledPhaseShift: &[&str; 5] = &[
@@ -337,6 +340,8 @@ pub struct Toffoli {
     /// The index of the least significant qubit in the unitary representation. Here, the qubit the phase-shift is applied to.
     target: usize,
 }
+
+impl super::ImplementedIn1point3 for Toffoli {}
 
 #[allow(non_upper_case_globals)]
 const TAGS_Toffoli: &[&str; 4] = &[
