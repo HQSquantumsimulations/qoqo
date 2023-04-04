@@ -12,9 +12,6 @@
 
 use std::collections::HashMap;
 
-// use bincode;
-// use roqoqo;
-// #[cfg(feature = "compatibility")]
 use test_case::test_case;
 use test_roqoqo_1_2;
 
