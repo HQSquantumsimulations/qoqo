@@ -33,7 +33,7 @@ use roqoqo::ROQOQO_VERSION;
 /// A QuantumProgram contains a list of the free parameters (`input_parameter_names`) and can automatically
 /// replace the parameters with its `run` methods and return the result.
 ///
-/// The QuantumProgram should correspond as closely as possible to a normal mulit-parameter function
+/// The QuantumProgram should correspond as closely as possible to a normal multi-parameter function
 /// in classical computing that can be called with a set of parameters and returns a result.
 /// It is the intended way to interface between normal program code and roqoqo based quantum programs.
 ///

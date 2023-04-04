@@ -11,7 +11,10 @@
 // limitations under the License.
 
 use ndarray::array;
-use roqoqo::{devices::*, RoqoqoError};
+use roqoqo::{
+    devices::{AllToAllDevice, Device, GenericDevice, SquareLatticeDevice},
+    RoqoqoError,
+};
 // use test_case::test_case;
 
 #[test]
@@ -297,6 +300,12 @@ fn all_to_all_generic() {
             msg: "Qubit 10 out of range for device of size 2".into()
         })
     );
+    assert_eq!(
+        all_to_all.single_qubit_gate_names(),
+        vec!["RotateZ".to_string()]
+    );
+    assert_eq!(all_to_all.two_qubit_gate_names(), vec!["CNOT".to_string()]);
+    assert_eq!(all_to_all.multi_qubit_gate_names(), Vec::<String>::new());
 }
 
 #[test]
@@ -433,4 +442,15 @@ fn test_square_lattice() {
             msg: "Qubit 10 out of range for device of size 4".into()
         })
     );
+    assert_eq!(
+        device.single_qubit_gate_names(),
+        vec!["RotateX".to_string()]
+    );
+    assert_eq!(device.two_qubit_gate_names(), vec!["CNOT".to_string()]);
+    assert!(device
+        .multi_qubit_gate_names()
+        .contains(&"ControlledControlledPauliZ".to_string(),));
+    assert!(device
+        .multi_qubit_gate_names()
+        .contains(&"MultiQubitMS".to_string()));
 }

@@ -32,7 +32,7 @@ fn test_circuit_multi_ms(qubits: Vec<usize>) {
         comparison_circuit += Hadamard::new(0);
         comparison_circuit += Hadamard::new(1);
         comparison_circuit += CNOT::new(0, 1);
-        comparison_circuit += RotateZ::new(1, CalculatorFloat::FRAC_PI_4);
+        comparison_circuit += RotateZ::new(1, CalculatorFloat::FRAC_PI_2);
         comparison_circuit += CNOT::new(0, 1);
         comparison_circuit += Hadamard::new(0);
         comparison_circuit += Hadamard::new(1);
@@ -45,7 +45,7 @@ fn test_circuit_multi_ms(qubits: Vec<usize>) {
         comparison_circuit += Hadamard::new(2);
         comparison_circuit += CNOT::new(0, 1);
         comparison_circuit += CNOT::new(1, 2);
-        comparison_circuit += RotateZ::new(2, CalculatorFloat::FRAC_PI_4);
+        comparison_circuit += RotateZ::new(2, CalculatorFloat::FRAC_PI_2);
         comparison_circuit += CNOT::new(1, 2);
         comparison_circuit += CNOT::new(0, 1);
         comparison_circuit += Hadamard::new(0);
@@ -306,7 +306,7 @@ fn test_circuit_multi_zz(qubits: Vec<usize>) {
         let mut comparison_circuit = Circuit::new();
 
         comparison_circuit += CNOT::new(0, 1);
-        comparison_circuit += RotateZ::new(1, CalculatorFloat::FRAC_PI_4);
+        comparison_circuit += RotateZ::new(1, CalculatorFloat::FRAC_PI_2);
         comparison_circuit += CNOT::new(0, 1);
 
         assert!(c == comparison_circuit);
@@ -316,7 +316,7 @@ fn test_circuit_multi_zz(qubits: Vec<usize>) {
 
         comparison_circuit += CNOT::new(0, 1);
         comparison_circuit += CNOT::new(1, 2);
-        comparison_circuit += RotateZ::new(2, CalculatorFloat::FRAC_PI_4);
+        comparison_circuit += RotateZ::new(2, CalculatorFloat::FRAC_PI_2);
         comparison_circuit += CNOT::new(1, 2);
         comparison_circuit += CNOT::new(0, 1);
 
@@ -451,7 +451,7 @@ fn test_matrix_output_three_multi_qubit_zz(qubits: Vec<usize>) {
 }
 
 #[test]
-fn test_clone_partial_eq_mulit_qubit_ms() {
+fn test_clone_partial_eq_multi_qubit_ms() {
     let qubits = vec![0, 1, 2];
 
     let gate = MultiQubitZZ::new(qubits.clone(), CalculatorFloat::FRAC_PI_2);
@@ -475,7 +475,7 @@ fn test_clone_partial_eq_mulit_qubit_ms() {
 }
 
 #[test]
-fn test_operate_mulit_qubit_zz() {
+fn test_operate_multi_qubit_zz() {
     let qubits = vec![0, 1, 2];
     let gate = MultiQubitZZ::new(qubits.clone(), CalculatorFloat::FRAC_PI_2);
     assert_eq!(gate.hqslang(), "MultiQubitZZ");

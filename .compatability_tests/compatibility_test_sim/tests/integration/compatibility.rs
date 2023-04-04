@@ -129,6 +129,7 @@ fn test_circuits_mq(iteration: (bool, bool, bool), value: usize) {
     let final_matrix_mqms = unitary_mqms.dot(&final_matrix);
 
     // Serializing .circuit()
+
     let mqzz_circuit = mqzz.circuit();
     let mqms_circuit = mqms.circuit();
     let json_mqzz_circuit = serde_json::to_string(&mqzz_circuit).unwrap();
@@ -168,6 +169,9 @@ fn test_circuits_mq(iteration: (bool, bool, bool), value: usize) {
     let backend = Backend::new(3);
     let (_, _, result_mqzz) = backend.run_circuit(&circuit_mqzz_fromj).unwrap();
     let (_, _, result_mqms) = backend.run_circuit(&circuit_mqms_fromj).unwrap();
+
+    let mqzz_state_vector = Array1::<Complex64>::from_iter(result_mqzz["out"][0].iter().cloned());
+    let mqms_state_vector = Array1::<Complex64>::from_iter(result_mqms["out"][0].iter().cloned());
 
     for (el1, el2) in result_mqzz["out"][0].iter().zip(
         final_matrix_mqzz

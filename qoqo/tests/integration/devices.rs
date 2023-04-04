@@ -86,6 +86,35 @@ fn test_number_rows() {
     })
 }
 
+#[test]
+fn test_gate_names() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let device = new_genericlattice();
+
+        let singe_qubit_gates = device
+            .call_method0(py, "single_qubit_gate_names")
+            .unwrap()
+            .extract::<Vec<String>>(py)
+            .unwrap();
+        assert!(singe_qubit_gates.contains(&"RotateX".to_string()));
+        assert!(singe_qubit_gates.contains(&"RotateZ".to_string()));
+
+        let two_qubit_gates = device
+            .call_method0(py, "two_qubit_gate_names")
+            .unwrap()
+            .extract::<Vec<String>>(py)
+            .unwrap();
+        assert_eq!(two_qubit_gates, vec!["CNOT".to_string()]);
+        let multi_qubit_gates = device
+            .call_method0(py, "multi_qubit_gate_names")
+            .unwrap()
+            .extract::<Vec<String>>(py)
+            .unwrap();
+        assert_eq!(multi_qubit_gates, Vec::<String>::new());
+    })
+}
+
 // Test number_qubits() for AllToAllDevice
 #[test_case(new_alltoalldevice(); "all_to_all")]
 #[test_case(new_genericdevice(); "generic")]

@@ -511,6 +511,18 @@ impl Device for GenericDevice {
     fn to_generic_device(&self) -> GenericDevice {
         self.clone()
     }
+
+    fn single_qubit_gate_names(&self) -> Vec<String> {
+        self.single_qubit_gates.keys().cloned().collect()
+    }
+
+    fn two_qubit_gate_names(&self) -> Vec<String> {
+        self.two_qubit_gates.keys().cloned().collect()
+    }
+
+    fn multi_qubit_gate_names(&self) -> Vec<String> {
+        self.multi_qubit_gates.keys().cloned().collect()
+    }
 }
 
 impl crate::operations::SupportedVersion for GenericDevice {}
