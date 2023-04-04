@@ -31,6 +31,7 @@
 //!     accessing the quantum computing hardware. The devices also encode a connectivity model
 //!
 
+#[cfg(feature = "unstable_qoqo_devices")]
 use std::collections::HashSet;
 
 use crate::RoqoqoBackendError;
