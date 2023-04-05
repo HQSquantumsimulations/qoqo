@@ -12,9 +12,11 @@
 
 //! Qoqo measurement inputs
 
+use bincode::{deserialize, serialize};
 use num_complex::Complex64;
-use pyo3::exceptions::{PyRuntimeError, PyTypeError};
+use pyo3::exceptions::{PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
+use pyo3::types::PyByteArray;
 use roqoqo::measurements::{
     CheatedInput, CheatedPauliZProductInput, PauliProductMask, PauliZProductInput,
 };
@@ -118,6 +120,74 @@ impl PauliZProductInputWrapper {
             .map_err(|x| {
                 PyRuntimeError::new_err(format!("Failed to add symbolic expectation value {:?}", x))
             })
+    }
+
+    /// Serialize the PauliZProductInput to json form.
+    ///
+    /// Returns:
+    ///     str: The serialized PauliZProductInput.
+    ///
+    /// Raises:
+    ///     PyRuntimeError: Unexpected error serializing PauliZProductInput.
+    pub fn to_json(&self) -> PyResult<String> {
+        serde_json::to_string(&self.internal)
+            .map_err(|_| PyRuntimeError::new_err("Unexpected error serializing PauliZProductInput"))
+    }
+
+    /// Deserialize the PauliZProductInput from json form.
+    ///
+    /// Returns:
+    ///     PauliZProductInput: The deserialized PauliZProductInput.
+    ///
+    /// Raises:
+    ///     PyRuntimeError: Cannot deserialize string to PauliZProductInput.
+    #[staticmethod]
+    pub fn from_json(json_string: &str) -> PyResult<Self> {
+        Ok(Self {
+            internal: serde_json::from_str(json_string).map_err(|_| {
+                PyValueError::new_err("Cannot deserialize string to PauliZProductInput")
+            })?,
+        })
+    }
+
+    /// Return the bincode representation of the PauliZProductInput using the [bincode] crate.
+    ///
+    /// Returns:
+    ///     ByteArray: The serialized PauliZProductInput (in [bincode] form).
+    ///
+    /// Raises:
+    ///     ValueError: Cannot serialize PauliZProductInput to bytes.
+    pub fn to_bincode(&self) -> PyResult<Py<PyByteArray>> {
+        let serialized = serialize(&self.internal)
+            .map_err(|_| PyValueError::new_err("Cannot serialize PauliZProductInput to bytes"))?;
+        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+            PyByteArray::new(py, &serialized[..]).into()
+        });
+        Ok(b)
+    }
+
+    #[staticmethod]
+    /// Convert the bincode representation of the PauliZProductInput to a PauliZProductInput using the [bincode] crate.
+    ///
+    /// Args:
+    ///     input (ByteArray): The serialized PauliZProductInput (in [bincode] form).
+    ///
+    /// Returns:
+    ///     PauliZProductInput: The deserialized PauliZProductInput.
+    ///
+    /// Raises:
+    ///     TypeError: Input cannot be converted to byte array.
+    ///     ValueError: Input cannot be deserialized to PauliZProductInput.
+    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
+        let bytes = input
+            .extract::<Vec<u8>>()
+            .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
+
+        Ok(Self {
+            internal: deserialize(&bytes[..]).map_err(|_| {
+                PyValueError::new_err("Input cannot be deserialized to PauliZProductInput")
+            })?,
+        })
     }
 
     /// Implement __repr__ magic method
@@ -243,6 +313,75 @@ impl CheatedPauliZProductInputWrapper {
             })
     }
 
+    /// Serialize the CheatedPauliZProductInput to json form.
+    ///
+    /// Returns:
+    ///     str: The serialized CheatedPauliZProductInput.
+    ///
+    /// Raises:
+    ///     PyRuntimeError: Unexpected error serializing CheatedPauliZProductInput.
+    pub fn to_json(&self) -> PyResult<String> {
+        serde_json::to_string(&self.internal)
+            .map_err(|_| PyRuntimeError::new_err("Unexpected error serializing PauliZProductInput"))
+    }
+
+    /// Deserialize the CheatedPauliZProductInput from json form.
+    ///
+    /// Returns:
+    ///     CheatedPauliZProductInput: The deserialized CheatedPauliZProductInput.
+    ///
+    /// Raises:
+    ///     PyRuntimeError: Cannot deserialize string to CheatedPauliZProductInput.
+    #[staticmethod]
+    pub fn from_json(json_string: &str) -> PyResult<Self> {
+        Ok(Self {
+            internal: serde_json::from_str(json_string).map_err(|_| {
+                PyValueError::new_err("Cannot deserialize string to PauliZProductInput")
+            })?,
+        })
+    }
+
+    /// Return the bincode representation of the CheatedPauliZProductInput using the [bincode] crate.
+    ///
+    /// Returns:
+    ///     ByteArray: The serialized CheatedPauliZProductInput (in [bincode] form).
+    ///
+    /// Raises:
+    ///     ValueError: Cannot serialize CheatedPauliZProductInput to bytes.
+    pub fn to_bincode(&self) -> PyResult<Py<PyByteArray>> {
+        let serialized = serialize(&self.internal).map_err(|_| {
+            PyValueError::new_err("Cannot serialize CheatedPauliZProductInput to bytes")
+        })?;
+        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+            PyByteArray::new(py, &serialized[..]).into()
+        });
+        Ok(b)
+    }
+
+    #[staticmethod]
+    /// Convert the bincode representation of the CheatedPauliZProductInput to a CheatedPauliZProductInput using the [bincode] crate.
+    ///
+    /// Args:
+    ///     input (ByteArray): The serialized CheatedPauliZProductInput (in [bincode] form).
+    ///
+    /// Returns:
+    ///     CheatedPauliZProductInput: The deserialized CheatedPauliZProductInput.
+    ///
+    /// Raises:
+    ///     TypeError: Input cannot be converted to byte array.
+    ///     ValueError: Input cannot be deserialized to CheatedPauliZProductInput.
+    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
+        let bytes = input
+            .extract::<Vec<u8>>()
+            .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
+
+        Ok(Self {
+            internal: deserialize(&bytes[..]).map_err(|_| {
+                PyValueError::new_err("Input cannot be deserialized to CheatedPauliZProductInput")
+            })?,
+        })
+    }
+
     /// Implement __repr__ magic method
     pub fn __repr__(&self) -> String {
         format!("{:?}", self.internal)
@@ -329,6 +468,74 @@ impl CheatedInputWrapper {
                     x
                 ))
             })
+    }
+
+    /// Serialize the CheatedInput to json form.
+    ///
+    /// Returns:
+    ///     str: The serialized CheatedInput.
+    ///
+    /// Raises:
+    ///     PyRuntimeError: Unexpected error serializing CheatedInput.
+    pub fn to_json(&self) -> PyResult<String> {
+        serde_json::to_string(&self.internal)
+            .map_err(|_| PyRuntimeError::new_err("Unexpected error serializing PauliZProductInput"))
+    }
+
+    /// Deserialize the CheatedInput from json form.
+    ///
+    /// Returns:
+    ///     CheatedInput: The deserialized CheatedInput.
+    ///
+    /// Raises:
+    ///     PyRuntimeError: Cannot deserialize string to CheatedInput.
+    #[staticmethod]
+    pub fn from_json(json_string: &str) -> PyResult<Self> {
+        Ok(Self {
+            internal: serde_json::from_str(json_string).map_err(|_| {
+                PyValueError::new_err("Cannot deserialize string to PauliZProductInput")
+            })?,
+        })
+    }
+
+    /// Return the bincode representation of the CheatedInput using the [bincode] crate.
+    ///
+    /// Returns:
+    ///     ByteArray: The serialized CheatedInput (in [bincode] form).
+    ///
+    /// Raises:
+    ///     ValueError: Cannot serialize CheatedInput to bytes.
+    pub fn to_bincode(&self) -> PyResult<Py<PyByteArray>> {
+        let serialized = serialize(&self.internal)
+            .map_err(|_| PyValueError::new_err("Cannot serialize CheatedInput to bytes"))?;
+        let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
+            PyByteArray::new(py, &serialized[..]).into()
+        });
+        Ok(b)
+    }
+
+    #[staticmethod]
+    /// Convert the bincode representation of the CheatedInput to a CheatedInput using the [bincode] crate.
+    ///
+    /// Args:
+    ///     input (ByteArray): The serialized CheatedInput (in [bincode] form).
+    ///
+    /// Returns:
+    ///     CheatedInput: The deserialized CheatedInput.
+    ///
+    /// Raises:
+    ///     TypeError: Input cannot be converted to byte array.
+    ///     ValueError: Input cannot be deserialized to CheatedInput.
+    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
+        let bytes = input
+            .extract::<Vec<u8>>()
+            .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
+
+        Ok(Self {
+            internal: deserialize(&bytes[..]).map_err(|_| {
+                PyValueError::new_err("Input cannot be deserialized to CheatedInput")
+            })?,
+        })
     }
 
     /// Implement __repr__ magic method
