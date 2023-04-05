@@ -6,7 +6,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ### Fixed in 1.3.2
 
-* Measurement inputs cannot be passed properly in Python interface due to missing serialisation functions
+* Measurement inputs can now be passed properly in Python interface (previously, there were serialisation functions missing)
 
 ## 1.3.1
 
