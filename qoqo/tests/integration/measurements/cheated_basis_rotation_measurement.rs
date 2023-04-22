@@ -384,6 +384,15 @@ fn test_to_from_bincode() {
             .unwrap();
         let _ = input.call_method1("add_pauliz_product", ("ro",)).unwrap();
 
+        let serialised = input.call_method0("to_bincode").unwrap();
+        let new_input = input;
+        let deserialised = new_input
+            .call_method1("from_bincode", (serialised,))
+            .unwrap()
+            .downcast::<PyCell<CheatedPauliZProductInputWrapper>>()
+            .unwrap();
+        assert_eq!(format!("{:?}", input), format!("{:?}", deserialised));
+
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
         let br_type = py.get_type::<CheatedPauliZProductWrapper>();
@@ -428,6 +437,15 @@ fn test_to_from_json() {
             .downcast::<PyCell<CheatedPauliZProductInputWrapper>>()
             .unwrap();
         let _ = input.call_method1("add_pauliz_product", ("ro",)).unwrap();
+
+        let serialised = input.call_method0("to_json").unwrap();
+        let new_input = input;
+        let deserialised = new_input
+            .call_method1("from_json", (serialised,))
+            .unwrap()
+            .downcast::<PyCell<CheatedPauliZProductInputWrapper>>()
+            .unwrap();
+        assert_eq!(format!("{:?}", input), format!("{:?}", deserialised));
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 

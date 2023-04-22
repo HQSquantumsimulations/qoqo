@@ -95,7 +95,7 @@ impl AllToAllDevice {
         self
     }
 
-    /// Function that allows to set a unifromg gate time per gate type for the two-qubit-gates.
+    /// Function that allows to set a uniform gate time per gate type for the two-qubit-gates.
     ///
     /// # Arguments
     ///
@@ -154,8 +154,8 @@ impl AllToAllDevice {
     /// # Arguments
     ///
     /// * `gate` - hqslang name of the two-qubit-gate.
-    /// * `control` - The control qubit for which the gate time is set
-    /// * `target` - The target qubit for which the gate time is set
+    /// * `control` - The control qubit for which the gate time is set.
+    /// * `target` - The target qubit for which the gate time is set.
     /// * `gate_time` - gate time for the given gate.
     ///
     /// # Returns
@@ -174,7 +174,35 @@ impl AllToAllDevice {
             .set_two_qubit_gate_time(gate, control, target, gate_time)
     }
 
-    /// Setting the gate time of a mulit qubit gate.
+    /// Setting the gate time of a two qubit gate.
+    ///
+    /// # Arguments
+    ///
+    /// * `gate` - hqslang name of the two-qubit-gate.
+    /// * `control_0` - The control_0 qubit for which the gate time is set.
+    /// * `control_1` - The control_1 qubit for which the gate time is set.
+    /// * `target` - The target qubit for which the gate time is set.
+    /// * `gate_time` - gate time for the given gate.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(())` - The gate time was correctly set and nothing is returned
+    /// * `Err(RoqoqoError::GenericError)` - Control_0 qubit set is larger than the number qubits in the device
+    /// * `Err(RoqoqoError::GenericError)` - Control_1 qubit set is larger than the number qubits in the device
+    /// * `Err(RoqoqoError::GenericError)` - Target qubit set is larger than the number qubits in the device
+    pub fn set_three_qubit_gate_time(
+        &mut self,
+        gate: &str,
+        control_0: usize,
+        control_1: usize,
+        target: usize,
+        gate_time: f64,
+    ) -> Result<(), RoqoqoError> {
+        self.generic_device
+            .set_three_qubit_gate_time(gate, control_0, control_1, target, gate_time)
+    }
+
+    /// Setting the gate time of a multi qubit gate.
     ///
     /// # Arguments
     ///
@@ -368,6 +396,17 @@ impl Device for AllToAllDevice {
             .two_qubit_gate_time(hqslang, control, target)
     }
 
+    fn three_qubit_gate_time(
+        &self,
+        hqslang: &str,
+        control_0: &usize,
+        control_1: &usize,
+        target: &usize,
+    ) -> Option<f64> {
+        self.generic_device
+            .three_qubit_gate_time(hqslang, control_0, control_1, target)
+    }
+
     fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
         self.generic_device.multi_qubit_gate_time(hqslang, qubits)
     }
@@ -398,6 +437,86 @@ impl Device for AllToAllDevice {
             }
         }
         vector
+    }
+    fn single_qubit_gate_names(&self) -> Vec<String> {
+        self.generic_device
+            .single_qubit_gates
+            .keys()
+            .cloned()
+            .collect()
+    }
+
+    fn two_qubit_gate_names(&self) -> Vec<String> {
+        self.generic_device
+            .two_qubit_gates
+            .keys()
+            .cloned()
+            .collect()
+    }
+
+    fn multi_qubit_gate_names(&self) -> Vec<String> {
+        self.generic_device
+            .multi_qubit_gates
+            .keys()
+            .cloned()
+            .collect()
+    }
+}
+
+#[cfg(feature = "unstable_qoqo_devices")]
+impl crate::devices::QoqoDevice for AllToAllDevice {
+    fn longest_chains(&self) -> Vec<Vec<usize>> {
+        vec![(0..self.number_qubits).collect()]
+    }
+
+    fn longest_closed_chains(&self) -> Vec<Vec<usize>> {
+        vec![(0..self.number_qubits).collect()]
+    }
+
+    fn single_qubit_gate_time(&self, hqslang: &str, qubit: &usize) -> Option<f64> {
+        Device::single_qubit_gate_time(self, hqslang, qubit)
+    }
+
+    fn two_qubit_gate_time(&self, hqslang: &str, control: &usize, target: &usize) -> Option<f64> {
+        Device::two_qubit_gate_time(self, hqslang, control, target)
+    }
+
+    fn three_qubit_gate_time(
+        &self,
+        hqslang: &str,
+        control_0: &usize,
+        control_1: &usize,
+        target: &usize,
+    ) -> Option<f64> {
+        Device::three_qubit_gate_time(self, hqslang, control_0, control_1, target)
+    }
+
+    fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
+        Device::multi_qubit_gate_time(self, hqslang, qubits)
+    }
+
+    fn qubit_decoherence_rates(&self, qubit: &usize) -> Option<Array2<f64>> {
+        Device::qubit_decoherence_rates(self, qubit)
+    }
+
+    fn number_qubits(&self) -> usize {
+        Device::number_qubits(self)
+    }
+
+    fn two_qubit_edges(&self) -> Vec<(usize, usize)> {
+        Device::two_qubit_edges(self)
+    }
+
+    fn single_qubit_gate_names(&self) -> Vec<String> {
+        Device::single_qubit_gate_names(self)
+    }
+
+    fn two_qubit_gate_names(&self) -> Vec<String> {
+        Device::two_qubit_gate_names(self)
+    }
+
+    fn multi_qubit_gate_names(&self) -> Vec<String> {
+        Device::multi_qubit_gate_names(self)
     }
 }
 

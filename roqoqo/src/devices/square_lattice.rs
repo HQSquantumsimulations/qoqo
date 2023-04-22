@@ -97,13 +97,14 @@ impl SquareLatticeDevice {
     /// An SquareLatticeDevice with updated gate times.
     ///
     pub fn set_all_single_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
+        let number_qubits = <Self as Device>::number_qubits(&self);
         if let Some(gate_times) = self.generic_device.single_qubit_gates.get_mut(gate) {
             for (_, gatetime) in gate_times.iter_mut() {
                 *gatetime = gate_time
             }
         } else {
-            let mut gatetimes: HashMap<usize, f64> = HashMap::with_capacity(self.number_qubits());
-            for qubit in 0..self.number_qubits() {
+            let mut gatetimes: HashMap<usize, f64> = HashMap::with_capacity(number_qubits);
+            for qubit in 0..number_qubits {
                 gatetimes.insert(qubit, gate_time);
             }
             self.generic_device
@@ -125,13 +126,14 @@ impl SquareLatticeDevice {
     /// An SquareLatticeDevice with updated gate times.
     ///
     pub fn set_all_two_qubit_gate_times(mut self, gate: &str, gate_time: f64) -> Self {
+        let number_qubits = <Self as Device>::number_qubits(&self);
         if let Some(gate_times) = self.generic_device.two_qubit_gates.get_mut(gate) {
             for (_, gatetime) in gate_times.iter_mut() {
                 *gatetime = gate_time
             }
         } else {
             let mut gatetimes: HashMap<(usize, usize), f64> =
-                HashMap::with_capacity(self.number_qubits() * 4);
+                HashMap::with_capacity(number_qubits * 4);
             // insert horizontal terms
             for row in 0..self.number_rows() {
                 for column in 0..self.number_columns() - 1 {
@@ -204,13 +206,13 @@ impl SquareLatticeDevice {
     /// # Arguments
     ///
     /// * `gate` - hqslang name of the two-qubit-gate.
-    /// * `control` - The control qubit for which the gate time is set
-    /// * `target` - The target qubit for which the gate time is set
-    /// * `gate_time` - gate time for the given gate.
+    /// * `control` - The control qubit for which the gate time is set.
+    /// * `target` - The target qubit for which the gate time is set.
+    /// * `gate_time` - The gate time for the given gate.
     ///
     /// # Returns
     ///
-    /// An SquareLatticeDevice with updated gate times or
+    /// A SquareLatticeDevice with updated gate times.
     ///
     pub fn set_two_qubit_gate_time(
         &mut self,
@@ -241,17 +243,43 @@ impl SquareLatticeDevice {
         }
     }
 
-    /// Setting the gate time of a mulit qubit gate.
+    /// Setting the gate time of a three qubit gate.
+    ///
+    /// # Arguments
+    ///
+    /// * `gate` - hqslang name of the two-qubit-gate.
+    /// * `control_0` - The control_0 qubit for which the gate time is set.
+    /// * `control_1` - The control_1 qubit for which the gate time is set.
+    /// * `target` - The target qubit for which the gate time is set.
+    /// * `gate_time` - The gate time for the given gate.
+    ///
+    /// # Returns
+    ///
+    /// A SquareLatticeDevice with updated gate times.
+    ///
+    pub fn set_three_qubit_gate_time(
+        &mut self,
+        gate: &str,
+        control_0: usize,
+        control_1: usize,
+        target: usize,
+        gate_time: f64,
+    ) -> Result<(), RoqoqoError> {
+        self.generic_device
+            .set_three_qubit_gate_time(gate, control_0, control_1, target, gate_time)
+    }
+
+    /// Setting the gate time of a multi qubit gate.
     ///
     /// # Arguments
     ///
     /// * `gate` - hqslang name of the multi-qubit-gate.
-    /// * `qubits` - The qubits for which the gate time is set
-    /// * `gate_time` - gate time for the given gate.
+    /// * `qubits` - The qubits for which the gate time is set.
+    /// * `gate_time` - The gate time for the given gate.
     ///
     /// # Returns
     ///
-    /// An SquareLatticeDevice with updated gate times or
+    /// A SquareLatticeDevice with updated gate times.
     ///
     pub fn set_multi_qubit_gate_time(
         &mut self,
@@ -278,10 +306,11 @@ impl SquareLatticeDevice {
         mut self,
         rates: Array2<f64>,
     ) -> Result<Self, RoqoqoError> {
+        let number_qubits = <Self as Device>::number_qubits(&self);
         // Check if input matrix has the dimension (3x3)
         let shape = rates.shape();
         if shape == [3, 3] {
-            for qubit in 0..self.number_qubits() {
+            for qubit in 0..number_qubits {
                 self.generic_device
                     .set_qubit_decoherence_rates(qubit, rates.clone())?;
             }
@@ -344,7 +373,8 @@ impl SquareLatticeDevice {
     ///
     /// * `damping` - The damping rates.
     pub fn add_damping_all(mut self, damping: f64) -> Self {
-        for qubit in 0..self.number_qubits() {
+        let number_qubits = <Self as Device>::number_qubits(&self);
+        for qubit in 0..number_qubits {
             self.generic_device
                 .add_damping(qubit, damping)
                 .expect("Checked insertion fails");
@@ -358,7 +388,8 @@ impl SquareLatticeDevice {
     ///
     /// * `dephasing` - The dephasing rates.
     pub fn add_dephasing_all(mut self, dephasing: f64) -> Self {
-        for qubit in 0..self.number_qubits() {
+        let number_qubits = <Self as Device>::number_qubits(&self);
+        for qubit in 0..number_qubits {
             self.generic_device
                 .add_dephasing(qubit, dephasing)
                 .expect("Checked insertion fails");
@@ -372,7 +403,8 @@ impl SquareLatticeDevice {
     ///
     /// * `depolarising` - The depolarising rates.
     pub fn add_depolarising_all(mut self, depolarising: f64) -> Self {
-        for qubit in 0..self.number_qubits() {
+        let number_qubits = <Self as Device>::number_qubits(&self);
+        for qubit in 0..number_qubits {
             self.generic_device
                 .add_depolarising(qubit, depolarising)
                 .expect("Checked insertion fails");
@@ -403,6 +435,17 @@ impl Device for SquareLatticeDevice {
     fn two_qubit_gate_time(&self, hqslang: &str, control: &usize, target: &usize) -> Option<f64> {
         self.generic_device
             .two_qubit_gate_time(hqslang, control, target)
+    }
+
+    fn three_qubit_gate_time(
+        &self,
+        hqslang: &str,
+        control_0: &usize,
+        control_1: &usize,
+        target: &usize,
+    ) -> Option<f64> {
+        self.generic_device
+            .three_qubit_gate_time(hqslang, control_0, control_1, target)
     }
 
     fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
@@ -449,6 +492,158 @@ impl Device for SquareLatticeDevice {
             }
         }
         vector
+    }
+    fn single_qubit_gate_names(&self) -> Vec<String> {
+        self.generic_device
+            .single_qubit_gates
+            .keys()
+            .cloned()
+            .collect()
+    }
+
+    fn two_qubit_gate_names(&self) -> Vec<String> {
+        self.generic_device
+            .two_qubit_gates
+            .keys()
+            .cloned()
+            .collect()
+    }
+
+    fn multi_qubit_gate_names(&self) -> Vec<String> {
+        self.generic_device
+            .multi_qubit_gates
+            .keys()
+            .cloned()
+            .collect()
+    }
+}
+
+#[cfg(feature = "unstable_qoqo_devices")]
+impl crate::devices::QoqoDevice for SquareLatticeDevice {
+    fn longest_chains(&self) -> Vec<Vec<usize>> {
+        let number_qubits = crate::devices::QoqoDevice::number_qubits(self);
+        let mut return_vec: Vec<Vec<usize>> = Vec::with_capacity(2);
+        let mut chain_vec: Vec<usize> = Vec::with_capacity(number_qubits);
+        for row in 0..self.number_rows {
+            if row % 2 == 0 {
+                for column in 0..self.number_columns {
+                    chain_vec.push(row * self.number_columns + column)
+                }
+            } else {
+                for column in 0..self.number_columns {
+                    chain_vec.push((row + 1) * self.number_columns - column - 1)
+                }
+            }
+        }
+        return_vec.push(chain_vec);
+        let mut chain_vec: Vec<usize> = Vec::with_capacity(number_qubits);
+        for column in 0..self.number_columns {
+            if column % 2 == 0 {
+                for row in 0..self.number_rows {
+                    chain_vec.push(column * self.number_rows + row)
+                }
+            } else {
+                for row in 0..self.number_rows {
+                    chain_vec.push((column + 1) * self.number_rows - row - 1)
+                }
+            }
+        }
+        return_vec.push(chain_vec);
+        return_vec
+    }
+
+    fn longest_closed_chains(&self) -> Vec<Vec<usize>> {
+        let number_qubits = crate::devices::QoqoDevice::number_qubits(self);
+        let mut return_vec: Vec<Vec<usize>> = Vec::with_capacity(2);
+        let mut chain_vec: Vec<usize> = Vec::with_capacity(number_qubits);
+        if self.number_rows % 2 == 0 {
+            for row in 0..self.number_rows {
+                if row % 2 == 0 {
+                    for column in 1..self.number_columns {
+                        chain_vec.push(row * self.number_columns + column)
+                    }
+                } else {
+                    for column in 0..self.number_columns - 1 {
+                        chain_vec.push((row + 1) * self.number_columns - column - 1)
+                    }
+                }
+            }
+            // Go from bottom left to top left
+            for row in 0..self.number_rows {
+                chain_vec.push((self.number_rows - row - 1) * self.number_columns)
+            }
+        } else {
+            for row in 1..self.number_rows {
+                if row % 2 == 0 {
+                    for column in 0..self.number_columns - 1 {
+                        chain_vec.push(row * self.number_columns + column)
+                    }
+                } else {
+                    for column in 0..self.number_columns {
+                        chain_vec
+                            .push((row) * self.number_columns + self.number_columns - column - 2)
+                    }
+                }
+            }
+            // Go back up on right edge of device
+            for row in 0..self.number_rows {
+                chain_vec.push(
+                    (self.number_rows - row - 1) * self.number_columns + self.number_columns - 1,
+                )
+            }
+            // Go from top right to top left
+            for column in 1..self.number_columns {
+                chain_vec.push(self.number_columns - 1 - column)
+            }
+        }
+        return_vec.push(chain_vec);
+        return_vec
+    }
+
+    fn single_qubit_gate_time(&self, hqslang: &str, qubit: &usize) -> Option<f64> {
+        Device::single_qubit_gate_time(self, hqslang, qubit)
+    }
+
+    fn two_qubit_gate_time(&self, hqslang: &str, control: &usize, target: &usize) -> Option<f64> {
+        Device::two_qubit_gate_time(self, hqslang, control, target)
+    }
+
+    fn three_qubit_gate_time(
+        &self,
+        hqslang: &str,
+        control_0: &usize,
+        control_1: &usize,
+        target: &usize,
+    ) -> Option<f64> {
+        Device::three_qubit_gate_time(self, hqslang, control_0, control_1, target)
+    }
+
+    fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
+        Device::multi_qubit_gate_time(self, hqslang, qubits)
+    }
+
+    fn qubit_decoherence_rates(&self, qubit: &usize) -> Option<Array2<f64>> {
+        Device::qubit_decoherence_rates(self, qubit)
+    }
+
+    fn number_qubits(&self) -> usize {
+        Device::number_qubits(self)
+    }
+
+    fn two_qubit_edges(&self) -> Vec<(usize, usize)> {
+        Device::two_qubit_edges(self)
+    }
+
+    fn single_qubit_gate_names(&self) -> Vec<String> {
+        Device::single_qubit_gate_names(self)
+    }
+
+    fn two_qubit_gate_names(&self) -> Vec<String> {
+        Device::two_qubit_gate_names(self)
+    }
+
+    fn multi_qubit_gate_names(&self) -> Vec<String> {
+        Device::multi_qubit_gate_names(self)
     }
 }
 

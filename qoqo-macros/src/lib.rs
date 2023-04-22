@@ -27,9 +27,11 @@ mod operate;
 // mod operate_unitary;
 
 /// Array of field names that are reserved for use with specific traits
-const RESERVED_FIELDS: &[&str; 11] = &[
+const RESERVED_FIELDS: &[&str; 13] = &[
     "qubit",
     "control",
+    "control_0",
+    "control_1",
     "target",
     "theta",
     "qubits",
@@ -292,12 +294,12 @@ pub fn wrap(
     };
     let operate_two_qubit_quote = if attribute_arguments.contains("OperateTwoQubit") {
         quote! {
-            /// Returns contol qubit of the two-qubit operation
-            pub fn control(&self) -> usize{
+            /// Returns control qubit of the two-qubit operation
+            pub fn control(&self) -> usize {
                 self.internal.control().clone()
             }
             /// Returns target qubit of the two-qubit operation
-            pub fn target(&self) -> usize{
+            pub fn target(&self) -> usize {
                 self.internal.target().clone()
             }
         }
@@ -314,6 +316,37 @@ pub fn wrap(
     // } else {
     //     TokenStream::new()
     // };
+    let operate_three_qubit_quote = if attribute_arguments.contains("OperateThreeQubit") {
+        quote! {
+            /// Returns control_0 qubit of the three-qubit operation
+            pub fn control_0(&self) -> usize {
+                self.internal.control_0().clone()
+            }
+            /// Returns control_1 qubit of the three-qubit operation
+            pub fn control_1(&self) -> usize {
+                self.internal.control_1().clone()
+            }
+            /// Returns target qubit of the three-qubit operation
+            pub fn target(&self) -> usize {
+                self.internal.target().clone()
+            }
+        }
+    } else {
+        TokenStream::new()
+    };
+    let operate_three_qubit_gate_quote = if attribute_arguments.contains("OperateThreeQubitGate") {
+        quote! {
+            /// Returns circuit implementing the ThreeQubitGateOperation
+            ///
+            /// Returns:
+            ///     Circuit
+            pub fn circuit(&self) -> CircuitWrapper {
+                CircuitWrapper { internal: self.internal.circuit().clone() }
+            }
+        }
+    } else {
+        TokenStream::new()
+    };
     let operate_gate_quote = if attribute_arguments.contains("OperateGate") {
         quote! {
             /// Return unitary matrix of gate.
@@ -402,6 +435,8 @@ pub fn wrap(
             #operate_single_qubit_gate_quote
             #operate_two_qubit_quote
             // #operate_two_qubit_gate_quote
+            #operate_three_qubit_quote
+            #operate_three_qubit_gate_quote
             #operate_multi_qubit_quote
             #operate_multi_qubit_gate_quote
             #operate_gate_quote
@@ -595,6 +630,26 @@ pub fn devicewrapper(
                     .two_qubit_gate_time(hqslang, &control, &target)
             }
 
+            /// Returns the gate time of a three qubit operation if the three qubit operation is available on device.
+            ///
+            /// Args:
+            ///     hqslang[str]: The hqslang name of a single qubit gate.
+            ///     control_0[int]: The control_0 qubit the gate acts on.
+            ///     control_1[int]: The control_1 qubit the gate acts on.
+            ///     target[int]: The target qubit the gate acts on.
+            ///
+            /// Returns:
+            ///     Option[float]: None if gate is not available
+            ///
+            /// Raises:
+            ///     PyValueError: Qubit is not in device
+            ///
+            #[pyo3(text_signature = "(gate, control_0, control_1, target")]
+            pub fn three_qubit_gate_time(&self, hqslang: &str, control_0: usize, control_1: usize, target: usize) -> Option<f64> {
+                self.internal
+                    .three_qubit_gate_time(hqslang, &control_0, &control_1, &target)
+            }
+
             /// Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
             ///
             /// Args:
@@ -626,7 +681,7 @@ pub fn devicewrapper(
                 PyValueError::new_err(format!("{:?}", err)))
             }
 
-            /// Set the gate time of a single qubit gate.
+            /// Set the gate time of a two qubit gate.
             ///
             /// Args:
             ///     gate (str): hqslang name of the single-qubit-gate.
@@ -636,9 +691,26 @@ pub fn devicewrapper(
             ///
             /// Raises:
             ///     PyValueError: Qubit is not in device
-            #[pyo3(text_signature = "(qubit, control, targe, gate_time)")]
+            #[pyo3(text_signature = "(gate, control, target, gate_time)")]
             pub fn set_two_qubit_gate_time(&mut self, gate: &str, control: usize, target: usize, gate_time: f64) -> PyResult<()> {
                 self.internal.set_two_qubit_gate_time(gate, control, target, gate_time).map_err(|err|
+                    PyValueError::new_err(format!("{:?}", err)))
+            }
+
+            /// Set the gate time of a three qubit gate.
+            ///
+            /// Args:
+            ///     gate (str): hqslang name of the single-qubit-gate.
+            ///     control_0 (int): The control_0 qubit for which the gate time is set
+            ///     control_1 (int): The control_1 qubit for which the gate time is set
+            ///     target (int): The control qubit for which the gate time is set
+            ///     gate_time (float): The gate time for the given gate.
+            ///
+            /// Raises:
+            ///     PyValueError: Qubit is not in device
+            #[pyo3(text_signature = "(gate, control_0, control_1, target, gate_time)")]
+            pub fn set_three_qubit_gate_time(&mut self, gate: &str, control_0: usize, control_1: usize, target: usize, gate_time: f64) -> PyResult<()> {
+                self.internal.set_three_qubit_gate_time(gate, control_0, control_1, target, gate_time).map_err(|err|
                     PyValueError::new_err(format!("{:?}", err)))
             }
 
@@ -768,6 +840,33 @@ pub fn devicewrapper(
             fn to_generic_device(&self) -> GenericDeviceWrapper {
                 GenericDeviceWrapper{ internal: self.internal.to_generic_device()}
             }
+
+    /// Returns the names of a single qubit operations available on the device.
+    ///
+    /// Returns:
+    ///     List[strt]: The list of gate names.
+    pub fn single_qubit_gate_names(&self) -> Vec<String>{
+        self.internal.single_qubit_gate_names()
+    }
+
+    /// Returns the names of a two qubit operations available on the device.
+    ///
+    /// Returns:
+    ///     List[strt]: The list of gate names.
+    pub fn two_qubit_gate_names(&self) -> Vec<String>{
+        self.internal.two_qubit_gate_names()
+    }
+
+    /// Returns the names of a mutli qubit operations available on the device.
+    ///
+    /// The list of names also includes the three qubit gate operations.
+    ///
+    /// Returns:
+    ///     List[strt]: The list of gate names.
+    ///
+    pub fn multi_qubit_gate_names(&self) -> Vec<String>{
+        self.internal.multi_qubit_gate_names()
+    }
 
             /// Returns a copy of the device (copy here produces a deepcopy).
             ///

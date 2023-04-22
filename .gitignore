@@ -1,5 +1,6 @@
 Cargo.lock
 compatibility_test/target/*
+compatibility_test_sim/target/*
 */Cargo.lock
 target/*
 */docs/_build*
@@ -10,3 +11,4 @@ target/*
 *.DS_Store
 *.ipynb_checkpoints*
 *.vscode*
+*target*

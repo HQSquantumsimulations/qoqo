@@ -386,6 +386,15 @@ fn test_to_from_bincode() {
             .call_method1("add_operator_exp_val", ("test_diagonal", test_matrix, "ro"))
             .unwrap();
 
+        let serialised = input.call_method0("to_bincode").unwrap();
+        let new_input = input;
+        let deserialised = new_input
+            .call_method1("from_bincode", (serialised,))
+            .unwrap()
+            .downcast::<PyCell<CheatedInputWrapper>>()
+            .unwrap();
+        assert_eq!(format!("{:?}", input), format!("{:?}", deserialised));
+
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
         let br_type = py.get_type::<CheatedWrapper>();
@@ -438,6 +447,15 @@ fn test_to_from_json() {
         let _ = input
             .call_method1("add_operator_exp_val", ("test_diagonal", test_matrix, "ro"))
             .unwrap();
+
+        let serialised = input.call_method0("to_json").unwrap();
+        let new_input = input;
+        let deserialised = new_input
+            .call_method1("from_json", (serialised,))
+            .unwrap()
+            .downcast::<PyCell<CheatedInputWrapper>>()
+            .unwrap();
+        assert_eq!(format!("{:?}", input), format!("{:?}", deserialised));
 
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 

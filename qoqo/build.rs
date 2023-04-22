@@ -85,10 +85,10 @@ impl<'ast> Visit<'ast> for Visitor {
     fn visit_item_struct(&mut self, itemstruct: &'ast ItemStruct) {
         // Check attributes
         for att in itemstruct.attrs.clone() {
-            let path = att.path.get_ident().map(|id| id.to_string());
+            let path = att.path().get_ident().map(|id| id.to_string());
             // only consider the wrap attribute, if no derive attribute is present don't add anything
             // to the internal storage of the visitor
-            if att.style == AttrStyle::Outer && path == Some("wrap".to_string()) {
+            if matches!(att.style, AttrStyle::Outer) && path == Some("wrap".to_string()) {
                 let wrapper_ident = format_ident!("{}Wrapper", itemstruct.ident);
                 let field_information = extract_fields_with_types(itemstruct.fields.clone());
                 self.info_wrap
@@ -119,6 +119,7 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/single_qubit_gate_operations.rs",
     "src/operations/pragma_operations.rs",
     "src/operations/two_qubit_gate_operations.rs",
+    "src/operations/three_qubit_gate_operations.rs",
     "src/operations/multi_qubit_gate_operations.rs",
     "src/operations/measurement_operations.rs",
     "src/operations/define_operations.rs",
