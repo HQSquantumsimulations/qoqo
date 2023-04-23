@@ -382,3 +382,51 @@ struct RotateXY {
     theta: CalculatorFloat,
     phi: CalculatorFloat,
 }
+
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    Rotate,
+    OperateGate,
+    OperateSingleQubitGate
+)]
+/// Implements a rotation around an axis in the x-y plane in spherical coordinates.
+///
+/// .. math::
+/// U = \begin{pmatrix}
+/// 0 & e^{-i \theta\\\\
+/// e^{i \theta} & 0)
+/// \end{pmatrix}
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+///     theta (CalculatorFloat): The angle :math:`\theta` of the rotation.
+///
+struct GPi {
+    qubit: usize,
+    theta: CalculatorFloat,
+}
+
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    Rotate,
+    OperateGate,
+    OperateSingleQubitGate
+)]
+/// Implements a rotation around an axis in the x-y plane in spherical coordinates.
+///
+/// .. math::
+/// U = \begin{pmatrix}
+/// frac{1}{\sqrt{2}} & -i e^{-i \theta}\\\\
+/// -i e^{i \theta} & frac{1}{\sqrt{2}}
+/// \end{pmatrix}
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+///     theta (CalculatorFloat): The angle :math:`\theta` of the rotation.
+///
+struct GPi2 {
+    qubit: usize,
+    theta: CalculatorFloat,
+}

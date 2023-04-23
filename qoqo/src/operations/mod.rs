@@ -118,6 +118,8 @@ use pyo3::prelude::*;
 ///    PMInteraction
 ///    ComplexPMInteraction
 ///    MultiQubitMS
+///    GPi
+///    GPi2
 #[pymodule]
 
 pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
@@ -198,5 +200,7 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<ToffoliWrapper>()?;
     m.add_class::<MultiQubitMSWrapper>()?;
     m.add_class::<MultiQubitZZWrapper>()?;
+    m.add_class::<GPiWrapper>()?;
+    m.add_class::<GPi2Wrapper>()?;
     Ok(())
 }

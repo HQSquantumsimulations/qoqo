@@ -17,10 +17,10 @@ use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
-    HadamardWrapper, InvSqrtPauliXWrapper, PauliXWrapper, PauliYWrapper, PauliZWrapper,
-    PhaseShiftState0Wrapper, PhaseShiftState1Wrapper, RotateAroundSphericalAxisWrapper,
-    RotateXWrapper, RotateXYWrapper, RotateYWrapper, RotateZWrapper, SGateWrapper,
-    SingleQubitGateWrapper, SqrtPauliXWrapper, TGateWrapper,
+    GPi2Wrapper, GPiWrapper, HadamardWrapper, InvSqrtPauliXWrapper, PauliXWrapper, PauliYWrapper,
+    PauliZWrapper, PhaseShiftState0Wrapper, PhaseShiftState1Wrapper,
+    RotateAroundSphericalAxisWrapper, RotateXWrapper, RotateXYWrapper, RotateYWrapper,
+    RotateZWrapper, SGateWrapper, SingleQubitGateWrapper, SqrtPauliXWrapper, TGateWrapper,
 };
 use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorFloat;
@@ -625,6 +625,102 @@ fn test_new_phaseshiftstate1(input_operation: Operation, arguments: (u32, f64), 
     })
 }
 
+#[test_case(Operation::from(GPi::new(1, CalculatorFloat::ZERO)), (1, 0.0,), "__eq__"; "GPi_eq")]
+#[test_case(Operation::from(GPi::new(1, CalculatorFloat::ZERO)), (0, 0.0,), "__ne__"; "GPi_ne")]
+fn test_new_gpi(input_operation: Operation, arguments: (u32, f64), method: &str) {
+    let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<GPiWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .downcast::<PyCell<GPiWrapper>>()
+            .unwrap();
+
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        // Error initialisation
+        let result = operation_type.call1((0, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py.extract::<GPiWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((2, 0.0))
+            .unwrap()
+            .downcast::<PyCell<GPiWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<GPiWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "GPiWrapper { internal: GPi { qubit: 2, theta: Float(0.0) } }"
+        );
+    })
+}
+
+#[test_case(Operation::from(GPi2::new(1, CalculatorFloat::ZERO)), (1, 0.0,), "__eq__"; "GPi2_eq")]
+#[test_case(Operation::from(GPi2::new(1, CalculatorFloat::ZERO)), (0, 0.0,), "__ne__"; "GPi2_ne")]
+fn test_new_gpi2(input_operation: Operation, arguments: (u32, f64), method: &str) {
+    let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<GPi2Wrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .downcast::<PyCell<GPi2Wrapper>>()
+            .unwrap();
+
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        // Error initialisation
+        let result = operation_type.call1((0, vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py.extract::<GPi2Wrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((2, 0.0))
+            .unwrap()
+            .downcast::<PyCell<GPi2Wrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<GPi2Wrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "GPi2Wrapper { internal: GPi2 { qubit: 2, theta: Float(0.0) } }"
+        );
+    })
+}
+
 #[test_case(Operation::from(
     RotateAroundSphericalAxis::new(
         1,
@@ -877,6 +973,8 @@ fn test_new_singlequbitgate(
 ]
 #[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from("theta"))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from("theta"))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(1, CalculatorFloat::from("theta"))); "GPi")]
+#[test_case(Operation::from(GPi2::new(1, CalculatorFloat::from("theta"))); "GPi2")]
 fn test_pyo3_is_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -933,6 +1031,8 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from(0))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(1, CalculatorFloat::from(0))); "GPi")]
+#[test_case(Operation::from(GPi2::new(1, CalculatorFloat::from(0))); "GPi2")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -963,6 +1063,8 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
 ]
 #[test_case(CalculatorFloat::from(0), Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
 #[test_case(CalculatorFloat::from(0), Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from(0))); "PhaseShiftState1")]
+#[test_case(CalculatorFloat::from(0), Operation::from(GPi::new(1, CalculatorFloat::from(0))); "GPi")]
+#[test_case(CalculatorFloat::from(0), Operation::from(GPi2::new(1, CalculatorFloat::from(0))); "GPi2")]
 fn test_pyo3_theta(theta: CalculatorFloat, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1008,6 +1110,8 @@ fn test_pyo3_theta(theta: CalculatorFloat, input_operation: Operation) {
 #[test_case(0, Operation::from(Hadamard::new(0)); "Hadamard")]
 #[test_case(1, Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
 #[test_case(1, Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from(0))); "PhaseShiftState1")]
+#[test_case(1, Operation::from(GPi::new(1, CalculatorFloat::from(0))); "GPi")]
+#[test_case(1, Operation::from(GPi2::new(1, CalculatorFloat::from(0))); "GPi2")]
 fn test_pyo3_qubit(qubit: usize, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1059,6 +1163,8 @@ fn test_pyo3_qubit(qubit: usize, input_operation: Operation) {
     )); "SingleQubitGate")]
 #[test_case("PhaseShiftState0", Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
 #[test_case("PhaseShiftState1", Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from(0))); "PhaseShiftState1")]
+#[test_case("GPi", Operation::from(GPi::new(1, CalculatorFloat::from(0))); "GPi")]
+#[test_case("GPi2", Operation::from(GPi2::new(1, CalculatorFloat::from(0))); "GPi2")]
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1225,6 +1331,26 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         "PhaseShiftState1",
         ];
     "PhaseShiftState1")]
+#[test_case(
+    Operation::from(GPi::new(0, CalculatorFloat::from(0))),
+    vec![
+        "Operation",
+        "GateOperation",
+        "SingleQubitGateOperation",
+        "Rotation",
+        "GPi",
+        ];
+    "GPi")]
+#[test_case(
+    Operation::from(GPi2::new(0, CalculatorFloat::from(0))),
+    vec![
+        "Operation",
+        "GateOperation",
+        "SingleQubitGateOperation",
+        "Rotation",
+        "GPi2",
+        ];
+    "GPi2")]
 fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1280,6 +1406,8 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
 #[test_case(Operation::from(Hadamard::new(0)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0))); "GPi")]
+#[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0))); "GPi2")]
 fn test_pyo3_remapqubits(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1346,6 +1474,8 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 #[test_case(Operation::from(Hadamard::new(0)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0))); "GPi")]
+#[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0))); "GPi2")]
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
@@ -1402,6 +1532,8 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
 ]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(-1.0))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(0, CalculatorFloat::from(2.3))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(2.3))); "GPi")]
+#[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(2.3))); "GPi2")]
 fn test_pyo3_unitarymatrix(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1444,6 +1576,8 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
 ]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from("PI"))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(0, CalculatorFloat::from("PI"))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(0, CalculatorFloat::from("PI"))); "GPi")]
+#[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from("PI"))); "GPi2")]
 fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1529,6 +1663,8 @@ fn test_pyo3_unitarymatrix_singlequbitgate(input_operation: Operation) {
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0.0))); "GPi")]
+#[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0.0))); "GPi2")]
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1598,6 +1734,8 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0.0))); "GPi")]
+#[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0.0))); "GPi2")]
 fn test_pyo3_alpha_r(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1661,6 +1799,8 @@ fn test_pyo3_alpha_r(input_operation: Operation) {
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0.0))); "GPi")]
+#[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0.0))); "GPi2")]
 fn test_pyo3_alpha_i(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1724,6 +1864,8 @@ fn test_pyo3_alpha_i(input_operation: Operation) {
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0.0))); "GPi")]
+#[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0.0))); "GPi2")]
 fn test_pyo3_beta_r(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1787,6 +1929,8 @@ fn test_pyo3_beta_r(input_operation: Operation) {
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0.0))); "GPi")]
+#[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0.0))); "GPi2")]
 fn test_pyo3_beta_i(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1850,6 +1994,8 @@ fn test_pyo3_beta_i(input_operation: Operation) {
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0.0))); "GPi")]
+#[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0.0))); "GPi2")]
 fn test_pyo3_global_phase(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1947,6 +2093,14 @@ fn test_pyo3_global_phase(input_operation: Operation) {
     "PhaseShiftState1 { qubit: 0, theta: Float(0.0) }",
     Operation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0)));
     "PhaseShiftState1")]
+#[test_case(
+    "GPi { qubit: 0, theta: Float(0.0) }",
+    Operation::from(GPi::new(0, CalculatorFloat::from(0)));
+    "GPi")]
+#[test_case(
+    "GPi2 { qubit: 0, theta: Float(0.0) }",
+    Operation::from(GPi2::new(0, CalculatorFloat::from(0)));
+    "GPi2")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2017,6 +2171,8 @@ fn test_pyo3_substitute_parameters(input_operation: Operation) {
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from("theta"))); "RotateY")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from("theta"))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(0, CalculatorFloat::from("theta"))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(0, CalculatorFloat::from("theta"))); "GPi")]
+#[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from("theta"))); "GPi2")]
 fn test_pyo3_substitute_params_rotate(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2071,6 +2227,8 @@ fn test_pyo3_substitute_params_rotate(input_operation: Operation) {
 ]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from("theta"))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(0, CalculatorFloat::from("theta"))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(0, CalculatorFloat::from("theta"))); "GPi")]
+#[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from("theta"))); "GPi2")]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2093,6 +2251,8 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0))); "GPi")]
+#[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0))); "GPi2")]
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(0))); "RotateZ")]
 #[test_case(Operation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from(0))); "RotateY")]
@@ -2132,6 +2292,12 @@ fn test_ineffective_substitute_parameters(input_operation: Operation) {
 #[test_case(
     Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from(0.005))),
     Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from(0.005 * 1.5))); "PhaseShiftState1")]
+#[test_case(
+    Operation::from(GPi::new(1, CalculatorFloat::from(0.005))),
+    Operation::from(GPi::new(1, CalculatorFloat::from(0.005 * 1.5))); "GPi")]
+#[test_case(
+    Operation::from(GPi2::new(1, CalculatorFloat::from(0.005))),
+    Operation::from(GPi2::new(1, CalculatorFloat::from(0.005 * 1.5))); "GPi2")]
 #[test_case(
     Operation::from(
         RotateAroundSphericalAxis::new(
@@ -2188,6 +2354,8 @@ fn test_pyo3_rotate_powercf(first_op: Operation, second_op: Operation) {
 #[test_case(Operation::from(Hadamard::new(1)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from(0))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(1, CalculatorFloat::from(0))); "GPi")]
+#[test_case(Operation::from(GPi2::new(1, CalculatorFloat::from(0))); "GPi2")]
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(0))); "RotateZ")]
 #[test_case(Operation::from(RotateX::new(1, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(1, CalculatorFloat::from(0))); "RotateY")]
@@ -2221,6 +2389,8 @@ fn test_pyo3_mul(gate1: Operation) {
 #[test_case(Operation::from(Hadamard::new(1)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from(0))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(1, CalculatorFloat::from(0))); "GPi")]
+#[test_case(Operation::from(GPi2::new(1, CalculatorFloat::from(0))); "GPi2")]
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(0))); "RotateZ")]
 #[test_case(Operation::from(RotateX::new(1, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(1, CalculatorFloat::from(0))); "RotateY")]
@@ -2247,6 +2417,8 @@ fn test_pyo3_mul_error1(gate1: Operation) {
 #[test_case(Operation::from(Hadamard::new(1)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from(0))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(1, CalculatorFloat::from(0))); "GPi")]
+#[test_case(Operation::from(GPi2::new(1, CalculatorFloat::from(0))); "GPi2")]
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(0))); "RotateZ")]
 #[test_case(Operation::from(RotateX::new(1, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(1, CalculatorFloat::from(0))); "RotateY")]
@@ -2273,6 +2445,8 @@ fn test_pyo3_mul_error2(gate1: Operation) {
 #[test_case(Operation::from(Hadamard::new(1)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
 #[test_case(Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from(0))); "PhaseShiftState1")]
+#[test_case(Operation::from(GPi::new(1, CalculatorFloat::from(0))); "GPi")]
+#[test_case(Operation::from(GPi2::new(1, CalculatorFloat::from(0))); "GPi2")]
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::from(0))); "RotateZ")]
 #[test_case(Operation::from(RotateX::new(1, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(1, CalculatorFloat::from(0))); "RotateY")]
@@ -2375,6 +2549,12 @@ fn test_pyo3_mul_error3(gate1: Operation) {
 #[test_case(
     Operation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0))),
     Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from(0))); "PhaseShiftState1")]
+#[test_case(
+    Operation::from(GPi::new(0, CalculatorFloat::from(0))),
+    Operation::from(GPi::new(1, CalculatorFloat::from(0))); "GPi")]
+#[test_case(
+    Operation::from(GPi2::new(0, CalculatorFloat::from(0))),
+    Operation::from(GPi2::new(1, CalculatorFloat::from(0))); "GPi2")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
