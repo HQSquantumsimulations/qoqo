@@ -390,7 +390,7 @@ struct RotateXY {
     OperateGate,
     OperateSingleQubitGate
 )]
-/// Implements a rotation around an axis in the x-y plane in spherical coordinates.
+/// Implements a pi-rotation with an embedded phase.
 ///
 /// .. math::
 /// U = \begin{pmatrix}
@@ -414,7 +414,7 @@ struct GPi {
     OperateGate,
     OperateSingleQubitGate
 )]
-/// Implements a rotation around an axis in the x-y plane in spherical coordinates.
+/// Implements a pi/2-rotation with an embedded phase.
 ///
 /// .. math::
 /// U = \begin{pmatrix}

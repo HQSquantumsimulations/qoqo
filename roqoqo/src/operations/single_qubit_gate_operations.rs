@@ -1567,7 +1567,7 @@ impl OperateSingleQubitGate for RotateXY {
     }
 }
 
-/// Implements a rotation around an x- and y-axis in spherical coordinates.
+/// Implements a pi-rotation with an embedded phase.
 ///
 #[derive(
     Debug,
@@ -1581,7 +1581,6 @@ impl OperateSingleQubitGate for RotateXY {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct GPi {
     /// The qubit the unitary gate is applied to.
     qubit: usize,
@@ -1662,7 +1661,7 @@ impl OperateSingleQubitGate for GPi {
     }
 }
 
-/// Implements a rotation around an x- and y-axis in spherical coordinates.
+/// Implements a pi/2-rotation with an embedded phase.
 ///
 #[derive(
     Debug,
