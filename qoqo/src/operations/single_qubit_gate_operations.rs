@@ -394,8 +394,8 @@ struct RotateXY {
 ///
 /// .. math::
 /// U = \begin{pmatrix}
-/// 0 & e^{-i \theta\\\\
-/// e^{i \theta} & 0)
+/// 0 & e^{-i \theta}\\\\
+/// e^{i \theta} & 0
 /// \end{pmatrix}
 ///
 /// Args:
@@ -417,9 +417,9 @@ struct GPi {
 /// Implements a pi/2-rotation with an embedded phase.
 ///
 /// .. math::
-/// U = \begin{pmatrix}
-/// frac{1}{\sqrt{2}} & -i e^{-i \theta}\\\\
-/// -i e^{i \theta} & frac{1}{\sqrt{2}}
+/// U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+/// 1 & -i e^{-i \theta}\\\\
+/// -i e^{i \theta} & 1
 /// \end{pmatrix}
 ///
 /// Args:
