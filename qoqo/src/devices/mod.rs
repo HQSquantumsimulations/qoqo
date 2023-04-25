@@ -51,13 +51,7 @@ pub use all_to_all::AllToAllDeviceWrapper;
 /// * Actual hardware devices: These devices are provided by roqoqo backends and contain the necessary information for
 ///     accessing the quantum computing hardware. The devices also encode a connectivity model.
 ///
-/// .. autosummary::
-///    :toctree: generated/
-///
-///    AllToAllDevice
-///    SquareLatticeDevice
-///    GenericDevice
-///
+/// The devices were introduced after qoqo 1.0.0, but their design may be refactored later for backwards compatibility
 
 #[pymodule]
 pub fn devices(_py: Python, module: &PyModule) -> PyResult<()> {
