@@ -88,7 +88,7 @@ use test_roqoqo_1_2;
 // 1.1 and 1.2
 #[test_case(test_roqoqo_1_2::operations::InputBit::new("input".to_string(), 1, true).into(); "InputBit")]
 #[test_case(test_roqoqo_1_2::operations::PragmaLoop::new(2.0.into(), test_roqoqo_1_2::Circuit::new()).into(); "PragmaLoop")]
-#[test_case(test_roqoqo_1_2::operations::PhaseShiftedControlledPhase::new(0,1, 1.0.into()).into(); "PhaseShiftedControlledPhase")]
+#[test_case(test_roqoqo_1_3::operations::PhaseShiftedControlledPhase::new(0,1, 1.0.into(), 1.0.into()).into(); "PhaseShiftedControlledPhase")]
 
 fn test_bincode_compatibility_1_2(operation: test_roqoqo_1_2::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_2::Circuit::new();
