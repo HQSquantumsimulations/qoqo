@@ -101,6 +101,7 @@ pub enum QoqoBackendError {
 ///     QuantumProgram
 ///     operations
 ///     measurements
+///     devices
 ///
 
 #[pymodule]
@@ -109,9 +110,6 @@ fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<QuantumProgramWrapper>()?;
     #[cfg(feature = "circuitdag")]
     module.add_class::<CircuitDagWrapper>()?;
-    // module.add_class::<GenericChainWrapper>()?;
-    // module.add_class::<GenericDeviceWrapper>()?;
-    // module.add_class::<AllToAllDeviceWrapper>()?;
     let wrapper = wrap_pymodule!(operations::operations);
     module.add_wrapped(wrapper)?;
     let wrapper2 = wrap_pymodule!(measurements::measurements);
@@ -124,6 +122,6 @@ fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     let system_modules: &PyDict = system.getattr("modules")?.downcast()?;
     system_modules.set_item("qoqo.operations", module.getattr("operations")?)?;
     system_modules.set_item("qoqo.measurements", module.getattr("measurements")?)?;
-    // system_modules.set_item("qoqo.devices", module.getattr("devices")?)?;
+    system_modules.set_item("qoqo.devices", module.getattr("devices")?)?;
     Ok(())
 }
