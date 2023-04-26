@@ -1106,7 +1106,8 @@ fn test_is_parametrized_false(gate: SingleQubitGateOperation) {
     CalculatorFloat::from(0),
     CalculatorFloat::from(0),
     CalculatorFloat::from(0))); "Rotation")]
-#[test_case(SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate0")]
+    #[test_case(SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate0")]
+    #[test_case(SingleQubitGateOperation::from(PhaseShiftState1::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate1")]
 #[test_case(SingleQubitGateOperation::from(GPi::new(0, CalculatorFloat::from(PI))); "gpi")]
 #[test_case(SingleQubitGateOperation::from(GPi2::new(0, CalculatorFloat::from(PI))); "gpi2")]
 fn test_singlequbitgates_unitarity(gate: SingleQubitGateOperation) {
