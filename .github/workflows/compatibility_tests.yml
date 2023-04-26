@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  unittests_check_compatibility:
+  unittests_check_compatibility_1_0:
     name: unittests_check-compatibility-1-0
     runs-on: "ubuntu-latest"
     steps:
