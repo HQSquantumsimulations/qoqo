@@ -592,14 +592,14 @@ fn test_phaseshiftstate_rotate(qubit: usize, theta: CalculatorFloat) {
 #[test_case(0, CalculatorFloat::from(0); "test0")]
 #[test_case(1, CalculatorFloat::from("theta"); "test1")]
 fn test_gpi_gpi2_rotate(qubit: usize, theta: CalculatorFloat) {
-    // Test PhaseShiftState0 rotate
+    // Test GPi rotate
     let gate1 = GPi::new(qubit, theta.clone());
     let gate2 = GPi::new(qubit, gate1.theta().clone());
     assert_eq!(gate1, gate2);
     let theta_p: &CalculatorFloat = gate1.theta();
     assert_eq!(theta_p, &theta);
 
-    // Test PhaseShiftState1 rotate
+    // Test GPi2 rotate
     let gate1 = GPi2::new(qubit, theta.clone());
     let gate2 = GPi2::new(qubit, gate1.theta().clone());
     assert_eq!(gate1, gate2);
@@ -981,7 +981,7 @@ fn test_rotatearoundsphericalaxis_abp(
     assert_eq!(CalculatorFloat::from(global_phase), gate.global_phase());
 }
 
-/// Test alpha, beta, global phase of RotateAroundSphericalAxis
+/// Test alpha, beta, global phase of GPi
 #[test_case(
     CalculatorFloat::from(0.0),
     (0.0, 0.0), (0.0, -1.0), PI / 2.0; "theta = 0")]
@@ -998,7 +998,7 @@ fn test_gpi_abp(theta: CalculatorFloat, alpha: (f64, f64), beta: (f64, f64), glo
     assert_eq!(CalculatorFloat::from(global_phase), gate.global_phase());
 }
 
-/// Test alpha, beta, global phase of RotateAroundSphericalAxis
+/// Test alpha, beta, global phase of GPi2
 #[test_case(
     CalculatorFloat::from(0.0),
     (1.0 / 2.0_f64.sqrt(), 0.0), (0.0, -1.0 / 2.0_f64.sqrt()), 0.0; "theta = 0")]
@@ -1302,7 +1302,7 @@ fn test_rotatexy_substitute_parameters() {
     assert_eq!(result.phi().clone(), CalculatorFloat::from(PI / 2.0));
 }
 
-/// Test substitute parameters for FPi
+/// Test substitute parameters for GPi
 #[test]
 fn test_gpi_substitute_parameters() {
     let gate = GPi::new(0, CalculatorFloat::from("theta"));
@@ -2089,7 +2089,7 @@ fn test_phaseshiftstate1_powercf(theta: CalculatorFloat, power: CalculatorFloat)
     assert_eq!(power_gate.global_phase(), test_gate.global_phase());
 }
 
-/// Test powerfc function for PhaseShiftState1 with symbolic parameters
+/// Test powerfc function for GPi with symbolic parameters
 #[test_case(CalculatorFloat::from("theta"), CalculatorFloat::from("power"); "power_symbolic")]
 fn test_gpi_powercf(theta: CalculatorFloat, power: CalculatorFloat) {
     let gate = GPi::new(0, theta);
@@ -2103,7 +2103,7 @@ fn test_gpi_powercf(theta: CalculatorFloat, power: CalculatorFloat) {
     assert_eq!(power_gate.global_phase(), test_gate.global_phase());
 }
 
-/// Test powerfc function for PhaseShiftState1 with symbolic parameters
+/// Test powerfc function for GPi2 with symbolic parameters
 #[test_case(CalculatorFloat::from("theta"), CalculatorFloat::from("power"); "power_symbolic")]
 fn test_gpi2_powercf(theta: CalculatorFloat, power: CalculatorFloat) {
     let gate = GPi2::new(0, theta);
