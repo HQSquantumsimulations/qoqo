@@ -186,6 +186,7 @@ impl QuantumProgramWrapper {
                 .unwrap();
                 pyref.to_object(py)
             }),
+            _ => panic!("Unknown type of QuantumProgram"),
         }
     }
 
@@ -211,6 +212,7 @@ impl QuantumProgramWrapper {
                 measurement: _,
                 input_parameter_names,
             } => input_parameter_names,
+            _ => panic!("Unknown type of QuantumProgram"),
         }
     }
 

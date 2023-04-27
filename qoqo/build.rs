@@ -244,6 +244,7 @@ fn main() {
             match operation {
                 #(#operation_to_pyobject_quotes),*
                 #(#operation_to_pyobject_injected_quotes),*
+                _ => Err(pyo3::exceptions::PyRuntimeError::new_err(format!("Unknown operation: {}", operation.hqslang())))
             }
         })
         }
