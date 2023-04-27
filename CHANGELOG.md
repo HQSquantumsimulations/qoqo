@@ -4,6 +4,11 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## 1.4.0
 
+### Fixed in 1.4.0
+
+* Added non-exhaustive attribute to enums where it was obmitted by mistake
+* Fixed semver violation in Device trait
+
 ### Added in 1.4.0
 
 * Added GPi and GPi2 gates
