@@ -66,6 +66,10 @@ struct Visitor {
     // These operations will only be added at end of automatically created enums
     // to maintain compatibility with bincode encoding
     roqoqo_1_3_operations: Vec<Ident>,
+    // Operations that have only been introduced in roqoqoq 1.4.0
+    // These operations will only be added at end of automatically created enums
+    // to maintain compatibility with bincode encoding
+    roqoqo_1_4_operations: Vec<Ident>,
 }
 
 impl Visitor {
@@ -90,6 +94,7 @@ impl Visitor {
             roqoqo_1_1_operations: Vec::new(),
             roqoqo_1_2_operations: Vec::new(),
             roqoqo_1_3_operations: Vec::new(),
+            roqoqo_1_4_operations: Vec::new(),
         }
     }
 }
@@ -253,6 +258,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 if trait_name.as_str() == "ImplementedIn1point3" {
                     self.roqoqo_1_3_operations.push(id.clone());
                 }
+                if trait_name.as_str() == "ImplementedIn1point4" {
+                    self.roqoqo_1_4_operations.push(id.clone());
+                }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());
                 }
@@ -311,6 +319,7 @@ fn main() {
             !vis.roqoqo_1_1_operations.contains(v)
                 && !vis.roqoqo_1_2_operations.contains(v)
                 && !vis.roqoqo_1_3_operations.contains(v)
+                && !vis.roqoqo_1_4_operations.contains(v)
         })
         .map(|v| {
             let msg = format!("Variant for {}", v);
@@ -327,6 +336,7 @@ fn main() {
             vis.roqoqo_1_1_operations.contains(v)
                 && !vis.roqoqo_1_2_operations.contains(v)
                 && !vis.roqoqo_1_3_operations.contains(v)
+                && !vis.roqoqo_1_4_operations.contains(v)
         })
         .map(|v| {
             let msg = format!("Variant for {}", v);
@@ -343,6 +353,7 @@ fn main() {
             !vis.roqoqo_1_1_operations.contains(v)
                 && vis.roqoqo_1_2_operations.contains(v)
                 && !vis.roqoqo_1_3_operations.contains(v)
+                && !vis.roqoqo_1_4_operations.contains(v)
         })
         .map(|v| {
             let msg = format!("Variant for {}", v);
@@ -353,11 +364,29 @@ fn main() {
         });
     let operations_quotes_1_3 = vis
         .operations
+        .clone()
         .into_iter()
         .filter(|v| {
             !vis.roqoqo_1_1_operations.contains(v)
                 && !vis.roqoqo_1_2_operations.contains(v)
                 && vis.roqoqo_1_3_operations.contains(v)
+                && !vis.roqoqo_1_4_operations.contains(v)
+        })
+        .map(|v| {
+            let msg = format!("Variant for {}", v);
+            quote! {
+            #[allow(clippy::upper_case_acronyms)]
+            #[doc = #msg]
+            #v(#v)}
+        });
+    let operations_quotes_1_4 = vis
+        .operations
+        .into_iter()
+        .filter(|v| {
+            !vis.roqoqo_1_1_operations.contains(v)
+                && !vis.roqoqo_1_2_operations.contains(v)
+                && !vis.roqoqo_1_3_operations.contains(v)
+                && vis.roqoqo_1_4_operations.contains(v)
         })
         .map(|v| {
             let msg = format!("Variant for {}", v);
@@ -552,6 +581,7 @@ fn main() {
             #(#operations_quotes_1_1),* ,
             #(#operations_quotes_1_2),* ,
             #(#operations_quotes_1_3),* ,
+            #(#operations_quotes_1_4),* ,
         }
 
         /// Enum of all Operations implementing [OperateSingleQubit]

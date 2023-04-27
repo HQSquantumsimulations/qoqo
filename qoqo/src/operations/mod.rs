@@ -46,81 +46,10 @@ use pyo3::prelude::*;
 ///     Measurement Operations are operations that perform a measurement either on a quantum computing device (MeasuareQubit)
 ///     or on a simulation of a quantum computing program (PRAGMA measurement operations).
 ///
-/// .. autosummary::
-///    :toctree: generated/
-///
-///    SingleQubitGate
-///    RotateZ
-///    RotateY
-///    RotateX
-///    RotateAroundSphericalAxis
-///    PauliZ
-///    PauliY
-///    PauliX
-///    SqrtPauliX
-///    InvSqrtPauliX
-///    Hadamard
-///    TGate
-///    SGate
-///    DefinitionUsize
-///    DefinitionBit
-///    DefinitionFloat
-///    DefinitionComplex
-///    InputSymbolic
-///    InputSymbolic
-///    MeasureQubit
-///    PragmaGetStateVector
-///    PragmaGetDensityMatrix
-///    PragmaGetOccupationProbability
-///    PragmaGetPauliProduct
-///    PragmaRepeatedMeasurement
-///    PragmaSetNumberOfMeasurements
-///    PragmaSetStateVector
-///    PragmaSetDensityMatrix
-///    PragmaRepeatGate
-///    PragmaOverrotation
-///    PragmaBoostNoise
-///    PragmaStopParallelBlock
-///    PragmaGlobalPhase
-///    PragmaSleep
-///    PragmaActiveReset
-///    PragmaStopDecompositionBlock
-///    PragmaDamping
-///    PragmaDepolarising
-///    PragmaDephasing
-///    PragmaRandomNoise
-///    PragmaGeneralNoise
-///    PragmaConditional
-///    PragmaLoop
-///    CNOT
-///    SWAP
-///    FSwap
-///    ISwap
-///    SqrtISwap
-///    InvSqrtISwap
-///    XY
-///    ControlledPhaseShift
-///    ControlledPauliY
-///    ControlledPauliZ
-///    ControlledRotateX
-///    ControlledRotateXY
-///    ControlledControlledPauliZ
-///    ControlledControlledPhaseShift
-///    Toffoli
-///    MolmerSorensenXX
-///    VariableMSXX
-///    GivensRotation
-///    GivensRotationLittleEndian
-///    Qsim
-///    Fsim
-///    SpinInteraction
-///    Bogoliubov
-///    PMInteraction
-///    ComplexPMInteraction
-///    MultiQubitMS
 #[pymodule]
 
 pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
+    // 1.0
     m.add_class::<SingleQubitGateWrapper>()?;
     m.add_class::<RotateZWrapper>()?;
     m.add_class::<RotateYWrapper>()?;
@@ -140,7 +69,6 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<DefinitionFloatWrapper>()?;
     m.add_class::<DefinitionComplexWrapper>()?;
     m.add_class::<InputSymbolicWrapper>()?;
-    m.add_class::<InputBitWrapper>()?;
     m.add_class::<MeasureQubitWrapper>()?;
     m.add_class::<PragmaGetStateVectorWrapper>()?;
     m.add_class::<PragmaGetDensityMatrixWrapper>()?;
@@ -166,7 +94,6 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<PragmaGeneralNoiseWrapper>()?;
     m.add_class::<PragmaConditionalWrapper>()?;
     m.add_class::<PragmaChangeDeviceWrapper>()?;
-    m.add_class::<PragmaLoopWrapper>()?;
     m.add_class::<CNOTWrapper>()?;
     m.add_class::<SWAPWrapper>()?;
     m.add_class::<FSwapWrapper>()?;
@@ -188,15 +115,22 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<PMInteractionWrapper>()?;
     m.add_class::<ComplexPMInteractionWrapper>()?;
     m.add_class::<PhaseShiftedControlledZWrapper>()?;
-    m.add_class::<PhaseShiftedControlledPhaseWrapper>()?;
-    m.add_class::<ControlledRotateXWrapper>()?;
-    m.add_class::<ControlledRotateXYWrapper>()?;
     m.add_class::<PhaseShiftState0Wrapper>()?;
     m.add_class::<PhaseShiftState1Wrapper>()?;
+    m.add_class::<MultiQubitMSWrapper>()?;
+    m.add_class::<MultiQubitZZWrapper>()?;
+    // 1.1 and 1.2
+    m.add_class::<InputBitWrapper>()?;
+    m.add_class::<PragmaLoopWrapper>()?;
+    m.add_class::<PhaseShiftedControlledPhaseWrapper>()?;
+    // 1.3
+    m.add_class::<ControlledRotateXWrapper>()?;
+    m.add_class::<ControlledRotateXYWrapper>()?;
     m.add_class::<ControlledControlledPauliZWrapper>()?;
     m.add_class::<ControlledControlledPhaseShiftWrapper>()?;
     m.add_class::<ToffoliWrapper>()?;
-    m.add_class::<MultiQubitMSWrapper>()?;
-    m.add_class::<MultiQubitZZWrapper>()?;
+    // 1.4
+    m.add_class::<GPiWrapper>()?;
+    m.add_class::<GPi2Wrapper>()?;
     Ok(())
 }

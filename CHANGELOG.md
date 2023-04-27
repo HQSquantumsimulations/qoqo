@@ -2,6 +2,12 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.4.0
+
+### Added in 1.4.0
+
+* Added GPi and GPi2 gates
+
 ## 1.3.2
 
 ### Fixed in 1.3.2

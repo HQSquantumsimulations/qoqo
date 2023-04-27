@@ -1,0 +1,31 @@
+[package]
+name = "compatibility_test_sim"
+version = "1.4.0"
+authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
+license = "Apache-2.0"
+edition = "2021"
+rust-version = "1.56"
+categories = ["science", "simulation"]
+homepage = "https://github.com/HQSquantumsimulations/qoqo"
+repository = "https://github.com/HQSquantumsimulations/qoqo"
+documentation = "https://docs.rs/roqoqo/"
+readme = "../README.md"
+description = "Compatibility tests for roqoqo"
+include = ["src*", "build.rs", "LICENSE", "README.md"]
+publish = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[workspace]
+
+[dependencies]
+test_roqoqo_1_2 = {package = "roqoqo", features=["serialize"], version="=1.2.5"}
+qoqo_calculator = { version="1.1" }
+roqoqo = {path="../../roqoqo", features=["serialize", "overrotate"]}
+num-complex = {version="0.4"}
+ndarray="0.15"
+
+[dev-dependencies]
+test-case = "3.0"
+roqoqo-quest = {version="=0.9.1"}
+serde_json = "1.0"
