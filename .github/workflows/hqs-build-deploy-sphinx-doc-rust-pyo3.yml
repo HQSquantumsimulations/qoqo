@@ -8,7 +8,7 @@ on:
 jobs:
 
   publish_documentation:
-    uses: HQSquantumsimulations/reusable_workflows/.github/workflows/reusable_publish_documenation_rust_sphinx.yml@main
+    uses: HQSquantumsimulations/reusable_workflows/.github/workflows/reusable_publish_documentation_rust_sphinx.yml@main
     with: 
       py_interface_folder: "qoqo"
       py_docs_folder: "qoqo/docs"
