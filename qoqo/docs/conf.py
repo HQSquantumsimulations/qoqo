@@ -2,15 +2,8 @@
 # -*- coding: utf-8 -*-
 #
 """Configuration of sphinx documentation module"""
-try:
-    with open('../qoqo/__version__.py') as f:
-        lines = f.readlines()
-    version = lines[-1].strip().split("'")[1].strip()
-except Exception:
-    version = '0.0.0'
-versions = version.split(".")
-main_version = "{}.{}".format(versions[0], versions[1])
-
+import tomli
+main_version = tomli.load(open("../pyproject.toml", "rb"))["project"]["version"]
 
 # -- General configuration ------------------------------------------------
 
