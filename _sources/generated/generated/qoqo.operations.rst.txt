@@ -20,15 +20,21 @@ qoqo.operations
       Bogoliubov
       CNOT
       ComplexPMInteraction
+      ControlledControlledPauliZ
+      ControlledControlledPhaseShift
       ControlledPauliY
       ControlledPauliZ
       ControlledPhaseShift
+      ControlledRotateX
+      ControlledRotateXY
       DefinitionBit
       DefinitionComplex
       DefinitionFloat
       DefinitionUsize
       FSwap
       Fsim
+      GPi
+      GPi2
       GivensRotation
       GivensRotationLittleEndian
       Hadamard
@@ -87,6 +93,7 @@ qoqo.operations
       SqrtISwap
       SqrtPauliX
       TGate
+      Toffoli
       VariableMSXX
       XY
    
