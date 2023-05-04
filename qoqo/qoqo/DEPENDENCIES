@@ -3163,7 +3163,7 @@ limitations under the License.
 
 
 ====================================================
-matrixmultiply 0.3.3
+matrixmultiply 0.3.7
 https://github.com/bluss/matrixmultiply/
 by bluss, R. Janis Goldschmidt
 General matrix multiplication for f32 and f64 matrices. Operates on matrices with general layout (they can use arbitrary row and column stride). Detects and uses AVX or SSE2 on x86 platforms transparently for higher performance. Uses a microkernel strategy, so that the implementation is easy to parallelize and optimize.
@@ -3173,7 +3173,7 @@ License: MIT/Apache-2.0
 ----------------------------------------------------
 LICENSE-MIT:
 
-Copyright (c) 2016 - 2021 Ulrik Sverdrup "bluss"
+Copyright (c) 2016 - 2023 Ulrik Sverdrup "bluss"
 Copyirhgt (c) 2018 R. Janis Goldschmidt
 Copyright (c) 2021 DutchGhost [constparse.rs]
 

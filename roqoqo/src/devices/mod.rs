@@ -309,13 +309,16 @@ pub trait QoqoDevice {
     /// * `Some<f64>` - The gate time.
     /// * `None` - The gate is not available on the device.
     ///
+    #[allow(unused_variables)]
     fn three_qubit_gate_time(
         &self,
         hqslang: &str,
         control_0: &usize,
         control_1: &usize,
         target: &usize,
-    ) -> Option<f64>;
+    ) -> Option<f64> {
+        None
+    }
 
     /// Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
     ///

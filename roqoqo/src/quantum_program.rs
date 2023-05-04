@@ -38,6 +38,7 @@ use std::fmt::{Display, Formatter};
 #[derive(Debug, PartialEq, Clone)]
 // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[non_exhaustive]
 pub enum QuantumProgram {
     /// Variant for basis rotation measurement based quantum programs
     PauliZProduct {
