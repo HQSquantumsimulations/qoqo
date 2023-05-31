@@ -1210,6 +1210,22 @@ pub struct PragmaConditional {
     circuit: Circuit,
 }
 
+#[wrap(Operate, OperatePragma)]
+/// A circuit controlled by a qubit.
+///
+/// The circuit is applied when the qubit is in state 1.
+/// Note that this is a unitary operation (for example a CNOT(0,1)
+/// is equvalent to a PragmaControlledCircuit(0, [PauliX(1)]) but it cannot be represented
+/// by a unitary operation in qoqo for arbitraty circuits.
+///
+/// Args:
+///     controlling_qubit (int): - The qubit controlling circuit application.
+///     circuit (Circuit): - The circuit executed if the condition is met.
+pub struct PragmaControlledCircuit {
+    controlling_qubit: usize,
+    circuit: Circuit,
+}
+
 #[pyclass(name = "PragmaChangeDevice", module = "qoqo.operations")]
 #[derive(Clone, Debug, PartialEq, Eq)]
 /// A wrapper around backend specific PRAGMA operations capable of changing a device.

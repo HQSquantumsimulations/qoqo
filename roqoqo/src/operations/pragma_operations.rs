@@ -1033,6 +1033,83 @@ impl Substitute for PragmaConditional {
     }
 }
 
+/// A circuit controlled by a qubit.
+///
+/// The circuit is applied when the qubit is in state 1.
+/// Note that this is a unitary operation (for example a CNOT(0,1)
+/// is equvalent to a PragmaControlledCircuit(0, [PauliX(1)]) but it cannot be represented
+/// by a unitary operation in qoqo for arbitraty circuits.
+///
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::SupportedVersion,
+    roqoqo_derive::Operate,
+    roqoqo_derive::OperatePragma,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct PragmaControlledCircuit {
+    /// The qubit controlling if the circuit is applied. Circuit is applied for qubit in state 1.
+    controlling_qubit: usize,
+    /// The circuit executed if the condition is met.
+    circuit: Circuit,
+}
+
+impl super::ImplementedIn1point5 for PragmaControlledCircuit {}
+
+#[allow(non_upper_case_globals)]
+const TAGS_PragmaControlledCircuit: &[&str; 3] =
+    &["Operation", "PragmaOperation", "PragmaControlledCircuit"];
+
+// Implementing the InvolveQubits trait for PragmaControlledCircuit.
+impl InvolveQubits for PragmaControlledCircuit {
+    /// Lists all involved qubits.
+    fn involved_qubits(&self) -> InvolvedQubits {
+        match self.circuit.involved_qubits() {
+            InvolvedQubits::All => InvolvedQubits::All,
+            InvolvedQubits::None => {
+                let set: HashSet<usize> = [self.controlling_qubit].into_iter().collect();
+                InvolvedQubits::Set(set)
+            }
+            InvolvedQubits::Set(s) => {
+                let mut set = s;
+                set.insert(self.controlling_qubit);
+                InvolvedQubits::Set(set)
+            }
+        }
+    }
+
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        super::InvolvedClassical::None
+    }
+}
+
+/// Substitute trait allowing to replace symbolic parameters and to perform qubit mappings.
+impl Substitute for PragmaControlledCircuit {
+    /// Remaps qubits in clone of the operation.
+    fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        let new_circuit = self.circuit.remap_qubits(mapping).unwrap();
+        let new_controlling_qubit = mapping
+            .get(&self.controlling_qubit)
+            .unwrap_or(&self.controlling_qubit);
+        Ok(PragmaControlledCircuit::new(
+            *new_controlling_qubit,
+            new_circuit,
+        ))
+    }
+
+    /// Substitutes symbolic parameters in clone of the operation.
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
+        let new_circuit = self.circuit.substitute_parameters(calculator).unwrap();
+        Ok(PragmaControlledCircuit::new(
+            self.controlling_qubit,
+            new_circuit,
+        ))
+    }
+}
+
 /// A wrapper around backend specific PRAGMA operations capable of changing a device.
 ///
 /// This PRAGMA is a thin wrapper around device specific operations that can change
