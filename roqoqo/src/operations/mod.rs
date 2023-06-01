@@ -571,7 +571,6 @@ pub trait OperateSingleQubitGate:
     + OperateSingleQubit
     + Clone
     + PartialEq
-    + OperateSingleQubit
     + SupportedVersion
     + std::fmt::Debug
 {
@@ -881,4 +880,192 @@ pub(crate) fn check_valid_mapping(mapping: &HashMap<usize, usize>) -> Result<(),
         }
     }
     Ok(())
+}
+
+/// Represents bosonic modes involved in a roqoqo bosonic Operation.
+#[derive(Debug, PartialEq, Clone, Eq)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+pub enum InvolvedModes {
+    /// Operation affects all bosonic modes no matter how many there are.
+    All,
+    /// Operation affects no bosonic modes (annotations etc.).
+    None,
+    /// Operation affects a specific set of bosonic modes.
+    Set(HashSet<usize>),
+}
+
+/// Trait for the bosonic modes involved in each bosonic Operation.
+///
+/// # Example
+/// ```
+/// use roqoqo::operations::{InvolveModes, InvolvedModes};
+/// use std::collections::{HashMap, HashSet};
+/// ```
+pub trait InvolveModes {
+    /// Returns all bosonic modes involved in operation.
+    fn involved_modes(&self) -> InvolvedModes;
+}
+
+/// SubstituteModes trait allowing to perform bosonic mode mappings.
+///
+/// # Example
+/// ```
+/// use roqoqo::operations::{SubstituteModes};
+/// use qoqo_calculator::{Calculator, CalculatorFloat};
+/// use std::collections::HashMap;
+///
+/// let mut mode_mapping_test: HashMap<usize, usize> = HashMap::new();
+/// mode_mapping_test.insert(0, 2);
+/// mode_mapping_test.insert(2, 0);
+/// ```
+///
+pub trait SubstituteModes
+where
+    Self: Sized,
+{
+    /// Remaps the bosonic modes in clone of the operation.
+    fn remap_modes(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError>;
+}
+
+/// Trait for Operations acting with a unitary gate on a set of bosonic modes.
+///
+/// # Example
+/// ```
+/// use ndarray::array;
+/// use num_complex::Complex64;
+/// use roqoqo::operations::{OperateModeGate};
+///
+/// let matrix = array![
+///     [Complex64::new(0.0, 0.0), Complex64::new(1.0, 0.0)],
+///     [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)]
+/// ];
+/// ```
+///
+pub trait OperateModeGate:
+    Operate + InvolveModes + SubstituteModes + Clone + PartialEq + SupportedVersion
+{
+    /// Returns unitary matrix of the gate.
+    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError>;
+}
+
+/// Trait for bosonic operations acting on exactly one bosonic modes.
+///
+/// # Example
+/// ```
+/// use roqoqo::operations::{OperateSingleMode};
+/// ```
+///
+pub trait OperateSingleMode: Operate + InvolveModes + SubstituteModes + Clone + PartialEq {
+    /// Returns `mode` the bosonic Operation acts on.
+    fn mode(&self) -> &usize;
+}
+
+/// Trait for Operations acting on exactly two bosonic modes.
+///
+/// # Example
+/// ```
+/// use roqoqo::operations::{OperateTwoModes};
+/// ```
+///
+pub trait OperateTwoModes: Operate + InvolveModes + SubstituteModes + Clone + PartialEq {
+    /// Returns `mode_0` bosonic mode of two bosonic mode Operation.
+    fn mode_0(&self) -> &usize;
+    /// Returns `mode_1` bosonic mode of two bosonic mode Operation.
+    fn mode_1(&self) -> &usize;
+}
+
+/// Trait for operations acting on multiple (more than two) bosonic modes.
+///
+/// # Example
+/// ```
+/// use roqoqo::operations::{InvolveModes};
+/// ```
+///
+pub trait OperateMultiModes:
+    Operate + InvolveModes + SubstituteModes + Clone + PartialEq + SupportedVersion
+{
+    /// Returns vector of bosonic modes operation is acting on in descending order of significance
+    fn modes(&self) -> &Vec<usize>;
+}
+
+/// Trait for unitary operations acting on exactly one bosonic mode.
+///
+/// Implements the general single bosonic mode unitary gates that can be brought into the form:
+///
+/// U =exp(i * φ) * [[Re(α)+i * Im(α), -Re(β) + i * Im(β)], [Re(β) + i * Im(β) , Re(α) - i * Im(α) ]].
+///
+/// These gates can be parametrized by five real parameters:
+///
+/// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-mode unitary.
+/// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-mode unitary.
+/// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-mode unitary.
+/// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-mode unitary.
+/// * `global_phase` - The global phase φ of the single-mode unitary.
+///
+/// These are the single bosonic mode gates that are performed in the Circuit(), and are then translated
+/// to quantum hardware through the relevant backend. Two-mode gates are also available.
+///
+/// # Example
+/// ```
+/// use qoqo_calculator::CalculatorFloat;
+/// use roqoqo::operations::{OperateSingleModeGate};
+/// use std::f64::consts::PI;
+/// ```
+///
+pub trait OperateSingleModeGate:
+    Operate
+    + OperateModeGate
+    + InvolveModes
+    + SubstituteModes
+    + OperateSingleMode
+    + Clone
+    + PartialEq
+    + SupportedVersion
+    + std::fmt::Debug
+{
+}
+
+/// Trait for all Operations operating on or affecting exactly two bosonic modes.
+///
+/// # Example
+/// ```
+/// use roqoqo::operations::{OperateTwoModeGate};
+/// use qoqo_calculator::CalculatorFloat;
+/// ```
+///
+pub trait OperateTwoModeGate:
+    Operate
+    + OperateModeGate
+    + OperateTwoModes
+    + InvolveModes
+    + SubstituteModes
+    + Clone
+    + PartialEq
+    + SupportedVersion
+{
+}
+
+/// Trait for all Operations operating on or affecting more than two bosonic modes.
+///
+/// # Example
+/// ```
+/// use roqoqo::operations::{OperateMultiModeGate};
+/// use roqoqo::Circuit;
+/// use qoqo_calculator::CalculatorFloat;
+///
+/// let mut circuit = Circuit::new();
+/// ```
+///
+pub trait OperateMultiModeGate:
+    Operate
+    + OperateModeGate
+    + OperateMultiModes
+    + InvolveModes
+    + SubstituteModes
+    + Clone
+    + PartialEq
+    + SupportedVersion
+{
+    /// Returns a decomposition of the multi-mode operation using a circuit with two-mode-operations.
+    fn circuit(&self) -> crate::Circuit;
 }
