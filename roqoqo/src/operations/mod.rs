@@ -964,10 +964,10 @@ pub trait OperateSingleMode: Operate + InvolveModes + SubstituteModes + Clone + 
 ///
 /// # Example
 /// ```
-/// use roqoqo::operations::{OperateTwoModes};
+/// use roqoqo::operations::{OperateTwoMode};
 /// ```
 ///
-pub trait OperateTwoModes: Operate + InvolveModes + SubstituteModes + Clone + PartialEq {
+pub trait OperateTwoMode: Operate + InvolveModes + SubstituteModes + Clone + PartialEq {
     /// Returns `mode_0` bosonic mode of two bosonic mode Operation.
     fn mode_0(&self) -> &usize;
     /// Returns `mode_1` bosonic mode of two bosonic mode Operation.
@@ -981,7 +981,7 @@ pub trait OperateTwoModes: Operate + InvolveModes + SubstituteModes + Clone + Pa
 /// use roqoqo::operations::{InvolveModes};
 /// ```
 ///
-pub trait OperateMultiModes:
+pub trait OperateMultiMode:
     Operate + InvolveModes + SubstituteModes + Clone + PartialEq + SupportedVersion
 {
     /// Returns vector of bosonic modes operation is acting on in descending order of significance
@@ -1036,7 +1036,7 @@ pub trait OperateSingleModeGate:
 pub trait OperateTwoModeGate:
     Operate
     + OperateModeGate
-    + OperateTwoModes
+    + OperateTwoMode
     + InvolveModes
     + SubstituteModes
     + Clone
@@ -1059,7 +1059,7 @@ pub trait OperateTwoModeGate:
 pub trait OperateMultiModeGate:
     Operate
     + OperateModeGate
-    + OperateMultiModes
+    + OperateMultiMode
     + InvolveModes
     + SubstituteModes
     + Clone
