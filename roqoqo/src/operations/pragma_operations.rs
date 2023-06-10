@@ -1091,6 +1091,7 @@ impl Substitute for PragmaControlledCircuit {
     /// Remaps qubits in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
         let new_circuit = self.circuit.remap_qubits(mapping).unwrap();
+        crate::operations::check_valid_mapping(mapping)?;
         let new_controlling_qubit = mapping
             .get(&self.controlling_qubit)
             .unwrap_or(&self.controlling_qubit);
@@ -1183,6 +1184,7 @@ impl Substitute for PragmaChangeDevice {
     /// This is not supported  for PragmaChangeDevice and should throw and error when a non-trivial remapping
     /// is used
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        crate::operations::check_valid_mapping(mapping)?;
         match mapping.iter().find(|(x, y)| x != y) {
             Some((x, _)) => Err(RoqoqoError::QubitMappingError { qubit: *x }),
             None => Ok(self.clone()),
