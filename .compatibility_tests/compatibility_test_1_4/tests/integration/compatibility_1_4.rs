@@ -95,10 +95,11 @@ use test_roqoqo_1_4;
 #[test_case(test_roqoqo_1_4::operations::ControlledControlledPauliZ::new(0,1,2).into(); "ControlledControlledPauliZ")]
 #[test_case(test_roqoqo_1_4::operations::ControlledControlledPhaseShift::new(0,1,2, 1.0.into()).into(); "ControlledControlledPhaseShift")]
 #[test_case(test_roqoqo_1_4::operations::Toffoli::new(0,1,2).into(); "Toffoli")]
-// 1.4 - add this into the next compatibility crate
+// 1.4
 #[test_case(test_roqoqo_1_4::operations::GPi::new(0, 0.1.into()).into(); "GPi")]
 #[test_case(test_roqoqo_1_4::operations::GPi2::new(0, 0.1.into()).into(); "GPi2")]
-
+// Operations from 1.5 - uncomment for next unittests
+// #[test_case(test_roqoqo_1_5::operations::PragmaControlledCircuit::new(0, test_roqoqo_1_5::Circuit::new()))]
 fn test_bincode_compatibility_1_4(operation: test_roqoqo_1_4::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_4::Circuit::new();
     test_circuit += operation;

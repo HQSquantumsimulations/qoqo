@@ -10,9 +10,9 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-///! Module containing the CircuitDag class that represents the Directed Acyclic Graph (DAG)
-///! of a quantum circuit in qoqo.
-///!
+//! Module containing the CircuitDag class that represents the Directed Acyclic Graph (DAG)
+//! of a quantum circuit in qoqo.
+//!
 use std::collections::HashSet;
 
 use crate::{QoqoError, QOQO_VERSION};

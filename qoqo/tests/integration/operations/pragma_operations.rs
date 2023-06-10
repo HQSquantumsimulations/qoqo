@@ -2570,6 +2570,8 @@ fn test_pyo3_new_loop() {
 #[test_case(Operation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDephasing")]
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))); "PragmaRandomNoise")]
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators())); "PragmaGeneralNoise")]
+#[test_case(Operation::from(PragmaControlledCircuit::new(0, roqoqo::Circuit::new())); "PragmaControlledCircuit")]
+
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();

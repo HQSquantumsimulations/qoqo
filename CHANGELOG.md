@@ -2,9 +2,9 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
-## Not released yet
+## 1.5.0
 
-### Added
+### Added in 1.5.0
 
 * `PragmaControlledCircuit` operation for a Circuit that is controlled by a single qubit.
 

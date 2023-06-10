@@ -24,7 +24,7 @@ use roqoqo::Circuit;
 #[cfg(feature = "serialize")]
 use serde_test::{assert_tokens, Configure, Token};
 use std::collections::{HashMap, HashSet};
-
+use test_case::test_case;
 /// Test PragmaSetNumberOfMeasurements inputs and involved qubits
 #[test]
 fn pragma_loop_inputs_qubits() {
@@ -3111,10 +3111,13 @@ fn pragma_change_device_substitute_trait() {
 }
 
 /// Test PragmaConditional inputs and involved qubits
-#[test]
-fn pragma_controlled_circuit_inputs_qubits() {
+#[test_case(PauliX::new(0).into(), InvolvedQubits::Set(HashSet::from([0,1])); "Some")]
+#[test_case(DefinitionBit::new("ro".to_string(),1,false).into(), InvolvedQubits::Set(HashSet::from([1])); "None")]
+#[test_case(PragmaRepeatedMeasurement::new("ro".to_string(),10,None).into(), InvolvedQubits::All; "All")]
+
+fn pragma_controlled_circuit_inputs_qubits(operation: Operation, involved_qubits: InvolvedQubits) {
     let mut circuit = Circuit::new();
-    circuit.add_operation(PauliX::new(0));
+    circuit.add_operation(operation);
     let pragma = PragmaControlledCircuit::new(1, circuit.clone());
 
     // Test inputs are correct
@@ -3125,7 +3128,7 @@ fn pragma_controlled_circuit_inputs_qubits() {
     let mut qubits: HashSet<usize> = HashSet::new();
     qubits.insert(0);
     qubits.insert(1);
-    assert_eq!(pragma.involved_qubits(), InvolvedQubits::Set(qubits));
+    assert_eq!(pragma.involved_qubits(), involved_qubits);
 }
 
 /// Test PragmaConditional standard derived traits (Debug, Clone, PartialEq)
@@ -3248,7 +3251,7 @@ fn pragma_controlled_circuit_serde_readable() {
 fn pragma_controlled_circuit_serde_compact() {
     let pragma_serialization = PragmaControlledCircuit::new(1, Circuit::default());
     assert_tokens(
-        &pragma_serialization.readable(),
+        &pragma_serialization.compact(),
         &[
             Token::Struct {
                 name: "PragmaControlledCircuit",
