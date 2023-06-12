@@ -3,13 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; qoqo 1.4.0 documentation</title>
+  <title>Index &mdash; qoqo 1.5.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
@@ -31,7 +33,7 @@
             qoqo
           </a>
               <div class="version">
-                1.4.0
+                1.5.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -336,6 +338,8 @@
 </li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaConditional.circuit">(qoqo.operations.PragmaConditional method)</a>
 </li>
+        <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaControlledCircuit.circuit">(qoqo.operations.PragmaControlledCircuit method)</a>
+</li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaGetDensityMatrix.circuit">(qoqo.operations.PragmaGetDensityMatrix method)</a>
 </li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaGetOccupationProbability.circuit">(qoqo.operations.PragmaGetOccupationProbability method)</a>
@@ -464,6 +468,8 @@
       <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.ControlledRotateX">ControlledRotateX (class in qoqo.operations)</a>
 </li>
       <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.ControlledRotateXY">ControlledRotateXY (class in qoqo.operations)</a>
+</li>
+      <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaControlledCircuit.controlling_qubit">controlling_qubit() (qoqo.operations.PragmaControlledCircuit method)</a>
 </li>
       <li><a href="generated/generated/qoqo.Circuit.html#qoqo.Circuit.count_occurences">count_occurences() (qoqo.Circuit method)</a>, <a href="generated/qoqo.html#qoqo.Circuit.count_occurences">[1]</a>
 </li>
@@ -752,6 +758,8 @@
 </li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaConditional.hqslang">(qoqo.operations.PragmaConditional method)</a>
 </li>
+        <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaControlledCircuit.hqslang">(qoqo.operations.PragmaControlledCircuit method)</a>
+</li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaDamping.hqslang">(qoqo.operations.PragmaDamping method)</a>
 </li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaDephasing.hqslang">(qoqo.operations.PragmaDephasing method)</a>
@@ -936,6 +944,8 @@
 </li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaConditional.involved_qubits">(qoqo.operations.PragmaConditional method)</a>
 </li>
+        <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaControlledCircuit.involved_qubits">(qoqo.operations.PragmaControlledCircuit method)</a>
+</li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaDamping.involved_qubits">(qoqo.operations.PragmaDamping method)</a>
 </li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaDephasing.involved_qubits">(qoqo.operations.PragmaDephasing method)</a>
@@ -1111,6 +1121,8 @@
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaChangeDevice.is_parametrized">(qoqo.operations.PragmaChangeDevice method)</a>
 </li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaConditional.is_parametrized">(qoqo.operations.PragmaConditional method)</a>
+</li>
+        <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaControlledCircuit.is_parametrized">(qoqo.operations.PragmaControlledCircuit method)</a>
 </li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaDamping.is_parametrized">(qoqo.operations.PragmaDamping method)</a>
 </li>
@@ -1438,6 +1450,8 @@
 </li>
       <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaConditional">PragmaConditional (class in qoqo.operations)</a>
 </li>
+      <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaControlledCircuit">PragmaControlledCircuit (class in qoqo.operations)</a>
+</li>
       <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaDamping">PragmaDamping (class in qoqo.operations)</a>
 </li>
       <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaDephasing">PragmaDephasing (class in qoqo.operations)</a>
@@ -1716,6 +1730,8 @@
 </li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaConditional.remap_qubits">(qoqo.operations.PragmaConditional method)</a>
 </li>
+        <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaControlledCircuit.remap_qubits">(qoqo.operations.PragmaControlledCircuit method)</a>
+</li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaDamping.remap_qubits">(qoqo.operations.PragmaDamping method)</a>
 </li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaDephasing.remap_qubits">(qoqo.operations.PragmaDephasing method)</a>
@@ -1932,6 +1948,8 @@
 </li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaConditional.substitute_parameters">(qoqo.operations.PragmaConditional method)</a>
 </li>
+        <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaControlledCircuit.substitute_parameters">(qoqo.operations.PragmaControlledCircuit method)</a>
+</li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaDamping.substitute_parameters">(qoqo.operations.PragmaDamping method)</a>
 </li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaDephasing.substitute_parameters">(qoqo.operations.PragmaDephasing method)</a>
@@ -2125,6 +2143,8 @@
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaChangeDevice.tags">(qoqo.operations.PragmaChangeDevice method)</a>
 </li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaConditional.tags">(qoqo.operations.PragmaConditional method)</a>
+</li>
+        <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaControlledCircuit.tags">(qoqo.operations.PragmaControlledCircuit method)</a>
 </li>
         <li><a href="generated/generated/qoqo.operations.html#qoqo.operations.PragmaDamping.tags">(qoqo.operations.PragmaDamping method)</a>
 </li>

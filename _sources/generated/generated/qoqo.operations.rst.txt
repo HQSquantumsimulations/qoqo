@@ -59,6 +59,7 @@ qoqo.operations
       PragmaBoostNoise
       PragmaChangeDevice
       PragmaConditional
+      PragmaControlledCircuit
       PragmaDamping
       PragmaDephasing
       PragmaDepolarising
