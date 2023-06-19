@@ -132,5 +132,7 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     // 1.4
     m.add_class::<GPiWrapper>()?;
     m.add_class::<GPi2Wrapper>()?;
+    // 1.5
+    m.add_class::<PragmaControlledCircuitWrapper>()?;
     Ok(())
 }

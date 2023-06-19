@@ -558,6 +558,34 @@ fn test_pyo3_inputs_conditional() {
     })
 }
 
+/// Test inputs of PragmaControlledCircuit
+#[test]
+fn test_pyo3_inputs_controlled_circuit() {
+    let input_pragma = Operation::from(PragmaControlledCircuit::new(1, create_circuit()));
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+
+        let condition_index_op: &usize = &usize::extract(
+            operation
+                .call_method0(py, "controlling_qubit")
+                .unwrap()
+                .as_ref(py),
+        )
+        .unwrap();
+        assert_eq!(condition_index_op, &1_usize);
+
+        let to_circuit = operation.call_method0(py, "circuit").unwrap();
+        let circuit_op = to_circuit.as_ref(py);
+        let circuit = new_circuit(py);
+        let paulix = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
+        circuit.call_method1("add", (paulix,)).unwrap();
+        let comparison_circuit =
+            bool::extract(circuit_op.call_method1("__eq__", (circuit,)).unwrap()).unwrap();
+        assert!(comparison_circuit);
+    })
+}
+
 /// Test involved_qubits function for Pragmas with None
 #[test_case(Operation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro"))); "PragmaSetNumberOfMeasurements")]
 #[test_case(Operation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.003))); "PragmaBoostNoise")]
@@ -602,6 +630,8 @@ fn test_pyo3_involved_qubits_all(input_definition: Operation) {
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))); "PragmaRandomNoise")]
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators())); "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
+#[test_case(Operation::from(PragmaControlledCircuit::new(0, create_circuit())); "PragmaControlledCircuit")]
+
 fn test_pyo3_involved_qubits_qubit(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -662,6 +692,8 @@ fn test_pyo3_involved_qubits_qubit_overrotation(input_definition: Operation) {
             "PragmaGeneralNoise { qubit: 0, gate_time: Float(0.005), rates: [[1.0, 0.0, 0.0],\n [0.0, 1.0, 0.0],\n [0.0, 0.0, 1.0]], shape=[3, 3], strides=[3, 1], layout=Cc (0x5), const ndim=2 }"; "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, Circuit::default())),
             "PragmaConditional { condition_register: \"ro\", condition_index: 1, circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"; "PragmaConditional")]
+#[test_case(Operation::from(PragmaControlledCircuit::new( 1, Circuit::default())),
+            "PragmaControlledCircuit { controlling_qubit: 1, circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"; "PragmaControlledCircuit")]
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::default())),
             "PragmaLoop { repetitions: Str(\"number_t\"), circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"; "PragmaLoop")]
 fn test_pyo3_format_repr(input_measurement: Operation, format_repr: &str) {
@@ -710,6 +742,7 @@ fn test_pyo3_format_repr_overrotation(input_measurement: Operation, format_repr:
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))); "PragmaRandomNoise")]
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005),  operators())); "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
+#[test_case(Operation::from(PragmaControlledCircuit::new( 1, create_circuit())); "PragmaControlledCircuit")]
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::default())); "PragmaLoop")]
 fn test_pyo3_copy_deepcopy(input_measurement: Operation) {
     pyo3::prepare_freethreaded_python();
@@ -861,6 +894,8 @@ fn test_pyo3_tags_single(input_measurement: Operation, tag_name: &str) {
 
 /// Test tags function for Pragmas that are also SingleQubitGates
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())), "PragmaConditional"; "PragmaConditional")]
+#[test_case(Operation::from(PragmaControlledCircuit::new( 1, create_circuit())), "PragmaControlledCircuit"; "PragmaControlledCircuit")]
+
 fn test_pyo3_tags_conditional(input_measurement: Operation, tag_name: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -932,6 +967,7 @@ fn test_pyo3_tags_noise(input_measurement: Operation, tag_name: &str) {
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))), "PragmaRandomNoise"; "PragmaRandomNoise")]
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005),  operators())), "PragmaGeneralNoise"; "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())), "PragmaConditional"; "PragmaConditional")]
+#[test_case(Operation::from(PragmaControlledCircuit::new( 1, create_circuit())), "PragmaControlledCircuit"; "PragmaControlledCircuit")]
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::default())), "PragmaLoop"; "PragmaLoop")]
 fn test_pyo3_hqslang(input_measurement: Operation, hqslang_param: &str) {
     pyo3::prepare_freethreaded_python();
@@ -972,6 +1008,7 @@ fn test_pyo3_hqslang_overrotation(input_measurement: Operation, hqslang_param: &
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))); "PragmaRandomNoise")]
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005),  operators())); "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
+#[test_case(Operation::from(PragmaControlledCircuit::new( 1, create_circuit())); "PragmaControlledCircuit")]
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::default())); "PragmaLoop")]
 fn test_pyo3_is_parametrized(input_measurement: Operation) {
     pyo3::prepare_freethreaded_python();
@@ -1054,6 +1091,9 @@ fn test_pyo3_is_parametrized_overrotation(input_measurement: Operation) {
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())),
             Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit()));
             "PragmaConditional")]
+#[test_case(Operation::from(PragmaControlledCircuit::new(1, create_circuit())),
+            Operation::from(PragmaControlledCircuit::new(1, create_circuit()));
+            "PragmaControlledCircuit")]
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("test"), Circuit::default())),
             Operation::from(PragmaLoop::new(CalculatorFloat::from(1.0), Circuit::default()));
             "PragmaLoop")]
@@ -1148,6 +1188,8 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 /// Test substitute_parameters() causing an error `not-a-real-number`
 #[test_case(Operation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro"))); "PragmaSetNumberOfMeasurements")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
+#[test_case(Operation::from(PragmaControlledCircuit::new( 1, create_circuit())); "PragmaControlledCircuit")]
+
 fn test_pyo3_substituteparameters_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1212,6 +1254,9 @@ fn test_pyo3_substituteparameters_error(input_operation: Operation) {
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())),
             Operation::from(PragmaConditional::new(String::from("ro"), 1, circuit_remapped()));
             "PragmaConditional")]
+#[test_case(Operation::from(PragmaControlledCircuit::new(20, create_circuit())),
+            Operation::from(PragmaControlledCircuit::new(20, circuit_remapped()));
+            "PragmaControlledCircuit")]
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), create_circuit())),
             Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), circuit_remapped()));
             "PragmaLoop")]
@@ -1516,6 +1561,9 @@ fn test_pyo3_noise_powercf(first_op: Operation, second_op: Operation) {
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())),
             Operation::from(PragmaConditional::new(String::from("ro"), 1, circuit_remapped()));
             "PragmaConditional")]
+#[test_case(Operation::from(PragmaControlledCircuit::new( 1, create_circuit())),
+            Operation::from(PragmaControlledCircuit::new( 1, circuit_remapped()));
+            "PragmaControlledCircuit")]
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), create_circuit())),
             Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), circuit_remapped()));
             "PragmaLoop")]
@@ -2435,6 +2483,45 @@ fn test_pyo3_new_conditional() {
     })
 }
 
+/// Test PragmaControlledCircuit new() function
+#[test]
+fn test_pyo3_new_controlled_circuit() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = py.get_type::<PragmaControlledCircuitWrapper>();
+        let new_op = operation
+            .call1((0, new_circuit(py)))
+            .unwrap()
+            .downcast::<PyCell<PragmaControlledCircuitWrapper>>()
+            .unwrap();
+
+        let input_definition = Operation::from(PragmaControlledCircuit::new(0, Circuit::new()));
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        assert!(comparison_copy);
+
+        let pragma_wrapper = new_op.extract::<PragmaControlledCircuitWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1((2, new_circuit(py)))
+            .unwrap()
+            .downcast::<PyCell<PragmaControlledCircuitWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff
+            .extract::<PragmaControlledCircuitWrapper>()
+            .unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", pragma_wrapper),
+            "PragmaControlledCircuitWrapper { internal: PragmaControlledCircuit { controlling_qubit: 0, circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } } }"
+        );
+    })
+}
+
 /// Test PragmaLoop new() function
 #[test]
 fn test_pyo3_new_loop() {
@@ -2483,6 +2570,8 @@ fn test_pyo3_new_loop() {
 #[test_case(Operation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDephasing")]
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))); "PragmaRandomNoise")]
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators())); "PragmaGeneralNoise")]
+#[test_case(Operation::from(PragmaControlledCircuit::new(0, roqoqo::Circuit::new())); "PragmaControlledCircuit")]
+
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();

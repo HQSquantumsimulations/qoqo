@@ -24,7 +24,7 @@ use roqoqo::Circuit;
 #[cfg(feature = "serialize")]
 use serde_test::{assert_tokens, Configure, Token};
 use std::collections::{HashMap, HashSet};
-
+use test_case::test_case;
 /// Test PragmaSetNumberOfMeasurements inputs and involved qubits
 #[test]
 fn pragma_loop_inputs_qubits() {
@@ -3108,4 +3108,180 @@ fn pragma_change_device_substitute_trait() {
     new_qubit_paulis.insert(2, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).is_err();
     assert!(result);
+}
+
+/// Test PragmaConditional inputs and involved qubits
+#[test_case(PauliX::new(0).into(), InvolvedQubits::Set(HashSet::from([0,1])); "Some")]
+#[test_case(DefinitionBit::new("ro".to_string(),1,false).into(), InvolvedQubits::Set(HashSet::from([1])); "None")]
+#[test_case(PragmaRepeatedMeasurement::new("ro".to_string(),10,None).into(), InvolvedQubits::All; "All")]
+
+fn pragma_controlled_circuit_inputs_qubits(operation: Operation, involved_qubits: InvolvedQubits) {
+    let mut circuit = Circuit::new();
+    circuit.add_operation(operation);
+    let pragma = PragmaControlledCircuit::new(1, circuit.clone());
+
+    // Test inputs are correct
+    assert_eq!(pragma.controlling_qubit(), &1_usize);
+    assert_eq!(pragma.circuit(), &circuit.clone());
+
+    // Test InvolveQubits trait
+    let mut qubits: HashSet<usize> = HashSet::new();
+    qubits.insert(0);
+    qubits.insert(1);
+    assert_eq!(pragma.involved_qubits(), involved_qubits);
+}
+
+/// Test PragmaConditional standard derived traits (Debug, Clone, PartialEq)
+#[test]
+fn pragma_controlled_circuit_simple_traits() {
+    let pragma = PragmaControlledCircuit::new(1, Circuit::default());
+
+    // Test Debug trait
+    assert_eq!(
+        format!("{:?}", pragma),
+        "PragmaControlledCircuit { controlling_qubit: 1, circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"
+    );
+
+    // Test Clone trait
+    assert_eq!(pragma.clone(), pragma);
+
+    // Test PartialEq trait
+    let pragma_0 = PragmaControlledCircuit::new(1, Circuit::default());
+    let pragma_1 = PragmaControlledCircuit::new(0, Circuit::default());
+    assert!(pragma_0 == pragma);
+    assert!(pragma == pragma_0);
+    assert!(pragma_1 != pragma);
+    assert!(pragma != pragma_1);
+}
+
+/// Test PragmaConditional Operate trait
+#[test]
+fn pragma_controlled_circuit_operate_trait() {
+    let pragma = PragmaControlledCircuit::new(1, Circuit::default());
+
+    // (1) Test tags function
+    let tags: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaControlledCircuit"];
+    assert_eq!(pragma.tags(), tags);
+
+    // (2) Test hqslang function
+    assert_eq!(pragma.hqslang(), String::from("PragmaControlledCircuit"));
+
+    // (3) Test is_parametrized function
+    assert!(!pragma.is_parametrized());
+}
+
+/// Test PragmaConditional Substitute trait
+#[test]
+fn pragma_controlled_circuit_substitute_trait() {
+    let pragma = PragmaControlledCircuit::new(1, Circuit::default());
+    let pragma_test = PragmaControlledCircuit::new(1, Circuit::default());
+
+    // (1) Substitute parameters function
+    let mut substitution_dict: Calculator = Calculator::new();
+    substitution_dict.set_variable("ro", 0.0);
+    let result = pragma_test
+        .substitute_parameters(&substitution_dict)
+        .unwrap();
+    assert_eq!(pragma, result);
+
+    // (2) Remap qubits function with an empty circuit
+    let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
+    let mut new_qubit_paulis: HashMap<usize, usize> = HashMap::new();
+    new_qubit_paulis.insert(2, 1);
+    let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
+    assert_eq!(result, pragma);
+
+    // (3) Remap qubits function with an non-empty circuit
+    let mut circuit = Circuit::new();
+    circuit.add_operation(PauliX::new(2));
+    let mut circuit_test = Circuit::new();
+    circuit_test.add_operation(PauliX::new(0));
+    let pragma = PragmaControlledCircuit::new(1, circuit_test);
+    let result = pragma.remap_qubits(&qubit_mapping_test).unwrap();
+    let test_gate = PragmaControlledCircuit::new(1, circuit);
+    assert_eq!(result, test_gate);
+}
+
+/// Test PragmaConditional Serialization and Deserialization traits (readable)
+#[cfg(feature = "serialize")]
+#[test]
+fn pragma_controlled_circuit_serde_readable() {
+    let pragma_serialization = PragmaControlledCircuit::new(1, Circuit::default());
+    assert_tokens(
+        &pragma_serialization.readable(),
+        &[
+            Token::Struct {
+                name: "PragmaControlledCircuit",
+                len: 2,
+            },
+            Token::Str("controlling_qubit"),
+            Token::U64(1),
+            Token::Str("circuit"),
+            Token::Struct {
+                name: "Circuit",
+                len: 3,
+            },
+            Token::Str("definitions"),
+            Token::Seq { len: Some(0) },
+            Token::SeqEnd,
+            Token::Str("operations"),
+            Token::Seq { len: Some(0) },
+            Token::SeqEnd,
+            Token::Str("_roqoqo_version"),
+            Token::Struct {
+                name: "RoqoqoVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(1),
+            Token::Str("minor_version"),
+            Token::U32(0),
+            Token::StructEnd,
+            Token::StructEnd,
+            Token::StructEnd,
+        ],
+    );
+}
+
+/// Test PragmaConditional Serialization and Deserialization traits (compact)
+#[cfg(feature = "serialize")]
+#[test]
+fn pragma_controlled_circuit_serde_compact() {
+    let pragma_serialization = PragmaControlledCircuit::new(1, Circuit::default());
+    assert_tokens(
+        &pragma_serialization.compact(),
+        &[
+            Token::Struct {
+                name: "PragmaControlledCircuit",
+                len: 2,
+            },
+            Token::Str("controlling_qubit"),
+            Token::U64(1),
+            Token::Str("circuit"),
+            Token::Struct {
+                name: "Circuit",
+                len: 3,
+            },
+            Token::Str("definitions"),
+            Token::Seq { len: Some(0) },
+            Token::SeqEnd,
+            Token::Str("operations"),
+            Token::Seq { len: Some(0) },
+            Token::SeqEnd,
+            Token::Str("_roqoqo_version"),
+            Token::Struct {
+                name: "RoqoqoVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(1),
+            Token::Str("minor_version"),
+            Token::U32(0),
+            Token::StructEnd,
+            Token::StructEnd,
+            Token::StructEnd,
+        ],
+    );
 }
