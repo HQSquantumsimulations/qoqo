@@ -18,11 +18,11 @@ use syn::{
     parse_macro_input, DataEnum, DataStruct, DeriveInput, Fields, GenericArgument, Ident,
     PathArguments, Type, TypePath,
 };
-mod involve_qubits;
 mod involve_modes;
+mod involve_qubits;
 mod operate;
-mod operate_n_qubit;
 mod operate_n_mode;
+mod operate_n_qubit;
 mod operate_unitary;
 mod operate_unitary_modes;
 mod substitute;
