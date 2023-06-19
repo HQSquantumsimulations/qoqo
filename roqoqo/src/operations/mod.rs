@@ -944,8 +944,6 @@ where
 pub trait OperateModeGate:
     Operate + InvolveModes + SubstituteModes + Clone + PartialEq + SupportedVersion
 {
-    /// Returns unitary matrix of the gate.
-    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError>;
 }
 
 /// Trait for bosonic operations acting on exactly one bosonic modes.
@@ -972,20 +970,6 @@ pub trait OperateTwoMode: Operate + InvolveModes + SubstituteModes + Clone + Par
     fn mode_0(&self) -> &usize;
     /// Returns `mode_1` bosonic mode of two bosonic mode Operation.
     fn mode_1(&self) -> &usize;
-}
-
-/// Trait for operations acting on multiple (more than two) bosonic modes.
-///
-/// # Example
-/// ```
-/// use roqoqo::operations::{InvolveModes};
-/// ```
-///
-pub trait OperateMultiMode:
-    Operate + InvolveModes + SubstituteModes + Clone + PartialEq + SupportedVersion
-{
-    /// Returns vector of bosonic modes operation is acting on in descending order of significance
-    fn modes(&self) -> &Vec<usize>;
 }
 
 /// Trait for unitary operations acting on exactly one bosonic mode.
@@ -1043,29 +1027,4 @@ pub trait OperateTwoModeGate:
     + PartialEq
     + SupportedVersion
 {
-}
-
-/// Trait for all Operations operating on or affecting more than two bosonic modes.
-///
-/// # Example
-/// ```
-/// use roqoqo::operations::{OperateMultiModeGate};
-/// use roqoqo::Circuit;
-/// use qoqo_calculator::CalculatorFloat;
-///
-/// let mut circuit = Circuit::new();
-/// ```
-///
-pub trait OperateMultiModeGate:
-    Operate
-    + OperateModeGate
-    + OperateMultiMode
-    + InvolveModes
-    + SubstituteModes
-    + Clone
-    + PartialEq
-    + SupportedVersion
-{
-    /// Returns a decomposition of the multi-mode operation using a circuit with two-mode-operations.
-    fn circuit(&self) -> crate::Circuit;
 }

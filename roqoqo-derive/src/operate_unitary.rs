@@ -20,7 +20,7 @@ pub fn dispatch_struct_enum_operate_gate(input: DeriveInput) -> TokenStream {
     match input.data {
         Data::Struct(_ds) => operate_gate_struct(ident),
         Data::Enum(de) => operate_gate_enum(de, ident),
-        _ => panic!("OperateGate can only be derived on enums"),
+        _ => panic!("OperateGate can only be derived on structs and enums"),
     }
 }
 
