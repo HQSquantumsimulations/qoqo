@@ -2,9 +2,9 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
-## 1.5.0-alpha.0
+## 1.6.0-alpha.0
 
-### Added in 1.5.0-alpha.0
+### Added in 1.6.0-alpha.0
 
 * Added first bosonic operations traits and derives in `roqoqo` and `roqoqo-derive`.
 
