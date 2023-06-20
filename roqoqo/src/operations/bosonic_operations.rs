@@ -17,24 +17,20 @@ use crate::operations::{
 use crate::RoqoqoError;
 use qoqo_calculator::CalculatorFloat;
 
-/// The most general unitary operation acting on one qubit.
-///
-/// # Warning
-///
-/// Due to the support of parameterized values it cannot be guaranteed that the unitary matrix of the gate
-/// is always normalized to one.
+/// The single-mode squeezing gate with tunable squeezing.
 ///
 #[derive(
     Debug,
     Clone,
     PartialEq,
-    roqoqo_derive::Substitute,
     OperateModeGate,
     OperateSingleModeGate,
-    roqoqo_derive::InvolveModes,
-    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::InvolveModes,
     roqoqo_derive::SubstituteModes,
+    roqoqo_derive::SupportedVersion,
+    roqoqo_derive::OperateSingleMode,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct Squeezing {
@@ -51,18 +47,6 @@ const TAGS_Squeezing: &[&str; 4] = &[
     "SingleModeGateOperation",
     "Squeezing",
 ];
-
-/// Trait for bosonic operations acting on exactly one qubit.
-impl OperateSingleMode for Squeezing {
-    /// Returns the mode the bosonic Operation acts on.
-    ///
-    /// # Returns
-    ///
-    /// * `mode` - The mode the operation acts on.
-    fn mode(&self) -> &usize {
-        &self.mode
-    }
-}
 
 /// Trait for unitary operations acting on exactly one qubit.
 impl InvolveQubits for Squeezing {
