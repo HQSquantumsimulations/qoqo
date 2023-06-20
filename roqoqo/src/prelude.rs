@@ -27,6 +27,7 @@ pub use crate::operations::{
     OperateMultiQubit, OperateMultiQubitGate, OperatePragma, OperatePragmaNoise,
     OperatePragmaNoiseProba, OperateSingleQubit, OperateSingleQubitGate, OperateThreeQubit,
     OperateThreeQubitGate, OperateTwoQubit, OperateTwoQubitGate, Rotate, Substitute,
-    SupportedVersion,
+    SupportedVersion, InvolvedModes, SubstituteModes, OperateModeGate, OperateSingleMode,
+    OperateTwoMode, OperateSingleModeGate, OperateTwoModeGate,
 };
 pub use crate::{RoqoqoBackendError, RoqoqoError};
