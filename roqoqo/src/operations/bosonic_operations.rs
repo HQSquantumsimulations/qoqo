@@ -12,7 +12,8 @@
 
 use crate::operations::{
     InvolveModes, InvolveQubits, InvolvedModes, InvolvedQubits, Operate, OperateModeGate,
-    OperateSingleMode, OperateSingleModeGate, Substitute, SubstituteModes, SupportedVersion,
+    OperateSingleMode, OperateSingleModeGate, OperateTwoMode, OperateTwoModeGate, Substitute,
+    SubstituteModes, SupportedVersion,
 };
 use crate::RoqoqoError;
 use qoqo_calculator::CalculatorFloat;
@@ -48,8 +49,115 @@ const TAGS_Squeezing: &[&str; 4] = &[
     "Squeezing",
 ];
 
-/// Trait for unitary operations acting on exactly one qubit.
 impl InvolveQubits for Squeezing {
+    /// Returns all qubits involved in operation.
+    fn involved_qubits(&self) -> InvolvedQubits {
+        InvolvedQubits::None
+    }
+}
+/// The single-mode phase-shift gate with variable phase.
+///
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    OperateModeGate,
+    OperateSingleModeGate,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::InvolveModes,
+    roqoqo_derive::SubstituteModes,
+    roqoqo_derive::SupportedVersion,
+    roqoqo_derive::OperateSingleMode,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+pub struct PhaseShift {
+    /// The mode the phase-shift gate is applied to.
+    mode: usize,
+    /// The phase by which to shift the mode.
+    phase: CalculatorFloat,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_PhaseShift: &[&str; 4] = &[
+    "Operation",
+    "ModeGateOperation",
+    "SingleModeGateOperation",
+    "PhaseShift",
+];
+
+impl InvolveQubits for PhaseShift {
+    /// Returns all qubits involved in operation.
+    fn involved_qubits(&self) -> InvolvedQubits {
+        InvolvedQubits::None
+    }
+}
+
+/// The 2-mode beam splitter which splits a beam with a transmission amplitude cos(theta) and a reflection amplitude exp(i phi) sin(theta)
+///
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    OperateModeGate,
+    OperateTwoModeGate,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::InvolveModes,
+    roqoqo_derive::SubstituteModes,
+    roqoqo_derive::SupportedVersion,
+    roqoqo_derive::OperateTwoMode,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+pub struct BeamSplitter {
+    /// The first mode the beam-splitter is applied to.
+    mode_0: usize,
+    /// The first mode the beam-splitter is applied to.
+    mode_1: usize,
+    /// The transmittivity angle of the beam-splitter.
+    theta: CalculatorFloat,
+    /// The phase angle of the beam-splitter.
+    phi: CalculatorFloat,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_BeamSplitter: &[&str; 4] = &[
+    "Operation",
+    "ModeGateOperation",
+    "TwoModeGateOperation",
+    "BeamSplitter",
+];
+
+impl InvolveQubits for BeamSplitter {
+    /// Returns all qubits involved in operation.
+    fn involved_qubits(&self) -> InvolvedQubits {
+        InvolvedQubits::None
+    }
+}
+
+/// The photon number-resolving detector measurement for bosons.
+///
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::InvolveModes,
+    roqoqo_derive::SubstituteModes,
+    roqoqo_derive::SupportedVersion,
+    roqoqo_derive::OperateSingleMode,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+pub struct PNRDetection {
+    /// The mode the detector (measurement) is applied to.
+    mode: usize,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_PNRDetection: &[&str; 3] = &["Operation", "Measurement", "PNRDetection"];
+
+impl InvolveQubits for PNRDetection {
     /// Returns all qubits involved in operation.
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::None
