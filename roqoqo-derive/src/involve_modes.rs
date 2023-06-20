@@ -39,7 +39,7 @@ fn involve_modes_enum(de: DataEnum, ident: Ident) -> TokenStream {
         #[automatically_derived]
         /// Implements [InvolveModes] trait for the modes involved in this Operation.
         impl InvolveModes for #ident{
-            fn involved_modes(&self) -> InvolveModes {
+            fn involved_modes(&self) -> InvolvedModes {
                 match self{
                     #(#match_quotes)*
                     _ => panic!("Unexpectedly cannot match variant")
@@ -102,7 +102,7 @@ fn involve_modes_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 fn involved_modes(&self) -> InvolvedModes {
                     let mut new_hash_set: std::collections::HashSet<usize> = std::collections::HashSet::new();
                     new_hash_set.insert(self.mode);
-                    InvolveModes::Set(new_hash_set)
+                    InvolvedModes::Set(new_hash_set)
                 }
             }
         }
@@ -120,7 +120,7 @@ fn involve_modes_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     let mut new_hash_set: std::collections::HashSet<usize> = std::collections::HashSet::new();
                     new_hash_set.insert(self.mode_0);
                     new_hash_set.insert(self.mode_1);
-                    InvolveModes::Set(new_hash_set)
+                    InvolvedModes::Set(new_hash_set)
                 }
             }
         }

@@ -230,23 +230,19 @@ impl<'ast> Visit<'ast> for Visitor {
                 if parsed_arguments.contains("OperateMultiQubitGate") {
                     self.multi_qubit_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateModeGate")
-                {
+                if parsed_arguments.contains("OperateModeGate") {
                     self.mode_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateSingleMode")
-                {
+                if parsed_arguments.contains("OperateSingleMode") {
                     self.single_mode_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateTwoMode")
-                {
+                if parsed_arguments.contains("OperateTwoMode") {
                     self.two_mode_operations.push(i.ident.clone());
                 }
                 if parsed_arguments.contains("OperateSingleModeGate") {
                     self.single_mode_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateTwoModeGate")
-                {
+                if parsed_arguments.contains("OperateTwoModeGate") {
                     self.two_mode_gate_operations.push(i.ident.clone());
                 }
             }
@@ -491,7 +487,8 @@ fn main() {
     // Construct TokenStreams for variants of pragma enum
     let mut mode_gate_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
     for i in 0..NUMBER_OF_MINOR_VERSIONS {
-        let res: Vec<proc_macro2::TokenStream> = build_quotes(&vis, i, vis.mode_gate_operations.clone());
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.mode_gate_operations.clone());
         mode_gate_operations_quotes.extend(res);
     }
 
@@ -501,7 +498,7 @@ fn main() {
         let res: Vec<proc_macro2::TokenStream> =
             build_quotes(&vis, i, vis.single_mode_operations.clone());
 
-            single_mode_operations_quotes.extend(res);
+        single_mode_operations_quotes.extend(res);
     }
 
     // Construct TokenStreams for variants of operation enum
@@ -518,7 +515,7 @@ fn main() {
     for i in 0..NUMBER_OF_MINOR_VERSIONS {
         let res: Vec<proc_macro2::TokenStream> =
             build_quotes(&vis, i, vis.single_mode_gate_operations.clone());
-            single_mode_gate_operations_quote.extend(res);
+        single_mode_gate_operations_quote.extend(res);
     }
 
     // Construct TokenStreams for variants of operation enum
@@ -526,7 +523,7 @@ fn main() {
     for i in 0..NUMBER_OF_MINOR_VERSIONS {
         let res: Vec<proc_macro2::TokenStream> =
             build_quotes(&vis, i, vis.two_mode_gate_operations.clone());
-            two_mode_gate_operations_quote.extend(res);
+        two_mode_gate_operations_quote.extend(res);
     }
 
     // Construct TokenStream for auto-generated rust file containing the enums
@@ -681,7 +678,7 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperateModeGate]
-        #[derive(Debug, Clone, PartialEq, InvolveModes, Operate, OperateTryFromEnum, SubstituteModes, OperateModeGate,SupportedVersion)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, InvolveModes, Operate, OperateTryFromEnum, Substitute, SubstituteModes, OperateModeGate,SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         #[non_exhaustive]
@@ -690,16 +687,16 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperateSingleMode]
-        #[derive(Debug, Clone, PartialEq, InvolveModes, Operate, OperateTryFromEnum, SubstituteModes, OperateSingleMode,SupportedVersion)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, InvolveModes, Operate, OperateTryFromEnum, Substitute, SubstituteModes, OperateSingleMode,SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         #[non_exhaustive]
         pub enum SingleModeOperation {
-            #(#single_qubit_operations_quotes),*
+            #(#single_mode_operations_quotes),*
         }
 
         /// Enum of all Operations implementing [OperateTwoMode]
-        #[derive(Debug, Clone, PartialEq, InvolveModes, Operate, OperateTryFromEnum, SubstituteModes, OperateTwoMode, SupportedVersion)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, InvolveModes, Operate, OperateTryFromEnum, Substitute, SubstituteModes, OperateTwoMode, SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         #[non_exhaustive]
@@ -708,7 +705,7 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperateSingleModeGate]
-        #[derive(Debug, Clone, PartialEq, InvolveModes, Operate, OperateTryFromEnum, SubstituteModes, OperateModeGate, OperateSingleMode, OperateSingleModeGate, SupportedVersion)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, InvolveModes, Operate, OperateTryFromEnum, Substitute, SubstituteModes, OperateModeGate, OperateSingleMode, OperateSingleModeGate, SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         #[non_exhaustive]
@@ -717,7 +714,7 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperateTwoModeGate]
-        #[derive(Debug, Clone, PartialEq, InvolveModes, Operate, OperateTryFromEnum, SubstituteModes, OperateModeGate, OperateTwoMode, OperateTwoModeGate, SupportedVersion)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, InvolveModes, Operate, OperateTryFromEnum, Substitute, SubstituteModes, OperateModeGate, OperateTwoMode, OperateTwoModeGate, SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         #[non_exhaustive]

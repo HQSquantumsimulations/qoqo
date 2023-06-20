@@ -10,12 +10,12 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use qoqo_calculator::CalculatorFloat;
 use crate::operations::{
-    InvolveQubits, InvolvedQubits, InvolveModes, InvolvedModes, Operate, OperateModeGate, OperateSingleMode,
-    OperateSingleModeGate, SubstituteModes, SupportedVersion,
+    InvolveModes, InvolveQubits, InvolvedModes, InvolvedQubits, Operate, OperateModeGate,
+    OperateSingleMode, OperateSingleModeGate, Substitute, SubstituteModes, SupportedVersion,
 };
 use crate::RoqoqoError;
+use qoqo_calculator::CalculatorFloat;
 
 /// The most general unitary operation acting on one qubit.
 ///
@@ -28,16 +28,16 @@ use crate::RoqoqoError;
     Debug,
     Clone,
     PartialEq,
+    roqoqo_derive::Substitute,
     OperateModeGate,
     OperateSingleModeGate,
     roqoqo_derive::InvolveModes,
     roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::SubstituteModes,
-    roqoqo_derive::OperateSingleMode,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-pub struct SqueezingGate {
+pub struct Squeezing {
     /// The mode the squeezing gate is applied to.
     mode: usize,
     /// The coefficient of the squeezing operation.
@@ -45,27 +45,27 @@ pub struct SqueezingGate {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_SqueezingGate: &[&str; 4] = &[
+const TAGS_Squeezing: &[&str; 4] = &[
     "Operation",
     "ModeGateOperation",
     "SingleModeGateOperation",
-    "SqueezingGate",
+    "Squeezing",
 ];
 
 /// Trait for bosonic operations acting on exactly one qubit.
-impl OperateSingleMode for SqueezingGate {
+impl OperateSingleMode for Squeezing {
     /// Returns the mode the bosonic Operation acts on.
     ///
     /// # Returns
     ///
     /// * `mode` - The mode the operation acts on.
-    fn mode(&self) -> usize {
-        self.mode
+    fn mode(&self) -> &usize {
+        &self.mode
     }
 }
 
 /// Trait for unitary operations acting on exactly one qubit.
-impl InvolveQubits for SqueezingGate {
+impl InvolveQubits for Squeezing {
     /// Returns all qubits involved in operation.
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::None

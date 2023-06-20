@@ -916,6 +916,13 @@ pub trait InvolveModes {
     fn involved_modes(&self) -> InvolvedModes;
 }
 
+#[cfg(feature = "dynamic")]
+impl InvolveModes for DynOperation {
+    fn involved_modes(&self) -> InvolvedModes {
+        self.0.involved_modes()
+    }
+}
+
 /// SubstituteModes trait allowing to perform bosonic mode mappings.
 ///
 /// # Example

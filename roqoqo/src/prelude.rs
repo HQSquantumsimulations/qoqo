@@ -23,11 +23,11 @@ pub use crate::backends::EvaluatingBackend;
 pub use crate::circuit::AsVec;
 pub use crate::measurements::{Measure, MeasureExpectationValues};
 pub use crate::operations::{
-    Define, InvolveQubits, InvolvedQubits, Operate, OperateConstantGate, OperateGate,
-    OperateMultiQubit, OperateMultiQubitGate, OperatePragma, OperatePragmaNoise,
-    OperatePragmaNoiseProba, OperateSingleQubit, OperateSingleQubitGate, OperateThreeQubit,
-    OperateThreeQubitGate, OperateTwoQubit, OperateTwoQubitGate, Rotate, Substitute,
-    SupportedVersion, InvolvedModes, SubstituteModes, OperateModeGate, OperateSingleMode,
-    OperateTwoMode, OperateSingleModeGate, OperateTwoModeGate,
+    Define, InvolveModes, InvolveQubits, InvolvedModes, InvolvedQubits, Operate,
+    OperateConstantGate, OperateGate, OperateModeGate, OperateMultiQubit, OperateMultiQubitGate,
+    OperatePragma, OperatePragmaNoise, OperatePragmaNoiseProba, OperateSingleMode,
+    OperateSingleModeGate, OperateSingleQubit, OperateSingleQubitGate, OperateThreeQubit,
+    OperateThreeQubitGate, OperateTwoMode, OperateTwoModeGate, OperateTwoQubit,
+    OperateTwoQubitGate, Rotate, Substitute, SubstituteModes, SupportedVersion,
 };
 pub use crate::{RoqoqoBackendError, RoqoqoError};

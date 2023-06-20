@@ -58,13 +58,12 @@ fn substitute_modes_enum(de: DataEnum, ident: Ident) -> TokenStream {
 fn substitute_modes_struct(ds: DataStruct, ident: Ident) -> TokenStream {
     let fields_with_type = extract_fields_with_types(ds).into_iter();
 
-    let remap_quote = fields_with_type
-        .map(|(fid, _, _)| match fid.to_string().as_str() {
-            "mode" => quote! {*mapping.get(&self.mode).unwrap_or(&self.mode)},
-            "mode_0" => quote! {*mapping.get(&self.mode_0).unwrap_or(&self.mode_0)},
-            "mode_1" => quote! {*mapping.get(&self.mode_1).unwrap_or(&self.mode_1)},
-            _ => quote! {(self).#fid.clone()},
-        });
+    let remap_quote = fields_with_type.map(|(fid, _, _)| match fid.to_string().as_str() {
+        "mode" => quote! {*mapping.get(&self.mode).unwrap_or(&self.mode)},
+        "mode_0" => quote! {*mapping.get(&self.mode_0).unwrap_or(&self.mode_0)},
+        "mode_1" => quote! {*mapping.get(&self.mode_1).unwrap_or(&self.mode_1)},
+        _ => quote! {(self).#fid.clone()},
+    });
     quote! {
         /// Implements [SubstituteModes] trait allowing to perform bosonic mode mappings.
         #[automatically_derived]
