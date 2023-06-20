@@ -58,31 +58,13 @@ fn substitute_modes_enum(de: DataEnum, ident: Ident) -> TokenStream {
 fn substitute_modes_struct(ds: DataStruct, ident: Ident) -> TokenStream {
     let fields_with_type = extract_fields_with_types(ds).into_iter();
 
-    let mut contains_modes = false;
     let remap_quote = fields_with_type
-        .clone()
         .map(|(fid, _, _)| match fid.to_string().as_str() {
             "mode" => quote! {*mapping.get(&self.mode).unwrap_or(&self.mode)},
             "mode_0" => quote! {*mapping.get(&self.mode_0).unwrap_or(&self.mode_0)},
             "mode_1" => quote! {*mapping.get(&self.mode_1).unwrap_or(&self.mode_1)},
-            "modes" => quote! { new_modes },
             _ => quote! {(self).#fid.clone()},
         });
-    for (fid, _, _) in fields_with_type {
-        if fid.to_string().as_str() == "modes" {
-            contains_modes = true
-        }
-    }
-    let new_modes_quote = if contains_modes {
-        quote! {
-            let mut new_modes: Vec<usize> = Vec::new();
-            for m in &self.modes {
-                new_modes.push(*mapping.get(m).unwrap_or(m))
-            }
-        }
-    } else {
-        quote! {}
-    };
     quote! {
         /// Implements [SubstituteModes] trait allowing to perform bosonic mode mappings.
         #[automatically_derived]
@@ -90,7 +72,6 @@ fn substitute_modes_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             /// Remaps the modes in clone of the operation.
             fn remap_modes(&self, mapping: &std::collections::HashMap<usize, usize>) -> Result<Self, RoqoqoError>{
                 crate::operations::check_valid_mapping(mapping)?;
-                #new_modes_quote
                 Ok(Self::new(#(#remap_quote),*))
             }
         }

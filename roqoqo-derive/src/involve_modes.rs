@@ -91,7 +91,7 @@ fn involve_modes_struct(ds: DataStruct, ident: Ident) -> TokenStream {
     }
     if mode {
         if mode_0 || mode_1 {
-            panic!("When deriving InvolveModes, mode field is not compatible with mode_0, mode_1 or modes fields");
+            panic!("When deriving InvolveModes, mode field is not compatible with mode_0 or mode_1 fields");
         };
         // Creating a function that puts exactly one bosonic mode `mode` into the InvolvedModes HashSet
         quote! {
@@ -125,6 +125,6 @@ fn involve_modes_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             }
         }
     } else {
-        panic!("To derive InvolveModes mode or mode_0 or mode_1 or modes fields need to be present in struct")
+        panic!("To derive InvolveModes mode, mode_0 or mode_1 fields need to be present in struct")
     }
 }

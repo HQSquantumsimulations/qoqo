@@ -717,7 +717,7 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperateTwoModeGate]
-        #[derive(Debug, Clone, PartialEq, InvolveModes, Operate, OperateTryFromEnum, SubstituteModes, OperateMOdeGate, OperateTwoMode, OperateTwoModeGate, SupportedVersion)]
+        #[derive(Debug, Clone, PartialEq, InvolveModes, Operate, OperateTryFromEnum, SubstituteModes, OperateModeGate, OperateTwoMode, OperateTwoModeGate, SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         #[non_exhaustive]
