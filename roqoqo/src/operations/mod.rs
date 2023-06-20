@@ -56,6 +56,10 @@ pub use two_qubit_gate_operations::*;
 #[doc(hidden)]
 mod three_qubit_gate_operations;
 pub use three_qubit_gate_operations::*;
+/// Collection of roqoqo three qubit gate operations.
+#[doc(hidden)]
+mod bosonic_operations;
+pub use bosonic_operations::*;
 
 include!(concat!(env!("OUT_DIR"), "/_auto_generated_operations.rs"));
 
@@ -896,6 +900,9 @@ pub enum InvolvedModes {
     /// Operation affects a specific set of bosonic modes.
     Set(HashSet<usize>),
 }
+
+// #[cfg(feature = "dynamic")]
+// dyn_clone::clone_trait_object!(Operate);
 
 /// Trait for the bosonic modes involved in each bosonic Operation.
 ///
