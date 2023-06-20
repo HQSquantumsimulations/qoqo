@@ -59,7 +59,6 @@ fn involve_modes_struct(ds: DataStruct, ident: Ident) -> TokenStream {
     let mut mode: bool = false;
     let mut mode_0: bool = false;
     let mut mode_1: bool = false;
-    let mut modes: bool = false;
 
     // Iterating over the fields in the struct and setting the bool values to true if the field is
     // in the struct
@@ -87,14 +86,11 @@ fn involve_modes_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     panic!("Field mode_1 must have type usize")
                 }
             }
-            "modes" => {
-                modes = true;
-            }
             _ => {}
         };
     }
     if mode {
-        if mode_0 || mode_1 || modes {
+        if mode_0 || mode_1 {
             panic!("When deriving InvolveModes, mode field is not compatible with mode_0, mode_1 or modes fields");
         };
         // Creating a function that puts exactly one bosonic mode `mode` into the InvolvedModes HashSet
@@ -114,9 +110,6 @@ fn involve_modes_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         if !(mode_0 && mode_1) {
             panic!("When deriving InvolveModes mode_0 and mode_1 fields have to both be present");
         };
-        if modes {
-            panic!("When deriving InvolveModes, mode_0 and mode_0 fields are not compatible with modes fields");
-        };
         // Creating a function that puts bosonic modes `mode_0` and `mode_1` into the InvolvedModes HashSet
         quote! {
             /// Implements [InvolveModes] trait for the bosonic modes involved in this Operation.
@@ -127,22 +120,6 @@ fn involve_modes_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     let mut new_hash_set: std::collections::HashSet<usize> = std::collections::HashSet::new();
                     new_hash_set.insert(self.mode_0);
                     new_hash_set.insert(self.mode_1);
-                    InvolveModes::Set(new_hash_set)
-                }
-            }
-        }
-    } else if modes {
-        // Creating a function that puts all bosonic modes in the vector `modes` into the InvolvedModes HashSet
-        quote! {
-            /// Implements [InvolveModes] trait for the bosonic modes involved in this Operation.
-            #[automatically_derived]
-            impl InvolveModes for #ident{
-                /// Returns a list of all involved bosonic modes.
-                fn involved_modes(&self) -> InvolvedModes {
-                    let mut new_hash_set: std::collections::HashSet<usize> = std::collections::HashSet::new();
-                    for mode in self.modes.iter(){
-                        new_hash_set.insert(*mode);
-                    }
                     InvolveModes::Set(new_hash_set)
                 }
             }
