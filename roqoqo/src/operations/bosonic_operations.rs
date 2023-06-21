@@ -32,7 +32,6 @@ use qoqo_calculator::CalculatorFloat;
     roqoqo_derive::Substitute,
     roqoqo_derive::InvolveModes,
     roqoqo_derive::SubstituteModes,
-    roqoqo_derive::SupportedVersion,
     roqoqo_derive::OperateSingleMode,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
@@ -57,6 +56,13 @@ impl InvolveQubits for Squeezing {
         InvolvedQubits::None
     }
 }
+
+impl SupportedVersion for Squeezing {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 6, 0)
+    }
+}
+
 /// The single-mode phase-shift gate with variable phase.
 ///
 #[derive(
@@ -69,7 +75,6 @@ impl InvolveQubits for Squeezing {
     roqoqo_derive::Substitute,
     roqoqo_derive::InvolveModes,
     roqoqo_derive::SubstituteModes,
-    roqoqo_derive::SupportedVersion,
     roqoqo_derive::OperateSingleMode,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
@@ -95,6 +100,12 @@ impl InvolveQubits for PhaseShift {
     }
 }
 
+impl SupportedVersion for PhaseShift {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 6, 0)
+    }
+}
+
 /// The 2-mode beam splitter which splits a beam with a transmission amplitude cos(θ) and a reflection amplitude exp(i * φ) * sin(θ)
 ///
 #[derive(
@@ -107,7 +118,6 @@ impl InvolveQubits for PhaseShift {
     roqoqo_derive::Substitute,
     roqoqo_derive::InvolveModes,
     roqoqo_derive::SubstituteModes,
-    roqoqo_derive::SupportedVersion,
     roqoqo_derive::OperateTwoMode,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
@@ -137,6 +147,12 @@ impl InvolveQubits for BeamSplitter {
     }
 }
 
+impl SupportedVersion for BeamSplitter {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 6, 0)
+    }
+}
+
 /// The photon number-resolving detector measurement for bosons.
 ///
 #[derive(
@@ -147,7 +163,6 @@ impl InvolveQubits for BeamSplitter {
     roqoqo_derive::Substitute,
     roqoqo_derive::InvolveModes,
     roqoqo_derive::SubstituteModes,
-    roqoqo_derive::SupportedVersion,
     roqoqo_derive::OperateSingleMode,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
@@ -173,5 +188,11 @@ impl InvolveQubits for PNRDetection {
         let mut a: HashSet<(String, usize)> = HashSet::new();
         a.insert((self.readout.clone(), self.readout_index));
         InvolvedClassical::Set(a)
+    }
+}
+
+impl SupportedVersion for PNRDetection {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 6, 0)
     }
 }

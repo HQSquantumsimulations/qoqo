@@ -36,7 +36,7 @@ const RESERVED_FIELDS: &[&str; 16] = &[
     "control_0",
     "control_1",
     "target",
-    "theta",
+    "theta", // can we remove this? TODO
     "qubits",
     "global_phase",
     "alpha_r",

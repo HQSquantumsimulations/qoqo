@@ -37,6 +37,9 @@ pub use involved_classical::*;
 mod supported_version;
 pub use supported_version::*;
 
+mod bosonic_operations;
+pub use bosonic_operations::*;
+
 use nalgebra as na;
 use ndarray::Array2;
 use num_complex::Complex64;
