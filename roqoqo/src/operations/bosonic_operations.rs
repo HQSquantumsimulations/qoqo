@@ -10,10 +10,12 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use std::collections::HashSet;
+
 use crate::operations::{
-    InvolveModes, InvolveQubits, InvolvedModes, InvolvedQubits, Operate, OperateModeGate,
-    OperateSingleMode, OperateSingleModeGate, OperateTwoMode, OperateTwoModeGate, Substitute,
-    SubstituteModes, SupportedVersion,
+    InvolveModes, InvolveQubits, InvolvedClassical, InvolvedModes, InvolvedQubits, Operate,
+    OperateModeGate, OperateSingleMode, OperateSingleModeGate, OperateTwoMode, OperateTwoModeGate,
+    Substitute, SubstituteModes, SupportedVersion,
 };
 use crate::RoqoqoError;
 use qoqo_calculator::CalculatorFloat;
@@ -93,7 +95,7 @@ impl InvolveQubits for PhaseShift {
     }
 }
 
-/// The 2-mode beam splitter which splits a beam with a transmission amplitude cos(theta) and a reflection amplitude exp(i phi) sin(theta)
+/// The 2-mode beam splitter which splits a beam with a transmission amplitude cos(θ) and a reflection amplitude exp(i * φ) * sin(θ)
 ///
 #[derive(
     Debug,
@@ -112,7 +114,7 @@ impl InvolveQubits for PhaseShift {
 pub struct BeamSplitter {
     /// The first mode the beam-splitter is applied to.
     mode_0: usize,
-    /// The first mode the beam-splitter is applied to.
+    /// The second mode the beam-splitter is applied to.
     mode_1: usize,
     /// The transmittivity angle of the beam-splitter.
     theta: CalculatorFloat,
@@ -152,6 +154,10 @@ impl InvolveQubits for BeamSplitter {
 pub struct PNRDetection {
     /// The mode the detector (measurement) is applied to.
     mode: usize,
+    /// The register for the readout.
+    readout: String,
+    /// The index in the readout the result is saved to.
+    readout_index: usize,
 }
 
 #[allow(non_upper_case_globals)]
@@ -161,5 +167,11 @@ impl InvolveQubits for PNRDetection {
     /// Returns all qubits involved in operation.
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::None
+    }
+
+    fn involved_classical(&self) -> InvolvedClassical {
+        let mut a: HashSet<(String, usize)> = HashSet::new();
+        a.insert((self.readout.clone(), self.readout_index));
+        InvolvedClassical::Set(a)
     }
 }

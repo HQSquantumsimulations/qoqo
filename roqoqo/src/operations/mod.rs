@@ -913,7 +913,9 @@ pub enum InvolvedModes {
 /// ```
 pub trait InvolveModes {
     /// Returns all bosonic modes involved in operation.
-    fn involved_modes(&self) -> InvolvedModes;
+    fn involved_modes(&self) -> InvolvedModes {
+        InvolvedModes::None
+    }
 }
 
 /// SubstituteModes trait allowing to perform bosonic mode mappings.
