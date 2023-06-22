@@ -41,7 +41,7 @@ fn beamsplitter_inputs() {
     let op = BeamSplitter::new(0, 1, 0.5.into(), 0.1.into());
     assert_eq!(op.mode_0(), &0_usize);
     assert_eq!(op.mode_1(), &1_usize);
-    // assert_eq!(op.theta(), &CalculatorFloat::from(0.5)); TODO/FIX
+    assert_eq!(op.theta(), &CalculatorFloat::from(0.5));
     assert_eq!(op.phi(), &CalculatorFloat::from(0.1));
 }
 
@@ -176,7 +176,7 @@ fn operate_one_mode(op: Operation, op_param: Operation, name: &str) {
     assert!(op_param.is_parametrized());
 }
 
-#[test_case(Operation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.1.into())), Operation::from(BeamSplitter::new(0, 1, "both".into(), "param".into())), "BeamSplitter")] // TODO (make `both` into `1.0`)
+#[test_case(Operation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.1.into())), Operation::from(BeamSplitter::new(0, 1, 1.0.into(), "param".into())), "BeamSplitter")]
 fn operate_two_modes(op: Operation, op_param: Operation, name: &str) {
     // (1) Test tags function
     let tags: &[&str; 4] = &[
@@ -266,6 +266,138 @@ fn squeezing_serde() {
                 variant: "Float",
             },
             Token::F64(0.1),
+            Token::StructEnd,
+        ],
+    );
+}
+
+#[cfg(feature = "serialize")]
+#[test]
+fn phaseshift_serde() {
+    let op = PhaseShift::new(0, 0.1.into());
+
+    assert_tokens(
+        &op.clone().readable(),
+        &[
+            Token::Struct {
+                name: "PhaseShift",
+                len: 2,
+            },
+            Token::Str("mode"),
+            Token::U64(0),
+            Token::Str("phase"),
+            Token::F64(0.1),
+            Token::StructEnd,
+        ],
+    );
+
+    assert_tokens(
+        &op.compact(),
+        &[
+            Token::Struct {
+                name: "PhaseShift",
+                len: 2,
+            },
+            Token::Str("mode"),
+            Token::U64(0),
+            Token::Str("phase"),
+            Token::NewtypeVariant {
+                name: "CalculatorFloat",
+                variant: "Float",
+            },
+            Token::F64(0.1),
+            Token::StructEnd,
+        ],
+    );
+}
+
+#[cfg(feature = "serialize")]
+#[test]
+fn beamsplitter_serde() {
+    let op = BeamSplitter::new(0, 1, 0.1.into(), 0.1.into());
+
+    assert_tokens(
+        &op.clone().readable(),
+        &[
+            Token::Struct {
+                name: "BeamSplitter",
+                len: 4,
+            },
+            Token::Str("mode_0"),
+            Token::U64(0),
+            Token::Str("mode_1"),
+            Token::U64(1),
+            Token::Str("theta"),
+            Token::F64(0.1),
+            Token::Str("phi"),
+            Token::F64(0.1),
+            Token::StructEnd,
+        ],
+    );
+
+    assert_tokens(
+        &op.compact(),
+        &[
+            Token::Struct {
+                name: "BeamSplitter",
+                len: 4,
+            },
+            Token::Str("mode_0"),
+            Token::U64(0),
+            Token::Str("mode_1"),
+            Token::U64(1),
+            Token::Str("theta"),
+            Token::NewtypeVariant {
+                name: "CalculatorFloat",
+                variant: "Float",
+            },
+            Token::F64(0.1),
+            Token::Str("phi"),
+            Token::NewtypeVariant {
+                name: "CalculatorFloat",
+                variant: "Float",
+            },
+            Token::F64(0.1),
+            Token::StructEnd,
+        ],
+    );
+}
+
+#[cfg(feature = "serialize")]
+#[test]
+fn pnrdetection_serde() {
+    let op = PNRDetection::new(0, "ro".into(), 0);
+
+    assert_tokens(
+        &op.clone().readable(),
+        &[
+            Token::Struct {
+                name: "PNRDetection",
+                len: 3,
+            },
+            Token::Str("mode"),
+            Token::U64(0),
+            Token::Str("readout"),
+            Token::Str("ro"),
+            Token::Str("readout_index"),
+            Token::U64(0),
+            Token::StructEnd,
+        ],
+    );
+
+    assert_tokens(
+        &op.compact(),
+        &[
+            Token::Struct {
+                name: "PNRDetection",
+                len: 3,
+            },
+            Token::Str("mode"),
+            Token::U64(0),
+            Token::Str("readout"),
+            Token::Str("ro"),
+            Token::Str("readout_index"),
+            Token::U64(0),
             Token::StructEnd,
         ],
     );
