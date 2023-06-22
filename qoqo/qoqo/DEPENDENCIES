@@ -13885,7 +13885,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-target-lexicon 0.12.7
+target-lexicon 0.12.8
 https://github.com/bytecodealliance/target-lexicon
 by Dan Gohman <sunfish@mozilla.com>
 Targeting utilities for compilers and related tools
