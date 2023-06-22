@@ -277,6 +277,18 @@ impl<'ast> Visit<'ast> for Visitor {
                 if trait_name.as_str() == "Operate" {
                     self.operations.push(id.clone());
                 }
+                if trait_name.as_str() == "OperateSingleQubit" {
+                    self.single_qubit_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateTwoQubit" {
+                    self.two_qubit_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateThreeQubit" {
+                    self.three_qubit_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateMultiQubit" {
+                    self.multi_qubit_operations.push(id.clone());
+                }
                 if trait_name.as_str() == "ImplementedIn1point1" {
                     self.roqoqo_version_register.insert(id.clone(), 1);
                 }
@@ -291,6 +303,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 }
                 if trait_name.as_str() == "ImplementedIn1point5" {
                     self.roqoqo_version_register.insert(id.clone(), 5);
+                }
+                if trait_name.as_str() == "ImplementedIn1point6" {
+                    self.roqoqo_version_register.insert(id.clone(), 6);
                 }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());
