@@ -13,12 +13,25 @@
 use std::collections::HashSet;
 
 use crate::operations::{
-    InvolveModes, InvolveQubits, InvolvedClassical, InvolvedModes, InvolvedQubits, Operate,
-    OperateModeGate, OperateSingleMode, OperateSingleModeGate, OperateTwoMode, OperateTwoModeGate,
-    Substitute, SubstituteModes, SupportedVersion,
+    InvolveModes,
+    InvolveQubits,
+    InvolvedClassical,
+    InvolvedModes,
+    InvolvedQubits,
+    Operate,
+    OperateModeGate,
+    OperateSingleMode,
+    OperateSingleModeGate,
+    OperateTwoMode,
+    OperateTwoModeGate,
+    Substitute,
+    SubstituteModes,
+    SupportedVersion, // Implementedin1Point6
 };
 use crate::RoqoqoError;
 use qoqo_calculator::CalculatorFloat;
+
+// TODO: when we move to 1.6.0, add `Implementedin1Point6` for all of these
 
 /// The single-mode squeezing gate with tunable squeezing.
 ///

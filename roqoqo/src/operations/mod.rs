@@ -821,6 +821,9 @@ pub(crate) trait ImplementedIn1point4: Operate {}
 /// Marker trait to show that some operation has been implemented in roqoqo 1.5.0
 pub(crate) trait ImplementedIn1point5: Operate {}
 
+/// Marker trait to show that some operation has been implemented in roqoqo 1.6.0
+pub(crate) trait ImplementedIn1point6: Operate {}
+
 #[cfg(feature = "dynamic")]
 /// A wrapper for Operate trait objects.
 ///
