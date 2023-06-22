@@ -56,6 +56,10 @@ pub use two_qubit_gate_operations::*;
 #[doc(hidden)]
 mod three_qubit_gate_operations;
 pub use three_qubit_gate_operations::*;
+/// Collection of roqoqo three qubit gate operations.
+#[doc(hidden)]
+mod bosonic_operations;
+pub use bosonic_operations::*;
 
 include!(concat!(env!("OUT_DIR"), "/_auto_generated_operations.rs"));
 
@@ -817,6 +821,9 @@ pub(crate) trait ImplementedIn1point4: Operate {}
 /// Marker trait to show that some operation has been implemented in roqoqo 1.5.0
 pub(crate) trait ImplementedIn1point5: Operate {}
 
+/// Marker trait to show that some operation has been implemented in roqoqo 1.6.0
+pub(crate) trait ImplementedIn1point6: Operate {}
+
 #[cfg(feature = "dynamic")]
 /// A wrapper for Operate trait objects.
 ///
@@ -897,29 +904,48 @@ pub enum InvolvedModes {
     Set(HashSet<usize>),
 }
 
+// #[cfg(feature = "dynamic")]
+// dyn_clone::clone_trait_object!(Operate);
+
 /// Trait for the bosonic modes involved in each bosonic Operation.
 ///
 /// # Example
 /// ```
-/// use roqoqo::operations::{InvolveModes, InvolvedModes};
-/// use std::collections::{HashMap, HashSet};
+/// use roqoqo::operations::{InvolveModes, InvolvedModes, PNRDetection, BeamSplitter};
+/// use std::collections::HashSet;
+///
+/// let measurement = PNRDetection::new(1, "ro".into(), 0);
+/// let operation = BeamSplitter::new(0, 1, 0.1.into(), 0.2.into());
+///
+/// let mut modes: HashSet<usize> = HashSet::new();
+/// modes.insert(1);
+/// assert_eq!(measurement.involved_modes(), InvolvedModes::Set(modes.clone()));
+/// modes.insert(0);
+/// assert_eq!(operation.involved_modes(), InvolvedModes::Set(modes));
 /// ```
 pub trait InvolveModes {
     /// Returns all bosonic modes involved in operation.
-    fn involved_modes(&self) -> InvolvedModes;
+    fn involved_modes(&self) -> InvolvedModes {
+        InvolvedModes::None
+    }
 }
 
 /// SubstituteModes trait allowing to perform bosonic mode mappings.
 ///
 /// # Example
 /// ```
-/// use roqoqo::operations::{SubstituteModes};
+/// use roqoqo::operations::{SubstituteModes, BeamSplitter};
 /// use qoqo_calculator::{Calculator, CalculatorFloat};
 /// use std::collections::HashMap;
 ///
 /// let mut mode_mapping_test: HashMap<usize, usize> = HashMap::new();
 /// mode_mapping_test.insert(0, 2);
-/// mode_mapping_test.insert(2, 0);
+/// mode_mapping_test.insert(1, 0);
+/// mode_mapping_test.insert(2, 1);
+///
+/// let operation = BeamSplitter::new(0, 1, 0.1.into(), 0.2.into());
+/// let operation_after_remapping = BeamSplitter::new(2, 0, 0.1.into(), 0.2.into());
+/// assert_eq!(operation.remap_modes(&mode_mapping_test).unwrap(), operation_after_remapping);
 /// ```
 ///
 pub trait SubstituteModes
@@ -934,14 +960,9 @@ where
 ///
 /// # Example
 /// ```
-/// use ndarray::array;
-/// use num_complex::Complex64;
-/// use roqoqo::operations::{OperateModeGate};
+/// use roqoqo::operations::{OperateModeGate, Squeezing};
 ///
-/// let matrix = array![
-///     [Complex64::new(0.0, 0.0), Complex64::new(1.0, 0.0)],
-///     [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)]
-/// ];
+/// let _op = Squeezing::new(0, 0.1.into());
 /// ```
 ///
 pub trait OperateModeGate:
@@ -953,7 +974,10 @@ pub trait OperateModeGate:
 ///
 /// # Example
 /// ```
-/// use roqoqo::operations::{OperateSingleMode};
+/// use roqoqo::operations::{OperateSingleMode, PNRDetection};
+///
+/// let op = PNRDetection::new(0, "ro".into(), 0);
+/// assert_eq!(op.mode(), &0_usize);
 /// ```
 ///
 pub trait OperateSingleMode: Operate + InvolveModes + SubstituteModes + Clone + PartialEq {
@@ -965,7 +989,11 @@ pub trait OperateSingleMode: Operate + InvolveModes + SubstituteModes + Clone + 
 ///
 /// # Example
 /// ```
-/// use roqoqo::operations::{OperateTwoMode};
+/// use roqoqo::operations::{OperateTwoMode, BeamSplitter};
+///
+/// let op = BeamSplitter::new(2, 3, 1.0.into(), 0.1.into());
+/// assert_eq!(op.mode_0(), &2_usize);
+/// assert_eq!(op.mode_1(), &3_usize);
 /// ```
 ///
 pub trait OperateTwoMode: Operate + InvolveModes + SubstituteModes + Clone + PartialEq {
@@ -977,26 +1005,11 @@ pub trait OperateTwoMode: Operate + InvolveModes + SubstituteModes + Clone + Par
 
 /// Trait for unitary operations acting on exactly one bosonic mode.
 ///
-/// Implements the general single bosonic mode unitary gates that can be brought into the form:
-///
-/// U =exp(i * φ) * [[Re(α)+i * Im(α), -Re(β) + i * Im(β)], [Re(β) + i * Im(β) , Re(α) - i * Im(α) ]].
-///
-/// These gates can be parametrized by five real parameters:
-///
-/// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-mode unitary.
-/// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-mode unitary.
-/// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-mode unitary.
-/// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-mode unitary.
-/// * `global_phase` - The global phase φ of the single-mode unitary.
-///
-/// These are the single bosonic mode gates that are performed in the Circuit(), and are then translated
-/// to quantum hardware through the relevant backend. Two-mode gates are also available.
-///
 /// # Example
 /// ```
-/// use qoqo_calculator::CalculatorFloat;
-/// use roqoqo::operations::{OperateSingleModeGate};
-/// use std::f64::consts::PI;
+/// use roqoqo::operations::{OperateSingleModeGate, PhaseShift};
+///
+/// let _op = PhaseShift::new(0, 0.1.into());
 /// ```
 ///
 pub trait OperateSingleModeGate:
@@ -1016,8 +1029,9 @@ pub trait OperateSingleModeGate:
 ///
 /// # Example
 /// ```
-/// use roqoqo::operations::{OperateTwoModeGate};
-/// use qoqo_calculator::CalculatorFloat;
+/// use roqoqo::operations::{OperateTwoModeGate, BeamSplitter};
+///
+/// let _op = BeamSplitter::new(0, 1, 0.2.into(), 0.5.into());
 /// ```
 ///
 pub trait OperateTwoModeGate:

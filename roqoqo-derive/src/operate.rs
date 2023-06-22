@@ -215,7 +215,7 @@ fn operate_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             #[inline]
             fn is_parametrized(&self) -> bool {
                     // Leading false is necessary for constant operations that are never parametrized
-                    (#(#is_parametrized_fields)&&*)
+                    (#(#is_parametrized_fields)||*)
             }
             /// Returns tags classifying the type of the Operation.
             #[inline]

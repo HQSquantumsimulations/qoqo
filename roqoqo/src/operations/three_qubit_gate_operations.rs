@@ -33,7 +33,6 @@ use rand_distr::{Distribution, Normal};
     PartialEq,
     Eq,
     roqoqo_derive::InvolveQubits,
-    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateThreeQubit,
@@ -49,6 +48,12 @@ pub struct ControlledControlledPauliZ {
     target: usize,
 }
 impl super::ImplementedIn1point3 for ControlledControlledPauliZ {}
+
+impl SupportedVersion for ControlledControlledPauliZ {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 3, 0)
+    }
+}
 
 #[allow(non_upper_case_globals)]
 const TAGS_ControlledControlledPauliZ: &[&str; 4] = &[
@@ -178,7 +183,6 @@ impl OperateThreeQubitGate for ControlledControlledPauliZ {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
-    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateThreeQubit,
@@ -196,6 +200,12 @@ pub struct ControlledControlledPhaseShift {
     theta: CalculatorFloat,
 }
 impl super::ImplementedIn1point3 for ControlledControlledPhaseShift {}
+
+impl SupportedVersion for ControlledControlledPhaseShift {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 3, 0)
+    }
+}
 
 #[allow(non_upper_case_globals)]
 const TAGS_ControlledControlledPhaseShift: &[&str; 5] = &[
@@ -326,7 +336,6 @@ impl OperateThreeQubitGate for ControlledControlledPhaseShift {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
-    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateThreeQubit,
@@ -342,6 +351,12 @@ pub struct Toffoli {
 }
 
 impl super::ImplementedIn1point3 for Toffoli {}
+
+impl SupportedVersion for Toffoli {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 3, 0)
+    }
+}
 
 #[allow(non_upper_case_globals)]
 const TAGS_Toffoli: &[&str; 4] = &[

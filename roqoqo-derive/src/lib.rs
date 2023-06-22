@@ -30,13 +30,12 @@ mod substitute_modes;
 mod supported_version;
 
 /// Array of field names that are reserved for use with specific traits
-const RESERVED_FIELDS: &[&str; 17] = &[
+const RESERVED_FIELDS: &[&str; 15] = &[
     "qubit",
     "control",
     "control_0",
     "control_1",
     "target",
-    "theta",
     "qubits",
     "global_phase",
     "alpha_r",
@@ -47,7 +46,6 @@ const RESERVED_FIELDS: &[&str; 17] = &[
     "mode",
     "mode_0",
     "mode_1",
-    "modes",
 ];
 
 /// Derive macro for the InvolveQubits trait
