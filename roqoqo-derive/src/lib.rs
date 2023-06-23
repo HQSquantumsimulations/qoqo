@@ -55,13 +55,6 @@ pub fn derive_involve_qubits(input: proc_macro::TokenStream) -> proc_macro::Toke
     involve_qubits::dispatch_struct_enum(parsed_input).into()
 }
 
-/// Derive macro for the InvolveModes trait
-#[proc_macro_derive(InvolveModes)]
-pub fn derive_involve_modes(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
-    let parsed_input = parse_macro_input!(input as DeriveInput);
-    involve_modes::dispatch_struct_enum(parsed_input).into()
-}
-
 /// Derive macro for the [roqoqo::Operate] trait
 #[proc_macro_derive(Operate)]
 pub fn derive_operate(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
@@ -81,13 +74,6 @@ pub fn derive_operate_try_from_enum(input: proc_macro::TokenStream) -> proc_macr
 pub fn derive_substitute(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let parsed_input = parse_macro_input!(input as DeriveInput);
     substitute::dispatch_struct_enum(parsed_input).into()
-}
-
-/// Derive macro for the [roqoqo::SubstituteModes] trait
-#[proc_macro_derive(SubstituteModes)]
-pub fn derive_substitute_modes(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
-    let parsed_input = parse_macro_input!(input as DeriveInput);
-    substitute_modes::dispatch_struct_enum(parsed_input).into()
 }
 
 /// Derive macro for the [roqoqo::SupportedVersion] trait
@@ -123,20 +109,6 @@ pub fn derive_operate_three_qubit(input: proc_macro::TokenStream) -> proc_macro:
 pub fn derive_operate_multi_qubit(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let parsed_input = parse_macro_input!(input as DeriveInput);
     operate_n_qubit::dispatch_struct_enum_multi_qubit(parsed_input).into()
-}
-
-/// Derive macro for the [roqoqo::OperateSingleQubit] trait
-#[proc_macro_derive(OperateSingleMode)]
-pub fn derive_operate_single_mode(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
-    let parsed_input = parse_macro_input!(input as DeriveInput);
-    operate_n_mode::dispatch_struct_enum_single_mode(parsed_input).into()
-}
-
-/// Derive macro for the [roqoqo::OperateTwoMode] trait
-#[proc_macro_derive(OperateTwoMode)]
-pub fn derive_operate_two_mode(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
-    let parsed_input = parse_macro_input!(input as DeriveInput);
-    operate_n_mode::dispatch_struct_enum_two_mode(parsed_input).into()
 }
 
 /// Derive macro for the [roqoqo::OperatePragma] trait
@@ -216,6 +188,34 @@ pub fn derive_operate_three_qubit_gate(input: proc_macro::TokenStream) -> proc_m
 pub fn derive_operate_multi_qubit_gate(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let parsed_input = parse_macro_input!(input as DeriveInput);
     operate_unitary::dispatch_struct_enum_multi_qubit_gate(parsed_input).into()
+}
+
+/// Derive macro for the InvolveModes trait
+#[proc_macro_derive(InvolveModes)]
+pub fn derive_involve_modes(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    involve_modes::dispatch_struct_enum(parsed_input).into()
+}
+
+/// Derive macro for the [roqoqo::SubstituteModes] trait
+#[proc_macro_derive(SubstituteModes)]
+pub fn derive_substitute_modes(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    substitute_modes::dispatch_struct_enum(parsed_input).into()
+}
+
+/// Derive macro for the [roqoqo::OperateSingleQubit] trait
+#[proc_macro_derive(OperateSingleMode)]
+pub fn derive_operate_single_mode(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    operate_n_mode::dispatch_struct_enum_single_mode(parsed_input).into()
+}
+
+/// Derive macro for the [roqoqo::OperateTwoMode] trait
+#[proc_macro_derive(OperateTwoMode)]
+pub fn derive_operate_two_mode(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    operate_n_mode::dispatch_struct_enum_two_mode(parsed_input).into()
 }
 
 /// Derive macro for the [roqoqo::OperateModeGate] trait

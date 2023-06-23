@@ -2197,6 +2197,7 @@ pub struct PhaseShiftedControlledPhase {
     /// The single qubit phase φ.
     phi: CalculatorFloat,
 }
+
 impl SupportedVersion for PhaseShiftedControlledPhase {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 2, 0)

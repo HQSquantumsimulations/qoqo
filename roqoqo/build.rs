@@ -214,25 +214,19 @@ impl<'ast> Visit<'ast> for Visitor {
                 {
                     self.constant_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("Operate")
-                    && parsed_arguments.contains("OperateSingleQubitGate")
+                if parsed_arguments.contains("OperateSingleQubitGate")
                 {
                     self.single_qubit_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("Operate")
-                    && parsed_arguments.contains("OperateGate")
-                    && parsed_arguments.contains("OperateTwoQubit")
+                if parsed_arguments.contains("OperateTwoQubitGate")
                 {
                     self.two_qubit_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("Operate")
-                    && parsed_arguments.contains("OperateGate")
-                    && parsed_arguments.contains("OperateThreeQubit")
+                if parsed_arguments.contains("OperateThreeQubitGate")
                 {
                     self.three_qubit_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("Operate")
-                    && parsed_arguments.contains("OperateMultiQubitGate")
+                if parsed_arguments.contains("OperateMultiQubitGate")
                 {
                     self.multi_qubit_gate_operations.push(i.ident.clone());
                 }
