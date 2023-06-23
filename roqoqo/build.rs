@@ -214,35 +214,51 @@ impl<'ast> Visit<'ast> for Visitor {
                 {
                     self.constant_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateSingleQubitGate") {
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateSingleQubitGate")
+                {
                     self.single_qubit_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateGate")
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateGate")
                     && parsed_arguments.contains("OperateTwoQubit")
                 {
                     self.two_qubit_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateGate")
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateGate")
                     && parsed_arguments.contains("OperateThreeQubit")
                 {
                     self.three_qubit_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateMultiQubitGate") {
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateMultiQubitGate")
+                {
                     self.multi_qubit_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateModeGate") {
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateModeGate")
+                {
                     self.mode_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateSingleMode") {
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateSingleMode")
+                {
                     self.single_mode_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateTwoMode") {
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateTwoMode")
+                {
                     self.two_mode_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateSingleModeGate") {
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateSingleModeGate")
+                {
                     self.single_mode_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateTwoModeGate") {
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateTwoModeGate")
+                {
                     self.two_mode_gate_operations.push(i.ident.clone());
                 }
             }
@@ -331,11 +347,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 if trait_name.as_str() == "OperateModeGate" {
                     self.mode_gate_operations.push(id.clone());
                 }
-                // Is this needed? TODO
                 if trait_name.as_str() == "OperateSingleMode" {
                     self.single_mode_operations.push(id.clone());
                 }
-                // Is this needed? TODO
                 if trait_name.as_str() == "OperateTwoMode" {
                     self.two_mode_operations.push(id.clone());
                 }
