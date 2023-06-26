@@ -22,6 +22,10 @@ use qoqo_calculator::CalculatorFloat;
 
 /// The single-mode squeezing gate with tunable squeezing.
 ///
+/// The squeezing gate is a quantum operation that reduces that allows for precise manipulation of quantum states,
+/// by reducing the uncertainty in one variable and therefore increasing the uncertainty of another.
+/// https://arxiv.org/pdf/quant-ph/0106157.pdf
+///
 #[derive(
     Debug,
     Clone,
@@ -65,7 +69,9 @@ impl SupportedVersion for Squeezing {
     }
 }
 
-/// The single-mode phase-shift gate with variable phase.
+/// The single-mode phase-shift gate with variable phase, given by R(θ) = eexp(i * θ * 𝑁̂).
+///
+/// https://arxiv.org/pdf/2104.03241.pdf
 ///
 #[derive(
     Debug,
@@ -110,7 +116,7 @@ impl SupportedVersion for PhaseShift {
     }
 }
 
-/// The 2-mode beam splitter which splits a beam with a transmission amplitude cos(θ) and a reflection amplitude exp(i * φ) * sin(θ)
+/// The 2-mode beam splitter which splits a beam with a transmission amplitude cos(θ) and a reflection amplitude exp(i * φ) * sin(θ).
 ///
 #[derive(
     Debug,
@@ -160,6 +166,9 @@ impl SupportedVersion for BeamSplitter {
 }
 
 /// The photon number-resolving detector measurement for bosons.
+///
+/// This can be used as a single-shot measurement of the photon number.
+/// https://arxiv.org/pdf/0902.4824.pdf
 ///
 #[derive(
     Debug,
