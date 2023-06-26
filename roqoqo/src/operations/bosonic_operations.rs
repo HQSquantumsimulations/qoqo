@@ -13,25 +13,12 @@
 use std::collections::HashSet;
 
 use crate::operations::{
-    InvolveModes,
-    InvolveQubits,
-    InvolvedClassical,
-    InvolvedModes,
-    InvolvedQubits,
-    Operate,
-    OperateModeGate,
-    OperateSingleMode,
-    OperateSingleModeGate,
-    OperateTwoMode,
-    OperateTwoModeGate,
-    Substitute,
-    SubstituteModes,
-    SupportedVersion, // Implementedin1Point6
+    ImplementedIn1point6, InvolveModes, InvolveQubits, InvolvedClassical, InvolvedModes,
+    InvolvedQubits, Operate, OperateModeGate, OperateSingleMode, OperateSingleModeGate,
+    OperateTwoMode, OperateTwoModeGate, Substitute, SubstituteModes, SupportedVersion,
 };
 use crate::RoqoqoError;
 use qoqo_calculator::CalculatorFloat;
-
-// TODO: when we move to 1.6.0, add `Implementedin1Point6` for all of these
 
 /// The single-mode squeezing gate with tunable squeezing.
 ///
@@ -69,6 +56,8 @@ impl InvolveQubits for Squeezing {
         InvolvedQubits::None
     }
 }
+
+impl ImplementedIn1point6 for Squeezing {}
 
 impl SupportedVersion for Squeezing {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
@@ -112,6 +101,8 @@ impl InvolveQubits for PhaseShift {
         InvolvedQubits::None
     }
 }
+
+impl ImplementedIn1point6 for PhaseShift {}
 
 impl SupportedVersion for PhaseShift {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
@@ -160,6 +151,8 @@ impl InvolveQubits for BeamSplitter {
     }
 }
 
+impl ImplementedIn1point6 for BeamSplitter {}
+
 impl SupportedVersion for BeamSplitter {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 6, 0)
@@ -203,6 +196,8 @@ impl InvolveQubits for PNRDetection {
         InvolvedClassical::Set(a)
     }
 }
+
+impl ImplementedIn1point6 for PNRDetection {}
 
 impl SupportedVersion for PNRDetection {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
