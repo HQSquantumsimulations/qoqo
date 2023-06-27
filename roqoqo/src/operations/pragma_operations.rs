@@ -1054,7 +1054,8 @@ impl super::ImplementedIn1point5 for PragmaControlledCircuit {}
 
 impl SupportedVersion for PragmaControlledCircuit {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 5, 0)
+        let pragma_version: (u32, u32, u32) = (1, 5, 0);
+        pragma_version.max(self.circuit.minimum_supported_roqoqo_version())
     }
 }
 
