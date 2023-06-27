@@ -140,6 +140,6 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<SqueezingWrapper>()?;
     m.add_class::<PhaseShiftWrapper>()?;
     m.add_class::<BeamSplitterWrapper>()?;
-    // m.add_class::<PNRDetectionWrapper>()?;
+    m.add_class::<PNRDetectionWrapper>()?;
     Ok(())
 }
