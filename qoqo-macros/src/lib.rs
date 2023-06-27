@@ -27,13 +27,12 @@ mod operate;
 // mod operate_unitary;
 
 /// Array of field names that are reserved for use with specific traits
-const RESERVED_FIELDS: &[&str; 13] = &[
+const RESERVED_FIELDS: &[&str; 15] = &[
     "qubit",
     "control",
     "control_0",
     "control_1",
     "target",
-    "theta",
     "qubits",
     "global_phase",
     "alpha_r",
@@ -41,6 +40,9 @@ const RESERVED_FIELDS: &[&str; 13] = &[
     "beta_r",
     "beta_i",
     "name",
+    "mode",
+    "mode_0",
+    "mode_1",
 ];
 
 // Struct for parsed derive macro arguments. Used to identify structs belonging to enums
@@ -90,10 +92,6 @@ pub fn wrap(
     };
     let rotate_quote = if attribute_arguments.contains("Rotate") {
         quote! {
-            /// Returns angle of rotation
-            pub fn theta(&self) -> CalculatorFloatWrapper{
-                CalculatorFloatWrapper{internal: self.internal.theta().clone()}
-            }
             /// Returns Rotated gate raised to power
             ///
             /// Args:
@@ -417,6 +415,118 @@ pub fn wrap(
     } else {
         TokenStream::new()
     };
+
+    let involve_modes_quote = if attribute_arguments.contains("InvolveModes") {
+        quote! {
+        /// List of modes the operation acts on.
+        ///
+        /// Returns:
+        ///     Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        pub fn involved_modes(&self) -> PyObject {
+            Python::with_gil(|py| -> PyObject {
+                let involved = self.internal.involved_modes();
+                match involved {
+                    InvolvedModes::All => {
+                        let pyref: &PySet = PySet::new(py, &["All"]).unwrap();
+                        let pyobject: PyObject = pyref.to_object(py);
+                        pyobject
+                    },
+                    InvolvedModes::None => {
+                        let pyref: &PySet = PySet::empty(py).unwrap();
+                        let pyobject: PyObject = pyref.to_object(py);
+                        pyobject
+                    },
+                    InvolvedModes::Set(x) => {
+                        let mut vector: Vec<usize> = Vec::new();
+                        for mode in x {
+                            vector.push(mode)
+                        }
+                        let pyref: &PySet = PySet::new(py, &vector[..]).unwrap();
+                        let pyobject: PyObject = pyref.to_object(py);
+                        pyobject
+                    },
+                }
+            })
+            }
+        }
+    } else {
+        TokenStream::new()
+    };
+
+    let substitute_modes_quote = if attribute_arguments.contains("SubstituteModes") {
+        quote! {
+        /// Remap the bosonic modes in copy of the operation.
+        ///
+        /// Args:
+        ///     mapping (dict[int, int]): Mapping for bosonic modes in operation.
+        ///
+        /// Returns:
+        ///     self
+        ///
+        /// Raises:
+        ///     PyValueError: Remapping could not be performed
+        pub fn remap_modes(&self, mapping: HashMap<usize, usize>) -> PyResult<Self> {
+            let new_internal = self.internal.remap_modes(&mapping).map_err(|x|
+                PyRuntimeError::new_err(format!("Mode remapping failed: {:?}",x))
+            )?;
+            Ok(Self{internal: new_internal})
+            }
+        }
+    } else {
+        TokenStream::new()
+    };
+
+    let operate_mode_gate_quote = if attribute_arguments.contains("OperateModeGate") {
+        quote! {}
+    } else {
+        TokenStream::new()
+    };
+
+    let operate_single_mode_quote = if attribute_arguments.contains("OperateSingleMode") {
+        quote! {
+        /// Return `mode` the bosonic Operation acts on.
+        ///
+        /// Returns:
+        ///     int
+        pub fn mode(&self) -> usize {
+                self.internal.mode().clone()
+            }
+        }
+    } else {
+        TokenStream::new()
+    };
+
+    let operate_two_mode_quote = if attribute_arguments.contains("OperateTwoMode") {
+        quote! {
+        /// Return `mode_0` bosonic mode of two bosonic mode Operation.
+        ///
+        /// Returns:
+        ///     int
+        pub fn mode_0(&self) -> usize {
+                self.internal.mode_0().clone()
+            }
+        /// Return `mode_1` bosonic mode of two bosonic mode Operation.
+        ///
+        /// Returns:
+        ///     int
+        pub fn mode_1(&self) -> usize {
+                self.internal.mode_1().clone()
+            }
+        }
+    } else {
+        TokenStream::new()
+    };
+    let operate_single_mode_gate_quote = if attribute_arguments.contains("OperateSingleModeGate") {
+        quote! {}
+    } else {
+        TokenStream::new()
+    };
+    let operate_two_mode_gate_quote = if attribute_arguments.contains("OperateTwoModeGate") {
+        quote! {}
+    } else {
+        TokenStream::new()
+    };
+
     let msg = format!("Internal storage of {} object", ident);
     let q = quote! {
         #[automatically_derived]
@@ -446,6 +556,13 @@ pub fn wrap(
             #operate_pragma_noise_proba_quote
             #define_quote
             #operate_constant_gate_quote
+            #involve_modes_quote
+            #substitute_modes_quote
+            #operate_mode_gate_quote
+            #operate_single_mode_quote
+            #operate_two_mode_quote
+            #operate_single_mode_gate_quote
+            #operate_two_mode_gate_quote
             fn __format__(&self, _format_spec: &str) -> PyResult<String> {
                 Ok(format!("{:?}", self.internal))
             }

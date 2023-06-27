@@ -28,6 +28,8 @@ mod three_qubit_gate_operations;
 pub use three_qubit_gate_operations::*;
 mod multi_qubit_gate_operations;
 pub use multi_qubit_gate_operations::*;
+mod bosonic_operations;
+pub use bosonic_operations::*;
 include!(concat!(
     env!("OUT_DIR"),
     "/_auto_generated_operation_conversion.rs"
@@ -134,5 +136,10 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<GPi2Wrapper>()?;
     // 1.5
     m.add_class::<PragmaControlledCircuitWrapper>()?;
+    // 1.6
+    m.add_class::<SqueezingWrapper>()?;
+    m.add_class::<PhaseShiftWrapper>()?;
+    m.add_class::<BeamSplitterWrapper>()?;
+    // m.add_class::<PNRDetectionWrapper>()?;
     Ok(())
 }
