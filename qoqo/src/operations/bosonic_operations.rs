@@ -31,7 +31,7 @@ use std::collections::HashMap;
 )]
 /// The single-mode squeezing gate with tunable squeezing.
 ///
-/// The squeezing gate is a quantum operation that reduces that allows for precise manipulation of quantum states,
+/// The squeezing gate is a quantum operation that allows for precise manipulation of quantum states,
 /// by reducing the uncertainty in one variable and therefore increasing the uncertainty of another.
 /// https://arxiv.org/pdf/quant-ph/0106157.pdf
 ///
