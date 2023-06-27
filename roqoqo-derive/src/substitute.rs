@@ -21,7 +21,7 @@ pub fn dispatch_struct_enum(input: DeriveInput) -> TokenStream {
     match input.data {
         Data::Struct(ds) => substitute_struct(ds, ident),
         Data::Enum(de) => substitute_enum(de, ident),
-        _ => panic!("InvolveQubits can only be derived on structs and enums"),
+        _ => panic!("Substitute can only be derived on structs and enums"),
     }
 }
 

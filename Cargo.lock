@@ -529,7 +529,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "1.5.0"
+version = "1.6.0-alpha.0"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -553,7 +553,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "1.5.0"
+version = "1.6.0-alpha.0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -651,7 +651,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.5.0"
+version = "1.6.0-alpha.0"
 dependencies = [
  "async-trait",
  "bincode",
@@ -678,7 +678,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "1.5.0"
+version = "1.6.0-alpha.0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -687,7 +687,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "1.5.0"
+version = "1.6.0-alpha.0"
 dependencies = [
  "nalgebra",
  "ndarray",
@@ -748,9 +748,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.96"
+version = "1.0.97"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "057d394a50403bcac12672b2b18fb387ab6d289d957dab67dd201875391e52f1"
+checksum = "bdf3bf93142acad5821c99197022e170842cdbc1c30482b98750c688c640842a"
 dependencies = [
  "itoa",
  "ryu",
@@ -818,9 +818,9 @@ dependencies = [
 
 [[package]]
 name = "target-lexicon"
-version = "0.12.7"
+version = "0.12.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fd1ba337640d60c3e96bc6f0638a939b9c9a7f2c316a1598c279828b3d1dc8c5"
+checksum = "1b1c7f239eb94671427157bd93b3694320f3668d4e1eff08c7285366fd777fac"
 
 [[package]]
 name = "test-case"

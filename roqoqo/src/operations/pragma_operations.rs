@@ -1040,14 +1040,7 @@ impl Substitute for PragmaConditional {
 /// is equvalent to a PragmaControlledCircuit(0, [PauliX(1)]) but it cannot be represented
 /// by a unitary operation in qoqo for arbitraty circuits.
 ///
-#[derive(
-    Debug,
-    Clone,
-    PartialEq,
-    roqoqo_derive::SupportedVersion,
-    roqoqo_derive::Operate,
-    roqoqo_derive::OperatePragma,
-)]
+#[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaControlledCircuit {
@@ -1058,6 +1051,13 @@ pub struct PragmaControlledCircuit {
 }
 
 impl super::ImplementedIn1point5 for PragmaControlledCircuit {}
+
+impl SupportedVersion for PragmaControlledCircuit {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        let pragma_version: (u32, u32, u32) = (1, 5, 0);
+        pragma_version.max(self.circuit.minimum_supported_roqoqo_version())
+    }
+}
 
 #[allow(non_upper_case_globals)]
 const TAGS_PragmaControlledCircuit: &[&str; 3] =

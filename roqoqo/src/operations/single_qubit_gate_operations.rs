@@ -1574,7 +1574,6 @@ impl OperateSingleQubitGate for RotateXY {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
-    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
@@ -1589,6 +1588,12 @@ pub struct GPi {
 }
 
 impl super::ImplementedIn1point4 for GPi {}
+
+impl SupportedVersion for GPi {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 4, 0)
+    }
+}
 
 #[allow(non_upper_case_globals)]
 const TAGS_GPi: &[&str; 5] = &[
@@ -1668,7 +1673,6 @@ impl OperateSingleQubitGate for GPi {
     Clone,
     PartialEq,
     roqoqo_derive::InvolveQubits,
-    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
@@ -1684,6 +1688,11 @@ pub struct GPi2 {
 }
 impl super::ImplementedIn1point4 for GPi2 {}
 
+impl SupportedVersion for GPi2 {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 4, 0)
+    }
+}
 #[allow(non_upper_case_globals)]
 const TAGS_GPi2: &[&str; 5] = &[
     "Operation",

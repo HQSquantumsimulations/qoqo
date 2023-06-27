@@ -1009,7 +1009,7 @@ fn test_pyo3_hqslang_overrotation(input_measurement: Operation, hqslang_param: &
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005),  operators())); "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 #[test_case(Operation::from(PragmaControlledCircuit::new( 1, create_circuit())); "PragmaControlledCircuit")]
-#[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::default())); "PragmaLoop")]
+#[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from(1.0), Circuit::default())); "PragmaLoop")]
 fn test_pyo3_is_parametrized(input_measurement: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {

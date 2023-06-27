@@ -21,7 +21,7 @@ use syn::punctuated::Punctuated;
 use syn::visit::{self, Visit};
 use syn::{AttrStyle, File, Ident, ItemImpl, ItemStruct, Path, Token, Type, TypePath};
 
-const NUMBER_OF_MINOR_VERSIONS: usize = 6;
+const NUMBER_OF_MINOR_VERSIONS: usize = 7;
 
 /// Visitor scanning rust source code for struct belonging to enums
 struct Visitor {
@@ -59,6 +59,16 @@ struct Visitor {
     multi_qubit_gate_operations: Vec<Ident>,
     // Register of minor point version Operation was introduced in.
     roqoqo_version_register: HashMap<Ident, usize>,
+    // Identifiers of structs belonging to ModeGateOperation enum
+    mode_gate_operations: Vec<Ident>,
+    // Identifiers of structs belonging to SingleModeOperation enum
+    single_mode_operations: Vec<Ident>,
+    // Identifiers of structs belonging to TwoModeOperation enum
+    two_mode_operations: Vec<Ident>,
+    // Identifiers of structs belonging to SingleModeGateOperation enum
+    single_mode_gate_operations: Vec<Ident>,
+    // Identifiers of structs belonging to TwoModeGateOperation enum
+    two_mode_gate_operations: Vec<Ident>,
 }
 
 impl Visitor {
@@ -81,6 +91,11 @@ impl Visitor {
             three_qubit_gate_operations: Vec::new(),
             multi_qubit_gate_operations: Vec::new(),
             roqoqo_version_register: HashMap::new(),
+            mode_gate_operations: Vec::new(),
+            single_mode_operations: Vec::new(),
+            two_mode_operations: Vec::new(),
+            single_mode_gate_operations: Vec::new(),
+            two_mode_gate_operations: Vec::new(),
         }
     }
 
@@ -202,18 +217,39 @@ impl<'ast> Visit<'ast> for Visitor {
                 if parsed_arguments.contains("OperateSingleQubitGate") {
                     self.single_qubit_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateGate")
-                    && parsed_arguments.contains("OperateTwoQubit")
-                {
+                if parsed_arguments.contains("OperateTwoQubitGate") {
                     self.two_qubit_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateGate")
-                    && parsed_arguments.contains("OperateThreeQubit")
-                {
+                if parsed_arguments.contains("OperateThreeQubitGate") {
                     self.three_qubit_gate_operations.push(i.ident.clone());
                 }
                 if parsed_arguments.contains("OperateMultiQubitGate") {
                     self.multi_qubit_gate_operations.push(i.ident.clone());
+                }
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateModeGate")
+                {
+                    self.mode_gate_operations.push(i.ident.clone());
+                }
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateSingleMode")
+                {
+                    self.single_mode_operations.push(i.ident.clone());
+                }
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateTwoMode")
+                {
+                    self.two_mode_operations.push(i.ident.clone());
+                }
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateSingleModeGate")
+                {
+                    self.single_mode_gate_operations.push(i.ident.clone());
+                }
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateTwoModeGate")
+                {
+                    self.two_mode_gate_operations.push(i.ident.clone());
                 }
             }
         }
@@ -247,6 +283,18 @@ impl<'ast> Visit<'ast> for Visitor {
                 if trait_name.as_str() == "Operate" {
                     self.operations.push(id.clone());
                 }
+                if trait_name.as_str() == "OperateSingleQubit" {
+                    self.single_qubit_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateTwoQubit" {
+                    self.two_qubit_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateThreeQubit" {
+                    self.three_qubit_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateMultiQubit" {
+                    self.multi_qubit_operations.push(id.clone());
+                }
                 if trait_name.as_str() == "ImplementedIn1point1" {
                     self.roqoqo_version_register.insert(id.clone(), 1);
                 }
@@ -261,6 +309,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 }
                 if trait_name.as_str() == "ImplementedIn1point5" {
                     self.roqoqo_version_register.insert(id.clone(), 5);
+                }
+                if trait_name.as_str() == "ImplementedIn1point6" {
+                    self.roqoqo_version_register.insert(id.clone(), 6);
                 }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());
@@ -281,7 +332,22 @@ impl<'ast> Visit<'ast> for Visitor {
                     self.pragma_noise_proba_operations.push(id.clone());
                 }
                 if trait_name.as_str() == "OperateMultiQubitGate" {
-                    self.multi_qubit_gate_operations.push(id);
+                    self.multi_qubit_gate_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateModeGate" {
+                    self.mode_gate_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateSingleMode" {
+                    self.single_mode_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateTwoMode" {
+                    self.two_mode_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateSingleModeGate" {
+                    self.single_mode_gate_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateTwoModeGate" {
+                    self.two_mode_gate_operations.push(id);
                 }
             }
         }
@@ -297,6 +363,7 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/multi_qubit_gate_operations.rs",
     "src/operations/measurement_operations.rs",
     "src/operations/define_operations.rs",
+    "src/operations/bosonic_operations.rs",
 ];
 
 fn main() {
@@ -318,6 +385,7 @@ fn main() {
 
         operations_quotes.extend(res)
     }
+
     // Construct TokenStreams for variants of operation enum
     let mut single_qubit_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
     for i in 0..NUMBER_OF_MINOR_VERSIONS {
@@ -433,6 +501,48 @@ fn main() {
         let res: Vec<proc_macro2::TokenStream> =
             build_quotes(&vis, i, vis.multi_qubit_gate_operations.clone());
         multi_qubit_gate_operations_quote.extend(res);
+    }
+
+    // Construct TokenStreams for variants of pragma enum
+    let mut mode_gate_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.mode_gate_operations.clone());
+        mode_gate_operations_quotes.extend(res);
+    }
+
+    // Construct TokenStreams for variants of operation enum
+    let mut single_mode_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.single_mode_operations.clone());
+
+        single_mode_operations_quotes.extend(res);
+    }
+
+    // Construct TokenStreams for variants of operation enum
+    let mut two_mode_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.two_mode_operations.clone());
+
+        two_mode_operations_quotes.extend(res);
+    }
+
+    // Construct TokenStreams for variants of operation enum
+    let mut single_mode_gate_operations_quote: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.single_mode_gate_operations.clone());
+        single_mode_gate_operations_quote.extend(res);
+    }
+
+    // Construct TokenStreams for variants of operation enum
+    let mut two_mode_gate_operations_quote: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.two_mode_gate_operations.clone());
+        two_mode_gate_operations_quote.extend(res);
     }
 
     // Construct TokenStream for auto-generated rust file containing the enums
@@ -578,12 +688,57 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperateMultiQubitGate]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateMultiQubit, OperateMultiQubitGate,  SupportedVersion)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateMultiQubit, OperateMultiQubitGate, SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         #[non_exhaustive]
         pub enum MultiQubitGateOperation {
             #(#multi_qubit_gate_operations_quote),*
+        }
+
+        /// Enum of all Operations implementing [OperateModeGate]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, InvolveModes, Operate, OperateTryFromEnum, Substitute, SubstituteModes, OperateModeGate,SupportedVersion)]
+        #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+        #[non_exhaustive]
+        pub enum ModeGateOperation {
+            #(#mode_gate_operations_quotes),*
+        }
+
+        /// Enum of all Operations implementing [OperateSingleMode]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, InvolveModes, Operate, OperateTryFromEnum, Substitute, SubstituteModes, OperateSingleMode,SupportedVersion)]
+        #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+        #[non_exhaustive]
+        pub enum SingleModeOperation {
+            #(#single_mode_operations_quotes),*
+        }
+
+        /// Enum of all Operations implementing [OperateTwoMode]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, InvolveModes, Operate, OperateTryFromEnum, Substitute, SubstituteModes, OperateTwoMode, SupportedVersion)]
+        #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+        #[non_exhaustive]
+        pub enum TwoModeOperation {
+            #(#two_mode_operations_quotes),*
+        }
+
+        /// Enum of all Operations implementing [OperateSingleModeGate]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, InvolveModes, Operate, OperateTryFromEnum, Substitute, SubstituteModes, OperateModeGate, OperateSingleMode, OperateSingleModeGate, SupportedVersion)]
+        #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+        #[non_exhaustive]
+        pub enum SingleModeGateOperation {
+            #(#single_mode_gate_operations_quote),*
+        }
+
+        /// Enum of all Operations implementing [OperateTwoModeGate]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, InvolveModes, Operate, OperateTryFromEnum, Substitute, SubstituteModes, OperateModeGate, OperateTwoMode, OperateTwoModeGate, SupportedVersion)]
+        #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+        #[non_exhaustive]
+        pub enum TwoModeGateOperation {
+            #(#two_mode_gate_operations_quote),*
         }
 
     };

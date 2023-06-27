@@ -18,19 +18,24 @@ use syn::{
     parse_macro_input, DataEnum, DataStruct, DeriveInput, Fields, GenericArgument, Ident,
     PathArguments, Type, TypePath,
 };
+mod involve_modes;
 mod involve_qubits;
 mod operate;
+mod operate_n_mode;
 mod operate_n_qubit;
 mod operate_unitary;
+mod operate_unitary_modes;
 mod substitute;
+mod substitute_modes;
 mod supported_version;
 
 /// Array of field names that are reserved for use with specific traits
-const RESERVED_FIELDS: &[&str; 11] = &[
+const RESERVED_FIELDS: &[&str; 15] = &[
     "qubit",
     "control",
+    "control_0",
+    "control_1",
     "target",
-    "theta",
     "qubits",
     "global_phase",
     "alpha_r",
@@ -38,6 +43,9 @@ const RESERVED_FIELDS: &[&str; 11] = &[
     "beta_r",
     "beta_i",
     "name",
+    "mode",
+    "mode_0",
+    "mode_1",
 ];
 
 /// Derive macro for the InvolveQubits trait
@@ -180,6 +188,55 @@ pub fn derive_operate_three_qubit_gate(input: proc_macro::TokenStream) -> proc_m
 pub fn derive_operate_multi_qubit_gate(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let parsed_input = parse_macro_input!(input as DeriveInput);
     operate_unitary::dispatch_struct_enum_multi_qubit_gate(parsed_input).into()
+}
+
+/// Derive macro for the InvolveModes trait
+#[proc_macro_derive(InvolveModes)]
+pub fn derive_involve_modes(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    involve_modes::dispatch_struct_enum(parsed_input).into()
+}
+
+/// Derive macro for the [roqoqo::SubstituteModes] trait
+#[proc_macro_derive(SubstituteModes)]
+pub fn derive_substitute_modes(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    substitute_modes::dispatch_struct_enum(parsed_input).into()
+}
+
+/// Derive macro for the [roqoqo::OperateSingleQubit] trait
+#[proc_macro_derive(OperateSingleMode)]
+pub fn derive_operate_single_mode(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    operate_n_mode::dispatch_struct_enum_single_mode(parsed_input).into()
+}
+
+/// Derive macro for the [roqoqo::OperateTwoMode] trait
+#[proc_macro_derive(OperateTwoMode)]
+pub fn derive_operate_two_mode(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    operate_n_mode::dispatch_struct_enum_two_mode(parsed_input).into()
+}
+
+/// Derive macro for the [roqoqo::OperateModeGate] trait
+#[proc_macro_derive(OperateModeGate)]
+pub fn derive_operate_mode_gate(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    operate_unitary_modes::dispatch_struct_enum_operate_mode_gate(parsed_input).into()
+}
+
+/// Derive macro for the [roqoqo::OperateSingleModeGate] trait
+#[proc_macro_derive(OperateSingleModeGate)]
+pub fn derive_operate_single_mode_gate(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    operate_unitary_modes::dispatch_struct_enum_single_mode_gate(parsed_input).into()
+}
+
+/// Derive macro for the [roqoqo::OperateTwoModeGate] trait
+#[proc_macro_derive(OperateTwoModeGate)]
+pub fn derive_operate_two_mode_gate(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    operate_unitary_modes::dispatch_struct_enum_two_mode_gate(parsed_input).into()
 }
 
 fn extract_fields_with_types(ds: DataStruct) -> Vec<(Ident, Option<String>, Type)> {

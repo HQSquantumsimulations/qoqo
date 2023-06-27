@@ -73,7 +73,7 @@ fn pragma_loop_operate_trait() {
     assert_eq!(pragma.hqslang(), String::from("PragmaLoop"));
 
     // (3) Test is_parametrized function
-    assert!(!pragma.is_parametrized());
+    assert!(pragma.is_parametrized());
 }
 
 /// Test PragmaSetNumberOfMeasurements Substitute trait

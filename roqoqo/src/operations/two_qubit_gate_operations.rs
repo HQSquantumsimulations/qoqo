@@ -2197,6 +2197,7 @@ pub struct PhaseShiftedControlledPhase {
     /// The single qubit phase φ.
     phi: CalculatorFloat,
 }
+
 impl SupportedVersion for PhaseShiftedControlledPhase {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 2, 0)
@@ -2309,6 +2310,7 @@ pub struct ControlledRotateX {
     /// The angle θ of the rotation, in the interval from 0 to 2 * 2π.
     theta: CalculatorFloat,
 }
+
 impl SupportedVersion for ControlledRotateX {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 3, 0)
