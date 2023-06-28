@@ -1,4 +1,4 @@
-// Copyright © 2021-2022 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -33,6 +33,9 @@ pub use two_qubit_gate_operations::*;
 
 mod three_qubit_gate_operations;
 pub use three_qubit_gate_operations::*;
+
+mod bosonic_operations;
+pub use bosonic_operations::*;
 
 use pyo3::prelude::*;
 use qoqo_calculator::CalculatorFloat;

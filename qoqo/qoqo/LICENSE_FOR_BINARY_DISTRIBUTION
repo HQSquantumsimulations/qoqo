@@ -3,7 +3,7 @@ In building the binary distribution other products the software listed in the fi
 The licenses an Copyright notices are also listed in the DEPENDENCIES file.
 
 This product in binary form links dynamically against Python  available under the Python license. For full license text see file qoqo_calculator_pyo3/PYTHON_LICENSE
-Python (Copyright © 2001-2021 Python Software Foundation; All Rights
+Python (Copyright © 2001-2023 Python Software Foundation; All Rights
 Reserved)
 
 

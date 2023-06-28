@@ -1,4 +1,4 @@
-// Copyright © 2021-2022 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -28,6 +28,8 @@ mod three_qubit_gate_operations;
 pub use three_qubit_gate_operations::*;
 mod multi_qubit_gate_operations;
 pub use multi_qubit_gate_operations::*;
+mod bosonic_operations;
+pub use bosonic_operations::*;
 include!(concat!(
     env!("OUT_DIR"),
     "/_auto_generated_operation_conversion.rs"
@@ -132,5 +134,12 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     // 1.4
     m.add_class::<GPiWrapper>()?;
     m.add_class::<GPi2Wrapper>()?;
+    // 1.5
+    m.add_class::<PragmaControlledCircuitWrapper>()?;
+    // 1.6
+    m.add_class::<SqueezingWrapper>()?;
+    m.add_class::<PhaseShiftWrapper>()?;
+    m.add_class::<BeamSplitterWrapper>()?;
+    m.add_class::<PNRDetectionWrapper>()?;
     Ok(())
 }

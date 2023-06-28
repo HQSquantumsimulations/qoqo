@@ -1,4 +1,4 @@
-// Copyright © 2021-2022 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -20,7 +20,7 @@ pub fn dispatch_struct_enum_operate_gate(input: DeriveInput) -> TokenStream {
     match input.data {
         Data::Struct(_ds) => operate_gate_struct(ident),
         Data::Enum(de) => operate_gate_enum(de, ident),
-        _ => panic!("OperateGate can only be derived on enums"),
+        _ => panic!("OperateGate can only be derived on structs and enums"),
     }
 }
 

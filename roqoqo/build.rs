@@ -1,4 +1,4 @@
-// Copyright © 2021-2022 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -11,7 +11,7 @@
 // limitations under the License.
 
 use quote::quote;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::fs;
 use std::path::PathBuf;
 use std::process::Command;
@@ -20,6 +20,9 @@ use syn::parse::{Parse, ParseStream};
 use syn::punctuated::Punctuated;
 use syn::visit::{self, Visit};
 use syn::{AttrStyle, File, Ident, ItemImpl, ItemStruct, Path, Token, Type, TypePath};
+
+const NUMBER_OF_MINOR_VERSIONS: usize = 7;
+
 /// Visitor scanning rust source code for struct belonging to enums
 struct Visitor {
     // Identifiers of structs belonging to Operation enum
@@ -54,22 +57,18 @@ struct Visitor {
     three_qubit_gate_operations: Vec<Ident>,
     // Identifiers of structs belonging to MultiQubitGateOperation enum
     multi_qubit_gate_operations: Vec<Ident>,
-    // Operations that have only been introduced in roqoqoq 1.1.0
-    // These operations will only be added at end of automatically created enums
-    // to maintain compatibility with bincode encoding
-    roqoqo_1_1_operations: Vec<Ident>,
-    // Operations that have only been introduced in roqoqoq 1.2.0
-    // These operations will only be added at end of automatically created enums
-    // to maintain compatibility with bincode encoding
-    roqoqo_1_2_operations: Vec<Ident>,
-    // Operations that have only been introduced in roqoqoq 1.3.0
-    // These operations will only be added at end of automatically created enums
-    // to maintain compatibility with bincode encoding
-    roqoqo_1_3_operations: Vec<Ident>,
-    // Operations that have only been introduced in roqoqoq 1.4.0
-    // These operations will only be added at end of automatically created enums
-    // to maintain compatibility with bincode encoding
-    roqoqo_1_4_operations: Vec<Ident>,
+    // Register of minor point version Operation was introduced in.
+    roqoqo_version_register: HashMap<Ident, usize>,
+    // Identifiers of structs belonging to ModeGateOperation enum
+    mode_gate_operations: Vec<Ident>,
+    // Identifiers of structs belonging to SingleModeOperation enum
+    single_mode_operations: Vec<Ident>,
+    // Identifiers of structs belonging to TwoModeOperation enum
+    two_mode_operations: Vec<Ident>,
+    // Identifiers of structs belonging to SingleModeGateOperation enum
+    single_mode_gate_operations: Vec<Ident>,
+    // Identifiers of structs belonging to TwoModeGateOperation enum
+    two_mode_gate_operations: Vec<Ident>,
 }
 
 impl Visitor {
@@ -91,10 +90,24 @@ impl Visitor {
             two_qubit_gate_operations: Vec::new(),
             three_qubit_gate_operations: Vec::new(),
             multi_qubit_gate_operations: Vec::new(),
-            roqoqo_1_1_operations: Vec::new(),
-            roqoqo_1_2_operations: Vec::new(),
-            roqoqo_1_3_operations: Vec::new(),
-            roqoqo_1_4_operations: Vec::new(),
+            roqoqo_version_register: HashMap::new(),
+            mode_gate_operations: Vec::new(),
+            single_mode_operations: Vec::new(),
+            two_mode_operations: Vec::new(),
+            single_mode_gate_operations: Vec::new(),
+            two_mode_gate_operations: Vec::new(),
+        }
+    }
+
+    #[inline]
+    /// Helps filtering Operation id's for minor version
+    pub fn filter_for_version(&self, id: &Ident, minor_version: usize) -> bool {
+        if minor_version == 0 {
+            self.roqoqo_version_register.get(id).is_none()
+        } else if let Some(saved_version) = self.roqoqo_version_register.get(id) {
+            saved_version == &minor_version
+        } else {
+            false
         }
     }
 }
@@ -204,18 +217,39 @@ impl<'ast> Visit<'ast> for Visitor {
                 if parsed_arguments.contains("OperateSingleQubitGate") {
                     self.single_qubit_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateGate")
-                    && parsed_arguments.contains("OperateTwoQubit")
-                {
+                if parsed_arguments.contains("OperateTwoQubitGate") {
                     self.two_qubit_gate_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("OperateGate")
-                    && parsed_arguments.contains("OperateThreeQubit")
-                {
+                if parsed_arguments.contains("OperateThreeQubitGate") {
                     self.three_qubit_gate_operations.push(i.ident.clone());
                 }
                 if parsed_arguments.contains("OperateMultiQubitGate") {
                     self.multi_qubit_gate_operations.push(i.ident.clone());
+                }
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateModeGate")
+                {
+                    self.mode_gate_operations.push(i.ident.clone());
+                }
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateSingleMode")
+                {
+                    self.single_mode_operations.push(i.ident.clone());
+                }
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateTwoMode")
+                {
+                    self.two_mode_operations.push(i.ident.clone());
+                }
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateSingleModeGate")
+                {
+                    self.single_mode_gate_operations.push(i.ident.clone());
+                }
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateTwoModeGate")
+                {
+                    self.two_mode_gate_operations.push(i.ident.clone());
                 }
             }
         }
@@ -249,17 +283,35 @@ impl<'ast> Visit<'ast> for Visitor {
                 if trait_name.as_str() == "Operate" {
                     self.operations.push(id.clone());
                 }
+                if trait_name.as_str() == "OperateSingleQubit" {
+                    self.single_qubit_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateTwoQubit" {
+                    self.two_qubit_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateThreeQubit" {
+                    self.three_qubit_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateMultiQubit" {
+                    self.multi_qubit_operations.push(id.clone());
+                }
                 if trait_name.as_str() == "ImplementedIn1point1" {
-                    self.roqoqo_1_1_operations.push(id.clone());
+                    self.roqoqo_version_register.insert(id.clone(), 1);
                 }
                 if trait_name.as_str() == "ImplementedIn1point2" {
-                    self.roqoqo_1_2_operations.push(id.clone());
+                    self.roqoqo_version_register.insert(id.clone(), 2);
                 }
                 if trait_name.as_str() == "ImplementedIn1point3" {
-                    self.roqoqo_1_3_operations.push(id.clone());
+                    self.roqoqo_version_register.insert(id.clone(), 3);
                 }
                 if trait_name.as_str() == "ImplementedIn1point4" {
-                    self.roqoqo_1_4_operations.push(id.clone());
+                    self.roqoqo_version_register.insert(id.clone(), 4);
+                }
+                if trait_name.as_str() == "ImplementedIn1point5" {
+                    self.roqoqo_version_register.insert(id.clone(), 5);
+                }
+                if trait_name.as_str() == "ImplementedIn1point6" {
+                    self.roqoqo_version_register.insert(id.clone(), 6);
                 }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());
@@ -280,7 +332,22 @@ impl<'ast> Visit<'ast> for Visitor {
                     self.pragma_noise_proba_operations.push(id.clone());
                 }
                 if trait_name.as_str() == "OperateMultiQubitGate" {
-                    self.multi_qubit_gate_operations.push(id);
+                    self.multi_qubit_gate_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateModeGate" {
+                    self.mode_gate_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateSingleMode" {
+                    self.single_mode_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateTwoMode" {
+                    self.two_mode_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateSingleModeGate" {
+                    self.single_mode_gate_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateTwoModeGate" {
+                    self.two_mode_gate_operations.push(id);
                 }
             }
         }
@@ -296,6 +363,7 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/multi_qubit_gate_operations.rs",
     "src/operations/measurement_operations.rs",
     "src/operations/define_operations.rs",
+    "src/operations/bosonic_operations.rs",
 ];
 
 fn main() {
@@ -311,262 +379,172 @@ fn main() {
     }
 
     // Construct TokenStreams for variants of operation enum
-    let operations_quotes = vis
-        .operations
-        .clone()
-        .into_iter()
-        .filter(|v| {
-            !vis.roqoqo_1_1_operations.contains(v)
-                && !vis.roqoqo_1_2_operations.contains(v)
-                && !vis.roqoqo_1_3_operations.contains(v)
-                && !vis.roqoqo_1_4_operations.contains(v)
-        })
-        .map(|v| {
-            let msg = format!("Variant for {}", v);
-            quote! {
-            #[allow(clippy::upper_case_acronyms)]
-            #[doc = #msg]
-            #v(#v)}
-        });
-    let operations_quotes_1_1 = vis
-        .operations
-        .clone()
-        .into_iter()
-        .filter(|v| {
-            vis.roqoqo_1_1_operations.contains(v)
-                && !vis.roqoqo_1_2_operations.contains(v)
-                && !vis.roqoqo_1_3_operations.contains(v)
-                && !vis.roqoqo_1_4_operations.contains(v)
-        })
-        .map(|v| {
-            let msg = format!("Variant for {}", v);
-            quote! {
-            #[allow(clippy::upper_case_acronyms)]
-            #[doc = #msg]
-            #v(#v)}
-        });
-    let operations_quotes_1_2 = vis
-        .operations
-        .clone()
-        .into_iter()
-        .filter(|v| {
-            !vis.roqoqo_1_1_operations.contains(v)
-                && vis.roqoqo_1_2_operations.contains(v)
-                && !vis.roqoqo_1_3_operations.contains(v)
-                && !vis.roqoqo_1_4_operations.contains(v)
-        })
-        .map(|v| {
-            let msg = format!("Variant for {}", v);
-            quote! {
-            #[allow(clippy::upper_case_acronyms)]
-            #[doc = #msg]
-            #v(#v)}
-        });
-    let operations_quotes_1_3 = vis
-        .operations
-        .clone()
-        .into_iter()
-        .filter(|v| {
-            !vis.roqoqo_1_1_operations.contains(v)
-                && !vis.roqoqo_1_2_operations.contains(v)
-                && vis.roqoqo_1_3_operations.contains(v)
-                && !vis.roqoqo_1_4_operations.contains(v)
-        })
-        .map(|v| {
-            let msg = format!("Variant for {}", v);
-            quote! {
-            #[allow(clippy::upper_case_acronyms)]
-            #[doc = #msg]
-            #v(#v)}
-        });
-    let operations_quotes_1_4 = vis
-        .operations
-        .into_iter()
-        .filter(|v| {
-            !vis.roqoqo_1_1_operations.contains(v)
-                && !vis.roqoqo_1_2_operations.contains(v)
-                && !vis.roqoqo_1_3_operations.contains(v)
-                && vis.roqoqo_1_4_operations.contains(v)
-        })
-        .map(|v| {
-            let msg = format!("Variant for {}", v);
-            quote! {
-            #[allow(clippy::upper_case_acronyms)]
-            #[doc = #msg]
-            #v(#v)}
-        });
+    let mut operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> = build_quotes(&vis, i, vis.operations.clone());
+
+        operations_quotes.extend(res)
+    }
+
     // Construct TokenStreams for variants of operation enum
-    let single_qubit_operations_quotes = vis.single_qubit_operations.into_iter().map(|v| {
-        let msg = format!("Variant for {}", v);
-        quote! {
-        #[doc = #msg]
-        #v(#v)}
-    });
+    let mut single_qubit_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.single_qubit_operations.clone());
+
+        single_qubit_operations_quotes.extend(res);
+    }
+
     // Construct TokenStreams for variants of operation enum
-    let two_qubit_operations_quotes = vis.two_qubit_operations.into_iter().map(|v| {
-        let msg = format!("Variant for {}", v);
-        quote! {
-        #[allow(clippy::upper_case_acronyms)]
-        #[doc = #msg]
-        #v(#v)}
-    });
+    let mut two_qubit_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.two_qubit_operations.clone());
+
+        two_qubit_operations_quotes.extend(res);
+    }
     // Construct TokenStreams for variants of operation enum
-    let three_qubit_operations_quotes = vis.three_qubit_operations.into_iter().map(|v| {
-        let msg = format!("Variant for {}", v);
-        quote! {
-        #[allow(clippy::upper_case_acronyms)]
-        #[doc = #msg]
-        #v(#v)}
-    });
+    let mut three_qubit_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.three_qubit_operations.clone());
+
+        three_qubit_operations_quotes.extend(res);
+    }
+
     // Construct TokenStreams for variants of operation enum
-    let multi_qubit_operations_quotes = vis.multi_qubit_operations.into_iter().map(|v| {
-        let msg = format!("Variant for {}", v);
-        quote! {
-        #[doc = #msg]
-        #v(#v)}
-    });
+    let mut multi_qubit_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res = build_quotes(&vis, i, vis.multi_qubit_operations.clone());
+        multi_qubit_operations_quotes.extend(res);
+    }
+
     // Construct TokenStreams for variants of pragma enum
-    let pragma_operations_quotes = vis
-        .pragma_operations
-        .clone()
-        .into_iter()
-        .filter(|v| {
-            !vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v)
-        })
-        .map(|v| {
-            let msg = format!("Variant for {}", v);
-            quote! {
-            #[doc = #msg]
-            #v(#v)}
-        });
+    let mut pragma_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.pragma_operations.clone());
+
+        pragma_operations_quotes.extend(res);
+    }
     // Construct TokenStreams for variants of pragma enum
-    let pragma_operations_quotes_1_1 = vis
-        .pragma_operations
-        .clone()
-        .into_iter()
-        .filter(|v| vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v))
-        .map(|v| {
-            let msg = format!("Variant for {}", v);
-            quote! {
-            #[doc = #msg]
-            #v(#v)}
-        });
-    let pragma_operations_quotes_1_2 = vis
-        .pragma_operations
-        .into_iter()
-        .filter(|v| vis.roqoqo_1_2_operations.contains(v))
-        .map(|v| {
-            let msg = format!("Variant for {}", v);
-            quote! {
-            #[doc = #msg]
-            #v(#v)}
-        });
+    let mut pragma_noise_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.pragma_noise_operations.clone());
+        pragma_noise_operations_quotes.extend(res);
+    }
+
     // Construct TokenStreams for variants of pragma enum
-    let pragma_noise_operations_quotes = vis.pragma_noise_operations.clone().into_iter().map(|v| {
-        let msg = format!("Variant for {}", v);
-        quote! {
-        #[doc = #msg]
-        #v(#v)}
-    });
+    let mut pragma_noise_proba_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.pragma_noise_proba_operations.clone());
+        pragma_noise_proba_operations_quotes.extend(res);
+    }
+
     // Construct TokenStreams for variants of pragma enum
-    let pragma_noise_proba_operations_quotes =
-        vis.pragma_noise_proba_operations.into_iter().map(|v| {
-            let msg = format!("Variant for {}", v);
-            quote! {
-            #[doc = #msg]
-            #v(#v)}
-        });
-    // Construct TokenStreams for variants of pragma enum
-    let gate_operations_quotes = vis.gate_operations.into_iter().map(|v| {
-        let msg = format!("Variant for {}", v);
-        quote! {
-        #[allow(clippy::upper_case_acronyms)]
-        #[doc = #msg]
-        #v(#v)}
-    });
+    let mut gate_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> = build_quotes(&vis, i, vis.gate_operations.clone());
+        gate_operations_quotes.extend(res);
+    }
+
     // Construct TokenStreams for variants of definition enum
-    let rotations_quotes = vis.rotations.into_iter().map(|v| {
-        let msg = format!("Variant for {}", v);
-        quote! {
-            #[doc = #msg]
-        #v(#v)}
-    });
+    let mut rotations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> = build_quotes(&vis, i, vis.rotations.clone());
+        rotations_quotes.extend(res);
+    }
+
     // Construct TokenStreams for variants of definition enum
-    let definitions_quotes = vis
-        .definitions
-        .clone()
-        .into_iter()
-        .filter(|v| {
-            !vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v)
-        })
-        .map(|v| {
-            let msg = format!("Variant for {}", v);
-            quote! {
-                #[doc = #msg]
-            #v(#v)}
-        });
-    // Construct TokenStreams for variants of definition enum
-    let definitions_quotes_1_1 = vis
-        .definitions
-        .clone()
-        .into_iter()
-        .filter(|v| vis.roqoqo_1_1_operations.contains(v) && !vis.roqoqo_1_2_operations.contains(v))
-        .map(|v| {
-            let msg = format!("Variant for {}", v);
-            quote! {
-                #[doc = #msg]
-            #v(#v)}
-        });
-    // Construct TokenStreams for variants of definition enum
-    let definitions_quotes_1_2 = vis
-        .definitions
-        .into_iter()
-        .filter(|v| vis.roqoqo_1_2_operations.contains(v))
-        .map(|v| {
-            let msg = format!("Variant for {}", v);
-            quote! {
-                #[doc = #msg]
-            #v(#v)}
-        });
+    let mut definitions_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> = build_quotes(&vis, i, vis.definitions.clone());
+        definitions_quotes.extend(res);
+    }
+
     // Construct TokenStreams for variants of operation enum
-    let constant_gate_operations_quote = vis.constant_gate_operations.into_iter().map(|v| {
-        let msg = format!("Variant for {}", v);
-        quote! {
-        #[allow(clippy::upper_case_acronyms)]
-        #[doc = #msg]
-        #v(#v)}
-    });
+    let mut constant_gate_operations_quote: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.constant_gate_operations.clone());
+        constant_gate_operations_quote.extend(res);
+    }
     // Construct TokenStreams for variants of operation enum
-    let single_qubit_gate_operations_quote =
-        vis.single_qubit_gate_operations.into_iter().map(|v| {
-            let msg = format!("Variant for {}", v);
-            quote! {
-                #[doc = #msg]
-            #v(#v)}
-        });
+    let mut single_qubit_gate_operations_quote: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.single_qubit_gate_operations.clone());
+        single_qubit_gate_operations_quote.extend(res);
+    }
+
     // Construct TokenStreams for variants of operation enum
-    let two_qubit_gate_operations_quote = vis.two_qubit_gate_operations.into_iter().map(|v| {
-        let msg = format!("Variant for {}", v);
-        quote! {
-        #[allow(clippy::upper_case_acronyms)]
-        #[doc = #msg]
-        #v(#v)}
-    });
+    let mut two_qubit_gate_operations_quote: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.two_qubit_gate_operations.clone());
+        two_qubit_gate_operations_quote.extend(res);
+    }
+
     // Construct TokenStreams for variants of operation enum
-    let three_qubit_gate_operations_quote = vis.three_qubit_gate_operations.into_iter().map(|v| {
-        let msg = format!("Variant for {}", v);
-        quote! {
-        #[allow(clippy::upper_case_acronyms)]
-        #[doc = #msg]
-        #v(#v)}
-    });
+    let mut three_qubit_gate_operations_quote: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.three_qubit_gate_operations.clone());
+        three_qubit_gate_operations_quote.extend(res);
+    }
+
     // Construct TokenStreams for variants of operation enum
-    let multi_qubit_gate_operations_quote = vis.multi_qubit_gate_operations.into_iter().map(|v| {
-        let msg = format!("Variant for {}", v);
-        quote! {
-            #[doc = #msg]
-        #v(#v)}
-    });
+    let mut multi_qubit_gate_operations_quote: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.multi_qubit_gate_operations.clone());
+        multi_qubit_gate_operations_quote.extend(res);
+    }
+
+    // Construct TokenStreams for variants of pragma enum
+    let mut mode_gate_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.mode_gate_operations.clone());
+        mode_gate_operations_quotes.extend(res);
+    }
+
+    // Construct TokenStreams for variants of operation enum
+    let mut single_mode_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.single_mode_operations.clone());
+
+        single_mode_operations_quotes.extend(res);
+    }
+
+    // Construct TokenStreams for variants of operation enum
+    let mut two_mode_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.two_mode_operations.clone());
+
+        two_mode_operations_quotes.extend(res);
+    }
+
+    // Construct TokenStreams for variants of operation enum
+    let mut single_mode_gate_operations_quote: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.single_mode_gate_operations.clone());
+        single_mode_gate_operations_quote.extend(res);
+    }
+
+    // Construct TokenStreams for variants of operation enum
+    let mut two_mode_gate_operations_quote: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.two_mode_gate_operations.clone());
+        two_mode_gate_operations_quote.extend(res);
+    }
+
     // Construct TokenStream for auto-generated rust file containing the enums
     let final_quote = quote! {
 
@@ -579,10 +557,7 @@ fn main() {
         #[non_exhaustive]
         pub enum Operation {
             #(#operations_quotes),* ,
-            #(#operations_quotes_1_1),* ,
-            #(#operations_quotes_1_2),* ,
-            #(#operations_quotes_1_3),* ,
-            #(#operations_quotes_1_4),* ,
+
         }
 
         /// Enum of all Operations implementing [OperateSingleQubit]
@@ -627,9 +602,7 @@ fn main() {
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         #[non_exhaustive]
         pub enum PragmaOperation {
-            #(#pragma_operations_quotes),* ,
-            #(#pragma_operations_quotes_1_1),* ,
-            #(#pragma_operations_quotes_1_2),*
+            #(#pragma_operations_quotes),*
         }
 
         /// Enum of all Operations implementing [OperatePragmaNoise]
@@ -676,8 +649,6 @@ fn main() {
         #[non_exhaustive]
         pub enum Definition {
             #(#definitions_quotes),* ,
-            #(#definitions_quotes_1_1),* ,
-            #(#definitions_quotes_1_2),*
         }
 
         /// Enum of all Operations implementing [OperateConstantGate]
@@ -717,12 +688,57 @@ fn main() {
         }
 
         /// Enum of all Operations implementing [OperateMultiQubitGate]
-        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateMultiQubit, OperateMultiQubitGate,  SupportedVersion)]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateMultiQubit, OperateMultiQubitGate, SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
         // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
         #[non_exhaustive]
         pub enum MultiQubitGateOperation {
             #(#multi_qubit_gate_operations_quote),*
+        }
+
+        /// Enum of all Operations implementing [OperateModeGate]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, InvolveModes, Operate, OperateTryFromEnum, Substitute, SubstituteModes, OperateModeGate,SupportedVersion)]
+        #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+        #[non_exhaustive]
+        pub enum ModeGateOperation {
+            #(#mode_gate_operations_quotes),*
+        }
+
+        /// Enum of all Operations implementing [OperateSingleMode]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, InvolveModes, Operate, OperateTryFromEnum, Substitute, SubstituteModes, OperateSingleMode,SupportedVersion)]
+        #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+        #[non_exhaustive]
+        pub enum SingleModeOperation {
+            #(#single_mode_operations_quotes),*
+        }
+
+        /// Enum of all Operations implementing [OperateTwoMode]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, InvolveModes, Operate, OperateTryFromEnum, Substitute, SubstituteModes, OperateTwoMode, SupportedVersion)]
+        #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+        #[non_exhaustive]
+        pub enum TwoModeOperation {
+            #(#two_mode_operations_quotes),*
+        }
+
+        /// Enum of all Operations implementing [OperateSingleModeGate]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, InvolveModes, Operate, OperateTryFromEnum, Substitute, SubstituteModes, OperateModeGate, OperateSingleMode, OperateSingleModeGate, SupportedVersion)]
+        #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+        #[non_exhaustive]
+        pub enum SingleModeGateOperation {
+            #(#single_mode_gate_operations_quote),*
+        }
+
+        /// Enum of all Operations implementing [OperateTwoModeGate]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, InvolveModes, Operate, OperateTryFromEnum, Substitute, SubstituteModes, OperateModeGate, OperateTwoMode, OperateTwoModeGate, SupportedVersion)]
+        #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        // #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+        #[non_exhaustive]
+        pub enum TwoModeGateOperation {
+            #(#two_mode_gate_operations_quote),*
         }
 
     };
@@ -735,4 +751,20 @@ fn main() {
     fs::write(&out_dir, final_str).expect("Could not write to file");
     // Try to format auto generated operations
     let _unused_output = Command::new("rustfmt").arg(&out_dir).output();
+}
+
+#[inline]
+fn build_quotes(vis: &Visitor, i: usize, idents: Vec<Ident>) -> Vec<proc_macro2::TokenStream> {
+    let res: Vec<proc_macro2::TokenStream> = idents
+        .into_iter()
+        .filter(|v| vis.filter_for_version(v, i))
+        .map(|v| {
+            let msg = format!("Variant for {}", v);
+            quote! {
+            #[allow(clippy::upper_case_acronyms)]
+            #[doc = #msg]
+            #v(#v)}
+        })
+        .collect();
+    res
 }

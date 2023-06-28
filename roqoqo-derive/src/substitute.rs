@@ -1,4 +1,4 @@
-// Copyright © 2021-2022 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -21,7 +21,7 @@ pub fn dispatch_struct_enum(input: DeriveInput) -> TokenStream {
     match input.data {
         Data::Struct(ds) => substitute_struct(ds, ident),
         Data::Enum(de) => substitute_enum(de, ident),
-        _ => panic!("InvolveQubits can only be derived on structs and enums"),
+        _ => panic!("Substitute can only be derived on structs and enums"),
     }
 }
 

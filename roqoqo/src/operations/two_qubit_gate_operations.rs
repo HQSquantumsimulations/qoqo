@@ -1,4 +1,4 @@
-// Copyright © 2021-2022 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -2197,6 +2197,7 @@ pub struct PhaseShiftedControlledPhase {
     /// The single qubit phase φ.
     phi: CalculatorFloat,
 }
+
 impl SupportedVersion for PhaseShiftedControlledPhase {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 2, 0)
@@ -2309,6 +2310,7 @@ pub struct ControlledRotateX {
     /// The angle θ of the rotation, in the interval from 0 to 2 * 2π.
     theta: CalculatorFloat,
 }
+
 impl SupportedVersion for ControlledRotateX {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 3, 0)
