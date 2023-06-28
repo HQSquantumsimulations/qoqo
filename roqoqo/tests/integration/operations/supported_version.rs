@@ -110,7 +110,7 @@ fn test_version_1_0_0_multi_qubit_gate(operation: operations::MultiQubitGateOper
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 0, 0));
 }
 
-#[test_case(operations::SingleModeGateOperation::from(operations::Squeezing::new(0, 1.0.into())); "Squeezing")]
+#[test_case(operations::SingleModeGateOperation::from(operations::Squeezing::new(0, 1.0.into(), 0.0.into())); "Squeezing")]
 #[test_case(operations::SingleModeGateOperation::from(operations::PhaseShift::new(0, 1.0.into())); "PhaseShift")]
 fn test_version_1_6_0_single_mode_gate(operation: operations::SingleModeGateOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 6, 0));

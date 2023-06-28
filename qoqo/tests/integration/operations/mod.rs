@@ -34,6 +34,9 @@ pub use two_qubit_gate_operations::*;
 mod three_qubit_gate_operations;
 pub use three_qubit_gate_operations::*;
 
+mod bosonic_operations;
+pub use bosonic_operations::*;
+
 use pyo3::prelude::*;
 use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::CalculatorFloatWrapper;

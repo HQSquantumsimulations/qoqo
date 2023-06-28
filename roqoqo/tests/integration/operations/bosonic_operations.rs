@@ -22,9 +22,10 @@ use test_case::test_case;
 /// Test Squeezing inputs
 #[test]
 fn squeezing_inputs() {
-    let op = Squeezing::new(1, 0.1.into());
+    let op = Squeezing::new(1, 0.1.into(), 0.0.into());
     assert_eq!(op.mode(), &1_usize);
     assert_eq!(op.squeezing(), &CalculatorFloat::from(0.1));
+    assert_eq!(op.phase(), &CalculatorFloat::from(0.0));
 }
 
 /// Test Squeezing inputs
@@ -54,7 +55,7 @@ fn pnrdetection_inputs() {
     assert_eq!(op.readout_index(), &0_usize)
 }
 
-#[test_case(Operation::from(Squeezing::new(0, 0.5.into())))]
+#[test_case(Operation::from(Squeezing::new(0, 0.5.into(), 0.0.into())))]
 #[test_case(Operation::from(PhaseShift::new(0, 0.5.into())))]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.5.into())))]
 #[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)))]
@@ -62,7 +63,7 @@ fn clone(op: Operation) {
     assert_eq!(op.clone(), op);
 }
 
-#[test_case(Operation::from(Squeezing::new(0, 0.5.into())), "Squeezing(Squeezing { mode: 0, squeezing: Float(0.5) })")]
+#[test_case(Operation::from(Squeezing::new(0, 0.5.into(), 0.0.into())), "Squeezing(Squeezing { mode: 0, squeezing: Float(0.5), phase: Float(0.0) })")]
 #[test_case(Operation::from(PhaseShift::new(0, 0.5.into())), "PhaseShift(PhaseShift { mode: 0, phase: Float(0.5) })")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.5.into())), "BeamSplitter(BeamSplitter { mode_0: 0, mode_1: 1, theta: Float(0.1), phi: Float(0.5) })")]
 #[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)), "PNRDetection(PNRDetection { mode: 0, readout: \"ro\", readout_index: 0 })")]
@@ -70,7 +71,7 @@ fn debug(op: Operation, string: &str) {
     assert_eq!(format!("{:?}", op), string);
 }
 
-#[test_case(Operation::from(Squeezing::new(0, 0.5.into())), Operation::from(Squeezing::new(0, 0.5.into())), Operation::from(Squeezing::new(1, 0.5.into())))]
+#[test_case(Operation::from(Squeezing::new(0, 0.5.into(), 0.0.into())), Operation::from(Squeezing::new(0, 0.5.into(), 0.0.into())), Operation::from(Squeezing::new(1, 0.5.into(), 0.0.into())))]
 #[test_case(Operation::from(PhaseShift::new(0, 0.5.into())), Operation::from(PhaseShift::new(0, 0.5.into())), Operation::from(PhaseShift::new(1, 0.5.into())))]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.5.into())), Operation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.5.into())), Operation::from(BeamSplitter::new(1, 2, 0.1.into(), 0.5.into())))]
 #[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)), Operation::from(PNRDetection::new(0, "ro".into(), 0)), Operation::from(PNRDetection::new(1, "ro".into(), 0)))]
@@ -81,10 +82,9 @@ fn partial_eq(op: Operation, op_0: Operation, op_1: Operation) {
     assert!(op != op_1);
 }
 
-#[test_case(ModeGateOperation::from(Squeezing::new(0, 0.1.into())), InvolvedQubits::None, InvolvedClassical::None, InvolvedModes::Set(HashSet::from([0_usize])))]
+#[test_case(ModeGateOperation::from(Squeezing::new(0, 0.1.into(), 0.0.into())), InvolvedQubits::None, InvolvedClassical::None, InvolvedModes::Set(HashSet::from([0_usize])))]
 #[test_case(ModeGateOperation::from(PhaseShift::new(0, 0.1.into())), InvolvedQubits::None, InvolvedClassical::None, InvolvedModes::Set(HashSet::from([0_usize])))]
 #[test_case(ModeGateOperation::from(BeamSplitter::new(0, 1, 0.5.into(), 0.1.into())), InvolvedQubits::None, InvolvedClassical::None, InvolvedModes::Set(HashSet::from([0_usize, 1_usize])))]
-// #[test_case(ModeGateOperation::from(PNRDetection::new(0, "ro".into(), 0)), InvolvedQubits::None, InvolvedClassical::Set(HashSet::from([0_usize])), InvolvedModes::Set(HashSet::from([0_usize])))]
 fn involved_qubits_classical_modes(
     op: ModeGateOperation,
     qubits: InvolvedQubits,
@@ -108,7 +108,7 @@ fn involved_qubits_classical_modes_measurement(
     assert_eq!(op.involved_modes(), modes);
 }
 
-#[test_case(ModeGateOperation::from(Squeezing::new(2, "test".into())), ModeGateOperation::from(Squeezing::new(0, 0.1.into())))]
+#[test_case(ModeGateOperation::from(Squeezing::new(2, "test".into(), "test1".into())), ModeGateOperation::from(Squeezing::new(0, 0.1.into(), 0.5.into())))]
 #[test_case(ModeGateOperation::from(PhaseShift::new(2, "test".into())), ModeGateOperation::from(PhaseShift::new(0, 0.1.into())))]
 #[test_case(ModeGateOperation::from(BeamSplitter::new(2, 0, "test".into(), "test1".into())), ModeGateOperation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.5.into())))]
 fn substitute_subsitutemodes(op: ModeGateOperation, op_test: ModeGateOperation) {
@@ -156,7 +156,7 @@ fn substitute_subsitutemodes_measurement(op: SingleModeOperation, op_test: Singl
     assert_eq!(result, op_test);
 }
 
-#[test_case(Operation::from(Squeezing::new(0, 0.1.into())), Operation::from(Squeezing::new(0, "param".into())), "Squeezing")]
+#[test_case(Operation::from(Squeezing::new(0, 0.1.into(), 0.0.into())), Operation::from(Squeezing::new(0, "param".into(), 0.0.into())), "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(0, 0.1.into())), Operation::from(PhaseShift::new(0, "param".into())), "PhaseShift")]
 fn operate_one_mode(op: Operation, op_param: Operation, name: &str) {
     // (1) Test tags function
@@ -208,13 +208,13 @@ fn operate_measurement(op: Operation, name: &str) {
     assert!(!op.is_parametrized());
 }
 
-#[test_case(SingleModeOperation::from(Squeezing::new(0, 0.5.into())))]
+#[test_case(SingleModeOperation::from(Squeezing::new(0, 0.5.into(), 0.0.into())))]
 #[test_case(SingleModeOperation::from(PhaseShift::new(0, 0.5.into())))]
 #[test_case(SingleModeOperation::from(PNRDetection::new(0, "ro".into(), 0)))]
 fn single_mode_op(op: SingleModeOperation) {
     assert_eq!(op.mode(), &0_usize);
 }
-#[test_case(SingleModeGateOperation::from(Squeezing::new(0, 0.5.into())))]
+#[test_case(SingleModeGateOperation::from(Squeezing::new(0, 0.5.into(), 0.0.into())))]
 #[test_case(SingleModeGateOperation::from(PhaseShift::new(0, 0.5.into())))]
 fn single_mode_gate_op(op: SingleModeGateOperation) {
     assert_eq!(op.mode(), &0_usize);
@@ -234,19 +234,21 @@ fn two_mode_gate_op(op: TwoModeGateOperation) {
 #[cfg(feature = "serialize")]
 #[test]
 fn squeezing_serde() {
-    let op = Squeezing::new(0, 0.1.into());
+    let op = Squeezing::new(0, 0.1.into(), 0.0.into());
 
     assert_tokens(
         &op.clone().readable(),
         &[
             Token::Struct {
                 name: "Squeezing",
-                len: 2,
+                len: 3,
             },
             Token::Str("mode"),
             Token::U64(0),
             Token::Str("squeezing"),
             Token::F64(0.1),
+            Token::Str("phase"),
+            Token::F64(0.0),
             Token::StructEnd,
         ],
     );
@@ -256,7 +258,7 @@ fn squeezing_serde() {
         &[
             Token::Struct {
                 name: "Squeezing",
-                len: 2,
+                len: 3,
             },
             Token::Str("mode"),
             Token::U64(0),
@@ -266,6 +268,12 @@ fn squeezing_serde() {
                 variant: "Float",
             },
             Token::F64(0.1),
+            Token::Str("phase"),
+            Token::NewtypeVariant {
+                name: "CalculatorFloat",
+                variant: "Float",
+            },
+            Token::F64(0.0),
             Token::StructEnd,
         ],
     );

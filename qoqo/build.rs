@@ -123,6 +123,7 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/multi_qubit_gate_operations.rs",
     "src/operations/measurement_operations.rs",
     "src/operations/define_operations.rs",
+    "src/operations/bosonic_operations.rs",
 ];
 
 fn main() {

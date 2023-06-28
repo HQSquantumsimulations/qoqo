@@ -44,6 +44,8 @@ pub struct Squeezing {
     mode: usize,
     /// The coefficient of the squeezing operation.
     squeezing: CalculatorFloat,
+    /// The squeezing phase angle of the squeezing operation.
+    phase: CalculatorFloat,
 }
 
 #[allow(non_upper_case_globals)]
