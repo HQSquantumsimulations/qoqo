@@ -17,6 +17,7 @@ qoqo.operations
 
    .. autosummary::
    
+      BeamSplitter
       Bogoliubov
       CNOT
       ComplexPMInteraction
@@ -48,9 +49,11 @@ qoqo.operations
       MultiQubitMS
       MultiQubitZZ
       PMInteraction
+      PNRDetection
       PauliX
       PauliY
       PauliZ
+      PhaseShift
       PhaseShiftState0
       PhaseShiftState1
       PhaseShiftedControlledPhase
@@ -93,6 +96,7 @@ qoqo.operations
       SpinInteraction
       SqrtISwap
       SqrtPauliX
+      Squeezing
       TGate
       Toffoli
       VariableMSXX
