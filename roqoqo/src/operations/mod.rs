@@ -962,7 +962,7 @@ where
 /// ```
 /// use roqoqo::operations::{OperateModeGate, Squeezing};
 ///
-/// let _op = Squeezing::new(0, 0.1.into());
+/// let _op = Squeezing::new(0, 0.1.into(), 0.0.into());
 /// ```
 ///
 pub trait OperateModeGate:

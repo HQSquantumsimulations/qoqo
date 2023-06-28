@@ -38,9 +38,11 @@ use std::collections::HashMap;
 /// Args:
 ///     mode (int): The mode the squeezing gate is applied to.
 ///     squeezing (CalculatorFloat): The coefficient of the squeezing operation.
+///     phase (CalculatorFloat): The squeezing phase angle of the squeezing operation.
 pub struct Squeezing {
     mode: usize,
     squeezing: CalculatorFloat,
+    phase: CalculatorFloat,
 }
 
 #[wrap(

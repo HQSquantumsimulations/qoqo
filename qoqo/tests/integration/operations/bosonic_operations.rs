@@ -45,9 +45,9 @@ fn convert_cf_to_pyobject(
 }
 
 /// Test new() function for Squeezing
-#[test_case(Operation::from(Squeezing::new(1, 0.1.into())), (1, 0.1,), "__eq__"; "Squeezing_eq")]
-#[test_case(Operation::from(Squeezing::new(1, 0.1.into())), (0, 0.1,), "__ne__"; "Squeezing_ne")]
-fn test_new_squeezing(input_operation: Operation, arguments: (u32, f64), method: &str) {
+#[test_case(Operation::from(Squeezing::new(1, 0.1.into(), 0.1.into())), (1, 0.1, 0.1,), "__eq__"; "Squeezing_eq")]
+#[test_case(Operation::from(Squeezing::new(1, 0.1.into(), 0.1.into())), (0, 0.1, 0.1,), "__ne__"; "Squeezing_ne")]
+fn test_new_squeezing(input_operation: Operation, arguments: (u32, f64, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -69,7 +69,7 @@ fn test_new_squeezing(input_operation: Operation, arguments: (u32, f64), method:
 
         let def_wrapper = operation_py.extract::<SqueezingWrapper>().unwrap();
         let new_op_diff = operation_type
-            .call1((2, 0.1))
+            .call1((2, 0.1, 0.0))
             .unwrap()
             .downcast::<PyCell<SqueezingWrapper>>()
             .unwrap();
@@ -81,12 +81,26 @@ fn test_new_squeezing(input_operation: Operation, arguments: (u32, f64), method:
 
         assert_eq!(
             format!("{:?}", def_wrapper_diff),
-            "SqueezingWrapper { internal: Squeezing { mode: 2, squeezing: Float(0.1) } }"
+            "SqueezingWrapper { internal: Squeezing { mode: 2, squeezing: Float(0.1), phase: Float(0.0) } }"
         );
 
         let comparison_copy = bool::extract(
             operation
                 .call_method0(py, "squeezing")
+                .unwrap()
+                .as_ref(py)
+                .call_method1(
+                    "__eq__",
+                    (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
+                )
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_copy);
+
+        let comparison_copy = bool::extract(
+            operation
+                .call_method0(py, "phase")
                 .unwrap()
                 .as_ref(py)
                 .call_method1(
@@ -294,7 +308,9 @@ fn test_new_pnrdetection(input_operation: Operation, arguments: (u32, String, u3
 }
 
 /// Test is_parametrized() function for SingleModeGate Operations
-#[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from("theta"))); "Squeezing")]
+#[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from("theta"), CalculatorFloat::from(0.0))); "Squeezing_theta")]
+#[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(0.0), CalculatorFloat::from("phase"))); "Squeezing_phase")]
+#[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from("theta"), CalculatorFloat::from("phase"))); "Squeezing_theta_phase")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from("theta"))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(0.1))); "BeamSplitter_theta")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from("phi"))); "BeamSplitter_phi")]
@@ -314,7 +330,7 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
 }
 
 /// Test is_parametrized = false for SingleModeGate Operations
-#[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from(1.3))); "Squeezing")]
+#[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from(1.3), 0.0.into())); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(0.1))); "BeamSplitter")]
 #[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
@@ -333,7 +349,7 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
 }
 
 /// Test mode() function for SingleMode Operations
-#[test_case(0, Operation::from(Squeezing::new(0, CalculatorFloat::from(0))); "Squeezing")]
+#[test_case(0, Operation::from(Squeezing::new(0, CalculatorFloat::from(0), 0.0.into())); "Squeezing")]
 #[test_case(0, Operation::from(PhaseShift::new(0, CalculatorFloat::from(0))); "PhaseShift")]
 #[test_case(0, Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
 fn test_pyo3_mode(mode: usize, input_operation: Operation) {
@@ -362,7 +378,7 @@ fn test_pyo3_mode0_mode_1(mode_0: usize, mode_1: usize, input_operation: Operati
 }
 
 /// Test Squeezing hqslang() function for SingleModeGate Operations
-#[test_case("Squeezing", Operation::from(Squeezing::new(0, CalculatorFloat::from(0))); "Squeezing")]
+#[test_case("Squeezing", Operation::from(Squeezing::new(0, CalculatorFloat::from(0), 0.0.into())); "Squeezing")]
 #[test_case("PhaseShift", Operation::from(PhaseShift::new(0, CalculatorFloat::from(0))); "PhaseShift")]
 #[test_case("BeamSplitter", Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0), CalculatorFloat::from(0))); "BeamSplitter")]
 #[test_case("PNRDetection", Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
@@ -378,7 +394,7 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
 
 /// Test tags() function for SingleModeGate Operations
 #[test_case(
-    Operation::from(Squeezing::new(0, CalculatorFloat::from(0))),
+    Operation::from(Squeezing::new(0, CalculatorFloat::from(0), 0.0.into())),
     vec![
         "Operation",
         "ModeGateOperation",
@@ -426,7 +442,7 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
 }
 
 /// Test involved_modes() function for SingleModeGate Operations
-#[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(1.3))), HashSet::<usize>::from([0]); "Squeezing")]
+#[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(1.3), 0.0.into())), HashSet::<usize>::from([0]); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))), HashSet::<usize>::from([0]); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(1.3))), HashSet::<usize>::from([0, 1]); "BeamSplitter")]
 #[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)), HashSet::<usize>::from([0]); "PNRDetection")]
@@ -447,7 +463,7 @@ fn test_pyo3_involved_modes(input_operation: Operation, modes: HashSet<usize>) {
 }
 
 /// Test remap_qubits() function for SingleModeGate Operations
-#[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(1.3))); "Squeezing")]
+#[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(1.3), 0.0.into())); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(1.3))); "BeamSplitter")]
 #[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
@@ -481,7 +497,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 }
 
 /// Test remap_modes() function for SingleModeGate Operations
-#[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(1.3))); "Squeezing")]
+#[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(1.3), 0.0.into())); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))); "PhaseShift")]
 #[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
 fn test_pyo3_remapmodes_single(input_operation: Operation) {
@@ -542,7 +558,7 @@ fn test_pyo3_remapmodes_two(input_operation: Operation) {
 }
 
 // test remap_modes() function returning an error.
-#[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(1.3))); "Squeezing")]
+#[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(1.3), 0.0.into())); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(1.3))); "BeamSplitter")]
 #[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
@@ -561,7 +577,7 @@ fn test_pyo3_remapmodes_error(input_operation: Operation) {
 }
 
 /// Test copy and deepcopy functions
-#[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from(1.3))); "Squeezing")]
+#[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from(1.3), 0.0.into())); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(1.3))); "BeamSplitter")]
 #[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
@@ -594,8 +610,8 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 
 /// Test format and repr functions
 #[test_case(
-    "Squeezing { mode: 0, squeezing: Float(0.0) }",
-    Operation::from(Squeezing::new(0, CalculatorFloat::from(0)));
+    "Squeezing { mode: 0, squeezing: Float(0.0), phase: Float(0.0) }",
+    Operation::from(Squeezing::new(0, CalculatorFloat::from(0), 0.0.into()));
     "Squeezing")]
 #[test_case(
     "PhaseShift { mode: 0, phase: Float(0.0) }",
@@ -623,6 +639,9 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
 }
 
 /// Test substitute_parameters() function for gates having multiple parameters
+#[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from("theta"), CalculatorFloat::from(1.0))); "Squeezing_theta")]
+#[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from(1.0), CalculatorFloat::from("phi"))); "Squeezing_phi")]
+#[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from("theta"), CalculatorFloat::from("phi"))); "Squeezing_theta_phi")]
 #[test_case(
     Operation::from(
         BeamSplitter::new(
@@ -681,7 +700,6 @@ fn test_pyo3_substitute_parameters(input_operation: Operation) {
 }
 
 /// Test substitute_parameters() function for one parameter
-#[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from("theta"))); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(1, CalculatorFloat::from("theta"))); "PhaseShift")]
 fn test_pyo3_substitute_params_single(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
@@ -712,7 +730,7 @@ fn test_pyo3_substitute_params_single(input_operation: Operation) {
 }
 
 /// Test substitute_parameters() causing an error `None`
-#[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from("test"))); "Squeezing")]
+#[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from("test"), 0.0.into())); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(1, CalculatorFloat::from("test"))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from("test"), CalculatorFloat::from(0.1))); "BeamSplitter")]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
@@ -727,7 +745,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 }
 
 /// Test substitute parameters function for SingleModeGate Operations where it has no effect
-#[test_case(Operation::from(Squeezing::new(1, 0.1.into())); "Squeezing")]
+#[test_case(Operation::from(Squeezing::new(1, 0.1.into(), 0.0.into())); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(1, 0.1.into())); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(0.1))); "BeamSplitter")]
 #[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
@@ -754,8 +772,8 @@ fn test_ineffective_substitute_parameters(input_operation: Operation) {
 
 /// Test the __richcmp__ function
 #[test_case(
-    Operation::from(Squeezing::new(0, CalculatorFloat::from(0))),
-    Operation::from(Squeezing::new(1, CalculatorFloat::from(0))); "Squeezing")]
+    Operation::from(Squeezing::new(0, CalculatorFloat::from(0), 0.0.into())),
+    Operation::from(Squeezing::new(1, CalculatorFloat::from(0), 0.0.into())); "Squeezing")]
 #[test_case(
     Operation::from(PhaseShift::new(0, CalculatorFloat::from(0))),
     Operation::from(PhaseShift::new(1, CalculatorFloat::from(0))); "PhaseShift")]
