@@ -78,11 +78,28 @@ fn test_version_1_0_0_single_qubit_gate(operation: operations::SingleQubitGateOp
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 0, 0));
 }
 
+#[test_case(operations::SingleQubitGateOperation::from(operations::GPi::new(0, 0.3.into())); "GPi")]
+#[test_case(operations::SingleQubitGateOperation::from(operations::GPi2::new(0, 0.3.into())); "GPi2")]
+fn test_version_1_4_0_single_qubit_gate(operation: operations::SingleQubitGateOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 4, 0));
+    let op = operations::Operation::try_from(operation).unwrap();
+    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 4, 0));
+}
+
 #[test_case(operations::MultiQubitGateOperation::from(operations::MultiQubitMS::new(vec![0,1,2,3], 1.0.into())); "MultiQubitMS")]
 fn test_version_1_0_0_multi_qubit_gate(operation: operations::MultiQubitGateOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 0, 0));
     let op = operations::Operation::try_from(operation).unwrap();
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 0, 0));
+}
+
+#[test_case(operations::ThreeQubitGateOperation::from(operations::ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
+#[test_case(operations::ThreeQubitGateOperation::from(operations::ControlledControlledPhaseShift::new(0, 1, 2, 0.6.into())); "ControlledControlledPhaseShift")]
+#[test_case(operations::ThreeQubitGateOperation::from(operations::Toffoli::new(0, 1, 2)); "Toffoli")]
+fn test_version_1_3_0_three_qubit_gate(operation: operations::ThreeQubitGateOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 3, 0));
+    let op = operations::Operation::try_from(operation).unwrap();
+    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 3, 0));
 }
 
 #[test_case(operations::Operation::from(operations::PragmaSetNumberOfMeasurements::new(3, "ro".into())); "PragmaSetNumberOfMeasurements")]
@@ -97,9 +114,7 @@ fn test_version_1_0_0_multi_qubit_gate(operation: operations::MultiQubitGateOper
 #[test_case(operations::Operation::from(operations::InputSymbolic::new("ro".into(), 2.0)); "InputSymbolic")]
 #[test_case(operations::Operation::from(operations::PragmaDamping::new(0, 0.01.into(),  2.0.into())); "PragmaDamping001")]
 #[test_case(operations::Operation::from(operations::PragmaDephasing::new(0, 0.01.into(),  2.0.into())); "PragmaDephasing")]
-#[test_case(operations::Operation::from(operations::PragmaGetPauliProduct::new(HashMap::from([(0, 0)]),
-"ro".into(),
-roqoqo::Circuit::new(),)); "PragmaGetPauliProduct")]
+#[test_case(operations::Operation::from(operations::PragmaGetPauliProduct::new(HashMap::from([(0, 0)]), "ro".into(), roqoqo::Circuit::new(),)); "PragmaGetPauliProduct")]
 #[test_case(operations::Operation::from(operations::PragmaActiveReset::new(0)); "PragmaActiveReset")]
 #[test_case(operations::Operation::from(operations::PragmaSleep::new(vec![0],0.0.into())); "PragmaSleep")]
 #[test_case(operations::Operation::from(operations::PragmaRepeatedMeasurement::new( "ro".to_string(), 10, None)); "PragmaRepeatedMeasurement")]
@@ -113,9 +128,13 @@ fn test_version_1_0_0_pragmas(operation: operations::Operation) {
 }
 
 #[test_case(operations::Operation::from(operations::PragmaLoop::new(10.into(), roqoqo::Circuit::new())); "PragmaLoop")]
-
 fn test_version_1_1_0_pragmas(operation: operations::Operation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 1, 0));
+}
+
+#[test_case(operations::Operation::from(operations::PragmaControlledCircuit::new(0, roqoqo::Circuit::new())); "PragmaControlledCircuit")]
+fn test_version_1_5_0_pragmas(operation: operations::Operation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 5, 0));
 }
 
 #[cfg(feature = "circuitdag")]

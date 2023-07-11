@@ -120,7 +120,7 @@ For an expanded collection of examples please see the jupyter notebooks in the e
 * **qoqo examples**: For jupyter notebooks in **python**, please refer to [qoqo_examples/qoqo/](https://github.com/HQSquantumsimulations/qoqo_examples/tree/main/qoqo).
 * **roqoqo examples**: The jupyter notebooks in **Rust** can be found in [qoqo_examples/roqoqo/notebooks/](https://github.com/HQSquantumsimulations/qoqo_examples/tree/main/roqoqo/notebooks). Alternatively, you can also find pure **Rust** versions of the examples in [qoqo_examples/roqoqo/standalone/](https://github.com/HQSquantumsimulations/qoqo_examples/tree/main/roqoqo/standalone)
 
-This project is partly supported by [PlanQK](https://planqk.de).
+This project has been partly supported by [PlanQK](https://planqk.de) and is partially supported by [QSolid](https://www.q-solid.de/) and [PhoQuant](https://www.quantentechnologien.de/forschung/foerderung/quantencomputer-demonstrationsaufbauten/phoquant.html).
 
 ## Contributing
 
