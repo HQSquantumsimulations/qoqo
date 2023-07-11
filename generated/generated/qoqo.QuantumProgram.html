@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qoqo.QuantumProgram &mdash; qoqo 1.6.0-alpha.0 documentation</title>
+  <title>qoqo.QuantumProgram &mdash; qoqo 1.5.1 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -35,7 +35,7 @@
             qoqo
           </a>
               <div class="version">
-                1.6.0-alpha.0
+                1.5.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -95,7 +95,7 @@
 <h1>qoqo.QuantumProgram<a class="headerlink" href="#qoqo-quantumprogram" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="qoqo.QuantumProgram">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.</span></span><span class="sig-name descname"><span class="pre">QuantumProgram</span></span><a class="headerlink" href="#qoqo.QuantumProgram" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.</span></span><span class="sig-name descname"><span class="pre">QuantumProgram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measurement</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_parameter_names</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram" title="Permalink to this definition"></a></dt>
 <dd><p>Represents a quantum program evaluating measurements based on a one or more free float parameters.</p>
 <p>The main use of QuantumProgram is to contain a Measurements implementing [crate::measurements::Measure]
 that measures expectation values or output registers of [crate::Circuit] quantum circuits that contain
@@ -211,7 +211,7 @@ i.e. PauliZProduct, CheatedPauliZProduct, Cheated or ClassicalRegister.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.QuantumProgram.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Ellipsis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.run" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.run" title="Permalink to this definition"></a></dt>
 <dd><p>Runs the QuantumProgram and returns expectation values.</p>
 <p>Runs the quantum programm for a given set of parameters passed in the same order as the parameters
 listed in <cite>input_parameter_names</cite> and returns expectation values.</p>
@@ -227,7 +227,7 @@ listed in <cite>input_parameter_names</cite> and returns expectation values.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="qoqo.QuantumProgram.run_registers">
-<span class="sig-name descname"><span class="pre">run_registers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Ellipsis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.run_registers" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">run_registers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.QuantumProgram.run_registers" title="Permalink to this definition"></a></dt>
 <dd><p>Runs the QuantumProgram and returns the classical registers of the quantum program.</p>
 <p>Runs the quantum programm for a given set of parameters passed in the same order as the parameters
 listed in <cite>input_parameter_names</cite> and returns the classical register output.
