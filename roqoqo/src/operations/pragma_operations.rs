@@ -1052,6 +1052,9 @@ pub struct PragmaControlledCircuit {
 
 impl SupportedVersion for PragmaControlledCircuit {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        if self.circuit.minimum_supported_roqoqo_version() > (1, 5, 0) {
+            return self.circuit.minimum_supported_roqoqo_version();
+        }
         (1, 5, 0)
     }
 }
