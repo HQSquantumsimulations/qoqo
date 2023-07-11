@@ -79,6 +79,7 @@ fn test_version_1_0_0_single_qubit_gate(operation: operations::SingleQubitGateOp
 }
 
 #[test_case(operations::SingleQubitGateOperation::from(operations::GPi::new(0, 0.3.into())); "GPi")]
+#[test_case(operations::SingleQubitGateOperation::from(operations::GPi2::new(0, 0.3.into())); "GPi2")]
 fn test_version_1_4_0_single_qubit_gate(operation: operations::SingleQubitGateOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 4, 0));
     let op = operations::Operation::try_from(operation).unwrap();
