@@ -2250,7 +2250,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-itoa 1.0.6
+itoa 1.0.9
 https://github.com/dtolnay/itoa
 by David Tolnay <dtolnay@gmail.com>
 Fast integer primitive to string conversion
@@ -3408,7 +3408,7 @@ limitations under the License.
 
 
 ====================================================
-memoffset 0.8.0
+memoffset 0.9.0
 https://github.com/Gilnaa/memoffset
 by Gilad Naaman <gilad.naaman@gmail.com>
 offset_of functionality for Rust structs.
@@ -3437,7 +3437,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ====================================================
-nalgebra 0.32.2
+nalgebra 0.32.3
 https://nalgebra.org
 by Sébastien Crozet <developer@crozet.re>
 General-purpose linear algebra library with transformations and statically-sized or dynamically-sized matrices.
@@ -3649,7 +3649,7 @@ LICENSE:
 
 
 ====================================================
-nalgebra-macros 0.2.0
+nalgebra-macros 0.2.1
 https://nalgebra.org
 by Andreas Longva, Sébastien Crozet <developer@crozet.re>
 Procedural macros for nalgebra
@@ -4863,7 +4863,7 @@ limitations under the License.
 
 
 ====================================================
-numpy 0.18.0
+numpy 0.19.0
 https://github.com/PyO3/rust-numpy
 by The rust-numpy Project Developers, PyO3 Project and Contributors <https://github.com/PyO3>
 PyO3-based Rust bindings of the NumPy C-API
@@ -5620,7 +5620,7 @@ limitations under the License.
 
 
 ====================================================
-paste 1.0.12
+paste 1.0.14
 https://github.com/dtolnay/paste
 by David Tolnay <dtolnay@gmail.com>
 Macros for all your token pasting needs
@@ -6790,7 +6790,7 @@ limitations under the License.
 
 
 ====================================================
-proc-macro2 1.0.63
+proc-macro2 1.0.66
 https://github.com/dtolnay/proc-macro2
 by David Tolnay <dtolnay@gmail.com>, Alex Crichton <alex@alexcrichton.com>
 A substitute implementation of the compiler's `proc_macro` API to decouple token-based libraries from the procedural macro use case.
@@ -7004,7 +7004,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-pyo3 0.18.3
+pyo3 0.19.1
 https://github.com/pyo3/pyo3
 by PyO3 Project and Contributors <https://github.com/PyO3>
 Bindings to Python interpreter
@@ -7204,7 +7204,7 @@ LICENSE:
 
 
 ====================================================
-pyo3-build-config 0.18.3
+pyo3-build-config 0.19.1
 https://github.com/pyo3/pyo3
 by PyO3 Project and Contributors <https://github.com/PyO3>
 Build configuration for the PyO3 ecosystem
@@ -7404,7 +7404,7 @@ LICENSE:
 
 
 ====================================================
-pyo3-ffi 0.18.3
+pyo3-ffi 0.19.1
 https://github.com/pyo3/pyo3
 by PyO3 Project and Contributors <https://github.com/PyO3>
 Python-API bindings for the PyO3 ecosystem
@@ -8032,7 +8032,7 @@ docs/license.html_lib.
 
 
 ====================================================
-pyo3-macros 0.18.3
+pyo3-macros 0.19.1
 https://github.com/pyo3/pyo3
 by PyO3 Project and Contributors <https://github.com/PyO3>
 Proc macros for PyO3 package
@@ -8232,7 +8232,7 @@ LICENSE:
 
 
 ====================================================
-pyo3-macros-backend 0.18.3
+pyo3-macros-backend 0.19.1
 https://github.com/pyo3/pyo3
 by PyO3 Project and Contributors <https://github.com/PyO3>
 Code generation for PyO3 package
@@ -8855,7 +8855,7 @@ LICENSE:
 
 
 ====================================================
-qoqo_calculator 1.1.1
+qoqo_calculator 1.1.2
 https://github.com/HQSquantumsimulations/qoqo_calculator
 by HQS Quantum Simulations <info@quantumsimulations.de>
 qoqo-calculator is the calculator backend of the qoqo quantum computing toolkit by HQS Quantum Simulations
@@ -9067,7 +9067,7 @@ LICENSE:
 
 
 ====================================================
-qoqo_calculator_pyo3 1.1.1
+qoqo_calculator_pyo3 1.1.2
 https://github.com/HQSquantumsimulations/qoqo_calculator_pyo3
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Python interface to qoqo calculator, the calculator backend of the qoqo quantum computing toolkit by HQS Quantum Simulations
@@ -9279,7 +9279,7 @@ LICENSE:
 
 
 ====================================================
-quote 1.0.28
+quote 1.0.31
 https://github.com/dtolnay/quote
 by David Tolnay <dtolnay@gmail.com>
 Quasi-quoting macro quote!(...)
@@ -11563,7 +11563,7 @@ limitations under the License.
 
 
 ====================================================
-ryu 1.0.13
+ryu 1.0.15
 https://github.com/dtolnay/ryu
 by David Tolnay <dtolnay@gmail.com>
 Fast floating point to string conversion
@@ -11777,7 +11777,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-safe_arch 0.7.0
+safe_arch 0.7.1
 https://github.com/Lokathor/safe_arch
 by Lokathor <zefria@gmail.com>
 Crate that exposes `core::arch` safely via `#[cfg()]`.
@@ -11877,7 +11877,7 @@ limitations under the License.
 
 
 ====================================================
-scopeguard 1.1.0
+scopeguard 1.2.0
 https://github.com/bluss/scopeguard
 by bluss
 A RAII scope guard that will run a given closure when it goes out of scope,
@@ -11886,7 +11886,7 @@ even if the code between panics (assuming unwinding panic).
 Defines the macros `defer!`, `defer_on_unwind!`, `defer_on_success!` as
 shorthands for guards with one of the implemented strategies.
 
-License: MIT/Apache-2.0
+License: MIT OR Apache-2.0
 ----------------------------------------------------
 LICENSE-MIT:
 
@@ -12123,7 +12123,7 @@ limitations under the License.
 
 
 ====================================================
-serde 1.0.164
+serde 1.0.171
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A generic serialization/deserialization framework
@@ -12337,7 +12337,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-serde_derive 1.0.164
+serde_derive 1.0.171
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Macros 1.1 implementation of #[derive(Serialize, Deserialize)]
@@ -12551,7 +12551,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-serde_json 1.0.99
+serde_json 1.0.103
 https://github.com/serde-rs/json
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A JSON serialization file format
@@ -12765,7 +12765,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-serde_test 1.0.164
+serde_test 1.0.171
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Token De/Serializer for testing De/Serialize implementations
@@ -13191,7 +13191,7 @@ LICENSE:
 
 
 ====================================================
-smallvec 1.10.0
+smallvec 1.11.0
 https://github.com/servo/rust-smallvec
 by The Servo Project Developers
 'Small vector' optimization: store up to a small number of items on the stack
@@ -13671,7 +13671,7 @@ limitations under the License.
 
 
 ====================================================
-syn 2.0.22
+syn 2.0.26
 https://github.com/dtolnay/syn
 by David Tolnay <dtolnay@gmail.com>
 Parser for Rust source code
@@ -13885,7 +13885,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-target-lexicon 0.12.8
+target-lexicon 0.12.10
 https://github.com/bytecodealliance/target-lexicon
 by Dan Gohman <sunfish@mozilla.com>
 Targeting utilities for compilers and related tools
@@ -14212,7 +14212,7 @@ SOFTWARE.
 
 
 ====================================================
-thiserror 1.0.40
+thiserror 1.0.43
 https://github.com/dtolnay/thiserror
 by David Tolnay <dtolnay@gmail.com>
 derive(Error)
@@ -14426,7 +14426,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-thiserror-impl 1.0.40
+thiserror-impl 1.0.43
 https://github.com/dtolnay/thiserror
 by David Tolnay <dtolnay@gmail.com>
 Implementation detail of the `thiserror` crate
@@ -14883,7 +14883,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 ====================================================
-unicode-ident 1.0.9
+unicode-ident 1.0.11
 https://github.com/dtolnay/unicode-ident
 by David Tolnay <dtolnay@gmail.com>
 Determine whether characters have the XID_Start or XID_Continue properties according to Unicode Standard Annex #31
@@ -16084,7 +16084,7 @@ limitations under the License.
 
 
 ====================================================
-wide 0.7.10
+wide 0.7.11
 https://github.com/Lokathor/wide
 by Lokathor <zefria@gmail.com>
 A crate to help you go wide.
@@ -16106,7 +16106,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 
 
 ====================================================
-windows-targets 0.48.0
+windows-targets 0.48.1
 https://github.com/microsoft/windows-rs
 by Microsoft
 Import libs for Windows

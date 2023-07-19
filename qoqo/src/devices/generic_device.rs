@@ -28,7 +28,6 @@ use roqoqo::devices::{Device, GenericDevice};
 ///     GenericDevice uses nested HashMaps to represent the most general device connectivity.
 ///     The memory usage will be inefficient for devices with large qubit numbers.
 #[pyclass(name = "GenericDevice", module = "devices")]
-#[pyo3(text_signature = "(number_qubits)")]
 #[derive(Clone, Debug, PartialEq)]
 pub struct GenericDeviceWrapper {
     /// Internal storage of [roqoqo::devices::SquareLatticeDevice]
@@ -39,6 +38,7 @@ pub struct GenericDeviceWrapper {
 impl GenericDeviceWrapper {
     /// Create new generic device
     #[new]
+    #[pyo3(text_signature = "(number_qubits)")]
     pub fn new(number_qubits: usize) -> PyResult<Self> {
         Ok(Self {
             internal: GenericDevice::new(number_qubits),

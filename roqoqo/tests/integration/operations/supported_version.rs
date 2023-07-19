@@ -144,9 +144,7 @@ fn test_version_1_6_0_measurement_mode_gate(operation: operations::SingleModeOpe
 #[test_case(operations::Operation::from(operations::InputSymbolic::new("ro".into(), 2.0)); "InputSymbolic")]
 #[test_case(operations::Operation::from(operations::PragmaDamping::new(0, 0.01.into(),  2.0.into())); "PragmaDamping001")]
 #[test_case(operations::Operation::from(operations::PragmaDephasing::new(0, 0.01.into(),  2.0.into())); "PragmaDephasing")]
-#[test_case(operations::Operation::from(operations::PragmaGetPauliProduct::new(HashMap::from([(0, 0)]),
-"ro".into(),
-roqoqo::Circuit::new(),)); "PragmaGetPauliProduct")]
+#[test_case(operations::Operation::from(operations::PragmaGetPauliProduct::new(HashMap::from([(0, 0)]), "ro".into(), roqoqo::Circuit::new(),)); "PragmaGetPauliProduct")]
 #[test_case(operations::Operation::from(operations::PragmaActiveReset::new(0)); "PragmaActiveReset")]
 #[test_case(operations::Operation::from(operations::PragmaSleep::new(vec![0],0.0.into())); "PragmaSleep")]
 #[test_case(operations::Operation::from(operations::PragmaRepeatedMeasurement::new( "ro".to_string(), 10, None)); "PragmaRepeatedMeasurement")]
@@ -154,20 +152,17 @@ roqoqo::Circuit::new(),)); "PragmaGetPauliProduct")]
 #[test_case(operations::Operation::from(operations::DefinitionFloat::new("ro".into(), 2, false)); "DefinitionFloat")]
 #[test_case(operations::Operation::from(operations::DefinitionComplex::new("ro".into(), 2, false)); "DefinitionComplex")]
 #[test_case(operations::Operation::from(operations::PragmaGetOccupationProbability::new("ro".into(), None)); "PragmaGetOccupationProbability")]
-
 fn test_version_1_0_0_pragmas(operation: operations::Operation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 0, 0));
 }
 
 #[test_case(operations::Operation::from(operations::PragmaLoop::new(10.into(), roqoqo::Circuit::new())); "PragmaLoop")]
 #[test_case(operations::Operation::from(operations::InputBit::new(String::from("test"), 1, false)); "InputBit")]
-
 fn test_version_1_1_0_pragmas(operation: operations::Operation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 1, 0));
 }
 
 #[test_case(operations::Operation::from(operations::PragmaControlledCircuit::new(10, roqoqo::Circuit::new())); "PragmaControlledCircuit")]
-
 fn test_version_1_5_0_pragmas(operation: operations::Operation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 5, 0));
 }
