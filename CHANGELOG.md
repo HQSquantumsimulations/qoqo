@@ -5,6 +5,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 ## 1.6.0-alpha.1
 
 * Renamed the PNRDetection operation to PhotonDetection.
+* Added support for JsonSchema.
 
 ## 1.6.0-alpha.0
 
