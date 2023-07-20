@@ -1587,13 +1587,13 @@ pub struct GPi {
     theta: CalculatorFloat,
 }
 
-impl super::ImplementedIn1point4 for GPi {}
-
 impl SupportedVersion for GPi {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 4, 0)
     }
 }
+
+impl super::ImplementedIn1point4 for GPi {}
 
 #[allow(non_upper_case_globals)]
 const TAGS_GPi: &[&str; 5] = &[
@@ -1693,6 +1693,7 @@ impl SupportedVersion for GPi2 {
         (1, 4, 0)
     }
 }
+
 #[allow(non_upper_case_globals)]
 const TAGS_GPi2: &[&str; 5] = &[
     "Operation",

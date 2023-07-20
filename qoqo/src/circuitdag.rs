@@ -38,7 +38,7 @@ fn circuitdag(_py: Python, module: &PyModule) -> PyResult<()> {
 ///
 #[pyclass(name = "CircuitDag", module = "qoqo")]
 #[derive(Clone, Debug, PartialEq)]
-#[pyo3(text_signature = "(node_number, edge_number, /)")]
+
 pub struct CircuitDagWrapper {
     /// Internal storage of [roqoqo:CircuitDag]
     pub internal: CircuitDag,
