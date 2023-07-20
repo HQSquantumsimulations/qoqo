@@ -14,7 +14,7 @@ use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
-    BeamSplitterWrapper, PNRDetectionWrapper, PhaseShiftWrapper, SqueezingWrapper,
+    BeamSplitterWrapper, PhaseShiftWrapper, PhotonDetectionWrapper, SqueezingWrapper,
 };
 use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorFloat;
@@ -243,18 +243,22 @@ fn test_new_beamsplitter(
     })
 }
 
-/// Test new() function for PNRDetection
-#[test_case(Operation::from(PNRDetection::new(1, "ro".into(), 0)), (1, "ro".into(), 0,), "__eq__"; "PNRDetection_eq")]
-#[test_case(Operation::from(PNRDetection::new(1, "ro".into(), 0)), (0, "ro".into(), 0,), "__ne__"; "PNRDetection_ne")]
-fn test_new_pnrdetection(input_operation: Operation, arguments: (u32, String, u32), method: &str) {
+/// Test new() function for PhotonDetection
+#[test_case(Operation::from(PhotonDetection::new(1, "ro".into(), 0)), (1, "ro".into(), 0,), "__eq__"; "PhotonDetection_eq")]
+#[test_case(Operation::from(PhotonDetection::new(1, "ro".into(), 0)), (0, "ro".into(), 0,), "__ne__"; "PhotonDetection_ne")]
+fn test_new_photondetection(
+    input_operation: Operation,
+    arguments: (u32, String, u32),
+    method: &str,
+) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type::<PNRDetectionWrapper>();
+        let operation_type = py.get_type::<PhotonDetectionWrapper>();
         let operation_py = operation_type
             .call1(arguments)
             .unwrap()
-            .downcast::<PyCell<PNRDetectionWrapper>>()
+            .downcast::<PyCell<PhotonDetectionWrapper>>()
             .unwrap();
 
         let comparison = bool::extract(
@@ -266,13 +270,13 @@ fn test_new_pnrdetection(input_operation: Operation, arguments: (u32, String, u3
         .unwrap();
         assert!(comparison);
 
-        let def_wrapper = operation_py.extract::<PNRDetectionWrapper>().unwrap();
+        let def_wrapper = operation_py.extract::<PhotonDetectionWrapper>().unwrap();
         let new_op_diff = operation_type
             .call1((2, "ro", 0))
             .unwrap()
-            .downcast::<PyCell<PNRDetectionWrapper>>()
+            .downcast::<PyCell<PhotonDetectionWrapper>>()
             .unwrap();
-        let def_wrapper_diff = new_op_diff.extract::<PNRDetectionWrapper>().unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<PhotonDetectionWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
         let helper_eq: bool = def_wrapper == def_wrapper.clone();
@@ -280,7 +284,7 @@ fn test_new_pnrdetection(input_operation: Operation, arguments: (u32, String, u3
 
         assert_eq!(
             format!("{:?}", def_wrapper_diff),
-            "PNRDetectionWrapper { internal: PNRDetection { mode: 2, readout: \"ro\", readout_index: 0 } }"
+            "PhotonDetectionWrapper { internal: PhotonDetection { mode: 2, readout: \"ro\", readout_index: 0 } }"
         );
 
         let comparison_copy = bool::extract(
@@ -333,7 +337,7 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
 #[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from(1.3), 0.0.into())); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(0.1))); "BeamSplitter")]
-#[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
+#[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -351,7 +355,7 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
 /// Test mode() function for SingleMode Operations
 #[test_case(0, Operation::from(Squeezing::new(0, CalculatorFloat::from(0), 0.0.into())); "Squeezing")]
 #[test_case(0, Operation::from(PhaseShift::new(0, CalculatorFloat::from(0))); "PhaseShift")]
-#[test_case(0, Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
+#[test_case(0, Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_mode(mode: usize, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -381,7 +385,7 @@ fn test_pyo3_mode0_mode_1(mode_0: usize, mode_1: usize, input_operation: Operati
 #[test_case("Squeezing", Operation::from(Squeezing::new(0, CalculatorFloat::from(0), 0.0.into())); "Squeezing")]
 #[test_case("PhaseShift", Operation::from(PhaseShift::new(0, CalculatorFloat::from(0))); "PhaseShift")]
 #[test_case("BeamSplitter", Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0), CalculatorFloat::from(0))); "BeamSplitter")]
-#[test_case("PNRDetection", Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
+#[test_case("PhotonDetection", Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -421,13 +425,13 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         ];
     "BeamSplitter")]
 #[test_case(
-    Operation::from(PNRDetection::new(0, "ro".into(), 0)),
+    Operation::from(PhotonDetection::new(0, "ro".into(), 0)),
     vec![
         "Operation",
         "Measurement",
-        "PNRDetection",
+        "PhotonDetection",
         ];
-    "PNRDetection")]
+    "PhotonDetection")]
 fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -445,7 +449,7 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
 #[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(1.3), 0.0.into())), HashSet::<usize>::from([0]); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))), HashSet::<usize>::from([0]); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(1.3))), HashSet::<usize>::from([0, 1]); "BeamSplitter")]
-#[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)), HashSet::<usize>::from([0]); "PNRDetection")]
+#[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)), HashSet::<usize>::from([0]); "PhotonDetection")]
 fn test_pyo3_involved_modes(input_operation: Operation, modes: HashSet<usize>) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -466,7 +470,7 @@ fn test_pyo3_involved_modes(input_operation: Operation, modes: HashSet<usize>) {
 #[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(1.3), 0.0.into())); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(1.3))); "BeamSplitter")]
-#[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
+#[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_remapqubits(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -499,7 +503,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 /// Test remap_modes() function for SingleModeGate Operations
 #[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(1.3), 0.0.into())); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))); "PhaseShift")]
-#[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
+#[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_remapmodes_single(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -561,7 +565,7 @@ fn test_pyo3_remapmodes_two(input_operation: Operation) {
 #[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(1.3), 0.0.into())); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(1.3))); "BeamSplitter")]
-#[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
+#[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_remapmodes_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
@@ -580,7 +584,7 @@ fn test_pyo3_remapmodes_error(input_operation: Operation) {
 #[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from(1.3), 0.0.into())); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(1.3))); "BeamSplitter")]
-#[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
+#[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -622,9 +626,9 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0), CalculatorFloat::from(0)));
     "BeamSplitter")]
 #[test_case(
-    "PNRDetection { mode: 0, readout: \"ro\", readout_index: 0 }",
-    Operation::from(PNRDetection::new(0, "ro".into(), 0));
-    "PNRDetection")]
+    "PhotonDetection { mode: 0, readout: \"ro\", readout_index: 0 }",
+    Operation::from(PhotonDetection::new(0, "ro".into(), 0));
+    "PhotonDetection")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -748,7 +752,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 #[test_case(Operation::from(Squeezing::new(1, 0.1.into(), 0.0.into())); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(1, 0.1.into())); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(0.1))); "BeamSplitter")]
-#[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
+#[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_ineffective_substitute_parameters(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -781,8 +785,8 @@ fn test_ineffective_substitute_parameters(input_operation: Operation) {
     Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0), CalculatorFloat::from(0))),
     Operation::from(BeamSplitter::new(1, 2, CalculatorFloat::from(0), CalculatorFloat::from(0))); "BeamSplitter")]
 #[test_case(
-    Operation::from(PNRDetection::new(0, "ro".into(), 0)),
-    Operation::from(PNRDetection::new(1, "ro".into(), 0)); "PNRDetection")]
+    Operation::from(PhotonDetection::new(0, "ro".into(), 0)),
+    Operation::from(PhotonDetection::new(1, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
