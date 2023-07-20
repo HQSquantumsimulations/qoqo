@@ -1050,14 +1050,16 @@ pub struct PragmaControlledCircuit {
     circuit: Circuit,
 }
 
-impl super::ImplementedIn1point5 for PragmaControlledCircuit {}
-
 impl SupportedVersion for PragmaControlledCircuit {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        let pragma_version: (u32, u32, u32) = (1, 5, 0);
-        pragma_version.max(self.circuit.minimum_supported_roqoqo_version())
+        if self.circuit.minimum_supported_roqoqo_version() > (1, 5, 0) {
+            return self.circuit.minimum_supported_roqoqo_version();
+        }
+        (1, 5, 0)
     }
 }
+
+impl super::ImplementedIn1point5 for PragmaControlledCircuit {}
 
 #[allow(non_upper_case_globals)]
 const TAGS_PragmaControlledCircuit: &[&str; 3] =
