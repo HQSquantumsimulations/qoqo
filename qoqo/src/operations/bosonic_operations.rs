@@ -100,7 +100,7 @@ pub struct BeamSplitter {
 ///     mode (int): The mode the detector (measurement) is applied to.
 ///     readout (str): The register for the readout.
 ///     readout_index (int): The index in the readout the result is saved to.
-pub struct PNRDetection {
+pub struct PhotonDetection {
     mode: usize,
     readout: String,
     readout_index: usize,

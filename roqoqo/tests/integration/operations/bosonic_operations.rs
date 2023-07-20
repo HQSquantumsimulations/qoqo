@@ -48,8 +48,8 @@ fn beamsplitter_inputs() {
 
 /// Test Squeezing inputs
 #[test]
-fn pnrdetection_inputs() {
-    let op = PNRDetection::new(1, "ro".into(), 0);
+fn photondetection_inputs() {
+    let op = PhotonDetection::new(1, "ro".into(), 0);
     assert_eq!(op.mode(), &1_usize);
     assert_eq!(op.readout(), &String::from("ro"));
     assert_eq!(op.readout_index(), &0_usize)
@@ -58,7 +58,7 @@ fn pnrdetection_inputs() {
 #[test_case(Operation::from(Squeezing::new(0, 0.5.into(), 0.0.into())))]
 #[test_case(Operation::from(PhaseShift::new(0, 0.5.into())))]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.5.into())))]
-#[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)))]
+#[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)))]
 fn clone(op: Operation) {
     assert_eq!(op.clone(), op);
 }
@@ -66,7 +66,7 @@ fn clone(op: Operation) {
 #[test_case(Operation::from(Squeezing::new(0, 0.5.into(), 0.0.into())), "Squeezing(Squeezing { mode: 0, squeezing: Float(0.5), phase: Float(0.0) })")]
 #[test_case(Operation::from(PhaseShift::new(0, 0.5.into())), "PhaseShift(PhaseShift { mode: 0, phase: Float(0.5) })")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.5.into())), "BeamSplitter(BeamSplitter { mode_0: 0, mode_1: 1, theta: Float(0.1), phi: Float(0.5) })")]
-#[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)), "PNRDetection(PNRDetection { mode: 0, readout: \"ro\", readout_index: 0 })")]
+#[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)), "PhotonDetection(PhotonDetection { mode: 0, readout: \"ro\", readout_index: 0 })")]
 fn debug(op: Operation, string: &str) {
     assert_eq!(format!("{:?}", op), string);
 }
@@ -74,7 +74,7 @@ fn debug(op: Operation, string: &str) {
 #[test_case(Operation::from(Squeezing::new(0, 0.5.into(), 0.0.into())), Operation::from(Squeezing::new(0, 0.5.into(), 0.0.into())), Operation::from(Squeezing::new(1, 0.5.into(), 0.0.into())))]
 #[test_case(Operation::from(PhaseShift::new(0, 0.5.into())), Operation::from(PhaseShift::new(0, 0.5.into())), Operation::from(PhaseShift::new(1, 0.5.into())))]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.5.into())), Operation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.5.into())), Operation::from(BeamSplitter::new(1, 2, 0.1.into(), 0.5.into())))]
-#[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)), Operation::from(PNRDetection::new(0, "ro".into(), 0)), Operation::from(PNRDetection::new(1, "ro".into(), 0)))]
+#[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)), Operation::from(PhotonDetection::new(0, "ro".into(), 0)), Operation::from(PhotonDetection::new(1, "ro".into(), 0)))]
 fn partial_eq(op: Operation, op_0: Operation, op_1: Operation) {
     assert!(op_0 == op);
     assert!(op == op_0);
@@ -96,7 +96,7 @@ fn involved_qubits_classical_modes(
     assert_eq!(op.involved_modes(), modes);
 }
 
-#[test_case(SingleModeOperation::from(PNRDetection::new(0, "ro".into(), 0)), InvolvedQubits::None, InvolvedClassical::Set(HashSet::from([("ro".into(), 0_usize)])), InvolvedModes::Set(HashSet::from([0_usize])))]
+#[test_case(SingleModeOperation::from(PhotonDetection::new(0, "ro".into(), 0)), InvolvedQubits::None, InvolvedClassical::Set(HashSet::from([("ro".into(), 0_usize)])), InvolvedModes::Set(HashSet::from([0_usize])))]
 fn involved_qubits_classical_modes_measurement(
     op: SingleModeOperation,
     qubits: InvolvedQubits,
@@ -133,7 +133,7 @@ fn substitute_subsitutemodes(op: ModeGateOperation, op_test: ModeGateOperation) 
     assert_eq!(result, op_test);
 }
 
-#[test_case(SingleModeOperation::from(PNRDetection::new(2, "ro".into(), 0)), SingleModeOperation::from(PNRDetection::new(0, "ro".into(), 0)))]
+#[test_case(SingleModeOperation::from(PhotonDetection::new(2, "ro".into(), 0)), SingleModeOperation::from(PhotonDetection::new(0, "ro".into(), 0)))]
 fn substitute_subsitutemodes_measurement(op: SingleModeOperation, op_test: SingleModeOperation) {
     let mut mapping_test: HashMap<usize, usize> = HashMap::new();
     mapping_test.insert(0, 1);
@@ -195,7 +195,7 @@ fn operate_two_modes(op: Operation, op_param: Operation, name: &str) {
     assert!(op_param.is_parametrized());
 }
 
-#[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)), "PNRDetection")]
+#[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)), "PhotonDetection")]
 fn operate_measurement(op: Operation, name: &str) {
     // (1) Test tags function
     let tags: &[&str; 3] = &["Operation", "Measurement", name];
@@ -210,7 +210,7 @@ fn operate_measurement(op: Operation, name: &str) {
 
 #[test_case(SingleModeOperation::from(Squeezing::new(0, 0.5.into(), 0.0.into())))]
 #[test_case(SingleModeOperation::from(PhaseShift::new(0, 0.5.into())))]
-#[test_case(SingleModeOperation::from(PNRDetection::new(0, "ro".into(), 0)))]
+#[test_case(SingleModeOperation::from(PhotonDetection::new(0, "ro".into(), 0)))]
 fn single_mode_op(op: SingleModeOperation) {
     assert_eq!(op.mode(), &0_usize);
 }
@@ -373,14 +373,14 @@ fn beamsplitter_serde() {
 
 #[cfg(feature = "serialize")]
 #[test]
-fn pnrdetection_serde() {
-    let op = PNRDetection::new(0, "ro".into(), 0);
+fn photondetection_serde() {
+    let op = PhotonDetection::new(0, "ro".into(), 0);
 
     assert_tokens(
         &op.clone().readable(),
         &[
             Token::Struct {
-                name: "PNRDetection",
+                name: "PhotonDetection",
                 len: 3,
             },
             Token::Str("mode"),
@@ -397,7 +397,7 @@ fn pnrdetection_serde() {
         &op.compact(),
         &[
             Token::Struct {
-                name: "PNRDetection",
+                name: "PhotonDetection",
                 len: 3,
             },
             Token::Str("mode"),

@@ -183,7 +183,7 @@ impl SupportedVersion for BeamSplitter {
     roqoqo_derive::OperateSingleMode,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-pub struct PNRDetection {
+pub struct PhotonDetection {
     /// The mode the detector (measurement) is applied to.
     mode: usize,
     /// The register for the readout.
@@ -193,9 +193,9 @@ pub struct PNRDetection {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_PNRDetection: &[&str; 3] = &["Operation", "Measurement", "PNRDetection"];
+const TAGS_PhotonDetection: &[&str; 3] = &["Operation", "Measurement", "PhotonDetection"];
 
-impl InvolveQubits for PNRDetection {
+impl InvolveQubits for PhotonDetection {
     /// Returns all qubits involved in operation.
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::None
@@ -208,9 +208,9 @@ impl InvolveQubits for PNRDetection {
     }
 }
 
-impl ImplementedIn1point6 for PNRDetection {}
+impl ImplementedIn1point6 for PhotonDetection {}
 
-impl SupportedVersion for PNRDetection {
+impl SupportedVersion for PhotonDetection {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 6, 0)
     }

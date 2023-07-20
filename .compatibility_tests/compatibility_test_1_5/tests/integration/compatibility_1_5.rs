@@ -104,7 +104,7 @@ use test_roqoqo_1_5;
 // #[test_case(test_roqoqo_1_6::operations::Squeezing::new(0, 0.1.into()).into(); "Squeezing")]
 // #[test_case(test_roqoqo_1_6::operations::PhaseShift::new(0, 0.1.into()).into(); "PhaseShift")]
 // #[test_case(test_roqoqo_1_6::operations::BeamSplitter::new(0, 1, 0.1.into(), 0.2.into()).into(); "BeamSplitter")]
-// #[test_case(test_roqoqo_1_6::operations::PNRDetection::new(0, "ro".into(), 0).into(); "PNRDetection")]
+// #[test_case(test_roqoqo_1_6::operations::PhotonDetection::new(0, "ro".into(), 0).into(); "PhotonDetection")]
 fn test_bincode_compatibility_1_5(operation: test_roqoqo_1_5::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_5::Circuit::new();
     test_circuit += operation;
