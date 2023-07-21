@@ -14,6 +14,8 @@
 
 #[cfg(feature = "serialize")]
 use bincode::serialize;
+#[cfg(feature = "json_schema")]
+use jsonschema::{Draft, JSONSchema};
 use nalgebra::{matrix, Matrix4};
 use ndarray::{array, Array, Array1, Array2};
 use num_complex::Complex64;
@@ -21,10 +23,13 @@ use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::operations::*;
 use roqoqo::prelude::RoqoqoError;
 use roqoqo::Circuit;
+#[cfg(feature = "json_schema")]
+use schemars::schema_for;
 #[cfg(feature = "serialize")]
 use serde_test::{assert_tokens, Configure, Token};
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
+
 /// Test PragmaSetNumberOfMeasurements inputs and involved qubits
 #[test]
 fn pragma_loop_inputs_qubits() {
@@ -3284,4 +3289,105 @@ fn pragma_controlled_circuit_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+#[cfg(feature = "json_schema")]
+#[test_case(PragmaOperation::from(PragmaSetStateVector::new(array![
+    Complex64::new(1.0, 0.0),
+    Complex64::new(0.0, 0.0),
+    Complex64::new(0.0, 0.0),
+    Complex64::new(0.0, 0.0)
+])); "PragmaSetStateVector")]
+#[test_case(PragmaOperation::from(PragmaSetDensityMatrix::new(array![
+    [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],
+    [Complex64::new(0.0, 0.0), Complex64::new(0.0, 0.0)],
+])); "PragmaSetDensityMatrix")]
+#[test_case(PragmaOperation::from(PragmaRepeatGate::new(2)); "PragmaRepeatGate")]
+#[test_case(PragmaOperation::from(PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.34, 0.45)); "PragmaOverrotation")]
+#[test_case(PragmaOperation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.2))); "PragmaBoostNoise")]
+#[test_case(PragmaOperation::from(PragmaStopParallelBlock::new(vec![0,1], CalculatorFloat::from(0.3))); "PragmaStopParallelBlock")]
+#[test_case(PragmaOperation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.5))); "PragmaGlobalPhase")]
+#[test_case(PragmaOperation::from(PragmaSleep::new(vec![0, 1], CalculatorFloat::from(1))); "PragmaSleep")]
+#[test_case(PragmaOperation::from(PragmaActiveReset::new(3)); "PragmaActiveReset")]
+#[test_case(PragmaOperation::from(PragmaStartDecompositionBlock::new(vec![0, 1], vec![(0, 1), (1, 0)].iter().cloned().collect())); "PragmaStartDecompositionBlock")]
+#[test_case(PragmaOperation::from(PragmaStopDecompositionBlock::new(vec![0, 1])); "PragmaStopDecompositionBlock")]
+#[test_case(PragmaOperation::from(PragmaDamping::new(0, CalculatorFloat::from(0.4), CalculatorFloat::from(0.8))); "PragmaDamping")]
+#[test_case(PragmaOperation::from(PragmaDepolarising::new(0, CalculatorFloat::from(0.3), CalculatorFloat::from(0.6))); "PragmaDepolarising")]
+#[test_case(PragmaOperation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.1), CalculatorFloat::from(0.9))); "PragmaDephasing")]
+#[test_case(PragmaOperation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.7), CalculatorFloat::from(3.4), CalculatorFloat::from(2.4))); "PragmaRandomNoise")]
+#[test_case(PragmaOperation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.7), array![[1.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0],])); "PragmaGeneralNoise")]
+fn test_json_schema(pragma_op: PragmaOperation) {
+    // Serialize Circuit
+    let test_json = match pragma_op.clone() {
+        PragmaOperation::PragmaSetNumberOfMeasurements(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaSetStateVector(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaSetDensityMatrix(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaRepeatGate(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaOverrotation(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaBoostNoise(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaStopParallelBlock(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaGlobalPhase(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaSleep(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaActiveReset(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaStartDecompositionBlock(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaStopDecompositionBlock(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaDamping(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaDepolarising(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaDephasing(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaRandomNoise(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaGeneralNoise(op) => serde_json::to_string(&op).unwrap(),
+        // PragmaOperation::PragmaConditional(op) => serde_json::to_string(&op).unwrap(),
+        // PragmaOperation::PragmaGetStateVector(op) => serde_json::to_string(&op).unwrap(),
+        // PragmaOperation::PragmaGetDensityMatrix(op) => serde_json::to_string(&op).unwrap(),
+        // PragmaOperation::PragmaGetOccupationProbability(op) => serde_json::to_string(&op).unwrap(),
+        // PragmaOperation::PragmaGetPauliProduct(op) => serde_json::to_string(&op).unwrap(),
+        PragmaOperation::PragmaRepeatedMeasurement(op) => serde_json::to_string(&op).unwrap(),
+        // PragmaOperation::PragmaLoop(op) => serde_json::to_string(&op).unwrap(),
+        // PragmaOperation::PragmaControlledCircuit(op) => serde_json::to_string(&op).unwrap(),
+        _ => unreachable!(),
+    };
+    // let test_json = serde_json::to_string(&pragma_op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = match pragma_op {
+        PragmaOperation::PragmaSetNumberOfMeasurements(_) => schema_for!(PragmaSetNumberOfMeasurements),
+        PragmaOperation::PragmaSetStateVector(_) => schema_for!(PragmaSetStateVector),
+        PragmaOperation::PragmaSetDensityMatrix(_) => schema_for!(PragmaSetDensityMatrix),
+        PragmaOperation::PragmaRepeatGate(_) => schema_for!(PragmaRepeatGate),
+        PragmaOperation::PragmaOverrotation(_) => schema_for!(PragmaOverrotation),
+        PragmaOperation::PragmaBoostNoise(_) => schema_for!(PragmaBoostNoise),
+        PragmaOperation::PragmaStopParallelBlock(_) => schema_for!(PragmaStopParallelBlock),
+        PragmaOperation::PragmaGlobalPhase(_) => schema_for!(PragmaGlobalPhase),
+        PragmaOperation::PragmaSleep(_) => schema_for!(PragmaSleep),
+        PragmaOperation::PragmaActiveReset(_) => schema_for!(PragmaActiveReset),
+        PragmaOperation::PragmaStartDecompositionBlock(_) => schema_for!(PragmaStartDecompositionBlock),
+        PragmaOperation::PragmaStopDecompositionBlock(_) => schema_for!(PragmaStopDecompositionBlock),
+        PragmaOperation::PragmaDamping(_) => schema_for!(PragmaDamping),
+        PragmaOperation::PragmaDepolarising(_) => schema_for!(PragmaDepolarising),
+        PragmaOperation::PragmaDephasing(_) => schema_for!(PragmaDephasing),
+        PragmaOperation::PragmaRandomNoise(_) => schema_for!(PragmaRandomNoise),
+        PragmaOperation::PragmaGeneralNoise(_) => schema_for!(PragmaGeneralNoise),
+        // PragmaOperation::PragmaConditional(_) => schema_for!(PragmaConditional),
+        // PragmaOperation::PragmaGetStateVector(_) => schema_for!(PragmaGetStateVector),
+        // PragmaOperation::PragmaGetDensityMatrix(_) => schema_for!(PragmaGetDensityMatrix),
+        // PragmaOperation::PragmaGetOccupationProbability(_) => schema_for!(PragmaGetOccupationProbability),
+        // PragmaOperation::PragmaGetPauliProduct(_) => schema_for!(PragmaGetPauliProduct),
+        PragmaOperation::PragmaRepeatedMeasurement(_) => schema_for!(PragmaRepeatedMeasurement),
+        // PragmaOperation::PragmaLoop(_) => schema_for!(PragmaLoop),
+        // PragmaOperation::PragmaControlledCircuit(_) => schema_for!(PragmaControlledCircuit),
+        _ => unreachable!(),
+    };
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    // println!("{test_value}");
+    // println!("{schema_value}");
+    // println!("{:#?}", compiled_schema);
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
