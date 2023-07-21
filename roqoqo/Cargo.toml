@@ -31,7 +31,8 @@ qoqo_calculator = { version="1.1"}
 roqoqo-derive = {version="1.6.0-alpha.1", path="../roqoqo-derive"}
 typetag = {version="0.2", optional=true}
 nalgebra = "0.32"
-# schemars = { version="0.8", features = ["num-complex", "ndarray"], optional=true }
+schemars = { version="0.8", optional=true }
+jsonschema = { version="0.17", optional=true }
 rand_distr = {version="0.4", optional=true}
 rand = { version = "0.8.4"}
 async-trait = {version = "0.1", optional = true}
@@ -54,11 +55,11 @@ rand = {version="0.8"}
 rustdoc-args = ["--document-private-items" ]
 
 [features]
-default = ["serialize", "circuitdag"]
+default = ["serialize", "circuitdag", "json_schema"]
 dynamic = ["typetag", "dyn-clone"]
 unstable_qoqo_devices = []
 serialize = ["serde", "ndarray/serde", "num-complex/serde", "bincode", "petgraph/serde-1"]
 overrotate = [ "rand_distr", "roqoqo-derive/overrotate"]
 async = ["async-trait", "futures"]
-# json_schema=["schemars", "serialize", "qoqo_calculator/json_schema"]
+json_schema=["schemars", "serialize", "qoqo_calculator/json_schema", "jsonschema"]
 circuitdag = ["petgraph"]
