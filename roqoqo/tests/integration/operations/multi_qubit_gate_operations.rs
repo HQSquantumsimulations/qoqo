@@ -12,12 +12,16 @@
 
 //! Integration test for public API of multi qubit gate operations
 
+#[cfg(feature = "json_schema")]
+use jsonschema::{Draft, JSONSchema};
 use ndarray::array;
 use num_complex::Complex64;
 use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorFloat;
 use roqoqo::operations::*;
 use roqoqo::Circuit;
+#[cfg(feature = "json_schema")]
+use schemars::schema_for;
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
 
@@ -564,4 +568,32 @@ fn test_rotatex_powercf_multi_qubit_zz(theta: CalculatorFloat, power: Calculator
     let test_gate = MultiQubitZZ::new(qubits, test_theta);
     assert_eq!(power_gate, test_gate);
     assert_eq!(power_gate.theta(), test_gate.theta());
+}
+
+#[test_case(MultiQubitGateOperation::from(MultiQubitZZ::new(vec![0, 1, 2, 3], 0.23.into())); "MultiQubitZZ")]
+#[test_case(MultiQubitGateOperation::from(MultiQubitMS::new(vec![0, 1, 2], 0.45.into())); "MultiQubitMS")]
+pub fn test_json_schema_multi_qubit_gate_operations(gate: MultiQubitGateOperation) {
+    // Serialize Circuit
+    let test_json = match gate.clone() {
+        MultiQubitGateOperation::MultiQubitMS(op) => serde_json::to_string(&op).unwrap(),
+        MultiQubitGateOperation::MultiQubitZZ(op) => serde_json::to_string(&op).unwrap(),
+        _ => unreachable!(),
+    };
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = match gate {
+        MultiQubitGateOperation::MultiQubitMS(_) => schema_for!(MultiQubitMS),
+        MultiQubitGateOperation::MultiQubitZZ(_) => schema_for!(MultiQubitZZ),
+        _ => unreachable!(),
+    };
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
