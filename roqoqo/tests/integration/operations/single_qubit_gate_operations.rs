@@ -12,8 +12,6 @@
 
 //! Integration test for public API of single qubit gate operations
 
-#![allow(clippy::redundant_clone)]
-
 //use crate::RoqoqoError::{CalculatorError, UnitaryMatrixErrror};
 #[cfg(feature = "json_schema")]
 use jsonschema::{Draft, JSONSchema};
@@ -2358,6 +2356,7 @@ pub fn test_tags(gate: SingleQubitGateOperation, tags: Vec<&str>) {
 }
 
 /// Test JsonSchema trait
+#[cfg(feature = "json_schema")]
 #[test_case(SingleQubitGateOperation::from(RotateX::new(0, CalculatorFloat::from("theta"))); "RotateX")]
 #[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from("theta"))); "RotateY")]
 #[test_case(SingleQubitGateOperation::from(PauliX::new(0)); "PauliX")]

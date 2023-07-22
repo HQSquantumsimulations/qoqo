@@ -12,8 +12,6 @@
 
 //! Integration test for public API of two qubit gate operations
 
-#![allow(clippy::redundant_clone)]
-
 use super::convert_matrix;
 #[cfg(feature = "json_schema")]
 use jsonschema::{Draft, JSONSchema};
@@ -1218,6 +1216,7 @@ fn test_kakdecomposition_debug() {
 }
 
 /// Test JsonSchema trait
+#[cfg(feature = "json_schema")]
 #[test_case(TwoQubitGateOperation::from(SWAP::new(0, 1)); "SWAP")]
 #[test_case(TwoQubitGateOperation::from(ISwap::new(0, 1)); "ISwap")]
 #[test_case(TwoQubitGateOperation::from(FSwap::new(0, 1)); "FSwap")]

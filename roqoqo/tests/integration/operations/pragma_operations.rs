@@ -3291,6 +3291,7 @@ fn pragma_controlled_circuit_serde_compact() {
     );
 }
 
+/// Test JsonSchema trait
 #[cfg(feature = "json_schema")]
 #[test_case(PragmaOperation::from(PragmaSetStateVector::new(array![
     Complex64::new(1.0, 0.0),
@@ -3316,7 +3317,7 @@ fn pragma_controlled_circuit_serde_compact() {
 #[test_case(PragmaOperation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.1), CalculatorFloat::from(0.9))); "PragmaDephasing")]
 #[test_case(PragmaOperation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.7), CalculatorFloat::from(3.4), CalculatorFloat::from(2.4))); "PragmaRandomNoise")]
 #[test_case(PragmaOperation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.7), array![[1.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0],])); "PragmaGeneralNoise")]
-fn test_json_schema(pragma_op: PragmaOperation) {
+fn test_json_schema_pragmas(pragma_op: PragmaOperation) {
     // Serialize Circuit
     let test_json = match pragma_op.clone() {
         PragmaOperation::PragmaSetNumberOfMeasurements(op) => serde_json::to_string(&op).unwrap(),
@@ -3346,7 +3347,6 @@ fn test_json_schema(pragma_op: PragmaOperation) {
         // PragmaOperation::PragmaControlledCircuit(op) => serde_json::to_string(&op).unwrap(),
         _ => unreachable!(),
     };
-    // let test_json = serde_json::to_string(&pragma_op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
     // Create JSONSchema
@@ -3385,9 +3385,6 @@ fn test_json_schema(pragma_op: PragmaOperation) {
         .compile(&schema_value)
         .unwrap();
 
-    // println!("{test_value}");
-    // println!("{schema_value}");
-    // println!("{:#?}", compiled_schema);
     let validation_result = compiled_schema.validate(&test_value);
     assert!(validation_result.is_ok());
 }
