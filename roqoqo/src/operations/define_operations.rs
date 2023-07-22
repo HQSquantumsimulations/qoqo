@@ -50,7 +50,7 @@ use super::SupportedVersion;
     roqoqo_derive::Define,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct DefinitionFloat {
     /// The name of the register that is defined.
     name: String,
@@ -86,7 +86,7 @@ impl InvolveQubits for DefinitionFloat {
     roqoqo_derive::Define,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 
 pub struct DefinitionComplex {
     /// The name of the register that is defined.
@@ -126,7 +126,7 @@ impl InvolveQubits for DefinitionComplex {
     roqoqo_derive::Define,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct DefinitionUsize {
     /// The name of the register that is defined.
     name: String,
@@ -164,7 +164,7 @@ impl InvolveQubits for DefinitionUsize {
     roqoqo_derive::Define,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct DefinitionBit {
     /// The name of the register that is defined.
     name: String,
@@ -201,7 +201,7 @@ impl InvolveQubits for DefinitionBit {
     roqoqo_derive::Define,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct InputSymbolic {
     /// The name of the register that is defined.
     name: String,
@@ -238,7 +238,7 @@ impl InvolveQubits for InputSymbolic {
     roqoqo_derive::Define,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct InputBit {
     /// The name of the register that where the bit is set.
     name: String,
