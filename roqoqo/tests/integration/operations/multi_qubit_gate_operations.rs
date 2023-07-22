@@ -570,6 +570,8 @@ fn test_rotatex_powercf_multi_qubit_zz(theta: CalculatorFloat, power: Calculator
     assert_eq!(power_gate.theta(), test_gate.theta());
 }
 
+/// Test JsonSchema trait
+#[cfg(feature = "json_schema")]
 #[test_case(MultiQubitGateOperation::from(MultiQubitZZ::new(vec![0, 1, 2, 3], 0.23.into())); "MultiQubitZZ")]
 #[test_case(MultiQubitGateOperation::from(MultiQubitMS::new(vec![0, 1, 2], 0.45.into())); "MultiQubitMS")]
 pub fn test_json_schema_multi_qubit_gate_operations(gate: MultiQubitGateOperation) {

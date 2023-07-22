@@ -12,8 +12,6 @@
 
 //! Integration test for public API of three qubit gate operations
 
-#![allow(clippy::redundant_clone)]
-
 use super::convert_matrix;
 #[cfg(feature = "json_schema")]
 use jsonschema::{Draft, JSONSchema};
@@ -336,6 +334,7 @@ fn test_inputs_toffoli() {
 }
 
 /// Test JsonSchema trait
+#[cfg(feature = "json_schema")]
 #[test_case(ThreeQubitGateOperation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(ThreeQubitGateOperation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
 #[test_case(ThreeQubitGateOperation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
