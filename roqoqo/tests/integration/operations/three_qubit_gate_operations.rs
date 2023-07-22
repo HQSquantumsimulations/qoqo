@@ -12,14 +12,19 @@
 
 //! Integration test for public API of three qubit gate operations
 
+#![allow(clippy::redundant_clone)]
+
 use super::convert_matrix;
+#[cfg(feature = "json_schema")]
+use jsonschema::{Draft, JSONSchema};
 use nalgebra::DMatrix;
 use ndarray::Array2;
 use num_complex::Complex64;
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::RoqoqoError::QubitMappingError;
 use roqoqo::{operations::*, Circuit, RoqoqoError};
-
+#[cfg(feature = "json_schema")]
+use schemars::schema_for;
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
 
@@ -328,4 +333,44 @@ fn test_inputs_toffoli() {
     assert_eq!(gate.control_0(), &0);
     assert_eq!(gate.control_1(), &1);
     assert_eq!(gate.target(), &2);
+}
+
+/// Test JsonSchema trait
+#[test_case(ThreeQubitGateOperation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
+#[test_case(ThreeQubitGateOperation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
+#[test_case(ThreeQubitGateOperation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
+pub fn test_json_schema_three_qubit_gate_operations(gate: ThreeQubitGateOperation) {
+    // Serialize Circuit
+    let test_json = match gate.clone() {
+        ThreeQubitGateOperation::ControlledControlledPauliZ(op) => {
+            serde_json::to_string(&op).unwrap()
+        }
+        ThreeQubitGateOperation::ControlledControlledPhaseShift(op) => {
+            serde_json::to_string(&op).unwrap()
+        }
+        ThreeQubitGateOperation::Toffoli(op) => serde_json::to_string(&op).unwrap(),
+        _ => unreachable!(),
+    };
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = match gate {
+        ThreeQubitGateOperation::ControlledControlledPauliZ(_) => {
+            schema_for!(ControlledControlledPauliZ)
+        }
+        ThreeQubitGateOperation::ControlledControlledPhaseShift(_) => {
+            schema_for!(ControlledControlledPhaseShift)
+        }
+        ThreeQubitGateOperation::Toffoli(_) => schema_for!(Toffoli),
+        _ => unreachable!(),
+    };
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
