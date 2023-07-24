@@ -26,7 +26,7 @@ use roqoqo::Circuit;
 use std::collections::HashMap;
 
 /// Wrap function automatically generates functions in these traits.
-#[wrap(Operate, OperatePragma)]
+#[wrap(Operate, OperatePragma, JsonSchema)]
 #[derive(Eq)]
 /// This PRAGMA operation sets the number of measurements of the circuit.
 ///
@@ -41,7 +41,7 @@ struct PragmaSetNumberOfMeasurements {
     readout: String,
 }
 
-#[wrap(Operate, OperatePragma)]
+#[wrap(Operate, OperatePragma, JsonSchema)]
 /// This PRAGMA measurement operation returns the statevector of a quantum register.
 ///
 /// Args:
@@ -313,6 +313,17 @@ impl PragmaSetStateVectorWrapper {
             )),
         }
     }
+
+    #[cfg(feature = "json_schema")]
+    #[staticmethod]
+    /// Return the JsonSchema for the json serialisation of the class.
+    ///
+    /// Returns:
+    ///     str: The json schema serialized to json
+    pub fn json_schema() -> String {
+        let schema = schemars::schema_for!(PragmaSetStateVector);
+        serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
+    }
 }
 
 /// Module containing the PragmaSetDensityMatrix class.
@@ -535,9 +546,20 @@ impl PragmaSetDensityMatrixWrapper {
             )),
         }
     }
+
+    #[cfg(feature = "json_schema")]
+    #[staticmethod]
+    /// Return the JsonSchema for the json serialisation of the class.
+    ///
+    /// Returns:
+    ///     str: The json schema serialized to json
+    pub fn json_schema() -> String {
+        let schema = schemars::schema_for!(PragmaSetDensityMatrix);
+        serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
+    }
 }
 
-#[wrap(Operate, OperatePragma)]
+#[wrap(Operate, OperatePragma, JsonSchema)]
 #[derive(Eq)]
 /// The repeated gate PRAGMA operation.
 ///
@@ -550,7 +572,7 @@ struct PragmaRepeatGate {
     repetition_coefficient: usize,
 }
 
-#[wrap(Operate, OperatePragma, OperateMultiQubit)]
+#[wrap(Operate, OperatePragma, OperateMultiQubit, JsonSchema)]
 /// The statistical overrotation PRAGMA operation.
 ///
 /// This PRAGMA applies a statistical overrotation to the next rotation gate in the circuit, which
@@ -574,7 +596,7 @@ struct PragmaOverrotation {
     variance: f64,
 }
 
-#[wrap(Operate, OperatePragma)]
+#[wrap(Operate, OperatePragma, JsonSchema)]
 /// This PRAGMA operation boosts noise and overrotations in the circuit.
 ///
 /// Args:
@@ -583,7 +605,7 @@ struct PragmaBoostNoise {
     noise_coefficient: CalculatorFloat,
 }
 
-#[wrap(Operate, OperateMultiQubit, OperatePragma)]
+#[wrap(Operate, OperateMultiQubit, OperatePragma, JsonSchema)]
 /// This PRAGMA operation signals the STOP of a parallel execution block.
 ///
 /// Args:
@@ -594,7 +616,7 @@ struct PragmaStopParallelBlock {
     execution_time: CalculatorFloat,
 }
 
-#[wrap(Operate)]
+#[wrap(Operate, JsonSchema)]
 /// The global phase PRAGMA operation.
 ///
 /// This PRAGMA operation signals that the quantum register picks up a global phase,
@@ -606,7 +628,7 @@ struct PragmaGlobalPhase {
     phase: CalculatorFloat,
 }
 
-#[wrap(Operate, OperateMultiQubit, OperatePragma)]
+#[wrap(Operate, OperateMultiQubit, OperatePragma, JsonSchema)]
 /// This PRAGMA operation makes the quantum hardware wait a given amount of time.
 ///
 /// This PRAGMA operation is used for error mitigation reasons, for instance.
@@ -620,7 +642,7 @@ pub struct PragmaSleep {
     sleep_time: CalculatorFloat,
 }
 
-#[wrap(Operate, OperateSingleQubit, OperatePragma)]
+#[wrap(Operate, OperateSingleQubit, OperatePragma, JsonSchema)]
 #[derive(Eq)]
 /// This PRAGMA operation resets the chosen qubit to the zero state.
 ///
@@ -630,7 +652,7 @@ pub struct PragmaActiveReset {
     qubit: usize,
 }
 
-#[wrap(Operate, OperateMultiQubit, OperatePragma)]
+#[wrap(Operate, OperateMultiQubit, OperatePragma, JsonSchema)]
 #[derive(Eq)]
 /// This PRAGMA operation signals the START of a decomposition block.
 ///
@@ -642,7 +664,7 @@ pub struct PragmaStartDecompositionBlock {
     reordering_dictionary: HashMap<usize, usize>,
 }
 
-#[wrap(Operate, OperateMultiQubit, OperatePragma)]
+#[wrap(Operate, OperateMultiQubit, OperatePragma, JsonSchema)]
 #[derive(Eq)]
 /// This PRAGMA operation signals the STOP of a decomposition block.
 ///
@@ -657,7 +679,8 @@ pub struct PragmaStopDecompositionBlock {
     OperateSingleQubit,
     OperatePragma,
     OperatePragmaNoise,
-    OperatePragmaNoiseProba
+    OperatePragmaNoiseProba,
+    JsonSchema
 )]
 /// The damping PRAGMA noise operation.
 ///
@@ -723,7 +746,8 @@ pub struct PragmaDamping {
     OperateSingleQubit,
     OperatePragma,
     OperatePragmaNoise,
-    OperatePragmaNoiseProba
+    OperatePragmaNoiseProba,
+    JsonSchema
 )]
 /// The depolarising PRAGMA noise operation.
 ///
@@ -782,7 +806,8 @@ pub struct PragmaDepolarising {
     OperateSingleQubit,
     OperatePragma,
     OperatePragmaNoise,
-    OperatePragmaNoiseProba
+    OperatePragmaNoiseProba,
+    JsonSchema
 )]
 /// The dephasing PRAGMA noise operation.
 ///
@@ -841,7 +866,8 @@ pub struct PragmaDephasing {
     OperateSingleQubit,
     OperatePragma,
     OperatePragmaNoise,
-    OperatePragmaNoiseProba
+    OperatePragmaNoiseProba,
+    JsonSchema
 )]
 /// The random noise PRAGMA operation.
 ///
@@ -1193,9 +1219,20 @@ impl PragmaGeneralNoiseWrapper {
             )),
         }
     }
+
+    #[cfg(feature = "json_schema")]
+    #[staticmethod]
+    /// Return the JsonSchema for the json serialisation of the class.
+    ///
+    /// Returns:
+    ///     str: The json schema serialized to json
+    pub fn json_schema() -> String {
+        let schema = schemars::schema_for!(PragmaGeneralNoise);
+        serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
+    }
 }
 
-#[wrap(Operate, OperatePragma)]
+#[wrap(Operate, OperatePragma, JsonSchema)]
 /// The conditional PRAGMA operation.
 ///
 /// This PRAGMA executes a circuit when the condition bit/bool stored in a classical bit register is true.
@@ -1210,7 +1247,7 @@ pub struct PragmaConditional {
     circuit: Circuit,
 }
 
-#[wrap(Operate, OperatePragma)]
+#[wrap(Operate, OperatePragma, JsonSchema)]
 /// A circuit controlled by a qubit.
 ///
 /// The circuit is applied when the qubit is in state 1.
@@ -1453,6 +1490,17 @@ impl PragmaChangeDeviceWrapper {
                 "Other comparison not implemented.",
             )),
         }
+    }
+
+    #[cfg(feature = "json_schema")]
+    #[staticmethod]
+    /// Return the JsonSchema for the json serialisation of the class.
+    ///
+    /// Returns:
+    ///     str: The json schema serialized to json
+    pub fn json_schema() -> String {
+        let schema = schemars::schema_for!(PragmaChangeDevice);
+        serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
     }
 }
 
