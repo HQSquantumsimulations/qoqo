@@ -2377,7 +2377,7 @@ pub fn test_tags(gate: SingleQubitGateOperation, tags: Vec<&str>) {
 #[test_case(SingleQubitGateOperation::from(GPi::new(0, CalculatorFloat::from(PI/2.0))); "GPi")]
 #[test_case(SingleQubitGateOperation::from(GPi2::new(0, CalculatorFloat::from(PI/2.0))); "GPi2")]
 pub fn test_json_schema_single_qubit_gate_operations(gate: SingleQubitGateOperation) {
-    // Serialize Circuit
+    // Serialize
     let test_json = match gate.clone() {
         SingleQubitGateOperation::SingleQubitGate(op) => serde_json::to_string(&op).unwrap(),
         SingleQubitGateOperation::RotateZ(op) => serde_json::to_string(&op).unwrap(),

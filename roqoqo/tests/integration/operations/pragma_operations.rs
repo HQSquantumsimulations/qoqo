@@ -158,7 +158,7 @@ fn pragma_loop_serde_compact() {
 fn pragma_loop_json_schema() {
     let op = PragmaLoop::new(CalculatorFloat::from(2), Circuit::new());
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -302,7 +302,7 @@ fn pragma_set_number_of_measurements_serde_compact() {
 fn pragma_set_number_of_measurements_json_schema() {
     let op = PragmaSetNumberOfMeasurements::new(1, String::from("ro"));
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -535,7 +535,7 @@ fn pragma_set_state_vector_json_schema() {
         Complex64::new(0.0, 0.0)
     ]);
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -757,7 +757,7 @@ fn pragma_set_density_matrix_json_schema() {
         [Complex64::new(0.0, 0.0), Complex64::new(0.0, 0.0)],
     ]);
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -891,7 +891,7 @@ fn pragma_repeat_gate_serde_compact() {
 fn pragma_repeat_gate_json_schema() {
     let op = PragmaRepeatGate::new(2);
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -1052,7 +1052,7 @@ fn pragma_overrotation_serde_compact() {
 fn pragma_overrotation_json_schema() {
     let op = PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.34, 0.45);
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -1190,7 +1190,7 @@ fn pragma_boost_noise_serde_compact() {
 fn pragma_boost_noise_json_schema() {
     let op = PragmaBoostNoise::new(CalculatorFloat::from(0.2));
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -1358,7 +1358,7 @@ fn pragma_stop_serde_compact() {
 fn pragma_stop_json_schema() {
     let op = PragmaStopParallelBlock::new(vec![0, 1], CalculatorFloat::from(0.3));
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -1496,7 +1496,7 @@ fn pragma_global_phase_serde_compact() {
 fn pragma_global_phase_json_schema() {
     let op = PragmaGlobalPhase::new(CalculatorFloat::from(0.5));
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -1661,7 +1661,7 @@ fn pragma_sleep_serde_compact() {
 fn pragma_sleep_json_schema() {
     let op = PragmaSleep::new(vec![0, 1], CalculatorFloat::from(1));
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -1800,7 +1800,7 @@ fn pragma_active_reset_serde_compact() {
 fn pragma_active_reset_json_schema() {
     let op = PragmaActiveReset::new(3);
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -1984,7 +1984,7 @@ fn pragma_start_decomp_block_json_schema() {
         vec![(0, 1), (1, 0)].iter().cloned().collect(),
     );
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -2146,7 +2146,7 @@ fn pragma_stop_decomp_block_serde_compact() {
 fn pragma_stop_decomp_block_json_schema() {
     let op = PragmaStopDecompositionBlock::new(vec![0, 1]);
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -2345,7 +2345,7 @@ fn pragma_damping_serde_compact() {
 fn pragma_damping_json_schema() {
     let op = PragmaDamping::new(0, CalculatorFloat::from(0.4), CalculatorFloat::from(0.8));
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -2554,7 +2554,7 @@ fn pragma_depolarising_serde_compact() {
 fn pragma_depolarising_json_schema() {
     let op = PragmaDepolarising::new(0, CalculatorFloat::from(0.3), CalculatorFloat::from(0.6));
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -2756,7 +2756,7 @@ fn pragma_dephasing_serde_compact() {
 fn pragma_dephasing_json_schema() {
     let op = PragmaDephasing::new(0, CalculatorFloat::from(0.1), CalculatorFloat::from(0.9));
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -3019,7 +3019,7 @@ fn pragma_random_noise_json_schema() {
         CalculatorFloat::from(2.4),
     );
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -3267,7 +3267,7 @@ fn pragma_general_noise_json_schema() {
         array![[1.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0],],
     );
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -3469,7 +3469,7 @@ fn pragma_conditional_json_schema() {
     circuit.add_operation(PauliX::new(0));
     let op = PragmaConditional::new(String::from("ro"), 1, circuit.clone());
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -3581,7 +3581,7 @@ fn pragma_change_device_json_schema() {
     let wrapped: Operation = PragmaActiveReset::new(0).into();
     let op = PragmaChangeDevice::new(&wrapped).unwrap();
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -3780,7 +3780,7 @@ fn pragma_controlled_circuit_serde_compact() {
 fn pragma_controlled_circuit_json_schema() {
     let op = PragmaControlledCircuit::new(1, Circuit::default());
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 

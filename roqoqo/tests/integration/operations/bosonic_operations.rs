@@ -419,7 +419,7 @@ fn pnrdetection_serde() {
 #[test]
 fn squeezing_json_schema() {
     let def = Squeezing::new(0, 0.1.into(), 0.0.into());
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&def).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -440,7 +440,7 @@ fn squeezing_json_schema() {
 #[test]
 fn phaseshift_json_schema() {
     let def = PhaseShift::new(0, 0.1.into());
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&def).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -461,7 +461,7 @@ fn phaseshift_json_schema() {
 #[test]
 fn beamsplitter_json_schema() {
     let def = BeamSplitter::new(0, 1, 0.3.into(), 0.4.into());
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&def).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -482,7 +482,7 @@ fn beamsplitter_json_schema() {
 #[test]
 fn pnrdetection_json_schema() {
     let def = PNRDetection::new(0, "test".to_string(), 0);
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&def).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
