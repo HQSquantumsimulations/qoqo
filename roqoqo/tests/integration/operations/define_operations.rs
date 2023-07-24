@@ -437,7 +437,7 @@ fn definition_usize_serde_compact() {
 #[test]
 pub fn definition_usize_json_schema() {
     let def = DefinitionUsize::new(String::from("test"), 1, true);
-    // Serialize 
+    // Serialize
     let test_json = serde_json::to_string(&def).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
