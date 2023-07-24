@@ -144,6 +144,28 @@ fn definition_float_serde_compact() {
     );
 }
 
+/// Test DefinitionFloat JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+pub fn definition_float_json_schema() {
+    let def = DefinitionFloat::new(String::from("test"), 1, true);
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&def).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(DefinitionFloat);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
 /// Test DefinitionComplex inputs and involved qubits
 #[test]
 fn definition_complex_inputs_qubits() {
@@ -264,6 +286,28 @@ fn definition_complex_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+/// Test DefinitionComplex JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+pub fn definition_complex_json_schema() {
+    let def = DefinitionComplex::new(String::from("test"), 1, true);
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&def).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(DefinitionComplex);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
 
 /// Test DefinitionUsize inputs and involved qubits
@@ -388,6 +432,28 @@ fn definition_usize_serde_compact() {
     );
 }
 
+/// Test DefinitionUsize JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+pub fn definition_usize_json_schema() {
+    let def = DefinitionUsize::new(String::from("test"), 1, true);
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&def).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(DefinitionUsize);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
 /// Test DefinitionBit inputs and involved qubits
 #[test]
 fn definition_bit_inputs_qubits() {
@@ -510,6 +576,28 @@ fn definition_bit_serde_compact() {
     );
 }
 
+/// Test DefinitionBit JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+pub fn definition_bit_json_schema() {
+    let def = DefinitionBit::new(String::from("test"), 1, true);
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&def).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(DefinitionBit);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
 /// Test InputSymbolic inputs and involved qubits
 #[test]
 fn input_symbolic_inputs_qubits() {
@@ -625,6 +713,28 @@ fn input_symbolic_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+/// Test InputSymbolic JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+pub fn input_symbolic_json_schema() {
+    let def = InputSymbolic::new(String::from("test"), 0.54);
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&def).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(InputSymbolic);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
 
 /// Test InputBit inputs and involved qubits
@@ -749,98 +859,10 @@ fn input_bit_serde_compact() {
     );
 }
 
-/// Test DefinitionFloat JsonSchema trait
-#[cfg(feature = "json_schema")]
-#[test]
-pub fn definition_float_json_schema() {
-    let def = DefinitionFloat::new(String::from("test"), 1, true);
-    // Serialize Circuit
-    let test_json = serde_json::to_string(&def).unwrap();
-    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
-
-    // Create JSONSchema
-    let test_schema = schema_for!(DefinitionFloat);
-    let schema = serde_json::to_string(&test_schema).unwrap();
-    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
-        .with_draft(Draft::Draft7)
-        .compile(&schema_value)
-        .unwrap();
-
-    let validation_result = compiled_schema.validate(&test_value);
-    assert!(validation_result.is_ok());
-}
-
-/// Test DefinitionComplex JsonSchema trait
-#[cfg(feature = "json_schema")]
-#[test]
-pub fn definition_complex_json_schema() {
-    let def = DefinitionComplex::new(String::from("test"), 1, true);
-    // Serialize Circuit
-    let test_json = serde_json::to_string(&def).unwrap();
-    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
-
-    // Create JSONSchema
-    let test_schema = schema_for!(DefinitionComplex);
-    let schema = serde_json::to_string(&test_schema).unwrap();
-    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
-        .with_draft(Draft::Draft7)
-        .compile(&schema_value)
-        .unwrap();
-
-    let validation_result = compiled_schema.validate(&test_value);
-    assert!(validation_result.is_ok());
-}
-
-/// Test DefinitionUsize JsonSchema trait
-#[cfg(feature = "json_schema")]
-#[test]
-pub fn definition_usize_json_schema() {
-    let def = DefinitionUsize::new(String::from("test"), 1, true);
-    // Serialize Circuit
-    let test_json = serde_json::to_string(&def).unwrap();
-    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
-
-    // Create JSONSchema
-    let test_schema = schema_for!(DefinitionUsize);
-    let schema = serde_json::to_string(&test_schema).unwrap();
-    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
-        .with_draft(Draft::Draft7)
-        .compile(&schema_value)
-        .unwrap();
-
-    let validation_result = compiled_schema.validate(&test_value);
-    assert!(validation_result.is_ok());
-}
-
-/// Test DefinitionBit JsonSchema trait
-#[cfg(feature = "json_schema")]
-#[test]
-pub fn definition_bit_json_schema() {
-    let def = DefinitionBit::new(String::from("test"), 1, true);
-    // Serialize Circuit
-    let test_json = serde_json::to_string(&def).unwrap();
-    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
-
-    // Create JSONSchema
-    let test_schema = schema_for!(DefinitionBit);
-    let schema = serde_json::to_string(&test_schema).unwrap();
-    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
-        .with_draft(Draft::Draft7)
-        .compile(&schema_value)
-        .unwrap();
-
-    let validation_result = compiled_schema.validate(&test_value);
-    assert!(validation_result.is_ok());
-}
-
 /// Test InputBit JsonSchema trait
 #[cfg(feature = "json_schema")]
 #[test]
-pub fn definition_input_bit_json_schema() {
+pub fn input_bit_json_schema() {
     let def = InputBit::new(String::from("test"), 1, true);
     // Serialize Circuit
     let test_json = serde_json::to_string(&def).unwrap();
