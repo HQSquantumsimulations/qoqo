@@ -535,7 +535,7 @@ pub fn wrap(
             /// Returns:
             ///     str: The json schema serialized to json
             pub fn json_schema() -> String {
-                let schema = schemars::schema_for!(#str_ident);
+                let schema = schemars::schema_for!(#ident);
                 serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
             }
         }
