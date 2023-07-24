@@ -11,6 +11,8 @@
 // limitations under the License.
 
 use crate::CalculatorFloat;
+#[cfg(feature = "json_schema")]
+use crate::Complex64Def;
 use crate::RoqoqoError;
 use num_complex::Complex64;
 use std::collections::HashMap;
@@ -23,7 +25,7 @@ pub type PauliProductMask = Vec<usize>;
 
 /// Defines how Pauli Products expectation values are post-processed into observable expectation value.
 #[derive(Debug, Clone, PartialEq)]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub enum PauliProductsToExpVal {
     /// Expectation value of observable is a linear combination of Pauli Product expectation values.
@@ -46,7 +48,7 @@ pub enum PauliProductsToExpVal {
 /// values are measured by PauliZProduct. These expecation values are defined as
 /// expectation values of pauli products.
 #[derive(Debug, Clone, PartialEq)]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct PauliZProductInput {
     /// Collection of PauliProductMasks for each readout register in Measurement.
@@ -203,7 +205,7 @@ impl PauliZProductInput {
 /// Is used by the full measurement struct [crate::measurements::CheatedPauliZProduct].
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct CheatedPauliZProductInput {
     /// Collection of names and construction methods of  expectation values.
     ///
@@ -323,12 +325,32 @@ impl CheatedPauliZProductInput {
 /// Is used by the full measurement struct [crate::measurements::Cheated].
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct CheatedInput {
     /// Map of expectation values and corresponding operator Matrices on the Hilbert Space.
     pub measured_operators: HashMap<String, (OperatorSparseVec, String)>,
     /// Number of qubits that defines the dimension of the Hilbertspace.
     pub number_qubits: usize,
+}
+
+#[cfg(feature = "json_schema")]
+impl schemars::JsonSchema for CheatedInput {
+    fn schema_name() -> String {
+        "CheatedInput".to_string()
+    }
+
+    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
+        <SchemaHelperCheatedInput>::json_schema(gen)
+    }
+}
+
+#[cfg(feature = "json_schema")]
+#[derive(schemars::JsonSchema)]
+#[allow(dead_code, clippy::type_complexity)]
+struct SchemaHelperCheatedInput {
+    /// Map of expectation values and corresponding operator Matrices on the Hilbert Space.
+    measured_operators: HashMap<String, (Vec<(usize, usize, Complex64Def)>, String)>,
+    /// Number of qubits that defines the dimension of the Hilbertspace.
+    number_qubits: usize,
 }
 
 /// Represents Operator acting on Hilbert space as a sparse list of two indices and a value.
