@@ -9,12 +9,13 @@
 // License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
-// use jsonschema::{Draft, JSONSchema};
+#[cfg(feature = "json_schema")]
+use jsonschema::{Draft, JSONSchema};
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::operations::*;
 use roqoqo::{AsVec, Circuit};
-// #[cfg(feature = "serialize")]
-// use schemars::schema_for;
+#[cfg(feature = "json_schema")]
+use schemars::schema_for;
 use std::collections::{HashMap, HashSet};
 #[cfg(feature = "overrotate")]
 use std::convert::TryInto;
@@ -447,25 +448,26 @@ fn test_overrotate() {
     assert_ne!(t.theta(), &2.0.into());
 }
 
-// #[cfg(feature = "json_schema")]
-// #[test]
-// fn test_basis_rotation_json() {
-//     let mut circuit = Circuit::new();
-//     circuit += RotateX::new(0, "theta".into());
+/// Test JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema() {
+    let mut circuit = Circuit::new();
+    circuit += RotateX::new(0, "theta".into());
 
-//     // Serialize Circuit
-//     let test_json = serde_json::to_string(&circuit).unwrap();
-//     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&circuit).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
-//     // Create JSONSchema
-//     let test_schema = schema_for!(Circuit);
-//     let schema = serde_json::to_string(&test_schema).unwrap();
-//     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-//     let compiled_schema = JSONSchema::options()
-//         .with_draft(Draft::Draft7)
-//         .compile(&schema_value)
-//         .unwrap();
+    // Create JSONSchema
+    let test_schema = schema_for!(Circuit);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
 
-//     let validation_result = compiled_schema.validate(&test_value);
-//     assert!(validation_result.is_ok());
-// }
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
