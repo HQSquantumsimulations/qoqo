@@ -747,3 +747,51 @@ fn test_pyo3_new_repeated_measurement() {
         );
     })
 }
+
+/// Test json_schema function for all measurement operations
+#[cfg(feature = "json_schema")]
+#[test_case(Operation::from(MeasureQubit::new(0, String::from("ro"), 0));
+            "MeasureQubit")]
+#[test_case(Operation::from(PragmaGetStateVector::new(String::from("ro"), Some(create_circuit())));
+            "PragmaGetStateVector")]
+#[test_case(Operation::from(PragmaGetDensityMatrix::new(String::from("ro"), Some(create_circuit())));
+            "PragmaGetDensityMatrix")]
+#[test_case(Operation::from(PragmaGetOccupationProbability::new(String::from("ro"), Some(create_circuit())));
+            "PragmaGetOccupationProbability")]
+#[test_case(Operation::from(PragmaGetPauliProduct::new(create_qubit_mapping(), String::from("ro"), create_circuit()));
+            "PragmaGetPauliProduct")]
+#[test_case(Operation::from(PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(create_qubit_mapping()))); "PragmaRepeatedMeasurement")]
+fn test_pyo3_json_schema(operation: Operation) {
+    let rust_schema = match operation {
+        Operation::MeasureQubit(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(MeasureQubit)).unwrap()
+        }
+        Operation::PragmaGetStateVector(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaGetStateVector)).unwrap()
+        }
+        Operation::PragmaGetDensityMatrix(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaGetDensityMatrix)).unwrap()
+        }
+        Operation::PragmaGetOccupationProbability(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaGetOccupationProbability))
+                .unwrap()
+        }
+        Operation::PragmaGetPauliProduct(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaGetPauliProduct)).unwrap()
+        }
+        Operation::PragmaRepeatedMeasurement(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaRepeatedMeasurement)).unwrap()
+        }
+        _ => unreachable!(),
+    };
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let pyobject = convert_operation_to_pyobject(operation).unwrap();
+        let operation = pyobject.as_ref(py);
+
+        let schema: String =
+            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+
+        assert_eq!(schema, rust_schema);
+    });
+}
