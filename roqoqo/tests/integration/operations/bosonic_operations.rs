@@ -12,8 +12,12 @@
 
 //! Integration test for public API of bosonic operations
 
+#[cfg(feature = "json_schema")]
+use jsonschema::{Draft, JSONSchema};
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::operations::*;
+#[cfg(feature = "json_schema")]
+use schemars::schema_for;
 #[cfg(feature = "serialize")]
 use serde_test::{assert_tokens, Configure, Token};
 use std::collections::{HashMap, HashSet};
@@ -409,4 +413,88 @@ fn pnrdetection_serde() {
             Token::StructEnd,
         ],
     );
+}
+
+#[cfg(feature = "json_schema")]
+#[test]
+fn squeezing_json_schema() {
+    let def = Squeezing::new(0, 0.1.into(), 0.0.into());
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&def).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(Squeezing);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
+#[cfg(feature = "json_schema")]
+#[test]
+fn phaseshift_json_schema() {
+    let def = PhaseShift::new(0, 0.1.into());
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&def).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PhaseShift);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
+#[cfg(feature = "json_schema")]
+#[test]
+fn beamsplitter_json_schema() {
+    let def = BeamSplitter::new(0, 1, 0.3.into(), 0.4.into());
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&def).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(BeamSplitter);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
+#[cfg(feature = "json_schema")]
+#[test]
+fn pnrdetection_json_schema() {
+    let def = PNRDetection::new(0, "test".to_string(), 0);
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&def).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PNRDetection);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }

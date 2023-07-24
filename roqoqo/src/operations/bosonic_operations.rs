@@ -39,6 +39,7 @@ use qoqo_calculator::CalculatorFloat;
     roqoqo_derive::OperateSingleMode,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct Squeezing {
     /// The mode the squeezing gate is applied to.
     mode: usize,
@@ -88,6 +89,7 @@ impl SupportedVersion for Squeezing {
     roqoqo_derive::OperateSingleMode,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PhaseShift {
     /// The mode the phase-shift gate is applied to.
     mode: usize,
@@ -133,6 +135,7 @@ impl SupportedVersion for PhaseShift {
     roqoqo_derive::OperateTwoMode,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct BeamSplitter {
     /// The first mode the beam-splitter is applied to.
     mode_0: usize,
@@ -183,6 +186,7 @@ impl SupportedVersion for BeamSplitter {
     roqoqo_derive::OperateSingleMode,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PNRDetection {
     /// The mode the detector (measurement) is applied to.
     mode: usize,
