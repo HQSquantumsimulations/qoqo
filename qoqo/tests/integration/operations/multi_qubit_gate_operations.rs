@@ -560,3 +560,28 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
         assert!(comparison.is_err());
     })
 }
+
+#[cfg(feature = "json_schema")]
+#[test_case(Operation::from(MultiQubitMS::new(vec![0, 1, 2], CalculatorFloat::from(0))); "MultiQubitMS")]
+#[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(0))); "MultiQubitZZ")]
+fn test_pyo3_json_schema(operation: Operation) {
+    let rust_schema = match operation {
+        Operation::MultiQubitMS(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(MultiQubitMS)).unwrap()
+        }
+        Operation::MultiQubitZZ(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(MultiQubitZZ)).unwrap()
+        }
+        _ => unreachable!(),
+    };
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let pyobject = convert_operation_to_pyobject(operation).unwrap();
+        let operation = pyobject.as_ref(py);
+
+        let schema: String =
+            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+
+        assert_eq!(schema, rust_schema);
+    });
+}
