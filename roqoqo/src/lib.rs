@@ -343,7 +343,7 @@ impl JsonSchema for Complex64Def {
 pub(crate) struct Array1C64Def;
 impl JsonSchema for Array1C64Def {
     fn schema_name() -> String {
-        "Array1".to_string()
+        "Array1_Complex64".to_string()
     }
     fn json_schema(gen: &mut SchemaGenerator) -> Schema {
         let mut schema = SchemaObject {
@@ -370,7 +370,7 @@ impl JsonSchema for Array1C64Def {
 pub(crate) struct Array2C64Def;
 impl JsonSchema for Array2C64Def {
     fn schema_name() -> String {
-        "Array2".to_string()
+        "Array2_Complex64".to_string()
     }
     fn json_schema(gen: &mut SchemaGenerator) -> Schema {
         let mut schema = SchemaObject {
@@ -397,7 +397,7 @@ impl JsonSchema for Array2C64Def {
 pub(crate) struct Array2f64Def;
 impl JsonSchema for Array2f64Def {
     fn schema_name() -> String {
-        "Array2".to_string()
+        "Array2_f64".to_string()
     }
     fn json_schema(gen: &mut SchemaGenerator) -> Schema {
         let mut schema = SchemaObject {
