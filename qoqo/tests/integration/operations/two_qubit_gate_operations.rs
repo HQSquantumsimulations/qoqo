@@ -2110,3 +2110,120 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
         assert!(comparison.is_err());
     })
 }
+
+/// Test json_schema function for all two qubit gate operations
+#[cfg(feature = "json_schema")]
+#[test_case(TwoQubitGateOperation::from(CNOT::new(0, 1)); "CNOT")]
+#[test_case(TwoQubitGateOperation::from(SWAP::new(0, 1)); "SWAP")]
+#[test_case(TwoQubitGateOperation::from(ISwap::new(0, 1)); "ISwap")]
+#[test_case(TwoQubitGateOperation::from(FSwap::new(0, 1)); "FSwap")]
+#[test_case(TwoQubitGateOperation::from(SqrtISwap::new(0, 1)); "SqrtISwap")]
+#[test_case(TwoQubitGateOperation::from(InvSqrtISwap::new(0, 1)); "InvSqrtISwap")]
+#[test_case(TwoQubitGateOperation::from(XY::new(0, 1, CalculatorFloat::PI)); "XY")]
+#[test_case(TwoQubitGateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
+#[test_case(TwoQubitGateOperation::from(ControlledPauliY::new(0, 1)); "ControlledPauliY")]
+#[test_case(TwoQubitGateOperation::from(ControlledPauliZ::new(0, 1)); "ControlledPauliZ")]
+#[test_case(TwoQubitGateOperation::from(MolmerSorensenXX::new(0, 1)); "MolmerSorensenXX")]
+#[test_case(TwoQubitGateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)); "VariableMSXX")]
+#[test_case(TwoQubitGateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
+#[test_case(TwoQubitGateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
+#[test_case(TwoQubitGateOperation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
+#[test_case(TwoQubitGateOperation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Fsim")]
+#[test_case(TwoQubitGateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
+#[test_case(TwoQubitGateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
+#[test_case(TwoQubitGateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
+#[test_case(TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
+#[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::PI)); "PhaseShiftedControlledZ")]
+#[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
+#[test_case(TwoQubitGateOperation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
+#[test_case(TwoQubitGateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+fn test_pyo3_json_schema(operation: TwoQubitGateOperation) {
+    let rust_schema = match operation {
+        TwoQubitGateOperation::CNOT(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(CNOT)).unwrap()
+        }
+        TwoQubitGateOperation::SWAP(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(SWAP)).unwrap()
+        }
+        TwoQubitGateOperation::ISwap(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(ISwap)).unwrap()
+        }
+        TwoQubitGateOperation::FSwap(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(FSwap)).unwrap()
+        }
+        TwoQubitGateOperation::SqrtISwap(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(SqrtISwap)).unwrap()
+        }
+        TwoQubitGateOperation::InvSqrtISwap(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(InvSqrtISwap)).unwrap()
+        }
+        TwoQubitGateOperation::XY(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(XY)).unwrap()
+        }
+        TwoQubitGateOperation::ControlledPhaseShift(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(ControlledPhaseShift)).unwrap()
+        }
+        TwoQubitGateOperation::ControlledPauliY(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(ControlledPauliY)).unwrap()
+        }
+        TwoQubitGateOperation::ControlledPauliZ(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(ControlledPauliZ)).unwrap()
+        }
+        TwoQubitGateOperation::MolmerSorensenXX(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(MolmerSorensenXX)).unwrap()
+        }
+        TwoQubitGateOperation::VariableMSXX(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(VariableMSXX)).unwrap()
+        }
+        TwoQubitGateOperation::GivensRotation(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(GivensRotation)).unwrap()
+        }
+        TwoQubitGateOperation::GivensRotationLittleEndian(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(GivensRotationLittleEndian))
+                .unwrap()
+        }
+        TwoQubitGateOperation::Qsim(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(Qsim)).unwrap()
+        }
+        TwoQubitGateOperation::Fsim(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(Fsim)).unwrap()
+        }
+        TwoQubitGateOperation::SpinInteraction(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(SpinInteraction)).unwrap()
+        }
+        TwoQubitGateOperation::Bogoliubov(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(Bogoliubov)).unwrap()
+        }
+        TwoQubitGateOperation::PMInteraction(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PMInteraction)).unwrap()
+        }
+        TwoQubitGateOperation::ComplexPMInteraction(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(ComplexPMInteraction)).unwrap()
+        }
+        TwoQubitGateOperation::PhaseShiftedControlledZ(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PhaseShiftedControlledZ)).unwrap()
+        }
+        TwoQubitGateOperation::PhaseShiftedControlledPhase(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PhaseShiftedControlledPhase))
+                .unwrap()
+        }
+        TwoQubitGateOperation::ControlledRotateX(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(ControlledRotateX)).unwrap()
+        }
+        TwoQubitGateOperation::ControlledRotateXY(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(ControlledRotateXY)).unwrap()
+        }
+        _ => unreachable!(),
+    };
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let converted_op = Operation::from(operation);
+        let pyobject = convert_operation_to_pyobject(converted_op).unwrap();
+        let operation = pyobject.as_ref(py);
+
+        let schema: String =
+            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+
+        assert_eq!(schema, rust_schema);
+    });
+}
