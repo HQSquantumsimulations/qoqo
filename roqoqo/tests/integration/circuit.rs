@@ -455,7 +455,7 @@ fn test_json_schema() {
     let mut circuit = Circuit::new();
     circuit += RotateX::new(0, "theta".into());
 
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&circuit).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 

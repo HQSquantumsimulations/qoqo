@@ -1046,7 +1046,7 @@ impl OperatePragmaNoise for PragmaGeneralNoise {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaConditional {
     /// The name of the [crate::registers::BitRegister] containting the condition bool value.
     condition_register: String,
@@ -1105,7 +1105,7 @@ impl Substitute for PragmaConditional {
 ///
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaControlledCircuit {
     /// The qubit controlling if the circuit is applied. Circuit is applied for qubit in state 1.
     controlling_qubit: usize,
@@ -1267,7 +1267,7 @@ impl Substitute for PragmaChangeDevice {
 ///
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaLoop {
     /// The name of the classical readout register.
     repetitions: CalculatorFloat,

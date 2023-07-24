@@ -1241,7 +1241,7 @@ fn test_kakdecomposition_debug() {
 #[test_case(TwoQubitGateOperation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(TwoQubitGateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
 pub fn test_json_schema_two_qubit_gate_operations(gate: TwoQubitGateOperation) {
-    // Serialize Circuit
+    // Serialize
     let test_json = match gate.clone() {
         TwoQubitGateOperation::CNOT(op) => serde_json::to_string(&op).unwrap(),
         TwoQubitGateOperation::SWAP(op) => serde_json::to_string(&op).unwrap(),

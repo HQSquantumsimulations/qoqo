@@ -149,7 +149,7 @@ fn definition_float_serde_compact() {
 #[test]
 pub fn definition_float_json_schema() {
     let def = DefinitionFloat::new(String::from("test"), 1, true);
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&def).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -293,7 +293,7 @@ fn definition_complex_serde_compact() {
 #[test]
 pub fn definition_complex_json_schema() {
     let def = DefinitionComplex::new(String::from("test"), 1, true);
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&def).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -437,7 +437,7 @@ fn definition_usize_serde_compact() {
 #[test]
 pub fn definition_usize_json_schema() {
     let def = DefinitionUsize::new(String::from("test"), 1, true);
-    // Serialize Circuit
+    // Serialize 
     let test_json = serde_json::to_string(&def).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -581,7 +581,7 @@ fn definition_bit_serde_compact() {
 #[test]
 pub fn definition_bit_json_schema() {
     let def = DefinitionBit::new(String::from("test"), 1, true);
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&def).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -720,7 +720,7 @@ fn input_symbolic_serde_compact() {
 #[test]
 pub fn input_symbolic_json_schema() {
     let def = InputSymbolic::new(String::from("test"), 0.54);
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&def).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
@@ -864,7 +864,7 @@ fn input_bit_serde_compact() {
 #[test]
 pub fn input_bit_json_schema() {
     let def = InputBit::new(String::from("test"), 1, true);
-    // Serialize Circuit
+    // Serialize
     let test_json = serde_json::to_string(&def).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 

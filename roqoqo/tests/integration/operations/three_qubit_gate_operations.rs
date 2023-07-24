@@ -339,7 +339,7 @@ fn test_inputs_toffoli() {
 #[test_case(ThreeQubitGateOperation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
 #[test_case(ThreeQubitGateOperation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
 pub fn test_json_schema_three_qubit_gate_operations(gate: ThreeQubitGateOperation) {
-    // Serialize Circuit
+    // Serialize
     let test_json = match gate.clone() {
         ThreeQubitGateOperation::ControlledControlledPauliZ(op) => {
             serde_json::to_string(&op).unwrap()
