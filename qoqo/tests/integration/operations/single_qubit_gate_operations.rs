@@ -2586,3 +2586,73 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
         assert!(comparison.is_err());
     })
 }
+
+/// Test json_schema function for all single qubit gate operations
+#[cfg(feature = "json_schema")]
+#[test_case(SingleQubitGateOperation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
+#[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from(PI))); "RotateY")]
+#[test_case(SingleQubitGateOperation::from(
+    SingleQubitGate::new(
+        0,
+        CalculatorFloat::from(0),
+        CalculatorFloat::from(0),
+        CalculatorFloat::from(0),
+        CalculatorFloat::from(0),
+        CalculatorFloat::from(0),
+        )
+    ); "SingleQubitGate")
+]
+#[test_case(SingleQubitGateOperation::from(
+    RotateAroundSphericalAxis::new(
+        0,
+        CalculatorFloat::from(PI),
+        CalculatorFloat::from(0),
+        CalculatorFloat::from(PI / 4.0),
+        )
+    ); "RotateAroundSphericalAxis")
+]
+#[test_case(SingleQubitGateOperation::from(PauliX::new(1)); "PauliX")]
+#[test_case(SingleQubitGateOperation::from(PauliY::new(1)); "PauliY")]
+#[test_case(SingleQubitGateOperation::from(PauliZ::new(1)); "PauliZ")]
+#[test_case(SingleQubitGateOperation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
+#[test_case(SingleQubitGateOperation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
+#[test_case(SingleQubitGateOperation::from(SGate::new(1)); "SGate")]
+#[test_case(SingleQubitGateOperation::from(TGate::new(1)); "TGate")]
+#[test_case(SingleQubitGateOperation::from(Hadamard::new(3)); "Hadamard")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState0")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState1::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState1")]
+#[test_case(SingleQubitGateOperation::from(GPi::new(0, CalculatorFloat::from(0.0))); "GPi")]
+#[test_case(SingleQubitGateOperation::from(GPi2::new(0, CalculatorFloat::from(0.0))); "GPi2")]
+fn test_pyo3_json_schema(operation: SingleQubitGateOperation) {
+    let rust_schema = match operation {
+        SingleQubitGateOperation::SingleQubitGate(_) => serde_json::to_string_pretty(&schemars::schema_for!(SingleQubitGate)).unwrap(),
+        SingleQubitGateOperation::RotateZ(_) => serde_json::to_string_pretty(&schemars::schema_for!(RotateZ)).unwrap(),
+        SingleQubitGateOperation::RotateX(_) => serde_json::to_string_pretty(&schemars::schema_for!(RotateX)).unwrap(),
+        SingleQubitGateOperation::RotateY(_) => serde_json::to_string_pretty(&schemars::schema_for!(RotateY)).unwrap(),
+        SingleQubitGateOperation::PauliX(_) => serde_json::to_string_pretty(&schemars::schema_for!(PauliX)).unwrap(),
+        SingleQubitGateOperation::PauliY(_) => serde_json::to_string_pretty(&schemars::schema_for!(PauliY)).unwrap(),
+        SingleQubitGateOperation::PauliZ(_) => serde_json::to_string_pretty(&schemars::schema_for!(PauliZ)).unwrap(),
+        SingleQubitGateOperation::SqrtPauliX(_) => serde_json::to_string_pretty(&schemars::schema_for!(SqrtPauliX)).unwrap(),
+        SingleQubitGateOperation::InvSqrtPauliX(_) => serde_json::to_string_pretty(&schemars::schema_for!(InvSqrtPauliX)).unwrap(),
+        SingleQubitGateOperation::Hadamard(_) => serde_json::to_string_pretty(&schemars::schema_for!(Hadamard)).unwrap(),
+        SingleQubitGateOperation::SGate(_) => serde_json::to_string_pretty(&schemars::schema_for!(SGate)).unwrap(),
+        SingleQubitGateOperation::TGate(_) => serde_json::to_string_pretty(&schemars::schema_for!(TGate)).unwrap(),
+        SingleQubitGateOperation::PhaseShiftState1(_) => serde_json::to_string_pretty(&schemars::schema_for!(PhaseShiftState1)).unwrap(),
+        SingleQubitGateOperation::PhaseShiftState0(_) => serde_json::to_string_pretty(&schemars::schema_for!(PhaseShiftState0)).unwrap(),
+        SingleQubitGateOperation::RotateAroundSphericalAxis(_) => serde_json::to_string_pretty(&schemars::schema_for!(RotateAroundSphericalAxis)).unwrap(),
+        SingleQubitGateOperation::RotateXY(_) => serde_json::to_string_pretty(&schemars::schema_for!(RotateXY)).unwrap(),
+        SingleQubitGateOperation::GPi(_) => serde_json::to_string_pretty(&schemars::schema_for!(GPi)).unwrap(),
+        SingleQubitGateOperation::GPi2(_) => serde_json::to_string_pretty(&schemars::schema_for!(GPi2)).unwrap(),
+        _ => unreachable!(),
+    };
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let converted_op = Operation::from(operation);
+        let pyobject = convert_operation_to_pyobject(converted_op).unwrap();
+        let operation = pyobject.as_ref(py);
+
+        let schema: String = String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+        
+        assert_eq!(schema, rust_schema);
+    });
+}
