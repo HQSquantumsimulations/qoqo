@@ -2625,24 +2625,60 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 #[test_case(SingleQubitGateOperation::from(GPi2::new(0, CalculatorFloat::from(0.0))); "GPi2")]
 fn test_pyo3_json_schema(operation: SingleQubitGateOperation) {
     let rust_schema = match operation {
-        SingleQubitGateOperation::SingleQubitGate(_) => serde_json::to_string_pretty(&schemars::schema_for!(SingleQubitGate)).unwrap(),
-        SingleQubitGateOperation::RotateZ(_) => serde_json::to_string_pretty(&schemars::schema_for!(RotateZ)).unwrap(),
-        SingleQubitGateOperation::RotateX(_) => serde_json::to_string_pretty(&schemars::schema_for!(RotateX)).unwrap(),
-        SingleQubitGateOperation::RotateY(_) => serde_json::to_string_pretty(&schemars::schema_for!(RotateY)).unwrap(),
-        SingleQubitGateOperation::PauliX(_) => serde_json::to_string_pretty(&schemars::schema_for!(PauliX)).unwrap(),
-        SingleQubitGateOperation::PauliY(_) => serde_json::to_string_pretty(&schemars::schema_for!(PauliY)).unwrap(),
-        SingleQubitGateOperation::PauliZ(_) => serde_json::to_string_pretty(&schemars::schema_for!(PauliZ)).unwrap(),
-        SingleQubitGateOperation::SqrtPauliX(_) => serde_json::to_string_pretty(&schemars::schema_for!(SqrtPauliX)).unwrap(),
-        SingleQubitGateOperation::InvSqrtPauliX(_) => serde_json::to_string_pretty(&schemars::schema_for!(InvSqrtPauliX)).unwrap(),
-        SingleQubitGateOperation::Hadamard(_) => serde_json::to_string_pretty(&schemars::schema_for!(Hadamard)).unwrap(),
-        SingleQubitGateOperation::SGate(_) => serde_json::to_string_pretty(&schemars::schema_for!(SGate)).unwrap(),
-        SingleQubitGateOperation::TGate(_) => serde_json::to_string_pretty(&schemars::schema_for!(TGate)).unwrap(),
-        SingleQubitGateOperation::PhaseShiftState1(_) => serde_json::to_string_pretty(&schemars::schema_for!(PhaseShiftState1)).unwrap(),
-        SingleQubitGateOperation::PhaseShiftState0(_) => serde_json::to_string_pretty(&schemars::schema_for!(PhaseShiftState0)).unwrap(),
-        SingleQubitGateOperation::RotateAroundSphericalAxis(_) => serde_json::to_string_pretty(&schemars::schema_for!(RotateAroundSphericalAxis)).unwrap(),
-        SingleQubitGateOperation::RotateXY(_) => serde_json::to_string_pretty(&schemars::schema_for!(RotateXY)).unwrap(),
-        SingleQubitGateOperation::GPi(_) => serde_json::to_string_pretty(&schemars::schema_for!(GPi)).unwrap(),
-        SingleQubitGateOperation::GPi2(_) => serde_json::to_string_pretty(&schemars::schema_for!(GPi2)).unwrap(),
+        SingleQubitGateOperation::SingleQubitGate(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(SingleQubitGate)).unwrap()
+        }
+        SingleQubitGateOperation::RotateZ(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(RotateZ)).unwrap()
+        }
+        SingleQubitGateOperation::RotateX(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(RotateX)).unwrap()
+        }
+        SingleQubitGateOperation::RotateY(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(RotateY)).unwrap()
+        }
+        SingleQubitGateOperation::PauliX(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PauliX)).unwrap()
+        }
+        SingleQubitGateOperation::PauliY(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PauliY)).unwrap()
+        }
+        SingleQubitGateOperation::PauliZ(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PauliZ)).unwrap()
+        }
+        SingleQubitGateOperation::SqrtPauliX(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(SqrtPauliX)).unwrap()
+        }
+        SingleQubitGateOperation::InvSqrtPauliX(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(InvSqrtPauliX)).unwrap()
+        }
+        SingleQubitGateOperation::Hadamard(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(Hadamard)).unwrap()
+        }
+        SingleQubitGateOperation::SGate(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(SGate)).unwrap()
+        }
+        SingleQubitGateOperation::TGate(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(TGate)).unwrap()
+        }
+        SingleQubitGateOperation::PhaseShiftState1(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PhaseShiftState1)).unwrap()
+        }
+        SingleQubitGateOperation::PhaseShiftState0(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PhaseShiftState0)).unwrap()
+        }
+        SingleQubitGateOperation::RotateAroundSphericalAxis(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(RotateAroundSphericalAxis)).unwrap()
+        }
+        SingleQubitGateOperation::RotateXY(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(RotateXY)).unwrap()
+        }
+        SingleQubitGateOperation::GPi(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(GPi)).unwrap()
+        }
+        SingleQubitGateOperation::GPi2(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(GPi2)).unwrap()
+        }
         _ => unreachable!(),
     };
     pyo3::prepare_freethreaded_python();
@@ -2651,8 +2687,9 @@ fn test_pyo3_json_schema(operation: SingleQubitGateOperation) {
         let pyobject = convert_operation_to_pyobject(converted_op).unwrap();
         let operation = pyobject.as_ref(py);
 
-        let schema: String = String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
-        
+        let schema: String =
+            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+
         assert_eq!(schema, rust_schema);
     });
 }
