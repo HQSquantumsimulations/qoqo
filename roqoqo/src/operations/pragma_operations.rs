@@ -17,9 +17,9 @@ use crate::operations::{
     InvolveQubits, InvolvedQubits, Operate, OperateMultiQubit, OperatePragma, OperatePragmaNoise,
     OperatePragmaNoiseProba, OperateSingleQubit, RoqoqoError, Substitute, SupportedVersion,
 };
+use crate::Circuit;
 #[cfg(feature = "json_schema")]
 use crate::{Array1C64Def, Array2C64Def, Array2f64Def};
-use crate::Circuit;
 #[cfg(feature = "serialize")]
 use bincode::serialize;
 use nalgebra::{matrix, Matrix4};
