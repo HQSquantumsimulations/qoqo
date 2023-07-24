@@ -29,7 +29,7 @@ use crate::CircuitWrapper;
 use qoqo_macros::*;
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateThreeQubit, OperateGate, OperateThreeQubitGate)]
+#[wrap(Operate, OperateThreeQubit, OperateGate, OperateThreeQubitGate, JsonSchema)]
 #[derive(Eq)]
 /// Implements the double-controlled PauliZ gate.
 ///
@@ -56,7 +56,7 @@ pub struct ControlledControlledPauliZ {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateThreeQubit, Rotate, OperateGate, OperateThreeQubitGate)]
+#[wrap(Operate, OperateThreeQubit, Rotate, OperateGate, OperateThreeQubitGate, JsonSchema)]
 /// Implements the double-controlled PhaseShift gate.
 ///
 /// .. math::
@@ -84,7 +84,7 @@ pub struct ControlledControlledPhaseShift {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateThreeQubit, OperateGate, OperateThreeQubitGate)]
+#[wrap(Operate, OperateThreeQubit, OperateGate, OperateThreeQubitGate, JsonSchema)]
 /// Implements Toffoli gate.
 ///
 /// .. math::

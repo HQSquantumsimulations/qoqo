@@ -554,3 +554,36 @@ fn test_circuit_pyo3_toffoli() {
         assert_eq!(result_circuit.internal, circuit);
     });
 }
+
+/// Test json_schema function for all three qubit gate operations
+#[cfg(feature = "json_schema")]
+#[test_case(ThreeQubitGateOperation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlleControlledPauliZ")]
+#[test_case(ThreeQubitGateOperation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from("test"))); "ControlledControlledPhaseShift")]
+#[test_case(ThreeQubitGateOperation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
+fn test_pyo3_json_schema(operation: ThreeQubitGateOperation) {
+    let rust_schema = match operation {
+        ThreeQubitGateOperation::ControlledControlledPauliZ(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(ControlledControlledPauliZ))
+                .unwrap()
+        }
+        ThreeQubitGateOperation::ControlledControlledPhaseShift(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(ControlledControlledPhaseShift))
+                .unwrap()
+        }
+        ThreeQubitGateOperation::Toffoli(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(Toffoli)).unwrap()
+        }
+        _ => unreachable!(),
+    };
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let converted_op = Operation::from(operation);
+        let pyobject = convert_operation_to_pyobject(converted_op).unwrap();
+        let operation = pyobject.as_ref(py);
+
+        let schema: String =
+            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+
+        assert_eq!(schema, rust_schema);
+    });
+}
