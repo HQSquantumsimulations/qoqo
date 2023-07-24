@@ -24,7 +24,14 @@ use roqoqo::operations::*;
 use std::collections::HashMap;
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, Rotate, OperateMultiQubit, OperateGate, OperateMultiQubitGate)]
+#[wrap(
+    Operate,
+    Rotate,
+    OperateMultiQubit,
+    OperateGate,
+    OperateMultiQubitGate,
+    JsonSchema
+)]
 /// The Molmer-Sorensen gate between multiple qubits.
 ///
 /// The gate applies the rotation under the product of Pauli X operators on multiple qubits.
@@ -37,7 +44,14 @@ pub struct MultiQubitMS {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, Rotate, OperateMultiQubit, OperateGate, OperateMultiQubitGate)]
+#[wrap(
+    Operate,
+    Rotate,
+    OperateMultiQubit,
+    OperateGate,
+    OperateMultiQubitGate,
+    JsonSchema
+)]
 /// The multi qubit Pauli-Z-Product gate.
 ///
 /// The gate applies the rotation under the product of Pauli Z operators on multiple qubits.
