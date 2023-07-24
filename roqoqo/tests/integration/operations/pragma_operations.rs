@@ -152,6 +152,29 @@ fn pragma_loop_serde_compact() {
     );
 }
 
+/// Test PragmaLoop JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_loop_json_schema() {
+    let op = PragmaLoop::new(CalculatorFloat::from(2), Circuit::new());
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaLoop);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
 /// Test PragmaSetNumberOfMeasurements inputs and involved qubits
 #[test]
 fn pragma_set_number_of_measurements_inputs_qubits() {
@@ -271,6 +294,29 @@ fn pragma_set_number_of_measurements_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+/// Test PragmaSetNumberOfMeasurements JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_set_number_of_measurements_json_schema() {
+    let op = PragmaSetNumberOfMeasurements::new(1, String::from("ro"));
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaSetNumberOfMeasurements);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
 
 /// Test PragmaSetStateVector inputs and involved qubits
@@ -478,6 +524,34 @@ fn pragma_set_statevector_serde_compact() {
     );
 }
 
+/// Test PragmaSetStateVector JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_set_state_vector_json_schema() {
+    let op = PragmaSetStateVector::new(array![
+        Complex64::new(1.0, 0.0),
+        Complex64::new(0.0, 0.0),
+        Complex64::new(0.0, 0.0),
+        Complex64::new(0.0, 0.0)
+    ]);
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaSetStateVector);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
 /// Test PragmaSetDensityMatrix inputs and involved qubits
 #[test]
 fn pragma_set_density_matrix_inputs_qubits() {
@@ -674,6 +748,32 @@ fn pragma_set_density_matrix_serde_compact() {
     );
 }
 
+/// Test PragmaSetDensityMatrix JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_set_density_matrix_json_schema() {
+    let op = PragmaSetDensityMatrix::new(array![
+        [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],
+        [Complex64::new(0.0, 0.0), Complex64::new(0.0, 0.0)],
+    ]);
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaSetDensityMatrix);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
 /// Test PragmaRepeatGate inputs and involved qubits
 #[test]
 fn pragma_repeat_gate_inputs_qubits() {
@@ -783,6 +883,29 @@ fn pragma_repeat_gate_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+/// Test PragmaRepeatGate JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_repeat_gate_json_schema() {
+    let op = PragmaRepeatGate::new(2);
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaRepeatGate);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
 
 /// Test PragmaOverrotation inputs and involved qubits
@@ -923,6 +1046,29 @@ fn pragma_overrotation_serde_compact() {
     );
 }
 
+/// Test PragmaOverrotation JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_overrotation_json_schema() {
+    let op = PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.34, 0.45);
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaOverrotation);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
 /// Test PragmaBoostNoise inputs and involved qubits
 #[test]
 fn pragma_boost_noise_inputs_qubits() {
@@ -1036,6 +1182,29 @@ fn pragma_boost_noise_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+/// Test PragmaBoostNoise JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_boost_noise_json_schema() {
+    let op = PragmaBoostNoise::new(CalculatorFloat::from(0.2));
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaBoostNoise);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
 
 /// Test PragmaStopParallelBlock inputs and involved qubits
@@ -1183,6 +1352,29 @@ fn pragma_stop_serde_compact() {
     );
 }
 
+/// Test PragmaStopParallelBlock JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_stop_json_schema() {
+    let op = PragmaStopParallelBlock::new(vec![0, 1], CalculatorFloat::from(0.3));
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaStopParallelBlock);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
 /// Test PragmaGlobalPhase inputs and involved qubits
 #[test]
 fn pragma_global_phase_inputs_qubits() {
@@ -1296,6 +1488,29 @@ fn pragma_global_phase_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+/// Test PragmaGlobalPhase JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_global_phase_json_schema() {
+    let op = PragmaGlobalPhase::new(CalculatorFloat::from(0.5));
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaGlobalPhase);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
 
 /// Test PragmaSleep inputs and involved qubits
@@ -1440,6 +1655,29 @@ fn pragma_sleep_serde_compact() {
     );
 }
 
+/// Test PragmaSleep JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_sleep_json_schema() {
+    let op = PragmaSleep::new(vec![0, 1], CalculatorFloat::from(1));
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaSleep);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
 /// Test PragmaActiveReset inputs and involved qubits
 #[test]
 fn pragma_active_reset_inputs_qubits() {
@@ -1554,6 +1792,29 @@ fn pragma_active_reset_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+/// Test PragmaActiveReset JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_active_reset_json_schema() {
+    let op = PragmaActiveReset::new(3);
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaActiveReset);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
 
 /// Test PragmaStartDecompositionBlock inputs and involved qubits
@@ -1714,6 +1975,32 @@ fn pragma_start_decomp_block_serde_compact() {
     );
 }
 
+/// Test PragmaStartDecompositionBlock JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_start_decomp_block_json_schema() {
+    let op = PragmaStartDecompositionBlock::new(
+        vec![0, 1],
+        vec![(0, 1), (1, 0)].iter().cloned().collect(),
+    );
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaStartDecompositionBlock);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
 /// Test PragmaStopDecompositionBlock inputs and involved qubits
 #[test]
 fn pragma_stop_decomp_block_inputs_qubits() {
@@ -1851,6 +2138,29 @@ fn pragma_stop_decomp_block_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+/// Test PragmaStopDecompositionBlock JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_stop_decomp_block_json_schema() {
+    let op = PragmaStopDecompositionBlock::new(vec![0, 1]);
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaStopDecompositionBlock);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
 
 /// Test PragmaDamping inputs and involved qubits
@@ -2027,6 +2337,29 @@ fn pragma_damping_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+/// Test PragmaDamping JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_damping_json_schema() {
+    let op = PragmaDamping::new(0, CalculatorFloat::from(0.4), CalculatorFloat::from(0.8));
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaDamping);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
 
 /// Test PragmaDepolarising inputs and involved qubits
@@ -2215,6 +2548,29 @@ fn pragma_depolarising_serde_compact() {
     );
 }
 
+/// Test PragmaDepolarising JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_depolarising_json_schema() {
+    let op = PragmaDepolarising::new(0, CalculatorFloat::from(0.3), CalculatorFloat::from(0.6));
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaDepolarising);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
 /// Test PragmaDephasing inputs and involved qubits
 #[test]
 fn pragma_dephasing_inputs_qubits() {
@@ -2392,6 +2748,29 @@ fn pragma_dephasing_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+/// Test PragmaDephasing JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_dephasing_json_schema() {
+    let op = PragmaDephasing::new(0, CalculatorFloat::from(0.1), CalculatorFloat::from(0.9));
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaDephasing);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
 
 /// Test PragmaRandomNoise inputs and involved qubits
@@ -2629,6 +3008,34 @@ fn pragma_random_noise_serde_compact() {
     );
 }
 
+/// Test PragmaRandomNoise JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_random_noise_json_schema() {
+    let op = PragmaRandomNoise::new(
+        0,
+        CalculatorFloat::from(0.7),
+        CalculatorFloat::from(3.4),
+        CalculatorFloat::from(2.4),
+    );
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaRandomNoise);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
 /// Test PragmaGeneralNoise inputs and involved qubits
 #[test]
 fn pragma_general_noise_inputs_qubits() {
@@ -2850,6 +3257,33 @@ fn pragma_general_noise_serde_compact() {
     );
 }
 
+/// Test PragmaGeneralNoise JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_general_noise_json_schema() {
+    let op = PragmaGeneralNoise::new(
+        0,
+        CalculatorFloat::from(0.7),
+        array![[1.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0],],
+    );
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaGeneralNoise);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
 /// Test PragmaConditional inputs and involved qubits
 #[test]
 fn pragma_conditional_inputs_qubits() {
@@ -3027,6 +3461,31 @@ fn pragma_conditional_serde_compact() {
     );
 }
 
+/// Test PragmaConditional JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_conditional_json_schema() {
+    let mut circuit = Circuit::new();
+    circuit.add_operation(PauliX::new(0));
+    let op = PragmaConditional::new(String::from("ro"), 1, circuit.clone());
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaConditional);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
 /// Test PragmaChangeDevice inputs and involved qubits
 #[test]
 #[cfg(feature = "serialize")]
@@ -3113,6 +3572,30 @@ fn pragma_change_device_substitute_trait() {
     new_qubit_paulis.insert(2, 1);
     let result = pragma_test.remap_qubits(&qubit_mapping_test).is_err();
     assert!(result);
+}
+
+/// Test PragmaChangeDevice JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_change_device_json_schema() {
+    let wrapped: Operation = PragmaActiveReset::new(0).into();
+    let op = PragmaChangeDevice::new(&wrapped).unwrap();
+
+    // Serialize Circuit
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaChangeDevice);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
 
 /// Test PragmaConditional inputs and involved qubits
@@ -3291,93 +3774,18 @@ fn pragma_controlled_circuit_serde_compact() {
     );
 }
 
-/// Test JsonSchema trait
+/// Test PragmaControlledCircuit JsonSchema trait
 #[cfg(feature = "json_schema")]
-#[test_case(PragmaOperation::from(PragmaSetStateVector::new(array![
-    Complex64::new(1.0, 0.0),
-    Complex64::new(0.0, 0.0),
-    Complex64::new(0.0, 0.0),
-    Complex64::new(0.0, 0.0)
-])); "PragmaSetStateVector")]
-#[test_case(PragmaOperation::from(PragmaSetDensityMatrix::new(array![
-    [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],
-    [Complex64::new(0.0, 0.0), Complex64::new(0.0, 0.0)],
-])); "PragmaSetDensityMatrix")]
-#[test_case(PragmaOperation::from(PragmaRepeatGate::new(2)); "PragmaRepeatGate")]
-#[test_case(PragmaOperation::from(PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.34, 0.45)); "PragmaOverrotation")]
-#[test_case(PragmaOperation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.2))); "PragmaBoostNoise")]
-#[test_case(PragmaOperation::from(PragmaStopParallelBlock::new(vec![0,1], CalculatorFloat::from(0.3))); "PragmaStopParallelBlock")]
-#[test_case(PragmaOperation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.5))); "PragmaGlobalPhase")]
-#[test_case(PragmaOperation::from(PragmaSleep::new(vec![0, 1], CalculatorFloat::from(1))); "PragmaSleep")]
-#[test_case(PragmaOperation::from(PragmaActiveReset::new(3)); "PragmaActiveReset")]
-#[test_case(PragmaOperation::from(PragmaStartDecompositionBlock::new(vec![0, 1], vec![(0, 1), (1, 0)].iter().cloned().collect())); "PragmaStartDecompositionBlock")]
-#[test_case(PragmaOperation::from(PragmaStopDecompositionBlock::new(vec![0, 1])); "PragmaStopDecompositionBlock")]
-#[test_case(PragmaOperation::from(PragmaDamping::new(0, CalculatorFloat::from(0.4), CalculatorFloat::from(0.8))); "PragmaDamping")]
-#[test_case(PragmaOperation::from(PragmaDepolarising::new(0, CalculatorFloat::from(0.3), CalculatorFloat::from(0.6))); "PragmaDepolarising")]
-#[test_case(PragmaOperation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.1), CalculatorFloat::from(0.9))); "PragmaDephasing")]
-#[test_case(PragmaOperation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.7), CalculatorFloat::from(3.4), CalculatorFloat::from(2.4))); "PragmaRandomNoise")]
-#[test_case(PragmaOperation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.7), array![[1.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0],])); "PragmaGeneralNoise")]
-fn test_json_schema_pragmas(pragma_op: PragmaOperation) {
+#[test]
+fn pragma_controlled_circuit_json_schema() {
+    let op = PragmaControlledCircuit::new(1, Circuit::default());
+
     // Serialize Circuit
-    let test_json = match pragma_op.clone() {
-        PragmaOperation::PragmaSetNumberOfMeasurements(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaSetStateVector(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaSetDensityMatrix(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaRepeatGate(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaOverrotation(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaBoostNoise(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaStopParallelBlock(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaGlobalPhase(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaSleep(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaActiveReset(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaStartDecompositionBlock(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaStopDecompositionBlock(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaDamping(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaDepolarising(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaDephasing(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaRandomNoise(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaGeneralNoise(op) => serde_json::to_string(&op).unwrap(),
-        // PragmaOperation::PragmaConditional(op) => serde_json::to_string(&op).unwrap(),
-        // PragmaOperation::PragmaGetStateVector(op) => serde_json::to_string(&op).unwrap(),
-        // PragmaOperation::PragmaGetDensityMatrix(op) => serde_json::to_string(&op).unwrap(),
-        // PragmaOperation::PragmaGetOccupationProbability(op) => serde_json::to_string(&op).unwrap(),
-        // PragmaOperation::PragmaGetPauliProduct(op) => serde_json::to_string(&op).unwrap(),
-        PragmaOperation::PragmaRepeatedMeasurement(op) => serde_json::to_string(&op).unwrap(),
-        // PragmaOperation::PragmaLoop(op) => serde_json::to_string(&op).unwrap(),
-        // PragmaOperation::PragmaControlledCircuit(op) => serde_json::to_string(&op).unwrap(),
-        _ => unreachable!(),
-    };
+    let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
     // Create JSONSchema
-    let test_schema = match pragma_op {
-        PragmaOperation::PragmaSetNumberOfMeasurements(_) => schema_for!(PragmaSetNumberOfMeasurements),
-        PragmaOperation::PragmaSetStateVector(_) => schema_for!(PragmaSetStateVector),
-        PragmaOperation::PragmaSetDensityMatrix(_) => schema_for!(PragmaSetDensityMatrix),
-        PragmaOperation::PragmaRepeatGate(_) => schema_for!(PragmaRepeatGate),
-        PragmaOperation::PragmaOverrotation(_) => schema_for!(PragmaOverrotation),
-        PragmaOperation::PragmaBoostNoise(_) => schema_for!(PragmaBoostNoise),
-        PragmaOperation::PragmaStopParallelBlock(_) => schema_for!(PragmaStopParallelBlock),
-        PragmaOperation::PragmaGlobalPhase(_) => schema_for!(PragmaGlobalPhase),
-        PragmaOperation::PragmaSleep(_) => schema_for!(PragmaSleep),
-        PragmaOperation::PragmaActiveReset(_) => schema_for!(PragmaActiveReset),
-        PragmaOperation::PragmaStartDecompositionBlock(_) => schema_for!(PragmaStartDecompositionBlock),
-        PragmaOperation::PragmaStopDecompositionBlock(_) => schema_for!(PragmaStopDecompositionBlock),
-        PragmaOperation::PragmaDamping(_) => schema_for!(PragmaDamping),
-        PragmaOperation::PragmaDepolarising(_) => schema_for!(PragmaDepolarising),
-        PragmaOperation::PragmaDephasing(_) => schema_for!(PragmaDephasing),
-        PragmaOperation::PragmaRandomNoise(_) => schema_for!(PragmaRandomNoise),
-        PragmaOperation::PragmaGeneralNoise(_) => schema_for!(PragmaGeneralNoise),
-        // PragmaOperation::PragmaConditional(_) => schema_for!(PragmaConditional),
-        // PragmaOperation::PragmaGetStateVector(_) => schema_for!(PragmaGetStateVector),
-        // PragmaOperation::PragmaGetDensityMatrix(_) => schema_for!(PragmaGetDensityMatrix),
-        // PragmaOperation::PragmaGetOccupationProbability(_) => schema_for!(PragmaGetOccupationProbability),
-        // PragmaOperation::PragmaGetPauliProduct(_) => schema_for!(PragmaGetPauliProduct),
-        PragmaOperation::PragmaRepeatedMeasurement(_) => schema_for!(PragmaRepeatedMeasurement),
-        // PragmaOperation::PragmaLoop(_) => schema_for!(PragmaLoop),
-        // PragmaOperation::PragmaControlledCircuit(_) => schema_for!(PragmaControlledCircuit),
-        _ => unreachable!(),
-    };
+    let test_schema = schema_for!(PragmaControlledCircuit);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
     let compiled_schema = JSONSchema::options()
