@@ -482,7 +482,7 @@ fn beamsplitter_json_schema() {
 #[test]
 fn photondetection_json_schema() {
     let def = PhotonDetection::new(0, "test".to_string(), 0);
-    // Serialize
+    // Serializee
     let test_json = serde_json::to_string(&def).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
