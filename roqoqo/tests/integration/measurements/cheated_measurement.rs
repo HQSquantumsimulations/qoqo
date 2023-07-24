@@ -240,7 +240,7 @@ fn test_evaluate_error() {
 
 #[cfg(feature = "json_schema")]
 #[test]
-fn test_cheated_json() {
+fn test_json_schema() {
     // setting up cheated measurement
     let bri = CheatedInput::new(2);
     let mut circs: Vec<Circuit> = Vec::new();
