@@ -780,3 +780,47 @@ fn test_pyo3_richcmp() {
         assert!(comparison.is_err());
     })
 }
+
+/// Test json_schema function
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_pyo3_json_schema() {
+    let rust_schema_input =
+        serde_json::to_string_pretty(&schemars::schema_for!(CheatedInput)).unwrap();
+    let rust_schema =
+        serde_json::to_string_pretty(&schemars::schema_for!(Cheated)).unwrap();
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let input_type = py.get_type::<CheatedInputWrapper>();
+        let input = input_type
+            .call1((3,))
+            .unwrap()
+            .downcast::<PyCell<CheatedInputWrapper>>()
+            .unwrap();
+        let test_matrix = vec![
+            (0, 0, Complex64::new(1.0, 0.0)),
+            (0, 1, Complex64::new(0.0, 0.0)),
+            (1, 0, Complex64::new(0.0, 0.0)),
+            (1, 1, Complex64::new(-1.0, 0.0)),
+        ];
+        let _ = input
+            .call_method1("add_operator_exp_val", ("test_diagonal", test_matrix, "ro"))
+            .unwrap();
+
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+
+        let br_type = py.get_type::<CheatedWrapper>();
+        let br_one = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .unwrap()
+            .downcast::<PyCell<CheatedWrapper>>()
+            .unwrap();
+
+        let schema_input: String =
+            String::extract(input.call_method0("json_schema").unwrap()).unwrap();
+        let schema: String = String::extract(br_one.call_method0("json_schema").unwrap()).unwrap();
+
+        assert_eq!(schema_input, rust_schema_input);
+        assert_eq!(schema, rust_schema);
+    });
+}

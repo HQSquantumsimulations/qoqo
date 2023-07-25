@@ -218,6 +218,17 @@ impl PauliZProductInputWrapper {
     pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
         self.clone()
     }
+
+    #[cfg(feature = "json_schema")]
+    #[staticmethod]
+    /// Return the JsonSchema for the json serialisation of the class.
+    ///
+    /// Returns:
+    ///     str: The json schema serialized to json
+    pub fn json_schema() -> String {
+        let schema = schemars::schema_for!(PauliZProductInput);
+        serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
+    }
 }
 
 #[pyclass(name = "CheatedPauliZProductInput", module = "qoqo.measurements")]
@@ -410,6 +421,17 @@ impl CheatedPauliZProductInputWrapper {
             )),
         }
     }
+
+    #[cfg(feature = "json_schema")]
+    #[staticmethod]
+    /// Return the JsonSchema for the json serialisation of the class.
+    ///
+    /// Returns:
+    ///     str: The json schema serialized to json
+    pub fn json_schema() -> String {
+        let schema = schemars::schema_for!(CheatedPauliZProductInput);
+        serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
+    }
 }
 
 #[pyclass(name = "CheatedInput", module = "qoqo.measurements")]
@@ -564,6 +586,17 @@ impl CheatedInputWrapper {
                 "Other comparison not implemented",
             )),
         }
+    }
+
+    #[cfg(feature = "json_schema")]
+    #[staticmethod]
+    /// Return the JsonSchema for the json serialisation of the class.
+    ///
+    /// Returns:
+    ///     str: The json schema serialized to json
+    pub fn json_schema() -> String {
+        let schema = schemars::schema_for!(CheatedInput);
+        serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
     }
 }
 
