@@ -986,7 +986,8 @@ fn test_pyo3_richcmp() {
 #[cfg(feature = "json_schema")]
 #[test]
 fn test_pyo3_json_schema() {
-    let rust_schema_input = serde_json::to_string_pretty(&schemars::schema_for!(PauliZProductInput)).unwrap();
+    let rust_schema_input =
+        serde_json::to_string_pretty(&schemars::schema_for!(PauliZProductInput)).unwrap();
     let rust_schema = serde_json::to_string_pretty(&schemars::schema_for!(PauliZProduct)).unwrap();
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {

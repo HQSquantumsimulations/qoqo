@@ -553,7 +553,8 @@ fn test_json_schema() {
             .unwrap();
 
         let schema: String = String::extract(program.call_method0("json_schema").unwrap()).unwrap();
-        let rust_schema = serde_json::to_string_pretty(&schemars::schema_for!(QuantumProgram)).unwrap();
+        let rust_schema =
+            serde_json::to_string_pretty(&schemars::schema_for!(QuantumProgram)).unwrap();
         assert_eq!(schema, rust_schema);
     });
 }
