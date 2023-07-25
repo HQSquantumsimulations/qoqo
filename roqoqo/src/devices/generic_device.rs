@@ -48,7 +48,7 @@ impl schemars::JsonSchema for GenericDevice {
     }
 
     fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-        <SchemaHelperGenericDeviceSerialize>::json_schema(gen)
+        <SchemaHelperGenericDeviceSerialize<Array2f64Def>>::json_schema(gen)
     }
 }
 
@@ -73,7 +73,7 @@ struct GenericDeviceSerialize {
 
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[allow(dead_code)]
-struct SchemaHelperGenericDeviceSerialize {
+struct SchemaHelperGenericDeviceSerialize<Array2f64Def> {
     /// The number of qubits
     number_qubits: usize,
     /// Gate times for all single qubit gates
