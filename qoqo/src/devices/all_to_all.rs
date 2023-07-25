@@ -30,9 +30,6 @@ use roqoqo::devices::{AllToAllDevice, Device};
 ///     default_gate_time (float): The default startig gate time.
 #[pyclass(name = "AllToAllDevice", module = "devices")]
 #[derive(Clone, Debug, PartialEq)]
-#[pyo3(
-    text_signature = "(number_qubits, single_qubit_gates, two_qubit_gates, default_gate_time, /)"
-)]
 pub struct AllToAllDeviceWrapper {
     /// Internal storage of [roqoqo::devices::AllToAllDevice]
     pub internal: AllToAllDevice,

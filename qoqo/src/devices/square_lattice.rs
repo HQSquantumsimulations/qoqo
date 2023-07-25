@@ -31,9 +31,6 @@ use roqoqo::devices::{Device, SquareLatticeDevice};
 ///     default_gate_time (float): The default startig gate time.
 #[pyclass(name = "SquareLatticeDevice", module = "devices")]
 #[derive(Clone, Debug, PartialEq)]
-#[pyo3(
-    text_signature = "(number_rows, number_columns, single_qubit_gates, two_qubit_gates, default_gate_time, /)"
-)]
 pub struct SquareLatticeDeviceWrapper {
     /// Internal storage of [roqoqo::devices::SquareLatticeDevice]
     pub internal: SquareLatticeDevice,

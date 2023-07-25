@@ -824,7 +824,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 #[test_case(Operation::from(Squeezing::new(1, 0.1.into(), 0.0.into())); "Squeezing")]
 #[test_case(Operation::from(PhaseShift::new(1, 0.1.into())); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(0.1))); "BeamSplitter")]
-#[test_case(Operation::from(PNRDetection::new(0, "ro".into(), 0)); "PNRDetection")]
+#[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PNRDetection")]
 fn test_pyo3_json_schema(operation: Operation) {
     let rust_schema = match operation {
         Operation::Squeezing(_) => {
@@ -836,8 +836,8 @@ fn test_pyo3_json_schema(operation: Operation) {
         Operation::BeamSplitter(_) => {
             serde_json::to_string_pretty(&schemars::schema_for!(BeamSplitter)).unwrap()
         }
-        Operation::PNRDetection(_) => {
-            serde_json::to_string_pretty(&schemars::schema_for!(PNRDetection)).unwrap()
+        Operation::PhotonDetection(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PhotonDetection)).unwrap()
         }
         _ => unreachable!(),
     };
