@@ -420,6 +420,7 @@ fn test_json_schema() {
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
         let circuit = new_circuit(py);
+        populate_circuit_rotatex(py, circuit, 0, 4);
 
         let schema: String = String::extract(circuit.call_method0("json_schema").unwrap()).unwrap();
         let rust_schema = serde_json::to_string_pretty(&schemars::schema_for!(Circuit)).unwrap();
