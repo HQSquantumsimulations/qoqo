@@ -319,6 +319,7 @@ pub enum RoqoqoBackendError {
 
 #[cfg(feature = "json_schema")]
 pub(crate) struct Complex64Def;
+#[cfg(feature = "json_schema")]
 impl JsonSchema for Complex64Def {
     fn schema_name() -> String {
         "Complex64".to_string()
@@ -341,6 +342,7 @@ impl JsonSchema for Complex64Def {
 
 #[cfg(feature = "json_schema")]
 pub(crate) struct Array1C64Def;
+#[cfg(feature = "json_schema")]
 impl JsonSchema for Array1C64Def {
     fn schema_name() -> String {
         "Array1_Complex64".to_string()
@@ -368,6 +370,7 @@ impl JsonSchema for Array1C64Def {
 
 #[cfg(feature = "json_schema")]
 pub(crate) struct Array2C64Def;
+#[cfg(feature = "json_schema")]
 impl JsonSchema for Array2C64Def {
     fn schema_name() -> String {
         "Array2_Complex64".to_string()
@@ -395,6 +398,7 @@ impl JsonSchema for Array2C64Def {
 
 #[cfg(feature = "json_schema")]
 pub(crate) struct Array2f64Def;
+#[cfg(feature = "json_schema")]
 impl JsonSchema for Array2f64Def {
     fn schema_name() -> String {
         "Array2_f64".to_string()
