@@ -2591,6 +2591,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 #[cfg(feature = "json_schema")]
 #[test_case(SingleQubitGateOperation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from(PI))); "RotateY")]
+#[test_case(SingleQubitGateOperation::from(RotateZ::new(1, CalculatorFloat::from(1.3))); "RotateZ")]
 #[test_case(SingleQubitGateOperation::from(
     SingleQubitGate::new(
         0,
@@ -2610,6 +2611,14 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
         CalculatorFloat::from(PI / 4.0),
         )
     ); "RotateAroundSphericalAxis")
+]
+#[test_case(SingleQubitGateOperation::from(
+    RotateXY::new(
+        1,
+        CalculatorFloat::from("theta"),
+        CalculatorFloat::from("phi"),
+        )
+    ); "RotateXY")
 ]
 #[test_case(SingleQubitGateOperation::from(PauliX::new(1)); "PauliX")]
 #[test_case(SingleQubitGateOperation::from(PauliY::new(1)); "PauliY")]

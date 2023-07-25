@@ -631,7 +631,6 @@ fn test_pyo3_involved_qubits_all(input_definition: Operation) {
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators())); "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 #[test_case(Operation::from(PragmaControlledCircuit::new(0, create_circuit())); "PragmaControlledCircuit")]
-
 fn test_pyo3_involved_qubits_qubit(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2606,6 +2605,8 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
 #[test_case(PragmaOperation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 #[test_case(PragmaOperation::from(PragmaControlledCircuit::new( 1, create_circuit())); "PragmaControlledCircuit")]
 #[test_case(PragmaOperation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::default())); "PragmaLoop")]
+#[test_case(PragmaOperation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro"))); "PragmaSetNumberOfMeasurements")]
+#[test_case(PragmaOperation::from(PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)); "PragmaOverrotation")]
 fn test_pyo3_json_schema(operation: PragmaOperation) {
     let rust_schema = match operation {
         PragmaOperation::PragmaSetNumberOfMeasurements(_) => {
@@ -2664,9 +2665,6 @@ fn test_pyo3_json_schema(operation: PragmaOperation) {
         }
         PragmaOperation::PragmaConditional(_) => {
             serde_json::to_string_pretty(&schemars::schema_for!(PragmaConditional)).unwrap()
-        }
-        PragmaOperation::PragmaGetPauliProduct(_) => {
-            serde_json::to_string_pretty(&schemars::schema_for!(PragmaGetPauliProduct)).unwrap()
         }
         PragmaOperation::PragmaLoop(_) => {
             serde_json::to_string_pretty(&schemars::schema_for!(PragmaLoop)).unwrap()

@@ -1217,6 +1217,7 @@ fn test_kakdecomposition_debug() {
 
 /// Test JsonSchema trait
 #[cfg(feature = "json_schema")]
+#[test_case(TwoQubitGateOperation::from(CNOT::new(0, 1)); "CNOT")]
 #[test_case(TwoQubitGateOperation::from(SWAP::new(0, 1)); "SWAP")]
 #[test_case(TwoQubitGateOperation::from(ISwap::new(0, 1)); "ISwap")]
 #[test_case(TwoQubitGateOperation::from(FSwap::new(0, 1)); "FSwap")]

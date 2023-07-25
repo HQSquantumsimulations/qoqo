@@ -2357,8 +2357,23 @@ pub fn test_tags(gate: SingleQubitGateOperation, tags: Vec<&str>) {
 
 /// Test JsonSchema trait
 #[cfg(feature = "json_schema")]
+#[test_case(SingleQubitGateOperation::from(
+    SingleQubitGate::new(
+        0,
+        CalculatorFloat::from(1.0),
+        CalculatorFloat::from(0.0),
+        CalculatorFloat::from(0.0),
+        CalculatorFloat::from(0.0),
+        CalculatorFloat::from(PI),
+    ));
+    "SingleQubitGate")]
 #[test_case(SingleQubitGateOperation::from(RotateX::new(0, CalculatorFloat::from("theta"))); "RotateX")]
 #[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from("theta"))); "RotateY")]
+#[test_case(SingleQubitGateOperation::from(RotateZ::new(0, CalculatorFloat::from("theta"))); "RotateZ")]
+#[test_case(SingleQubitGateOperation::from(RotateXY::new(
+    0,
+    CalculatorFloat::from(PI/3.0),
+    CalculatorFloat::from(PI/4.0))); "RotateXY")]
 #[test_case(SingleQubitGateOperation::from(PauliX::new(0)); "PauliX")]
 #[test_case(SingleQubitGateOperation::from(PauliY::new(0)); "PauliY")]
 #[test_case( SingleQubitGateOperation::from(PauliZ::new(0)); "PauliZ")]
