@@ -364,3 +364,25 @@ fn test_pyo3_richcmp() {
         assert!(comparison.is_err());
     })
 }
+
+/// Test json_schema function
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_pyo3_json_schema() {
+    let rust_schema =
+        serde_json::to_string_pretty(&schemars::schema_for!(ClassicalRegister)).unwrap();
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
+        let br_one = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone()))
+            .unwrap()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
+            .unwrap();
+
+        let schema: String = String::extract(br_one.call_method0("json_schema").unwrap()).unwrap();
+
+        assert_eq!(schema, rust_schema);
+    });
+}

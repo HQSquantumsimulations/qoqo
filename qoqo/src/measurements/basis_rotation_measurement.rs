@@ -329,6 +329,17 @@ impl PauliZProductWrapper {
             )),
         }
     }
+
+    #[cfg(feature = "json_schema")]
+    #[staticmethod]
+    /// Return the JsonSchema for the json serialisation of the class.
+    ///
+    /// Returns:
+    ///     str: The json schema serialized to json
+    pub fn json_schema() -> String {
+        let schema = schemars::schema_for!(PauliZProduct);
+        serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
+    }
 }
 
 impl PauliZProductWrapper {
