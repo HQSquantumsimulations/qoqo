@@ -10,11 +10,15 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+#[cfg(feature = "json_schema")]
+use jsonschema::{Draft, JSONSchema};
 use ndarray::array;
 use roqoqo::{
     devices::{AllToAllDevice, Device, GenericDevice, SquareLatticeDevice},
     RoqoqoError,
 };
+#[cfg(feature = "json_schema")]
+use schemars::schema_for;
 // use test_case::test_case;
 
 #[test]
@@ -453,4 +457,55 @@ fn test_square_lattice() {
     assert!(device
         .multi_qubit_gate_names()
         .contains(&"MultiQubitMS".to_string()));
+}
+
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema() {
+    let generic_device = GenericDevice::new(2);
+    let squared_device =
+        SquareLatticeDevice::new(2, 2, &["RotateX".to_string()], &["CNOT".to_string()], 0.1);
+    let all_to_all_device =
+        AllToAllDevice::new(3, &["RotateX".to_string()], &["CNOT".to_string()], 0.1);
+
+    // Serialize
+    let test_json_generic = serde_json::to_string(&generic_device).unwrap();
+    let test_json_squared = serde_json::to_string(&squared_device).unwrap();
+    let test_json_all_to_all = serde_json::to_string(&all_to_all_device).unwrap();
+
+    let test_value_generic: serde_json::Value = serde_json::from_str(&test_json_generic).unwrap();
+    let test_value_squared: serde_json::Value = serde_json::from_str(&test_json_squared).unwrap();
+    let test_value_all_to_all: serde_json::Value =
+        serde_json::from_str(&test_json_all_to_all).unwrap();
+
+    // Create JSONSchema
+    let test_schema_generic = schema_for!(GenericDevice);
+    let test_schema_squared = schema_for!(SquareLatticeDevice);
+    let test_schema_all_to_all = schema_for!(AllToAllDevice);
+    let schema_generic = serde_json::to_string(&test_schema_generic).unwrap();
+    let schema_squared = serde_json::to_string(&test_schema_squared).unwrap();
+    let schema_all_to_all = serde_json::to_string(&test_schema_all_to_all).unwrap();
+    let schema_value_generic: serde_json::Value = serde_json::from_str(&schema_generic).unwrap();
+    let schema_value_squared: serde_json::Value = serde_json::from_str(&schema_squared).unwrap();
+    let schema_value_all_to_all: serde_json::Value =
+        serde_json::from_str(&schema_all_to_all).unwrap();
+    let compiled_schema_generic = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value_generic)
+        .unwrap();
+    let compiled_schema_squared = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value_squared)
+        .unwrap();
+    let compiled_schema_all_to_all = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value_all_to_all)
+        .unwrap();
+
+    let validation_result_generic = compiled_schema_generic.validate(&test_value_generic);
+    let validation_result_squared = compiled_schema_squared.validate(&test_value_squared);
+    let validation_result_all_to_all = compiled_schema_all_to_all.validate(&test_value_all_to_all);
+    assert!(validation_result_generic.is_ok());
+    assert!(validation_result_squared.is_ok());
+    assert!(validation_result_all_to_all.is_ok());
 }

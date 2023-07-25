@@ -13,6 +13,8 @@
 use std::collections::HashMap;
 
 use super::Device;
+#[cfg(feature = "json_schema")]
+use crate::Array2f64Def;
 use crate::RoqoqoError;
 use crate::RoqoqoVersionSerializable;
 use ndarray::{array, Array2};
@@ -39,13 +41,24 @@ pub struct GenericDevice {
     pub decoherence_rates: HashMap<usize, Array2<f64>>,
 }
 
+#[cfg(feature = "json_schema")]
+impl schemars::JsonSchema for GenericDevice {
+    fn schema_name() -> String {
+        "GenericDevice".to_string()
+    }
+
+    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
+        <SchemaHelperGenericDeviceSerialize>::json_schema(gen)
+    }
+}
+
 type TwoQubitGates = HashMap<(usize, usize), f64>;
 type TwoQubitGatesVec = Vec<((usize, usize), f64)>;
 
 #[derive(Clone)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-
 struct GenericDeviceSerialize {
+    /// The number of qubits
     number_qubits: usize,
     /// Gate times for all single qubit gates
     single_qubit_gates: HashMap<String, Vec<(usize, f64)>>,
@@ -55,6 +68,22 @@ struct GenericDeviceSerialize {
     multi_qubit_gates: HashMap<String, Vec<(Vec<usize>, f64)>>,
     /// Decoherence rates for all qubits
     decoherence_rates: Vec<(usize, Array2<f64>)>,
+    _roqoqo_version: RoqoqoVersionSerializable,
+}
+
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[allow(dead_code)]
+struct SchemaHelperGenericDeviceSerialize {
+    /// The number of qubits
+    number_qubits: usize,
+    /// Gate times for all single qubit gates
+    single_qubit_gates: HashMap<String, Vec<(usize, f64)>>,
+    /// Gate times for all two qubit gates
+    two_qubit_gates: HashMap<String, TwoQubitGatesVec>,
+    /// Gate times for all multi qubit gates
+    multi_qubit_gates: HashMap<String, Vec<(Vec<usize>, f64)>>,
+    /// Decoherence rates for all qubits
+    decoherence_rates: Vec<(usize, Array2f64Def)>,
     _roqoqo_version: RoqoqoVersionSerializable,
 }
 
