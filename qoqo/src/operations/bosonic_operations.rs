@@ -27,7 +27,8 @@ use std::collections::HashMap;
     InvolveModes,
     OperateSingleMode,
     InvolveQubits,
-    OperateSingleModeGate
+    OperateSingleModeGate,
+    JsonSchema
 )]
 /// The single-mode squeezing gate with tunable squeezing.
 ///
@@ -53,7 +54,8 @@ pub struct Squeezing {
     InvolveModes,
     OperateSingleMode,
     InvolveQubits,
-    OperateSingleModeGate
+    OperateSingleModeGate,
+    JsonSchema
 )]
 /// The single-mode phase-shift gate with variable phase, given by R(θ) = eexp(i * θ * 𝑁̂).
 ///
@@ -74,7 +76,8 @@ pub struct PhaseShift {
     Substitute,
     InvolveModes,
     SubstituteModes,
-    OperateTwoMode
+    OperateTwoMode,
+    JsonSchema
 )]
 /// The 2-mode beam splitter which splits a beam with a transmission amplitude cos(θ) and a reflection amplitude exp(i * φ) * sin(θ).
 ///
@@ -90,7 +93,14 @@ pub struct BeamSplitter {
     phi: CalculatorFloat,
 }
 
-#[wrap(Operate, Substitute, InvolveModes, SubstituteModes, OperateSingleMode)]
+#[wrap(
+    Operate,
+    Substitute,
+    InvolveModes,
+    SubstituteModes,
+    OperateSingleMode,
+    JsonSchema
+)]
 /// The photon number-resolving detector measurement for bosons.
 ///
 /// This can be used as a single-shot measurement of the photon number.
