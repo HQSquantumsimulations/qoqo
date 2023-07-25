@@ -37,6 +37,9 @@ pub use circuit::{convert_into_circuit, CircuitWrapper, OperationIteratorWrapper
 mod quantum_program;
 pub use quantum_program::{convert_into_quantum_program, QuantumProgramWrapper};
 
+#[cfg(feature = "unstable_noise_models")]
+pub mod noise_models;
+
 #[cfg(feature = "circuitdag")]
 mod circuitdag;
 #[cfg(feature = "circuitdag")]
@@ -116,12 +119,17 @@ fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_wrapped(wrapper2)?;
     let wrapper3 = wrap_pymodule!(devices::devices);
     module.add_wrapped(wrapper3)?;
-
+    #[cfg(feature = "unstable_noise_models")]
+    let wrapper4 = wrap_pymodule!(noise_models::noise_models);
+    #[cfg(feature = "unstable_noise_models")]
+    module.add_wrapped(wrapper4)?;
     // Adding nice imports corresponding to maturin example
     let system = PyModule::import(_py, "sys")?;
     let system_modules: &PyDict = system.getattr("modules")?.downcast()?;
     system_modules.set_item("qoqo.operations", module.getattr("operations")?)?;
     system_modules.set_item("qoqo.measurements", module.getattr("measurements")?)?;
     system_modules.set_item("qoqo.devices", module.getattr("devices")?)?;
+    #[cfg(feature = "unstable_noise_models")]
+    system_modules.set_item("qoqo.noise_models", module.getattr("noise_models")?)?;
     Ok(())
 }
