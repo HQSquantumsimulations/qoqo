@@ -192,6 +192,69 @@ fn test_to_from_bincode(device: Py<PyAny>) {
     });
 }
 
+/// Test json_schema function for AllToAllDevice
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema_all_to_all() {
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let device = new_alltoalldevice();
+        let schema: String = String::extract(
+            device
+                .call_method0(py, "json_schema")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+        let rust_schema =
+            serde_json::to_string_pretty(&schemars::schema_for!(AllToAllDevice)).unwrap();
+        assert_eq!(schema, rust_schema);
+    });
+}
+
+/// Test json_schema function for SquaredDevice
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema_squared() {
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let device = new_genericlattice();
+        let schema: String = String::extract(
+            device
+                .call_method0(py, "json_schema")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+        let rust_schema =
+            serde_json::to_string_pretty(&schemars::schema_for!(SquareLatticeDevice)).unwrap();
+        assert_eq!(schema, rust_schema);
+    });
+}
+
+/// Test json_schema function for GenericDevice
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema_generic() {
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let device = new_genericdevice();
+        let schema: String = String::extract(
+            device
+                .call_method0(py, "json_schema")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+        let rust_schema =
+            serde_json::to_string_pretty(&schemars::schema_for!(GenericDevice)).unwrap();
+        assert_eq!(schema, rust_schema);
+    });
+}
+
 // Test qubit_decoherence_rates() for GenericGrid
 #[test_case(new_alltoalldevice(); "all_to_all")]
 #[test_case(new_genericlattice(); "lattice")]
