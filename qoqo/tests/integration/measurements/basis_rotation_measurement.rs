@@ -524,6 +524,7 @@ fn test_pyo3_debug() {
             .unwrap();
         let br_wrapper = br.extract::<PauliZProductWrapper>().unwrap();
 
+        #[allow(clippy::redundant_clone)]
         let br_clone = br_wrapper.clone();
         assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
 
@@ -1005,6 +1006,7 @@ fn test_pyo3_json_schema() {
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
         let br_type = py.get_type::<PauliZProductWrapper>();
+        #[allow(clippy::redundant_clone)]
         let br_one = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone(), input))
             .unwrap()

@@ -28,6 +28,7 @@ fn test_pp_to_exp_val() {
     let mut map: HashMap<usize, f64> = HashMap::new();
     map.insert(0, 3.0);
     let lin = PauliProductsToExpVal::Linear(map);
+    #[allow(clippy::redundant_clone)]
     let lin2 = lin.clone();
     let helper = lin == lin2;
     assert!(helper);
@@ -40,6 +41,7 @@ fn test_pp_to_exp_val() {
 #[test]
 fn test_clone_br() {
     let bri = PauliZProductInput::new(3, false);
+    #[allow(clippy::redundant_clone)]
     let bri1 = bri.clone();
     assert_eq!(bri1, bri);
     let bri2 = PauliZProductInput::new(4, true);

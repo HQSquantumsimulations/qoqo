@@ -50,6 +50,7 @@ fn test_clone_eq_format() {
         circuits: circs.clone(),
     };
 
+    #[allow(clippy::redundant_clone)]
     let br_cloned = br.clone();
     let helper = br == br_cloned;
     assert!(helper);

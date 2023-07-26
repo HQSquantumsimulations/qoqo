@@ -58,6 +58,7 @@ fn test_clone_eq_format() {
         input: bri.clone(),
     };
 
+    #[allow(clippy::redundant_clone)]
     let br_cloned = br.clone();
     let helper = br == br_cloned;
     assert!(helper);

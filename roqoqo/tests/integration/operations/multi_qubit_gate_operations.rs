@@ -205,6 +205,7 @@ fn test_clone_partial_eq() {
     assert!(gate1.is_parametrized());
     let helper = gate != gate1;
     assert!(helper);
+    #[allow(clippy::redundant_clone)]
     let gate2 = gate1.clone();
     assert_eq!(gate2, gate1);
 }
@@ -474,6 +475,7 @@ fn test_clone_partial_eq_multi_qubit_ms() {
     assert!(gate1.is_parametrized());
     let helper = gate != gate1;
     assert!(helper);
+    #[allow(clippy::redundant_clone)]
     let gate2 = gate1.clone();
     assert_eq!(gate2, gate1);
 }

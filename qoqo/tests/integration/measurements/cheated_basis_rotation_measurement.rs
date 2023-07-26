@@ -299,6 +299,7 @@ fn test_pyo3_debug() {
             .unwrap();
         let br_wrapper = br.extract::<CheatedPauliZProductWrapper>().unwrap();
 
+        #[allow(clippy::redundant_clone)]
         let br_clone = br_wrapper.clone();
         assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
 
