@@ -54,7 +54,7 @@ no-default-features = true
 
 [features]
 extension-module = ["pyo3/extension-module", "circuitdag"]
-default = ["extension-module"]
+default = ["extension-module", "json_schema"]
 circuitdag = ["roqoqo/circuitdag"]
 json_schema = ["roqoqo/json_schema"]
 
