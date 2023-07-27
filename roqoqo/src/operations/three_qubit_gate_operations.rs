@@ -38,7 +38,7 @@ use rand_distr::{Distribution, Normal};
     roqoqo_derive::OperateThreeQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct ControlledControlledPauliZ {
     /// The index of the most significant qubit in the unitary representation. Here, the first controlling qubit of the operation.
     control_0: usize,
@@ -189,6 +189,7 @@ impl OperateThreeQubitGate for ControlledControlledPauliZ {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct ControlledControlledPhaseShift {
     /// The index of the most significant qubit in the unitary representation. Here, the first controlling qubit of the operation.
     control_0: usize,
@@ -341,6 +342,7 @@ impl OperateThreeQubitGate for ControlledControlledPhaseShift {
     roqoqo_derive::OperateThreeQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct Toffoli {
     /// The index of the most significant qubit in the unitary representation. Here, the first controlling qubit of the operation.
     control_0: usize,

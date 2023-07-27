@@ -13,6 +13,8 @@
 //! Integration test for public API of single qubit gate operations
 
 //use crate::RoqoqoError::{CalculatorError, UnitaryMatrixErrror};
+#[cfg(feature = "json_schema")]
+use jsonschema::{Draft, JSONSchema};
 use nalgebra as na;
 use ndarray::Array2;
 use num_complex::Complex64;
@@ -25,6 +27,8 @@ use rand::rngs::StdRng;
 use roqoqo::operations::*;
 use roqoqo::RoqoqoError;
 use roqoqo::RoqoqoError::{CalculatorError, QubitMappingError, UnitaryMatrixErrror};
+#[cfg(feature = "json_schema")]
+use schemars::schema_for;
 #[cfg(feature = "serialize")]
 use serde_test::{assert_tokens, Configure, Token};
 use std::collections::{HashMap, HashSet};
@@ -292,7 +296,7 @@ fn test_to_single_qubit_gate_symbolic(operation: SingleQubitGateOperation) {
 #[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from(PI/3.0))); "RotateY")]
 #[test_case(SingleQubitGateOperation::from(PauliX::new(0)); "PauliX")]
 #[test_case(SingleQubitGateOperation::from(PauliY::new(0)); "PauliY")]
-#[test_case( SingleQubitGateOperation::from(PauliZ::new(0)); "PauliZ")]
+#[test_case(SingleQubitGateOperation::from(PauliZ::new(0)); "PauliZ")]
 #[test_case(SingleQubitGateOperation::from(SqrtPauliX::new(0)); "SqrtPauliX")]
 #[test_case(SingleQubitGateOperation::from(InvSqrtPauliX::new(0)); "InvSqrtPauliX")]
 #[test_case(SingleQubitGateOperation::from(SGate::new(0)); "SGate")]
@@ -349,6 +353,7 @@ fn test_singlequbitgate_operatesinglequbit() {
 }
 
 /// Test 'clone()' for SingleQubitGate
+#[allow(clippy::redundant_clone)]
 #[test]
 fn test_singlequbitgate_clone() {
     let gate1 = SingleQubitGate::new(
@@ -705,7 +710,7 @@ fn test_operatesinglequbit(qubit: usize, gate: SingleQubitGateOperation) {
 #[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from("theta"))); "RotateY")]
 #[test_case(SingleQubitGateOperation::from(PauliX::new(1)); "PauliX")]
 #[test_case(SingleQubitGateOperation::from(PauliY::new(1)); "PauliY")]
-#[test_case( SingleQubitGateOperation::from(PauliZ::new(1)); "PauliZ")]
+#[test_case(SingleQubitGateOperation::from(PauliZ::new(1)); "PauliZ")]
 #[test_case(SingleQubitGateOperation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
 #[test_case(SingleQubitGateOperation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
 #[test_case(SingleQubitGateOperation::from(SGate::new(1)); "SGate")]
@@ -721,6 +726,7 @@ fn test_operatesinglequbit(qubit: usize, gate: SingleQubitGateOperation) {
 #[test_case(SingleQubitGateOperation::from(GPi::new(0, CalculatorFloat::from(PI/2.0))); "gpi")]
 #[test_case(SingleQubitGateOperation::from(GPi2::new(0, CalculatorFloat::from(PI/2.0))); "gpi2")]
 fn test_clone(gate1: SingleQubitGateOperation) {
+    #[allow(clippy::redundant_clone)]
     let gate2 = gate1.clone();
     assert_eq!(gate2, gate1);
 }
@@ -1870,9 +1876,9 @@ fn test_singlequbitgate_mul_symb() {
     0,
     CalculatorFloat::from("theta"),
     CalculatorFloat::from("spherical_theta"),
-    CalculatorFloat::from("spherical_phi"))); "Rotation")]
-#[test_case(SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate0")]
-#[test_case(SingleQubitGateOperation::from(PhaseShiftState1::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate1")]
+    CalculatorFloat::from("spherical_phi"))); "RotateAroundSphericalAxis")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(PI/2.0))); "PhaseShiftState0")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState1::new(0, CalculatorFloat::from(PI/2.0))); "PhaseShiftState1")]
 #[test_case(SingleQubitGateOperation::from(GPi::new(0, CalculatorFloat::from(PI/2.0))); "GPi")]
 #[test_case(SingleQubitGateOperation::from(GPi2::new(0, CalculatorFloat::from(PI/2.0))); "GPi2")]
 fn test_singlequbitgate_mul_all(gate1: SingleQubitGateOperation) {
@@ -2349,4 +2355,102 @@ pub fn test_tags(gate: SingleQubitGateOperation, tags: Vec<&str>) {
     for i in range {
         assert_eq!(gate.tags()[i], tags[i]);
     }
+}
+
+/// Test JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test_case(SingleQubitGateOperation::from(
+    SingleQubitGate::new(
+        0,
+        CalculatorFloat::from(1.0),
+        CalculatorFloat::from(0.0),
+        CalculatorFloat::from(0.0),
+        CalculatorFloat::from(0.0),
+        CalculatorFloat::from(PI),
+    ));
+    "SingleQubitGate")]
+#[test_case(SingleQubitGateOperation::from(RotateX::new(0, CalculatorFloat::from("theta"))); "RotateX")]
+#[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from("theta"))); "RotateY")]
+#[test_case(SingleQubitGateOperation::from(RotateZ::new(0, CalculatorFloat::from("theta"))); "RotateZ")]
+#[test_case(SingleQubitGateOperation::from(RotateXY::new(
+    0,
+    CalculatorFloat::from(PI/3.0),
+    CalculatorFloat::from(PI/4.0))); "RotateXY")]
+#[test_case(SingleQubitGateOperation::from(PauliX::new(0)); "PauliX")]
+#[test_case(SingleQubitGateOperation::from(PauliY::new(0)); "PauliY")]
+#[test_case( SingleQubitGateOperation::from(PauliZ::new(0)); "PauliZ")]
+#[test_case(SingleQubitGateOperation::from(SqrtPauliX::new(0)); "SqrtPauliX")]
+#[test_case(SingleQubitGateOperation::from(InvSqrtPauliX::new(0)); "InvSqrtPauliX")]
+#[test_case(SingleQubitGateOperation::from(SGate::new(0)); "SGate")]
+#[test_case(SingleQubitGateOperation::from(TGate::new(0)); "TGate")]
+#[test_case(SingleQubitGateOperation::from(Hadamard::new(0)); "Hadamard")]
+#[test_case(SingleQubitGateOperation::from(RotateAroundSphericalAxis::new(
+    0,
+    CalculatorFloat::from("theta"),
+    CalculatorFloat::from("spherical_theta"),
+    CalculatorFloat::from("spherical_phi"))); "RotationAroundSphericalAxis")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(PI/2.0))); "PhaseShiftState0")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState1::new(0, CalculatorFloat::from(PI/2.0))); "PhaseShiftState1")]
+#[test_case(SingleQubitGateOperation::from(GPi::new(0, CalculatorFloat::from(PI/2.0))); "GPi")]
+#[test_case(SingleQubitGateOperation::from(GPi2::new(0, CalculatorFloat::from(PI/2.0))); "GPi2")]
+pub fn test_json_schema_single_qubit_gate_operations(gate: SingleQubitGateOperation) {
+    // Serialize
+    let test_json = match gate.clone() {
+        SingleQubitGateOperation::SingleQubitGate(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::RotateZ(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::RotateX(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::RotateY(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::PauliX(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::PauliY(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::PauliZ(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::SqrtPauliX(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::InvSqrtPauliX(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::Hadamard(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::SGate(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::TGate(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::PhaseShiftState1(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::PhaseShiftState0(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::RotateAroundSphericalAxis(op) => {
+            serde_json::to_string(&op).unwrap()
+        }
+        SingleQubitGateOperation::RotateXY(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::GPi(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::GPi2(op) => serde_json::to_string(&op).unwrap(),
+        _ => unreachable!(),
+    };
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = match gate {
+        SingleQubitGateOperation::SingleQubitGate(_) => schema_for!(SingleQubitGate),
+        SingleQubitGateOperation::RotateZ(_) => schema_for!(RotateZ),
+        SingleQubitGateOperation::RotateX(_) => schema_for!(RotateX),
+        SingleQubitGateOperation::RotateY(_) => schema_for!(RotateY),
+        SingleQubitGateOperation::PauliX(_) => schema_for!(PauliX),
+        SingleQubitGateOperation::PauliY(_) => schema_for!(PauliY),
+        SingleQubitGateOperation::PauliZ(_) => schema_for!(PauliZ),
+        SingleQubitGateOperation::SqrtPauliX(_) => schema_for!(SqrtPauliX),
+        SingleQubitGateOperation::InvSqrtPauliX(_) => schema_for!(InvSqrtPauliX),
+        SingleQubitGateOperation::Hadamard(_) => schema_for!(Hadamard),
+        SingleQubitGateOperation::SGate(_) => schema_for!(SGate),
+        SingleQubitGateOperation::TGate(_) => schema_for!(TGate),
+        SingleQubitGateOperation::PhaseShiftState1(_) => schema_for!(PhaseShiftState1),
+        SingleQubitGateOperation::PhaseShiftState0(_) => schema_for!(PhaseShiftState0),
+        SingleQubitGateOperation::RotateAroundSphericalAxis(_) => {
+            schema_for!(RotateAroundSphericalAxis)
+        }
+        SingleQubitGateOperation::RotateXY(_) => schema_for!(RotateXY),
+        SingleQubitGateOperation::GPi(_) => schema_for!(GPi),
+        SingleQubitGateOperation::GPi2(_) => schema_for!(GPi2),
+        _ => unreachable!(),
+    };
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }

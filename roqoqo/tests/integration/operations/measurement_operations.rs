@@ -12,9 +12,13 @@
 //
 //! Integration test for public API of Measurement operations
 
+#[cfg(feature = "json_schema")]
+use jsonschema::{Draft, JSONSchema};
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::operations::*;
 use roqoqo::Circuit;
+#[cfg(feature = "json_schema")]
+use schemars::schema_for;
 #[cfg(feature = "serialize")]
 use serde_test::{assert_tokens, Configure, Token};
 use std::collections::{HashMap, HashSet};
@@ -145,6 +149,29 @@ fn measure_qubit_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+/// Test MeasureQubit JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn measure_qubit_json_schema() {
+    let op = MeasureQubit::new(0, String::from("ro"), 1);
+
+    // Serialize
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(MeasureQubit);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
 
 /// Test PragmaGetStateVector inputs and involved qubits
@@ -306,6 +333,29 @@ fn pragma_get_statevector_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+/// Test PragmaGetStateVector JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_get_state_vector_json_schema() {
+    let op = PragmaGetStateVector::new(String::from("ro"), None);
+
+    // Serialize
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaGetStateVector);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
 
 /// Test PragmaGetDensityMatrix inputs and involved qubits
@@ -471,6 +521,29 @@ fn pragma_get_density_matrix_serde_compact() {
     );
 }
 
+/// Test PragmaGetDensityMatrix JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_get_density_matrix_json_schema() {
+    let op = PragmaGetDensityMatrix::new(String::from("ro"), None);
+
+    // Serialize
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaGetDensityMatrix);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
 /// Test PragmaGetOccupationProbability inputs and involved qubits
 #[test]
 fn pragma_get_occupation_probability_inputs_qubits() {
@@ -633,6 +706,29 @@ fn pragma_get_occupation_probability_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+/// Test PragmaGetOccupationalProbability JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_get_occupational_probability_json_schema() {
+    let op = PragmaGetOccupationProbability::new(String::from("ro"), None);
+
+    // Serialize
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaGetOccupationProbability);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
 
 /// Test PragmaGetPauliProduct inputs and involved qubits
@@ -854,6 +950,32 @@ fn pragma_get_pauli_product_serde_compact() {
     );
 }
 
+/// Test PragmaGetPauliProduct JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_get_pauli_product_json_schema() {
+    let mut qubit_paulis: HashMap<usize, usize> = HashMap::new();
+    qubit_paulis.insert(0, 1);
+    let op =
+        PragmaGetPauliProduct::new(qubit_paulis.clone(), String::from("ro"), Circuit::default());
+
+    // Serialize
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaGetPauliProduct);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
 /// Test PragmaRepeatedMeasurement inputs and involved qubits
 #[test]
 fn pragma_repeated_measurement_inputs_qubits() {
@@ -1019,4 +1141,29 @@ fn pragma_repeated_measurement_serde_compact() {
             Token::StructEnd,
         ],
     );
+}
+
+/// Test PragmaRepeatedMeasurement JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_repeated_measuremnt_json_schema() {
+    let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping.insert(0, 1);
+    let op = PragmaRepeatedMeasurement::new(String::from("ro"), 2, Some(qubit_mapping.clone()));
+
+    // Serialize
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaRepeatedMeasurement);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }

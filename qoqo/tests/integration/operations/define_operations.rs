@@ -623,3 +623,45 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
         assert!(comparison.is_err());
     })
 }
+
+/// Test json_schema function for all define operations
+#[cfg(feature = "json_schema")]
+#[test_case(Operation::from(DefinitionFloat::new(String::from("ro"), 1, false)); "DefinitionFloat")]
+#[test_case(Operation::from(DefinitionComplex::new(String::from("ro"), 1, false)); "DefinitionComplex")]
+#[test_case(Operation::from(DefinitionUsize::new(String::from("ro"), 1, false)); "DefinitionUsize")]
+#[test_case(Operation::from(DefinitionBit::new(String::from("ro"), 1, false)); "DefinitionBit")]
+#[test_case(Operation::from(InputSymbolic::new(String::from("ro"), 1.0)); "InputSymbolic")]
+#[test_case(Operation::from(InputBit::new(String::from("ro"), 1, true)); "InputBit")]
+fn test_pyo3_json_schema(operation: Operation) {
+    let rust_schema = match operation {
+        Operation::DefinitionFloat(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(DefinitionFloat)).unwrap()
+        }
+        Operation::DefinitionComplex(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(DefinitionComplex)).unwrap()
+        }
+        Operation::DefinitionUsize(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(DefinitionUsize)).unwrap()
+        }
+        Operation::DefinitionBit(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(DefinitionBit)).unwrap()
+        }
+        Operation::InputSymbolic(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(InputSymbolic)).unwrap()
+        }
+        Operation::InputBit(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(InputBit)).unwrap()
+        }
+        _ => unreachable!(),
+    };
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let pyobject = convert_operation_to_pyobject(operation).unwrap();
+        let operation = pyobject.as_ref(py);
+
+        let schema: String =
+            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+
+        assert_eq!(schema, rust_schema);
+    });
+}

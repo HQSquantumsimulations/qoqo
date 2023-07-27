@@ -20,6 +20,7 @@ use qoqo::{CircuitWrapper, OperationIteratorWrapper, QOQO_VERSION};
 use qoqo_calculator::CalculatorFloat;
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
+use roqoqo::Circuit;
 use roqoqo::ROQOQO_VERSION;
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
@@ -410,6 +411,21 @@ fn test_to_from_json() {
             bool::extract(deserialised_py.call_method1("__eq__", (circuit,)).unwrap()).unwrap();
         assert!(comparison);
     })
+}
+
+/// Test json_schema function of Circuit
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema() {
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let circuit = new_circuit(py);
+        populate_circuit_rotatex(py, circuit, 0, 4);
+
+        let schema: String = String::extract(circuit.call_method0("json_schema").unwrap()).unwrap();
+        let rust_schema = serde_json::to_string_pretty(&schemars::schema_for!(Circuit)).unwrap();
+        assert_eq!(schema, rust_schema);
+    });
 }
 
 ///  Test single index set and write access using "get" function

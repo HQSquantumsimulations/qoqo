@@ -631,7 +631,6 @@ fn test_pyo3_involved_qubits_all(input_definition: Operation) {
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators())); "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 #[test_case(Operation::from(PragmaControlledCircuit::new(0, create_circuit())); "PragmaControlledCircuit")]
-
 fn test_pyo3_involved_qubits_qubit(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2584,4 +2583,106 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
         let result_ref = result.as_ref();
         assert!(result_ref.is_err());
     })
+}
+
+/// Test json_schema function for all pragma operations
+#[cfg(feature = "json_schema")]
+#[test_case(PragmaOperation::from(PragmaSetStateVector::new(statevector())); "PragmaSetStateVector")]
+#[test_case(PragmaOperation::from(PragmaSetDensityMatrix::new(densitymatrix())); "PragmaSetDensityMatrix")]
+#[test_case(PragmaOperation::from(PragmaRepeatGate::new(3)); "PragmaRepeatGate")]
+#[test_case(PragmaOperation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.003))); "PragmaBoostNoise")]
+#[test_case(PragmaOperation::from(PragmaStopParallelBlock::new(vec![0, 1], CalculatorFloat::from(0.0000001))); "PragmaStopParallelBlock")]
+#[test_case(PragmaOperation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.05))); "PragmaGlobalPhase")]
+#[test_case(PragmaOperation::from(PragmaSleep::new(vec![0, 1], CalculatorFloat::from(0.0000001))); "PragmaSleep")]
+#[test_case(PragmaOperation::from(PragmaActiveReset::new(0)); "PragmaActiveReset")]
+#[test_case(PragmaOperation::from(PragmaStartDecompositionBlock::new(vec![0, 1], reordering())); "PragmaStartDecompositionBlock")]
+#[test_case(PragmaOperation::from(PragmaStopDecompositionBlock::new(vec![0, 1])); "PragmaStopDecompositionBlock")]
+#[test_case(PragmaOperation::from(PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDamping")]
+#[test_case(PragmaOperation::from(PragmaDepolarising::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDepolarising")]
+#[test_case(PragmaOperation::from(PragmaDephasing::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDephasing")]
+#[test_case(PragmaOperation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))); "PragmaRandomNoise")]
+#[test_case(PragmaOperation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005),  operators())); "PragmaGeneralNoise")]
+#[test_case(PragmaOperation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
+#[test_case(PragmaOperation::from(PragmaControlledCircuit::new( 1, create_circuit())); "PragmaControlledCircuit")]
+#[test_case(PragmaOperation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::default())); "PragmaLoop")]
+#[test_case(PragmaOperation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro"))); "PragmaSetNumberOfMeasurements")]
+#[test_case(PragmaOperation::from(PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)); "PragmaOverrotation")]
+fn test_pyo3_json_schema(operation: PragmaOperation) {
+    let rust_schema = match operation {
+        PragmaOperation::PragmaSetNumberOfMeasurements(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaSetNumberOfMeasurements))
+                .unwrap()
+        }
+        PragmaOperation::PragmaSetStateVector(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaSetStateVector)).unwrap()
+        }
+        PragmaOperation::PragmaSetDensityMatrix(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaSetDensityMatrix)).unwrap()
+        }
+        PragmaOperation::PragmaRepeatGate(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaRepeatGate)).unwrap()
+        }
+        PragmaOperation::PragmaOverrotation(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaOverrotation)).unwrap()
+        }
+        PragmaOperation::PragmaBoostNoise(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaBoostNoise)).unwrap()
+        }
+        PragmaOperation::PragmaStopParallelBlock(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaStopParallelBlock)).unwrap()
+        }
+        PragmaOperation::PragmaGlobalPhase(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaGlobalPhase)).unwrap()
+        }
+        PragmaOperation::PragmaSleep(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaSleep)).unwrap()
+        }
+        PragmaOperation::PragmaActiveReset(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaActiveReset)).unwrap()
+        }
+        PragmaOperation::PragmaStartDecompositionBlock(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaStartDecompositionBlock))
+                .unwrap()
+        }
+        PragmaOperation::PragmaStopDecompositionBlock(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaStopDecompositionBlock))
+                .unwrap()
+        }
+        PragmaOperation::PragmaDamping(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaDamping)).unwrap()
+        }
+        PragmaOperation::PragmaDepolarising(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaDepolarising)).unwrap()
+        }
+        PragmaOperation::PragmaDephasing(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaDephasing)).unwrap()
+        }
+        PragmaOperation::PragmaRandomNoise(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaRandomNoise)).unwrap()
+        }
+        PragmaOperation::PragmaGeneralNoise(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaGeneralNoise)).unwrap()
+        }
+        PragmaOperation::PragmaConditional(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaConditional)).unwrap()
+        }
+        PragmaOperation::PragmaLoop(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaLoop)).unwrap()
+        }
+        PragmaOperation::PragmaControlledCircuit(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaControlledCircuit)).unwrap()
+        }
+        _ => unreachable!(),
+    };
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let converted_op = Operation::from(operation);
+        let pyobject = convert_operation_to_pyobject(converted_op).unwrap();
+        let operation = pyobject.as_ref(py);
+
+        let schema: String =
+            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+
+        assert_eq!(schema, rust_schema);
+    });
 }

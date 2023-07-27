@@ -526,6 +526,22 @@ pub fn wrap(
     } else {
         TokenStream::new()
     };
+    let json_schema_quote = if attribute_arguments.contains("JsonSchema") {
+        quote! {
+            #[cfg(feature = "json_schema")]
+            #[staticmethod]
+            /// Return the JsonSchema for the json serialisation of the class.
+            ///
+            /// Returns:
+            ///     str: The json schema serialized to json
+            pub fn json_schema() -> String {
+                let schema = schemars::schema_for!(#ident);
+                serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
+            }
+        }
+    } else {
+        TokenStream::new()
+    };
 
     let msg = format!("Internal storage of {} object", ident);
     let q = quote! {
@@ -563,6 +579,7 @@ pub fn wrap(
             #operate_two_mode_quote
             #operate_single_mode_gate_quote
             #operate_two_mode_gate_quote
+            #json_schema_quote
             fn __format__(&self, _format_spec: &str) -> PyResult<String> {
                 Ok(format!("{:?}", self.internal))
             }
@@ -570,7 +587,6 @@ pub fn wrap(
             fn __repr__(&self) -> PyResult<String> {
                 Ok(format!("{:?}", self.internal))
             }
-
 
             /// Returns the __richcmp__ magic method to perform rich comparison
             /// operations on Operation.

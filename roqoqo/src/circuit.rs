@@ -86,7 +86,7 @@ use std::{
 ///
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", serde(try_from = "CircuitSerializable"))]
 #[cfg_attr(feature = "serialize", serde(into = "CircuitSerializable"))]
 pub struct Circuit {

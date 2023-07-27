@@ -19,6 +19,7 @@ use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
 use qoqo_macros::devicewrapper;
 use roqoqo::devices::{Device, GenericDevice};
+
 /// A generic device assuming all-to-all connectivity between all involved qubits.
 ///
 /// Args:
@@ -43,6 +44,17 @@ impl GenericDeviceWrapper {
         Ok(Self {
             internal: GenericDevice::new(number_qubits),
         })
+    }
+
+    #[cfg(feature = "json_schema")]
+    #[staticmethod]
+    /// Return the JsonSchema for the json serialisation of the class.
+    ///
+    /// Returns:
+    ///     str: The json schema serialized to json
+    pub fn json_schema() -> String {
+        let schema = schemars::schema_for!(GenericDevice);
+        serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
     }
 }
 

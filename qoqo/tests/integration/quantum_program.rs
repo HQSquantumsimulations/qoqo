@@ -538,6 +538,27 @@ fn test_to_from_json() {
     })
 }
 
+/// Test json_schema function of QuantumProgram
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema() {
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let input = create_measurement(py);
+        let program_type = py.get_type::<QuantumProgramWrapper>();
+        let program = program_type
+            .call1((input, vec!["test".to_string()]))
+            .unwrap()
+            .downcast::<PyCell<QuantumProgramWrapper>>()
+            .unwrap();
+
+        let schema: String = String::extract(program.call_method0("json_schema").unwrap()).unwrap();
+        let rust_schema =
+            serde_json::to_string_pretty(&schemars::schema_for!(QuantumProgram)).unwrap();
+        assert_eq!(schema, rust_schema);
+    });
+}
+
 /// Test the __richcmp__ function
 #[test]
 fn test_richcmp() {

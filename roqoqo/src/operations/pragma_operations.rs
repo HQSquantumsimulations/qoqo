@@ -18,6 +18,8 @@ use crate::operations::{
     OperatePragmaNoiseProba, OperateSingleQubit, RoqoqoError, Substitute, SupportedVersion,
 };
 use crate::Circuit;
+#[cfg(feature = "json_schema")]
+use crate::{Array1C64Def, Array2C64Def, Array2f64Def};
 #[cfg(feature = "serialize")]
 use bincode::serialize;
 use nalgebra::{matrix, Matrix4};
@@ -47,7 +49,7 @@ use super::InvolvedClassical;
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaSetNumberOfMeasurements {
     /// The number of measurements.
     number_measurements: usize,
@@ -105,9 +107,28 @@ impl InvolveQubits for PragmaSetNumberOfMeasurements {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaSetStateVector {
     /// The statevector that is initialized.
+    statevector: Array1<Complex64>,
+}
+
+#[cfg(feature = "json_schema")]
+impl schemars::JsonSchema for PragmaSetStateVector {
+    fn schema_name() -> String {
+        "PragmaSetStateVector".to_string()
+    }
+
+    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
+        <SchemaHelperPragmaSetStateVector>::json_schema(gen)
+    }
+}
+
+#[cfg(feature = "json_schema")]
+#[derive(schemars::JsonSchema)]
+#[allow(dead_code)]
+struct SchemaHelperPragmaSetStateVector {
+    /// The statevector that is initialized.
+    #[serde(with = "Array1C64Def")]
     statevector: Array1<Complex64>,
 }
 
@@ -153,9 +174,28 @@ impl InvolveQubits for PragmaSetStateVector {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaSetDensityMatrix {
     /// The density matrix that is initialized.
+    density_matrix: Array2<Complex64>,
+}
+
+#[cfg(feature = "json_schema")]
+impl schemars::JsonSchema for PragmaSetDensityMatrix {
+    fn schema_name() -> String {
+        "PragmaSetDensityMatrix".to_string()
+    }
+
+    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
+        <SchemaHelperPragmaSetDensityMatrix>::json_schema(gen)
+    }
+}
+
+#[cfg(feature = "json_schema")]
+#[derive(schemars::JsonSchema)]
+#[allow(dead_code)]
+struct SchemaHelperPragmaSetDensityMatrix {
+    /// The density matrix that is initialized.
+    #[serde(with = "Array2C64Def")]
     density_matrix: Array2<Complex64>,
 }
 
@@ -186,7 +226,7 @@ impl InvolveQubits for PragmaSetDensityMatrix {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaRepeatGate {
     /// The number of times the following gate is repeated.
     repetition_coefficient: usize,
@@ -224,7 +264,7 @@ impl InvolveQubits for PragmaRepeatGate {
     roqoqo_derive::OperateMultiQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 // #[cfg_attr(feature = "overrotate")]
 pub struct PragmaOverrotation {
     /// The unique hqslang name of the gate to overrotate.
@@ -257,7 +297,7 @@ const TAGS_PragmaOverrotation: &[&str; 4] = &[
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaBoostNoise {
     /// The coefficient by which the noise is boosted, i.e. the number by which the gate time is multiplied.
     noise_coefficient: CalculatorFloat,
@@ -288,7 +328,7 @@ impl InvolveQubits for PragmaBoostNoise {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaStopParallelBlock {
     /// The qubits involved in parallel execution block.
     qubits: Vec<usize>,
@@ -319,7 +359,7 @@ const TAGS_PragmaStopParallelBlock: &[&str; 4] = &[
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGlobalPhase {
     /// The picked up global phase.
     phase: CalculatorFloat,
@@ -353,7 +393,7 @@ impl InvolveQubits for PragmaGlobalPhase {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaSleep {
     /// The qubits involved in the sleep block.
     qubits: Vec<usize>,
@@ -384,7 +424,7 @@ const TAGS_PragmaSleep: &[&str; 4] = &[
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaActiveReset {
     /// The qubit to be reset.
     qubit: usize,
@@ -412,7 +452,7 @@ const TAGS_PragmaActiveReset: &[&str; 4] = &[
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaStartDecompositionBlock {
     /// The qubits involved in the decomposition block.
     qubits: Vec<usize>,
@@ -476,7 +516,7 @@ impl Substitute for PragmaStartDecompositionBlock {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaStopDecompositionBlock {
     /// The qubits involved in the decomposition block.
     qubits: Vec<usize>,
@@ -512,7 +552,7 @@ const TAGS_PragmaStopDecompositionBlock: &[&str; 4] = &[
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaDamping {
     /// The qubit on which to apply the damping.
     qubit: usize,
@@ -583,7 +623,7 @@ impl OperatePragmaNoiseProba for PragmaDamping {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaDepolarising {
     /// The qubit on which to apply the depolarising.
     qubit: usize,
@@ -651,7 +691,7 @@ impl OperatePragmaNoiseProba for PragmaDepolarising {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaDephasing {
     /// The qubit on which to apply the dephasing.
     qubit: usize,
@@ -723,7 +763,7 @@ impl OperatePragmaNoiseProba for PragmaDephasing {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaRandomNoise {
     /// The qubit the PRAGMA Operation is applied to.
     qubit: usize,
@@ -845,13 +885,36 @@ impl OperatePragmaNoiseProba for PragmaRandomNoise {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGeneralNoise {
     /// The qubit the PRAGMA Operation is applied to.
     qubit: usize,
     /// The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
     gate_time: CalculatorFloat,
     /// The rates representing the general noise matrix M (a 3x3 matrix).
+    rates: Array2<f64>,
+}
+
+#[cfg(feature = "json_schema")]
+impl schemars::JsonSchema for PragmaGeneralNoise {
+    fn schema_name() -> String {
+        "PragmaGeneralNoise".to_string()
+    }
+
+    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
+        <SchemaHelperPragmaGeneralNoise>::json_schema(gen)
+    }
+}
+
+#[cfg(feature = "json_schema")]
+#[derive(schemars::JsonSchema)]
+#[allow(dead_code)]
+struct SchemaHelperPragmaGeneralNoise {
+    /// The qubit the PRAGMA Operation is applied to.
+    qubit: usize,
+    /// The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+    gate_time: CalculatorFloat,
+    /// The rates representing the general noise matrix M (a 3x3 matrix).
+    #[serde(with = "Array2f64Def")]
     rates: Array2<f64>,
 }
 
@@ -983,7 +1046,7 @@ impl OperatePragmaNoise for PragmaGeneralNoise {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaConditional {
     /// The name of the [crate::registers::BitRegister] containting the condition bool value.
     condition_register: String,
@@ -1042,7 +1105,7 @@ impl Substitute for PragmaConditional {
 ///
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaControlledCircuit {
     /// The qubit controlling if the circuit is applied. Circuit is applied for qubit in state 1.
     controlling_qubit: usize,
@@ -1126,7 +1189,7 @@ impl Substitute for PragmaControlledCircuit {
     Debug, Clone, PartialEq, Eq, roqoqo_derive::SupportedVersion, roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaChangeDevice {
     /// The tags of the wrapped operation.
     pub wrapped_tags: Vec<String>,
@@ -1204,7 +1267,7 @@ impl Substitute for PragmaChangeDevice {
 ///
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaLoop {
     /// The name of the classical readout register.
     repetitions: CalculatorFloat,

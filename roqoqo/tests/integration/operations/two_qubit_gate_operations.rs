@@ -13,6 +13,8 @@
 //! Integration test for public API of two qubit gate operations
 
 use super::convert_matrix;
+#[cfg(feature = "json_schema")]
+use jsonschema::{Draft, JSONSchema};
 use nalgebra as na;
 use ndarray::{array, Array2};
 use num_complex::Complex64;
@@ -21,6 +23,8 @@ use roqoqo::operations::*;
 use roqoqo::Circuit;
 use roqoqo::RoqoqoError;
 use roqoqo::RoqoqoError::QubitMappingError;
+#[cfg(feature = "json_schema")]
+use schemars::schema_for;
 use std::collections::{HashMap, HashSet};
 use std::convert::TryFrom;
 use std::convert::TryInto;
@@ -317,6 +321,7 @@ fn test_twoqubitgates_unitarity(gate: GateOperation) {
 #[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
 fn test_twoqubitgates_clone(gate1: Operation) {
+    #[allow(clippy::redundant_clone)]
     let gate2 = gate1.clone();
     assert_eq!(gate2, gate1);
 }
@@ -1209,4 +1214,108 @@ fn test_kakdecomposition_debug() {
     };
     let message = "KakDecomposition { global_phase: Float(1.0), k_vector: [Float(0.0), Float(0.0), Float(0.0)], circuit_before: None, circuit_after: None }";
     assert_eq!(format!("{:?}", gate), message);
+}
+
+/// Test JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test_case(TwoQubitGateOperation::from(CNOT::new(0, 1)); "CNOT")]
+#[test_case(TwoQubitGateOperation::from(SWAP::new(0, 1)); "SWAP")]
+#[test_case(TwoQubitGateOperation::from(ISwap::new(0, 1)); "ISwap")]
+#[test_case(TwoQubitGateOperation::from(FSwap::new(0, 1)); "FSwap")]
+#[test_case(TwoQubitGateOperation::from(SqrtISwap::new(0, 1)); "SqrtISwap")]
+#[test_case(TwoQubitGateOperation::from(InvSqrtISwap::new(0, 1)); "InvSqrtISwap")]
+#[test_case(TwoQubitGateOperation::from(XY::new(0, 1, CalculatorFloat::PI)); "XY")]
+#[test_case(TwoQubitGateOperation::from(ControlledPhaseShift::new(0, 1, CalculatorFloat::FRAC_PI_4)); "ControlledPhaseShift")]
+#[test_case(TwoQubitGateOperation::from(ControlledPauliY::new(0, 1)); "ControlledPauliY")]
+#[test_case(TwoQubitGateOperation::from(ControlledPauliZ::new(0, 1)); "ControlledPauliZ")]
+#[test_case(TwoQubitGateOperation::from(MolmerSorensenXX::new(0, 1)); "MolmerSorensenXX")]
+#[test_case(TwoQubitGateOperation::from(VariableMSXX::new(0, 1, CalculatorFloat::PI)); "VariableMSXX")]
+#[test_case(TwoQubitGateOperation::from(GivensRotation::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotation")]
+#[test_case(TwoQubitGateOperation::from(GivensRotationLittleEndian::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "GivensRotationLittleEndian")]
+#[test_case(TwoQubitGateOperation::from(Qsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Qsim")]
+#[test_case(TwoQubitGateOperation::from(Fsim::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "Fsim")]
+#[test_case(TwoQubitGateOperation::from(SpinInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(2.0), CalculatorFloat::from(-1.0))); "SpinInteraction")]
+#[test_case(TwoQubitGateOperation::from(Bogoliubov::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "Bogoliubov")]
+#[test_case(TwoQubitGateOperation::from(PMInteraction::new(0, 1, CalculatorFloat::PI)); "PMInteraction")]
+#[test_case(TwoQubitGateOperation::from(ComplexPMInteraction::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::from(-1.0))); "ComplexPMInteraction")]
+#[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledZ::new(0, 1, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledZ")]
+#[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase")]
+#[test_case(TwoQubitGateOperation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
+#[test_case(TwoQubitGateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+pub fn test_json_schema_two_qubit_gate_operations(gate: TwoQubitGateOperation) {
+    // Serialize
+    let test_json = match gate.clone() {
+        TwoQubitGateOperation::CNOT(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::SWAP(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::ISwap(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::FSwap(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::SqrtISwap(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::InvSqrtISwap(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::XY(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::ControlledPhaseShift(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::ControlledPauliY(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::ControlledPauliZ(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::MolmerSorensenXX(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::VariableMSXX(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::GivensRotation(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::GivensRotationLittleEndian(op) => {
+            serde_json::to_string(&op).unwrap()
+        }
+        TwoQubitGateOperation::Qsim(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::Fsim(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::SpinInteraction(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::Bogoliubov(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::PMInteraction(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::ComplexPMInteraction(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::PhaseShiftedControlledZ(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::PhaseShiftedControlledPhase(op) => {
+            serde_json::to_string(&op).unwrap()
+        }
+        TwoQubitGateOperation::ControlledRotateX(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::ControlledRotateXY(op) => serde_json::to_string(&op).unwrap(),
+        _ => unreachable!(),
+    };
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = match gate {
+        TwoQubitGateOperation::CNOT(_) => schema_for!(CNOT),
+        TwoQubitGateOperation::SWAP(_) => schema_for!(SWAP),
+        TwoQubitGateOperation::ISwap(_) => schema_for!(ISwap),
+        TwoQubitGateOperation::FSwap(_) => schema_for!(FSwap),
+        TwoQubitGateOperation::SqrtISwap(_) => schema_for!(SqrtISwap),
+        TwoQubitGateOperation::InvSqrtISwap(_) => schema_for!(InvSqrtISwap),
+        TwoQubitGateOperation::XY(_) => schema_for!(XY),
+        TwoQubitGateOperation::ControlledPhaseShift(_) => schema_for!(ControlledPhaseShift),
+        TwoQubitGateOperation::ControlledPauliY(_) => schema_for!(ControlledPauliY),
+        TwoQubitGateOperation::ControlledPauliZ(_) => schema_for!(ControlledPauliZ),
+        TwoQubitGateOperation::MolmerSorensenXX(_) => schema_for!(MolmerSorensenXX),
+        TwoQubitGateOperation::VariableMSXX(_) => schema_for!(VariableMSXX),
+        TwoQubitGateOperation::GivensRotation(_) => schema_for!(GivensRotation),
+        TwoQubitGateOperation::GivensRotationLittleEndian(_) => {
+            schema_for!(GivensRotationLittleEndian)
+        }
+        TwoQubitGateOperation::Qsim(_) => schema_for!(Qsim),
+        TwoQubitGateOperation::Fsim(_) => schema_for!(Fsim),
+        TwoQubitGateOperation::SpinInteraction(_) => schema_for!(SpinInteraction),
+        TwoQubitGateOperation::Bogoliubov(_) => schema_for!(Bogoliubov),
+        TwoQubitGateOperation::PMInteraction(_) => schema_for!(PMInteraction),
+        TwoQubitGateOperation::ComplexPMInteraction(_) => schema_for!(ComplexPMInteraction),
+        TwoQubitGateOperation::PhaseShiftedControlledZ(_) => schema_for!(PhaseShiftedControlledZ),
+        TwoQubitGateOperation::PhaseShiftedControlledPhase(_) => {
+            schema_for!(PhaseShiftedControlledPhase)
+        }
+        TwoQubitGateOperation::ControlledRotateX(_) => schema_for!(ControlledRotateX),
+        TwoQubitGateOperation::ControlledRotateXY(_) => schema_for!(ControlledRotateXY),
+        _ => unreachable!(),
+    };
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }

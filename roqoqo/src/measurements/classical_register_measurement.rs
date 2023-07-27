@@ -19,7 +19,7 @@ use std::collections::HashMap;
 ///
 /// Runs a sequence of circuits and returns the classical registers written during circuit execution.
 #[derive(Debug, PartialEq, Clone)]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 pub struct ClassicalRegister {
     /// Constant Circuit that is executed before each Circuit in circuits.

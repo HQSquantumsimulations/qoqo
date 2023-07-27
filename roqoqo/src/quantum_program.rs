@@ -36,7 +36,7 @@ use std::fmt::{Display, Formatter};
 /// It is the intended way to interface between normal program code and roqoqo based quantum programs.
 ///
 #[derive(Debug, PartialEq, Clone)]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[non_exhaustive]
 pub enum QuantumProgram {

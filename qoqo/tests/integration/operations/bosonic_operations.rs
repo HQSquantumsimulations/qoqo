@@ -818,3 +818,37 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
         assert!(comparison.is_err());
     })
 }
+
+/// Test json_schema function for all bosonic operations
+#[cfg(feature = "json_schema")]
+#[test_case(Operation::from(Squeezing::new(1, 0.1.into(), 0.0.into())); "Squeezing")]
+#[test_case(Operation::from(PhaseShift::new(1, 0.1.into())); "PhaseShift")]
+#[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(0.1))); "BeamSplitter")]
+#[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PNRDetection")]
+fn test_pyo3_json_schema(operation: Operation) {
+    let rust_schema = match operation {
+        Operation::Squeezing(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(Squeezing)).unwrap()
+        }
+        Operation::PhaseShift(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PhaseShift)).unwrap()
+        }
+        Operation::BeamSplitter(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(BeamSplitter)).unwrap()
+        }
+        Operation::PhotonDetection(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PhotonDetection)).unwrap()
+        }
+        _ => unreachable!(),
+    };
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let pyobject = convert_operation_to_pyobject(operation).unwrap();
+        let operation = pyobject.as_ref(py);
+
+        let schema: String =
+            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+
+        assert_eq!(schema, rust_schema);
+    });
+}
