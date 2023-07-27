@@ -15,6 +15,7 @@ use pyo3::prelude::*;
 use pyo3::types::PySet;
 use qoqo_macros::*;
 use roqoqo::operations::*;
+use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
 #[wrap(Operate, Define, JsonSchema)]

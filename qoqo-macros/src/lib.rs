@@ -529,11 +529,31 @@ pub fn wrap(
     let json_schema_quote = if attribute_arguments.contains("JsonSchema") {
         quote! {
             #[cfg(feature = "json_schema")]
+            /// Returns the current version of the qoqo library .
+            ///
+            /// Returns:
+            ///     str: The current version of the library.
             #[staticmethod]
+            pub fn current_version() -> String {
+                ROQOQO_VERSION.to_string()
+            }
+
+            #[cfg(feature = "json_schema")]
+            /// Return the minimum version of qoqo that supports this object.
+            ///
+            /// Returns:
+            ///     str: The minimum version of the qoqo library to deserialize this object.
+            pub fn min_supported_version(&self) -> String {
+                let min_version: (u32, u32, u32) = #ident::minimum_supported_roqoqo_version(&self.internal);
+                format!("{}.{}.{}", min_version.0, min_version.1, min_version.2)
+            }
+
+            #[cfg(feature = "json_schema")]
             /// Return the JsonSchema for the json serialisation of the class.
             ///
             /// Returns:
             ///     str: The json schema serialized to json
+            #[staticmethod]
             pub fn json_schema() -> String {
                 let schema = schemars::schema_for!(#ident);
                 serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")

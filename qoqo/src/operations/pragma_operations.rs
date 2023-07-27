@@ -23,6 +23,7 @@ use qoqo_calculator_pyo3::{convert_into_calculator_float, CalculatorFloatWrapper
 use qoqo_macros::*;
 use roqoqo::operations::*;
 use roqoqo::Circuit;
+use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
 /// Wrap function automatically generates functions in these traits.

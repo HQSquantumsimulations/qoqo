@@ -21,6 +21,7 @@ use qoqo_calculator_pyo3::convert_into_calculator_float;
 use qoqo_calculator_pyo3::CalculatorFloatWrapper;
 use qoqo_macros::*;
 use roqoqo::operations::*;
+use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
 #[allow(clippy::upper_case_acronyms)]

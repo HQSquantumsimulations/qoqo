@@ -21,6 +21,7 @@ use pyo3::exceptions::{PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
 use roqoqo::measurements::Measure;
+use roqoqo::operations::SupportedVersion;
 use roqoqo::QuantumProgram;
 use roqoqo::ROQOQO_VERSION;
 
@@ -407,6 +408,27 @@ impl QuantumProgramWrapper {
     pub fn json_schema() -> String {
         let schema = schemars::schema_for!(QuantumProgram);
         serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
+    }
+
+    #[cfg(feature = "json_schema")]
+    /// Returns the current version of the qoqo library .
+    ///
+    /// Returns:
+    ///     str: The current version of the library.
+    #[staticmethod]
+    pub fn current_version() -> String {
+        ROQOQO_VERSION.to_string()
+    }
+
+    #[cfg(feature = "json_schema")]
+    /// Return the minimum version of qoqo that supports this object.
+    ///
+    /// Returns:
+    ///     str: The minimum version of the qoqo library to deserialize this object.
+    pub fn min_supported_version(&self) -> String {
+        let min_version: (u32, u32, u32) =
+            QuantumProgram::minimum_supported_roqoqo_version(&self.internal);
+        format!("{}.{}.{}", min_version.0, min_version.1, min_version.2)
     }
 
     /// Return the __richcmp__ magic method to perform rich comparison operations on QuantumProgram.
