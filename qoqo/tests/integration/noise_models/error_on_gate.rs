@@ -21,15 +21,22 @@ fn test_pyo3_init() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let br_type = py.get_type::<ErrorOnGateModelWrapper>();
-        let _br = br_type
+        let br = br_type
             .call0()
             .unwrap()
             .downcast::<PyCell<ErrorOnGateModelWrapper>>()
             .unwrap();
+        let br_copied = br
+            .call_method0("__copy__")
+            .unwrap()
+            .extract::<ErrorOnGateModelWrapper>()
+            .unwrap();
+        let br_wrapper = br.extract::<ErrorOnGateModelWrapper>().unwrap();
+        assert_eq!(br_copied, br_wrapper);
     })
 }
 
-/// Test debug and clone
+/// Test debug
 #[test]
 fn test_pyo3_debug() {
     pyo3::prepare_freethreaded_python();

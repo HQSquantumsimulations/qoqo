@@ -35,7 +35,6 @@ fn test_pyo3_init() {
     })
 }
 
-/// Test copy
 #[test]
 fn test_add_damping() {
     pyo3::prepare_freethreaded_python();
@@ -190,7 +189,6 @@ fn test_add_excitation() {
     })
 }
 
-/// Test debug and clone
 #[test]
 fn test_pyo3_debug() {
     pyo3::prepare_freethreaded_python();
@@ -202,7 +200,12 @@ fn test_pyo3_debug() {
             .downcast::<PyCell<ContinuousDecoherenceModelWrapper>>()
             .unwrap();
         let br_wrapper = br.extract::<ContinuousDecoherenceModelWrapper>().unwrap();
-
+        let br_copied = br
+            .call_method0("__copy__")
+            .unwrap()
+            .extract::<ContinuousDecoherenceModelWrapper>()
+            .unwrap();
+        assert_eq!(br_copied, br_wrapper);
         let br_clone = br_wrapper.clone();
         assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
 

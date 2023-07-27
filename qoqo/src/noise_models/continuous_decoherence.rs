@@ -43,7 +43,7 @@ use struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper;
 ///
 ///     noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): Optional initialisation of Noise Model with given Lindblad operator.
 #[pyclass(frozen, name = "ContinuousDecoherenceModel")]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct ContinuousDecoherenceModelWrapper {
     internal: ContinuousDecoherenceModel,
 }

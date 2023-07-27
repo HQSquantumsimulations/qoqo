@@ -32,10 +32,11 @@ use struqture::{
 ///
 /// with L0 = σ+, L1 = σ- and L3 = σz.
 ///
-/// Here the genreal incoherent part of the Lindblad equation is internally represented by a [struqture::spins::PlusMinusLindbladNoiseOperator].
+/// Here the general incoherent part of the Lindblad equation is internally represented by a [struqture::spins::PlusMinusLindbladNoiseOperator].
 ///
 /// To create a complex decoherence model first create the Lindblad noise and then turn it into a ContinuousDecoherenceModel.
-/// For a simple decoherence model, use new to create an empty model and use the add_damping, add_excitation and add_dephasing methods.
+/// For a simple decoherence model, use new to create an empty model and use the add_damping, add_excitation, add_depolarising
+/// and add_dephasing methods.
 /// For more fine control access the internal lindblad_noise directly and modify it.
 #[derive(Debug, Clone, PartialEq, Default)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
@@ -77,7 +78,7 @@ impl ContinuousDecoherenceModel {
                         // In the qc convention in a single qubit state vector v[0] corresponds to state |0>
                         // and v[1] corresponds to state |1>
                         // The plus-minus plus operator brings state |1> to state |0>
-                        // Therefor the plus operator corresponds to damping
+                        // Therefore the plus operator corresponds to damping
                         PlusMinusProduct::new().plus(*qubit),
                         PlusMinusProduct::new().plus(*qubit),
                     ),

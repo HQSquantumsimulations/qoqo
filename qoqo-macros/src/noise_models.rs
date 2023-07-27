@@ -77,15 +77,6 @@ pub fn noise_model_wrapper_def(
                 Ok(serialized)
             }
 
-
-
-
-
-            fn __repr__(&self) -> String{
-                format!("{:?}", self.internal)
-            }
-
-
             /// Return the __richcmp__ magic method to perform rich comparison operations on mixed system.
             ///
             /// Args:
@@ -125,9 +116,7 @@ pub fn noise_model_wrapper_def(
                     if let Ok(try_downcast) = input.extract::<#ident>() {
                         Ok(try_downcast.internal.into())
                     } else {
-                        // This allows all devices to be imported as generic device
-                        let generic_device_candidate = input.call_method0("generic_device")?;
-                        let get_bytes = generic_device_candidate.call_method0("to_bincode")?;
+                        let get_bytes = input.call_method0("to_bincode")?;
                         let bytes = get_bytes.extract::<Vec<u8>>()?;
                         bincode::deserialize(&bytes[..]).map_err(|err| {
                             pyo3::exceptions::PyValueError::new_err(format!(

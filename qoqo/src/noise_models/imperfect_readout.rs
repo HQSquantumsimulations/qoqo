@@ -51,16 +51,16 @@ impl ImperfectReadoutModelWrapper {
 
     /// Convenience function to create uniform error probabilities
     ///
-    /// # Arguments
+    /// Args:
+    ///     number_qubits (int): The number of qubits the uniform error probabilites should be initialized for.
+    ///     prob_detect_0_as_1 (float): The error probability to detect a 1 instead of a 0 when measuring 0
+    ///     prob_detect_1_as_0 (float): The error probability to detect a 0 instead of a 1 when measuring 1
     ///
-    /// * `number_qubits` - The number of qubits the uniform error probabilites should be initialized for.
-    /// * `prob_detect_0_as_1` - The error probability to detect a 1 instead of a 0 when measuring 0
-    /// * `prob_detect_1_as_0` - The error probability to detect a 0 instead of a 1 when measuring 1
+    /// Returns:
+    ///     ImperfectReadoutModel: The new error model
     ///
-    /// # Returns
-    ///
-    /// * `Ok(ImperfectReadoutModel)` - The new error model
-    /// * `Err(RoqoqoError)` - Probabilities are not valid (< 0 or > 1)
+    /// Raises:
+    ///     ValueError: Raised if the error probabilities are not valid (< 0 or > 1)
     #[staticmethod]
     pub fn new_with_uniform_error(
         number_qubits: usize,
@@ -141,6 +141,9 @@ impl ImperfectReadoutModelWrapper {
     ///
     /// Returns:
     ///     Self: The updated error model
+    ///
+    /// Raises:
+    ///     ValueError: Raised if the error probabilities are not valid (< 0 or > 1).
     pub fn set_error_probabilites(
         &self,
         qubit: usize,

@@ -63,7 +63,7 @@ fn test_new_with_uniform_error_init() {
     })
 }
 
-/// Test debug and clone
+/// Test debug
 #[test]
 fn test_pyo3_debug() {
     pyo3::prepare_freethreaded_python();
@@ -74,11 +74,17 @@ fn test_pyo3_debug() {
             .unwrap()
             .downcast::<PyCell<ImperfectReadoutModelWrapper>>()
             .unwrap();
+        let br_copied = br
+            .call_method0("__copy__")
+            .unwrap()
+            .extract::<ImperfectReadoutModelWrapper>()
+            .unwrap();
+
         let br_wrapper = br.extract::<ImperfectReadoutModelWrapper>().unwrap();
 
         let br_clone = br_wrapper.clone();
         assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
-
+        assert_eq!(format!("{:?}", br_copied), format!("{:?}", br_clone));
         let debug_string = format!("{:?}", br_clone);
         assert_eq!(format!("{:?}", br_wrapper), debug_string);
     })

@@ -39,10 +39,10 @@ use struqture_py;
 /// noise_model = noise_model.set_two_qubit_term(
 /// "CNOT", 0,1,
 /// lindblad_noise
-/// );
+/// )
 /// ```
 #[pyclass(frozen, name = "ErrorOnGateModel")]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ErrorOnGateModelWrapper {
     internal: ErrorOnGateModel,
 }
@@ -59,15 +59,16 @@ impl ErrorOnGateModelWrapper {
 
     /// Sets extra noise for a single qubit gate.
     ///
-    /// # Arguments
+    /// Args:
+    ///     gate (str): The name of the gate.
+    ///     qubit (int): The qubit the gate acts on.
+    ///     noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): The noise affecting system when gate is applied.
     ///
-    /// * `gate` - The name of the gate.
-    /// * `qubit` - The qubit the gate acts on.
-    /// * `noise_operator` - The noise affecting system when gate is applied.
+    /// Returns:
+    ///     Self: The error model with the new noise on gate set.
     ///
-    /// # Returns
-    ///
-    /// `Self` - The error model with the new noise on gate set.
+    /// Raises:
+    ///     PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
     pub fn set_single_qubit_gate_error(
         &self,
         gate: &str,
@@ -87,14 +88,12 @@ impl ErrorOnGateModelWrapper {
 
     /// Returns the extra noise for a single qubit gate, if it exists.
     ///
-    /// # Arguments
+    /// Args:
+    ///     gate (str): The name of the gate.
+    ///     qubit (int): The qubit the gate acts on.
     ///
-    /// * `gate` - The name of the gate.
-    /// * `qubit` - The qubit the gate acts on.
-    ///
-    /// # Returns
-    ///
-    /// `Option<struqture::spins::PlusMinusLindbladNoiseOperator>` - The error model applied when gate is applied.
+    /// Returns
+    ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
     pub fn get_single_qubit_gate_error(
         &self,
         gate: &str,
@@ -111,16 +110,17 @@ impl ErrorOnGateModelWrapper {
 
     /// Sets extra noise for a single qubit gate.
     ///
-    /// # Arguments
+    /// Args:
+    ///     gate (str): The name of the gate.
+    ///     control (int): The control qubit the gate acts on.
+    ///     target (int): The target qubit the gate acts on.
+    ///     noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): The noise affecting system when gate is applied.
     ///
-    /// * `gate` - The name of the gate.
-    /// * `control` - The control qubit the gate acts on.
-    /// * `target` - The target qubit the gate acts on.
-    /// * `noise_operator` - The noise affecting system when gate is applied.
+    /// Returns:
+    ///     Self: The error model with the new noise on gate set.
     ///
-    /// # Returns
-    ///
-    /// `Self` - The error model with the new noise on gate set.
+    /// Raises:
+    ///     PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
     pub fn set_two_qubit_gate_error(
         &self,
         gate: &str,
@@ -142,15 +142,13 @@ impl ErrorOnGateModelWrapper {
 
     /// Returns the extra noise for a single qubit gate, if it exists.
     ///
-    /// # Arguments
+    /// Args:
+    ///     gate (str): The name of the gate.
+    ///     control (int) - The control qubit the gate acts on.
+    ///     target (int) - The target qubit the gate acts on.
     ///
-    /// * `gate` - The name of the gate.
-    /// * `control` - The control qubit the gate acts on.
-    /// * `target` - The target qubit the gate acts on.
-    ///
-    /// # Returns
-    ///
-    /// `Option<struqture::spins::PlusMinusLindbladNoiseOperator>` - The error model applied when gate is applied.
+    /// Returns
+    ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
     pub fn get_two_qubit_gate_error(
         &self,
         gate: &str,
@@ -171,17 +169,18 @@ impl ErrorOnGateModelWrapper {
 
     /// Sets extra noise for a single qubit gate.
     ///
-    /// # Arguments
+    /// Args:
+    ///     gate (str): The name of the gate.
+    ///     control0 (int): The first control qubit the gate acts on.
+    ///     control1 (int): The second control qubit the gate acts on.
+    ///     target (int): The target qubit the gate acts on.
+    ///     noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): The noise affecting system when gate is applied.
     ///
-    /// * `gate` - The name of the gate.
-    /// * `control0` - The first control qubit the gate acts on.
-    /// * `control1` - The second control qubit the gate acts on.
-    /// * `target` - The target qubit the gate acts on.
-    /// * `noise_operator` - The noise affecting system when gate is applied.
+    /// Returns:
+    ///     Self: The error model with the new noise on gate set.
     ///
-    /// # Returns
-    ///
-    /// `Self` - The error model with the new noise on gate set.
+    /// Raises:
+    ///     PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
     pub fn set_three_qubit_gate_error(
         &self,
         gate: &str,
@@ -205,16 +204,14 @@ impl ErrorOnGateModelWrapper {
 
     /// Returns the extra noise for a three qubit gate, if it exists.
     ///
-    /// # Arguments
+    /// Args:
+    ///     gate (str): The name of the gate.
+    ///     control0 (int): The first control qubit the gate acts on.
+    ///     control1 (int): The second control qubit the gate acts on.
+    ///     target (int): The target qubit the gate acts on.
     ///
-    /// * `gate` - The name of the gate.
-    /// * `control0` - The first control qubit the gate acts on.
-    /// * `control1` - The second control qubit the gate acts on.
-    /// * `target` - The target qubit the gate acts on.
-    ///
-    /// # Returns
-    ///
-    /// `Option<struqture::spins::PlusMinusLindbladNoiseOperator>` - The error model applied when gate is applied.
+    /// Returns
+    ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
     pub fn get_three_qubit_gate_error(
         &self,
         gate: &str,
@@ -236,15 +233,16 @@ impl ErrorOnGateModelWrapper {
 
     /// Sets extra noise for a multi qubit gate.
     ///
-    /// # Arguments
+    /// Args:
+    ///     gate (str): The name of the gate.
+    ///     qubits (list): The qubits the gate acts on.
+    ///     noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): The noise affecting system when gate is applied.
     ///
-    /// * `gate` - The name of the gate.
-    /// * `qubits` - The qubits the gate acts on.
-    /// * `noise_operator` - The noise affecting system when gate is applied.
+    /// Returns:
+    ///     Self: The error model with the new noise on gate set.
     ///
-    /// # Returns
-    ///
-    /// `Self` - The error model with the new noise on gate set.
+    /// Raises:
+    ///     PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
     pub fn set_multi_qubit_gate_error(
         &self,
         gate: &str,
@@ -264,14 +262,12 @@ impl ErrorOnGateModelWrapper {
 
     /// Returns the extra noise for a multi qubit gate, if it exists.
     ///
-    /// # Arguments
+    /// Args:
+    ///     gate (str): The name of the gate.
+    ///     qubits (list[int]): The qubits the gate acts on.
     ///
-    /// * `gate` - The name of the gate.
-    /// * `qubits` - The qubits the gate acts on.
-    ///
-    /// # Returns
-    ///
-    /// `Option<struqture::spins::PlusMinusLindbladNoiseOperator>` - The error model applied when gate is applied.
+    /// Returns
+    ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
     pub fn get_multi_qubit_gate_error(
         &self,
         gate: &str,
@@ -338,26 +334,3 @@ impl ErrorOnGateModelWrapper {
         }
     }
 }
-
-// impl ErrorOnGateModelWrapper {
-//     /// Fallible conversion of generic python object..
-//     pub fn from_pyany(input: Py<PyAny>) -> PyResult<NoiseModel> {
-//         Python::with_gil(|py| -> PyResult<NoiseModel> {
-//             let input = input.as_ref(py);
-//             if let Ok(try_downcast) = input.extract::<ErrorOnGateModelWrapper>() {
-//                 Ok(try_downcast.internal.into())
-//             } else {
-//                 // This allows all devices to be imported as generic device
-//                 let generic_device_candidate = input.call_method0("generic_device")?;
-//                 let get_bytes = generic_device_candidate.call_method0("to_bincode")?;
-//                 let bytes = get_bytes.extract::<Vec<u8>>()?;
-//                 bincode::deserialize(&bytes[..]).map_err(|err| {
-//                     pyo3::exceptions::PyValueError::new_err(format!(
-//                         "Cannot treat input as NoiseModel: {}",
-//                         err
-//                     ))
-//                 })
-//             }
-//         })
-//     }
-// }
