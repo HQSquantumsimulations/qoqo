@@ -22,6 +22,8 @@ use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::CalculatorFloatWrapper;
 use roqoqo::operations::*;
 use roqoqo::Circuit;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
 
@@ -2676,6 +2678,11 @@ fn test_pyo3_json_schema(operation: PragmaOperation) {
     };
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
+        let minimum_version: String = match operation {
+            PragmaOperation::PragmaLoop(_) => "1.1.0".to_string(),
+            PragmaOperation::PragmaControlledCircuit(_) => "1.5.0".to_string(),
+            _ => "1.0.0".to_string(),
+        };
         let converted_op = Operation::from(operation);
         let pyobject = convert_operation_to_pyobject(converted_op).unwrap();
         let operation = pyobject.as_ref(py);
@@ -2684,5 +2691,13 @@ fn test_pyo3_json_schema(operation: PragmaOperation) {
             String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
 
         assert_eq!(schema, rust_schema);
+
+        let current_version_string =
+            String::extract(operation.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(operation.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, minimum_version);
     });
 }

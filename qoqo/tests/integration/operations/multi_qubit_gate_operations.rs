@@ -23,6 +23,8 @@ use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::CalculatorFloatWrapper;
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use roqoqo::{Circuit, RoqoqoError};
 use std::collections::HashMap;
 use std::convert::TryInto;
@@ -583,5 +585,13 @@ fn test_pyo3_json_schema(operation: Operation) {
             String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
 
         assert_eq!(schema, rust_schema);
+
+        let current_version_string =
+            String::extract(operation.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(operation.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.0.0");
     });
 }

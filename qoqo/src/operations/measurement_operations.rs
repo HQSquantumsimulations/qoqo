@@ -16,6 +16,8 @@ use pyo3::types::PySet;
 use qoqo_macros::*;
 use roqoqo::operations::*;
 use roqoqo::Circuit;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
 #[wrap(Operate, OperateSingleQubit, JsonSchema)]

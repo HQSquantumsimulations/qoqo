@@ -15,6 +15,8 @@ use qoqo::operations::*;
 use qoqo::CircuitWrapper;
 use roqoqo::operations::*;
 use roqoqo::Circuit;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
 
@@ -793,5 +795,13 @@ fn test_pyo3_json_schema(operation: Operation) {
             String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
 
         assert_eq!(schema, rust_schema);
+
+        let current_version_string =
+            String::extract(operation.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(operation.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.0.0");
     });
 }

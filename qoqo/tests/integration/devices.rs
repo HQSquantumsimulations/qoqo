@@ -15,6 +15,8 @@ use numpy::{pyarray, PyArray2};
 use pyo3::prelude::*;
 use qoqo::devices::{AllToAllDeviceWrapper, GenericDeviceWrapper, SquareLatticeDeviceWrapper};
 use roqoqo::devices::{AllToAllDevice, GenericDevice, SquareLatticeDevice};
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use test_case::test_case;
 
 fn new_alltoalldevice() -> Py<PyAny> {
@@ -210,6 +212,26 @@ fn test_json_schema_all_to_all() {
         let rust_schema =
             serde_json::to_string_pretty(&schemars::schema_for!(AllToAllDevice)).unwrap();
         assert_eq!(schema, rust_schema);
+
+        let current_version_string = String::extract(
+            device
+                .call_method0(py, "current_version")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+        let minimum_supported_version_string = String::extract(
+            device
+                .call_method0(py, "min_supported_version")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.0.0");
     });
 }
 
@@ -231,6 +253,26 @@ fn test_json_schema_squared() {
         let rust_schema =
             serde_json::to_string_pretty(&schemars::schema_for!(SquareLatticeDevice)).unwrap();
         assert_eq!(schema, rust_schema);
+
+        let current_version_string = String::extract(
+            device
+                .call_method0(py, "current_version")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+        let minimum_supported_version_string = String::extract(
+            device
+                .call_method0(py, "min_supported_version")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.0.0");
     });
 }
 
@@ -252,6 +294,26 @@ fn test_json_schema_generic() {
         let rust_schema =
             serde_json::to_string_pretty(&schemars::schema_for!(GenericDevice)).unwrap();
         assert_eq!(schema, rust_schema);
+
+        let current_version_string = String::extract(
+            device
+                .call_method0(py, "current_version")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+        let minimum_supported_version_string = String::extract(
+            device
+                .call_method0(py, "min_supported_version")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.0.0");
     });
 }
 

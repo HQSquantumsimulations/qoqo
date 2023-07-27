@@ -21,6 +21,8 @@ use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::{convert_into_calculator_float, CalculatorFloatWrapper};
 
 use roqoqo::operations::*;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 
 use std::collections::HashMap;
 

@@ -31,6 +31,8 @@ use qoqo_calculator::CalculatorFloat;
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
 use roqoqo::RoqoqoError;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 use std::convert::TryInto;
 use test_case::test_case;
@@ -2217,6 +2219,12 @@ fn test_pyo3_json_schema(operation: TwoQubitGateOperation) {
     };
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
+        let minimum_version: String = match operation {
+            TwoQubitGateOperation::PhaseShiftedControlledPhase(_) => "1.2.0".to_string(),
+            TwoQubitGateOperation::ControlledRotateX(_) => "1.3.0".to_string(),
+            TwoQubitGateOperation::ControlledRotateXY(_) => "1.3.0".to_string(),
+            _ => "1.0.0".to_string(),
+        };
         let converted_op = Operation::from(operation);
         let pyobject = convert_operation_to_pyobject(converted_op).unwrap();
         let operation = pyobject.as_ref(py);
@@ -2225,5 +2233,13 @@ fn test_pyo3_json_schema(operation: TwoQubitGateOperation) {
             String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
 
         assert_eq!(schema, rust_schema);
+
+        let current_version_string =
+            String::extract(operation.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(operation.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, minimum_version);
     });
 }

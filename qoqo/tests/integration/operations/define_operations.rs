@@ -13,6 +13,8 @@
 use pyo3::prelude::*;
 use qoqo::operations::*;
 use roqoqo::operations::*;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
 
@@ -656,6 +658,10 @@ fn test_pyo3_json_schema(operation: Operation) {
     };
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
+        let minimum_version: String = match operation {
+            Operation::InputBit(_) => "1.1.0".to_string(),
+            _ => "1.0.0".to_string(),
+        };
         let pyobject = convert_operation_to_pyobject(operation).unwrap();
         let operation = pyobject.as_ref(py);
 
@@ -663,5 +669,13 @@ fn test_pyo3_json_schema(operation: Operation) {
             String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
 
         assert_eq!(schema, rust_schema);
+
+        let current_version_string =
+            String::extract(operation.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(operation.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, minimum_version);
     });
 }

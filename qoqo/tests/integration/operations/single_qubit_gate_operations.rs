@@ -29,6 +29,8 @@ use roqoqo::operations::Operation;
 use roqoqo::operations::SingleQubitGateOperation;
 use roqoqo::operations::*;
 use roqoqo::RoqoqoError;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 use std::convert::TryInto;
 use std::f64::consts::PI;
@@ -2692,6 +2694,11 @@ fn test_pyo3_json_schema(operation: SingleQubitGateOperation) {
     };
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
+        let minimum_version: String = match operation {
+            SingleQubitGateOperation::GPi(_) => "1.4.0".to_string(),
+            SingleQubitGateOperation::GPi2(_) => "1.4.0".to_string(),
+            _ => "1.0.0".to_string(),
+        };
         let converted_op = Operation::from(operation);
         let pyobject = convert_operation_to_pyobject(converted_op).unwrap();
         let operation = pyobject.as_ref(py);
@@ -2700,5 +2707,13 @@ fn test_pyo3_json_schema(operation: SingleQubitGateOperation) {
             String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
 
         assert_eq!(schema, rust_schema);
+
+        let current_version_string =
+            String::extract(operation.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(operation.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, minimum_version);
     });
 }
