@@ -163,7 +163,6 @@ impl ClassicalRegisterWrapper {
         Ok(b)
     }
 
-    #[staticmethod]
     /// Convert the bincode representation of the ClassicalRegister to a ClassicalRegister using the [bincode] crate.
     ///
     /// Args:
@@ -175,6 +174,7 @@ impl ClassicalRegisterWrapper {
     /// Raises:
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to ClassicalRegister.
+    #[staticmethod]
     pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
         let bytes = input
             .extract::<Vec<u8>>()

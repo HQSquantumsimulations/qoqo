@@ -241,7 +241,6 @@ impl CheatedWrapper {
         Ok(b)
     }
 
-    #[staticmethod]
     /// Convert the bincode representation of the Cheated to a Cheated using the [bincode] crate.
     ///
     /// Args:
@@ -253,6 +252,7 @@ impl CheatedWrapper {
     /// Raises:
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to Cheated.
+    #[staticmethod]
     pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
         let bytes = input
             .extract::<Vec<u8>>()

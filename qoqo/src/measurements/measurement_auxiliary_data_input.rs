@@ -170,7 +170,6 @@ impl PauliZProductInputWrapper {
         Ok(b)
     }
 
-    #[staticmethod]
     /// Convert the bincode representation of the PauliZProductInput to a PauliZProductInput using the [bincode] crate.
     ///
     /// Args:
@@ -182,6 +181,7 @@ impl PauliZProductInputWrapper {
     /// Raises:
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to PauliZProductInput.
+    #[staticmethod]
     pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
         let bytes = input
             .extract::<Vec<u8>>()
@@ -394,7 +394,6 @@ impl CheatedPauliZProductInputWrapper {
         Ok(b)
     }
 
-    #[staticmethod]
     /// Convert the bincode representation of the CheatedPauliZProductInput to a CheatedPauliZProductInput using the [bincode] crate.
     ///
     /// Args:
@@ -406,6 +405,7 @@ impl CheatedPauliZProductInputWrapper {
     /// Raises:
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to CheatedPauliZProductInput.
+    #[staticmethod]
     pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
         let bytes = input
             .extract::<Vec<u8>>()
@@ -582,7 +582,6 @@ impl CheatedInputWrapper {
         Ok(b)
     }
 
-    #[staticmethod]
     /// Convert the bincode representation of the CheatedInput to a CheatedInput using the [bincode] crate.
     ///
     /// Args:
@@ -594,6 +593,7 @@ impl CheatedInputWrapper {
     /// Raises:
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to CheatedInput.
+    #[staticmethod]
     pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
         let bytes = input
             .extract::<Vec<u8>>()
