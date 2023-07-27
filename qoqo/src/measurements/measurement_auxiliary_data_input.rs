@@ -21,9 +21,7 @@ use roqoqo::measurements::{
     CheatedInput, CheatedPauliZProductInput, PauliProductMask, PauliZProductInput,
 };
 #[cfg(feature = "json_schema")]
-use roqoqo::operations::SupportedVersion;
-#[cfg(feature = "json_schema")]
-use roqoqo::ROQOQO_VERSION;
+use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 use std::collections::HashMap;
 
 #[pyclass(name = "PauliZProductInput", module = "qoqo.measurements")]

@@ -21,9 +21,7 @@ use pyo3::types::PyByteArray;
 use qoqo_macros::devicewrapper;
 use roqoqo::devices::{Device, SquareLatticeDevice};
 #[cfg(feature = "json_schema")]
-use roqoqo::operations::SupportedVersion;
-#[cfg(feature = "json_schema")]
-use roqoqo::ROQOQO_VERSION;
+use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 
 /// A generic square lattice device with only next-neighbours-connectivity.
 ///

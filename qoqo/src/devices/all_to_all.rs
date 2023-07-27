@@ -21,9 +21,7 @@ use pyo3::types::PyByteArray;
 use qoqo_macros::devicewrapper;
 use roqoqo::devices::{AllToAllDevice, Device};
 #[cfg(feature = "json_schema")]
-use roqoqo::operations::SupportedVersion;
-#[cfg(feature = "json_schema")]
-use roqoqo::ROQOQO_VERSION;
+use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 
 /// A generic device with all-to-all connectivity.
 ///

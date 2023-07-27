@@ -20,9 +20,7 @@ use pyo3::types::PyByteArray;
 use qoqo_macros::devicewrapper;
 use roqoqo::devices::{Device, GenericDevice};
 #[cfg(feature = "json_schema")]
-use roqoqo::operations::SupportedVersion;
-#[cfg(feature = "json_schema")]
-use roqoqo::ROQOQO_VERSION;
+use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 
 /// A generic device assuming all-to-all connectivity between all involved qubits.
 ///
