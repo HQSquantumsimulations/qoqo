@@ -22,6 +22,7 @@ use roqoqo::measurements::Cheated;
 use roqoqo::prelude::*;
 use roqoqo::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
 use roqoqo::Circuit;
+#[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 

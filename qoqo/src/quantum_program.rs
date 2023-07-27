@@ -21,6 +21,7 @@ use pyo3::exceptions::{PyRuntimeError, PyTypeError, PyValueError};
 use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
 use roqoqo::measurements::Measure;
+#[cfg(feature = "json_schema")]
 use roqoqo::operations::SupportedVersion;
 use roqoqo::QuantumProgram;
 use roqoqo::ROQOQO_VERSION;

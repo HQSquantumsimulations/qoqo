@@ -20,6 +20,7 @@ use pyo3::types::PyByteArray;
 use roqoqo::measurements::ClassicalRegister;
 use roqoqo::prelude::*;
 use roqoqo::Circuit;
+#[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 

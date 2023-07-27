@@ -20,7 +20,9 @@ use pyo3::types::PyByteArray;
 use roqoqo::measurements::{
     CheatedInput, CheatedPauliZProductInput, PauliProductMask, PauliZProductInput,
 };
+#[cfg(feature = "json_schema")]
 use roqoqo::operations::SupportedVersion;
+#[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 

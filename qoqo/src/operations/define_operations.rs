@@ -15,6 +15,7 @@ use pyo3::prelude::*;
 use pyo3::types::PySet;
 use qoqo_macros::*;
 use roqoqo::operations::*;
+#[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
