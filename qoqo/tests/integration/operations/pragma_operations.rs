@@ -2681,7 +2681,7 @@ fn test_pyo3_json_schema(operation: PragmaOperation) {
         let minimum_version: String = match operation {
             PragmaOperation::PragmaLoop(_) => "1.1.0".to_string(),
             PragmaOperation::PragmaControlledCircuit(_) => "1.5.0".to_string(),
-            _ => "1.0.0".to_string()
+            _ => "1.0.0".to_string(),
         };
         let converted_op = Operation::from(operation);
         let pyobject = convert_operation_to_pyobject(converted_op).unwrap();

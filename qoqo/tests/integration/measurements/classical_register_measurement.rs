@@ -17,9 +17,9 @@ use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::measurements::ClassicalRegisterWrapper;
 use qoqo::CircuitWrapper;
-use roqoqo::{measurements::ClassicalRegister, Circuit};
 #[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
+use roqoqo::{measurements::ClassicalRegister, Circuit};
 use std::collections::HashMap;
 
 #[test]
