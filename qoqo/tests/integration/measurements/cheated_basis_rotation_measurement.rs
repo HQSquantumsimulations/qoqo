@@ -18,6 +18,8 @@ use pyo3::Python;
 use qoqo::measurements::{CheatedPauliZProductInputWrapper, CheatedPauliZProductWrapper};
 use qoqo::CircuitWrapper;
 use roqoqo::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use roqoqo::{
     measurements::{CheatedPauliZProduct, CheatedPauliZProductInput},
     Circuit,
@@ -754,5 +756,19 @@ fn test_pyo3_json_schema() {
 
         assert_eq!(schema_input, rust_schema_input);
         assert_eq!(schema, rust_schema);
+
+        let current_version_string_input =
+            String::extract(input.call_method0("current_version").unwrap()).unwrap();
+        let current_version_string =
+            String::extract(br_one.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string_input =
+            String::extract(input.call_method0("min_supported_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(br_one.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(current_version_string_input, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.0.0");
+        assert_eq!(minimum_supported_version_string_input, "1.0.0");
     });
 }

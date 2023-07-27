@@ -20,6 +20,7 @@ use qoqo::{CircuitWrapper, OperationIteratorWrapper, QOQO_VERSION};
 use qoqo_calculator::CalculatorFloat;
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
+#[cfg(feature = "json_schema")]
 use roqoqo::Circuit;
 use roqoqo::ROQOQO_VERSION;
 use std::collections::{HashMap, HashSet};
@@ -425,6 +426,14 @@ fn test_json_schema() {
         let schema: String = String::extract(circuit.call_method0("json_schema").unwrap()).unwrap();
         let rust_schema = serde_json::to_string_pretty(&schemars::schema_for!(Circuit)).unwrap();
         assert_eq!(schema, rust_schema);
+
+        let current_version_string =
+            String::extract(circuit.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(circuit.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.0.0");
     });
 }
 

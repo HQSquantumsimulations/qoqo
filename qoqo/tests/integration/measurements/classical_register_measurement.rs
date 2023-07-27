@@ -18,6 +18,8 @@ use pyo3::Python;
 use qoqo::measurements::ClassicalRegisterWrapper;
 use qoqo::CircuitWrapper;
 use roqoqo::{measurements::ClassicalRegister, Circuit};
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
 #[test]
@@ -386,5 +388,13 @@ fn test_pyo3_json_schema() {
         let schema: String = String::extract(br_one.call_method0("json_schema").unwrap()).unwrap();
 
         assert_eq!(schema, rust_schema);
+
+        let current_version_string =
+            String::extract(br_one.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(br_one.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.0.0");
     });
 }
