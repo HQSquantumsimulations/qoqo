@@ -16,6 +16,7 @@ qoqo.Circuit
       ~Circuit.__init__
       ~Circuit.add
       ~Circuit.count_occurences
+      ~Circuit.current_version
       ~Circuit.definitions
       ~Circuit.filter_by_tag
       ~Circuit.from_bincode
@@ -23,6 +24,8 @@ qoqo.Circuit
       ~Circuit.get
       ~Circuit.get_operation_types
       ~Circuit.get_slice
+      ~Circuit.json_schema
+      ~Circuit.min_supported_version
       ~Circuit.operations
       ~Circuit.overrotate
       ~Circuit.remap_qubits

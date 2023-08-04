@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qoqo.Circuit &mdash; qoqo 1.6.0-alpha.1 documentation</title>
+  <title>qoqo.Circuit &mdash; qoqo 1.6.0-alpha.2 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -36,7 +36,7 @@
             qoqo
           </a>
               <div class="version">
-                1.6.0-alpha.1
+                1.6.0-alpha.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -116,43 +116,52 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.count_occurences" title="qoqo.Circuit.count_occurences"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_occurences</span></code></a>(operations)</p></td>
 <td><p>Count the number of occurences of a set of operation tags in the circuit.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.definitions" title="qoqo.Circuit.definitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">definitions</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.current_version" title="qoqo.Circuit.current_version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_version</span></code></a>()</p></td>
+<td><p>Returns the current version of the qoqo library .</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.definitions" title="qoqo.Circuit.definitions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">definitions</span></code></a>()</p></td>
 <td><p>Return a list of definitions in the Circuit.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.filter_by_tag" title="qoqo.Circuit.filter_by_tag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_by_tag</span></code></a>(tag)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.filter_by_tag" title="qoqo.Circuit.filter_by_tag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_by_tag</span></code></a>(tag)</p></td>
 <td><p>Return a list of operations with given tag.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.from_bincode" title="qoqo.Circuit.from_bincode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_bincode</span></code></a>(input)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.from_bincode" title="qoqo.Circuit.from_bincode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_bincode</span></code></a>(input)</p></td>
 <td><p>Convert the bincode representation of the Circuit to a Circuit using the [bincode] crate.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.from_json" title="qoqo.Circuit.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(json_string)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.from_json" title="qoqo.Circuit.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(json_string)</p></td>
 <td><p>Convert the json representation of a Circuit to a Circuit.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.get" title="qoqo.Circuit.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(index)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.get" title="qoqo.Circuit.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(index)</p></td>
 <td><p>Return a copy of the Operation at a certain index of the Circuit.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.get_operation_types" title="qoqo.Circuit.get_operation_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_operation_types</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.get_operation_types" title="qoqo.Circuit.get_operation_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_operation_types</span></code></a>()</p></td>
 <td><p>Return a list of the hqslang names of all operations occuring in the circuit.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.get_slice" title="qoqo.Circuit.get_slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_slice</span></code></a>([start, stop])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.get_slice" title="qoqo.Circuit.get_slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_slice</span></code></a>([start, stop])</p></td>
 <td><p>Return the copy of a slice of the Circuit.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.operations" title="qoqo.Circuit.operations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">operations</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.json_schema" title="qoqo.Circuit.json_schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">json_schema</span></code></a>()</p></td>
+<td><p>Return the JsonSchema for the json serialisation of the class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.min_supported_version" title="qoqo.Circuit.min_supported_version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_supported_version</span></code></a>()</p></td>
+<td><p>Return the minimum version of qoqo that supports this object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.operations" title="qoqo.Circuit.operations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">operations</span></code></a>()</p></td>
 <td><p>Return a list of all operations in the Circuit.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.overrotate" title="qoqo.Circuit.overrotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overrotate</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.overrotate" title="qoqo.Circuit.overrotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overrotate</span></code></a>()</p></td>
 <td><p>Return clone of the circuit with all overrotation Pragmas applied.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.remap_qubits" title="qoqo.Circuit.remap_qubits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remap_qubits</span></code></a>(mapping)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.remap_qubits" title="qoqo.Circuit.remap_qubits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remap_qubits</span></code></a>(mapping)</p></td>
 <td><p>Remap qubits in operations in clone of Circuit.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.substitute_parameters" title="qoqo.Circuit.substitute_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">substitute_parameters</span></code></a>(substitution_parameters)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.substitute_parameters" title="qoqo.Circuit.substitute_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">substitute_parameters</span></code></a>(substitution_parameters)</p></td>
 <td><p>Substitute the symbolic parameters in a clone of the Circuit according to the substitution_parameters input.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.to_bincode" title="qoqo.Circuit.to_bincode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_bincode</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.to_bincode" title="qoqo.Circuit.to_bincode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_bincode</span></code></a>()</p></td>
 <td><p>Return the bincode representation of the Circuit using the [bincode] crate.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.to_json" title="qoqo.Circuit.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../qoqo.html#qoqo.Circuit.to_json" title="qoqo.Circuit.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>()</p></td>
 <td><p>Return the json representation of the Circuit.</p></td>
 </tr>
 </tbody>
@@ -181,6 +190,20 @@
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.Circuit.current_version">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.current_version" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the current version of the qoqo library .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current version of the library.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -317,6 +340,34 @@
 <li><p><strong>IndexError</strong> -- Stop index out of range.</p></li>
 <li><p><strong>IndexError</strong> -- Start index out of range.</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.Circuit.json_schema">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">json_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.json_schema" title="Permalink to this definition"></a></dt>
+<dd><p>Return the JsonSchema for the json serialisation of the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The json schema serialized to json</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.Circuit.min_supported_version">
+<span class="sig-name descname"><span class="pre">min_supported_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.Circuit.min_supported_version" title="Permalink to this definition"></a></dt>
+<dd><p>Return the minimum version of qoqo that supports this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The minimum version of the qoqo library to deserialize this object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
