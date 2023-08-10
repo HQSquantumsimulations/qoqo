@@ -2,22 +2,11 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
-## 1.6.0-alpha.2
+## 1.6.0
 
-### Added in 1.6.0-alpha.2
+### Added in 1.6.0
 
 * Added support for JsonSchema.
-
-## 1.6.0-alpha.1
-
-### Fixed in 1.6.0-alpha.1
-
-* Renamed the PNRDetection operation to PhotonDetection.
-
-## 1.6.0-alpha.0
-
-### Added in 1.6.0-alpha.0
-
 * Added first bosonic operations traits in `roqoqo` and `qoqo`.
 
 ## 1.5.1
