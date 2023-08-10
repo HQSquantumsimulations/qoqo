@@ -23,7 +23,16 @@ use syn::{
     parse2, parse_macro_input, DataStruct, DeriveInput, Fields, GenericArgument, Ident, ItemImpl,
     ItemStruct, PathArguments, Token, Type, TypePath,
 };
+mod noise_models;
 mod operate;
+
+#[proc_macro_attribute]
+pub fn noise_model_wrapper(
+    _metadata: proc_macro::TokenStream,
+    input: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    noise_models::noise_model_wrapper_def(_metadata, input)
+}
 // mod operate_unitary;
 
 /// Array of field names that are reserved for use with specific traits
