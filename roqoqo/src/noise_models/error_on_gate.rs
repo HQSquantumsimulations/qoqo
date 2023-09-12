@@ -57,30 +57,38 @@ pub struct ErrorOnGateModel {
         HashMap<(String, Vec<usize>), struqture::spins::PlusMinusLindbladNoiseOperator>,
 }
 
+type SingleQGateIndes = (String, usize);
+type SingleQubitErrors = Vec<(SingleQGateIndes, struqture::spins::PlusMinusLindbladNoiseOperator)>;
+type TwoQubitGateIndes = (String, (usize, usize));
+type TwoQubitErrors = Vec<(TwoQubitGateIndes, struqture::spins::PlusMinusLindbladNoiseOperator)>;
+type ThreeQubitGateIndes = (String, (usize, usize, usize));
+type ThreeQubitErrors = Vec<(ThreeQubitGateIndes, struqture::spins::PlusMinusLindbladNoiseOperator)>;
+type MultiQubitGateIndes = (String, Vec<usize>);
+type MultiQubitErrors = Vec<(MultiQubitGateIndes, struqture::spins::PlusMinusLindbladNoiseOperator)>;
 #[cfg(feature = "serialize")]
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 struct ErrorOnGateModelSerailize{
     /// Extra noise for single qubit gates.
-    single_qubit_gate_errors:
-        Vec<((String, usize), struqture::spins::PlusMinusLindbladNoiseOperator)>,
+    single_qubit_gate_errors:SingleQubitErrors
+        ,
     /// Extra noise for two qubit gates.
     two_qubit_gate_errors:
-        Vec<((String, (usize, usize)), struqture::spins::PlusMinusLindbladNoiseOperator)>,
+    TwoQubitErrors,
     /// Extra noise for three qubit gates.
     three_qubit_gate_errors:
-        Vec<((String, (usize, usize, usize)), struqture::spins::PlusMinusLindbladNoiseOperator)>,
+    ThreeQubitErrors,
     /// Extra noise for multi qubit gates.
     multi_qubit_gate_errors:
-        Vec<((String, Vec<usize>), struqture::spins::PlusMinusLindbladNoiseOperator)>,
+    MultiQubitErrors,
 }
 
 #[cfg(feature = "serialize")]
 impl From<ErrorOnGateModel> for ErrorOnGateModelSerailize {
     fn from(value: ErrorOnGateModel) -> Self {
-        let single_qubit_gate_errors: Vec<((String, usize), struqture::spins::PlusMinusLindbladNoiseOperator)>= value.single_qubit_gate_errors.into_iter().collect();
-        let two_qubit_gate_errors: Vec<((String, (usize, usize)), struqture::spins::PlusMinusLindbladNoiseOperator)>= value.two_qubit_gate_errors.into_iter().collect();
-        let three_qubit_gate_errors: Vec<((String, (usize, usize, usize)), struqture::spins::PlusMinusLindbladNoiseOperator)>= value.three_qubit_gate_errors.into_iter().collect();
-        let multi_qubit_gate_errors: Vec<((String, Vec<usize>), struqture::spins::PlusMinusLindbladNoiseOperator)>= value.multi_qubit_gate_errors.into_iter().collect();
+        let single_qubit_gate_errors: SingleQubitErrors= value.single_qubit_gate_errors.into_iter().collect();
+        let two_qubit_gate_errors: TwoQubitErrors= value.two_qubit_gate_errors.into_iter().collect();
+        let three_qubit_gate_errors: ThreeQubitErrors= value.three_qubit_gate_errors.into_iter().collect();
+        let multi_qubit_gate_errors: MultiQubitErrors= value.multi_qubit_gate_errors.into_iter().collect();
         ErrorOnGateModelSerailize {single_qubit_gate_errors, two_qubit_gate_errors, three_qubit_gate_errors, multi_qubit_gate_errors}
     }
 }
