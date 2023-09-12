@@ -743,12 +743,12 @@ impl ops::Add<Circuit> for Circuit {
             definitions: self
                 .definitions
                 .into_iter()
-                .chain(other.definitions.into_iter())
+                .chain(other.definitions)
                 .collect(),
             operations: self
                 .operations
                 .into_iter()
-                .chain(other.operations.into_iter())
+                .chain(other.operations)
                 .collect(),
             _roqoqo_version: RoqoqoVersion,
         }
@@ -800,8 +800,8 @@ where
 /// * `other` - The Circuit to be appended.
 impl ops::AddAssign<Circuit> for Circuit {
     fn add_assign(&mut self, other: Circuit) {
-        self.definitions.extend(other.definitions.into_iter());
-        self.operations.extend(other.operations.into_iter())
+        self.definitions.extend(other.definitions);
+        self.operations.extend(other.operations)
     }
 }
 
