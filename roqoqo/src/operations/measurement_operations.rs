@@ -44,7 +44,7 @@ use crate::Circuit;
     roqoqo_derive::OperateSingleQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct MeasureQubit {
     /// The measured qubit.
     qubit: usize,
@@ -82,7 +82,7 @@ const TAGS_MeasureQubit: &[&str; 3] = &["Operation", "Measurement", "MeasureQubi
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGetStateVector {
     /// The name of the classical readout register.
     readout: String,
@@ -142,7 +142,7 @@ impl InvolveQubits for PragmaGetStateVector {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGetDensityMatrix {
     /// The name of the classical readout register.
     readout: String,
@@ -211,7 +211,7 @@ impl InvolveQubits for PragmaGetDensityMatrix {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGetOccupationProbability {
     /// The name of the classical readout register.
     readout: String,
@@ -281,7 +281,7 @@ impl InvolveQubits for PragmaGetOccupationProbability {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaGetPauliProduct {
     /// The HashMap of the pauli matrix to apply to each qubit in the form {qubit: pauli}. Allowed values to be provided for 'pauli' are: `0` = identity, `1` = PauliX, `2` = PauliY, `3` = PauliZ.
     qubit_paulis: HashMap<usize, usize>,
@@ -364,7 +364,7 @@ impl InvolveQubits for PragmaGetPauliProduct {
     roqoqo_derive::OperatePragma,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaRepeatedMeasurement {
     /// The name of the classical readout register.
     readout: String,

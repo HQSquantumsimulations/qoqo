@@ -23,7 +23,16 @@ use syn::{
     parse2, parse_macro_input, DataStruct, DeriveInput, Fields, GenericArgument, Ident, ItemImpl,
     ItemStruct, PathArguments, Token, Type, TypePath,
 };
+mod noise_models;
 mod operate;
+
+#[proc_macro_attribute]
+pub fn noise_model_wrapper(
+    _metadata: proc_macro::TokenStream,
+    input: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    noise_models::noise_model_wrapper_def(_metadata, input)
+}
 // mod operate_unitary;
 
 /// Array of field names that are reserved for use with specific traits
@@ -526,6 +535,42 @@ pub fn wrap(
     } else {
         TokenStream::new()
     };
+    let json_schema_quote = if attribute_arguments.contains("JsonSchema") {
+        quote! {
+            #[cfg(feature = "json_schema")]
+            /// Returns the current version of the qoqo library .
+            ///
+            /// Returns:
+            ///     str: The current version of the library.
+            #[staticmethod]
+            pub fn current_version() -> String {
+                ROQOQO_VERSION.to_string()
+            }
+
+            #[cfg(feature = "json_schema")]
+            /// Return the minimum version of qoqo that supports this object.
+            ///
+            /// Returns:
+            ///     str: The minimum version of the qoqo library to deserialize this object.
+            pub fn min_supported_version(&self) -> String {
+                let min_version: (u32, u32, u32) = #ident::minimum_supported_roqoqo_version(&self.internal);
+                format!("{}.{}.{}", min_version.0, min_version.1, min_version.2)
+            }
+
+            #[cfg(feature = "json_schema")]
+            /// Return the JsonSchema for the json serialisation of the class.
+            ///
+            /// Returns:
+            ///     str: The json schema serialized to json
+            #[staticmethod]
+            pub fn json_schema() -> String {
+                let schema = schemars::schema_for!(#ident);
+                serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
+            }
+        }
+    } else {
+        TokenStream::new()
+    };
 
     let msg = format!("Internal storage of {} object", ident);
     let q = quote! {
@@ -563,6 +608,7 @@ pub fn wrap(
             #operate_two_mode_quote
             #operate_single_mode_gate_quote
             #operate_two_mode_gate_quote
+            #json_schema_quote
             fn __format__(&self, _format_spec: &str) -> PyResult<String> {
                 Ok(format!("{:?}", self.internal))
             }
@@ -570,7 +616,6 @@ pub fn wrap(
             fn __repr__(&self) -> PyResult<String> {
                 Ok(format!("{:?}", self.internal))
             }
-
 
             /// Returns the __richcmp__ magic method to perform rich comparison
             /// operations on Operation.

@@ -15,6 +15,8 @@ use numpy::{pyarray, PyArray2};
 use pyo3::prelude::*;
 use qoqo::devices::{AllToAllDeviceWrapper, GenericDeviceWrapper, SquareLatticeDeviceWrapper};
 use roqoqo::devices::{AllToAllDevice, GenericDevice, SquareLatticeDevice};
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use test_case::test_case;
 
 fn new_alltoalldevice() -> Py<PyAny> {
@@ -189,6 +191,129 @@ fn test_to_from_bincode(device: Py<PyAny>) {
             .extract(py)
             .unwrap();
         assert!(comparison);
+    });
+}
+
+/// Test json_schema function for AllToAllDevice
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema_all_to_all() {
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let device = new_alltoalldevice();
+        let schema: String = String::extract(
+            device
+                .call_method0(py, "json_schema")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+        let rust_schema =
+            serde_json::to_string_pretty(&schemars::schema_for!(AllToAllDevice)).unwrap();
+        assert_eq!(schema, rust_schema);
+
+        let current_version_string = String::extract(
+            device
+                .call_method0(py, "current_version")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+        let minimum_supported_version_string = String::extract(
+            device
+                .call_method0(py, "min_supported_version")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.0.0");
+    });
+}
+
+/// Test json_schema function for SquaredDevice
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema_squared() {
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let device = new_genericlattice();
+        let schema: String = String::extract(
+            device
+                .call_method0(py, "json_schema")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+        let rust_schema =
+            serde_json::to_string_pretty(&schemars::schema_for!(SquareLatticeDevice)).unwrap();
+        assert_eq!(schema, rust_schema);
+
+        let current_version_string = String::extract(
+            device
+                .call_method0(py, "current_version")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+        let minimum_supported_version_string = String::extract(
+            device
+                .call_method0(py, "min_supported_version")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.0.0");
+    });
+}
+
+/// Test json_schema function for GenericDevice
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema_generic() {
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let device = new_genericdevice();
+        let schema: String = String::extract(
+            device
+                .call_method0(py, "json_schema")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+        let rust_schema =
+            serde_json::to_string_pretty(&schemars::schema_for!(GenericDevice)).unwrap();
+        assert_eq!(schema, rust_schema);
+
+        let current_version_string = String::extract(
+            device
+                .call_method0(py, "current_version")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+        let minimum_supported_version_string = String::extract(
+            device
+                .call_method0(py, "min_supported_version")
+                .unwrap()
+                .extract(py)
+                .unwrap(),
+        )
+        .unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.0.0");
     });
 }
 

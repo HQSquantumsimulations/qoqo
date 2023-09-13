@@ -18,6 +18,8 @@ use pyo3::Python;
 use qoqo::measurements::{CheatedPauliZProductInputWrapper, CheatedPauliZProductWrapper};
 use qoqo::CircuitWrapper;
 use roqoqo::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use roqoqo::{
     measurements::{CheatedPauliZProduct, CheatedPauliZProductInput},
     Circuit,
@@ -299,6 +301,7 @@ fn test_pyo3_debug() {
             .unwrap();
         let br_wrapper = br.extract::<CheatedPauliZProductWrapper>().unwrap();
 
+        #[allow(clippy::redundant_clone)]
         let br_clone = br_wrapper.clone();
         assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
 
@@ -716,4 +719,56 @@ fn test_pyo3_richcmp() {
         let comparison = br_one.call_method1("__ge__", (br_two,));
         assert!(comparison.is_err());
     })
+}
+
+/// Test json_schema function
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_pyo3_json_schema() {
+    let rust_schema_input =
+        serde_json::to_string_pretty(&schemars::schema_for!(CheatedPauliZProductInput)).unwrap();
+    let rust_schema =
+        serde_json::to_string_pretty(&schemars::schema_for!(CheatedPauliZProduct)).unwrap();
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let input_type = py.get_type::<CheatedPauliZProductInputWrapper>();
+        let input = input_type
+            .call0()
+            .unwrap()
+            .downcast::<PyCell<CheatedPauliZProductInputWrapper>>()
+            .unwrap();
+        let _ = input.call_method1("add_pauliz_product", ("ro",)).unwrap();
+
+        let mut circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+        let mut circ1 = CircuitWrapper::new();
+        circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
+        circs.push(circ1);
+        let br_type = py.get_type::<CheatedPauliZProductWrapper>();
+        let br_one = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone(), input))
+            .unwrap()
+            .downcast::<PyCell<CheatedPauliZProductWrapper>>()
+            .unwrap();
+
+        let schema_input: String =
+            String::extract(input.call_method0("json_schema").unwrap()).unwrap();
+        let schema: String = String::extract(br_one.call_method0("json_schema").unwrap()).unwrap();
+
+        assert_eq!(schema_input, rust_schema_input);
+        assert_eq!(schema, rust_schema);
+
+        let current_version_string_input =
+            String::extract(input.call_method0("current_version").unwrap()).unwrap();
+        let current_version_string =
+            String::extract(br_one.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string_input =
+            String::extract(input.call_method0("min_supported_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(br_one.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(current_version_string_input, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.0.0");
+        assert_eq!(minimum_supported_version_string_input, "1.0.0");
+    });
 }

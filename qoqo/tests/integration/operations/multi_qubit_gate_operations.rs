@@ -23,6 +23,8 @@ use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::CalculatorFloatWrapper;
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use roqoqo::{Circuit, RoqoqoError};
 use std::collections::HashMap;
 use std::convert::TryInto;
@@ -559,4 +561,37 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
         let comparison = operation_one.call_method1(py, "__ge__", (operation_two,));
         assert!(comparison.is_err());
     })
+}
+
+#[cfg(feature = "json_schema")]
+#[test_case(Operation::from(MultiQubitMS::new(vec![0, 1, 2], CalculatorFloat::from(0))); "MultiQubitMS")]
+#[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(0))); "MultiQubitZZ")]
+fn test_pyo3_json_schema(operation: Operation) {
+    let rust_schema = match operation {
+        Operation::MultiQubitMS(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(MultiQubitMS)).unwrap()
+        }
+        Operation::MultiQubitZZ(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(MultiQubitZZ)).unwrap()
+        }
+        _ => unreachable!(),
+    };
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let pyobject = convert_operation_to_pyobject(operation).unwrap();
+        let operation = pyobject.as_ref(py);
+
+        let schema: String =
+            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+
+        assert_eq!(schema, rust_schema);
+
+        let current_version_string =
+            String::extract(operation.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(operation.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.0.0");
+    });
 }

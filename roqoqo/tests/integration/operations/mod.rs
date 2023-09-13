@@ -56,6 +56,7 @@ pub fn convert_matrix(customarray: Array2<Complex64>) -> na::DMatrix<Complex64> 
 #[test]
 fn test_involved_qubits_clone() {
     let iq = roqoqo::operations::InvolvedQubits::All;
+    #[allow(clippy::redundant_clone)]
     let iq2 = iq.clone();
     assert_eq!(iq, iq2);
     let iq3 = roqoqo::operations::InvolvedQubits::None;

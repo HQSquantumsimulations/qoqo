@@ -41,7 +41,7 @@ use serde::{Deserialize, Serialize};
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct MultiQubitMS {
     /// The qubits involved in the multi qubit Molmer-Sorensen gate.
     qubits: Vec<usize>,
@@ -72,7 +72,6 @@ impl OperateGate for MultiQubitMS {
 }
 
 impl OperateMultiQubitGate for MultiQubitMS {
-    // Todo fill out circuit
     fn circuit(&self) -> Circuit {
         let dim = self.qubits.len();
         let mut circuit = Circuit::new();
@@ -110,7 +109,7 @@ impl OperateMultiQubitGate for MultiQubitMS {
     roqoqo_derive::Rotate,
 )]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
-// #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct MultiQubitZZ {
     /// The qubits involved in the multi qubit Molmer-Sorensen gate.
     qubits: Vec<usize>,
@@ -148,7 +147,6 @@ impl OperateGate for MultiQubitZZ {
 }
 
 impl OperateMultiQubitGate for MultiQubitZZ {
-    // Todo fill out circuit
     fn circuit(&self) -> Circuit {
         let dim = self.qubits.len();
         let mut circuit = Circuit::new();

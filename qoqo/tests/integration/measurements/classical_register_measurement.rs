@@ -17,6 +17,8 @@ use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::measurements::ClassicalRegisterWrapper;
 use qoqo::CircuitWrapper;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use roqoqo::{measurements::ClassicalRegister, Circuit};
 use std::collections::HashMap;
 
@@ -102,6 +104,7 @@ fn test_pyo3_debug() {
             .unwrap();
         let br_wrapper = br.extract::<ClassicalRegisterWrapper>().unwrap();
 
+        #[allow(clippy::redundant_clone)]
         let br_clone = br_wrapper.clone();
         assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
 
@@ -363,4 +366,35 @@ fn test_pyo3_richcmp() {
         let comparison = br_one.call_method1("__ge__", (br_two,));
         assert!(comparison.is_err());
     })
+}
+
+/// Test json_schema function
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_pyo3_json_schema() {
+    let rust_schema =
+        serde_json::to_string_pretty(&schemars::schema_for!(ClassicalRegister)).unwrap();
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
+        let br_type = py.get_type::<ClassicalRegisterWrapper>();
+        #[allow(clippy::redundant_clone)]
+        let br_one = br_type
+            .call1((Some(CircuitWrapper::new()), circs.clone()))
+            .unwrap()
+            .downcast::<PyCell<ClassicalRegisterWrapper>>()
+            .unwrap();
+
+        let schema: String = String::extract(br_one.call_method0("json_schema").unwrap()).unwrap();
+
+        assert_eq!(schema, rust_schema);
+
+        let current_version_string =
+            String::extract(br_one.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(br_one.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.0.0");
+    });
 }

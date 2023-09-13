@@ -911,10 +911,10 @@ pub enum InvolvedModes {
 ///
 /// # Example
 /// ```
-/// use roqoqo::operations::{InvolveModes, InvolvedModes, PNRDetection, BeamSplitter};
+/// use roqoqo::operations::{InvolveModes, InvolvedModes, PhotonDetection, BeamSplitter};
 /// use std::collections::HashSet;
 ///
-/// let measurement = PNRDetection::new(1, "ro".into(), 0);
+/// let measurement = PhotonDetection::new(1, "ro".into(), 0);
 /// let operation = BeamSplitter::new(0, 1, 0.1.into(), 0.2.into());
 ///
 /// let mut modes: HashSet<usize> = HashSet::new();
@@ -974,9 +974,9 @@ pub trait OperateModeGate:
 ///
 /// # Example
 /// ```
-/// use roqoqo::operations::{OperateSingleMode, PNRDetection};
+/// use roqoqo::operations::{OperateSingleMode, PhotonDetection};
 ///
-/// let op = PNRDetection::new(0, "ro".into(), 0);
+/// let op = PhotonDetection::new(0, "ro".into(), 0);
 /// assert_eq!(op.mode(), &0_usize);
 /// ```
 ///

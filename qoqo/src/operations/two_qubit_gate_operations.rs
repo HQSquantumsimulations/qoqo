@@ -19,10 +19,12 @@ use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::{convert_into_calculator_float, CalculatorFloatWrapper};
 use qoqo_macros::*;
 use roqoqo::operations::*;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 #[derive(Eq)]
 /// The controlled NOT quantum operation.
 ///
@@ -44,7 +46,7 @@ pub struct CNOT {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 #[derive(Eq)]
 /// The controlled SWAP quantum operation.
 ///
@@ -66,7 +68,7 @@ pub struct SWAP {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 #[derive(Eq)]
 /// The controlled ISwap quantum operation.
 ///
@@ -88,7 +90,7 @@ pub struct ISwap {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 #[derive(Eq)]
 /// The controlled square root ISwap quantum operation.
 ///
@@ -110,7 +112,7 @@ pub struct SqrtISwap {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 #[derive(Eq)]
 /// The controlled inverse square root ISwap quantum operation.
 ///
@@ -132,7 +134,7 @@ pub struct InvSqrtISwap {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 #[derive(Eq)]
 /// The controlled fermionic SWAP gate.
 ///
@@ -154,7 +156,7 @@ pub struct FSwap {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 #[derive(Eq)]
 /// The fixed phase MolmerSorensen XX gate. <http://arxiv.org/abs/1705.02771>
 ///
@@ -176,7 +178,14 @@ pub struct MolmerSorensenXX {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, Rotate, OperateGate, OperateTwoQubitGate)]
+#[wrap(
+    Operate,
+    OperateTwoQubit,
+    Rotate,
+    OperateGate,
+    OperateTwoQubitGate,
+    JsonSchema
+)]
 /// The variable-angle MolmerSorensen XX gate.
 ///
 /// .. math::
@@ -199,7 +208,14 @@ pub struct VariableMSXX {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, Rotate, OperateGate, OperateTwoQubitGate)]
+#[wrap(
+    Operate,
+    OperateTwoQubit,
+    Rotate,
+    OperateGate,
+    OperateTwoQubitGate,
+    JsonSchema
+)]
 /// The Givens rotation interaction gate in big endian notation: :math:`e^{-\mathrm{i} \theta (X_c Y_t - Y_c X_t)}`.
 ///
 /// Where :math:`X_c` is the Pauli matrix :math:`\sigma^x` acting on the control qubit
@@ -227,7 +243,14 @@ pub struct GivensRotation {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, Rotate, OperateGate, OperateTwoQubitGate)]
+#[wrap(
+    Operate,
+    OperateTwoQubit,
+    Rotate,
+    OperateGate,
+    OperateTwoQubitGate,
+    JsonSchema
+)]
 /// The Givens rotation interaction gate in little endian notation: :math:`e^{-\mathrm{i} \theta (X_c Y_t - Y_c X_t)}`.
 ///
 /// Where :math:`X_c` is the Pauli matrix :math:`\sigma^x` acting on the control qubit
@@ -255,7 +278,14 @@ pub struct GivensRotationLittleEndian {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, Rotate, OperateGate, OperateTwoQubitGate)]
+#[wrap(
+    Operate,
+    OperateTwoQubit,
+    Rotate,
+    OperateGate,
+    OperateTwoQubitGate,
+    JsonSchema
+)]
 /// The controlled XY quantum operation
 ///
 /// .. math::
@@ -278,7 +308,14 @@ pub struct XY {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, Rotate, OperateGate, OperateTwoQubitGate)]
+#[wrap(
+    Operate,
+    OperateTwoQubit,
+    Rotate,
+    OperateGate,
+    OperateTwoQubitGate,
+    JsonSchema
+)]
 /// The controlled-PhaseShift quantum operation.
 ///
 /// .. math::
@@ -301,7 +338,7 @@ pub struct ControlledPhaseShift {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 #[derive(Eq)]
 /// The controlled PauliY quantum operation
 ///
@@ -323,7 +360,7 @@ pub struct ControlledPauliY {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 #[derive(Eq)]
 /// The controlled PauliZ quantum operation
 ///
@@ -345,7 +382,7 @@ pub struct ControlledPauliZ {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 /// The qubit simulation (Qsim) gate.
 ///
 /// .. math::
@@ -372,7 +409,7 @@ pub struct Qsim {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 /// The fermionic qubit simulation (Fsim) gate.
 ///
 /// .. math::
@@ -403,7 +440,7 @@ pub struct Fsim {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 /// The generalized, anisotropic XYZ Heisenberg interaction between spins.
 ///
 /// :math:`e^{-\mathrm{i} (x \cdot X_c X_t + y \cdot Y_c Y_t + z \cdot Z_c Z_t)}`
@@ -427,7 +464,7 @@ pub struct SpinInteraction {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 /// The Bogoliubov DeGennes interaction gate.
 ///
 /// :math:`e^{-\mathrm{i} Re(\Delta) (X_c X_t - Y_c Y_t)/2 + Im(\Delta) (X_c Y_t+Y_c X_t)/2}`
@@ -459,7 +496,7 @@ pub struct Bogoliubov {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 /// The transversal interaction gate.
 ///
 /// :math:`e^{-\mathrm{i} \theta (X_c X_t + Y_c Y_t)} = e^{-\mathrm{i} \theta (\sigma^+_c \sigma^-_t + \sigma^-_c \sigma^+_t)}`
@@ -479,7 +516,7 @@ pub struct PMInteraction {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 /// The complex hopping gate.
 ///
 /// :math:`e^{-\mathrm{i} \left[ Re(\theta) \cdot (X_c X_t + Y_c Y_t) - Im(\theta) \cdot (X_c Y_t - Y_c X_t) \right] }`
@@ -501,7 +538,7 @@ pub struct ComplexPMInteraction {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 /// The phased-shifted controlled-Z gate.
 ///
 /// Modified, i.e. phase-shifted ControlledPauliZ two-qubit gate (`<https://arxiv.org/pdf/1908.06101.pdf eq.(1)>`).
@@ -528,7 +565,14 @@ pub struct PhaseShiftedControlledZ {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, Rotate, OperateGate, OperateTwoQubitGate)]
+#[wrap(
+    Operate,
+    OperateTwoQubit,
+    Rotate,
+    OperateGate,
+    OperateTwoQubitGate,
+    JsonSchema
+)]
 /// Implements the phase-shifted controlled PhaseShift gate.
 ///
 /// The unitary matrix representation is:
@@ -555,7 +599,14 @@ pub struct PhaseShiftedControlledPhase {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, Rotate, OperateGate, OperateTwoQubitGate)]
+#[wrap(
+    Operate,
+    OperateTwoQubit,
+    Rotate,
+    OperateGate,
+    OperateTwoQubitGate,
+    JsonSchema
+)]
 /// Implements the controlled RotateX operation.
 ///
 /// The unitary matrix representation is:
@@ -579,7 +630,14 @@ pub struct ControlledRotateX {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateTwoQubit, Rotate, OperateGate, OperateTwoQubitGate)]
+#[wrap(
+    Operate,
+    OperateTwoQubit,
+    Rotate,
+    OperateGate,
+    OperateTwoQubitGate,
+    JsonSchema
+)]
 /// Implements the controlled RotateXY operation.
 ///
 /// The unitary matrix representation is:

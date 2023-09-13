@@ -12,9 +12,8 @@
 
 //! Integration test for public API of cheated measurement
 
-use std::collections::HashMap;
-
-// use jsonschema::{Draft, JSONSchema};
+#[cfg(feature = "jsonschema")]
+use jsonschema::{Draft, JSONSchema};
 use num_complex::Complex64;
 use roqoqo::prelude::*;
 use roqoqo::Circuit;
@@ -23,7 +22,9 @@ use roqoqo::{
     registers::ComplexOutputRegister,
 };
 use roqoqo::{operations, RoqoqoError};
-// use schemars::schema_for;
+#[cfg(feature = "jsonschema")]
+use schemars::schema_for;
+use std::collections::HashMap;
 use test_case::test_case;
 
 #[test]
@@ -57,6 +58,7 @@ fn test_clone_eq_format() {
         input: bri.clone(),
     };
 
+    #[allow(clippy::redundant_clone)]
     let br_cloned = br.clone();
     let helper = br == br_cloned;
     assert!(helper);
@@ -237,40 +239,40 @@ fn test_evaluate_error() {
     );
 }
 
-// #[cfg(feature = "json_schema")]
-// #[test]
-// fn test_cheated_json() {
-//     // setting up cheated measurement
-//     let bri = CheatedInput::new(2);
-//     let mut circs: Vec<Circuit> = Vec::new();
-//     let mut circ1 = Circuit::new();
-//     let mut circ1_subs = Circuit::new();
-//     circ1 += operations::RotateX::new(0, "theta".into());
-//     circ1_subs += operations::RotateX::new(0, 0.0.into());
-//     let mut circ2 = Circuit::new();
-//     let mut circ2_subs = Circuit::new();
-//     circ2 += operations::RotateZ::new(0, "theta2".into());
-//     circ2_subs += operations::RotateZ::new(0, 1.0.into());
-//     circs.push(circ1);
-//     let br = Cheated {
-//         constant_circuit: Some(circ2),
-//         circuits: circs.clone(),
-//         input: bri,
-//     };
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema() {
+    // setting up cheated measurement
+    let bri = CheatedInput::new(2);
+    let mut circs: Vec<Circuit> = Vec::new();
+    let mut circ1 = Circuit::new();
+    let mut circ1_subs = Circuit::new();
+    circ1 += operations::RotateX::new(0, "theta".into());
+    circ1_subs += operations::RotateX::new(0, 0.0.into());
+    let mut circ2 = Circuit::new();
+    let mut circ2_subs = Circuit::new();
+    circ2 += operations::RotateZ::new(0, "theta2".into());
+    circ2_subs += operations::RotateZ::new(0, 1.0.into());
+    circs.push(circ1);
+    let br = Cheated {
+        constant_circuit: Some(circ2),
+        circuits: circs.clone(),
+        input: bri,
+    };
 
-//     // Serialize Measurement
-//     let test_json = serde_json::to_string(&br).unwrap();
-//     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+    // Serialize Measurement
+    let test_json = serde_json::to_string(&br).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
-//     // Create JSONSchema
-//     let test_schema = schema_for!(Cheated);
-//     let schema = serde_json::to_string(&test_schema).unwrap();
-//     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-//     let compiled_schema = JSONSchema::options()
-//         .with_draft(Draft::Draft7)
-//         .compile(&schema_value)
-//         .unwrap();
+    // Create JSONSchema
+    let test_schema = schema_for!(Cheated);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
 
-//     let validation_result = compiled_schema.validate(&test_value);
-//     assert!(validation_result.is_ok());
-// }
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}

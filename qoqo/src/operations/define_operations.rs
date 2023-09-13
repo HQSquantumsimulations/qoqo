@@ -15,9 +15,11 @@ use pyo3::prelude::*;
 use pyo3::types::PySet;
 use qoqo_macros::*;
 use roqoqo::operations::*;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
-#[wrap(Operate, Define)]
+#[wrap(Operate, Define, JsonSchema)]
 #[derive(Eq)]
 /// DefinitionFloat is the Definition for a Float type register.
 ///
@@ -31,7 +33,7 @@ pub struct DefinitionFloat {
     is_output: bool,
 }
 
-#[wrap(Operate, Define)]
+#[wrap(Operate, Define, JsonSchema)]
 #[derive(Eq)]
 /// DefinitionComplex is the Definition for a Complex type register.
 ///
@@ -45,7 +47,7 @@ pub struct DefinitionComplex {
     is_output: bool,
 }
 
-#[wrap(Operate, Define)]
+#[wrap(Operate, Define, JsonSchema)]
 #[derive(Eq)]
 /// DefinitionUsize is the Definition for an Integer type register.
 ///
@@ -59,7 +61,7 @@ pub struct DefinitionUsize {
     is_output: bool,
 }
 
-#[wrap(Operate, Define)]
+#[wrap(Operate, Define, JsonSchema)]
 #[derive(Eq)]
 /// DefinitionBit is the Definition for a Bit type register.
 ///
@@ -73,7 +75,7 @@ pub struct DefinitionBit {
     is_output: bool,
 }
 
-#[wrap(Operate, Define)]
+#[wrap(Operate, Define, JsonSchema)]
 /// InputSymbolic is the Definition for a Float which will replace a certain symbolic parameter.
 ///
 /// Args:
@@ -84,7 +86,7 @@ pub struct InputSymbolic {
     input: f64,
 }
 
-#[wrap(Operate, Define)]
+#[wrap(Operate, Define, JsonSchema)]
 #[derive(Eq)]
 /// InputBit sets a certain bit in an existing BitRegister of the circuit.
 ///

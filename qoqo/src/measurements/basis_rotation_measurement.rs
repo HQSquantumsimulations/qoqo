@@ -22,7 +22,10 @@ use roqoqo::measurements::PauliZProduct;
 use roqoqo::prelude::*;
 use roqoqo::registers::{BitOutputRegister, ComplexOutputRegister, FloatOutputRegister};
 use roqoqo::Circuit;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
+
 #[pyclass(name = "PauliZProduct", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Collected information for executing a measurement of PauliZ product.
@@ -239,7 +242,6 @@ impl PauliZProductWrapper {
         Ok(b)
     }
 
-    #[staticmethod]
     /// Convert the bincode representation of the PauliZProduct to a PauliZProduct using the [bincode] crate.
     ///
     /// Args:
@@ -251,6 +253,7 @@ impl PauliZProductWrapper {
     /// Raises:
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to PauliZProduct.
+    #[staticmethod]
     pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
         let bytes = input
             .extract::<Vec<u8>>()
@@ -328,6 +331,38 @@ impl PauliZProductWrapper {
                 "Other comparison not implemented",
             )),
         }
+    }
+
+    #[cfg(feature = "json_schema")]
+    /// Return the JsonSchema for the json serialisation of the class.
+    ///
+    /// Returns:
+    ///     str: The json schema serialized to json
+    #[staticmethod]
+    pub fn json_schema() -> String {
+        let schema = schemars::schema_for!(PauliZProduct);
+        serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
+    }
+
+    #[cfg(feature = "json_schema")]
+    /// Returns the current version of the qoqo library .
+    ///
+    /// Returns:
+    ///     str: The current version of the library.
+    #[staticmethod]
+    pub fn current_version() -> String {
+        ROQOQO_VERSION.to_string()
+    }
+
+    #[cfg(feature = "json_schema")]
+    /// Return the minimum version of qoqo that supports this object.
+    ///
+    /// Returns:
+    ///     str: The minimum version of the qoqo library to deserialize this object.
+    pub fn min_supported_version(&self) -> String {
+        let min_version: (u32, u32, u32) =
+            PauliZProduct::minimum_supported_roqoqo_version(&self.internal);
+        format!("{}.{}.{}", min_version.0, min_version.1, min_version.2)
     }
 }
 

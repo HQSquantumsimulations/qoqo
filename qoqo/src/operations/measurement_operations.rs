@@ -16,9 +16,11 @@ use pyo3::types::PySet;
 use qoqo_macros::*;
 use roqoqo::operations::*;
 use roqoqo::Circuit;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
-#[wrap(Operate, OperateSingleQubit)]
+#[wrap(Operate, OperateSingleQubit, JsonSchema)]
 #[derive(Eq)]
 /// Measurement gate operation.
 ///
@@ -36,7 +38,7 @@ pub struct MeasureQubit {
     readout_index: usize,
 }
 
-#[wrap(Operate, OperatePragma)]
+#[wrap(Operate, OperatePragma, JsonSchema)]
 /// This PRAGMA measurement operation returns the statevector of a quantum register.
 ///
 /// Args:
@@ -48,7 +50,7 @@ pub struct PragmaGetStateVector {
     circuit: Option<Circuit>,
 }
 
-#[wrap(Operate, OperatePragma)]
+#[wrap(Operate, OperatePragma, JsonSchema)]
 /// This PRAGMA measurement operation returns the density matrix of a quantum register.
 ///
 /// Args:
@@ -60,7 +62,7 @@ struct PragmaGetDensityMatrix {
     circuit: Option<Circuit>,
 }
 
-#[wrap(Operate, OperatePragma)]
+#[wrap(Operate, OperatePragma, JsonSchema)]
 /// This PRAGMA measurement operation returns the vector of the occupation probabilities.
 ///
 /// Occupation probabilities in the context of this PRAGMA operation are probabilities of finding the quantum
@@ -75,7 +77,7 @@ struct PragmaGetOccupationProbability {
     circuit: Option<Circuit>,
 }
 
-#[wrap(Operate, OperatePragma)]
+#[wrap(Operate, OperatePragma, JsonSchema)]
 /// This PRAGMA measurement operation returns a Pauli product expectation value.
 ///
 /// This PRAGMA operation returns a Pauli product expectation value after applying
@@ -94,7 +96,7 @@ struct PragmaGetPauliProduct {
     circuit: Circuit,
 }
 
-#[wrap(Operate, OperatePragma)]
+#[wrap(Operate, OperatePragma, JsonSchema)]
 #[derive(Eq)]
 /// This PRAGMA measurement operation returns a measurement record for N repeated measurements.
 ///

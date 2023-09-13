@@ -39,6 +39,7 @@ use qoqo_calculator::CalculatorFloat;
     roqoqo_derive::OperateSingleMode,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct Squeezing {
     /// The mode the squeezing gate is applied to.
     mode: usize,
@@ -88,6 +89,7 @@ impl SupportedVersion for Squeezing {
     roqoqo_derive::OperateSingleMode,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PhaseShift {
     /// The mode the phase-shift gate is applied to.
     mode: usize,
@@ -133,6 +135,7 @@ impl SupportedVersion for PhaseShift {
     roqoqo_derive::OperateTwoMode,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct BeamSplitter {
     /// The first mode the beam-splitter is applied to.
     mode_0: usize,
@@ -183,7 +186,8 @@ impl SupportedVersion for BeamSplitter {
     roqoqo_derive::OperateSingleMode,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-pub struct PNRDetection {
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct PhotonDetection {
     /// The mode the detector (measurement) is applied to.
     mode: usize,
     /// The register for the readout.
@@ -193,9 +197,9 @@ pub struct PNRDetection {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_PNRDetection: &[&str; 3] = &["Operation", "Measurement", "PNRDetection"];
+const TAGS_PhotonDetection: &[&str; 3] = &["Operation", "Measurement", "PhotonDetection"];
 
-impl InvolveQubits for PNRDetection {
+impl InvolveQubits for PhotonDetection {
     /// Returns all qubits involved in operation.
     fn involved_qubits(&self) -> InvolvedQubits {
         InvolvedQubits::None
@@ -208,9 +212,9 @@ impl InvolveQubits for PNRDetection {
     }
 }
 
-impl ImplementedIn1point6 for PNRDetection {}
+impl ImplementedIn1point6 for PhotonDetection {}
 
-impl SupportedVersion for PNRDetection {
+impl SupportedVersion for PhotonDetection {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 6, 0)
     }

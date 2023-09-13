@@ -21,6 +21,8 @@ use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::{convert_into_calculator_float, CalculatorFloatWrapper};
 
 use roqoqo::operations::*;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 
 use std::collections::HashMap;
 
@@ -29,7 +31,13 @@ use crate::CircuitWrapper;
 use qoqo_macros::*;
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateThreeQubit, OperateGate, OperateThreeQubitGate)]
+#[wrap(
+    Operate,
+    OperateThreeQubit,
+    OperateGate,
+    OperateThreeQubitGate,
+    JsonSchema
+)]
 #[derive(Eq)]
 /// Implements the double-controlled PauliZ gate.
 ///
@@ -56,7 +64,14 @@ pub struct ControlledControlledPauliZ {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateThreeQubit, Rotate, OperateGate, OperateThreeQubitGate)]
+#[wrap(
+    Operate,
+    OperateThreeQubit,
+    Rotate,
+    OperateGate,
+    OperateThreeQubitGate,
+    JsonSchema
+)]
 /// Implements the double-controlled PhaseShift gate.
 ///
 /// .. math::
@@ -84,7 +99,13 @@ pub struct ControlledControlledPhaseShift {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, OperateThreeQubit, OperateGate, OperateThreeQubitGate)]
+#[wrap(
+    Operate,
+    OperateThreeQubit,
+    OperateGate,
+    OperateThreeQubitGate,
+    JsonSchema
+)]
 /// Implements Toffoli gate.
 ///
 /// .. math::

@@ -11,12 +11,15 @@
 // limitations under the License.
 
 //! Integration test for public API of measurement inputs
-
+#[cfg(feature = "json_schema")]
+use jsonschema::{Draft, JSONSchema};
 use num_complex::Complex64;
 use roqoqo::measurements::{
     CheatedInput, CheatedPauliZProductInput, PauliProductsToExpVal, PauliZProductInput,
 };
 use roqoqo::RoqoqoError;
+#[cfg(feature = "json_schema")]
+use schemars::schema_for;
 use std::collections::HashMap;
 use std::default::Default;
 
@@ -25,6 +28,7 @@ fn test_pp_to_exp_val() {
     let mut map: HashMap<usize, f64> = HashMap::new();
     map.insert(0, 3.0);
     let lin = PauliProductsToExpVal::Linear(map);
+    #[allow(clippy::redundant_clone)]
     let lin2 = lin.clone();
     let helper = lin == lin2;
     assert!(helper);
@@ -37,6 +41,7 @@ fn test_pp_to_exp_val() {
 #[test]
 fn test_clone_br() {
     let bri = PauliZProductInput::new(3, false);
+    #[allow(clippy::redundant_clone)]
     let bri1 = bri.clone();
     assert_eq!(bri1, bri);
     let bri2 = PauliZProductInput::new(4, true);
@@ -199,4 +204,99 @@ fn error_cheated() {
 fn default_cbr() {
     let bri: CheatedPauliZProductInput = Default::default();
     assert_eq!(bri, CheatedPauliZProductInput::new());
+}
+
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema_pp_to_exp() {
+    let mut map: HashMap<usize, f64> = HashMap::new();
+    map.insert(0, 3.0);
+    let lin = PauliProductsToExpVal::Linear(map);
+    let sym = PauliProductsToExpVal::Symbolic("theta".into());
+
+    // Serialize
+    let test_json_lin = serde_json::to_string(&lin).unwrap();
+    let test_json_sym = serde_json::to_string(&sym).unwrap();
+    let test_value_lin: serde_json::Value = serde_json::from_str(&test_json_lin).unwrap();
+    let test_value_sym: serde_json::Value = serde_json::from_str(&test_json_sym).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PauliProductsToExpVal);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result_lin = compiled_schema.validate(&test_value_lin);
+    let validation_result_sym = compiled_schema.validate(&test_value_sym);
+    assert!(validation_result_lin.is_ok());
+    assert!(validation_result_sym.is_ok());
+}
+
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema_br() {
+    let op = PauliZProductInput::new(3, false);
+
+    // Serialize
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PauliZProductInput);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema_cbr() {
+    let op = CheatedPauliZProductInput::new();
+
+    // Serialize
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(CheatedPauliZProductInput);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema_cheated() {
+    let op = CheatedInput::new(2);
+
+    // Serialize
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(CheatedInput);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }

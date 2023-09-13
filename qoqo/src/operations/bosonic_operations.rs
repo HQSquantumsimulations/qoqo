@@ -17,6 +17,8 @@ use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::{convert_into_calculator_float, CalculatorFloatWrapper};
 use qoqo_macros::*;
 use roqoqo::operations::*;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
 #[wrap(
@@ -27,7 +29,8 @@ use std::collections::HashMap;
     InvolveModes,
     OperateSingleMode,
     InvolveQubits,
-    OperateSingleModeGate
+    OperateSingleModeGate,
+    JsonSchema
 )]
 /// The single-mode squeezing gate with tunable squeezing.
 ///
@@ -53,7 +56,8 @@ pub struct Squeezing {
     InvolveModes,
     OperateSingleMode,
     InvolveQubits,
-    OperateSingleModeGate
+    OperateSingleModeGate,
+    JsonSchema
 )]
 /// The single-mode phase-shift gate with variable phase, given by R(θ) = eexp(i * θ * 𝑁̂).
 ///
@@ -74,7 +78,8 @@ pub struct PhaseShift {
     Substitute,
     InvolveModes,
     SubstituteModes,
-    OperateTwoMode
+    OperateTwoMode,
+    JsonSchema
 )]
 /// The 2-mode beam splitter which splits a beam with a transmission amplitude cos(θ) and a reflection amplitude exp(i * φ) * sin(θ).
 ///
@@ -90,7 +95,14 @@ pub struct BeamSplitter {
     phi: CalculatorFloat,
 }
 
-#[wrap(Operate, Substitute, InvolveModes, SubstituteModes, OperateSingleMode)]
+#[wrap(
+    Operate,
+    Substitute,
+    InvolveModes,
+    SubstituteModes,
+    OperateSingleMode,
+    JsonSchema
+)]
 /// The photon number-resolving detector measurement for bosons.
 ///
 /// This can be used as a single-shot measurement of the photon number.
@@ -100,7 +112,7 @@ pub struct BeamSplitter {
 ///     mode (int): The mode the detector (measurement) is applied to.
 ///     readout (str): The register for the readout.
 ///     readout_index (int): The index in the readout the result is saved to.
-pub struct PNRDetection {
+pub struct PhotonDetection {
     mode: usize,
     readout: String,
     readout_index: usize,

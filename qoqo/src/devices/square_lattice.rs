@@ -20,6 +20,8 @@ use pyo3::prelude::*;
 use pyo3::types::PyByteArray;
 use qoqo_macros::devicewrapper;
 use roqoqo::devices::{Device, SquareLatticeDevice};
+#[cfg(feature = "json_schema")]
+use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 
 /// A generic square lattice device with only next-neighbours-connectivity.
 ///
@@ -98,7 +100,7 @@ impl SquareLatticeDeviceWrapper {
     /// Returns:
     ///     A qoqo Device with updated gate times.
     ///
-    #[pyo3(text_signature = "(gate, gate_time)")]
+    #[pyo3(text_signature = "(gate, gate_time, /)")]
     pub fn set_all_two_qubit_gate_times(&self, gate: &str, gate_time: f64) -> Self {
         Self {
             internal: self
@@ -117,7 +119,7 @@ impl SquareLatticeDeviceWrapper {
     /// Returns:
     ///     A qoqo Device with updated gate times.
     ///
-    #[pyo3(text_signature = "(gate, gate_time)")]
+    #[pyo3(text_signature = "(gate, gate_time, /)")]
     pub fn set_all_single_qubit_gate_times(&self, gate: &str, gate_time: f64) -> Self {
         Self {
             internal: self
@@ -137,7 +139,7 @@ impl SquareLatticeDeviceWrapper {
     ///
     /// Raises:
     ///     PyValueError: The input parameter `rates` needs to be a (3x3)-matrix.
-    #[pyo3(text_signature = "(rates)")]
+    #[pyo3(text_signature = "(rates, /)")]
     pub fn set_all_qubit_decoherence_rates(&self, rates: PyReadonlyArray2<f64>) -> PyResult<Self> {
         let rates_matrix = rates.as_array().to_owned();
         Ok(Self {
@@ -158,7 +160,7 @@ impl SquareLatticeDeviceWrapper {
     ///
     /// Returns:
     ///     SquareLatticeDevice
-    #[pyo3(text_signature = "(damping)")]
+    #[pyo3(text_signature = "(damping, /)")]
     pub fn add_damping_all(&mut self, damping: f64) -> Self {
         Self {
             internal: self.internal.clone().add_damping_all(damping),
@@ -172,7 +174,7 @@ impl SquareLatticeDeviceWrapper {
     ///
     /// Returns:
     ///     SquareLatticeDevice
-    #[pyo3(text_signature = "(dephasing)")]
+    #[pyo3(text_signature = "(dephasing, /)")]
     pub fn add_dephasing_all(&mut self, dephasing: f64) -> Self {
         Self {
             internal: self.internal.clone().add_dephasing_all(dephasing),
@@ -186,11 +188,43 @@ impl SquareLatticeDeviceWrapper {
     ///
     /// Returns:
     ///     SquareLatticeDevice
-    #[pyo3(text_signature = "(depolarising)")]
+    #[pyo3(text_signature = "(depolarising, /)")]
     pub fn add_depolarising_all(&mut self, depolarising: f64) -> Self {
         Self {
             internal: self.internal.clone().add_depolarising_all(depolarising),
         }
+    }
+
+    #[cfg(feature = "json_schema")]
+    /// Return the JsonSchema for the json serialisation of the class.
+    ///
+    /// Returns:
+    ///     str: The json schema serialized to json
+    #[staticmethod]
+    pub fn json_schema() -> String {
+        let schema = schemars::schema_for!(SquareLatticeDevice);
+        serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
+    }
+
+    #[cfg(feature = "json_schema")]
+    /// Returns the current version of the qoqo library .
+    ///
+    /// Returns:
+    ///     str: The current version of the library.
+    #[staticmethod]
+    pub fn current_version() -> String {
+        ROQOQO_VERSION.to_string()
+    }
+
+    #[cfg(feature = "json_schema")]
+    /// Return the minimum version of qoqo that supports this object.
+    ///
+    /// Returns:
+    ///     str: The minimum version of the qoqo library to deserialize this object.
+    pub fn min_supported_version(&self) -> String {
+        let min_version: (u32, u32, u32) =
+            SquareLatticeDevice::minimum_supported_roqoqo_version(&self.internal);
+        format!("{}.{}.{}", min_version.0, min_version.1, min_version.2)
     }
 }
 

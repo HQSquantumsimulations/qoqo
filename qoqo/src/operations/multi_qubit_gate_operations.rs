@@ -21,10 +21,19 @@ use qoqo_calculator_pyo3::convert_into_calculator_float;
 use qoqo_calculator_pyo3::CalculatorFloatWrapper;
 use qoqo_macros::*;
 use roqoqo::operations::*;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, Rotate, OperateMultiQubit, OperateGate, OperateMultiQubitGate)]
+#[wrap(
+    Operate,
+    Rotate,
+    OperateMultiQubit,
+    OperateGate,
+    OperateMultiQubitGate,
+    JsonSchema
+)]
 /// The Molmer-Sorensen gate between multiple qubits.
 ///
 /// The gate applies the rotation under the product of Pauli X operators on multiple qubits.
@@ -37,7 +46,14 @@ pub struct MultiQubitMS {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(Operate, Rotate, OperateMultiQubit, OperateGate, OperateMultiQubitGate)]
+#[wrap(
+    Operate,
+    Rotate,
+    OperateMultiQubit,
+    OperateGate,
+    OperateMultiQubitGate,
+    JsonSchema
+)]
 /// The multi qubit Pauli-Z-Product gate.
 ///
 /// The gate applies the rotation under the product of Pauli Z operators on multiple qubits.

@@ -19,6 +19,7 @@ use ndarray::Array2;
 ///
 #[derive(Clone, Debug, PartialEq, Default)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct AllToAllDevice {
     number_qubits: usize,
     generic_device: GenericDevice,

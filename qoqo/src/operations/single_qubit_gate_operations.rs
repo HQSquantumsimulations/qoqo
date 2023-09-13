@@ -19,9 +19,17 @@ use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::{convert_into_calculator_float, CalculatorFloatWrapper};
 use qoqo_macros::*;
 use roqoqo::operations::*;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
-#[wrap(Operate, OperateSingleQubit, OperateSingleQubitGate, OperateGate)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateSingleQubitGate,
+    OperateGate,
+    JsonSchema
+)]
 /// The general single qubit unitary gate.
 ///
 /// .. math::
@@ -52,7 +60,8 @@ struct SingleQubitGate {
     OperateSingleQubit,
     Rotate,
     OperateGate,
-    OperateSingleQubitGate
+    OperateSingleQubitGate,
+    JsonSchema
 )]
 /// The XPower gate :math:`e^{-i \frac{\theta}{2} \sigma^x}`.
 ///
@@ -80,7 +89,8 @@ struct RotateX {
     OperateSingleQubit,
     Rotate,
     OperateGate,
-    OperateSingleQubitGate
+    OperateSingleQubitGate,
+    JsonSchema
 )]
 /// The YPower gate :math:`e^{-i \frac{\theta}{2} \sigma^y}`.
 ///
@@ -108,7 +118,8 @@ struct RotateY {
     OperateSingleQubit,
     Rotate,
     OperateGate,
-    OperateSingleQubitGate
+    OperateSingleQubitGate,
+    JsonSchema
 )]
 /// The ZPower gate :math:`e^{-i \frac{\theta}{2} \sigma^z}`.
 ///
@@ -136,7 +147,8 @@ struct RotateZ {
     OperateSingleQubit,
     Rotate,
     OperateGate,
-    OperateSingleQubitGate
+    OperateSingleQubitGate,
+    JsonSchema
 )]
 /// The phase shift gate applied on state |1>.
 ///
@@ -162,7 +174,8 @@ struct PhaseShiftState1 {
     OperateSingleQubit,
     Rotate,
     OperateGate,
-    OperateSingleQubitGate
+    OperateSingleQubitGate,
+    JsonSchema
 )]
 /// The phase shift gate applied on state |0>.
 ///
@@ -183,7 +196,13 @@ struct PhaseShiftState0 {
     theta: CalculatorFloat,
 }
 
-#[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
 #[derive(Eq)]
 /// The Pauli X gate.
 ///
@@ -200,7 +219,13 @@ struct PauliX {
     qubit: usize,
 }
 
-#[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
 #[derive(Eq)]
 /// The Pauli Y gate.
 ///
@@ -217,7 +242,13 @@ struct PauliY {
     qubit: usize,
 }
 
-#[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
 #[derive(Eq)]
 /// The Pauli Z gate.
 ///
@@ -234,7 +265,13 @@ struct PauliZ {
     qubit: usize,
 }
 
-#[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
 #[derive(Eq)]
 /// The square root of the XPower gate :math:`e^{-i \frac{\pi}{4} \sigma^x}`.
 ///
@@ -251,7 +288,13 @@ struct SqrtPauliX {
     qubit: usize,
 }
 
-#[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
 #[derive(Eq)]
 /// The inverse square root XPower gate :math:`e^{i \frac{\pi}{2} \sigma^x}`.
 ///
@@ -268,7 +311,13 @@ struct InvSqrtPauliX {
     qubit: usize,
 }
 
-#[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
 #[derive(Eq)]
 /// The Hadamard gate.
 ///
@@ -285,7 +334,13 @@ struct Hadamard {
     qubit: usize,
 }
 
-#[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
 #[derive(Eq)]
 /// The S gate.
 ///
@@ -301,7 +356,13 @@ struct Hadamard {
 struct SGate {
     qubit: usize,
 }
-#[wrap(Operate, OperateSingleQubit, OperateGate, OperateSingleQubitGate)]
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
 #[derive(Eq)]
 /// The T gate.
 ///
@@ -323,7 +384,8 @@ struct TGate {
     OperateSingleQubit,
     Rotate,
     OperateGate,
-    OperateSingleQubitGate
+    OperateSingleQubitGate,
+    JsonSchema
 )]
 /// Implements a rotation around an axis in the x-y plane in spherical coordinates.
 ///
@@ -362,7 +424,8 @@ struct RotateAroundSphericalAxis {
     OperateSingleQubit,
     Rotate,
     OperateGate,
-    OperateSingleQubitGate
+    OperateSingleQubitGate,
+    JsonSchema
 )]
 /// Implements a rotation around an axis in the x-y plane in spherical coordinates.
 ///
@@ -388,7 +451,8 @@ struct RotateXY {
     OperateSingleQubit,
     Rotate,
     OperateGate,
-    OperateSingleQubitGate
+    OperateSingleQubitGate,
+    JsonSchema
 )]
 /// Implements a pi-rotation with an embedded phase.
 ///
@@ -412,7 +476,8 @@ struct GPi {
     OperateSingleQubit,
     Rotate,
     OperateGate,
-    OperateSingleQubitGate
+    OperateSingleQubitGate,
+    JsonSchema
 )]
 /// Implements a pi/2-rotation with an embedded phase.
 ///

@@ -125,7 +125,7 @@ fn test_version_1_6_0_two_mode_gate(operation: operations::TwoModeGateOperation)
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 6, 0));
 }
 
-#[test_case(operations::SingleModeOperation::from(operations::PNRDetection::new(0, "ro".into(), 1)); "PNRDetection")]
+#[test_case(operations::SingleModeOperation::from(operations::PhotonDetection::new(0, "ro".into(), 1)); "PhotonDetection")]
 fn test_version_1_6_0_measurement_mode_gate(operation: operations::SingleModeOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 6, 0));
     let op = operations::Operation::try_from(operation).unwrap();
