@@ -208,7 +208,7 @@ mod tests {
     #[test]
     fn test_continuous_decoherence_model_add_damping() {
         let model = ContinuousDecoherenceModel::new();
-        let model = model.add_damping_rate(&vec![0], 0.9);
+        let model = model.add_damping_rate(&[0], 0.9);
         let mut lindblad_operator = PlusMinusLindbladNoiseOperator::new();
         lindblad_operator
             .add_operator_product(
@@ -225,7 +225,7 @@ mod tests {
     #[test]
     fn test_continuous_decoherence_model_add_depolarising() {
         let model = ContinuousDecoherenceModel::new();
-        let model = model.add_depolarising_rate(&vec![0], 0.9);
+        let model = model.add_depolarising_rate(&[0], 0.9);
         let mut lindblad_operator = PlusMinusLindbladNoiseOperator::new();
         lindblad_operator
             .add_operator_product(
@@ -257,7 +257,7 @@ mod tests {
     #[test]
     fn test_continuous_decoherence_model_add_excitation_rate() {
         let mut model = ContinuousDecoherenceModel::new();
-        model = model.add_excitation_rate(&vec![0, 1], 0.9);
+        model = model.add_excitation_rate(&[0, 1], 0.9);
         let mut lindblad_operator = PlusMinusLindbladNoiseOperator::new();
         lindblad_operator
             .add_operator_product(
@@ -283,7 +283,7 @@ mod tests {
     #[test]
     fn test_continuous_decoherence_model_add_dephasing_rate() {
         let mut model = ContinuousDecoherenceModel::new();
-        model = model.add_dephasing_rate(&vec![0, 1], 0.9);
+        model = model.add_dephasing_rate(&[0, 1], 0.9);
         let mut lindblad_operator = PlusMinusLindbladNoiseOperator::new();
         lindblad_operator
             .add_operator_product(
