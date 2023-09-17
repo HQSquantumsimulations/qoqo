@@ -21,7 +21,7 @@ use syn::punctuated::Punctuated;
 use syn::visit::{self, Visit};
 use syn::{AttrStyle, File, Ident, ItemImpl, ItemStruct, Path, Token, Type, TypePath};
 
-const NUMBER_OF_MINOR_VERSIONS: usize = 7;
+const NUMBER_OF_MINOR_VERSIONS: usize = 8;
 
 /// Visitor scanning rust source code for struct belonging to enums
 struct Visitor {
@@ -312,6 +312,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 }
                 if trait_name.as_str() == "ImplementedIn1point6" {
                     self.roqoqo_version_register.insert(id.clone(), 6);
+                }
+                if trait_name.as_str() == "ImplementedIn1point7" {
+                    self.roqoqo_version_register.insert(id.clone(), 7);
                 }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());
