@@ -100,7 +100,7 @@ use test_roqoqo_1_6;
 #[test_case(test_roqoqo_1_6::operations::GPi2::new(0, 0.1.into()).into(); "GPi2")]
 // 1.5
 #[test_case(test_roqoqo_1_6::operations::PragmaControlledCircuit::new(0, test_roqoqo_1_6::Circuit::new()).into(); "PragmaControlledCircuit")]
-// Operations from 1.6 - uncomment for next unittests
+// Operations from 1.6
 #[test_case(test_roqoqo_1_6::operations::Squeezing::new(0, 0.1.into(), 0.1.into()).into(); "Squeezing")]
 #[test_case(test_roqoqo_1_6::operations::PhaseShift::new(0, 0.1.into()).into(); "PhaseShift")]
 #[test_case(test_roqoqo_1_6::operations::BeamSplitter::new(0, 1, 0.1.into(), 0.2.into()).into(); "BeamSplitter")]
