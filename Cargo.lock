@@ -211,9 +211,9 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
 name = "clap"
-version = "4.4.2"
+version = "4.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6a13b88d2c62ff462f88e4a121f17a82c1af05693a2f192b5c38d14de73c19f6"
+checksum = "84ed82781cea27b43c9b106a979fe450a13a31aab0500595fb3fc06616de08e6"
 dependencies = [
  "clap_builder",
  "clap_derive",
@@ -666,9 +666,9 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "libc"
-version = "0.2.147"
+version = "0.2.148"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b4668fb0ea861c1df094127ac5f1da3409a82116a4ba74fca2e58ef927159bb3"
+checksum = "9cdc71e17332e86d2e1d38c1f99edcb6288ee11b815fb1a4b049eaa2114d369b"
 
 [[package]]
 name = "libm"
@@ -1086,7 +1086,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "1.6.1"
+version = "1.6.2"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -1113,7 +1113,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "1.6.1"
+version = "1.6.2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1275,7 +1275,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.6.1"
+version = "1.6.2"
 dependencies = [
  "async-trait",
  "bincode",
@@ -1305,7 +1305,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "1.6.1"
+version = "1.6.2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1314,7 +1314,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "1.6.1"
+version = "1.6.2"
 dependencies = [
  "nalgebra",
  "ndarray",
@@ -1502,9 +1502,9 @@ checksum = "73473c0e59e6d5812c5dfe2a064a6444949f089e20eec9a2e5506596494e4623"
 
 [[package]]
 name = "struqture"
-version = "1.4.1"
+version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f5d93a18555cad32d96488a76ca8e4b66bffd7f991d7444a050c8b8ccdb5db87"
+checksum = "74ae4aaa27dbbbe19ab7ba5693d1fe18162df91bd169dbc1ff949064fc6e411c"
 dependencies = [
  "itertools",
  "ndarray",
@@ -1519,9 +1519,9 @@ dependencies = [
 
 [[package]]
 name = "struqture-py"
-version = "1.4.1"
+version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1bb9668b342e070b545f828928152d4211dbc2723e7ce89d51c4cd9fcf1606e2"
+checksum = "b90d640d2456ec86f77d43374acf35899c51b631148c3696fcbe0f75c2425ac0"
 dependencies = [
  "bincode",
  "num-complex",
@@ -1543,9 +1543,9 @@ dependencies = [
 
 [[package]]
 name = "struqture-py-macros"
-version = "1.4.1"
+version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "868a923c94be092ab91f8fee388fc42efe92265a2347e3acb6c1f57e93f87ac2"
+checksum = "36e6eb21aac68cfad86ff1fdf74fa29613f6347534f8525deb530aaf49de3999"
 dependencies = [
  "num-complex",
  "proc-macro2",
@@ -1779,9 +1779,9 @@ checksum = "92888ba5573ff080736b3648696b70cafad7d250551175acbaa4e0385b3e1460"
 
 [[package]]
 name = "unicode-ident"
-version = "1.0.11"
+version = "1.0.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "301abaae475aa91687eb82514b328ab47a211a533026cb25fc3e519b86adfc3c"
+checksum = "3354b9ac3fae1ff6755cb6db53683adb661634f67557942dea4facebec0fee4b"
 
 [[package]]
 name = "unicode-normalization"

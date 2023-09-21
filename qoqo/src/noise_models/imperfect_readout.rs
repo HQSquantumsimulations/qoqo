@@ -13,6 +13,9 @@
 use pyo3::prelude::*;
 use qoqo_macros::noise_model_wrapper;
 use roqoqo::noise_models::{ImperfectReadoutModel, NoiseModel};
+#[cfg(feature = "json_schema")]
+use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
+
 /// Noise model representing readout errors.
 ///
 /// Readout errors are modeled by two probabilities in this simple model.
@@ -130,6 +133,17 @@ impl ImperfectReadoutModelWrapper {
                 "Input cannot be deserialized to selected Noise-Model.",
             )),
         }
+    }
+
+    #[cfg(feature = "json_schema")]
+    /// Return the JsonSchema for the json serialisation of the class.
+    ///
+    /// Returns:
+    ///     str: The json schema serialized to json
+    #[staticmethod]
+    pub fn json_schema() -> String {
+        let schema = schemars::schema_for!(ImperfectReadoutModel);
+        serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
     }
 
     /// Set and overwrite the measurement error probabilities

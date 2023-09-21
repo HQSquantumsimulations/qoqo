@@ -29,6 +29,7 @@ pub use error_on_gate::ErrorOnGateModel;
 #[non_exhaustive]
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub enum NoiseModel {
     /// Continuous decoherence model
     ContinuousDecoherenceModel(ContinuousDecoherenceModel),

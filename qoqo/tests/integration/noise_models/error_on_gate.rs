@@ -12,6 +12,8 @@
 
 use pyo3::prelude::*;
 use qoqo::noise_models::*;
+#[cfg(feature = "json_schema")]
+use roqoqo::{noise_models::ErrorOnGateModel, ROQOQO_VERSION};
 use struqture::OperateOnDensityMatrix;
 use struqture_py::spins;
 
@@ -290,4 +292,32 @@ fn test_multi_qubit_noise_term() {
             .unwrap();
         assert_eq!(operator, plus_minus_operator);
     })
+}
+
+/// Test json_schema function of ErrorOnGateModel
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema() {
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let br_type = py.get_type::<ErrorOnGateModelWrapper>();
+        let br = br_type
+            .call0()
+            .unwrap()
+            .downcast::<PyCell<ErrorOnGateModelWrapper>>()
+            .unwrap();
+
+        let schema: String = String::extract(br.call_method0("json_schema").unwrap()).unwrap();
+        let rust_schema =
+            serde_json::to_string_pretty(&schemars::schema_for!(ErrorOnGateModel)).unwrap();
+        assert_eq!(schema, rust_schema);
+
+        let current_version_string =
+            String::extract(br.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(br.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.6.0");
+    });
 }
