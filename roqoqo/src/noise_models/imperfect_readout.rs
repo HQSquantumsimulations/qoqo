@@ -35,6 +35,7 @@ use std::collections::HashMap;
 /// ```
 #[derive(Debug, Clone, PartialEq, Default)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct ImperfectReadoutModel {
     /// Decoherence rates for all qubits
     prob_detect_0_as_1: HashMap<usize, f64>,
@@ -222,5 +223,23 @@ mod tests {
         assert_eq!(model.prob_detect_1_as_0(&0), 0.8);
         assert_eq!(model.prob_detect_1_as_0(&1), 0.8);
         assert_eq!(model.prob_detect_1_as_0(&4), 0.0);
+    }
+
+    #[cfg(feature = "json_schema")]
+    #[test]
+    fn test_json_schema_feature() {
+        let model = ImperfectReadoutModel::new_with_uniform_error(2, 0.2, 0.8).unwrap();
+        let schema = schemars::schema_for!(ImperfectReadoutModel);
+        let schema_checker =
+            jsonschema::JSONSchema::compile(&serde_json::to_value(&schema).unwrap())
+                .expect("schema is valid");
+        let value = serde_json::to_value(model).unwrap();
+        let val = match value {
+            serde_json::Value::Object(ob) => ob,
+            _ => panic!(),
+        };
+        let value: serde_json::Value = serde_json::to_value(val).unwrap();
+        let validation = schema_checker.validate(&value);
+        assert!(validation.is_ok());
     }
 }

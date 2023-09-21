@@ -2,6 +2,12 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.6.2
+
+### Added in 1.6.2
+
+* Added the json_schema feature info to the NoiseModels (unstable)
+
 ## 1.6.1
 
 ### Fixed in 1.6.1

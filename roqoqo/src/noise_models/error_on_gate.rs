@@ -40,8 +40,8 @@ use std::collections::HashMap;
 /// ```
 #[derive(Debug, Default, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[serde(from = "ErrorOnGateModelSerailize")]
-#[serde(into = "ErrorOnGateModelSerailize")]
+#[serde(from = "ErrorOnGateModelSerialize")]
+#[serde(into = "ErrorOnGateModelSerialize")]
 pub struct ErrorOnGateModel {
     /// Extra noise for single qubit gates.
     single_qubit_gate_errors:
@@ -55,6 +55,17 @@ pub struct ErrorOnGateModel {
     /// Extra noise for multi qubit gates.
     multi_qubit_gate_errors:
         HashMap<(String, Vec<usize>), struqture::spins::PlusMinusLindbladNoiseOperator>,
+}
+
+#[cfg(feature = "json_schema")]
+impl schemars::JsonSchema for ErrorOnGateModel {
+    fn schema_name() -> String {
+        "ErrorOnGateModel".to_string()
+    }
+
+    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
+        <ErrorOnGateModelSerialize>::json_schema(gen)
+    }
 }
 
 type SingleQGateIndes = (String, usize);
@@ -79,7 +90,12 @@ type MultiQubitErrors = Vec<(
 )>;
 #[cfg(feature = "serialize")]
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
-struct ErrorOnGateModelSerailize {
+#[cfg_attr(
+    feature = "json_schema",
+    derive(schemars::JsonSchema),
+    schemars(deny_unknown_fields)
+)]
+struct ErrorOnGateModelSerialize {
     /// Extra noise for single qubit gates.
     single_qubit_gate_errors: SingleQubitErrors,
     /// Extra noise for two qubit gates.
@@ -91,7 +107,7 @@ struct ErrorOnGateModelSerailize {
 }
 
 #[cfg(feature = "serialize")]
-impl From<ErrorOnGateModel> for ErrorOnGateModelSerailize {
+impl From<ErrorOnGateModel> for ErrorOnGateModelSerialize {
     fn from(value: ErrorOnGateModel) -> Self {
         let single_qubit_gate_errors: SingleQubitErrors =
             value.single_qubit_gate_errors.into_iter().collect();
@@ -101,7 +117,7 @@ impl From<ErrorOnGateModel> for ErrorOnGateModelSerailize {
             value.three_qubit_gate_errors.into_iter().collect();
         let multi_qubit_gate_errors: MultiQubitErrors =
             value.multi_qubit_gate_errors.into_iter().collect();
-        ErrorOnGateModelSerailize {
+        ErrorOnGateModelSerialize {
             single_qubit_gate_errors,
             two_qubit_gate_errors,
             three_qubit_gate_errors,
@@ -111,8 +127,8 @@ impl From<ErrorOnGateModel> for ErrorOnGateModelSerailize {
 }
 
 #[cfg(feature = "serialize")]
-impl From<ErrorOnGateModelSerailize> for ErrorOnGateModel {
-    fn from(value: ErrorOnGateModelSerailize) -> Self {
+impl From<ErrorOnGateModelSerialize> for ErrorOnGateModel {
+    fn from(value: ErrorOnGateModelSerialize) -> Self {
         let single_qubit_gate_errors: HashMap<
             (String, usize),
             struqture::spins::PlusMinusLindbladNoiseOperator,
@@ -410,5 +426,28 @@ mod tests {
         let json_str = serde_json::to_string(&noise_model).unwrap();
         let deserialized_noise_model: ErrorOnGateModel = serde_json::from_str(&json_str).unwrap();
         assert_eq!(noise_model, deserialized_noise_model);
+    }
+
+    #[cfg(feature = "json_schema")]
+    #[test]
+    fn test_json_schema_feature() {
+        let mut model = ErrorOnGateModel::new();
+        model = model.set_single_qubit_gate_error(
+            "RotateX",
+            0,
+            PlusMinusLindbladNoiseOperator::new(),
+        );
+        let schema = schemars::schema_for!(ErrorOnGateModel);
+        let schema_checker =
+            jsonschema::JSONSchema::compile(&serde_json::to_value(&schema).unwrap())
+                .expect("schema is valid");
+        let value = serde_json::to_value(model).unwrap();
+        let val = match value {
+            serde_json::Value::Object(ob) => ob,
+            _ => panic!(),
+        };
+        let value: serde_json::Value = serde_json::to_value(val).unwrap();
+        let validation = schema_checker.validate(&value);
+        assert!(validation.is_ok());
     }
 }
