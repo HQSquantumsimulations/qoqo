@@ -12,6 +12,8 @@
 
 use pyo3::prelude::*;
 use qoqo::noise_models::*;
+#[cfg(feature = "json_schema")]
+use roqoqo::{noise_models::ImperfectReadoutModel, ROQOQO_VERSION};
 
 /// Test copy
 #[test]
@@ -155,4 +157,32 @@ fn test_to_from_bincode() {
         let serialised_error = serialised.call_method0("to_bincode");
         assert!(serialised_error.is_err());
     })
+}
+
+/// Test json_schema function of ImperfectReadoutModel
+#[cfg(feature = "json_schema")]
+#[test]
+fn test_json_schema() {
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let br_type = py.get_type::<ImperfectReadoutModelWrapper>();
+        let br = br_type
+            .call0()
+            .unwrap()
+            .downcast::<PyCell<ImperfectReadoutModelWrapper>>()
+            .unwrap();
+
+        let schema: String = String::extract(br.call_method0("json_schema").unwrap()).unwrap();
+        let rust_schema =
+            serde_json::to_string_pretty(&schemars::schema_for!(ImperfectReadoutModel)).unwrap();
+        assert_eq!(schema, rust_schema);
+
+        let current_version_string =
+            String::extract(br.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(br.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.6.0");
+    });
 }

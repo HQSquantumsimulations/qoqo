@@ -432,11 +432,8 @@ mod tests {
     #[test]
     fn test_json_schema_feature() {
         let mut model = ErrorOnGateModel::new();
-        model = model.set_single_qubit_gate_error(
-            "RotateX",
-            0,
-            PlusMinusLindbladNoiseOperator::new(),
-        );
+        model =
+            model.set_single_qubit_gate_error("RotateX", 0, PlusMinusLindbladNoiseOperator::new());
         let schema = schemars::schema_for!(ErrorOnGateModel);
         let schema_checker =
             jsonschema::JSONSchema::compile(&serde_json::to_value(&schema).unwrap())
