@@ -441,5 +441,4 @@ mod quantum_program;
 pub mod registers;
 pub use quantum_program::QuantumProgram;
 
-#[cfg(feature = "unstable_noise_models")]
 pub mod noise_models;

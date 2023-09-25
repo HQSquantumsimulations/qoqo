@@ -11,5 +11,5 @@
 // limitations under the License.
 
 mod continuous_decoherence;
-mod error_on_gate;
+mod decoherence_on_gate;
 mod imperfect_readout;

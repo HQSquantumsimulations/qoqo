@@ -19,9 +19,9 @@ mod continuous_decoherence;
 pub use continuous_decoherence::ContinuousDecoherenceModel;
 mod imperfect_readout;
 pub use imperfect_readout::ImperfectReadoutModel;
-mod error_on_gate;
+mod decoherence_on_gate;
 use super::operations::SupportedVersion;
-pub use error_on_gate::ErrorOnGateModel;
+pub use decoherence_on_gate::DecoherenceOnGateModel;
 
 /// Collection of all available noise models in this version of qoqo/roqoqo
 ///
@@ -36,7 +36,7 @@ pub enum NoiseModel {
     /// Readout error model (probabilities to measure 0 instead of 1 and vice-versa).
     ImperfectReadoutModel(ImperfectReadoutModel),
     /// additional error only when applying gate
-    ErrorOnGateModel(ErrorOnGateModel),
+    DecoherenceOnGateModel(DecoherenceOnGateModel),
 }
 
 impl From<ContinuousDecoherenceModel> for NoiseModel {
@@ -51,9 +51,9 @@ impl From<ImperfectReadoutModel> for NoiseModel {
     }
 }
 
-impl From<ErrorOnGateModel> for NoiseModel {
-    fn from(value: ErrorOnGateModel) -> Self {
-        Self::ErrorOnGateModel(value)
+impl From<DecoherenceOnGateModel> for NoiseModel {
+    fn from(value: DecoherenceOnGateModel) -> Self {
+        Self::DecoherenceOnGateModel(value)
     }
 }
 
@@ -66,7 +66,9 @@ impl SupportedVersion for NoiseModel {
             NoiseModel::ImperfectReadoutModel(internal) => {
                 internal.minimum_supported_roqoqo_version()
             }
-            NoiseModel::ErrorOnGateModel(internal) => internal.minimum_supported_roqoqo_version(),
+            NoiseModel::DecoherenceOnGateModel(internal) => {
+                internal.minimum_supported_roqoqo_version()
+            }
         }
     }
 }
@@ -82,7 +84,7 @@ mod tests {
     }
     #[test]
     fn minimum_supported_roqoqo_version_on_gate() {
-        let noise = ErrorOnGateModel::new();
+        let noise = DecoherenceOnGateModel::new();
         let noise_model: NoiseModel = noise.into();
         assert_eq!(noise_model.minimum_supported_roqoqo_version(), (1, 6, 0));
     }

@@ -18,8 +18,8 @@ mod continuous_decoherence;
 pub use continuous_decoherence::ContinuousDecoherenceModelWrapper;
 mod imperfect_readout;
 pub use imperfect_readout::ImperfectReadoutModelWrapper;
-mod error_on_gate;
-pub use error_on_gate::ErrorOnGateModelWrapper;
+mod decoherence_on_gate;
+pub use decoherence_on_gate::DecoherenceOnGateModelWrapper;
 use pyo3::prelude::*;
 
 /// A collection of noise models that represent different types of noise that can be present in Quantum Computing hardware.
@@ -29,11 +29,11 @@ use pyo3::prelude::*;
 ///
 ///     ContinuousDecoherenceModel
 ///     ImperfectReadoutModel
-///     ErrorOnGateModel
+///     DecoherenceOnGateModel
 #[pymodule]
 pub fn noise_models(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<ContinuousDecoherenceModelWrapper>()?;
     module.add_class::<ImperfectReadoutModelWrapper>()?;
-    module.add_class::<ErrorOnGateModelWrapper>()?;
+    module.add_class::<DecoherenceOnGateModelWrapper>()?;
     Ok(())
 }

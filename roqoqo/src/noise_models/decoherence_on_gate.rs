@@ -12,6 +12,7 @@
 
 use super::SupportedVersion;
 use std::collections::HashMap;
+
 /// Error model for noise that is only present on gate executions.
 ///
 /// Adds additional noise when specific gates (identified by hqslang name and qubits acted on) are executed.
@@ -20,11 +21,11 @@ use std::collections::HashMap;
 /// Example:
 ///
 /// ```
-/// use roqoqo::noise_models::ErrorOnGateModel;
+/// use roqoqo::noise_models::DecoherenceOnGateModel;
 /// use struqture::spins::{PlusMinusLindbladNoiseOperator, PlusMinusProduct};
 /// use struqture::prelude::*;
 ///
-/// let mut noise_model = ErrorOnGateModel::new();
+/// let mut noise_model = DecoherenceOnGateModel::new();
 /// let mut lindblad_noise = PlusMinusLindbladNoiseOperator::new();
 /// lindblad_noise.add_operator_product(
 ///    (PlusMinusProduct::new().z(0), PlusMinusProduct::new().z(0)),
@@ -40,9 +41,9 @@ use std::collections::HashMap;
 /// ```
 #[derive(Debug, Default, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[serde(from = "ErrorOnGateModelSerialize")]
-#[serde(into = "ErrorOnGateModelSerialize")]
-pub struct ErrorOnGateModel {
+#[serde(from = "DecoherenceOnGateModelSerialize")]
+#[serde(into = "DecoherenceOnGateModelSerialize")]
+pub struct DecoherenceOnGateModel {
     /// Extra noise for single qubit gates.
     single_qubit_gate_errors:
         HashMap<(String, usize), struqture::spins::PlusMinusLindbladNoiseOperator>,
@@ -58,13 +59,13 @@ pub struct ErrorOnGateModel {
 }
 
 #[cfg(feature = "json_schema")]
-impl schemars::JsonSchema for ErrorOnGateModel {
+impl schemars::JsonSchema for DecoherenceOnGateModel {
     fn schema_name() -> String {
-        "ErrorOnGateModel".to_string()
+        "DecoherenceOnGateModel".to_string()
     }
 
     fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-        <ErrorOnGateModelSerialize>::json_schema(gen)
+        <DecoherenceOnGateModelSerialize>::json_schema(gen)
     }
 }
 
@@ -95,7 +96,7 @@ type MultiQubitErrors = Vec<(
     derive(schemars::JsonSchema),
     schemars(deny_unknown_fields)
 )]
-struct ErrorOnGateModelSerialize {
+struct DecoherenceOnGateModelSerialize {
     /// Extra noise for single qubit gates.
     single_qubit_gate_errors: SingleQubitErrors,
     /// Extra noise for two qubit gates.
@@ -107,8 +108,8 @@ struct ErrorOnGateModelSerialize {
 }
 
 #[cfg(feature = "serialize")]
-impl From<ErrorOnGateModel> for ErrorOnGateModelSerialize {
-    fn from(value: ErrorOnGateModel) -> Self {
+impl From<DecoherenceOnGateModel> for DecoherenceOnGateModelSerialize {
+    fn from(value: DecoherenceOnGateModel) -> Self {
         let single_qubit_gate_errors: SingleQubitErrors =
             value.single_qubit_gate_errors.into_iter().collect();
         let two_qubit_gate_errors: TwoQubitErrors =
@@ -117,7 +118,7 @@ impl From<ErrorOnGateModel> for ErrorOnGateModelSerialize {
             value.three_qubit_gate_errors.into_iter().collect();
         let multi_qubit_gate_errors: MultiQubitErrors =
             value.multi_qubit_gate_errors.into_iter().collect();
-        ErrorOnGateModelSerialize {
+        DecoherenceOnGateModelSerialize {
             single_qubit_gate_errors,
             two_qubit_gate_errors,
             three_qubit_gate_errors,
@@ -127,8 +128,8 @@ impl From<ErrorOnGateModel> for ErrorOnGateModelSerialize {
 }
 
 #[cfg(feature = "serialize")]
-impl From<ErrorOnGateModelSerialize> for ErrorOnGateModel {
-    fn from(value: ErrorOnGateModelSerialize) -> Self {
+impl From<DecoherenceOnGateModelSerialize> for DecoherenceOnGateModel {
+    fn from(value: DecoherenceOnGateModelSerialize) -> Self {
         let single_qubit_gate_errors: HashMap<
             (String, usize),
             struqture::spins::PlusMinusLindbladNoiseOperator,
@@ -145,7 +146,7 @@ impl From<ErrorOnGateModelSerialize> for ErrorOnGateModel {
             (String, Vec<usize>),
             struqture::spins::PlusMinusLindbladNoiseOperator,
         > = value.multi_qubit_gate_errors.into_iter().collect();
-        ErrorOnGateModel {
+        DecoherenceOnGateModel {
             single_qubit_gate_errors,
             two_qubit_gate_errors,
             three_qubit_gate_errors,
@@ -154,14 +155,14 @@ impl From<ErrorOnGateModelSerialize> for ErrorOnGateModel {
     }
 }
 
-impl SupportedVersion for ErrorOnGateModel {
+impl SupportedVersion for DecoherenceOnGateModel {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 6, 0)
     }
 }
 
-impl ErrorOnGateModel {
-    /// Creates a new ErrorOnGateModel with default values.
+impl DecoherenceOnGateModel {
+    /// Creates a new DecoherenceOnGateModel with default values.
     pub fn new() -> Self {
         Self {
             single_qubit_gate_errors: HashMap::new(),
@@ -356,8 +357,8 @@ mod tests {
     use struqture::spins::PlusMinusLindbladNoiseOperator;
 
     #[test]
-    fn test_error_on_gate_model_single() {
-        let mut noise_model = ErrorOnGateModel::new();
+    fn test_decoherence_on_gate_model_single() {
+        let mut noise_model = DecoherenceOnGateModel::new();
         noise_model = noise_model.set_single_qubit_gate_error(
             "RotateX",
             0,
@@ -370,8 +371,8 @@ mod tests {
     }
 
     #[test]
-    fn test_error_on_gate_model_two() {
-        let mut noise_model = ErrorOnGateModel::new();
+    fn test_decoherence_on_gate_model_two() {
+        let mut noise_model = DecoherenceOnGateModel::new();
         noise_model = noise_model.set_two_qubit_gate_error(
             "CNOT",
             0,
@@ -385,8 +386,8 @@ mod tests {
     }
 
     #[test]
-    fn test_error_on_gate_model_three() {
-        let mut noise_model = ErrorOnGateModel::new();
+    fn test_decoherence_on_gate_model_three() {
+        let mut noise_model = DecoherenceOnGateModel::new();
         noise_model = noise_model.set_three_qubit_gate_error(
             "ControlledControlledPauliZ",
             0,
@@ -401,8 +402,8 @@ mod tests {
     }
 
     #[test]
-    fn test_error_on_gate_model_mulit() {
-        let mut noise_model = ErrorOnGateModel::new();
+    fn test_decoherence_on_gate_model_mulit() {
+        let mut noise_model = DecoherenceOnGateModel::new();
         noise_model = noise_model.set_multi_qubit_gate_error(
             "MultiQubitMS",
             vec![0, 1, 2, 3],
@@ -417,24 +418,25 @@ mod tests {
     #[cfg(feature = "serialize")]
     #[test]
     fn test_json_serialization() {
-        let mut noise_model = ErrorOnGateModel::new();
+        let mut noise_model = DecoherenceOnGateModel::new();
         noise_model = noise_model.set_single_qubit_gate_error(
             "RotateX",
             0,
             PlusMinusLindbladNoiseOperator::new(),
         );
         let json_str = serde_json::to_string(&noise_model).unwrap();
-        let deserialized_noise_model: ErrorOnGateModel = serde_json::from_str(&json_str).unwrap();
+        let deserialized_noise_model: DecoherenceOnGateModel =
+            serde_json::from_str(&json_str).unwrap();
         assert_eq!(noise_model, deserialized_noise_model);
     }
 
     #[cfg(feature = "json_schema")]
     #[test]
     fn test_json_schema_feature() {
-        let mut model = ErrorOnGateModel::new();
+        let mut model = DecoherenceOnGateModel::new();
         model =
             model.set_single_qubit_gate_error("RotateX", 0, PlusMinusLindbladNoiseOperator::new());
-        let schema = schemars::schema_for!(ErrorOnGateModel);
+        let schema = schemars::schema_for!(DecoherenceOnGateModel);
         let schema_checker =
             jsonschema::JSONSchema::compile(&serde_json::to_value(&schema).unwrap())
                 .expect("schema is valid");

@@ -2,6 +2,11 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.7.0
+
+* NoiseModels are now a stable feature
+* Renamed unstable ErrorOnGate NoiseModel to DecoherenceOnGate
+
 ## 1.6.2
 
 ### Added in 1.6.2
