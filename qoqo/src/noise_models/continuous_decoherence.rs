@@ -13,6 +13,8 @@
 use pyo3::prelude::*;
 use qoqo_macros::noise_model_wrapper;
 use roqoqo::noise_models::{ContinuousDecoherenceModel, NoiseModel};
+#[cfg(feature = "json_schema")]
+use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 use struqture;
 use struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper;
 
@@ -132,6 +134,17 @@ impl ContinuousDecoherenceModelWrapper {
                 "Input cannot be deserialized to selected Noise-Model.",
             )),
         }
+    }
+
+    #[cfg(feature = "json_schema")]
+    /// Return the JsonSchema for the json serialisation of the class.
+    ///
+    /// Returns:
+    ///     str: The json schema serialized to json
+    #[staticmethod]
+    pub fn json_schema() -> String {
+        let schema = schemars::schema_for!(ContinuousDecoherenceModel);
+        serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
     }
 
     /// Convenience function to add damping to several qubits

@@ -736,7 +736,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-aho-corasick 1.0.5
+aho-corasick 1.1.1
 https://github.com/BurntSushi/aho-corasick
 by Andrew Gallant <jamslam@gmail.com>
 Fast multiple substring searching.
@@ -3891,11 +3891,11 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-bumpalo 3.13.0
+bumpalo 3.14.0
 https://github.com/fitzgen/bumpalo
 by Nick Fitzgerald <fitzgen@gmail.com>
 A fast bump allocation arena for Rust.
-License: MIT/Apache-2.0
+License: MIT OR Apache-2.0
 ----------------------------------------------------
 LICENSE-APACHE:
 
@@ -4991,7 +4991,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-clap 4.4.2
+clap 4.4.4
 https://github.com/clap-rs/clap
 by 
 A simple to use, efficient, and full-featured Command Line Argument Parser
@@ -5227,7 +5227,7 @@ SOFTWARE.
 
 
 ====================================================
-clap_builder 4.4.2
+clap_builder 4.4.4
 https://github.com/clap-rs/clap
 by 
 A simple to use, efficient, and full-featured Command Line Argument Parser
@@ -6410,7 +6410,7 @@ LICENSE-Apache:
 
 
 ====================================================
-dyn-clone 1.0.13
+dyn-clone 1.0.14
 https://github.com/dtolnay/dyn-clone
 by David Tolnay <dtolnay@gmail.com>
 Clone trait that is object-safe
@@ -11081,8 +11081,8 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-hermit-abi 0.3.2
-https://github.com/hermitcore/rusty-hermit
+hermit-abi 0.3.3
+https://github.com/hermitcore/hermit-rs
 by Stefan Lankes
 Hermit system calls definitions.
 License: MIT OR Apache-2.0
@@ -14237,7 +14237,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-libc 0.2.147
+libc 0.2.148
 https://github.com/rust-lang/libc
 by The Rust Project Developers
 Raw FFI bindings to platform libraries like libc.
@@ -15178,7 +15178,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-matrixmultiply 0.3.7
+matrixmultiply 0.3.8
 https://github.com/bluss/matrixmultiply/
 by bluss, R. Janis Goldschmidt
 General matrix multiplication for f32 and f64 matrices. Operates on matrices with general layout (they can use arbitrary row and column stride). Detects and uses AVX or SSE2 on x86 platforms transparently for higher performance. Uses a microkernel strategy, so that the implementation is easy to parallelize and optimize.
@@ -22004,7 +22004,7 @@ SOFTWARE.
 
 
 ====================================================
-proc-macro2 1.0.66
+proc-macro2 1.0.67
 https://github.com/dtolnay/proc-macro2
 by David Tolnay <dtolnay@gmail.com>, Alex Crichton <alex@alexcrichton.com>
 A substitute implementation of the compiler's `proc_macro` API to decouple token-based libraries from the procedural macro use case.
@@ -28294,7 +28294,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 
 
 ====================================================
-schemars 0.8.13
+schemars 0.8.15
 https://graham.cool/schemars/
 by Graham Esau <gesau@hotmail.co.uk>
 Generate JSON Schemas from Rust code
@@ -28326,7 +28326,7 @@ SOFTWARE.
 
 
 ====================================================
-schemars_derive 0.8.13
+schemars_derive 0.8.15
 https://graham.cool/schemars/
 by Graham Esau <gesau@hotmail.co.uk>
 Macros for #[derive(JsonSchema)], for use with schemars
@@ -29271,7 +29271,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-serde_json 1.0.106
+serde_json 1.0.107
 https://github.com/serde-rs/json
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A JSON serialization file format
@@ -30163,7 +30163,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-smallvec 1.11.0
+smallvec 1.11.1
 https://github.com/servo/rust-smallvec
 by The Servo Project Developers
 'Small vector' optimization: store up to a small number of items on the stack
@@ -30926,7 +30926,7 @@ SOFTWARE.
 
 
 ====================================================
-struqture 1.4.1
+struqture 1.5.0
 by HQS Quantum Simulations <info@quantumsimulations.de>
 HQS tool for representing operators, Hamiltonians and open systems.
 License: Apache-2.0
@@ -31376,7 +31376,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-syn 2.0.32
+syn 2.0.37
 https://github.com/dtolnay/syn
 by David Tolnay <dtolnay@gmail.com>
 Parser for Rust source code
@@ -31821,7 +31821,7 @@ Software.
 
 
 ====================================================
-test-case 3.1.0
+test-case 3.2.1
 https://github.com/frondeus/test-case
 by Marcin Sas-Szymanski <marcin.sas-szymanski@anixe.pl>, Wojciech Polak <frondeus@gmail.com>, Łukasz Biel <lukasz.p.biel@gmail.com>
 Provides #[test_case(...)] procedural macro attribute for generating parametrized test cases easily
@@ -31853,7 +31853,7 @@ SOFTWARE.
 
 
 ====================================================
-test-case-core 3.1.0
+test-case-core 3.2.1
 https://github.com/frondeus/test-case
 by Marcin Sas-Szymanski <marcin.sas-szymanski@anixe.pl>, Wojciech Polak <frondeus@gmail.com>, Łukasz Biel <lukasz.p.biel@gmail.com>
 Provides core functionality for parsing #[test_case(...)] procedural macro attribute for generating parametrized test cases easily
@@ -31885,7 +31885,7 @@ SOFTWARE.
 
 
 ====================================================
-test-case-macros 3.1.0
+test-case-macros 3.2.1
 https://github.com/frondeus/test-case
 by Marcin Sas-Szymanski <marcin.sas-szymanski@anixe.pl>, Wojciech Polak <frondeus@gmail.com>, Łukasz Biel <lukasz.p.biel@gmail.com>
 Provides #[test_case(...)] procedural macro attribute for generating parametrized test cases easily
@@ -32345,7 +32345,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-time 0.3.28
+time 0.3.29
 https://time-rs.github.io
 by Jacob Pratt <open-source@jhpratt.dev>, Time contributors
 Date and time library. Fully interoperable with the standard library. Mostly compatible with #![no_std].
@@ -32581,7 +32581,7 @@ LICENSE-Apache:
 
 
 ====================================================
-time-core 0.1.1
+time-core 0.1.2
 https://github.com/time-rs/time
 by Jacob Pratt <open-source@jhpratt.dev>, Time contributors
 This crate is an implementation detail and should not be relied upon directly.
@@ -32817,7 +32817,7 @@ LICENSE-Apache:
 
 
 ====================================================
-time-macros 0.2.14
+time-macros 0.2.15
 https://github.com/time-rs/time
 by Jacob Pratt <open-source@jhpratt.dev>, Time contributors
     Procedural macros for the time crate.
@@ -33592,7 +33592,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-tokio-util 0.7.8
+tokio-util 0.7.9
 https://tokio.rs
 by Tokio Contributors <team@tokio.rs>
 Additional utilities for working with Tokio.
@@ -33772,7 +33772,7 @@ THE SOFTWARE.
 
 
 ====================================================
-typenum 1.16.0
+typenum 1.17.0
 https://github.com/paholg/typenum
 by Paho Lurie-Gregg <paho@paholg.com>, Andre Bogus <bogusandre@gmail.com>
 Typenum is a Rust library for type-level numbers evaluated at
@@ -34256,7 +34256,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-unicode-ident 1.0.11
+unicode-ident 1.0.12
 https://github.com/dtolnay/unicode-ident
 by David Tolnay <dtolnay@gmail.com>
 Determine whether characters have the XID_Start or XID_Continue properties according to Unicode Standard Annex #31

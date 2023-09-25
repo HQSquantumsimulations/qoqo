@@ -40,6 +40,7 @@ use struqture::{
 /// For more fine control access the internal lindblad_noise directly and modify it.
 #[derive(Debug, Clone, PartialEq, Default)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct ContinuousDecoherenceModel {
     /// Decoherence rates for all qubits
     pub lindblad_noise: PlusMinusLindbladNoiseOperator,
@@ -341,5 +342,24 @@ mod tests {
             ContinuousDecoherenceModel { lindblad_noise },
             converted_model
         );
+    }
+
+    #[cfg(feature = "json_schema")]
+    #[test]
+    fn test_json_schema_feature() {
+        let mut model = ContinuousDecoherenceModel::new();
+        model = model.add_dephasing_rate(&[0, 1], 0.9);
+        let schema = schemars::schema_for!(ContinuousDecoherenceModel);
+        let schema_checker =
+            jsonschema::JSONSchema::compile(&serde_json::to_value(&schema).unwrap())
+                .expect("schema is valid");
+        let value = serde_json::to_value(&model).unwrap();
+        let val = match value {
+            serde_json::Value::Object(ob) => ob,
+            _ => panic!(),
+        };
+        let value: serde_json::Value = serde_json::to_value(val).unwrap();
+        let validation = schema_checker.validate(&value);
+        assert!(validation.is_ok());
     }
 }

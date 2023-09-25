@@ -13,6 +13,8 @@
 use pyo3::prelude::*;
 use qoqo_macros::noise_model_wrapper;
 use roqoqo::noise_models::{ErrorOnGateModel, NoiseModel};
+#[cfg(feature = "json_schema")]
+use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 use struqture_py;
 
 /// Error model for noise that is only present on gate executions.
@@ -326,5 +328,16 @@ impl ErrorOnGateModelWrapper {
                 "Input cannot be deserialized to selected Noise-Model.",
             )),
         }
+    }
+
+    #[cfg(feature = "json_schema")]
+    /// Return the JsonSchema for the json serialisation of the class.
+    ///
+    /// Returns:
+    ///     str: The json schema serialized to json
+    #[staticmethod]
+    pub fn json_schema() -> String {
+        let schema = schemars::schema_for!(ErrorOnGateModel);
+        serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
     }
 }

@@ -77,6 +77,27 @@ pub fn noise_model_wrapper_def(
                 Ok(serialized)
             }
 
+            #[cfg(feature = "json_schema")]
+            /// Returns the current version of the qoqo library .
+            ///
+            /// Returns:
+            ///     str: The current version of the library.
+            #[staticmethod]
+            pub fn current_version() -> String {
+                ROQOQO_VERSION.to_string()
+            }
+
+            #[cfg(feature = "json_schema")]
+            /// Return the minimum version of qoqo that supports this object.
+            ///
+            /// Returns:
+            ///     str: The minimum version of the qoqo library to deserialize this object.
+            pub fn min_supported_version(&self) -> String {
+                let min_version: (u32, u32, u32) =
+                    NoiseModel::minimum_supported_roqoqo_version(&NoiseModel::from(self.internal.clone()));
+                format!("{}.{}.{}", min_version.0, min_version.1, min_version.2)
+            }
+
             /// Return the __richcmp__ magic method to perform rich comparison operations on mixed system.
             ///
             /// Args:
