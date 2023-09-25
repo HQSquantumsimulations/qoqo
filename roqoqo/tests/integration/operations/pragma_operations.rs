@@ -1979,10 +1979,8 @@ fn pragma_start_decomp_block_serde_compact() {
 #[cfg(feature = "json_schema")]
 #[test]
 fn pragma_start_decomp_block_json_schema() {
-    let op = PragmaStartDecompositionBlock::new(
-        vec![0, 1],
-        vec![(0, 1), (1, 0)].iter().cloned().collect(),
-    );
+    let op =
+        PragmaStartDecompositionBlock::new(vec![0, 1], [(0, 1), (1, 0)].iter().cloned().collect());
 
     // Serialize
     let test_json = serde_json::to_string(&op).unwrap();

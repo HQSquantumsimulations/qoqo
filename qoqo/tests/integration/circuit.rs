@@ -843,7 +843,7 @@ fn test_iter() {
             .unwrap()
             .downcast::<PyCell<RotateXWrapper>>()
             .unwrap();
-        let comparison_vec = vec![new_rotatex_0, new_rotatex_1, new_rotatex_2];
+        let comparison_vec = [new_rotatex_0, new_rotatex_1, new_rotatex_2];
 
         let t = new_circuit
             .call_method0("__iter__")

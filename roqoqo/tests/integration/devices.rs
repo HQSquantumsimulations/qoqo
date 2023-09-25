@@ -93,7 +93,7 @@ fn test_all_to_all() {
         .unwrap();
     assert_eq!(device.single_qubit_gate_time("RotateX", &2), Some(0.07f64));
 
-    let test_edges = vec![(0, 1), (0, 2), (1, 2)];
+    let test_edges = [(0, 1), (0, 2), (1, 2)];
     let edges = device.two_qubit_edges();
     assert_eq!(test_edges.len(), edges.len());
     for edge in edges {
@@ -238,7 +238,7 @@ fn generic_device_works() {
     );
     assert_eq!(device.multi_qubit_gate_time("Other", &[0, 1, 2]), None);
 
-    let test_edges = vec![(0, 1), (0, 2), (1, 2)];
+    let test_edges = [(0, 1), (0, 2), (1, 2)];
     let edges = device.two_qubit_edges();
     assert_eq!(test_edges.len(), edges.len());
     for edge in edges {
@@ -418,7 +418,7 @@ fn test_square_lattice() {
         .unwrap();
     assert_eq!(device.single_qubit_gate_time("RotateX", &2), Some(0.07f64));
 
-    let test_edges = vec![(0, 1), (2, 3), (0, 2), (1, 3)];
+    let test_edges = [(0, 1), (2, 3), (0, 2), (1, 3)];
     let edges = device.two_qubit_edges();
     assert_eq!(test_edges.len(), edges.len());
     for edge in edges {

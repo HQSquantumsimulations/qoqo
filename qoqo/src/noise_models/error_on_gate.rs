@@ -101,13 +101,13 @@ impl ErrorOnGateModelWrapper {
         gate: &str,
         qubit: usize,
     ) -> Option<struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper> {
-        if let Some(noise_operator) = self.internal.get_single_qubit_gate_error(gate, qubit) {
-            Some(struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
-                internal: noise_operator.clone(),
-            })
-        } else {
-            None
-        }
+        self.internal
+            .get_single_qubit_gate_error(gate, qubit)
+            .map(
+                |noise_operator| struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
+                    internal: noise_operator.clone(),
+                },
+            )
     }
 
     /// Sets extra noise for a single qubit gate.
@@ -157,16 +157,13 @@ impl ErrorOnGateModelWrapper {
         control: usize,
         target: usize,
     ) -> Option<struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper> {
-        if let Some(noise_operator) = self
-            .internal
+        self.internal
             .get_two_qubit_gate_error(gate, control, target)
-        {
-            Some(struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
-                internal: noise_operator.clone(),
-            })
-        } else {
-            None
-        }
+            .map(
+                |noise_operator| struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
+                    internal: noise_operator.clone(),
+                },
+            )
     }
 
     /// Sets extra noise for a single qubit gate.
@@ -221,16 +218,13 @@ impl ErrorOnGateModelWrapper {
         control1: usize,
         target: usize,
     ) -> Option<struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper> {
-        if let Some(noise_operator) = self
-            .internal
+        self.internal
             .get_three_qubit_gate_error(gate, control0, control1, target)
-        {
-            Some(struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
-                internal: noise_operator.clone(),
-            })
-        } else {
-            None
-        }
+            .map(
+                |noise_operator| struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
+                    internal: noise_operator.clone(),
+                },
+            )
     }
 
     /// Sets extra noise for a multi qubit gate.
@@ -275,13 +269,13 @@ impl ErrorOnGateModelWrapper {
         gate: &str,
         qubits: Vec<usize>,
     ) -> Option<struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper> {
-        if let Some(noise_operator) = self.internal.get_multi_qubit_gate_error(gate, qubits) {
-            Some(struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
-                internal: noise_operator.clone(),
-            })
-        } else {
-            None
-        }
+        self.internal
+            .get_multi_qubit_gate_error(gate, qubits)
+            .map(
+                |noise_operator| struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
+                    internal: noise_operator.clone(),
+                },
+            )
     }
 
     /// Convert the bincode representation of the Noise-Model to a device using the bincode crate.

@@ -1,6 +1,6 @@
 [package]
 name = "qoqo"
-version = "1.6.2"
+version = "1.7.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 homepage = "https://github.com/HQSquantumsimulations/qoqo"
@@ -32,8 +32,8 @@ num-complex = "0.4"
 thiserror = "1.0"
 qoqo_calculator = { version="1.1" }
 qoqo_calculator_pyo3 = {version="1.1", default-features=false}
-qoqo-macros = {version="1.6.2", path="../qoqo-macros"}
-roqoqo = {version="1.6.2", path="../roqoqo", features=["serialize", "overrotate"]}
+qoqo-macros = {version="1.7", path="../qoqo-macros"}
+roqoqo = {version="1.7", path="../roqoqo", features=["serialize", "overrotate"]}
 struqture = {version="1.3", optional = true}
 struqture-py = {version = "1.3", optional = true, default-features = false}
 numpy = "0.19"
