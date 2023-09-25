@@ -69,28 +69,28 @@ impl schemars::JsonSchema for DecoherenceOnGateModel {
     }
 }
 
-type SingleQGateIndes = (String, usize);
+type SingleQGateIndex = (String, usize);
 type SingleQubitErrors = Vec<(
-    SingleQGateIndes,
+    SingleQGateIndex,
     struqture::spins::PlusMinusLindbladNoiseOperator,
 )>;
-type TwoQubitGateIndes = (String, (usize, usize));
+type TwoQubitGateIndex = (String, (usize, usize));
 type TwoQubitErrors = Vec<(
-    TwoQubitGateIndes,
+    TwoQubitGateIndex,
     struqture::spins::PlusMinusLindbladNoiseOperator,
 )>;
-type ThreeQubitGateIndes = (String, (usize, usize, usize));
+type ThreeQubitGateIndex = (String, (usize, usize, usize));
 type ThreeQubitErrors = Vec<(
-    ThreeQubitGateIndes,
+    ThreeQubitGateIndex,
     struqture::spins::PlusMinusLindbladNoiseOperator,
 )>;
-type MultiQubitGateIndes = (String, Vec<usize>);
+type MultiQubitGateIndex = (String, Vec<usize>);
 type MultiQubitErrors = Vec<(
-    MultiQubitGateIndes,
+    MultiQubitGateIndex,
     struqture::spins::PlusMinusLindbladNoiseOperator,
 )>;
-#[cfg(feature = "serialize")]
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(
     feature = "json_schema",
     derive(schemars::JsonSchema),
