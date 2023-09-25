@@ -41,8 +41,8 @@ use std::collections::HashMap;
 /// ```
 #[derive(Debug, Default, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
-#[serde(from = "DecoherenceOnGateModelSerialize")]
-#[serde(into = "DecoherenceOnGateModelSerialize")]
+#[cfg_attr(feature = "serialize", serde(from = "DecoherenceOnGateModelSerialize"))]
+#[cfg_attr(feature = "serialize", serde(into = "DecoherenceOnGateModelSerialize"))]
 pub struct DecoherenceOnGateModel {
     /// Extra noise for single qubit gates.
     single_qubit_gate_errors:
