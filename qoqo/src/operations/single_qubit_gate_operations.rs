@@ -495,3 +495,18 @@ struct GPi2 {
     qubit: usize,
     theta: CalculatorFloat,
 }
+
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
+/// The Identity gate.
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+struct Identity {
+    qubit: usize,
+}
