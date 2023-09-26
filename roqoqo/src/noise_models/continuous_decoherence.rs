@@ -158,7 +158,7 @@ impl ContinuousDecoherenceModel {
                         PlusMinusProduct::new().plus(*qubit),
                         PlusMinusProduct::new().plus(*qubit),
                     ),
-                    rate.into(),
+                    (rate / 2.0).into(),
                 )
                 .expect("Internal struqture bug.");
             self.lindblad_noise
@@ -166,17 +166,17 @@ impl ContinuousDecoherenceModel {
                     (
                         PlusMinusProduct::new().minus(*qubit),
                         PlusMinusProduct::new().minus(*qubit),
-                    ),
-                    rate.into(),
-                )
-                .expect("Internal struqture bug.");
-            self.lindblad_noise
-                .add_operator_product(
-                    (
-                        PlusMinusProduct::new().z(*qubit),
-                        PlusMinusProduct::new().z(*qubit),
                     ),
                     (rate / 2.0).into(),
+                )
+                .expect("Internal struqture bug.");
+            self.lindblad_noise
+                .add_operator_product(
+                    (
+                        PlusMinusProduct::new().z(*qubit),
+                        PlusMinusProduct::new().z(*qubit),
+                    ),
+                    (rate / 4.0).into(),
                 )
                 .expect("Internal struqture bug.");
         }
