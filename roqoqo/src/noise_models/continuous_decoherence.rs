@@ -226,7 +226,7 @@ mod tests {
     #[test]
     fn test_continuous_decoherence_model_add_depolarising() {
         let model = ContinuousDecoherenceModel::new();
-        let model = model.add_depolarising_rate(&[0], 0.9);
+        let model = model.add_depolarising_rate(&[0], 1.8);
         let mut lindblad_operator = PlusMinusLindbladNoiseOperator::new();
         lindblad_operator
             .add_operator_product(
