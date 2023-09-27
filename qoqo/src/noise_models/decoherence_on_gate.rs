@@ -12,7 +12,7 @@
 
 use pyo3::prelude::*;
 use qoqo_macros::noise_model_wrapper;
-use roqoqo::noise_models::{ErrorOnGateModel, NoiseModel};
+use roqoqo::noise_models::{DecoherenceOnGateModel, NoiseModel};
 #[cfg(feature = "json_schema")]
 use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 use struqture_py;
@@ -26,10 +26,10 @@ use struqture_py;
 /// Example:
 ///
 /// ```
-/// from qoqo.noise_models import ErrorOnGateModel
+/// from qoqo.noise_models import DecoherenceOnGateModel
 /// from struqture_py.spins import (PlusMinusLindbladNoiseOperator, PlusMinusProduct)
 ///
-/// noise_model = ErrorOnGateModel()
+/// noise_model = DecoherenceOnGateModel()
 /// lindblad_noise = PlusMinusLindbladNoiseOperator()
 /// lindblad_noise.add_operator_product(
 ///    (PlusMinusProduct().z(0), PlusMinusProduct().z(0)),
@@ -43,19 +43,19 @@ use struqture_py;
 /// lindblad_noise
 /// )
 /// ```
-#[pyclass(frozen, name = "ErrorOnGateModel")]
-#[derive(Debug, Clone, PartialEq)]
-pub struct ErrorOnGateModelWrapper {
-    internal: ErrorOnGateModel,
+#[pyclass(frozen, name = "DecoherenceOnGateModel")]
+#[derive(Debug, Default, Clone, PartialEq)]
+pub struct DecoherenceOnGateModelWrapper {
+    internal: DecoherenceOnGateModel,
 }
 
 #[noise_model_wrapper]
-impl ErrorOnGateModelWrapper {
-    /// Creates a new ErrorOnGateModel.
+impl DecoherenceOnGateModelWrapper {
+    /// Creates a new DecoherenceOnGateModel.
     #[new]
-    pub fn new() -> ErrorOnGateModelWrapper {
-        ErrorOnGateModelWrapper {
-            internal: ErrorOnGateModel::new(),
+    pub fn new() -> DecoherenceOnGateModelWrapper {
+        DecoherenceOnGateModelWrapper {
+            internal: DecoherenceOnGateModel::new(),
         }
     }
 
@@ -291,7 +291,7 @@ impl ErrorOnGateModelWrapper {
     ///     ValueError: Input cannot be deserialized to selected Noise-Model.
     #[staticmethod]
     #[pyo3(text_signature = "(input)")]
-    pub fn from_bincode(input: &PyAny) -> PyResult<ErrorOnGateModelWrapper> {
+    pub fn from_bincode(input: &PyAny) -> PyResult<DecoherenceOnGateModelWrapper> {
         let bytes = input.extract::<Vec<u8>>().map_err(|_| {
             pyo3::exceptions::PyTypeError::new_err("Input cannot be converted to byte array")
         })?;
@@ -299,7 +299,9 @@ impl ErrorOnGateModelWrapper {
             pyo3::exceptions::PyValueError::new_err("Input cannot be deserialized to Noise-Model.")
         })?;
         match noise_model {
-            NoiseModel::ErrorOnGateModel(internal) => Ok(ErrorOnGateModelWrapper { internal }),
+            NoiseModel::DecoherenceOnGateModel(internal) => {
+                Ok(DecoherenceOnGateModelWrapper { internal })
+            }
             _ => Err(pyo3::exceptions::PyValueError::new_err(
                 "Input cannot be deserialized to selected Noise-Model.",
             )),
@@ -318,12 +320,14 @@ impl ErrorOnGateModelWrapper {
     ///     ValueError: Input cannot be deserialized to selected Noise-Model.
     #[staticmethod]
     #[pyo3(text_signature = "(input)")]
-    pub fn from_json(input: &str) -> PyResult<ErrorOnGateModelWrapper> {
+    pub fn from_json(input: &str) -> PyResult<DecoherenceOnGateModelWrapper> {
         let noise_model: NoiseModel = serde_json::from_str(input).map_err(|_| {
             pyo3::exceptions::PyValueError::new_err("Input cannot be deserialized to Noise-Model.")
         })?;
         match noise_model {
-            NoiseModel::ErrorOnGateModel(internal) => Ok(ErrorOnGateModelWrapper { internal }),
+            NoiseModel::DecoherenceOnGateModel(internal) => {
+                Ok(DecoherenceOnGateModelWrapper { internal })
+            }
             _ => Err(pyo3::exceptions::PyValueError::new_err(
                 "Input cannot be deserialized to selected Noise-Model.",
             )),
@@ -337,7 +341,7 @@ impl ErrorOnGateModelWrapper {
     ///     str: The json schema serialized to json
     #[staticmethod]
     pub fn json_schema() -> String {
-        let schema = schemars::schema_for!(ErrorOnGateModel);
+        let schema = schemars::schema_for!(DecoherenceOnGateModel);
         serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
     }
 }

@@ -37,7 +37,7 @@ use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 /// assert higher_prob == 0.7
 /// ```
 #[pyclass(frozen, name = "ImperfectReadoutModel")]
-#[derive(Clone, Debug)]
+#[derive(Debug, Default, Clone, PartialEq)]
 pub struct ImperfectReadoutModelWrapper {
     internal: ImperfectReadoutModel,
 }

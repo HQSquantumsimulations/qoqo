@@ -4,9 +4,15 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## 1.7.0
 
+### Fixed in 1.7.0
+
+* Renamed unstable ErrorOnGate NoiseModel to DecoherenceOnGate
+* Fixed the factors of the depolarising rate of ContinuousDecoherenceModel by dividing by 2 (now equivalent to GenericDevice)
+
 ### Added in 1.7.0
 
 * Added `Identity` gate
+* NoiseModels are now a stable feature
 
 ## 1.6.2
 

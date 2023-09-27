@@ -29,6 +29,5 @@ mod quantum_program;
 #[cfg(test)]
 mod measurements;
 
-#[cfg(feature = "unstable_noise_models")]
 #[cfg(test)]
 mod noise_models;

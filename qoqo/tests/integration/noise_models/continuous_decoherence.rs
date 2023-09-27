@@ -144,7 +144,7 @@ fn test_add_depolarising() {
             .downcast::<PyCell<ContinuousDecoherenceModelWrapper>>()
             .unwrap();
         let br = br
-            .call_method1("add_depolarising_rate", ([0], 0.1))
+            .call_method1("add_depolarising_rate", ([0], 0.2))
             .unwrap()
             .downcast::<PyCell<ContinuousDecoherenceModelWrapper>>()
             .unwrap();
