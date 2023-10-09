@@ -2,6 +2,12 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.7.1
+
+### Fixed in 1.7.1
+
+* Fixed missing `Identity` gate from operations module
+
 ## 1.7.0
 
 ### Fixed in 1.7.0
