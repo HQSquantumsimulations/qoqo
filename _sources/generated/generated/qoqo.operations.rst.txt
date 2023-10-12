@@ -40,6 +40,7 @@ qoqo.operations
       GivensRotationLittleEndian
       Hadamard
       ISwap
+      Identity
       InputBit
       InputSymbolic
       InvSqrtISwap
