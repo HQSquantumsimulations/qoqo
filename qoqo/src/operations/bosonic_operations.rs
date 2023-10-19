@@ -59,6 +59,29 @@ pub struct Squeezing {
     OperateSingleModeGate,
     JsonSchema
 )]
+/// The single-mode phase-displacement gate with variable magnitude and phase.
+///
+/// Args:
+///     mode (int): The mode the phase-shift gate is applied to.
+///     displacement (CalculatorFloat): The magnitude by which to displace the mode.
+///     phase (CalculatorFloat): The angle by which to displace the mode.
+pub struct PhaseDisplacement {
+    mode: usize,
+    displacement: CalculatorFloat,
+    phase: CalculatorFloat,
+}
+
+#[wrap(
+    Operate,
+    OperateModeGate,
+    Substitute,
+    SubstituteModes,
+    InvolveModes,
+    OperateSingleMode,
+    InvolveQubits,
+    OperateSingleModeGate,
+    JsonSchema
+)]
 /// The single-mode phase-shift gate with variable phase, given by R(θ) = eexp(i * θ * 𝑁̂).
 ///
 /// https://arxiv.org/pdf/2104.03241.pdf

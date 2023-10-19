@@ -72,7 +72,55 @@ impl SupportedVersion for Squeezing {
     }
 }
 
-/// The single-mode phase-shift gate with variable phase, given by R(θ) = eexp(i * θ * 𝑁̂).
+/// The single-mode phase-displacement gate with variable magnitude and phase.
+///
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    OperateModeGate,
+    OperateSingleModeGate,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::InvolveModes,
+    roqoqo_derive::SubstituteModes,
+    roqoqo_derive::OperateSingleMode,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct PhaseDisplacement {
+    /// The mode the phase-displacement gate is applied to.
+    mode: usize,
+    /// The magnitude by which to displace the mode.
+    displacement: CalculatorFloat,
+    /// The angle by which to displace the mode.
+    phase: CalculatorFloat,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_PhaseDisplacement: &[&str; 4] = &[
+    "Operation",
+    "ModeGateOperation",
+    "SingleModeGateOperation",
+    "PhaseDisplacement",
+];
+
+impl InvolveQubits for PhaseDisplacement {
+    /// Returns all qubits involved in operation.
+    fn involved_qubits(&self) -> InvolvedQubits {
+        InvolvedQubits::None
+    }
+}
+
+impl ImplementedIn1point6 for PhaseDisplacement {}
+
+impl SupportedVersion for PhaseDisplacement {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 7, 2)
+    }
+}
+
+/// The single-mode phase-shift gate with variable phase, given by R(θ) = exp(i * θ * 𝑁̂).
 ///
 /// https://arxiv.org/pdf/2104.03241.pdf
 ///
