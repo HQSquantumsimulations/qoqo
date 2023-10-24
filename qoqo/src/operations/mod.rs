@@ -143,5 +143,7 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<PhotonDetectionWrapper>()?;
     // 1.7
     m.add_class::<IdentityWrapper>()?;
+    // 1.8
+    // m.add_class::<PhaseDisplacementWrapper>()?;
     Ok(())
 }

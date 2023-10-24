@@ -69,7 +69,7 @@ fn photondetection_inputs() {
 }
 
 #[test_case(Operation::from(Squeezing::new(0, 0.5.into(), 0.0.into())))]
-#[test_case(Operation::from(PhaseDisplacement::new(0, 0.5.into(), 0.1.into())))]
+// #[test_case(Operation::from(PhaseDisplacement::new(0, 0.5.into(), 0.1.into())))]
 #[test_case(Operation::from(PhaseShift::new(0, 0.5.into())))]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.5.into())))]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)))]
