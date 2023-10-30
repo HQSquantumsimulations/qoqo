@@ -16,7 +16,8 @@ use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
     BeamSplitterWrapper,
     // PhaseDisplacementWrapper,
-    PhaseShiftWrapper, PhotonDetectionWrapper,
+    PhaseShiftWrapper,
+    PhotonDetectionWrapper,
     SqueezingWrapper,
 };
 use qoqo_calculator::Calculator;

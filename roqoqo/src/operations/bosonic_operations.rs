@@ -13,9 +13,10 @@
 use std::collections::HashSet;
 
 use crate::operations::{
-    ImplementedIn1point6, ImplementedIn1point8, InvolveModes, InvolveQubits, InvolvedClassical, InvolvedModes,
-    InvolvedQubits, Operate, OperateModeGate, OperateSingleMode, OperateSingleModeGate,
-    OperateTwoMode, OperateTwoModeGate, Substitute, SubstituteModes, SupportedVersion,
+    ImplementedIn1point6, ImplementedIn1point8, InvolveModes, InvolveQubits, InvolvedClassical,
+    InvolvedModes, InvolvedQubits, Operate, OperateModeGate, OperateSingleMode,
+    OperateSingleModeGate, OperateTwoMode, OperateTwoModeGate, Substitute, SubstituteModes,
+    SupportedVersion,
 };
 use crate::RoqoqoError;
 use qoqo_calculator::CalculatorFloat;
