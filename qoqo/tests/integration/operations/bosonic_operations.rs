@@ -15,7 +15,7 @@ use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
     BeamSplitterWrapper,
-    // PhaseDisplacementWrapper,
+    PhaseDisplacementWrapper,
     PhaseShiftWrapper,
     PhotonDetectionWrapper,
     SqueezingWrapper,
@@ -120,78 +120,78 @@ fn test_new_squeezing(input_operation: Operation, arguments: (u32, f64, f64), me
     })
 }
 
-// /// Test new() function for PhaseDisplacement
-// #[test_case(Operation::from(PhaseDisplacement::new(1, 0.1.into(), 0.1.into())), (1, 0.1, 0.1,), "__eq__"; "PhaseDisplacement_eq")]
-// #[test_case(Operation::from(PhaseDisplacement::new(1, 0.1.into(), 0.1.into())), (0, 0.1, 0.1,), "__ne__"; "PhaseDisplacement_ne")]
-// fn test_new_phasedisplacement(
-//     input_operation: Operation,
-//     arguments: (u32, f64, f64),
-//     method: &str,
-// ) {
-//     let operation = convert_operation_to_pyobject(input_operation).unwrap();
-//     pyo3::prepare_freethreaded_python();
-//     Python::with_gil(|py| {
-//         let operation_type = py.get_type::<PhaseDisplacementWrapper>();
-//         let operation_py = operation_type
-//             .call1(arguments)
-//             .unwrap()
-//             .downcast::<PyCell<PhaseDisplacementWrapper>>()
-//             .unwrap();
+/// Test new() function for PhaseDisplacement
+#[test_case(Operation::from(PhaseDisplacement::new(1, 0.1.into(), 0.1.into())), (1, 0.1, 0.1,), "__eq__"; "PhaseDisplacement_eq")]
+#[test_case(Operation::from(PhaseDisplacement::new(1, 0.1.into(), 0.1.into())), (0, 0.1, 0.1,), "__ne__"; "PhaseDisplacement_ne")]
+fn test_new_phasedisplacement(
+    input_operation: Operation,
+    arguments: (u32, f64, f64),
+    method: &str,
+) {
+    let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation_type = py.get_type::<PhaseDisplacementWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .downcast::<PyCell<PhaseDisplacementWrapper>>()
+            .unwrap();
 
-//         let comparison = bool::extract(
-//             operation
-//                 .as_ref(py)
-//                 .call_method1(method, (operation_py,))
-//                 .unwrap(),
-//         )
-//         .unwrap();
-//         assert!(comparison);
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
 
-//         let def_wrapper = operation_py.extract::<PhaseDisplacementWrapper>().unwrap();
-//         let new_op_diff = operation_type
-//             .call1((2, 0.1, 0.1))
-//             .unwrap()
-//             .downcast::<PyCell<PhaseDisplacementWrapper>>()
-//             .unwrap();
-//         let def_wrapper_diff = new_op_diff.extract::<PhaseDisplacementWrapper>().unwrap();
-//         let helper_ne: bool = def_wrapper_diff != def_wrapper;
-//         assert!(helper_ne);
-//         let helper_eq: bool = def_wrapper == def_wrapper.clone();
-//         assert!(helper_eq);
+        let def_wrapper = operation_py.extract::<PhaseDisplacementWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((2, 0.1, 0.1))
+            .unwrap()
+            .downcast::<PyCell<PhaseDisplacementWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<PhaseDisplacementWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
 
-//         assert_eq!(
-//             format!("{:?}", def_wrapper_diff),
-//             "PhaseDisplacementWrapper { internal: PhaseDisplacement { mode: 2, displacement: Float(0.1), displacement_angle: Float(0.1) } }"
-//         );
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "PhaseDisplacementWrapper { internal: PhaseDisplacement { mode: 2, displacement: Float(0.1), phase: Float(0.1) } }"
+        );
 
-//         let comparison_copy = bool::extract(
-//             operation
-//                 .call_method0(py, "displacement")
-//                 .unwrap()
-//                 .as_ref(py)
-//                 .call_method1(
-//                     "__eq__",
-//                     (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
-//                 )
-//                 .unwrap(),
-//         )
-//         .unwrap();
-//         assert!(comparison_copy);
-//         let comparison_copy = bool::extract(
-//             operation
-//                 .call_method0(py, "displacement_angle")
-//                 .unwrap()
-//                 .as_ref(py)
-//                 .call_method1(
-//                     "__eq__",
-//                     (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
-//                 )
-//                 .unwrap(),
-//         )
-//         .unwrap();
-//         assert!(comparison_copy);
-//     })
-// }
+        let comparison_copy = bool::extract(
+            operation
+                .call_method0(py, "displacement")
+                .unwrap()
+                .as_ref(py)
+                .call_method1(
+                    "__eq__",
+                    (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
+                )
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_copy);
+        let comparison_copy = bool::extract(
+            operation
+                .call_method0(py, "phase")
+                .unwrap()
+                .as_ref(py)
+                .call_method1(
+                    "__eq__",
+                    (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
+                )
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_copy);
+    })
+}
 
 /// Test new() function for PhaseShift
 #[test_case(Operation::from(PhaseShift::new(1, 0.1.into())), (1, 0.1,), "__eq__"; "PhaseShift_eq")]
@@ -394,8 +394,8 @@ fn test_new_photondetection(
 #[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from("theta"), CalculatorFloat::from(0.0))); "Squeezing_theta")]
 #[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(0.0), CalculatorFloat::from("phase"))); "Squeezing_phase")]
 #[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from("theta"), CalculatorFloat::from("phase"))); "Squeezing_theta_phase")]
-// #[test_case(Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from("theta"), 0.1.into())); "PhaseDisplacement_magnitude")]
-// #[test_case(Operation::from(PhaseDisplacement::new(0, 0.1.into(), CalculatorFloat::from("theta"))); "PhaseDisplacement_phase")]
+#[test_case(Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from("theta"), 0.1.into())); "PhaseDisplacement_magnitude")]
+#[test_case(Operation::from(PhaseDisplacement::new(0, 0.1.into(), CalculatorFloat::from("theta"))); "PhaseDisplacement_phase")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from("theta"))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from(0.1))); "BeamSplitter_theta")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from("phi"))); "BeamSplitter_phi")]
@@ -416,7 +416,7 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
 
 /// Test is_parametrized = false for SingleModeGate Operations
 #[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from(1.3), 0.0.into())); "Squeezing")]
-// #[test_case(Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(1.3), CalculatorFloat::from(1.3))); "PhaseDisplacement")]
+#[test_case(Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(1.3), CalculatorFloat::from(1.3))); "PhaseDisplacement")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(0.1))); "BeamSplitter")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
@@ -436,7 +436,7 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
 
 /// Test mode() function for SingleMode Operations
 #[test_case(0, Operation::from(Squeezing::new(0, CalculatorFloat::from(0), 0.0.into())); "Squeezing")]
-// #[test_case(0, Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(0), 0.1.into())); "PhaseDisplacement")]
+#[test_case(0, Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(0), 0.1.into())); "PhaseDisplacement")]
 #[test_case(0, Operation::from(PhaseShift::new(0, CalculatorFloat::from(0))); "PhaseShift")]
 #[test_case(0, Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_mode(mode: usize, input_operation: Operation) {
@@ -466,7 +466,7 @@ fn test_pyo3_mode0_mode_1(mode_0: usize, mode_1: usize, input_operation: Operati
 
 /// Test Squeezing hqslang() function for SingleModeGate Operations
 #[test_case("Squeezing", Operation::from(Squeezing::new(0, CalculatorFloat::from(0), 0.0.into())); "Squeezing")]
-// #[test_case("PhaseDisplacement", Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(0), 0.1.into())); "PhaseDisplacement")]
+#[test_case("PhaseDisplacement", Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(0), 0.1.into())); "PhaseDisplacement")]
 #[test_case("PhaseShift", Operation::from(PhaseShift::new(0, CalculatorFloat::from(0))); "PhaseShift")]
 #[test_case("BeamSplitter", Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0), CalculatorFloat::from(0))); "BeamSplitter")]
 #[test_case("PhotonDetection", Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
@@ -490,15 +490,15 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         "Squeezing",
         ];
     "Squeezing")]
-// #[test_case(
-//     Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(0), 0.1.into())),
-//     vec![
-//         "Operation",
-//         "ModeGateOperation",
-//         "SingleModeGateOperation",
-//         "PhaseDisplacement",
-//         ];
-//     "PhaseDisplacement")]
+#[test_case(
+    Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(0), 0.1.into())),
+    vec![
+        "Operation",
+        "ModeGateOperation",
+        "SingleModeGateOperation",
+        "PhaseDisplacement",
+        ];
+    "PhaseDisplacement")]
 #[test_case(
     Operation::from(PhaseShift::new(0, CalculatorFloat::from(0))),
     vec![
@@ -540,7 +540,7 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
 
 /// Test involved_modes() function for SingleModeGate Operations
 #[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(1.3), 0.0.into())), HashSet::<usize>::from([0]); "Squeezing")]
-// #[test_case(Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(1.3), 0.1.into())), HashSet::<usize>::from([0]); "PhaseDisplacement")]
+#[test_case(Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(1.3), 0.1.into())), HashSet::<usize>::from([0]); "PhaseDisplacement")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))), HashSet::<usize>::from([0]); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(1.3))), HashSet::<usize>::from([0, 1]); "BeamSplitter")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)), HashSet::<usize>::from([0]); "PhotonDetection")]
@@ -562,7 +562,7 @@ fn test_pyo3_involved_modes(input_operation: Operation, modes: HashSet<usize>) {
 
 /// Test remap_qubits() function for SingleModeGate Operations
 #[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(1.3), 0.0.into())); "Squeezing")]
-// #[test_case(Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(1.3), 0.1.into())); "PhaseDisplacement")]
+#[test_case(Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(1.3), 0.1.into())); "PhaseDisplacement")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(1.3))); "BeamSplitter")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
@@ -597,7 +597,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 
 /// Test remap_modes() function for SingleModeGate Operations
 #[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(1.3), 0.0.into())); "Squeezing")]
-// #[test_case(Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(1.3), 0.1.into())); "PhaseDisplacement")]
+#[test_case(Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(1.3), 0.1.into())); "PhaseDisplacement")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))); "PhaseShift")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 fn test_pyo3_remapmodes_single(input_operation: Operation) {
@@ -659,7 +659,7 @@ fn test_pyo3_remapmodes_two(input_operation: Operation) {
 
 // test remap_modes() function returning an error.
 #[test_case(Operation::from(Squeezing::new(0, CalculatorFloat::from(1.3), 0.0.into())); "Squeezing")]
-// #[test_case(Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(1.3), 0.1.into())); "PhaseDisplacement")]
+#[test_case(Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(1.3), 0.1.into())); "PhaseDisplacement")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(1.3))); "BeamSplitter")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
@@ -679,7 +679,7 @@ fn test_pyo3_remapmodes_error(input_operation: Operation) {
 
 /// Test copy and deepcopy functions
 #[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from(1.3), 0.0.into())); "Squeezing")]
-// #[test_case(Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(1.3), 0.1.into())); "PhaseDisplacement")]
+#[test_case(Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(1.3), 0.1.into())); "PhaseDisplacement")]
 #[test_case(Operation::from(PhaseShift::new(0, CalculatorFloat::from(1.3))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(1.3))); "BeamSplitter")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
@@ -715,10 +715,10 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     "Squeezing { mode: 0, squeezing: Float(0.0), phase: Float(0.0) }",
     Operation::from(Squeezing::new(0, CalculatorFloat::from(0), 0.0.into()));
     "Squeezing")]
-// #[test_case(
-//     "PhaseDisplacement { mode: 0, displacement: Float(0.0), displacement_angle: Float(0.1) }",
-//     Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(0), 0.1.into()));
-//     "PhaseDisplacement")]
+#[test_case(
+    "PhaseDisplacement { mode: 0, displacement: Float(0.0), displacement_angle: Float(0.1) }",
+    Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(0), 0.1.into()));
+    "PhaseDisplacement")]
 #[test_case(
     "PhaseShift { mode: 0, phase: Float(0.0) }",
     Operation::from(PhaseShift::new(0, CalculatorFloat::from(0)));
@@ -748,9 +748,9 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
 #[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from("theta"), CalculatorFloat::from(1.0))); "Squeezing_theta")]
 #[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from(1.0), CalculatorFloat::from("phi"))); "Squeezing_phi")]
 #[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from("theta"), CalculatorFloat::from("phi"))); "Squeezing_theta_phi")]
-// #[test_case(Operation::from(PhaseDisplacement::new(1, CalculatorFloat::from("theta"), CalculatorFloat::from(1.0))); "PhaseDisplacement_magnitude")]
-// #[test_case(Operation::from(PhaseDisplacement::new(1, CalculatorFloat::from(1.0), CalculatorFloat::from("phi"))); "PhaseDisplacement_phase")]
-// #[test_case(Operation::from(PhaseDisplacement::new(1, CalculatorFloat::from("theta"), CalculatorFloat::from("phi"))); "PhaseDisplacement_magnitude_phase")]
+#[test_case(Operation::from(PhaseDisplacement::new(1, CalculatorFloat::from("theta"), CalculatorFloat::from(1.0))); "PhaseDisplacement_magnitude")]
+#[test_case(Operation::from(PhaseDisplacement::new(1, CalculatorFloat::from(1.0), CalculatorFloat::from("phi"))); "PhaseDisplacement_phase")]
+#[test_case(Operation::from(PhaseDisplacement::new(1, CalculatorFloat::from("theta"), CalculatorFloat::from("phi"))); "PhaseDisplacement_magnitude_phase")]
 #[test_case(
     Operation::from(
         BeamSplitter::new(
@@ -840,7 +840,7 @@ fn test_pyo3_substitute_params_single(input_operation: Operation) {
 
 /// Test substitute_parameters() causing an error `None`
 #[test_case(Operation::from(Squeezing::new(1, CalculatorFloat::from("test"), 0.0.into())); "Squeezing")]
-// #[test_case(Operation::from(PhaseDisplacement::new(1, CalculatorFloat::from("test"), 0.0.into())); "PhaseDisplacement")]
+#[test_case(Operation::from(PhaseDisplacement::new(1, CalculatorFloat::from("test"), 0.0.into())); "PhaseDisplacement")]
 #[test_case(Operation::from(PhaseShift::new(1, CalculatorFloat::from("test"))); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from("test"), CalculatorFloat::from(0.1))); "BeamSplitter")]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
@@ -856,7 +856,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 
 /// Test substitute parameters function for SingleModeGate Operations where it has no effect
 #[test_case(Operation::from(Squeezing::new(1, 0.1.into(), 0.0.into())); "Squeezing")]
-// #[test_case(Operation::from(PhaseDisplacement::new(1, 0.1.into(), 0.0.into())); "PhaseDisplacement")]
+#[test_case(Operation::from(PhaseDisplacement::new(1, 0.1.into(), 0.0.into())); "PhaseDisplacement")]
 #[test_case(Operation::from(PhaseShift::new(1, 0.1.into())); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(0.1))); "BeamSplitter")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
@@ -885,9 +885,9 @@ fn test_ineffective_substitute_parameters(input_operation: Operation) {
 #[test_case(
     Operation::from(Squeezing::new(0, CalculatorFloat::from(0), 0.0.into())),
     Operation::from(Squeezing::new(1, CalculatorFloat::from(0), 0.0.into())); "Squeezing")]
-// #[test_case(
-//     Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(0), 0.0.into())),
-//     Operation::from(PhaseDisplacement::new(1, CalculatorFloat::from(0), 0.0.into())); "PhaseDisplacement")]
+#[test_case(
+    Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(0), 0.0.into())),
+    Operation::from(PhaseDisplacement::new(1, CalculatorFloat::from(0), 0.0.into())); "PhaseDisplacement")]
 #[test_case(
     Operation::from(PhaseShift::new(0, CalculatorFloat::from(0))),
     Operation::from(PhaseShift::new(1, CalculatorFloat::from(0))); "PhaseShift")]
@@ -932,7 +932,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 /// Test schema-related functions for all bosonic operations
 #[cfg(feature = "json_schema")]
 #[test_case(Operation::from(Squeezing::new(1, 0.1.into(), 0.0.into())); "Squeezing")]
-// #[test_case(Operation::from(PhaseDisplacement::new(1, 0.1.into(), 0.0.into())); "PhaseDisplacement")]
+#[test_case(Operation::from(PhaseDisplacement::new(1, 0.1.into(), 0.0.into())); "PhaseDisplacement")]
 #[test_case(Operation::from(PhaseShift::new(1, 0.1.into())); "PhaseShift")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.1), CalculatorFloat::from(0.1))); "BeamSplitter")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PNRDetection")]
