@@ -33,13 +33,13 @@ fn squeezing_inputs() {
 }
 
 /// Test PhaseDisplacement inputs
-// #[test]
-// fn phasedisplacement_inputs() {
-//     let op = PhaseDisplacement::new(1, 0.1.into(), CalculatorFloat::PI);
-//     assert_eq!(op.mode(), &1_usize);
-//     assert_eq!(op.displacement(), &CalculatorFloat::from(0.1));
-//     assert_eq!(op.phase(), &CalculatorFloat::PI);
-// }
+#[test]
+fn phasedisplacement_inputs() {
+    let op = PhaseDisplacement::new(1, 0.1.into(), CalculatorFloat::PI);
+    assert_eq!(op.mode(), &1_usize);
+    assert_eq!(op.displacement(), &CalculatorFloat::from(0.1));
+    assert_eq!(op.phase(), &CalculatorFloat::PI);
+}
 
 /// Test PhaseShift inputs
 #[test]
