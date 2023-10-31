@@ -98,6 +98,21 @@ jobs:
           cd ./.compatibility_tests/compatibility_test_1_6/
           cargo test
   
+  unittests_check_compatibility_1_7:
+    name: unittests_check-compatibility-1-7
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          default: true
+      - uses: Swatinem/rust-cache@v2
+      - run: |
+          cd ./.compatibility_tests/compatibility_test_1_7/
+          cargo test
+  
   unittests_check_circuit_decompositions:
     name: unittests_check_circuit_decompositions
     runs-on: "ubuntu-latest"
