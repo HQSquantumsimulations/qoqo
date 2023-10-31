@@ -21,7 +21,7 @@ use syn::punctuated::Punctuated;
 use syn::visit::{self, Visit};
 use syn::{AttrStyle, File, Ident, ItemImpl, ItemStruct, Path, Token, Type, TypePath};
 
-const NUMBER_OF_MINOR_VERSIONS: usize = 8;
+const NUMBER_OF_MINOR_VERSIONS: usize = 9;
 
 /// Visitor scanning rust source code for struct belonging to enums
 struct Visitor {

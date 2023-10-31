@@ -95,7 +95,7 @@ pub struct PhaseDisplacement {
     /// The magnitude by which to displace the mode.
     displacement: CalculatorFloat,
     /// The angle by which to displace the mode.
-    displacement_angle: CalculatorFloat,
+    phase: CalculatorFloat,
 }
 
 #[allow(non_upper_case_globals)]
