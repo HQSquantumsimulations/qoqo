@@ -716,7 +716,7 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     Operation::from(Squeezing::new(0, CalculatorFloat::from(0), 0.0.into()));
     "Squeezing")]
 #[test_case(
-    "PhaseDisplacement { mode: 0, displacement: Float(0.0), displacement_angle: Float(0.1) }",
+    "PhaseDisplacement { mode: 0, displacement: Float(0.0), phase: Float(0.1) }",
     Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(0), 0.1.into()));
     "PhaseDisplacement")]
 #[test_case(
