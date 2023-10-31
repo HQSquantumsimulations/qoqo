@@ -69,7 +69,7 @@ fn photondetection_inputs() {
 }
 
 #[test_case(Operation::from(Squeezing::new(0, 0.5.into(), 0.0.into())))]
-// #[test_case(Operation::from(PhaseDisplacement::new(0, 0.5.into(), 0.1.into())))]
+#[test_case(Operation::from(PhaseDisplacement::new(0, 0.5.into(), 0.1.into())))]
 #[test_case(Operation::from(PhaseShift::new(0, 0.5.into())))]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.5.into())))]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)))]
@@ -78,7 +78,7 @@ fn clone(op: Operation) {
 }
 
 #[test_case(Operation::from(Squeezing::new(0, 0.5.into(), 0.0.into())), "Squeezing(Squeezing { mode: 0, squeezing: Float(0.5), phase: Float(0.0) })")]
-// #[test_case(Operation::from(PhaseDisplacement::new(0, 0.5.into(), 0.1.into())), "PhaseDisplacement(PhaseDisplacement { mode: 0, displacement: Float(0.5), phase: Float(0.1) })")]
+#[test_case(Operation::from(PhaseDisplacement::new(0, 0.5.into(), 0.1.into())), "PhaseDisplacement(PhaseDisplacement { mode: 0, displacement: Float(0.5), phase: Float(0.1) })")]
 #[test_case(Operation::from(PhaseShift::new(0, 0.5.into())), "PhaseShift(PhaseShift { mode: 0, phase: Float(0.5) })")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.5.into())), "BeamSplitter(BeamSplitter { mode_0: 0, mode_1: 1, theta: Float(0.1), phi: Float(0.5) })")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)), "PhotonDetection(PhotonDetection { mode: 0, readout: \"ro\", readout_index: 0 })")]
@@ -87,7 +87,7 @@ fn debug(op: Operation, string: &str) {
 }
 
 #[test_case(Operation::from(Squeezing::new(0, 0.5.into(), 0.0.into())), Operation::from(Squeezing::new(0, 0.5.into(), 0.0.into())), Operation::from(Squeezing::new(1, 0.5.into(), 0.0.into())))]
-// #[test_case(Operation::from(PhaseDisplacement::new(0, 0.5.into(), 0.1.into())), Operation::from(PhaseDisplacement::new(0, 0.5.into(), 0.1.into())), Operation::from(PhaseDisplacement::new(1, 0.5.into(), 0.1.into())))]
+#[test_case(Operation::from(PhaseDisplacement::new(0, 0.5.into(), 0.1.into())), Operation::from(PhaseDisplacement::new(0, 0.5.into(), 0.1.into())), Operation::from(PhaseDisplacement::new(1, 0.5.into(), 0.1.into())))]
 #[test_case(Operation::from(PhaseShift::new(0, 0.5.into())), Operation::from(PhaseShift::new(0, 0.5.into())), Operation::from(PhaseShift::new(1, 0.5.into())))]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.5.into())), Operation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.5.into())), Operation::from(BeamSplitter::new(1, 2, 0.1.into(), 0.5.into())))]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)), Operation::from(PhotonDetection::new(0, "ro".into(), 0)), Operation::from(PhotonDetection::new(1, "ro".into(), 0)))]
@@ -99,7 +99,7 @@ fn partial_eq(op: Operation, op_0: Operation, op_1: Operation) {
 }
 
 #[test_case(ModeGateOperation::from(Squeezing::new(0, 0.1.into(), 0.0.into())), InvolvedQubits::None, InvolvedClassical::None, InvolvedModes::Set(HashSet::from([0_usize])))]
-// #[test_case(ModeGateOperation::from(PhaseDisplacement::new(0, 0.1.into(), 0.1.into())), InvolvedQubits::None, InvolvedClassical::None, InvolvedModes::Set(HashSet::from([0_usize])))]
+#[test_case(ModeGateOperation::from(PhaseDisplacement::new(0, 0.1.into(), 0.1.into())), InvolvedQubits::None, InvolvedClassical::None, InvolvedModes::Set(HashSet::from([0_usize])))]
 #[test_case(ModeGateOperation::from(PhaseShift::new(0, 0.1.into())), InvolvedQubits::None, InvolvedClassical::None, InvolvedModes::Set(HashSet::from([0_usize])))]
 #[test_case(ModeGateOperation::from(BeamSplitter::new(0, 1, 0.5.into(), 0.1.into())), InvolvedQubits::None, InvolvedClassical::None, InvolvedModes::Set(HashSet::from([0_usize, 1_usize])))]
 fn involved_qubits_classical_modes(
@@ -126,7 +126,7 @@ fn involved_qubits_classical_modes_measurement(
 }
 
 #[test_case(ModeGateOperation::from(Squeezing::new(2, "test".into(), "test1".into())), ModeGateOperation::from(Squeezing::new(0, 0.1.into(), 0.5.into())))]
-// #[test_case(ModeGateOperation::from(PhaseDisplacement::new(2, "test".into(), "test1".into())), ModeGateOperation::from(PhaseDisplacement::new(0, 0.1.into(), 0.5.into())))]
+#[test_case(ModeGateOperation::from(PhaseDisplacement::new(2, "test".into(), "test1".into())), ModeGateOperation::from(PhaseDisplacement::new(0, 0.1.into(), 0.5.into())))]
 #[test_case(ModeGateOperation::from(PhaseShift::new(2, "test".into())), ModeGateOperation::from(PhaseShift::new(0, 0.1.into())))]
 #[test_case(ModeGateOperation::from(BeamSplitter::new(2, 0, "test".into(), "test1".into())), ModeGateOperation::from(BeamSplitter::new(0, 1, 0.1.into(), 0.5.into())))]
 fn substitute_subsitutemodes(op: ModeGateOperation, op_test: ModeGateOperation) {
@@ -175,7 +175,7 @@ fn substitute_subsitutemodes_measurement(op: SingleModeOperation, op_test: Singl
 }
 
 #[test_case(Operation::from(Squeezing::new(0, 0.1.into(), 0.0.into())), Operation::from(Squeezing::new(0, "param".into(), 0.0.into())), "Squeezing")]
-// #[test_case(Operation::from(PhaseDisplacement::new(0, 0.1.into(), 0.5.into())), Operation::from(PhaseDisplacement::new(0, "param".into(), "param2".into())), "PhaseDisplacement")]
+#[test_case(Operation::from(PhaseDisplacement::new(0, 0.1.into(), 0.5.into())), Operation::from(PhaseDisplacement::new(0, "param".into(), "param2".into())), "PhaseDisplacement")]
 #[test_case(Operation::from(PhaseShift::new(0, 0.1.into())), Operation::from(PhaseShift::new(0, "param".into())), "PhaseShift")]
 fn operate_one_mode(op: Operation, op_param: Operation, name: &str) {
     // (1) Test tags function
@@ -228,14 +228,14 @@ fn operate_measurement(op: Operation, name: &str) {
 }
 
 #[test_case(SingleModeOperation::from(Squeezing::new(0, 0.5.into(), 0.0.into())))]
-// #[test_case(SingleModeOperation::from(PhaseDisplacement::new(0, 0.5.into(), 0.1.into())))]
+#[test_case(SingleModeOperation::from(PhaseDisplacement::new(0, 0.5.into(), 0.1.into())))]
 #[test_case(SingleModeOperation::from(PhaseShift::new(0, 0.5.into())))]
 #[test_case(SingleModeOperation::from(PhotonDetection::new(0, "ro".into(), 0)))]
 fn single_mode_op(op: SingleModeOperation) {
     assert_eq!(op.mode(), &0_usize);
 }
 #[test_case(SingleModeGateOperation::from(Squeezing::new(0, 0.5.into(), 0.0.into())))]
-// #[test_case(SingleModeGateOperation::from(PhaseDisplacement::new(0, 0.5.into(), 0.1.into())))]
+#[test_case(SingleModeGateOperation::from(PhaseDisplacement::new(0, 0.5.into(), 0.1.into())))]
 #[test_case(SingleModeGateOperation::from(PhaseShift::new(0, 0.5.into())))]
 fn single_mode_gate_op(op: SingleModeGateOperation) {
     assert_eq!(op.mode(), &0_usize);
@@ -340,53 +340,53 @@ fn phaseshift_serde() {
     );
 }
 
-// #[cfg(feature = "serialize")]
-// #[test]
-// fn phasedisplacement_serde() {
-//     let op = PhaseDisplacement::new(0, 0.1.into(), 0.1.into());
+#[cfg(feature = "serialize")]
+#[test]
+fn phasedisplacement_serde() {
+    let op = PhaseDisplacement::new(0, 0.1.into(), 0.1.into());
 
-//     assert_tokens(
-//         &op.clone().readable(),
-//         &[
-//             Token::Struct {
-//                 name: "PhaseDisplacement",
-//                 len: 3,
-//             },
-//             Token::Str("mode"),
-//             Token::U64(0),
-//             Token::Str("displacement"),
-//             Token::F64(0.1),
-//             Token::Str("phase"),
-//             Token::F64(0.1),
-//             Token::StructEnd,
-//         ],
-//     );
+    assert_tokens(
+        &op.clone().readable(),
+        &[
+            Token::Struct {
+                name: "PhaseDisplacement",
+                len: 3,
+            },
+            Token::Str("mode"),
+            Token::U64(0),
+            Token::Str("displacement"),
+            Token::F64(0.1),
+            Token::Str("phase"),
+            Token::F64(0.1),
+            Token::StructEnd,
+        ],
+    );
 
-//     assert_tokens(
-//         &op.compact(),
-//         &[
-//             Token::Struct {
-//                 name: "PhaseDisplacement",
-//                 len: 3,
-//             },
-//             Token::Str("mode"),
-//             Token::U64(0),
-//             Token::Str("displacement"),
-//             Token::NewtypeVariant {
-//                 name: "CalculatorFloat",
-//                 variant: "Float",
-//             },
-//             Token::F64(0.1),
-//             Token::Str("phase"),
-//             Token::NewtypeVariant {
-//                 name: "CalculatorFloat",
-//                 variant: "Float",
-//             },
-//             Token::F64(0.1),
-//             Token::StructEnd,
-//         ],
-//     );
-// }
+    assert_tokens(
+        &op.compact(),
+        &[
+            Token::Struct {
+                name: "PhaseDisplacement",
+                len: 3,
+            },
+            Token::Str("mode"),
+            Token::U64(0),
+            Token::Str("displacement"),
+            Token::NewtypeVariant {
+                name: "CalculatorFloat",
+                variant: "Float",
+            },
+            Token::F64(0.1),
+            Token::Str("phase"),
+            Token::NewtypeVariant {
+                name: "CalculatorFloat",
+                variant: "Float",
+            },
+            Token::F64(0.1),
+            Token::StructEnd,
+        ],
+    );
+}
 
 #[cfg(feature = "serialize")]
 #[test]
@@ -501,26 +501,26 @@ fn squeezing_json_schema() {
     assert!(validation_result.is_ok());
 }
 
-// #[cfg(feature = "json_schema")]
-// #[test]
-// fn phasedisplacement_json_schema() {
-//     let def = PhaseDisplacement::new(0, 0.1.into(), 0.1.into());
-//     // Serialize
-//     let test_json = serde_json::to_string(&def).unwrap();
-//     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+#[cfg(feature = "json_schema")]
+#[test]
+fn phasedisplacement_json_schema() {
+    let def = PhaseDisplacement::new(0, 0.1.into(), 0.1.into());
+    // Serialize
+    let test_json = serde_json::to_string(&def).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
-//     // Create JSONSchema
-//     let test_schema = schema_for!(PhaseDisplacement);
-//     let schema = serde_json::to_string(&test_schema).unwrap();
-//     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-//     let compiled_schema = JSONSchema::options()
-//         .with_draft(Draft::Draft7)
-//         .compile(&schema_value)
-//         .unwrap();
+    // Create JSONSchema
+    let test_schema = schema_for!(PhaseDisplacement);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
 
-//     let validation_result = compiled_schema.validate(&test_value);
-//     assert!(validation_result.is_ok());
-// }
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
 
 #[cfg(feature = "json_schema")]
 #[test]
