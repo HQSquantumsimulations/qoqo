@@ -79,10 +79,9 @@ impl SupportedVersion for Squeezing {
     Debug,
     Clone,
     PartialEq,
-    Operate,
     OperateModeGate,
     OperateSingleModeGate,
-    // roqoqo_derive::Operate,
+    roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::InvolveModes,
     roqoqo_derive::SubstituteModes,
@@ -96,7 +95,7 @@ pub struct PhaseDisplacement {
     /// The magnitude by which to displace the mode.
     displacement: CalculatorFloat,
     /// The angle by which to displace the mode.
-    phase: CalculatorFloat,
+    displacement_angle: CalculatorFloat,
 }
 
 #[allow(non_upper_case_globals)]
