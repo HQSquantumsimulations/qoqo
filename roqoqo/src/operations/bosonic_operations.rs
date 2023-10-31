@@ -79,9 +79,10 @@ impl SupportedVersion for Squeezing {
     Debug,
     Clone,
     PartialEq,
+    Operate
     OperateModeGate,
     OperateSingleModeGate,
-    roqoqo_derive::Operate,
+    // roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::InvolveModes,
     roqoqo_derive::SubstituteModes,
