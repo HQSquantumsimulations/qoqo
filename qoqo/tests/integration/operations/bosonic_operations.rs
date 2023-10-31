@@ -14,10 +14,7 @@ use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
-    BeamSplitterWrapper,
-    PhaseDisplacementWrapper,
-    PhaseShiftWrapper,
-    PhotonDetectionWrapper,
+    BeamSplitterWrapper, PhaseDisplacementWrapper, PhaseShiftWrapper, PhotonDetectionWrapper,
     SqueezingWrapper,
 };
 use qoqo_calculator::Calculator;
