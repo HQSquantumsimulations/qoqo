@@ -53,6 +53,7 @@ qoqo.operations
       PauliX
       PauliY
       PauliZ
+      PhaseDisplacement
       PhaseShift
       PhaseShiftState0
       PhaseShiftState1
