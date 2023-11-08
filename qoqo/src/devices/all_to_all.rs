@@ -28,7 +28,7 @@ use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 /// Args:
 ///     number_qubits (int): Fixed number of qubits.
 ///     single_qubit_gates (List[str]): A list of 'hqslang' names of single-qubit-gates supported by the device.
-///     two_qubit_gate (str): The 'hqslang' name of the basic two-qubit-gate supported by the device.
+///     two_qubit_gates (List[str]): A list of 'hqslang' names of basic two-qubit-gates supported by the device.
 ///     default_gate_time (float): The default startig gate time.
 #[pyclass(name = "AllToAllDevice", module = "devices")]
 #[derive(Clone, Debug, PartialEq)]
