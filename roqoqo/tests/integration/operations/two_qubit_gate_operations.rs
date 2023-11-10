@@ -135,6 +135,7 @@ fn kak_sigma_matrix(
 #[test_case(TwoQubitGateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY_zero_pi_4")]
 #[test_case(TwoQubitGateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_4, CalculatorFloat::ZERO)); "ControlledRotateXY_pi_4_zero")]
 #[test_case(TwoQubitGateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_2)); "ControlledRotateXY_pi_2_pi_2")]
+#[test_case(TwoQubitGateOperation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn test_kakdecomposition(gate: TwoQubitGateOperation) {
     // k vector
     let k = gate.kak_decomposition().k_vector;
@@ -277,6 +278,7 @@ fn test_kakdecomposition(gate: TwoQubitGateOperation) {
 #[test_case(GateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_2)); "ControlledRotateXY_pi_2_pi_2")]
 #[test_case(GateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_4, CalculatorFloat::ZERO)); "ControlledRotateXY_pi_4_zero")]
 #[test_case(GateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::ZERO, CalculatorFloat::FRAC_PI_2)); "ControlledRotateXY_zero_pi_2")]
+#[test_case(GateOperation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn test_twoqubitgates_unitarity(gate: GateOperation) {
     let result: Result<Array2<Complex64>, RoqoqoError> = gate.unitary_matrix();
     let result_array: Array2<Complex64> = result.unwrap();
@@ -320,6 +322,7 @@ fn test_twoqubitgates_unitarity(gate: GateOperation) {
 #[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase")]
 #[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(Operation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn test_twoqubitgates_clone(gate1: Operation) {
     #[allow(clippy::redundant_clone)]
     let gate2 = gate1.clone();
@@ -350,6 +353,7 @@ fn test_twoqubitgates_clone(gate1: Operation) {
 #[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase")]
 #[test_case(TwoQubitGateOperation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(TwoQubitGateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(TwoQubitGateOperation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn test_qubits_twoqubitgates(gate: TwoQubitGateOperation) {
     let control: &usize = gate.control();
     assert_eq!(control, &0);
@@ -386,6 +390,7 @@ fn test_qubits_twoqubitgates(gate: TwoQubitGateOperation) {
 #[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase")]
 #[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(Operation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn test_is_parametrized_false(gate: Operation) {
     let bool_parameter = gate.is_parametrized();
     assert!(!bool_parameter);
@@ -438,6 +443,7 @@ fn test_is_parametrized_true(gate: Operation) {
 #[test_case("PhaseShiftedControlledPhase", Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from("phi"))); "PhaseShiftedControlledPhase")]
 #[test_case("ControlledRotateX", Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::from("theta"))); "ControlledRotateX")]
 #[test_case("ControlledRotateXY", Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::from("theta"), CalculatorFloat::from("phi"))); "ControlledRotateXY")]
+#[test_case("EchoCrossResonance", Operation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn test_twoqubitgateoperations_hqslang(name: &'static str, gate: Operation) {
     assert!(!gate.hqslang().is_empty());
     assert_eq!(gate.hqslang(), name);
@@ -515,6 +521,9 @@ fn test_twoqubitgateoperations_hqslang(name: &'static str, gate: Operation) {
 #[test_case(
     GateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)),
     GateOperation::from(ControlledRotateXY::new(1, 0, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(
+    GateOperation::from(EchoCrossResonance::new(0, 1)),
+    GateOperation::from(EchoCrossResonance::new(1, 0)); "EchoCrossResonance")]
 fn remap_qubits_result(gate: GateOperation, test_gate: GateOperation) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 1);
@@ -547,6 +556,7 @@ fn remap_qubits_result(gate: GateOperation, test_gate: GateOperation) {
 #[test_case(GateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_4, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase")]
 #[test_case(GateOperation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(GateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(GateOperation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn remap_qubits_error0(gate: GateOperation) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(1, 0);
@@ -578,6 +588,7 @@ fn remap_qubits_error0(gate: GateOperation) {
 #[test_case(GateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_4, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase")]
 #[test_case(GateOperation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(GateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(GateOperation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn remap_qubits_error1(gate: GateOperation) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 2);
@@ -784,6 +795,14 @@ fn remap_qubits_error1(gate: GateOperation) {
         "ControlledRotateXY"
     ],
     Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(
+    vec![
+        "Operation",
+        "GateOperation",
+        "TwoQubitGateOperation",
+        "EchoCrossResonance"
+    ],
+    Operation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 pub fn test_tags(tags: Vec<&str>, gate: Operation) {
     let range = 0..tags.len();
     for i in range {
@@ -863,6 +882,9 @@ pub fn test_tags(tags: Vec<&str>, gate: Operation) {
 #[test_case(
     "ControlledRotateXY(ControlledRotateXY { control: 1, target: 0, theta: Float(-1.0), phi: Float(1.0) })",
     Operation::from(ControlledRotateXY::new(1, 0, CalculatorFloat::from(-1.0), CalculatorFloat::from(1.0))); "ControlledRotateXY")]
+#[test_case(
+    "EchoCrossResonance(EchoCrossResonance { control: 1, target: 0 })",
+    Operation::from(EchoCrossResonance::new(1, 0)); "EchoCrossResonance")]
 fn test_two_qubitgates_debug(message: &'static str, gate: Operation) {
     assert_eq!(format!("{:?}", gate), message);
 }
@@ -940,6 +962,9 @@ fn test_two_qubitgates_debug(message: &'static str, gate: Operation) {
 #[test_case(
     Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)),
     Operation::from(ControlledRotateXY::new(1, 0, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(
+    Operation::from(EchoCrossResonance::new(0, 1)),
+    Operation::from(EchoCrossResonance::new(1, 0)); "EchoCrossResonance")]
 fn test_twoqubitgates_partialeq(gate1: Operation, gate2: Operation) {
     assert!(gate1 == gate1.clone());
     assert_eq!(gate1, gate1.clone());
@@ -995,6 +1020,7 @@ fn test_rotate_powercf(gate: Rotation, gate2: Rotation) {
 #[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_4, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
 #[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(Operation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn test_ineffective_substitute_parameters(gate: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("theta", 0.0);
@@ -1242,6 +1268,7 @@ fn test_kakdecomposition_debug() {
 #[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "PhaseShiftedControlledPhase")]
 #[test_case(TwoQubitGateOperation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(TwoQubitGateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(TwoQubitGateOperation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 pub fn test_json_schema_two_qubit_gate_operations(gate: TwoQubitGateOperation) {
     // Serialize
     let test_json = match gate.clone() {
@@ -1273,6 +1300,7 @@ pub fn test_json_schema_two_qubit_gate_operations(gate: TwoQubitGateOperation) {
         }
         TwoQubitGateOperation::ControlledRotateX(op) => serde_json::to_string(&op).unwrap(),
         TwoQubitGateOperation::ControlledRotateXY(op) => serde_json::to_string(&op).unwrap(),
+        TwoQubitGateOperation::EchoCrossResonance(op) => serde_json::to_string(&op).unwrap(),
         _ => unreachable!(),
     };
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
@@ -1307,6 +1335,7 @@ pub fn test_json_schema_two_qubit_gate_operations(gate: TwoQubitGateOperation) {
         }
         TwoQubitGateOperation::ControlledRotateX(_) => schema_for!(ControlledRotateX),
         TwoQubitGateOperation::ControlledRotateXY(_) => schema_for!(ControlledRotateXY),
+        TwoQubitGateOperation::EchoCrossResonance(_) => schema_for!(EchoCrossResonance),
         _ => unreachable!(),
     };
     let schema = serde_json::to_string(&test_schema).unwrap();

@@ -2449,6 +2449,7 @@ pub fn test_json_schema_single_qubit_gate_operations(gate: SingleQubitGateOperat
         SingleQubitGateOperation::RotateXY(op) => serde_json::to_string(&op).unwrap(),
         SingleQubitGateOperation::GPi(op) => serde_json::to_string(&op).unwrap(),
         SingleQubitGateOperation::GPi2(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::Identity(op) => serde_json::to_string(&op).unwrap(),
         _ => unreachable!(),
     };
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
@@ -2475,6 +2476,7 @@ pub fn test_json_schema_single_qubit_gate_operations(gate: SingleQubitGateOperat
         SingleQubitGateOperation::RotateXY(_) => schema_for!(RotateXY),
         SingleQubitGateOperation::GPi(_) => schema_for!(GPi),
         SingleQubitGateOperation::GPi2(_) => schema_for!(GPi2),
+        SingleQubitGateOperation::Identity(_) => schema_for!(Identity),
         _ => unreachable!(),
     };
     let schema = serde_json::to_string(&test_schema).unwrap();
