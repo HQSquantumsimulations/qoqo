@@ -506,7 +506,7 @@ struct GPi2 {
 /// The Identity gate.
 ///
 /// .. math::
-///     U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+///     U = \begin{pmatrix}
 ///         1 & 0 \\\\
 ///         0 & 1
 ///         \end{pmatrix}
