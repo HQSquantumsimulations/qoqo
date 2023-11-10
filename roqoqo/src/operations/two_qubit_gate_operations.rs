@@ -2509,3 +2509,108 @@ impl OperateTwoQubitGate for ControlledRotateXY {
         }
     }
 }
+
+/// Implements the controlled RotateX operation.
+#[allow(clippy::upper_case_acronyms)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateTwoQubit,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct EchoCrossResonance {
+    /// The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the phase-shift on the target qubit.
+    control: usize,
+    /// The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
+    target: usize,
+}
+impl SupportedVersion for EchoCrossResonance {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 8, 0)
+    }
+}
+
+impl super::ImplementedIn1point8 for EchoCrossResonance {}
+
+#[allow(non_upper_case_globals)]
+const TAGS_EchoCrossResonance: &[&str; 4] = &[
+    "Operation",
+    "GateOperation",
+    "TwoQubitGateOperation",
+    "EchoCrossResonance",
+];
+
+/// Trait for all Operations acting with a unitary gate on a set of qubits.
+impl OperateGate for EchoCrossResonance {
+    /// Returns unitary matrix of the gate.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Array2<Complex64>)` - The unitary matrix representation of the gate.
+    /// * `Err(RoqoqoError)` - The conversion of parameters to f64 failed.
+    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
+        let matrix: Array2<Complex64> = array![
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 1.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 1.0),
+                Complex64::new(1.0, 0.0)
+            ],
+            [
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, -1.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, -1.0),
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ]
+        ];
+        Ok(matrix / 2.0_f64.sqrt())
+    }
+}
+
+/// Trait for all gate operations acting on exactly two qubits.
+impl OperateTwoQubitGate for EchoCrossResonance {
+    /// Returns [KakDecomposition] of the gate.
+    ///
+    /// # Returns
+    ///
+    /// * struct `KakDecomposition { global_phase, k_vector, circuit_before, circuit_after }`
+    fn kak_decomposition(&self) -> KakDecomposition {
+        let mut circuit_b = Circuit::new();
+        circuit_b += SGate::new(self.control);
+        circuit_b += RotateZ::new(self.control, CalculatorFloat::FRAC_PI_2);
+        circuit_b += RotateY::new(self.control, CalculatorFloat::FRAC_PI_2);
+        circuit_b += RotateX::new(self.target, CalculatorFloat::PI);
+
+        let mut circuit_a = Circuit::new();
+        circuit_a += RotateY::new(self.control, CalculatorFloat::FRAC_PI_2 * (-1.0));
+        circuit_a += PauliX::new(self.control);
+
+        KakDecomposition {
+            global_phase: CalculatorFloat::FRAC_PI_4,
+            k_vector: [
+                CalculatorFloat::FRAC_PI_4,
+                CalculatorFloat::ZERO,
+                CalculatorFloat::ZERO,
+            ],
+            circuit_before: Some(circuit_b),
+            circuit_after: Some(circuit_a),
+        }
+    }
+}

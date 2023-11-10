@@ -156,7 +156,7 @@ struct RotateZ {
 ///
 /// .. math::
 ///     U = \begin{pmatrix}
-///         1 & 0\\\\
+///         1 & 0 \\\\
 ///         0 & e^{i \theta}
 ///         \end{pmatrix}
 ///
@@ -183,7 +183,7 @@ struct PhaseShiftState1 {
 ///
 /// .. math::
 ///     U = \begin{pmatrix}
-///         e^{i \theta} & 0\\\\
+///         e^{i \theta} & 0 \\\\
 ///         0 & 1
 ///         \end{pmatrix}
 ///
@@ -276,7 +276,7 @@ struct PauliZ {
 /// The square root of the XPower gate :math:`e^{-i \frac{\pi}{4} \sigma^x}`.
 ///
 /// .. math::
-///     U = \frac{1}{\sqrt(2)}\begin{pmatrix}
+///     U = \frac{1}{\sqrt(2)} \begin{pmatrix}
 ///         1 & -i \\\\
 ///         -i & 1
 ///         \end{pmatrix}
@@ -323,7 +323,7 @@ struct InvSqrtPauliX {
 ///
 /// .. math::
 ///     U = \frac{1}{\sqrt{2}} \begin{pmatrix}
-///         1 & 1\\\\
+///         1 & 1 \\\\
 ///         1 & -1
 ///         \end{pmatrix}
 ///
@@ -430,10 +430,10 @@ struct RotateAroundSphericalAxis {
 /// Implements a rotation around an axis in the x-y plane in spherical coordinates.
 ///
 /// .. math::
-/// U = \begin{pmatrix}
-/// \cos(\frac{\theta}{2}) & -i e^{-i \phi} \sin(\frac{\theta}{2})\\\\
-/// -i e^{i \phi} \sin(\frac{\theta}{2}) & \cos(\frac{\theta}{2})
-/// \end{pmatrix}
+///     U = \begin{pmatrix}
+///         \cos(\frac{\theta}{2}) & -i e^{-i \phi} \sin(\frac{\theta}{2}) \\\\
+///         -i e^{i \phi} \sin(\frac{\theta}{2}) & \cos(\frac{\theta}{2})
+///         \end{pmatrix}
 ///
 /// Args:
 ///     qubit (int): The qubit the unitary gate is applied to.
@@ -457,10 +457,10 @@ struct RotateXY {
 /// Implements a pi-rotation with an embedded phase.
 ///
 /// .. math::
-/// U = \begin{pmatrix}
-/// 0 & e^{-i \theta}\\\\
-/// e^{i \theta} & 0
-/// \end{pmatrix}
+///     U = \begin{pmatrix}
+///         0 & e^{-i \theta} \\\\
+///         e^{i \theta} & 0
+///         \end{pmatrix}
 ///
 /// Args:
 ///     qubit (int): The qubit the unitary gate is applied to.
@@ -482,10 +482,10 @@ struct GPi {
 /// Implements a pi/2-rotation with an embedded phase.
 ///
 /// .. math::
-/// U = \frac{1}{\sqrt{2}} \begin{pmatrix}
-/// 1 & -i e^{-i \theta}\\\\
-/// -i e^{i \theta} & 1
-/// \end{pmatrix}
+///     U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+///         1 & -i e^{-i \theta} \\\\
+///         -i e^{i \theta} & 1
+///         \end{pmatrix}
 ///
 /// Args:
 ///     qubit (int): The qubit the unitary gate is applied to.
@@ -504,6 +504,12 @@ struct GPi2 {
     JsonSchema
 )]
 /// The Identity gate.
+///
+/// .. math::
+///     U = \begin{pmatrix}
+///         1 & 0 \\\\
+///         0 & 1
+///         \end{pmatrix}
 ///
 /// Args:
 ///     qubit (int): The qubit the unitary gate is applied to.

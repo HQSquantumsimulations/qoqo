@@ -947,10 +947,17 @@ fn test_pyo3_json_schema(operation: Operation) {
         Operation::PhotonDetection(_) => {
             serde_json::to_string_pretty(&schemars::schema_for!(PhotonDetection)).unwrap()
         }
+        Operation::PhaseDisplacement(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PhaseDisplacement)).unwrap()
+        }
         _ => unreachable!(),
     };
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
+        let minimum_version: String = match operation {
+            Operation::PhaseDisplacement(_) => "1.8.0".to_string(),
+            _ => "1.6.0".to_string(),
+        };
         let pyobject = convert_operation_to_pyobject(operation).unwrap();
         let operation = pyobject.as_ref(py);
 
@@ -965,6 +972,6 @@ fn test_pyo3_json_schema(operation: Operation) {
             String::extract(operation.call_method0("min_supported_version").unwrap()).unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
-        assert_eq!(minimum_supported_version_string, "1.6.0");
+        assert_eq!(minimum_supported_version_string, minimum_version);
     });
 }

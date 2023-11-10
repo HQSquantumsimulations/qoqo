@@ -291,8 +291,8 @@ pub struct GivensRotationLittleEndian {
 /// .. math::
 ///     U = \begin{pmatrix}
 ///         1 & 0 & 0 & 0 \\\
-///         0 & cos(\theta/2) & i sin(\theta/2) & 0 \\\
-///         0 & i sin(\theta/2) & cos(\theta/2) & 0 \\\
+///         0 & \cos(\theta/2) & i \sin(\theta/2) & 0 \\\
+///         0 & i \sin(\theta/2) & \cos(\theta/2) & 0 \\\
 ///         0 & 0 & 0 & 1
 ///         \end{pmatrix}
 ///
@@ -387,7 +387,7 @@ pub struct ControlledPauliZ {
 ///
 /// .. math::
 ///     U = \begin{pmatrix}
-///         \cos(x-y) \cdot e^{-i z} & 0 & 0 & -i\sin(x-y)\cdot e^{-i z}\\\\
+///         \cos(x-y) \cdot e^{-i z} & 0 & 0 & -i\sin(x-y)\cdot e^{-i z} \\\\
 ///         0 & -i \sin(x+y)\cdot e^{i z} & \cos(x+y)\cdot e^{i z} & 0 \\\\
 ///         0 & \cos(x+y)\cdot e^{i z}& -i \sin(x+y)\cdot e^{i z} & 0 \\\\
 ///         -\sin(x-y)\cdot e^{-i z} & 0 & 0 & \cos(x-y)\cdot e^{-i z}
@@ -541,7 +541,7 @@ pub struct ComplexPMInteraction {
 #[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
 /// The phased-shifted controlled-Z gate.
 ///
-/// Modified, i.e. phase-shifted ControlledPauliZ two-qubit gate (`<https://arxiv.org/pdf/1908.06101.pdf eq.(1)>`).
+/// Modified, i.e. phase-shifted ControlledPauliZ two-qubit gate. <https://arxiv.org/pdf/1908.06101.pdf eq.(1)>
 ///
 /// The unitary matrix representation is:
 ///
@@ -612,7 +612,7 @@ pub struct PhaseShiftedControlledPhase {
 /// The unitary matrix representation is:
 ///
 /// .. math::
-///     U = /begin{pmatrix}
+///     U = \begin{pmatrix}
 ///         1 & 0 & 0 & 0 \\\\
 ///         0 & 1 & 0 & 0 \\\\
 ///         0 & 0 & \cos(\frac{\theta}{2}) & -i \sin(\frac{\theta}{2}) \\\\
@@ -643,7 +643,7 @@ pub struct ControlledRotateX {
 /// The unitary matrix representation is:
 ///
 /// .. math::
-///     U = /begin{pmatrix}
+///     U = \begin{pmatrix}
 ///         1 & 0 & 0 & 0 \\\\
 ///         0 & 1 & 0 & 0 \\\\
 ///         0 & 0 & \cos(\frac{\theta}{2}) & -i e^{-i \phi} \sin(\frac{\theta}{2}) \\\\
@@ -660,4 +660,28 @@ pub struct ControlledRotateXY {
     target: usize,
     theta: CalculatorFloat,
     phi: CalculatorFloat,
+}
+
+#[allow(clippy::upper_case_acronyms)]
+#[wrap(Operate, OperateTwoQubit, OperateGate, OperateTwoQubitGate, JsonSchema)]
+/// Implements the controlled RotateXY operation.
+///
+/// The unitary matrix representation is:
+///
+/// .. math::
+///     U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+///         0 & 1 & 0 & i \\\\
+///         1 & 0 & -i & 0 \\\\
+///         0 & i & 0 & 1 \\\\
+///         -i & 0 & 1 & 0
+///         \end{pmatrix}
+///
+/// Args:
+///     control (int): The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the Rotatex Operation on the target qubit.
+///     target (int):: The index of the least significant qubit in the unitary representation. Here, the qubit RotateX Operation is applied to.
+///     theta (CalculatorFloat): The angle $\theta$ of the rotation.
+///     phi (CalculatorFloat): The rotation axis, in spherical coordinates :math:`\phi_{sph}`  gives the angle in the x-y plane.
+pub struct EchoCrossResonance {
+    control: usize,
+    target: usize,
 }

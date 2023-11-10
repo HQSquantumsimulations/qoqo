@@ -104,6 +104,7 @@ pub enum QoqoBackendError {
 ///     operations
 ///     measurements
 ///     devices
+///     noise_models
 ///
 
 #[pymodule]

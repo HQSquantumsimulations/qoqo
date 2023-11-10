@@ -20,11 +20,11 @@ use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
     BogoliubovWrapper, CNOTWrapper, ComplexPMInteractionWrapper, ControlledPauliYWrapper,
     ControlledPauliZWrapper, ControlledPhaseShiftWrapper, ControlledRotateXWrapper,
-    ControlledRotateXYWrapper, FSwapWrapper, FsimWrapper, GivensRotationLittleEndianWrapper,
-    GivensRotationWrapper, ISwapWrapper, InvSqrtISwapWrapper, MolmerSorensenXXWrapper,
-    PMInteractionWrapper, PhaseShiftedControlledPhaseWrapper, PhaseShiftedControlledZWrapper,
-    QsimWrapper, SWAPWrapper, SpinInteractionWrapper, SqrtISwapWrapper, VariableMSXXWrapper,
-    XYWrapper,
+    ControlledRotateXYWrapper, EchoCrossResonanceWrapper, FSwapWrapper, FsimWrapper,
+    GivensRotationLittleEndianWrapper, GivensRotationWrapper, ISwapWrapper, InvSqrtISwapWrapper,
+    MolmerSorensenXXWrapper, PMInteractionWrapper, PhaseShiftedControlledPhaseWrapper,
+    PhaseShiftedControlledZWrapper, QsimWrapper, SWAPWrapper, SpinInteractionWrapper,
+    SqrtISwapWrapper, VariableMSXXWrapper, XYWrapper,
 };
 
 use qoqo_calculator::CalculatorFloat;
@@ -62,6 +62,7 @@ use test_case::test_case;
 #[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
 #[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(Operation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -276,6 +277,14 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
         "ControlledRotateXY",
         ],
     Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(
+    vec![
+        "Operation",
+        "GateOperation",
+        "TwoQubitGateOperation",
+        "EchoCrossResonance",
+        ],
+    Operation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -317,6 +326,7 @@ fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
 #[test_case("PhaseShiftedControlledPhase", Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
 #[test_case("ControlledRotateX", Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case("ControlledRotateXY", Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case("EchoCrossResonance", Operation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -352,6 +362,7 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
 #[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
 #[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(Operation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn test_pyo3_remapqubits(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -414,6 +425,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 #[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
 #[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(Operation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
@@ -479,6 +491,7 @@ fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
 #[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
 #[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(Operation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn test_pyo3_unitarymatrix(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -572,6 +585,9 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
 #[test_case(
     "ControlledRotateXY { control: 0, target: 1, theta: Float(3.141592653589793), phi: Float(3.141592653589793) }",
     Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::PI, CalculatorFloat::PI)); "ControlledRotateXY")]
+#[test_case(
+    "EchoCrossResonance { control: 0, target: 1 }",
+    Operation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -610,6 +626,7 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
 #[test_case(Operation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
 #[test_case(Operation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(Operation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -710,6 +727,9 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 #[test_case(Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::from("test"), CalculatorFloat::PI)),
             Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::from(1.0), CalculatorFloat::PI));
             "ControlledRotateXY")]
+#[test_case(Operation::from(EchoCrossResonance::new(0, 1)),
+            Operation::from(EchoCrossResonance::new(0, 1));
+            "EchoCrossResonance")]
 fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2008,6 +2028,54 @@ fn test_new_controlledrotatexy(
     })
 }
 
+/// Test new() function for EchoCrossResonance
+#[test_case(Operation::from(EchoCrossResonance::new(0, 1)), (0, 1), "__eq__"; "EchoCrossResonance_eq")]
+#[test_case(Operation::from(EchoCrossResonance::new(2, 1)), (0, 1), "__ne__"; "EchoCrossResonance_ne")]
+fn test_new_echocrossresonance(input_operation: Operation, arguments: (u32, u32), method: &str) {
+    let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        // Basic initialization, no errors
+        let operation_type = py.get_type::<EchoCrossResonanceWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .downcast::<PyCell<EchoCrossResonanceWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        // Error initialisation
+        let result = operation_type.call1((0, 1, 0.0));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py.extract::<EchoCrossResonanceWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1((1, 2))
+            .unwrap()
+            .downcast::<PyCell<EchoCrossResonanceWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<EchoCrossResonanceWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "EchoCrossResonanceWrapper { internal: EchoCrossResonance { control: 1, target: 2 } }"
+        );
+    })
+}
+
 /// Test the __richcmp__ function
 #[test_case(
     Operation::from(CNOT::new(0, 1)),
@@ -2081,6 +2149,9 @@ fn test_new_controlledrotatexy(
 #[test_case(
     Operation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::PI)),
     Operation::from(ControlledRotateXY::new(1, 0, CalculatorFloat::FRAC_PI_2, CalculatorFloat::PI)); "ControlledRotateXY")]
+#[test_case(
+    Operation::from(EchoCrossResonance::new(0, 1)),
+    Operation::from(EchoCrossResonance::new(1, 0)); "EchoCrossResonance")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2139,6 +2210,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 #[test_case(TwoQubitGateOperation::from(PhaseShiftedControlledPhase::new(0, 1, CalculatorFloat::PI, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledPhase")]
 #[test_case(TwoQubitGateOperation::from(ControlledRotateX::new(0, 1, CalculatorFloat::FRAC_PI_2)); "ControlledRotateX")]
 #[test_case(TwoQubitGateOperation::from(ControlledRotateXY::new(0, 1, CalculatorFloat::FRAC_PI_2, CalculatorFloat::FRAC_PI_4)); "ControlledRotateXY")]
+#[test_case(TwoQubitGateOperation::from(EchoCrossResonance::new(0, 1)); "EchoCrossResonance")]
 fn test_pyo3_json_schema(operation: TwoQubitGateOperation) {
     let rust_schema = match operation {
         TwoQubitGateOperation::CNOT(_) => {
@@ -2215,6 +2287,9 @@ fn test_pyo3_json_schema(operation: TwoQubitGateOperation) {
         TwoQubitGateOperation::ControlledRotateXY(_) => {
             serde_json::to_string_pretty(&schemars::schema_for!(ControlledRotateXY)).unwrap()
         }
+        TwoQubitGateOperation::EchoCrossResonance(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(EchoCrossResonance)).unwrap()
+        }
         _ => unreachable!(),
     };
     pyo3::prepare_freethreaded_python();
@@ -2223,6 +2298,7 @@ fn test_pyo3_json_schema(operation: TwoQubitGateOperation) {
             TwoQubitGateOperation::PhaseShiftedControlledPhase(_) => "1.2.0".to_string(),
             TwoQubitGateOperation::ControlledRotateX(_) => "1.3.0".to_string(),
             TwoQubitGateOperation::ControlledRotateXY(_) => "1.3.0".to_string(),
+            TwoQubitGateOperation::EchoCrossResonance(_) => "1.8.0".to_string(),
             _ => "1.0.0".to_string(),
         };
         let converted_op = Operation::from(operation);
