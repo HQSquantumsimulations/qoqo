@@ -32,6 +32,7 @@ qoqo.operations
       DefinitionComplex
       DefinitionFloat
       DefinitionUsize
+      EchoCrossResonance
       FSwap
       Fsim
       GPi
