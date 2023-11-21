@@ -181,8 +181,7 @@ impl<'ast> Visit<'ast> for Visitor {
                 {
                     self.multi_qubit_operations.push(i.ident.clone());
                 }
-                if parsed_arguments.contains("Operate")
-                    && parsed_arguments.contains("OperatePragma")
+                if parsed_arguments.contains("OperatePragma")
                 {
                     self.pragma_operations.push(i.ident.clone());
                 }
