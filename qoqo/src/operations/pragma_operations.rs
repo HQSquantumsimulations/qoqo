@@ -1591,6 +1591,13 @@ impl PragmaChangeDeviceWrapper {
     }
 }
 
+/// Module containing the PragmaAnnotatedOp class.
+#[pymodule]
+fn pragma_annotated_op(_py: Python, module: &PyModule) -> PyResult<()> {
+    module.add_class::<PragmaAnnotatedOpWrapper>()?;
+    Ok(())
+}
+
 #[pyclass(name = "PragmaAnnotatedOp", module = "qoqo.operations")]
 #[derive(Clone, Debug, PartialEq)]
 /// An annotated Operation.
