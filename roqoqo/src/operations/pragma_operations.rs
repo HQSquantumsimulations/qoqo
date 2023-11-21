@@ -1365,6 +1365,7 @@ impl Operate for PragmaAnnotatedOp {
         self.operation.is_parametrized()
     }
 }
+
 impl PragmaAnnotatedOp {
     #[cfg(feature = "serialize")]
     pub fn new(operation: Operation, annotation: String) -> Self {
