@@ -10,6 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use crate::operations::convert_operation_to_pyobject;
 use crate::{convert_into_circuit, CircuitWrapper};
 use ndarray::Array1;
 use num_complex::Complex64;
@@ -1586,6 +1587,284 @@ impl PragmaChangeDeviceWrapper {
     pub fn min_supported_version(&self) -> String {
         let min_version: (u32, u32, u32) =
             PragmaChangeDevice::minimum_supported_roqoqo_version(&self.internal);
+        format!("{}.{}.{}", min_version.0, min_version.1, min_version.2)
+    }
+}
+
+#[pyclass(name = "PragmaAnnotatedOp", module = "qoqo.operations")]
+#[derive(Clone, Debug, PartialEq)]
+/// An annotated Operation.
+///
+/// Args:
+///     operation (Operation): - The Operation to be annotated.
+///     annotation (String): - The annotation.
+pub struct PragmaAnnotatedOpWrapper {
+    /// PragmaAnnotatedOp to be wrapped and converted to Python.
+    pub internal: PragmaAnnotatedOp,
+}
+
+insert_pyany_to_operation!(
+    "PragmaAnnotatedOp" =>{
+        let annot_op = op.call_method0( "operation").map_err(|_|QoqoError::ConversionError)?;
+        let operation: Operation = convert_pyany_to_operation(annot_op)
+                                  .map_err(|_| QoqoError::ConversionError)?;
+        let annot = op.call_method0( "annotation").map_err(|_|QoqoError::ConversionError)?;
+        let annotation: String = annot.extract()
+                                      .map_err(|_|QoqoError::ConversionError)?;
+           Ok( PragmaAnnotatedOp{ operation: Box::new(operation), annotation }.into())
+    }
+);
+
+insert_operation_to_pyobject!(
+    Operation::PragmaAnnotatedOp(internal) => {
+        {
+            let pyref: Py<PragmaAnnotatedOpWrapper> =
+                Py::new(py, PragmaAnnotatedOpWrapper { internal }).unwrap();
+            let pyobject: PyObject = pyref.to_object(py);
+            Ok(pyobject)
+        }
+    }
+);
+
+#[pymethods]
+impl PragmaAnnotatedOpWrapper {
+    /// Create a PragmaAnnotatedOp instance.
+    ///
+    /// Args:
+    ///     operation (Operation): - The Operation to be annotated.
+    ///     annotation (String): - The annotation.
+    #[new]
+    fn new(operation: Py<PyAny>, annotation: String) -> PyResult<Self> {
+        let op: Operation = Python::with_gil(|py| -> PyResult<Operation> {
+            let op_ref = operation.as_ref(py);
+            crate::operations::convert_pyany_to_operation(op_ref).map_err(|_| {
+                pyo3::exceptions::PyTypeError::new_err(
+                    "Input operation cannot be converted to Operation",
+                )
+            })
+        })?;
+        Ok(Self {
+            internal: PragmaAnnotatedOp::new(op, annotation),
+        })
+    }
+
+    /// Return the internal Operation.
+    ///
+    /// Returns:
+    ///     Operation: The annotated Operation.
+    fn operation(&self) -> PyResult<Py<PyAny>> {
+        let op = self.internal.operation.clone();
+        convert_operation_to_pyobject(*op)
+    }
+
+    /// Return the annotation.
+    ///
+    /// Returns:
+    ///     String: The annotation.
+    fn annotation(&self) -> String {
+        self.internal.annotation.clone()
+    }
+
+    /// List all involved qubits.
+    ///
+    /// Returns:
+    ///     set[int]: The involved qubits of the PRAGMA operation.
+    fn involved_qubits(&self) -> PyObject {
+        Python::with_gil(|py| -> PyObject {
+            let involved = self.internal.involved_qubits();
+            match involved {
+                InvolvedQubits::All => {
+                    let pyref: &PySet = PySet::new(py, &["All"]).unwrap();
+                    let pyobject: PyObject = pyref.to_object(py);
+                    pyobject
+                }
+                InvolvedQubits::None => {
+                    let pyref: &PySet = PySet::empty(py).unwrap();
+                    let pyobject: PyObject = pyref.to_object(py);
+                    pyobject
+                }
+                InvolvedQubits::Set(x) => {
+                    let mut vector: Vec<usize> = Vec::new();
+                    for mode in x {
+                        vector.push(mode)
+                    }
+                    let pyref: &PySet = PySet::new(py, &vector[..]).unwrap();
+                    let pyobject: PyObject = pyref.to_object(py);
+                    pyobject
+                }
+            }
+        })
+    }
+
+    /// Return tags classifying the type of the operation.
+    ///
+    /// Used for the type based dispatch in ffi interfaces.
+    ///
+    /// Returns:
+    ///     list[str]: The tags of the Operation.
+    fn tags(&self) -> Vec<String> {
+        self.internal.tags().iter().map(|s| s.to_string()).collect()
+    }
+
+    /// Return hqslang name of the operation.
+    ///
+    /// Returns:
+    ///     str: The hqslang name of the operation.
+    fn hqslang(&self) -> &'static str {
+        self.internal.hqslang()
+    }
+
+    /// Return true when the operation has symbolic parameters.
+    ///
+    /// Returns:
+    ///     is_parametrized (bool): True if the operation contains symbolic parameters, False if it does not.
+    fn is_parametrized(&self) -> bool {
+        self.internal.is_parametrized()
+    }
+
+    /// Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
+    ///
+    /// Args:
+    ///     substitution_parameters (dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+    ///
+    /// Returns:
+    ///     self: The PRAGMA operation with the parameters substituted.
+    ///
+    /// Raises:
+    ///     RuntimeError: The parameter substitution failed.
+    fn substitute_parameters(
+        &self,
+        substitution_parameters: std::collections::HashMap<&str, f64>,
+    ) -> PyResult<Self> {
+        let mut calculator = qoqo_calculator::Calculator::new();
+        for (key, val) in substitution_parameters.iter() {
+            calculator.set_variable(key, *val);
+        }
+        Ok(Self {
+            internal: self
+                .internal
+                .substitute_parameters(&calculator)
+                .map_err(|x| {
+                    pyo3::exceptions::PyRuntimeError::new_err(format!(
+                        "Parameter Substitution failed: {:?}",
+                        x
+                    ))
+                })?,
+        })
+    }
+
+    /// Remap qubits in a clone of the PRAGMA operation.
+    ///
+    /// Args:
+    ///     mapping (dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+    ///
+    /// Returns:
+    ///     self: The PRAGMA operation with the qubits remapped.
+    ///
+    /// Raises:
+    ///     RuntimeError: The qubit remapping failed.
+    fn remap_qubits(&self, mapping: std::collections::HashMap<usize, usize>) -> PyResult<Self> {
+        let new_internal = self
+            .internal
+            .remap_qubits(&mapping)
+            .map_err(|_| pyo3::exceptions::PyRuntimeError::new_err("Qubit remapping failed: "))?;
+        Ok(Self {
+            internal: new_internal,
+        })
+    }
+
+    /// Return a copy of the PRAGMA operation (copy here produces a deepcopy).
+    ///
+    /// Returns:
+    ///     PragmaAnnotatedOp: A deep copy of self.
+    fn __copy__(&self) -> PragmaAnnotatedOpWrapper {
+        self.clone()
+    }
+
+    /// Return a deep copy of the PRAGMA operation.
+    ///
+    /// Returns:
+    ///     PragmaAnnotatedOp: A deep copy of self.
+    fn __deepcopy__(&self, _memodict: Py<PyAny>) -> PragmaAnnotatedOpWrapper {
+        self.clone()
+    }
+
+    /// Return a string containing a formatted (string) representation of the PRAGMA operation.
+    ///
+    /// Returns:
+    ///     str: The string representation of the operation.
+    fn __format__(&self, _format_spec: &str) -> PyResult<String> {
+        Ok(format!("{:?}", self.internal))
+    }
+
+    /// Return a string containing a printable representation of the PRAGMA operation.
+    ///
+    /// Returns:
+    ///     str: The printable string representation of the operation.
+    fn __repr__(&self) -> PyResult<String> {
+        Ok(format!("{:?}", self.internal))
+    }
+
+    /// Return the __richcmp__ magic method to perform rich comparison operations on PragmaAnnotatedOp.
+    ///
+    /// Args:
+    ///     self: The PragmaGeneralNoise object.
+    ///     other: The object to compare self to.
+    ///     op: Type of comparison.
+    ///
+    /// Returns:
+    ///     bool: Whether the two operations compared evaluated to True or False.
+    fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
+        let other: Operation = Python::with_gil(|py| -> PyResult<Operation> {
+            let other_ref = other.as_ref(py);
+            crate::operations::convert_pyany_to_operation(other_ref).map_err(|_| {
+                pyo3::exceptions::PyTypeError::new_err(
+                    "Right hand side cannot be converted to Operation",
+                )
+            })
+        })?;
+        match op {
+            pyo3::class::basic::CompareOp::Eq => {
+                Ok(Operation::from(self.internal.clone()) == other)
+            }
+            pyo3::class::basic::CompareOp::Ne => {
+                Ok(Operation::from(self.internal.clone()) != other)
+            }
+            _ => Err(pyo3::exceptions::PyNotImplementedError::new_err(
+                "Other comparison not implemented.",
+            )),
+        }
+    }
+
+    #[cfg(feature = "json_schema")]
+    /// Return the JsonSchema for the json serialisation of the class.
+    ///
+    /// Returns:
+    ///     str: The json schema serialized to json
+    #[staticmethod]
+    pub fn json_schema() -> String {
+        let schema = schemars::schema_for!(PragmaAnnotatedOp);
+        serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
+    }
+
+    #[cfg(feature = "json_schema")]
+    /// Returns the current version of the qoqo library .
+    ///
+    /// Returns:
+    ///     str: The current version of the library.
+    #[staticmethod]
+    pub fn current_version() -> String {
+        ROQOQO_VERSION.to_string()
+    }
+
+    #[cfg(feature = "json_schema")]
+    /// Return the minimum version of qoqo that supports this object.
+    ///
+    /// Returns:
+    ///     str: The minimum version of the qoqo library to deserialize this object.
+    pub fn min_supported_version(&self) -> String {
+        let min_version: (u32, u32, u32) =
+            PragmaAnnotatedOp::minimum_supported_roqoqo_version(&self.internal);
         format!("{}.{}.{}", min_version.0, min_version.1, min_version.2)
     }
 }
