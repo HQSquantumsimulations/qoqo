@@ -588,11 +588,41 @@ fn test_pyo3_inputs_controlled_circuit() {
     })
 }
 
+/// Test inputs of PragmaAnnotatedOp
+#[test]
+fn test_pyo3_inputs_annotated_op() {
+    let input_op = Operation::from(PauliX::new(0));
+    let input_pragma =
+        Operation::from(PragmaAnnotatedOp::new(input_op.clone(), "test".to_string()));
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+
+        let op = operation.call_method0(py, "operation").unwrap();
+        let op_ref = op.as_ref(py);
+        let comparison_op = bool::extract(
+            op_ref
+                .call_method1(
+                    "__eq__",
+                    (convert_operation_to_pyobject(input_op.clone()).unwrap(),),
+                )
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_op);
+
+        let annotation: String =
+            String::extract(operation.call_method0(py, "annotation").unwrap().as_ref(py)).unwrap();
+        assert_eq!(annotation, "test".to_string());
+    })
+}
+
 /// Test involved_qubits function for Pragmas with None
 #[test_case(Operation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro"))); "PragmaSetNumberOfMeasurements")]
 #[test_case(Operation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.003))); "PragmaBoostNoise")]
 #[test_case(Operation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.05))); "PragmaGlobalPhase")]
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::new())); "PragmaLoop")]
+#[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.005))), "test".to_string())); "PragmaAnnotatedOp")]
 fn test_pyo3_involved_qubits_none(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -608,6 +638,7 @@ fn test_pyo3_involved_qubits_none(input_definition: Operation) {
 #[test_case(Operation::from(PragmaSetStateVector::new(statevector())); "PragmaSetStateVector")]
 #[test_case(Operation::from(PragmaSetDensityMatrix::new(densitymatrix())); "PragmaSetDensityMatrix")]
 #[test_case(Operation::from(PragmaRepeatGate::new(3)); "PragmaRepeatGate")]
+#[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PragmaSetStateVector::new(statevector())), "test".to_string())); "PragmaAnnotatedOp")]
 fn test_pyo3_involved_qubits_all(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -633,6 +664,7 @@ fn test_pyo3_involved_qubits_all(input_definition: Operation) {
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators())); "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 #[test_case(Operation::from(PragmaControlledCircuit::new(0, create_circuit())); "PragmaControlledCircuit")]
+#[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string())); "PragmaAnnotatedOp")]
 fn test_pyo3_involved_qubits_qubit(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -697,6 +729,8 @@ fn test_pyo3_involved_qubits_qubit_overrotation(input_definition: Operation) {
             "PragmaControlledCircuit { controlling_qubit: 1, circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"; "PragmaControlledCircuit")]
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::default())),
             "PragmaLoop { repetitions: Str(\"number_t\"), circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion } }"; "PragmaLoop")]
+#[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string())),
+            "PragmaAnnotatedOp { operation: PauliX(PauliX { qubit: 0 }), annotation: \"test\" }"; "PragmaAnnotatedOp")]
 fn test_pyo3_format_repr(input_measurement: Operation, format_repr: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -745,6 +779,7 @@ fn test_pyo3_format_repr_overrotation(input_measurement: Operation, format_repr:
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 #[test_case(Operation::from(PragmaControlledCircuit::new( 1, create_circuit())); "PragmaControlledCircuit")]
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::default())); "PragmaLoop")]
+#[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string())); "PragmaAnnotatedOp")]
 fn test_pyo3_copy_deepcopy(input_measurement: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -826,6 +861,7 @@ fn test_pyo3_copy_deepcopy_overrotation() {
 #[test_case(Operation::from(PragmaBoostNoise::new(CalculatorFloat::from(0.003))), "PragmaBoostNoise"; "PragmaBoostNoise")]
 #[test_case(Operation::from(PragmaGlobalPhase::new(CalculatorFloat::from(0.05))), "PragmaGlobalPhase"; "PragmaGlobalPhase")]
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::default())), "PragmaLoop"; "PragmaLoop")]
+#[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string())), "PragmaAnnotatedOp"; "PragmaAnnotatedOp")]
 fn test_pyo3_tags_simple(input_measurement: Operation, tag_name: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -896,7 +932,6 @@ fn test_pyo3_tags_single(input_measurement: Operation, tag_name: &str) {
 /// Test tags function for Pragmas that are also SingleQubitGates
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())), "PragmaConditional"; "PragmaConditional")]
 #[test_case(Operation::from(PragmaControlledCircuit::new( 1, create_circuit())), "PragmaControlledCircuit"; "PragmaControlledCircuit")]
-
 fn test_pyo3_tags_conditional(input_measurement: Operation, tag_name: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -970,6 +1005,7 @@ fn test_pyo3_tags_noise(input_measurement: Operation, tag_name: &str) {
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())), "PragmaConditional"; "PragmaConditional")]
 #[test_case(Operation::from(PragmaControlledCircuit::new( 1, create_circuit())), "PragmaControlledCircuit"; "PragmaControlledCircuit")]
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::default())), "PragmaLoop"; "PragmaLoop")]
+#[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string())), "PragmaAnnotatedOp"; "PragmaAnnotatedOp")]
 fn test_pyo3_hqslang(input_measurement: Operation, hqslang_param: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -991,7 +1027,7 @@ fn test_pyo3_hqslang_overrotation(input_measurement: Operation, hqslang_param: &
     })
 }
 
-/// Test is_parametrized function
+/// Test is_parametrized function (false)
 #[test_case(Operation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro"))); "PragmaSetNumberOfMeasurements")]
 #[test_case(Operation::from(PragmaSetStateVector::new(statevector())); "PragmaSetStateVector")]
 #[test_case(Operation::from(PragmaSetDensityMatrix::new(densitymatrix())); "PragmaSetDensityMatrix")]
@@ -1011,11 +1047,28 @@ fn test_pyo3_hqslang_overrotation(input_measurement: Operation, hqslang_param: &
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 #[test_case(Operation::from(PragmaControlledCircuit::new( 1, create_circuit())); "PragmaControlledCircuit")]
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from(1.0), Circuit::default())); "PragmaLoop")]
-fn test_pyo3_is_parametrized(input_measurement: Operation) {
+#[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string())); "PragmaAnnotatedOp")]
+fn test_pyo3_is_parametrized_false(input_pragma: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = convert_operation_to_pyobject(input_measurement).unwrap();
+        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
         assert!(!bool::extract(
+            operation
+                .call_method0(py, "is_parametrized")
+                .unwrap()
+                .as_ref(py)
+        )
+        .unwrap());
+    })
+}
+
+/// Test is_parametrized function (true)
+#[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(RotateX::new(0, CalculatorFloat::Str("theta".to_string()))), "test".to_string())); "PragmaAnnotatedOp")]
+fn test_pyo3_is_parametrized_true(input_pragma: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+        assert!(bool::extract(
             operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
@@ -1098,6 +1151,9 @@ fn test_pyo3_is_parametrized_overrotation(input_measurement: Operation) {
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("test"), Circuit::default())),
             Operation::from(PragmaLoop::new(CalculatorFloat::from(1.0), Circuit::default()));
             "PragmaLoop")]
+#[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(RotateX::new(0, CalculatorFloat::from("test"))), "test".to_string())),
+            Operation::from(PragmaAnnotatedOp::new(Operation::from(RotateX::new(0, CalculatorFloat::from(1.0))), "test".to_string()));
+            "PragmaAnnotatedOp")]
 fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1175,6 +1231,13 @@ fn test_pyo3_substitute_parameters_overrotation() {
             "PragmaRandomNoise")]
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from("test"),  operators()));
             "PragmaGeneralNoise")]
+#[test_case(
+    Operation::from(PragmaAnnotatedOp::new(Operation::from(RotateX::new(
+        0,
+        CalculatorFloat::from("test")
+    )), "test".to_string()));
+    "PragmaAnnotatedOp"
+)]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1190,7 +1253,13 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 #[test_case(Operation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro"))); "PragmaSetNumberOfMeasurements")]
 #[test_case(Operation::from(PragmaConditional::new(String::from("ro"), 1, create_circuit())); "PragmaConditional")]
 #[test_case(Operation::from(PragmaControlledCircuit::new( 1, create_circuit())); "PragmaControlledCircuit")]
-
+#[test_case(
+    Operation::from(PragmaAnnotatedOp::new(Operation::from(RotateX::new(
+        0,
+        CalculatorFloat::from("test")
+    )), "test".to_string()));
+    "PragmaAnnotatedOp"
+)]
 fn test_pyo3_substituteparameters_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1261,6 +1330,9 @@ fn test_pyo3_substituteparameters_error(input_operation: Operation) {
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), create_circuit())),
             Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), circuit_remapped()));
             "PragmaLoop")]
+#[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(RotateX::new(0, CalculatorFloat::from("test"))), "test".to_string())),
+            Operation::from(PragmaAnnotatedOp::new(Operation::from(RotateX::new(2, CalculatorFloat::from("test"))), "test".to_string()));
+            "PragmaAnnotatedOp")]
 fn test_pyo3_remap_qubits(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1568,6 +1640,9 @@ fn test_pyo3_noise_powercf(first_op: Operation, second_op: Operation) {
 #[test_case(Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), create_circuit())),
             Operation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), circuit_remapped()));
             "PragmaLoop")]
+#[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(RotateX::new(0, CalculatorFloat::from("test"))), "test".to_string())),
+            Operation::from(PragmaAnnotatedOp::new(Operation::from(RotateX::new(2, CalculatorFloat::from("test"))), "test".to_string()));
+            "PragmaAnnotatedOp")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2560,6 +2635,54 @@ fn test_pyo3_new_loop() {
     })
 }
 
+/// Test PragmaAnnotatedOp new() function
+#[test]
+fn test_pyo3_new_annotated_op() {
+    let internal_op_0 = Operation::from(PauliX::new(0));
+    let internal_op_1 = Operation::from(PauliX::new(1));
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = py.get_type::<PragmaAnnotatedOpWrapper>();
+        let new_op = operation
+            .call1((
+                convert_operation_to_pyobject(internal_op_0).unwrap(),
+                "test",
+            ))
+            .unwrap()
+            .downcast::<PyCell<PragmaAnnotatedOpWrapper>>()
+            .unwrap();
+
+        let input_definition = Operation::from(PragmaAnnotatedOp::new(
+            Operation::from(PauliX::new(0)),
+            "test".to_string(),
+        ));
+        let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        assert!(comparison_copy);
+
+        let pragma_wrapper = new_op.extract::<PragmaAnnotatedOpWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1((
+                convert_operation_to_pyobject(internal_op_1).unwrap(),
+                "test",
+            ))
+            .unwrap()
+            .downcast::<PyCell<PragmaAnnotatedOpWrapper>>()
+            .unwrap();
+        let pragma_wrapper_diff = new_op_diff.extract::<PragmaAnnotatedOpWrapper>().unwrap();
+        let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = pragma_wrapper == pragma_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", pragma_wrapper),
+            "PragmaAnnotatedOpWrapper { internal: PragmaAnnotatedOp { operation: PauliX(PauliX { qubit: 0 }), annotation: \"test\" } }"
+        );
+    })
+}
+
 // test remap_qubits() function returning an error.
 #[test_case(Operation::from(PragmaStopParallelBlock::new(vec![0, 1], CalculatorFloat::from(0.0000001))); "PragmaStopParallelBlock")]
 #[test_case(Operation::from(PragmaSleep::new(vec![0, 1], CalculatorFloat::from(0.0000001))); "PragmaSleep")]
@@ -2572,7 +2695,7 @@ fn test_pyo3_new_loop() {
 #[test_case(Operation::from(PragmaRandomNoise::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02), CalculatorFloat::from(0.01))); "PragmaRandomNoise")]
 #[test_case(Operation::from(PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), operators())); "PragmaGeneralNoise")]
 #[test_case(Operation::from(PragmaControlledCircuit::new(0, roqoqo::Circuit::new())); "PragmaControlledCircuit")]
-
+#[test_case(Operation::from(PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string())); "PragmaAnnotatedOp")]
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
@@ -2609,6 +2732,7 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
 #[test_case(PragmaOperation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::default())); "PragmaLoop")]
 #[test_case(PragmaOperation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro"))); "PragmaSetNumberOfMeasurements")]
 #[test_case(PragmaOperation::from(PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)); "PragmaOverrotation")]
+#[test_case(PragmaOperation::from(PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), String::from("test"))); "PragmaAnnotatedOp")]
 fn test_pyo3_json_schema(operation: PragmaOperation) {
     let rust_schema = match operation {
         PragmaOperation::PragmaSetNumberOfMeasurements(_) => {
@@ -2674,6 +2798,9 @@ fn test_pyo3_json_schema(operation: PragmaOperation) {
         PragmaOperation::PragmaControlledCircuit(_) => {
             serde_json::to_string_pretty(&schemars::schema_for!(PragmaControlledCircuit)).unwrap()
         }
+        PragmaOperation::PragmaAnnotatedOp(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PragmaAnnotatedOp)).unwrap()
+        }
         _ => unreachable!(),
     };
     pyo3::prepare_freethreaded_python();
@@ -2681,6 +2808,7 @@ fn test_pyo3_json_schema(operation: PragmaOperation) {
         let minimum_version: String = match operation {
             PragmaOperation::PragmaLoop(_) => "1.1.0".to_string(),
             PragmaOperation::PragmaControlledCircuit(_) => "1.5.0".to_string(),
+            PragmaOperation::PragmaAnnotatedOp(_) => "1.8.0".to_string(),
             _ => "1.0.0".to_string(),
         };
         let converted_op = Operation::from(operation);
