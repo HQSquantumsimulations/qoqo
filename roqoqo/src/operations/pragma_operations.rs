@@ -1367,6 +1367,12 @@ impl Operate for PragmaAnnotatedOp {
 }
 
 impl PragmaAnnotatedOp {
+    /// Create a PragmaAnnotatedOp instance.
+    ///
+    /// # Arguments
+    ///
+    /// * `operation` - The Operation to be annotated.
+    /// * `annotation`` - The annotation.
     pub fn new(operation: Operation, annotation: String) -> Self {
         Self {
             operation: Box::new(operation),
