@@ -2732,7 +2732,6 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
 #[test_case(PragmaOperation::from(PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::default())); "PragmaLoop")]
 #[test_case(PragmaOperation::from(PragmaSetNumberOfMeasurements::new(1, String::from("ro"))); "PragmaSetNumberOfMeasurements")]
 #[test_case(PragmaOperation::from(PragmaOverrotation::new("RotateX".to_string(), vec![0], 0.03, 0.001)); "PragmaOverrotation")]
-#[test_case(PragmaOperation::from(PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), String::from("test"))); "PragmaAnnotatedOp")]
 fn test_pyo3_json_schema(operation: PragmaOperation) {
     let rust_schema = match operation {
         PragmaOperation::PragmaSetNumberOfMeasurements(_) => {
@@ -2798,9 +2797,6 @@ fn test_pyo3_json_schema(operation: PragmaOperation) {
         PragmaOperation::PragmaControlledCircuit(_) => {
             serde_json::to_string_pretty(&schemars::schema_for!(PragmaControlledCircuit)).unwrap()
         }
-        PragmaOperation::PragmaAnnotatedOp(_) => {
-            serde_json::to_string_pretty(&schemars::schema_for!(PragmaAnnotatedOp)).unwrap()
-        }
         _ => unreachable!(),
     };
     pyo3::prepare_freethreaded_python();
@@ -2808,7 +2804,6 @@ fn test_pyo3_json_schema(operation: PragmaOperation) {
         let minimum_version: String = match operation {
             PragmaOperation::PragmaLoop(_) => "1.1.0".to_string(),
             PragmaOperation::PragmaControlledCircuit(_) => "1.5.0".to_string(),
-            PragmaOperation::PragmaAnnotatedOp(_) => "1.8.0".to_string(),
             _ => "1.0.0".to_string(),
         };
         let converted_op = Operation::from(operation);
