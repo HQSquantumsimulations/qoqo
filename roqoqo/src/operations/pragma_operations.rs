@@ -1367,7 +1367,6 @@ impl Operate for PragmaAnnotatedOp {
 }
 
 impl PragmaAnnotatedOp {
-    #[cfg(feature = "serialize")]
     pub fn new(operation: Operation, annotation: String) -> Self {
         Self {
             operation: Box::new(operation),
