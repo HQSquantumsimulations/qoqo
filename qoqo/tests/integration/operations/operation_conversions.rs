@@ -126,6 +126,7 @@ use test_case::test_case;
 #[test_case(Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(0.005), 1.0.into())); "PhaseDisplacement")]
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.005), 1.0.into())); "Beamsplitter")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
+#[test_case(Operation::from(PragmaAnnotatedOp::new(PauliX::new(0).into(), "test".to_string())); "PragmaAnnotatedOp")]
 fn test_conversion(input: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
