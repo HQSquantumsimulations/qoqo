@@ -13,6 +13,7 @@
 //! Collection of roqoqo PRAGMA operations.
 //!
 
+use crate::operations::Operation;
 use crate::operations::{
     InvolveQubits, InvolvedQubits, Operate, OperateMultiQubit, OperatePragma, OperatePragmaNoise,
     OperatePragmaNoiseProba, OperateSingleQubit, RoqoqoError, Substitute, SupportedVersion,
@@ -1337,5 +1338,78 @@ impl InvolveQubits for PragmaLoop {
             }
         }
         involved
+    }
+}
+
+/// This PRAGMA annotates an Operation.
+///
+#[derive(Debug, Clone, PartialEq, roqoqo_derive::OperatePragma)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct PragmaAnnotatedOp {
+    /// The Operation to be annotated.
+    pub operation: Box<Operation>,
+    /// The annotation.
+    pub annotation: String,
+}
+
+#[cfg_attr(feature = "dynamic", typetag::serde)]
+impl Operate for PragmaAnnotatedOp {
+    fn tags(&self) -> &'static [&'static str] {
+        TAGS_PragmaAnnotatedOp
+    }
+    fn hqslang(&self) -> &'static str {
+        "PragmaAnnotatedOp"
+    }
+    fn is_parametrized(&self) -> bool {
+        self.operation.is_parametrized()
+    }
+}
+
+impl PragmaAnnotatedOp {
+    /// Create a PragmaAnnotatedOp instance.
+    ///
+    /// # Arguments
+    ///
+    /// * `operation` - The Operation to be annotated.
+    /// * `annotation`` - The annotation.
+    pub fn new(operation: Operation, annotation: String) -> Self {
+        Self {
+            operation: Box::new(operation),
+            annotation,
+        }
+    }
+}
+
+impl super::ImplementedIn1point8 for PragmaAnnotatedOp {}
+
+impl SupportedVersion for PragmaAnnotatedOp {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 8, 0)
+    }
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_PragmaAnnotatedOp: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaAnnotatedOp"];
+
+/// Implements [Substitute] trait allowing to replace symbolic parameters and to perform qubit mappings.
+impl Substitute for PragmaAnnotatedOp {
+    /// Remaps qubits in operations in clone of the operation.
+    fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        let new_op = self.operation.remap_qubits(mapping)?;
+        Ok(PragmaAnnotatedOp::new(new_op, self.annotation.clone()))
+    }
+
+    /// Substitutes symbolic parameters in clone of the operation.
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
+        let new_op = self.operation.substitute_parameters(calculator)?;
+        Ok(PragmaAnnotatedOp::new(new_op, self.annotation.clone()))
+    }
+}
+
+// Implements the InvolveQubits trait for PragmaAnnotatedOp.
+impl InvolveQubits for PragmaAnnotatedOp {
+    fn involved_qubits(&self) -> InvolvedQubits {
+        self.operation.involved_qubits()
     }
 }

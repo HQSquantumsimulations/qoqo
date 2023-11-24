@@ -110,6 +110,7 @@ use test_roqoqo_1_7;
 // Operations from 1.8 - uncomment for next unittests
 // #[test_case(test_roqoqo_1_7::operations::PhaseDisplacement::new(0, 0.1.into(), 0.1.into()).into(); "PhaseDisplacement")]
 // #[test_case(test_roqoqo_1_7::operations::EchoCrossResonance::new(0, 1).into(); "EchoCrossResonance")]
+// #[test_case(test_roqoqo_1_7::operations::PragmaAnnotedOp::new(test_roqoqo_1_7::operations::PauliX::new(0).into(), "test".to_string()).into(); "PragmaAnnotatedOp"]
 fn test_bincode_compatibility_1_7(operation: test_roqoqo_1_7::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_7::Circuit::new();
     test_circuit += operation;

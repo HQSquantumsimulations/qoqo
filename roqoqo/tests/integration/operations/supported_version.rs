@@ -186,6 +186,11 @@ fn test_version_1_5_0_pragmas(operation: operations::Operation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 5, 0));
 }
 
+#[test_case(operations::Operation::from(operations::PragmaAnnotatedOp::new(operations::PauliX::new(0).into(), "test".to_string())))]
+fn test_version_1_8_0_pragmas(operation: operations::Operation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 8, 0));
+}
+
 #[cfg(feature = "circuitdag")]
 #[test_case(roqoqo::Circuit::from_iter(vec![
     operations::Operation::from(operations::DefinitionBit::new("ro".to_string(), 2, true))

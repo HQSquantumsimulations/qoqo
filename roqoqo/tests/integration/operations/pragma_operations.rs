@@ -3794,3 +3794,184 @@ fn pragma_controlled_circuit_json_schema() {
     let validation_result = compiled_schema.validate(&test_value);
     assert!(validation_result.is_ok());
 }
+
+/// Test PragmaAnnotatedOp inputs and involved qubits
+#[test_case(PauliX::new(0).into(), InvolvedQubits::Set(HashSet::from([0])); "Some")]
+#[test_case(DefinitionBit::new("ro".to_string(),1,false).into(), InvolvedQubits::None; "None")]
+#[test_case(PragmaRepeatedMeasurement::new("ro".to_string(),10,None).into(), InvolvedQubits::All; "All")]
+fn pragma_annotated_op_inputs_qubits(operation: Operation, involved_qubits: InvolvedQubits) {
+    let pragma = PragmaAnnotatedOp::new(operation.clone(), "test".to_string());
+
+    // Test inputs are correct
+    assert_eq!(pragma.operation, Box::new(operation.clone()));
+    assert_eq!(pragma.annotation, "test".to_string());
+
+    // Test InvolveQubits trait
+    let mut qubits: HashSet<usize> = HashSet::new();
+    qubits.insert(0);
+    qubits.insert(1);
+    assert_eq!(pragma.involved_qubits(), involved_qubits);
+}
+
+/// Test PragmaAnnotatedOp standard derived traits (Debug, Clone, PartialEq)
+#[test]
+fn pragma_annotated_op_simple_traits() {
+    let pragma = PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string());
+
+    // Test Debug trait
+    assert_eq!(
+        format!("{:?}", pragma),
+        "PragmaAnnotatedOp { operation: PauliX(PauliX { qubit: 0 }), annotation: \"test\" }"
+    );
+
+    // Test Clone trait
+    assert_eq!(pragma.clone(), pragma);
+
+    // Test PartialEq trait
+    let pragma_0 = PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string());
+    let pragma_1 = PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "different".to_string());
+    assert!(pragma_0 == pragma);
+    assert!(pragma == pragma_0);
+    assert!(pragma_1 != pragma);
+    assert!(pragma != pragma_1);
+}
+
+/// Test PragmaAnnotatedOp Operate trait
+#[test]
+fn pragma_annotated_op_operate_trait() {
+    let pragma = PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string());
+    let pragma_param = PragmaAnnotatedOp::new(
+        Operation::from(RotateX::new(0, CalculatorFloat::Str("theta".to_string()))),
+        "test".to_string(),
+    );
+
+    // (1) Test tags function
+    let tags: &[&str; 3] = &["Operation", "PragmaOperation", "PragmaAnnotatedOp"];
+    assert_eq!(pragma.tags(), tags);
+
+    // (2) Test hqslang function
+    assert_eq!(pragma.hqslang(), String::from("PragmaAnnotatedOp"));
+
+    // (3) Test is_parametrized function
+    assert!(!pragma.is_parametrized());
+    assert!(pragma_param.is_parametrized());
+}
+
+/// Test PragmaAnnotatedOp Substitute trait
+#[test]
+fn pragma_annotated_op_substitute_trait() {
+    let pragma = PragmaAnnotatedOp::new(
+        Operation::from(RotateX::new(0, CalculatorFloat::Float(0.5))),
+        "test".to_string(),
+    );
+    let pragma_test = PragmaAnnotatedOp::new(
+        Operation::from(RotateX::new(0, CalculatorFloat::Str("ro".to_string()))),
+        "test".to_string(),
+    );
+
+    // (1) Substitute parameters function
+    let mut substitution_dict: Calculator = Calculator::new();
+    substitution_dict.set_variable("ro", 0.5);
+    let result = pragma_test
+        .substitute_parameters(&substitution_dict)
+        .unwrap();
+    assert_eq!(pragma, result);
+
+    // (2) Remap qubits function
+    let pragma = PragmaAnnotatedOp::new(
+        Operation::from(RotateX::new(2, CalculatorFloat::Str("ro".to_string()))),
+        "test".to_string(),
+    );
+    let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
+    let result = pragma_test.remap_qubits(&qubit_mapping_test).unwrap();
+    assert_eq!(result, pragma);
+}
+
+/// Test PragmaAnnotatedOp Serialization and Deserialization traits (readable)
+#[cfg(feature = "serialize")]
+#[test]
+fn pragma_annotated_op_serde_readable() {
+    let pragma_serialization =
+        PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string());
+    assert_tokens(
+        &pragma_serialization.readable(),
+        &[
+            Token::Struct {
+                name: "PragmaAnnotatedOp",
+                len: 2,
+            },
+            Token::Str("operation"),
+            Token::NewtypeVariant {
+                name: "Operation",
+                variant: "PauliX",
+            },
+            Token::Struct {
+                name: "PauliX",
+                len: 1,
+            },
+            Token::Str("qubit"),
+            Token::U64(0),
+            Token::StructEnd,
+            Token::Str("annotation"),
+            Token::Str("test"),
+            Token::StructEnd,
+        ],
+    );
+}
+
+/// Test PragmaAnnotatedOp Serialization and Deserialization traits (compact)
+#[cfg(feature = "serialize")]
+#[test]
+fn pragma_annotated_op_serde_compact() {
+    let pragma_serialization =
+        PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string());
+    assert_tokens(
+        &pragma_serialization.compact(),
+        &[
+            Token::Struct {
+                name: "PragmaAnnotatedOp",
+                len: 2,
+            },
+            Token::Str("operation"),
+            Token::NewtypeVariant {
+                name: "Operation",
+                variant: "PauliX",
+            },
+            Token::Struct {
+                name: "PauliX",
+                len: 1,
+            },
+            Token::Str("qubit"),
+            Token::U64(0),
+            Token::StructEnd,
+            Token::Str("annotation"),
+            Token::Str("test"),
+            Token::StructEnd,
+        ],
+    );
+}
+
+/// Test PragmaAnnotatedOp JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_annotated_op_json_schema() {
+    let op = PragmaAnnotatedOp::new(Operation::from(PauliX::new(0)), "test".to_string());
+
+    // Serialize
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaAnnotatedOp);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}

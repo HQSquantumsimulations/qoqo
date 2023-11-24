@@ -146,5 +146,6 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     // 1.8
     m.add_class::<PhaseDisplacementWrapper>()?;
     m.add_class::<EchoCrossResonanceWrapper>()?;
+    m.add_class::<PragmaAnnotatedOpWrapper>()?;
     Ok(())
 }
