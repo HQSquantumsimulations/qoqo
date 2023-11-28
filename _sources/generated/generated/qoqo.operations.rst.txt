@@ -62,6 +62,7 @@ qoqo.operations
       PhaseShiftedControlledZ
       PhotonDetection
       PragmaActiveReset
+      PragmaAnnotatedOp
       PragmaBoostNoise
       PragmaChangeDevice
       PragmaConditional

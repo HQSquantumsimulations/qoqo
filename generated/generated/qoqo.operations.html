@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="English" >
+<html class="writer-html5" lang="English" data-content_root="../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qoqo.operations &mdash; qoqo 1.8.0-alpha.1 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>qoqo.operations &mdash; qoqo 1.8.0-alpha.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=c8d5a4b6"></script>
+        <script src="../../_static/documentation_options.js?v=b2631f59"></script>
         <script src="../../_static/doctools.js?v=888ff710"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -38,7 +40,7 @@
             qoqo
           </a>
               <div class="version">
-                1.8.0-alpha.1
+                1.8.0-alpha.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -99,6 +101,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.PhaseShiftedControlledZ"><code class="docutils literal notranslate"><span class="pre">PhaseShiftedControlledZ</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.PhotonDetection"><code class="docutils literal notranslate"><span class="pre">PhotonDetection</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.PragmaActiveReset"><code class="docutils literal notranslate"><span class="pre">PragmaActiveReset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.PragmaAnnotatedOp"><code class="docutils literal notranslate"><span class="pre">PragmaAnnotatedOp</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.PragmaBoostNoise"><code class="docutils literal notranslate"><span class="pre">PragmaBoostNoise</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.PragmaChangeDevice"><code class="docutils literal notranslate"><span class="pre">PragmaChangeDevice</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.PragmaConditional"><code class="docutils literal notranslate"><span class="pre">PragmaConditional</span></code></a></li>
@@ -331,130 +334,133 @@ or on a simulation of a quantum computing program (PRAGMA measurement operations
 <tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaActiveReset" title="qoqo.operations.PragmaActiveReset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaActiveReset</span></code></a>(qubit)</p></td>
 <td><p>This PRAGMA operation resets the chosen qubit to the zero state.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaBoostNoise" title="qoqo.operations.PragmaBoostNoise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaBoostNoise</span></code></a>(noise_coefficient)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaAnnotatedOp" title="qoqo.operations.PragmaAnnotatedOp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaAnnotatedOp</span></code></a>(operation, annotation)</p></td>
+<td><p>An annotated Operation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaBoostNoise" title="qoqo.operations.PragmaBoostNoise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaBoostNoise</span></code></a>(noise_coefficient)</p></td>
 <td><p>This PRAGMA operation boosts noise and overrotations in the circuit.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaChangeDevice" title="qoqo.operations.PragmaChangeDevice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaChangeDevice</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaChangeDevice" title="qoqo.operations.PragmaChangeDevice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaChangeDevice</span></code></a>()</p></td>
 <td><p>A wrapper around backend specific PRAGMA operations capable of changing a device.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaConditional" title="qoqo.operations.PragmaConditional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaConditional</span></code></a>(condition_register, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaConditional" title="qoqo.operations.PragmaConditional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaConditional</span></code></a>(condition_register, ...)</p></td>
 <td><p>The conditional PRAGMA operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaControlledCircuit" title="qoqo.operations.PragmaControlledCircuit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaControlledCircuit</span></code></a>(controlling_qubit, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaControlledCircuit" title="qoqo.operations.PragmaControlledCircuit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaControlledCircuit</span></code></a>(controlling_qubit, ...)</p></td>
 <td><p>A circuit controlled by a qubit.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaDamping" title="qoqo.operations.PragmaDamping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaDamping</span></code></a>(qubit, gate_time, rate)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaDamping" title="qoqo.operations.PragmaDamping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaDamping</span></code></a>(qubit, gate_time, rate)</p></td>
 <td><p>The damping PRAGMA noise operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaDephasing" title="qoqo.operations.PragmaDephasing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaDephasing</span></code></a>(qubit, gate_time, rate)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaDephasing" title="qoqo.operations.PragmaDephasing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaDephasing</span></code></a>(qubit, gate_time, rate)</p></td>
 <td><p>The dephasing PRAGMA noise operation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaDepolarising" title="qoqo.operations.PragmaDepolarising"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaDepolarising</span></code></a>(qubit, gate_time, rate)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaDepolarising" title="qoqo.operations.PragmaDepolarising"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaDepolarising</span></code></a>(qubit, gate_time, rate)</p></td>
 <td><p>The depolarising PRAGMA noise operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGeneralNoise" title="qoqo.operations.PragmaGeneralNoise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGeneralNoise</span></code></a>(qubit, gate_time, rates)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGeneralNoise" title="qoqo.operations.PragmaGeneralNoise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGeneralNoise</span></code></a>(qubit, gate_time, rates)</p></td>
 <td><p>The general noise PRAGMA operation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGetDensityMatrix" title="qoqo.operations.PragmaGetDensityMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGetDensityMatrix</span></code></a>(readout, circuit)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGetDensityMatrix" title="qoqo.operations.PragmaGetDensityMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGetDensityMatrix</span></code></a>(readout, circuit)</p></td>
 <td><p>This PRAGMA measurement operation returns the density matrix of a quantum register.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGetOccupationProbability" title="qoqo.operations.PragmaGetOccupationProbability"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGetOccupationProbability</span></code></a>(readout, circuit)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGetOccupationProbability" title="qoqo.operations.PragmaGetOccupationProbability"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGetOccupationProbability</span></code></a>(readout, circuit)</p></td>
 <td><p>This PRAGMA measurement operation returns the vector of the occupation probabilities.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGetPauliProduct" title="qoqo.operations.PragmaGetPauliProduct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGetPauliProduct</span></code></a>(qubit_paulis, readout, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGetPauliProduct" title="qoqo.operations.PragmaGetPauliProduct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGetPauliProduct</span></code></a>(qubit_paulis, readout, ...)</p></td>
 <td><p>This PRAGMA measurement operation returns a Pauli product expectation value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGetStateVector" title="qoqo.operations.PragmaGetStateVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGetStateVector</span></code></a>(readout, circuit)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGetStateVector" title="qoqo.operations.PragmaGetStateVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGetStateVector</span></code></a>(readout, circuit)</p></td>
 <td><p>This PRAGMA measurement operation returns the statevector of a quantum register.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGlobalPhase" title="qoqo.operations.PragmaGlobalPhase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGlobalPhase</span></code></a>(phase)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGlobalPhase" title="qoqo.operations.PragmaGlobalPhase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGlobalPhase</span></code></a>(phase)</p></td>
 <td><p>The global phase PRAGMA operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaLoop" title="qoqo.operations.PragmaLoop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaLoop</span></code></a>(repetitions, circuit)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaLoop" title="qoqo.operations.PragmaLoop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaLoop</span></code></a>(repetitions, circuit)</p></td>
 <td><p>This PRAGMA measurement operation returns the statevector of a quantum register.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaOverrotation" title="qoqo.operations.PragmaOverrotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaOverrotation</span></code></a>(gate_hqslang, qubits, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaOverrotation" title="qoqo.operations.PragmaOverrotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaOverrotation</span></code></a>(gate_hqslang, qubits, ...)</p></td>
 <td><p>The statistical overrotation PRAGMA operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaRandomNoise" title="qoqo.operations.PragmaRandomNoise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaRandomNoise</span></code></a>(qubit, gate_time, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaRandomNoise" title="qoqo.operations.PragmaRandomNoise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaRandomNoise</span></code></a>(qubit, gate_time, ...)</p></td>
 <td><p>The random noise PRAGMA operation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaRepeatGate" title="qoqo.operations.PragmaRepeatGate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaRepeatGate</span></code></a>(repetition_coefficient)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaRepeatGate" title="qoqo.operations.PragmaRepeatGate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaRepeatGate</span></code></a>(repetition_coefficient)</p></td>
 <td><p>The repeated gate PRAGMA operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaRepeatedMeasurement" title="qoqo.operations.PragmaRepeatedMeasurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaRepeatedMeasurement</span></code></a>(readout, ...[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaRepeatedMeasurement" title="qoqo.operations.PragmaRepeatedMeasurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaRepeatedMeasurement</span></code></a>(readout, ...[, ...])</p></td>
 <td><p>This PRAGMA measurement operation returns a measurement record for N repeated measurements.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaSetDensityMatrix" title="qoqo.operations.PragmaSetDensityMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaSetDensityMatrix</span></code></a>(density_matrix)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaSetDensityMatrix" title="qoqo.operations.PragmaSetDensityMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaSetDensityMatrix</span></code></a>(density_matrix)</p></td>
 <td><p>This PRAGMA operation sets the density matrix of a quantum register.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaSetNumberOfMeasurements" title="qoqo.operations.PragmaSetNumberOfMeasurements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaSetNumberOfMeasurements</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaSetNumberOfMeasurements" title="qoqo.operations.PragmaSetNumberOfMeasurements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaSetNumberOfMeasurements</span></code></a>(...)</p></td>
 <td><p>Wrap function automatically generates functions in these traits.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaSetStateVector" title="qoqo.operations.PragmaSetStateVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaSetStateVector</span></code></a>(statevector)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaSetStateVector" title="qoqo.operations.PragmaSetStateVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaSetStateVector</span></code></a>(statevector)</p></td>
 <td><p>This PRAGMA operation sets the statevector of a quantum register.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaSleep" title="qoqo.operations.PragmaSleep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaSleep</span></code></a>(qubits, sleep_time)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaSleep" title="qoqo.operations.PragmaSleep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaSleep</span></code></a>(qubits, sleep_time)</p></td>
 <td><p>This PRAGMA operation makes the quantum hardware wait a given amount of time.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaStartDecompositionBlock" title="qoqo.operations.PragmaStartDecompositionBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaStartDecompositionBlock</span></code></a>(qubits, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaStartDecompositionBlock" title="qoqo.operations.PragmaStartDecompositionBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaStartDecompositionBlock</span></code></a>(qubits, ...)</p></td>
 <td><p>This PRAGMA operation signals the START of a decomposition block.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaStopDecompositionBlock" title="qoqo.operations.PragmaStopDecompositionBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaStopDecompositionBlock</span></code></a>(qubits)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaStopDecompositionBlock" title="qoqo.operations.PragmaStopDecompositionBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaStopDecompositionBlock</span></code></a>(qubits)</p></td>
 <td><p>This PRAGMA operation signals the STOP of a decomposition block.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaStopParallelBlock" title="qoqo.operations.PragmaStopParallelBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaStopParallelBlock</span></code></a>(qubits, execution_time)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaStopParallelBlock" title="qoqo.operations.PragmaStopParallelBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaStopParallelBlock</span></code></a>(qubits, execution_time)</p></td>
 <td><p>This PRAGMA operation signals the STOP of a parallel execution block.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.Qsim" title="qoqo.operations.Qsim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Qsim</span></code></a>(control, target, x, y, z)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.Qsim" title="qoqo.operations.Qsim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Qsim</span></code></a>(control, target, x, y, z)</p></td>
 <td><p>The qubit simulation (Qsim) gate.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.RotateAroundSphericalAxis" title="qoqo.operations.RotateAroundSphericalAxis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateAroundSphericalAxis</span></code></a>(qubit, theta, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.RotateAroundSphericalAxis" title="qoqo.operations.RotateAroundSphericalAxis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateAroundSphericalAxis</span></code></a>(qubit, theta, ...)</p></td>
 <td><p>Implements a rotation around an axis in the x-y plane in spherical coordinates.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.RotateX" title="qoqo.operations.RotateX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateX</span></code></a>(qubit, theta)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.RotateX" title="qoqo.operations.RotateX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateX</span></code></a>(qubit, theta)</p></td>
 <td><p>The XPower gate <span class="math notranslate nohighlight">\(e^{-i \frac{\theta}{2} \sigma^x}\)</span>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.RotateXY" title="qoqo.operations.RotateXY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateXY</span></code></a>(qubit, theta, phi)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.RotateXY" title="qoqo.operations.RotateXY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateXY</span></code></a>(qubit, theta, phi)</p></td>
 <td><p>Implements a rotation around an axis in the x-y plane in spherical coordinates.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.RotateY" title="qoqo.operations.RotateY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateY</span></code></a>(qubit, theta)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.RotateY" title="qoqo.operations.RotateY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateY</span></code></a>(qubit, theta)</p></td>
 <td><p>The YPower gate <span class="math notranslate nohighlight">\(e^{-i \frac{\theta}{2} \sigma^y}\)</span>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.RotateZ" title="qoqo.operations.RotateZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateZ</span></code></a>(qubit, theta)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.RotateZ" title="qoqo.operations.RotateZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateZ</span></code></a>(qubit, theta)</p></td>
 <td><p>The ZPower gate <span class="math notranslate nohighlight">\(e^{-i \frac{\theta}{2} \sigma^z}\)</span>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.SGate" title="qoqo.operations.SGate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SGate</span></code></a>(qubit)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.SGate" title="qoqo.operations.SGate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SGate</span></code></a>(qubit)</p></td>
 <td><p>The S gate.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.SWAP" title="qoqo.operations.SWAP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SWAP</span></code></a>(control, target)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.SWAP" title="qoqo.operations.SWAP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SWAP</span></code></a>(control, target)</p></td>
 <td><p>The controlled SWAP quantum operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.SingleQubitGate" title="qoqo.operations.SingleQubitGate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleQubitGate</span></code></a>(qubit, alpha_r, alpha_i, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.SingleQubitGate" title="qoqo.operations.SingleQubitGate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleQubitGate</span></code></a>(qubit, alpha_r, alpha_i, ...)</p></td>
 <td><p>The general single qubit unitary gate.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.SpinInteraction" title="qoqo.operations.SpinInteraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpinInteraction</span></code></a>(control, target, x, y, z)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.SpinInteraction" title="qoqo.operations.SpinInteraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpinInteraction</span></code></a>(control, target, x, y, z)</p></td>
 <td><p>The generalized, anisotropic XYZ Heisenberg interaction between spins.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.SqrtISwap" title="qoqo.operations.SqrtISwap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SqrtISwap</span></code></a>(control, target)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.SqrtISwap" title="qoqo.operations.SqrtISwap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SqrtISwap</span></code></a>(control, target)</p></td>
 <td><p>The controlled square root ISwap quantum operation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.SqrtPauliX" title="qoqo.operations.SqrtPauliX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SqrtPauliX</span></code></a>(qubit)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.SqrtPauliX" title="qoqo.operations.SqrtPauliX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SqrtPauliX</span></code></a>(qubit)</p></td>
 <td><p>The square root of the XPower gate <span class="math notranslate nohighlight">\(e^{-i \frac{\pi}{4} \sigma^x}\)</span>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.Squeezing" title="qoqo.operations.Squeezing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Squeezing</span></code></a>(mode, squeezing, phase)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.Squeezing" title="qoqo.operations.Squeezing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Squeezing</span></code></a>(mode, squeezing, phase)</p></td>
 <td><p>The single-mode squeezing gate with tunable squeezing.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.TGate" title="qoqo.operations.TGate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TGate</span></code></a>(qubit)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.TGate" title="qoqo.operations.TGate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TGate</span></code></a>(qubit)</p></td>
 <td><p>The T gate.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.Toffoli" title="qoqo.operations.Toffoli"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Toffoli</span></code></a>(control_0, control_1, target)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.Toffoli" title="qoqo.operations.Toffoli"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Toffoli</span></code></a>(control_0, control_1, target)</p></td>
 <td><p>Implements Toffoli gate.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.VariableMSXX" title="qoqo.operations.VariableMSXX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VariableMSXX</span></code></a>(control, target, theta)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.VariableMSXX" title="qoqo.operations.VariableMSXX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VariableMSXX</span></code></a>(control, target, theta)</p></td>
 <td><p>The variable-angle MolmerSorensen XX gate.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.XY" title="qoqo.operations.XY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">XY</span></code></a>(control, target, theta)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.XY" title="qoqo.operations.XY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">XY</span></code></a>(control, target, theta)</p></td>
 <td><p>The controlled XY quantum operation</p></td>
 </tr>
 </tbody>
@@ -10243,6 +10249,193 @@ provided parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The tags identifying the operation</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaAnnotatedOp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.operations.</span></span><span class="sig-name descname"><span class="pre">PragmaAnnotatedOp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaAnnotatedOp" title="Link to this definition"></a></dt>
+<dd><p>An annotated Operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>operation</strong> (<em>Operation</em>) -- <ul>
+<li><p>The Operation to be annotated.</p></li>
+</ul>
+</p></li>
+<li><p><strong>annotation</strong> (<em>String</em>) -- <ul>
+<li><p>The annotation.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaAnnotatedOp.annotation">
+<span class="sig-name descname"><span class="pre">annotation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaAnnotatedOp.annotation" title="Link to this definition"></a></dt>
+<dd><p>Return the annotation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The annotation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaAnnotatedOp.current_version">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaAnnotatedOp.current_version" title="Link to this definition"></a></dt>
+<dd><p>Returns the current version of the qoqo library .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current version of the library.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaAnnotatedOp.hqslang">
+<span class="sig-name descname"><span class="pre">hqslang</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaAnnotatedOp.hqslang" title="Link to this definition"></a></dt>
+<dd><p>Return hqslang name of the operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The hqslang name of the operation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaAnnotatedOp.involved_qubits">
+<span class="sig-name descname"><span class="pre">involved_qubits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaAnnotatedOp.involved_qubits" title="Link to this definition"></a></dt>
+<dd><p>List all involved qubits.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The involved qubits of the PRAGMA operation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>set[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaAnnotatedOp.is_parametrized">
+<span class="sig-name descname"><span class="pre">is_parametrized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaAnnotatedOp.is_parametrized" title="Link to this definition"></a></dt>
+<dd><p>Return true when the operation has symbolic parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the operation contains symbolic parameters, False if it does not.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>is_parametrized (bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaAnnotatedOp.json_schema">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">json_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaAnnotatedOp.json_schema" title="Link to this definition"></a></dt>
+<dd><p>Return the JsonSchema for the json serialisation of the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The json schema serialized to json</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaAnnotatedOp.min_supported_version">
+<span class="sig-name descname"><span class="pre">min_supported_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaAnnotatedOp.min_supported_version" title="Link to this definition"></a></dt>
+<dd><p>Return the minimum version of qoqo that supports this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The minimum version of the qoqo library to deserialize this object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaAnnotatedOp.operation">
+<span class="sig-name descname"><span class="pre">operation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaAnnotatedOp.operation" title="Link to this definition"></a></dt>
+<dd><p>Return the internal Operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The annotated Operation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Operation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaAnnotatedOp.remap_qubits">
+<span class="sig-name descname"><span class="pre">remap_qubits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapping</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaAnnotatedOp.remap_qubits" title="Link to this definition"></a></dt>
+<dd><p>Remap qubits in a clone of the PRAGMA operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mapping</strong> (<em>dict</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) -- The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The PRAGMA operation with the qubits remapped.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>self</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> -- The qubit remapping failed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaAnnotatedOp.substitute_parameters">
+<span class="sig-name descname"><span class="pre">substitute_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substitution_parameters</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaAnnotatedOp.substitute_parameters" title="Link to this definition"></a></dt>
+<dd><p>Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>substitution_parameters</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) -- The dictionary containing the substitutions to use in the PRAGMA operation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The PRAGMA operation with the parameters substituted.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>self</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> -- The parameter substitution failed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.PragmaAnnotatedOp.tags">
+<span class="sig-name descname"><span class="pre">tags</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaAnnotatedOp.tags" title="Link to this definition"></a></dt>
+<dd><p>Return tags classifying the type of the operation.</p>
+<p>Used for the type based dispatch in ffi interfaces.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The tags of the Operation.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>list[str]</p>
