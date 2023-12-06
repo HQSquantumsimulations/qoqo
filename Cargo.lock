@@ -1073,7 +1073,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "1.8.0-alpha.2"
+version = "1.8.0-alpha.3"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -1100,7 +1100,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "1.8.0-alpha.2"
+version = "1.8.0-alpha.3"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1263,7 +1263,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.8.0-alpha.2"
+version = "1.8.0-alpha.3"
 dependencies = [
  "async-trait",
  "bincode",
@@ -1293,7 +1293,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "1.8.0-alpha.2"
+version = "1.8.0-alpha.3"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1302,7 +1302,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "1.8.0-alpha.2"
+version = "1.8.0-alpha.3"
 dependencies = [
  "nalgebra",
  "ndarray",

@@ -1,6 +1,6 @@
 [package]
 name = "roqoqo"
-version = "1.8.0-alpha.2"
+version = "1.8.0-alpha.3"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
@@ -28,7 +28,7 @@ num-complex = { version = "0.4"}
 thiserror = "1.0"
 dyn-clone = {version="1.0", optional=true}
 qoqo_calculator = { version="1.1"}
-roqoqo-derive = {version="1.8.0-alpha.2", path="../roqoqo-derive"}
+roqoqo-derive = {version="1.8.0-alpha.3", path="../roqoqo-derive"}
 typetag = {version="0.2", optional=true}
 nalgebra = "0.32"
 schemars = { version="0.8", optional=true }
