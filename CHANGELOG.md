@@ -2,6 +2,12 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.8.0-alpha.3
+
+### Added in 1.8.0-alpha.3
+
+* Updated to pyo3 0.20.
+
 ## 1.8.0-alpha.2
 
 ### Added in 1.8.0-alpha.2
@@ -56,15 +62,6 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 * Added support for JsonSchema.
 * Added first bosonic operations traits in `roqoqo` and `qoqo`.
-## 1.5.1
-
-### Fixed in 1.5.1
-
-* Fixed wrong minimum required roqoqo version when serializing circuits with some operations from versions 1.3, 1.4. and 1.5.
-
-### Updated in 1.5.1
-
-* pyo3 updated to 0.19
 
 ## 1.5.1
 
