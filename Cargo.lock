@@ -1073,7 +1073,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "1.8.0-alpha.3"
+version = "1.8.0"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -1100,7 +1100,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "1.8.0-alpha.3"
+version = "1.8.0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1263,7 +1263,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.8.0-alpha.3"
+version = "1.8.0"
 dependencies = [
  "async-trait",
  "bincode",
@@ -1293,7 +1293,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "1.8.0-alpha.3"
+version = "1.8.0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1302,7 +1302,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "1.8.0-alpha.3"
+version = "1.8.0"
 dependencies = [
  "nalgebra",
  "ndarray",
@@ -1780,9 +1780,9 @@ dependencies = [
 
 [[package]]
 name = "unicode-bidi"
-version = "0.3.13"
+version = "0.3.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "92888ba5573ff080736b3648696b70cafad7d250551175acbaa4e0385b3e1460"
+checksum = "6f2528f27a9eb2b21e69c95319b30bd0efd85d09c379741b0f78ea1d86be2416"
 
 [[package]]
 name = "unicode-ident"

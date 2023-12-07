@@ -2,28 +2,13 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
-## 1.8.0-alpha.3
+## 1.8.0
 
-### Added in 1.8.0-alpha.3
+### Added in 1.8.0
 
 * Updated to pyo3 0.20.
-
-## 1.8.0-alpha.2
-
-### Added in 1.8.0-alpha.2
-
 * Added `PragmaAnnotatedOp` operation.
-
-## 1.8.0-alpha.1
-
-### Added in 1.8.0-alpha.1
-
 * Added EchoCrossResonance gate.
-
-## 1.8.0-alpha.0
-
-### Added in 1.8.0-alpha.0
-
 * Added PhaseDisplacement gate.
 
 ## 1.7.1

@@ -23344,7 +23344,7 @@ LICENSE-APACHE:
 
 
 ====================================================
-qoqo 1.8.0-alpha.3
+qoqo 1.8.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoqo
@@ -23556,7 +23556,7 @@ LICENSE:
 
 
 ====================================================
-qoqo-macros 1.8.0-alpha.3
+qoqo-macros 1.8.0
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -26562,7 +26562,7 @@ limitations under the License.
 
 
 ====================================================
-roqoqo 1.8.0-alpha.3
+roqoqo 1.8.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
@@ -26774,7 +26774,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-derive 1.8.0-alpha.3
+roqoqo-derive 1.8.0
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the roqoqo crate
 License: Apache-2.0
@@ -26985,7 +26985,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-test 1.8.0-alpha.3
+roqoqo-test 1.8.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
@@ -33944,7 +33944,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 ====================================================
-unicode-bidi 0.3.13
+unicode-bidi 0.3.14
 https://github.com/servo/unicode-bidi
 by The Servo Project Developers
 Implementation of the Unicode Bidirectional Algorithm
