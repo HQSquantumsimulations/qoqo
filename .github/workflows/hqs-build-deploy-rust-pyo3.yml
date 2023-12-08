@@ -20,8 +20,8 @@ jobs:
     - name: setup cargo
       run: |
         cargo login ${{ secrets.CRATES_IO_API_TOKEN }}
-        # cargo publish --manifest-path=roqoqo-derive/Cargo.toml
-        # sleep 45
+        cargo publish --manifest-path=roqoqo-derive/Cargo.toml
+        sleep 45
         cargo publish --manifest-path=roqoqo/Cargo.toml
         sleep 45
         cargo publish --manifest-path=qoqo-macros/Cargo.toml
