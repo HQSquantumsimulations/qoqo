@@ -1,6 +1,6 @@
 [package]
 name = "qoqo"
-version = "1.8.0-alpha.2"
+version = "1.8.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 homepage = "https://github.com/HQSquantumsimulations/qoqo"
@@ -22,7 +22,7 @@ doctest = false
 crate-type = ["cdylib", "rlib"]
 
 [dependencies.pyo3]
-version = "0.19"
+version = "0.20"
 features = ["num-complex"]
 
 [dependencies]
@@ -32,11 +32,11 @@ num-complex = "0.4"
 thiserror = "1.0"
 qoqo_calculator = { version="1.1" }
 qoqo_calculator_pyo3 = {version="1.1", default-features=false}
-qoqo-macros = {version="1.8.0-alpha.2", path="../qoqo-macros"}
-roqoqo = {version="1.8.0-alpha.2", path="../roqoqo", features=["serialize", "overrotate"]}
+qoqo-macros = {version="1.8", path="../qoqo-macros"}
+roqoqo = {version="1.8", path="../roqoqo", features=["serialize", "overrotate"]}
 struqture = {version="1.5"}
 struqture-py = {version = "1.5", default-features = false}
-numpy = "0.19"
+numpy = "0.20"
 bincode = "1.3"
 serde_json = "1.0"
 schemars = "0.8"
@@ -49,7 +49,7 @@ nalgebra = "0.32"
 quote = "1.0"
 syn = { version = "2.0", features = ["full", "visit"] }
 proc-macro2 = "1.0"
-pyo3-build-config = "0.19"
+pyo3-build-config = "0.20"
 
 [package.metadata.docs.rs]
 no-default-features = true
