@@ -11,10 +11,6 @@
 // limitations under the License.
 
 use std::collections::HashMap;
-use std::collections::HashSet;
-use std::hash::Hash;
-use std::hash::Hasher;
-
 use crate::operations::{
     InvolveQubits, InvolvedQubits, Operate, OperateSpinsAnalog, Substitute, SubstituteModes,
     SupportedVersion,
