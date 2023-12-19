@@ -65,6 +65,10 @@ pub use bosonic_operations::*;
 mod spin_boson_operations;
 #[cfg(feature = "unstable_spin_boson_operations")]
 pub use spin_boson_operations::*;
+/// Collection of roqoqo analog gate operations
+#[doc(hidden)]
+mod analog_operations;
+pub use analog_operations::*;
 
 include!(concat!(env!("OUT_DIR"), "/_auto_generated_operations.rs"));
 
@@ -1059,4 +1063,11 @@ pub trait OperateTwoModeGate:
     + PartialEq
     + SupportedVersion
 {
+}
+/// Trait for all continuous time spin operations
+///
+///
+pub trait OperateSpinsAnalog: Operate + Clone + PartialEq + SupportedVersion {
+    /// Returns spin incomplete docstring
+    fn spin(&self) -> &usize;
 }

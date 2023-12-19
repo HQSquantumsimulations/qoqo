@@ -166,15 +166,27 @@ fn operate_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 }
             }
         });
+
+    let struqture_fields = fields_with_type
+        .clone()
+        .filter(|(_, type_string, _)| type_string == &Some("SpinHamiltonian".to_string()))
+        .map(|(id, _, _)| {
+            quote! {
+                self.#id.values().any(|x| !x.is_float())
+            }
+        });
+
     let is_parametrized_fields = if calculator_float_fields.clone().last().is_none()
         && circuit_fields.clone().last().is_none()
         && circuit_fields2.clone().last().is_none()
+        && struqture_fields.clone().last().is_none()
     {
         vec![quote!(false)]
     } else {
         calculator_float_fields
             .chain(circuit_fields)
             .chain(circuit_fields2)
+            .chain(struqture_fields)
             .collect()
     };
     let getter_fields = fields_with_type
