@@ -1104,6 +1104,7 @@ version = "1.10.0"
 dependencies = [
  "proc-macro2",
  "quote",
+ "struqture",
  "syn 2.0.48",
 ]
 

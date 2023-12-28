@@ -10,15 +10,17 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use crate::operations::{
     InvolveQubits, InvolvedQubits, Operate, OperateSpinsAnalog, Substitute, SubstituteModes,
     SupportedVersion,
 };
 use crate::RoqoqoError;
 use qoqo_calculator::CalculatorFloat;
-use struqture::spins::SpinHamiltonian;
+use struqture::spins::{SpinHamiltonian, PauliProduct};
+use struqture::SpinIndex;
 use struqture::OperateOnDensityMatrix;
+use struqture::GetValue;
 
 /// Implements the continuous time spin Hamiltonian
 ///
@@ -31,9 +33,12 @@ use struqture::OperateOnDensityMatrix;
     roqoqo_derive::Substitute,
     roqoqo_derive::SubstituteModes,
 )]
+
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct ApplyConstantSpinHamiltonian {
-    hamiltonian: SpinHamiltonian,
-    time: CalculatorFloat,
+    pub hamiltonian: SpinHamiltonian,
+    pub time: CalculatorFloat,
 }
 
 #[allow(non_upper_case_globals)]
@@ -45,8 +50,18 @@ const TAGS_ApplyConstantSpinHamiltonian: &[&str; 4] = &[
 ];
 
 impl OperateSpinsAnalog for ApplyConstantSpinHamiltonian {
-    fn spin(&self) -> &usize {
-        &1 // Not sure what goes in here yet
+    fn spin(&self) -> Vec<usize> {
+        let mut qubit_set = HashSet::new();
+        println!("{:?}",self.hamiltonian.keys());
+        for pps in self.hamiltonian.keys(){
+            for (index, _) in PauliProduct::iter(pps){
+                qubit_set.insert(*index);
+            }
+        }
+        let mut qubits = Vec::from_iter(qubit_set);
+        qubits.sort();
+        qubits
+
     }
 }
 impl SupportedVersion for ApplyConstantSpinHamiltonian {
@@ -69,6 +84,8 @@ impl InvolveQubits for ApplyConstantSpinHamiltonian {
     roqoqo_derive::Substitute,
     roqoqo_derive::SubstituteModes,
 )]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct ApplyTimeDependentSpinHamiltonian {
     hamiltonian: SpinHamiltonian,
     time: Vec<f64>,
@@ -84,8 +101,18 @@ const TAGS_ApplyTimeDependentSpinHamiltonian: &[&str; 4] = &[
 ];
 
 impl OperateSpinsAnalog for ApplyTimeDependentSpinHamiltonian {
-    fn spin(&self) -> &usize {
-        &1 // Not sure what goes in here yet
+    fn spin(&self) -> Vec<usize> {
+        let mut qubit_set = HashSet::new();
+        println!("{:?}",self.hamiltonian.keys());
+        for pps in self.hamiltonian.keys(){
+            for (index, _) in PauliProduct::iter(pps){
+                qubit_set.insert(*index);
+            }
+        }
+        let mut qubits = Vec::from_iter(qubit_set);
+        qubits.sort();
+        qubits
+
     }
 }
 
