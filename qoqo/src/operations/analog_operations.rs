@@ -18,6 +18,7 @@ use qoqo_calculator_pyo3::{convert_into_calculator_float, CalculatorFloatWrapper
 use qoqo_macros::*;
 use roqoqo::operations::*;
 #[cfg(feature = "json_schema")]
+#[warn(unused_imports)]
 use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 use struqture::spins::SpinHamiltonian;

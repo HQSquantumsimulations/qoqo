@@ -18,7 +18,6 @@ use crate::RoqoqoError;
 use qoqo_calculator::CalculatorFloat;
 use std::collections::{HashMap, HashSet};
 use struqture::spins::{PauliProduct, SpinHamiltonian};
-use struqture::GetValue;
 use struqture::OperateOnDensityMatrix;
 use struqture::SpinIndex;
 

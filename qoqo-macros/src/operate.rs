@@ -16,7 +16,7 @@ use quote::{format_ident, quote};
 use std::collections::HashSet;
 use syn::{Data, DataStruct, DeriveInput, Ident};
 // use struqture_py::spins::SpinHamiltonianSystemWrapper;
-use struqture;
+
 /// Dispatch to derive Operate for enums and structs
 
 pub fn dispatch_struct(input: DeriveInput) -> TokenStream {
