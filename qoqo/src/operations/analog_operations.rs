@@ -23,32 +23,26 @@ use std::collections::HashMap;
 use struqture::spins::SpinHamiltonian;
 use struqture_py::spins::SpinHamiltonianSystemWrapper;
 
-#[wrap(
-    Operate,
-    OperateModeGate,
-)]
+#[wrap(Operate, OperateModeGate)]
 ///  Constant Hamiltonian operation on analog quantum device (PASCAL)
 ///
 ///
 /// Args:
 ///     hamiltonian (SpinHamiltonian): The hamiltonian that is to be simulated.
 ///     time (CalculatorFloat): The duration for which the state evolution takes place.
-pub struct ApplyConstantSpinHamiltonian{
+pub struct ApplyConstantSpinHamiltonian {
     hamiltonian: SpinHamiltonian,
     time: CalculatorFloat,
 }
 
-#[wrap(
-    Operate,
-    OperateModeGate,
-)]
+#[wrap(Operate, OperateModeGate)]
 ///  Constant Hamiltonian operation on analog quantum device (PASCAL)
 ///
 ///
 /// Args:
 ///     hamiltonian (SpinHamiltonian): The hamiltonian that is to be simulated.
 ///     time (CalculatorFloat): The duration for which the state evolution takes place.
-pub struct ApplyTimeDependentSpinHamiltonian{
+pub struct ApplyTimeDependentSpinHamiltonian {
     hamiltonian: SpinHamiltonian,
     time: Vec<f64>,
     values: HashMap<String, Vec<f64>>,

@@ -160,7 +160,6 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 }
                 "SpinHamiltonian" => {
                     let msg = format!("Get value of struct field {}", id);
-                    
                     quote! {
                         #[doc = #msg]
                         pub fn #id(&self) -> SpinHamiltonianSystemWrapper{
