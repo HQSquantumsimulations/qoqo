@@ -50,7 +50,6 @@ const TAGS_ApplyConstantSpinHamiltonian: &[&str; 4] = &[
 impl OperateSpinsAnalog for ApplyConstantSpinHamiltonian {
     fn spin(&self) -> Vec<usize> {
         let mut qubit_set = HashSet::new();
-        println!("{:?}", self.hamiltonian.keys());
         for pps in self.hamiltonian.keys() {
             for (index, _) in PauliProduct::iter(pps) {
                 qubit_set.insert(*index);
@@ -100,7 +99,6 @@ const TAGS_ApplyTimeDependentSpinHamiltonian: &[&str; 4] = &[
 impl OperateSpinsAnalog for ApplyTimeDependentSpinHamiltonian {
     fn spin(&self) -> Vec<usize> {
         let mut qubit_set = HashSet::new();
-        println!("{:?}", self.hamiltonian.keys());
         for pps in self.hamiltonian.keys() {
             for (index, _) in PauliProduct::iter(pps) {
                 qubit_set.insert(*index);
