@@ -2,6 +2,12 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.9.0
+
+### Added in 1.9.0
+
+* Unstable feature `unstable_chain_with_environment` implementing a Trait for returning chains in a device with an environment of qubits, where an environment are qubits that are not part of the chain but connected to at least one qubit in the chain.
+
 ## 1.8.0
 
 ### Added in 1.8.0

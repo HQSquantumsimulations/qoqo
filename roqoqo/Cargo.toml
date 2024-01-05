@@ -1,6 +1,6 @@
 [package]
 name = "roqoqo"
-version = "1.8.0"
+version = "1.9.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
@@ -64,3 +64,4 @@ overrotate = [ "rand_distr", "roqoqo-derive/overrotate"]
 async = ["async-trait", "futures"]
 json_schema=["schemars", "serialize", "qoqo_calculator/json_schema", "jsonschema"]
 circuitdag = ["petgraph"]
+unstable_chain_with_environment = []

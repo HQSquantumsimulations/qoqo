@@ -1,6 +1,6 @@
 [package]
 name = "qoqo"
-version = "1.8.0"
+version = "1.9.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 homepage = "https://github.com/HQSquantumsimulations/qoqo"
@@ -59,3 +59,4 @@ extension-module = ["pyo3/extension-module", "circuitdag"]
 default = ["extension-module", "json_schema"]
 circuitdag = ["roqoqo/circuitdag"]
 json_schema = ["roqoqo/json_schema"]
+unstable_chain_with_environment = ["roqoqo/unstable_chain_with_environment"]

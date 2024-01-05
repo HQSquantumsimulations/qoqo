@@ -18,14 +18,77 @@
 //! contain the necessary information for accessing the quantum computing hardware.
 //! The devices also encode a connectivity model.
 
+#[cfg(feature = "unstable_chain_with_environment")]
+use std::collections::HashMap;
+
 use pyo3::prelude::*;
 
 mod square_lattice;
+#[cfg(feature = "unstable_chain_with_environment")]
+use roqoqo::{devices::ChainWithEnvironmentDevice, RoqoqoError};
 pub use square_lattice::SquareLatticeDeviceWrapper;
 mod generic_device;
 pub use generic_device::GenericDeviceWrapper;
 mod all_to_all;
 pub use all_to_all::AllToAllDeviceWrapper;
+
+#[cfg(feature = "unstable_chain_with_environment")]
+/// A wrapper around a python object that implements the ChainWithEnvironment trait.
+///
+/// Can be used to avoid deserializain the python object.
+#[derive(Clone, Debug)]
+pub struct ChainWithEnvironmentCapsule {
+    internal: Py<PyAny>,
+}
+#[cfg(feature = "unstable_chain_with_environment")]
+
+impl ChainWithEnvironmentCapsule {
+    /// Creates a new ChainWithEnvironmentCapsule for a Python object.
+    ///
+    /// # Arguments
+    ///
+    /// * `python_device` - The python object that should implement the
+    pub fn new(python_device: Py<PyAny>) -> Result<Self, RoqoqoError> {
+        let implements_protocol = Python::with_gil(|py| -> bool {
+            let __implements_environment_with_chains =
+                python_device.call_method0(py, "__implements_environment_chains");
+            if __implements_environment_with_chains.is_err() {
+                return false;
+            }
+            let __implements_environment_with_chains = __implements_environment_with_chains
+                .unwrap()
+                .extract::<bool>(py);
+            if __implements_environment_with_chains.is_err() {
+                return false;
+            }
+            __implements_environment_with_chains.unwrap()
+        });
+        if !implements_protocol {
+            return Err(RoqoqoError::GenericError {
+                msg: "Python device does not implement `environment_chains` method.".to_string(),
+            });
+        }
+        Ok(Self {
+            internal: python_device,
+        })
+    }
+}
+#[cfg(feature = "unstable_chain_with_environment")]
+
+impl ChainWithEnvironmentDevice for ChainWithEnvironmentCapsule {
+    fn environment_chains(&self) -> Vec<roqoqo::devices::ChainAndEnvironment> {
+        Python::with_gil(|py| -> Vec<roqoqo::devices::ChainAndEnvironment> {
+            let chains_with_environment = self
+                .internal
+                .call_method0(py, "environment_chains")
+                .expect("Internal error `environment_chains` on python device failed.");
+            let chains_with_environment = chains_with_environment
+                  .extract::<Vec<(Vec<usize>, HashMap<usize, Vec<usize>>)>>(py)
+                  .expect("Internal error `environment_chains` on python device does not return valid desctiption.");
+            chains_with_environment
+        })
+    }
+}
 
 /// Devices in qoqo have two use cases:
 ///
