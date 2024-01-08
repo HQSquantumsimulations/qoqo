@@ -884,8 +884,9 @@ mod test_chain_with_environment {
                 .extract::<bool>(py)
                 .unwrap();
             assert_eq!(__implements_environment_with_chains, true);
-            let chains_with_environment =
-                test_device.call_method0(py, "environment_chains").unwrap();
+            let chains_with_environment = test_device
+                .call_method0(py, "__environment_chains")
+                .unwrap();
             let chains_with_environment = chains_with_environment
                 .extract::<Vec<(Vec<usize>, HashMap<usize, Vec<usize>>)>>(py)
                 .unwrap();

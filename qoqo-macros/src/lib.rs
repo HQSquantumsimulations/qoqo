@@ -776,7 +776,7 @@ pub fn devicewrapper(
         ///     List[List[int], Dict[int, List[int]]]: A list of the chains and environments.
         ///
         #[cfg(feature="unstable_chain_with_environment")]
-            pub fn environment_chains(&self) -> Vec<(Vec<usize>, HashMap<usize, Vec<usize>>)>
+            pub fn __environment_chains(&self) -> Vec<(Vec<usize>, HashMap<usize, Vec<usize>>)>
             {
                 self.internal.environment_chains()
             }
