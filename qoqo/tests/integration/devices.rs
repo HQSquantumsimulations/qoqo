@@ -832,7 +832,7 @@ mod test_chain_with_environment {
             ));
             new_chains.push((
                 vec![0, 1, 2, 5, 4, 3],
-                HashMap::from([(4, vec![7]), (6, vec![7])]),
+                HashMap::from([(4, vec![7]), (3, vec![7])]),
             ));
             new_chains
         }
