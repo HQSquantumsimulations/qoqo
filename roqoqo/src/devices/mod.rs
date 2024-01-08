@@ -521,7 +521,7 @@ pub trait ChainWithEnvironmentDevice {
     /// ```
     /// One of the longest chains with ratio 2 to 6 is
     /// ```
-    /// ([0,1,2,5,4,3], {4: [7], 3: [5]})
+    /// ([0,1,2,5,4,3], {4: [7], 3: [6]})
     /// ```
     /// And one of the possible chains with just one environment qubit is:
     /// ```

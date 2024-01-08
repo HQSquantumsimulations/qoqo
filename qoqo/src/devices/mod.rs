@@ -40,8 +40,8 @@ pub use all_to_all::AllToAllDeviceWrapper;
 pub struct ChainWithEnvironmentCapsule {
     internal: Py<PyAny>,
 }
-#[cfg(feature = "unstable_chain_with_environment")]
 
+#[cfg(feature = "unstable_chain_with_environment")]
 impl ChainWithEnvironmentCapsule {
     /// Creates a new ChainWithEnvironmentCapsule for a Python object.
     ///
@@ -73,8 +73,8 @@ impl ChainWithEnvironmentCapsule {
         })
     }
 }
-#[cfg(feature = "unstable_chain_with_environment")]
 
+#[cfg(feature = "unstable_chain_with_environment")]
 impl ChainWithEnvironmentDevice for ChainWithEnvironmentCapsule {
     fn environment_chains(&self) -> Vec<roqoqo::devices::ChainAndEnvironment> {
         Python::with_gil(|py| -> Vec<roqoqo::devices::ChainAndEnvironment> {
