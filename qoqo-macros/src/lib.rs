@@ -721,13 +721,82 @@ pub fn devicewrapper(
     _metadata: proc_macro::TokenStream,
     input: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
+    let attribute_arguments = parse_macro_input!(_metadata as AttributeMacroArguments);
     let parsed_input = parse_macro_input!(input as ItemImpl);
     let ident = parsed_input.self_ty;
     let items = parsed_input.items;
+    let chain_with_environment_quote = if attribute_arguments.contains("ChainWithEnvironment") {
+        quote! {
+
+            /// Return a list of linear chains with an environment through the device.
+            ///
+            /// Returns at least one chain of qubits with linear connectivity and an environment in the device.
+            /// An environment is defined as at least one qubit that is connected to at least one qubit of the chain
+            /// but not part of the chain.
+            /// For each ratio of environment qubits to chain qubits, the list contains at least one of the longest chains
+            /// in the devive with that ratio. (Unless that chain and environment is simply a subset
+            /// of a chain with equal or longer length and equal or higher ratio).
+            ///
+            /// For example, take a device with the connectivity graph:
+            /// ```
+            /// 0 - 3 - 6
+            /// |   |   |
+            /// 1 - 4 - 7
+            /// |   |
+            /// 2 - 5
+            /// ```
+            /// It would have one chain of length 1 and environment with ratio 4 to 1:
+            ///
+            /// ```
+            /// ([4], {4: [1,4,7,5]})
+            /// ```
+            ///
+            /// One with lenght 2 and ratio 5 to 2:
+            /// ```
+            /// ([3,4], {3:[0,6], 4: [1,7,5]})
+            /// ```
+            ///
+            /// The chain and environment with lenght 2 and ratio 2 to 1 is a subset of the one above
+            /// and does not need to be listed separately.
+            ///
+            /// The longest chain with ratio 1 to 1 is:
+            /// ```
+            /// ([0,1,4,3], {1:[2], 4: [5,7], 3: [6]})
+            /// ```
+            /// One of the longest chains with ratio 2 to 6 is
+            /// ```
+            /// ([0,1,2,5,4,3], {4: [7], 3: [6]})
+            /// ```
+            /// And one of the possible chains with just one environment qubit is:
+            /// ```
+            /// ([0,1,2,5,4,3,6], {6: [7], 4: [7]})
+            /// ```
+            ///
+            /// Returns:
+            ///     List[List[int], Dict[int, List[int]]]: A list of the chains and environments.
+            ///
+            #[cfg(feature="unstable_chain_with_environment")]
+            pub fn __environment_chains(&self) -> Vec<(Vec<usize>, HashMap<usize, Vec<usize>>)>
+            {
+                self.internal.environment_chains()
+            }
+
+            #[cfg(feature="unstable_chain_with_environment")]
+            /// Helper function signifying support for chain_with_environment.
+            pub fn __implements_environment_chains(&self) -> bool
+            {
+                true
+            }
+        }
+    } else {
+        TokenStream::new()
+    };
     let q = quote! {
         #[pymethods]
         impl #ident {
             #(#items)*
+
+            #chain_with_environment_quote
 
             /// Return number of qubits in device.
             ///

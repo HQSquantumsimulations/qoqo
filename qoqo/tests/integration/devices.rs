@@ -681,3 +681,232 @@ fn test_edges(device: Py<PyAny>, test_edges: Vec<(usize, usize)>) {
         }
     })
 }
+
+#[cfg(feature = "unstable_chain_with_environment")]
+mod test_chain_with_environment {
+    use std::collections::HashMap;
+
+    use super::*;
+    use qoqo::devices::ChainWithEnvironmentCapsule;
+    use roqoqo::devices::{ChainWithEnvironmentDevice, Device};
+    use roqoqo::RoqoqoError;
+    #[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+    struct TestDevice;
+    use bincode::{deserialize, serialize};
+    use ndarray::Array2;
+    use numpy::{PyArray2, PyReadonlyArray2, ToPyArray};
+    use pyo3::exceptions::{PyTypeError, PyValueError};
+    use pyo3::types::PyByteArray;
+    use qoqo_macros::devicewrapper;
+
+    /// Dummy implementation only for testing ChainWithEnvironment trait
+    impl Device for TestDevice {
+        fn single_qubit_gate_time(&self, _hqslang: &str, _qubit: &usize) -> Option<f64> {
+            None
+        }
+
+        fn two_qubit_gate_time(
+            &self,
+            _hqslang: &str,
+            _control: &usize,
+            _target: &usize,
+        ) -> Option<f64> {
+            None
+        }
+
+        fn three_qubit_gate_time(
+            &self,
+            _hqslang: &str,
+            _control_0: &usize,
+            _control_1: &usize,
+            _target: &usize,
+        ) -> Option<f64> {
+            None
+        }
+
+        fn multi_qubit_gate_time(&self, _hqslang: &str, _qubits: &[usize]) -> Option<f64> {
+            None
+        }
+
+        fn qubit_decoherence_rates(&self, _qubit: &usize) -> Option<Array2<f64>> {
+            None
+        }
+
+        fn number_qubits(&self) -> usize {
+            0
+        }
+
+        fn two_qubit_edges(&self) -> Vec<(usize, usize)> {
+            vec![]
+        }
+
+        fn to_generic_device(&self) -> GenericDevice {
+            GenericDevice::default()
+        }
+    }
+
+    impl TestDevice {
+        pub fn set_single_qubit_gate_time(
+            &mut self,
+            _gate: &str,
+            _qubit: usize,
+            _gate_time: f64,
+        ) -> Result<(), RoqoqoError> {
+            Ok(())
+        }
+
+        pub fn set_two_qubit_gate_time(
+            &mut self,
+            _gate: &str,
+            _control: usize,
+            _target: usize,
+            _gate_time: f64,
+        ) -> Result<(), RoqoqoError> {
+            Ok(())
+        }
+
+        pub fn set_three_qubit_gate_time(
+            &mut self,
+            _gate: &str,
+            _control_0: usize,
+            _control_1: usize,
+            _target: usize,
+            _gate_time: f64,
+        ) -> Result<(), RoqoqoError> {
+            Ok(())
+        }
+
+        pub fn set_multi_qubit_gate_time(
+            &mut self,
+            _gate: &str,
+            _qubits: Vec<usize>,
+            _gate_time: f64,
+        ) -> Result<(), RoqoqoError> {
+            Ok(())
+        }
+
+        pub fn set_qubit_decoherence_rates(
+            &mut self,
+            _qubit: usize,
+            _rates: Array2<f64>,
+        ) -> Result<(), RoqoqoError> {
+            Ok(())
+        }
+
+        pub fn add_damping(&mut self, _qubit: usize, _damping: f64) -> Result<(), RoqoqoError> {
+            Ok(())
+        }
+
+        pub fn add_dephasing(&mut self, _qubit: usize, _dephasing: f64) -> Result<(), RoqoqoError> {
+            Ok(())
+        }
+
+        pub fn add_depolarising(
+            &mut self,
+            _qubit: usize,
+            _depolarising: f64,
+        ) -> Result<(), RoqoqoError> {
+            Ok(())
+        }
+    }
+
+    impl ChainWithEnvironmentDevice for TestDevice {
+        fn environment_chains(&self) -> Vec<roqoqo::devices::ChainAndEnvironment> {
+            // Use device
+            // ```
+            // 0 - 3 - 6
+            // |   |   |
+            // 1 - 4 - 7
+            // |   |
+            // 2 - 5
+            // ```
+            let mut new_chains: Vec<(Vec<usize>, HashMap<usize, Vec<usize>>)> = Vec::new();
+            new_chains.push((vec![4], HashMap::from([(4, vec![1, 3, 5, 7])])));
+            new_chains.push((
+                vec![3, 4],
+                HashMap::from([(3, vec![0, 6]), (4, vec![1, 5, 7])]),
+            ));
+            new_chains.push((
+                vec![0, 1, 4, 3],
+                HashMap::from([(1, vec![2]), (3, vec![6]), (4, vec![5, 7])]),
+            ));
+            new_chains.push((
+                vec![0, 1, 2, 5, 4, 3],
+                HashMap::from([(4, vec![7]), (3, vec![7])]),
+            ));
+            new_chains
+        }
+    }
+
+    #[pyclass(name = "TestDevice", module = "devices")]
+    #[derive(Clone, Debug, PartialEq)]
+    pub struct TestDeviceWrapper {
+        internal: TestDevice,
+    }
+
+    #[devicewrapper(ChainWithEnvironment)]
+    impl TestDeviceWrapper {
+        #[new]
+        pub fn new() -> PyResult<Self> {
+            Ok(Self {
+                internal: TestDevice,
+            })
+        }
+    }
+
+    impl TestDeviceWrapper {
+        /// Fallible conversion of generic python object..
+        fn from_pyany(input: Py<PyAny>) -> PyResult<TestDevice> {
+            Python::with_gil(|py| -> PyResult<TestDevice> {
+                let input = input.as_ref(py);
+                if let Ok(try_downcast) = input.extract::<TestDeviceWrapper>() {
+                    Ok(try_downcast.internal)
+                } else {
+                    panic!()
+                }
+            })
+        }
+    }
+
+    #[test]
+    fn test_chain_with_environment() {
+        pyo3::prepare_freethreaded_python();
+        let test_device = Python::with_gil(|py| -> Py<PyAny> {
+            let device_type = py.get_type::<TestDeviceWrapper>();
+            device_type.call0().unwrap().into()
+        });
+        Python::with_gil(|py| {
+            let __implements_environment_with_chains =
+                test_device.call_method0(py, "__implements_environment_chains");
+            assert!(__implements_environment_with_chains.is_ok());
+            let __implements_environment_with_chains = __implements_environment_with_chains
+                .unwrap()
+                .extract::<bool>(py)
+                .unwrap();
+            assert_eq!(__implements_environment_with_chains, true);
+            let chains_with_environment = test_device
+                .call_method0(py, "__environment_chains")
+                .unwrap();
+            let chains_with_environment = chains_with_environment
+                .extract::<Vec<(Vec<usize>, HashMap<usize, Vec<usize>>)>>(py)
+                .unwrap();
+            let simple_test_device = TestDevice;
+            let comparison = simple_test_device.environment_chains();
+            assert_eq!(chains_with_environment, comparison);
+        })
+    }
+
+    #[test]
+    fn test_chain_with_environment_capsule() {
+        pyo3::prepare_freethreaded_python();
+        let test_device = Python::with_gil(|py| -> Py<PyAny> {
+            let device_type = py.get_type::<TestDeviceWrapper>();
+            device_type.call0().unwrap().into()
+        });
+        let device_capsule = ChainWithEnvironmentCapsule::new(test_device).unwrap();
+        let chains_with_environment = device_capsule.environment_chains();
+        let simple_test_device = TestDevice;
+        let comparison = simple_test_device.environment_chains();
+        assert_eq!(chains_with_environment, comparison);
+    }
+}
