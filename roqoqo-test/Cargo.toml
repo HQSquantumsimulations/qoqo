@@ -19,7 +19,7 @@ crate-type = ["rlib"]
 
 [dependencies]
 qoqo_calculator = { version="1.1" }
-roqoqo = {version="1.8", path="../roqoqo", features=["serialize"]}
+roqoqo = {version="1.9", path="../roqoqo", features=["serialize"]}
 rand = "0.8"
 nalgebra = "0.32"
 ndarray = { version = "0.15" }
