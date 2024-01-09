@@ -697,7 +697,7 @@ mod test_chain_with_environment {
     use numpy::{PyArray2, PyReadonlyArray2, ToPyArray};
     use pyo3::exceptions::{PyTypeError, PyValueError};
     use pyo3::types::PyByteArray;
-    use qoqo_macros::devicewrapper;
+    use qoqo_macros::{devicechainenvironmentwrapper, devicewrapper};
 
     /// Dummy implementation only for testing ChainWithEnvironment trait
     impl Device for TestDevice {
@@ -844,7 +844,7 @@ mod test_chain_with_environment {
         internal: TestDevice,
     }
 
-    #[devicewrapper(ChainWithEnvironment)]
+    #[devicewrapper]
     impl TestDeviceWrapper {
         #[new]
         pub fn new() -> PyResult<Self> {
@@ -853,6 +853,9 @@ mod test_chain_with_environment {
             })
         }
     }
+
+    #[devicechainenvironmentwrapper]
+    impl TestDeviceWrapper {}
 
     impl TestDeviceWrapper {
         /// Fallible conversion of generic python object..
