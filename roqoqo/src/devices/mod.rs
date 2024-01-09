@@ -507,12 +507,12 @@ pub trait ChainWithEnvironmentDevice {
     /// ([4], {4: [1,4,7,5]})
     /// ```
     ///
-    /// One with lenght 2 and ratio 5 to 2:
+    /// One with length 2 and ratio 5 to 2:
     /// ```
     /// ([3,4], {3:[0,6], 4: [1,7,5]})
     /// ```
     ///
-    /// The chain and environment with lenght 2 and ratio 2 to 1 is a subset of the one above
+    /// The chain and environment with length 2 and ratio 2 to 1 is a subset of the one above
     /// and does not need to be listed separately.
     ///
     /// The longest chain with ratio 1 to 1 is:
