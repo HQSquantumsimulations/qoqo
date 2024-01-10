@@ -10,10 +10,6 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! qoqo-macros
-//!
-//! Attribute proc-macros for the traits of qoqo [qoqo].
-
 use quote::quote;
 use syn::{parse_macro_input, ItemImpl};
 
