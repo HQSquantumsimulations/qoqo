@@ -2898,7 +2898,7 @@ limitations under the License.
 
 
 ====================================================
-base64 0.21.5
+base64 0.21.6
 https://github.com/marshallpierce/rust-base64
 by Alice Maz <alice@alicemaz.com>, Marshall Pierce <marshall@mpierce.org>
 encodes and decodes base64 as bytes or utf8
@@ -4991,7 +4991,7 @@ limitations under the License.
 
 
 ====================================================
-clap 4.4.13
+clap 4.4.14
 https://github.com/clap-rs/clap
 by 
 A simple to use, efficient, and full-featured Command Line Argument Parser
@@ -5227,7 +5227,7 @@ LICENSE-APACHE:
 
 
 ====================================================
-clap_builder 4.4.12
+clap_builder 4.4.14
 https://github.com/clap-rs/clap
 by 
 A simple to use, efficient, and full-featured Command Line Argument Parser
@@ -10321,7 +10321,7 @@ limitations under the License.
 
 
 ====================================================
-getrandom 0.2.11
+getrandom 0.2.12
 https://github.com/rust-random/getrandom
 by The Rand Project Developers
 A small cross-platform library for retrieving random data from system source
@@ -10329,7 +10329,7 @@ License: MIT OR Apache-2.0
 ----------------------------------------------------
 LICENSE-MIT:
 
-Copyright 2018 Developers of the Rand project
+Copyright (c) 2018-2024 The rust-random Project Developers
 Copyright (c) 2014 The Rust Project Developers
 
 Permission is hereby granted, free of charge, to any
@@ -14451,7 +14451,7 @@ limitations under the License.
 
 
 ====================================================
-libc 0.2.151
+libc 0.2.152
 https://github.com/rust-lang/libc
 by The Rust Project Developers
 Raw FFI bindings to platform libraries like libc.
@@ -21985,7 +21985,7 @@ limitations under the License.
 
 
 ====================================================
-proc-macro2 1.0.75
+proc-macro2 1.0.76
 https://github.com/dtolnay/proc-macro2
 by David Tolnay <dtolnay@gmail.com>, Alex Crichton <alex@alexcrichton.com>
 A substitute implementation of the compiler's `proc_macro` API to decouple token-based libraries from the procedural macro use case.
@@ -23344,7 +23344,7 @@ LICENSE-APACHE:
 
 
 ====================================================
-qoqo 1.9.0
+qoqo 1.9.1
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoqo
@@ -23556,7 +23556,7 @@ LICENSE:
 
 
 ====================================================
-qoqo-macros 1.9.0
+qoqo-macros 1.9.1
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -26562,7 +26562,7 @@ limitations under the License.
 
 
 ====================================================
-roqoqo 1.9.0
+roqoqo 1.9.1
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
@@ -26774,7 +26774,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-derive 1.9.0
+roqoqo-derive 1.9.1
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the roqoqo crate
 License: Apache-2.0
@@ -26985,7 +26985,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-test 1.9.0
+roqoqo-test 1.9.1
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
@@ -28302,7 +28302,7 @@ limitations under the License.
 
 
 ====================================================
-serde 1.0.194
+serde 1.0.195
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A generic serialization/deserialization framework
@@ -28516,7 +28516,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-serde_derive 1.0.194
+serde_derive 1.0.195
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Macros 1.1 implementation of #[derive(Serialize, Deserialize)]

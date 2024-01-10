@@ -2,6 +2,12 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.9.1
+
+### Fixed in 1.9.1
+
+* Unstable feature `unstable_chain_with_environment` macros have been moved to their own feature instead of incorporating the feature gate into the macros.
+
 ## 1.9.0
 
 ### Added in 1.9.0

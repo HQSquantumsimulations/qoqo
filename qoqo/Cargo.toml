@@ -1,6 +1,6 @@
 [package]
 name = "qoqo"
-version = "1.9.0"
+version = "1.9.1"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 homepage = "https://github.com/HQSquantumsimulations/qoqo"
@@ -23,7 +23,7 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies.pyo3]
 version = "0.20"
-features = ["num-complex"]
+features = ["num-complex", "multiple-pymethods"]
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
@@ -59,4 +59,4 @@ extension-module = ["pyo3/extension-module", "circuitdag"]
 default = ["extension-module", "json_schema"]
 circuitdag = ["roqoqo/circuitdag"]
 json_schema = ["roqoqo/json_schema"]
-unstable_chain_with_environment = ["roqoqo/unstable_chain_with_environment"]
+unstable_chain_with_environment = ["roqoqo/unstable_chain_with_environment", "qoqo-macros/unstable_chain_with_environment"]
