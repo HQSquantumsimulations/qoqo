@@ -10,37 +10,23 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 //! Abstract operations for qubit-resonator hardware
 
-
-use ndarray::{array, Array2};
-use num_complex::Complex64;
-
 use crate::operations::{
-    ImplementedIn1point9,
-    InvolveModes,
-    InvolvedModes,
-    InvolveQubits,
-    InvolvedQubits,
-    Operate,
-    OperateGate,
-    OperateModeGate,
-    OperateSingleQubit,
-    Substitute,
-    SubstituteModes,
-    SupportedVersion,
+    ImplementedIn1point10, InvolveModes, InvolveQubits, InvolvedModes, InvolvedQubits, Operate,
+    OperateSingleMode, OperateSingleQubit, Substitute, SubstituteModes, SupportedVersion,
 };
 use crate::RoqoqoError;
 use qoqo_calculator::CalculatorFloat;
 
-
-/// The quantum Rabi interaction exp(-i * θ * σ^x * (b^{dagger} + b))
+/// The quantum Rabi interaction exp(-i * θ * X * (b^{\dagger} + b))
 #[derive(
     Debug,
     Clone,
     PartialEq,
     roqoqo_derive::Operate,
+    roqoqo_derive::OperateSingleQubit,
+    roqoqo_derive::OperateSingleMode,
     roqoqo_derive::InvolveModes,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Substitute,
@@ -53,10 +39,9 @@ pub struct QuantumRabi {
     qubit: usize,
     /// The bosonic mode involved.
     mode: usize,
-    /// The parameter θ of the interaction 
+    /// The parameter θ of the interaction
     theta: CalculatorFloat,
 }
-
 
 #[allow(non_upper_case_globals)]
 const TAGS_QuantumRabi: &[&str; 6] = &[
@@ -68,7 +53,6 @@ const TAGS_QuantumRabi: &[&str; 6] = &[
     "SingleQubitGate",
 ];
 
-
 impl ImplementedIn1point10 for QuantumRabi {}
 
 impl SupportedVersion for QuantumRabi {
@@ -77,13 +61,56 @@ impl SupportedVersion for QuantumRabi {
     }
 }
 
-
-/// The Jaynes-Cummings gate exp(-i * theta * (σ^- * b^{dagger} + σ^+ * b))
+/// Longitudinal coupling gate exp(-i * θ * Z * (b^{\dagger} + b))
 #[derive(
     Debug,
     Clone,
     PartialEq,
     roqoqo_derive::Operate,
+    roqoqo_derive::OperateSingleQubit,
+    roqoqo_derive::OperateSingleMode,
+    roqoqo_derive::InvolveModes,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::SubstituteModes,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct LongitudinalCoupling {
+    /// The qubit involved.
+    qubit: usize,
+    /// The bosonic mode involved.
+    mode: usize,
+    /// The parameter θ of the interaction
+    theta: CalculatorFloat,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_LongitudinalCoupling: &[&str; 6] = &[
+    "Operation",
+    "GateOperation",
+    "ModeGateOperation",
+    "SingleModeGateOperation",
+    "SingleQubitGateOperation",
+    "SingleQubitGate",
+];
+
+impl ImplementedIn1point10 for LongitudinalCoupling {}
+
+impl SupportedVersion for LongitudinalCoupling {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 10, 0)
+    }
+}
+
+/// The Jaynes-Cummings gate exp(-i * θ * (σ^- * b^{\dagger} + σ^+ * b))
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::Operate,
+    roqoqo_derive::OperateSingleQubit,
+    roqoqo_derive::OperateSingleMode,
     roqoqo_derive::InvolveModes,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Substitute,
@@ -96,7 +123,7 @@ pub struct JaynesCummings {
     qubit: usize,
     /// The bosonic mode involved.
     mode: usize,
-    /// The parameter θ of the interaction 
+    /// The parameter θ of the interaction
     theta: CalculatorFloat,
 }
 
@@ -109,7 +136,6 @@ const TAGS_JaynesCummings: &[&str; 6] = &[
     "SingleQubitGateOperation",
     "SingleQubitGate",
 ];
-
 
 impl ImplementedIn1point10 for JaynesCummings {}
 
