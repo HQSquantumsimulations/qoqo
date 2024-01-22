@@ -26,10 +26,10 @@ use qoqo_calculator::CalculatorFloat;
     PartialEq,
     roqoqo_derive::Operate,
     roqoqo_derive::OperateSingleQubit,
-    roqoqo_derive::OperateSingleMode,
-    roqoqo_derive::InvolveModes,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Substitute,
+    roqoqo_derive::OperateSingleMode,
+    roqoqo_derive::InvolveModes,
     roqoqo_derive::SubstituteModes,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
@@ -68,10 +68,10 @@ impl SupportedVersion for QuantumRabi {
     PartialEq,
     roqoqo_derive::Operate,
     roqoqo_derive::OperateSingleQubit,
-    roqoqo_derive::OperateSingleMode,
-    roqoqo_derive::InvolveModes,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Substitute,
+    roqoqo_derive::OperateSingleMode,
+    roqoqo_derive::InvolveModes,
     roqoqo_derive::SubstituteModes,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
@@ -110,10 +110,10 @@ impl SupportedVersion for LongitudinalCoupling {
     PartialEq,
     roqoqo_derive::Operate,
     roqoqo_derive::OperateSingleQubit,
-    roqoqo_derive::OperateSingleMode,
-    roqoqo_derive::InvolveModes,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Substitute,
+    roqoqo_derive::OperateSingleMode,
+    roqoqo_derive::InvolveModes,
     roqoqo_derive::SubstituteModes,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]

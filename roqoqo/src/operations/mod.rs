@@ -807,8 +807,6 @@ pub trait OperateMultiQubitGate:
     fn circuit(&self) -> crate::Circuit;
 }
 
-// Implementing DynOperation for storing dynamic operations from extern crates in trait object
-
 /// Marker trait to show that some operation has been implemented in roqoqo 1.1.0
 pub(crate) trait ImplementedIn1point1: Operate {}
 

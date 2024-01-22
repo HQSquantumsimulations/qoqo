@@ -50,15 +50,15 @@ fn clone(op: Operation) {
 
 #[test_case(
     Operation::from(QuantumRabi::new(4, 0, 1.5.into())),
-    "QuantumRabi(QuantumRabi { qubit: 4, mode: 0, theta: 1.5})"  
+    "QuantumRabi(QuantumRabi { qubit: 4, mode: 0, theta: Float(1.5) })"  
 )]
 #[test_case(
     Operation::from(LongitudinalCoupling::new(4, 0, 1.5.into())),
-   "LongitudinalCoupling(LongitudinalCpupling { qubit: 4, mode: 0, theta: 1.5})"  
+   "LongitudinalCoupling(LongitudinalCoupling { qubit: 4, mode: 0, theta: Float(1.5) })"  
 )]
 #[test_case(
     Operation::from(JaynesCummings::new(4, 0, 1.5.into())),
-  "JaynesCummings(JaynesCummings { qubit: 4, mode: 0, theta: 1.5})"  
+   "JaynesCummings(JaynesCummings { qubit: 4, mode: 0, theta: Float(1.5) })"  
 )]
 fn debug(op: Operation, string: &str) {
     assert_eq!(format!("{:?}", op), string);
@@ -84,4 +84,55 @@ fn partial_eq(op: Operation, op_0: Operation, op_1: Operation) {
     assert!(op == op_0);
     assert!(op_1 != op);
     assert!(op != op_1);
+}
+
+#[test_case(
+    SingleModeOperation::from(QuantumRabi::new(4, 0, 1.5.into())),
+    InvolvedQubits::Set(HashSet::from([4_usize])),
+    InvolvedClassical::None,
+    InvolvedModes::Set(HashSet::from([0_usize]))
+)]
+#[test_case(
+    SingleModeOperation::from(LongitudinalCoupling::new(4, 0, 1.5.into())),
+    InvolvedQubits::Set(HashSet::from([4_usize])),
+    InvolvedClassical::None,
+    InvolvedModes::Set(HashSet::from([0_usize]))
+)]
+#[test_case(
+    SingleModeOperation::from(JaynesCummings::new(4, 0, 1.5.into())),
+    InvolvedQubits::Set(HashSet::from([4_usize])),
+    InvolvedClassical::None,
+    InvolvedModes::Set(HashSet::from([0_usize]))
+)]
+fn involved_qubits_classical_modes(
+    op: SingleModeOperation,
+    qubits: InvolvedQubits,
+    classical: InvolvedClassical,
+    modes: InvolvedModes,
+) {
+    assert_eq!(op.involved_qubits(), qubits);
+    assert_eq!(op.involved_classical(), classical);
+    assert_eq!(op.involved_modes(), modes);
+}
+
+fn substitute_subsitutemodes(op: ModeGateOperation, op_test: ModeGateOperation) {
+    let mut mapping_test: HashMap<usize, usize> = HashMap::new();
+    mapping_test.insert(0, 1);
+    mapping_test.insert(1, 2);
+    mapping_test.insert(2, 0);
+
+    let mut substitution_dict: Calculator = Calculator::new();
+    substitution_dict.set_variable("test", 0.1);
+    substitution_dict.set_variable("test1", 0.5);
+
+    // (1) Substitute parameters function
+    let result = op.substitute_parameters(&substitution_dict).unwrap();
+
+    // (2) Remap modes function
+    let result = result.remap_modes(&mapping_test).unwrap();
+    assert_eq!(result, op_test);
+
+    // (3) Remap qubits function
+    let result = result.remap_qubits(&mapping_test).unwrap();
+    assert_eq!(result, op_test);
 }

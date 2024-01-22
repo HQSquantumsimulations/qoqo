@@ -22,15 +22,19 @@ use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
 /// The quantum Rabi interaction exp(-i * θ * X * (b^{dagger} + b))
+///
+/// Args:
+///     qubit (int): The qubit the gate is applied to.
+///     mode (int): The mode the gate is applied to.
+///     theta (CalculatorFloat): The strength of the interaction.
 #[wrap(
     Operate,
-    OperateModeGate,
     Substitute,
-    SubstituteModes,
-    InvolveModes,
-    OperateSingleMode,
+    // OperateSingleMode,
+    // SubstituteModes,
+    // InvolveModes,
+    OperateSingleQubit,
     InvolveQubits,
-    OperateSingleModeGate,
     JsonSchema
 )]
 pub struct QuantumRabi {
@@ -40,15 +44,19 @@ pub struct QuantumRabi {
 }
 
 /// Longitudinal coupling gate exp(-i * θ * Z * (b^{dagger} + b))
+///
+/// Args:
+///     qubit (int): The qubit the gate is applied to.
+///     mode (int): The mode the gate is applied to.
+///     theta (CalculatorFloat): The strength of the interaction.
 #[wrap(
     Operate,
-    OperateModeGate,
     Substitute,
-    SubstituteModes,
-    InvolveModes,
-    OperateSingleMode,
+    // OperateSingleMode,
+    // SubstituteModes,
+    // InvolveModes,
+    OperateSingleQubit,
     InvolveQubits,
-    OperateSingleModeGate,
     JsonSchema
 )]
 pub struct LongitudinalCoupling {
@@ -58,15 +66,19 @@ pub struct LongitudinalCoupling {
 }
 
 /// The Jaynes-Cummings gate exp(-i * θ * (σ^- * b^{dagger} + σ^+ * b))
+///
+/// Args:
+///     qubit (int): The qubit the gate is applied to.
+///     mode (int): The mode the gate is applied to.
+///     theta (CalculatorFloat): The strength of the interaction.
 #[wrap(
     Operate,
-    OperateModeGate,
     Substitute,
-    SubstituteModes,
-    InvolveModes,
-    OperateSingleMode,
+    // OperateSingleMode,
+    // SubstituteModes,
+    // InvolveModes,
+    OperateSingleQubit,
     InvolveQubits,
-    OperateSingleModeGate,
     JsonSchema
 )]
 pub struct JaynesCummings {
