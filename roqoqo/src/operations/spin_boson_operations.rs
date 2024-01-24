@@ -44,13 +44,14 @@ pub struct QuantumRabi {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_QuantumRabi: &[&str; 6] = &[
+const TAGS_QuantumRabi: &[&str; 7] = &[
     "Operation",
     "GateOperation",
     "ModeGateOperation",
     "SingleModeGateOperation",
     "SingleQubitGateOperation",
     "SingleQubitGate",
+    "QuantumRabi",
 ];
 
 impl ImplementedIn1point10 for QuantumRabi {}
@@ -86,13 +87,14 @@ pub struct LongitudinalCoupling {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_LongitudinalCoupling: &[&str; 6] = &[
+const TAGS_LongitudinalCoupling: &[&str; 7] = &[
     "Operation",
     "GateOperation",
     "ModeGateOperation",
     "SingleModeGateOperation",
     "SingleQubitGateOperation",
     "SingleQubitGate",
+    "LongitudinalCoupling",
 ];
 
 impl ImplementedIn1point10 for LongitudinalCoupling {}
@@ -128,13 +130,14 @@ pub struct JaynesCummings {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_JaynesCummings: &[&str; 6] = &[
+const TAGS_JaynesCummings: &[&str; 7] = &[
     "Operation",
     "GateOperation",
     "ModeGateOperation",
     "SingleModeGateOperation",
     "SingleQubitGateOperation",
     "SingleQubitGate",
+    "JaynesCummings",
 ];
 
 impl ImplementedIn1point10 for JaynesCummings {}
