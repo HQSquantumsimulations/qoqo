@@ -115,6 +115,15 @@ fn test_version_1_4_0_single_qubit_gate(operation: operations::SingleQubitGateOp
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 4, 0));
 }
 
+#[test_case(operations::SingleQubitGateOperation::from(operations::QuantumRabi::new(1, 0, 1.0.into()));"QuantumRabi")]
+#[test_case(operations::SingleQubitGateOperation::from(operations::LongitudinalCoupling::new(1, 0, 1.0.into()));"LongitudinalCoupling")]
+#[test_case(operations::SingleQubitGateOperation::from(operations::JaynesCummings::new(1, 0, 1.0.into()));"JaynesCummings")]
+fn test_version_1_10_0_single_qubit_gate(operation: operations::SingleQubitGateOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 10, 0));
+    let op = operations::Operation::try_from(operation).unwrap();
+    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 10, 0));
+}
+
 #[test_case(operations::MultiQubitGateOperation::from(operations::MultiQubitMS::new(vec![0,1,2,3], 1.0.into())); "MultiQubitMS")]
 fn test_version_1_0_0_multi_qubit_gate(operation: operations::MultiQubitGateOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 0, 0));
@@ -135,6 +144,15 @@ fn test_version_1_8_0_single_mode_gate(operation: operations::SingleModeGateOper
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 8, 0));
     let op = operations::Operation::from(operation);
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 8, 0));
+}
+
+#[test_case(operations::SingleQubitGateOperation::from(operations::QuantumRabi::new(1, 0, 1.0.into()));"QuantumRabi")]
+#[test_case(operations::SingleQubitGateOperation::from(operations::LongitudinalCoupling::new(1, 0, 1.0.into()));"LongitudinalCoupling")]
+#[test_case(operations::SingleQubitGateOperation::from(operations::JaynesCummings::new(1, 0, 1.0.into()));"JaynesCummings")]
+fn test_version_1_10_0_single_mode_gate(operation: operations::SingleModeGateOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 10, 0));
+    let op = operations::Operation::try_from(operation).unwrap();
+    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 10, 0));
 }
 
 #[test_case(operations::TwoModeGateOperation::from(operations::BeamSplitter::new(0, 1, 0.5.into(), 1.0.into())); "BeamSplitter")]
