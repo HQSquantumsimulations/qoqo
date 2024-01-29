@@ -220,7 +220,7 @@ pub trait Device {
     #[allow(unused_mut)]
     fn change_device(&mut self, hqslang: &str, operation: &[u8]) -> Result<(), RoqoqoBackendError> {
         Err(RoqoqoBackendError::GenericError {
-            msg: "The device ".to_string(),
+            msg: "The `change_device()` method has not been implemented.".to_string(),
         })
     }
 
@@ -468,7 +468,7 @@ pub trait QoqoDevice {
     #[allow(unused_mut)]
     fn change_device(&mut self, hqslang: &str, operation: &[u8]) -> Result<(), RoqoqoBackendError> {
         Err(RoqoqoBackendError::GenericError {
-            msg: "The device ".to_string(),
+            msg: "The `change_device()` method has not been implemented.".to_string(),
         })
     }
 }
