@@ -12,6 +12,6 @@
 
 mod basis_rotation_measurement;
 mod cheated_basis_rotation_measurement;
-mod measurement_auxiliary_data_input;
 mod cheated_measurement;
 mod classical_register_measurement;
+mod measurement_auxiliary_data_input;
