@@ -215,6 +215,7 @@ pub trait Device {
     ///
     /// Result of changing the device.
     /// In case the device is not allowed to be changed a generic RoqoqoBackendError is returned.
+    /// If not implemented, a default `method has not been implemented` error is returned.
     ///
     #[allow(unused_variables)]
     #[allow(unused_mut)]
