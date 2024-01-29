@@ -820,8 +820,8 @@ mod test_chain_with_environment {
             // |   |
             // 2 - 5
             // ```
-            let mut new_chains: Vec<(Vec<usize>, HashMap<usize, Vec<usize>>)> = Vec::new();
-            new_chains.push((vec![4], HashMap::from([(4, vec![1, 3, 5, 7])])));
+            let mut new_chains: Vec<roqoqo::devices::ChainAndEnvironment> =
+                vec![(vec![4], HashMap::from([(4, vec![1, 3, 5, 7])]))];
             new_chains.push((
                 vec![3, 4],
                 HashMap::from([(3, vec![0, 6]), (4, vec![1, 5, 7])]),
@@ -886,7 +886,7 @@ mod test_chain_with_environment {
                 .unwrap()
                 .extract::<bool>(py)
                 .unwrap();
-            assert_eq!(__implements_environment_with_chains, true);
+            assert!(__implements_environment_with_chains);
             let chains_with_environment = test_device
                 .call_method0(py, "__environment_chains")
                 .unwrap();

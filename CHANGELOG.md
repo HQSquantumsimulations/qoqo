@@ -2,6 +2,12 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## Unreleased - 1.9.2
+
+### Fixed in 1.9.2
+
+* Error message in `Device.change_device()`
+
 ## 1.9.1
 
 ### Fixed in 1.9.1

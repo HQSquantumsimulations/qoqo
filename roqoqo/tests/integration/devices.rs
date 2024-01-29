@@ -100,6 +100,13 @@ fn test_all_to_all() {
         assert!(test_edges.contains(&edge));
     }
 
+    let change_device_error = device.change_device("PragmaTest", Vec::<u8>::new().as_ref());
+    assert!(change_device_error.is_err());
+    assert!(change_device_error
+        .unwrap_err()
+        .to_string()
+        .contains("The `change_device()` method has not been implemented."));
+
     let gen_dev = device.to_generic_device();
     assert_eq!(gen_dev.two_qubit_edges().len(), 3);
 }
@@ -245,6 +252,13 @@ fn generic_device_works() {
         assert!(test_edges.contains(&edge));
     }
 
+    let change_device_error = device.change_device("PragmaTest", Vec::<u8>::new().as_ref());
+    assert!(change_device_error.is_err());
+    assert!(change_device_error
+        .unwrap_err()
+        .to_string()
+        .contains("The `change_device()` method has not been implemented."));
+
     let gen_dev = device.clone().to_generic_device();
     assert_eq!(gen_dev, device);
 }
@@ -310,6 +324,13 @@ fn all_to_all_generic() {
     );
     assert_eq!(all_to_all.two_qubit_gate_names(), vec!["CNOT".to_string()]);
     assert_eq!(all_to_all.multi_qubit_gate_names(), Vec::<String>::new());
+
+    let change_device_error = generic_device.change_device("PragmaTest", Vec::<u8>::new().as_ref());
+    assert!(change_device_error.is_err());
+    assert!(change_device_error
+        .unwrap_err()
+        .to_string()
+        .contains("The `change_device()` method has not been implemented."));
 }
 
 #[test]
@@ -339,6 +360,13 @@ fn square_lattice_generic() {
         .set_qubit_decoherence_rates(1, array![[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
         .unwrap();
     assert_eq!(generic_device, square_lattice.to_generic_device());
+
+    let change_device_error = generic_device.change_device("PragmaTest", Vec::<u8>::new().as_ref());
+    assert!(change_device_error.is_err());
+    assert!(change_device_error
+        .unwrap_err()
+        .to_string()
+        .contains("The `change_device()` method has not been implemented."));
 }
 
 #[test]
@@ -457,6 +485,13 @@ fn test_square_lattice() {
     assert!(device
         .multi_qubit_gate_names()
         .contains(&"MultiQubitMS".to_string()));
+
+    let change_device_error = device.change_device("PragmaTest", Vec::<u8>::new().as_ref());
+    assert!(change_device_error.is_err());
+    assert!(change_device_error
+        .unwrap_err()
+        .to_string()
+        .contains("The `change_device()` method has not been implemented."));
 }
 
 #[cfg(feature = "json_schema")]
