@@ -376,6 +376,7 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/measurement_operations.rs",
     "src/operations/define_operations.rs",
     "src/operations/bosonic_operations.rs",
+    #[cfg(feature = "unstable_spin_boson_operations")]
     "src/operations/spin_boson_operations.rs",
 ];
 

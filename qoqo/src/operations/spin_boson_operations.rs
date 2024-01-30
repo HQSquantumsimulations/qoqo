@@ -52,9 +52,9 @@ pub struct QuantumRabi {
 #[wrap(
     Operate,
     Substitute,
-    // OperateSingleMode,
-    // SubstituteModes,
-    // InvolveModes,
+    OperateSingleMode,
+    SubstituteModes,
+    InvolveModes,
     OperateSingleQubit,
     InvolveQubits,
     JsonSchema

@@ -13,9 +13,7 @@
 use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
-use qoqo::operations::{
-    QuantumRabiWrapper, LongitudinalCouplingWrapper, JaynesCummingsWrapper
-};
+use qoqo::operations::{JaynesCummingsWrapper, LongitudinalCouplingWrapper, QuantumRabiWrapper};
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use qoqo_calculator_pyo3::CalculatorFloatWrapper;
 use roqoqo::operations::Operation;
@@ -24,7 +22,6 @@ use roqoqo::operations::*;
 use roqoqo::ROQOQO_VERSION;
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
-
 
 // helper function to convert CalculatorFloat into a python object
 fn convert_cf_to_pyobject(
@@ -105,7 +102,11 @@ fn test_new_quantumrabi(input_operation: Operation, arguments: (u32, u32, f64), 
 /// Test new() function for LongitudinalCoupling
 #[test_case(Operation::from(LongitudinalCoupling::new(1, 0, 1.0.into())), (1, 0, 1.0,), "__eq__"; "LongitudinalCoupling_eq")]
 #[test_case(Operation::from(LongitudinalCoupling::new(1, 0, 1.0.into())), (0, 1, 1.0,), "__ne__"; "LongitudinalCoupling_ne")]
-fn test_new_longitudinal_coupling(input_operation: Operation, arguments: (u32, u32, f64), method: &str) {
+fn test_new_longitudinal_coupling(
+    input_operation: Operation,
+    arguments: (u32, u32, f64),
+    method: &str,
+) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -125,13 +126,17 @@ fn test_new_longitudinal_coupling(input_operation: Operation, arguments: (u32, u
         .unwrap();
         assert!(comparison);
 
-        let def_wrapper = operation_py.extract::<LongitudinalCouplingWrapper>().unwrap();
+        let def_wrapper = operation_py
+            .extract::<LongitudinalCouplingWrapper>()
+            .unwrap();
         let new_op_diff = operation_type
             .call1((2, 3, 1.0))
             .unwrap()
             .downcast::<PyCell<LongitudinalCouplingWrapper>>()
             .unwrap();
-        let def_wrapper_diff = new_op_diff.extract::<LongitudinalCouplingWrapper>().unwrap();
+        let def_wrapper_diff = new_op_diff
+            .extract::<LongitudinalCouplingWrapper>()
+            .unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
         let helper_eq: bool = def_wrapper == def_wrapper.clone();
@@ -153,11 +158,10 @@ fn test_new_longitudinal_coupling(input_operation: Operation, arguments: (u32, u
                 )
                 .unwrap(),
         )
-            .unwrap();
+        .unwrap();
         assert!(comparison_copy);
     })
 }
-
 
 /// Test new() function for JaynesCummings
 #[test_case(Operation::from(JaynesCummings::new(1, 0, 1.0.into())), (1, 0, 1.0,), "__eq__"; "JaynesCummings_eq")]
@@ -229,7 +233,7 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
                 .unwrap()
                 .as_ref(py)
         )
-                .unwrap());
+        .unwrap());
     })
 }
 
@@ -417,7 +421,6 @@ fn test_pyo3_remapmodes_single(input_operation: Operation) {
         assert_ne!(mode, mode_new);
     })
 }
-
 
 // test remap_modes() function returning an error.
 #[test_case(Operation::from(QuantumRabi::new(1, 0, 1.0.into())); "QuantumRabi")]
@@ -629,7 +632,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     })
 }
 
-/// Test json_schema function 
+/// Test json_schema function
 #[cfg(feature = "json_schema")]
 #[test_case(Operation::from(QuantumRabi::new(1, 0, CalculatorFloat::from(1.0))); "QuantumRabi")]
 #[test_case(Operation::from(LongitudinalCoupling::new(1, 0, CalculatorFloat::from(1.0))); "LongitudinalCoupling")]

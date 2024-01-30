@@ -60,7 +60,6 @@ pub use three_qubit_gate_operations::*;
 #[doc(hidden)]
 mod bosonic_operations;
 pub use bosonic_operations::*;
-
 /// Collection of roqoqo spin-boson operations.
 #[cfg(feature = "unstable_spin_boson_operations")]
 mod spin_boson_operations;
