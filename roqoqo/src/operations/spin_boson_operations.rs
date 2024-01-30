@@ -14,7 +14,8 @@
 
 use crate::operations::{
     ImplementedIn1point10, InvolveModes, InvolveQubits, InvolvedModes, InvolvedQubits, Operate,
-    OperateSingleMode, OperateSingleQubit, Substitute, SubstituteModes, SupportedVersion,
+    OperateModeGate, OperateSingleMode, OperateSingleModeGate, OperateSingleQubit, Substitute,
+    SubstituteModes, SupportedVersion,
 };
 use crate::RoqoqoError;
 use qoqo_calculator::CalculatorFloat;
@@ -24,6 +25,8 @@ use qoqo_calculator::CalculatorFloat;
     Debug,
     Clone,
     PartialEq,
+    OperateModeGate,
+    OperateSingleModeGate,
     roqoqo_derive::Operate,
     roqoqo_derive::OperateSingleQubit,
     roqoqo_derive::InvolveQubits,
@@ -67,6 +70,8 @@ impl SupportedVersion for QuantumRabi {
     Debug,
     Clone,
     PartialEq,
+    OperateModeGate,
+    OperateSingleModeGate,
     roqoqo_derive::Operate,
     roqoqo_derive::OperateSingleQubit,
     roqoqo_derive::InvolveQubits,
@@ -110,6 +115,8 @@ impl SupportedVersion for LongitudinalCoupling {
     Debug,
     Clone,
     PartialEq,
+    OperateModeGate,
+    OperateSingleModeGate,
     roqoqo_derive::Operate,
     roqoqo_derive::OperateSingleQubit,
     roqoqo_derive::InvolveQubits,

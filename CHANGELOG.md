@@ -6,7 +6,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ### Added in 1.10.0
 
-* Unstable feature "unstable_spin_boson_operations" adding new spin-boson operations: QuantumRabi, LongitudinalCoupling, JaynesCummings
+* Unstable feature `unstable_spin_boson_operations` adding new spin-boson operations: QuantumRabi, LongitudinalCoupling, JaynesCummings
 
 
 ## Unreleased - 1.9.2

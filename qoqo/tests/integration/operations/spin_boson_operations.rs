@@ -492,15 +492,15 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 /// Test format and repr functions
 #[test_case(
     "QuantumRabi { qubit: 1, mode: 0, theta: Float(1.0) }",
-    Operation::from(QuantumRabi::new(1, 0, 0.0.into()));
+    Operation::from(QuantumRabi::new(1, 0, 1.0.into()));
     "QuantumRabi")]
 #[test_case(
     "LongitudinalCoupling { qubit: 1, mode: 0, theta: Float(1.0) }",
-    Operation::from(LongitudinalCoupling::new(1, 0, 0.0.into()));
+    Operation::from(LongitudinalCoupling::new(1, 0, 1.0.into()));
     "LongitudinalCoupling")]
 #[test_case(
     "JaynesCummings { qubit: 1, mode: 0, theta: Float(1.0) }",
-    Operation::from(JaynesCummings::new(1, 0, 0.0.into()));
+    Operation::from(JaynesCummings::new(1, 0, 1.0.into()));
     "JaynesCummings")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
@@ -599,7 +599,7 @@ fn test_ineffective_substitute_parameters(input_operation: Operation) {
 #[test_case(
     Operation::from(JaynesCummings::new(1, 0, CalculatorFloat::from(1.0))),
     Operation::from(JaynesCummings::new(0, 1, CalculatorFloat::from(1.0)));
-    "QuantumRabi")]
+    "JaynesCummings")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
