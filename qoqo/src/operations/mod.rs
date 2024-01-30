@@ -164,5 +164,6 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<JaynesCummingsWrapper>()?;
 
     m.add_class::<ApplyConstantSpinHamiltonianWrapper>()?;
+    m.add_class::<ApplyTimeDependentSpinHamiltonianWrapper>()?;
     Ok(())
 }
