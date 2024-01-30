@@ -30,7 +30,9 @@ mod multi_qubit_gate_operations;
 pub use multi_qubit_gate_operations::*;
 mod bosonic_operations;
 pub use bosonic_operations::*;
+#[cfg(feature = "unstable_spin_boson_operations")]
 mod spin_boson_operations;
+#[cfg(feature = "unstable_spin_boson_operations")]
 pub use spin_boson_operations::*;
 include!(concat!(
     env!("OUT_DIR"),
