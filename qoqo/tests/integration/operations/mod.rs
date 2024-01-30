@@ -31,6 +31,10 @@ mod bosonic_operations;
 #[cfg(feature = "unstable_spin_boson_operations")]
 mod spin_boson_operations;
 
+mod analog_operations;
+pub use analog_operations::*;
+
+
 use pyo3::prelude::*;
 use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::CalculatorFloatWrapper;

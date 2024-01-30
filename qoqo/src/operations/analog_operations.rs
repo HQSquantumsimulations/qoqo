@@ -17,10 +17,12 @@ use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::{convert_into_calculator_float, CalculatorFloatWrapper};
 use qoqo_macros::*;
 use roqoqo::operations::*;
-#[cfg(feature = "json_schema")]
-use std::collections::HashMap;
 use struqture::spins::SpinHamiltonian;
 use struqture_py::spins::SpinHamiltonianSystemWrapper;
+
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
+use std::collections::HashMap;
 
 #[wrap(Operate, OperateModeGate)]
 ///  Constant Hamiltonian operation on analog quantum device (PASCAL)
