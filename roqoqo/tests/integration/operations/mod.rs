@@ -30,8 +30,8 @@ mod supported_version;
 
 mod bosonic_operations;
 
+#[cfg(feature = "unstable_spin_boson_operations")]
 mod spin_boson_operations;
-pub use spin_boson_operations::*;
 
 use nalgebra as na;
 use ndarray::Array2;

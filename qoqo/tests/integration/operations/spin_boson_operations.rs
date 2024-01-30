@@ -14,10 +14,9 @@ use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
-    QuantumRabi, LongitudinalCoupling, JaynesCummings
+    QuantumRabiWrapper, LongitudinalCouplingWrapper, JaynesCummingsWrapper
 };
-use qoqo_calculator::Calculator;
-use qoqo_calculator::CalculatorFloat;
+use qoqo_calculator::{Calculator, CalculatorFloat};
 use qoqo_calculator_pyo3::CalculatorFloatWrapper;
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;

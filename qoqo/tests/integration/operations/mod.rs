@@ -28,6 +28,9 @@ mod three_qubit_gate_operations;
 
 mod bosonic_operations;
 
+#[cfg(feature = "unstable_spin_boson_operations")]
+mod spin_boson_operations;
+
 use pyo3::prelude::*;
 use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::CalculatorFloatWrapper;

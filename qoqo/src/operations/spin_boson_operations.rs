@@ -30,9 +30,9 @@ use std::collections::HashMap;
 #[wrap(
     Operate,
     Substitute,
-    // OperateSingleMode,
-    // SubstituteModes,
-    // InvolveModes,
+    OperateSingleMode,
+    SubstituteModes,
+    InvolveModes,
     OperateSingleQubit,
     InvolveQubits,
     JsonSchema
@@ -74,9 +74,9 @@ pub struct LongitudinalCoupling {
 #[wrap(
     Operate,
     Substitute,
-    // OperateSingleMode,
-    // SubstituteModes,
-    // InvolveModes,
+    OperateSingleMode,
+    SubstituteModes,
+    InvolveModes,
     OperateSingleQubit,
     InvolveQubits,
     JsonSchema

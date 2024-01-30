@@ -153,8 +153,11 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<PragmaAnnotatedOpWrapper>()?;
     // 1.9
     // 1.10
+    #[cfg(feature = "unstable_spin_boson_operations")]
     m.add_class::<QuantumRabiWrapper>()?;
+    #[cfg(feature = "unstable_spin_boson_operations")]
     m.add_class::<LongitudinalCouplingWrapper>()?;
+    #[cfg(feature = "unstable_spin_boson_operations")]
     m.add_class::<JaynesCummingsWrapper>()?;
     Ok(())
 }
