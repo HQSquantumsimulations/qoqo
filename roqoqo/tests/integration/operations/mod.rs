@@ -34,7 +34,6 @@ mod bosonic_operations;
 mod spin_boson_operations;
 
 mod analog_operations;
-pub use analog_operations::*;
 
 use nalgebra as na;
 use ndarray::Array2;
