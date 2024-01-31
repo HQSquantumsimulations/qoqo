@@ -248,7 +248,6 @@ fn main() {
         use ndarray::Array1;
         use num_complex::Complex64;
         use numpy::{PyArray2, PyReadonlyArray1};
-        // use struqture::spins::SpinHamiltonian;
         use struqture_py::spins::SpinHamiltonianSystemWrapper;
 
         /// Tries to convert a [roqoqo::operations::Operation] to a PyObject
