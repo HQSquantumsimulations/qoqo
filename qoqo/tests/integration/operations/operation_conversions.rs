@@ -127,6 +127,9 @@ use test_case::test_case;
 #[test_case(Operation::from(BeamSplitter::new(0, 1, CalculatorFloat::from(0.005), 1.0.into())); "Beamsplitter")]
 #[test_case(Operation::from(PhotonDetection::new(0, "ro".into(), 0)); "PhotonDetection")]
 #[test_case(Operation::from(PragmaAnnotatedOp::new(PauliX::new(0).into(), "test".to_string())); "PragmaAnnotatedOp")]
+#[test_case(Operation::from(QuantumRabi::new(0, 1, 1.0.into())); "QuantumRabi")]
+#[test_case(Operation::from(LongitudinalCoupling::new(0, 1, 1.0.into())); "LongitudinalCoupling")]
+#[test_case(Operation::from(JaynesCummings::new(0, 1, 1.0.into())); "JaynesCummings")]
 fn test_conversion(input: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
