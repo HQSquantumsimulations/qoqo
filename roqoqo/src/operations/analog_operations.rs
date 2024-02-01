@@ -22,13 +22,7 @@ use struqture::OperateOnDensityMatrix;
 use struqture::SpinIndex;
 
 /// Implements the continuous time, constant spin Hamiltonian
-#[derive(
-    Debug,
-    Clone,
-    PartialEq,
-    roqoqo_derive::Operate,
-    roqoqo_derive::Substitute,
-)]
+#[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::Substitute)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct ApplyConstantSpinHamiltonian {
@@ -52,7 +46,7 @@ impl OperateSpinsAnalog for ApplyConstantSpinHamiltonian {
     fn spin(&self) -> Vec<usize> {
         let mut qubit_set = HashSet::new();
         for pps in self.hamiltonian.keys() {
-            for (index, _) in PauliProduct::iter(pps) {
+            for (index, _) in pps.iter() {
                 qubit_set.insert(*index);
             }
         }
@@ -74,13 +68,7 @@ impl InvolveQubits for ApplyConstantSpinHamiltonian {
 }
 
 /// Implements the continuous time , time-dependent spin Hamiltonian
-#[derive(
-    Debug,
-    Clone,
-    PartialEq,
-    roqoqo_derive::Operate,
-    roqoqo_derive::Substitute,
-)]
+#[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate, roqoqo_derive::Substitute)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct ApplyTimeDependentSpinHamiltonian {
@@ -100,7 +88,6 @@ const TAGS_ApplyTimeDependentSpinHamiltonian: &[&str; 4] = &[
 ];
 
 impl ImplementedIn1point10 for ApplyTimeDependentSpinHamiltonian {}
-
 
 impl OperateSpinsAnalog for ApplyTimeDependentSpinHamiltonian {
     fn spin(&self) -> Vec<usize> {

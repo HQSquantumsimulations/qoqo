@@ -1067,8 +1067,20 @@ pub trait OperateTwoModeGate:
 }
 /// Trait for all continuous time spin operations
 ///
+/// # Example
+/// ```
+/// use roqoqo::operations::{OperateSpinAnalog, ApplyConstantSpinHamiltonian};
+/// use struqture::prelude::*;
+/// use struqture::spins::{PauliProduct, SpinHamiltonian};
+/// use qoqo_calculator::CalculatorFloat;
+///
+/// let pp = PauliProduct::new().z(0);
+/// let mut hamiltonian = SpinHamiltonian::new();
+/// hamiltonian.add_operator_product(pp.clone(), CalculatorFloat::from(1.0)).unwrap();
+/// let _op = ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0);
+/// ```
 ///
 pub trait OperateSpinsAnalog: Operate + Clone + PartialEq + SupportedVersion {
-/// Trait for all analog operations acting on spins.
+    /// Trait for all analog operations acting on spins.
     fn spin(&self) -> Vec<usize>;
 }
