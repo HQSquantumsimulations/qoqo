@@ -116,6 +116,9 @@ use test_roqoqo_1_9;
 // #[test_case(test_roqoqo_1_9::operations::QuantumRabi::new(0, 1, 0.1.into()).into(); "QuantumRabi")]
 // #[test_case(test_roqoqo_1_9::operations::LongitudinalCoupling::new(0, 1, 0.1.into()).into(); "LongitudinalCoupling")]
 // #[test_case(test_roqoqo_1_9::operations::JaynesCummings::new(0, 1, 0.1.into()).into(); "JaynesCummings")]
+// #[test_case(test_roqoqo_1_9::operations::SingleExcitationLoad::new(0, 1).into(); "SingleExcitationLoad")]
+// #[test_case(test_roqoqo_1_9::operations::SingleExcitationStore::new(0, 1).into(); "SingleExcitationStore")]
+// #[test_case(test_roqoqo_1_9::operations::CZQubitResonator::new(0, 1).into(); "CZQubitResonator")]
 fn test_bincode_compatibility_1_9(operation: test_roqoqo_1_9::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_9::Circuit::new();
     test_circuit += operation;

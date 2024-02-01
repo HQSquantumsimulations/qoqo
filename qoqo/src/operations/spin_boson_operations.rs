@@ -86,3 +86,68 @@ pub struct JaynesCummings {
     mode: usize,
     theta: CalculatorFloat,
 }
+
+
+/// Loads a single excitation from a bosonic mode into a qubit as follows
+/// (c1 |0⟩_B + c2 |1⟩_B) ⨂ |0⟩_Q -> |0⟩_B ⨂ (c1 |0⟩_Q + c2 |1⟩_Q)
+///
+/// Note: if the initial qubit state is |1>_Q the operation is only defined if c2 = 0
+///
+/// Args:
+///     qubit (int): The qubit the gate is applied to.
+///     mode (int): The mode the gate is applied to.
+#[wrap(
+    Operate,
+    Substitute,
+    OperateSingleMode,
+    SubstituteModes,
+    InvolveModes,
+    OperateSingleQubit,
+    InvolveQubits,
+    JsonSchema
+)]
+pub struct SingleExcitationLoad {
+    qubit: usize,
+    mode: usize,
+}
+
+/// Stores a single excitation from the involved qubit into the involved bosonic mode as follows
+/// |0⟩_B ⨂ (a |0⟩_Q + b |1⟩_Q) -> (a|0⟩_B + b |1⟩_B ) ⨂ |0⟩_Q
+///
+/// Note: not defined if the bosonic mode is in a state |n> with n != 0
+/// Args:
+///     qubit (int): The qubit the gate is applied to.
+///     mode (int): The mode the gate is applied to.
+#[wrap(
+    Operate,
+    Substitute,
+    OperateSingleMode,
+    SubstituteModes,
+    InvolveModes,
+    OperateSingleQubit,
+    InvolveQubits,
+    JsonSchema
+)]
+pub struct SingleExcitationStore {
+    qubit: usize,
+    mode: usize,
+}
+
+/// Controlled-Z operation between a qubit and a bosonic mode.
+/// Args:
+///     qubit (int): The qubit the gate is applied to.
+///     mode (int): The mode the gate is applied to.
+#[wrap(
+    Operate,
+    Substitute,
+    OperateSingleMode,
+    SubstituteModes,
+    InvolveModes,
+    OperateSingleQubit,
+    InvolveQubits,
+    JsonSchema
+)]
+pub struct CZQubitResonator {
+    qubit: usize,
+    mode: usize,
+}

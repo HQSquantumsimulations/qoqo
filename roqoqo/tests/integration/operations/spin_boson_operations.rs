@@ -40,11 +40,27 @@ fn inputs() {
     assert_eq!(op.qubit(), &4_usize);
     assert_eq!(op.mode(), &0_usize);
     assert_eq!(op.theta(), &CalculatorFloat::from(1.5));
+
+    let op = SingleExcitationStore::new(1, 0);
+    assert_eq!(op.qubit(), &1_usize);
+    assert_eq!(op.mode(), &0_usize);
+
+    let op = SingleExcitationLoad::new(1, 0);
+    assert_eq!(op.qubit(), &1_usize);
+    assert_eq!(op.mode(), &0_usize);
+
+    let op = CZQubitResonator::new(1, 0);
+    assert_eq!(op.qubit(), &1_usize);
+    assert_eq!(op.mode(), &0_usize);
+
 }
 
 #[test_case(Operation::from(QuantumRabi::new(4, 0, 1.5.into())))]
 #[test_case(Operation::from(LongitudinalCoupling::new(4, 0, 1.5.into())))]
 #[test_case(Operation::from(JaynesCummings::new(4, 0, 1.5.into())))]
+#[test_case(Operation::from(SingleExcitationLoad::new(4, 0)))]
+#[test_case(Operation::from(SingleExcitationStore::new(4, 0)))]
+#[test_case(Operation::from(CZQubitResonator::new(4, 0)))]
 fn clone(op: Operation) {
     assert_eq!(op.clone(), op);
 }
@@ -55,11 +71,26 @@ fn clone(op: Operation) {
 )]
 #[test_case(
     Operation::from(LongitudinalCoupling::new(4, 0, 1.5.into())),
-   "LongitudinalCoupling(LongitudinalCoupling { qubit: 4, mode: 0, theta: Float(1.5) })"  
+    "LongitudinalCoupling(LongitudinalCoupling { qubit: 4, mode: 0, theta: Float(1.5) })"  
 )]
 #[test_case(
     Operation::from(JaynesCummings::new(4, 0, 1.5.into())),
-   "JaynesCummings(JaynesCummings { qubit: 4, mode: 0, theta: Float(1.5) })"  
+    "JaynesCummings(JaynesCummings { qubit: 4, mode: 0, theta: Float(1.5) })"  
+)]
+#[test_case(
+    Operation::from(SingleExcitationLoad::new(4, 0)),
+    "SingleExcitationLoad(SingleExcitationLoad { qubit: 4, mode: 0 })"
+
+)]
+#[test_case(
+    Operation::from(SingleExcitationStore::new(4, 0)),
+    "SingleExcitationStore(SingleExcitationStore { qubit: 4, mode: 0 })"
+
+)]
+#[test_case(
+    Operation::from(CZQubitResonator::new(4, 0)),
+    "CZQubitResonator(CZQubitResonator { qubit: 4, mode: 0 })"
+
 )]
 fn debug(op: Operation, string: &str) {
     assert_eq!(format!("{:?}", op), string);
@@ -79,6 +110,21 @@ fn debug(op: Operation, string: &str) {
     Operation::from(JaynesCummings::new(4, 0, 1.5.into())),
     Operation::from(JaynesCummings::new(4, 0, 1.5.into())),
     Operation::from(JaynesCummings::new(2, 1, 1.0.into()))
+)]
+#[test_case(
+    Operation::from(SingleExcitationLoad::new(4, 0)),
+    Operation::from(SingleExcitationLoad::new(4, 0)),
+    Operation::from(SingleExcitationLoad::new(2, 1))
+)]
+#[test_case(
+    Operation::from(SingleExcitationStore::new(4, 0)),
+    Operation::from(SingleExcitationStore::new(4, 0)),
+    Operation::from(SingleExcitationStore::new(2, 1))
+)]
+#[test_case(
+    Operation::from(CZQubitResonator::new(4, 0)),
+    Operation::from(CZQubitResonator::new(4, 0)),
+    Operation::from(CZQubitResonator::new(2, 1))
 )]
 fn partial_eq(op: Operation, op_0: Operation, op_1: Operation) {
     assert!(op_0 == op);
@@ -101,6 +147,24 @@ fn partial_eq(op: Operation, op_0: Operation, op_1: Operation) {
 )]
 #[test_case(
     SingleModeOperation::from(JaynesCummings::new(4, 0, 1.5.into())),
+    InvolvedQubits::Set(HashSet::from([4_usize])),
+    InvolvedClassical::None,
+    InvolvedModes::Set(HashSet::from([0_usize]))
+)]
+#[test_case(
+    SingleModeOperation::from(SingleExcitationLoad::new(4, 0)),
+    InvolvedQubits::Set(HashSet::from([4_usize])),
+    InvolvedClassical::None,
+    InvolvedModes::Set(HashSet::from([0_usize]))
+)]
+#[test_case(
+    SingleModeOperation::from(SingleExcitationStore::new(4, 0)),
+    InvolvedQubits::Set(HashSet::from([4_usize])),
+    InvolvedClassical::None,
+    InvolvedModes::Set(HashSet::from([0_usize]))
+)]
+#[test_case(
+    SingleModeOperation::from(CZQubitResonator::new(4, 0)),
     InvolvedQubits::Set(HashSet::from([4_usize])),
     InvolvedClassical::None,
     InvolvedModes::Set(HashSet::from([0_usize]))
@@ -128,6 +192,18 @@ fn involved_qubits_classical_modes(
     SingleModeOperation::from(JaynesCummings::new(1, 0, "test".into())),
     SingleModeOperation::from(JaynesCummings::new(2, 3, 1.5.into()))
 )]
+#[test_case(
+    SingleModeOperation::from(SingleExcitationLoad::new(1, 0)),
+    SingleModeOperation::from(SingleExcitationLoad::new(2, 3)), 
+)]
+#[test_case(
+    SingleModeOperation::from(SingleExcitationStore::new(1, 0)),
+    SingleModeOperation::from(SingleExcitationStore::new(2, 3)), 
+)]
+#[test_case(
+    SingleModeOperation::from(CZQubitResonator::new(1, 0)),
+    SingleModeOperation::from(CZQubitResonator::new(2, 3)), 
+)]
 fn substitute_subsitutemodes(op: SingleModeOperation, op_test: SingleModeOperation) {
     let mut mapping_test: HashMap<usize, usize> = HashMap::new();
     mapping_test.insert(0, 3);
@@ -151,20 +227,29 @@ fn substitute_subsitutemodes(op: SingleModeOperation, op_test: SingleModeOperati
 
 #[test_case(
     Operation::from(QuantumRabi::new(2, 3, 1.5.into())),
-    Operation::from(QuantumRabi::new(1, 0, "test".into())),
     "QuantumRabi"
 )]
 #[test_case(
     Operation::from(LongitudinalCoupling::new(2, 3, 1.5.into())),
-    Operation::from(LongitudinalCoupling::new(1, 0, "test".into())),
     "LongitudinalCoupling"
 )]
 #[test_case(
     Operation::from(JaynesCummings::new(2, 3, 1.5.into())),
-    Operation::from(JaynesCummings::new(1, 0, "test".into())),
     "JaynesCummings"
 )]
-fn operate_one_mode_one_spin(op: Operation, op_param: Operation, name: &str) {
+#[test_case(
+    Operation::from(SingleExcitationLoad::new(1, 0)),
+    "SingleExcitationLoad"
+)]
+#[test_case(
+    Operation::from(SingleExcitationStore::new(1, 0)),
+    "SingleExcitationStore"
+)]
+#[test_case(
+    Operation::from(CZQubitResonator::new(1, 0)),
+    "CZQubitResonator"
+)]
+fn operate_one_mode_one_spin(op: Operation, name: &str) {
     // (1) Test tags function
     let tags: &[&str; 7] = &[
         "Operation",
@@ -179,8 +264,21 @@ fn operate_one_mode_one_spin(op: Operation, op_param: Operation, name: &str) {
 
     // (2) Test hqslang function
     assert_eq!(op.hqslang(), String::from(name));
+}
 
-    // (3) Test is_parametrized function
+#[test_case(
+    Operation::from(QuantumRabi::new(1, 0, "test".into())),
+    "QuantumRabi"
+)]
+#[test_case(
+    Operation::from(LongitudinalCoupling::new(1, 0, "test".into())),
+    "LongitudinalCoupling"
+)]
+#[test_case(
+    Operation::from(JaynesCummings::new(1, 0, "test".into())),
+    "JaynesCummings"
+)]
+fn is_parametrized(op_param: Operation, name: &str) {
     assert!(!op.is_parametrized());
     assert!(op_param.is_parametrized());
 }
@@ -188,6 +286,9 @@ fn operate_one_mode_one_spin(op: Operation, op_param: Operation, name: &str) {
 #[test_case(SingleModeOperation::from(QuantumRabi::new(0, 0, 1.0.into())))]
 #[test_case(SingleModeOperation::from(LongitudinalCoupling::new(0, 0, 1.0.into())))]
 #[test_case(SingleModeOperation::from(JaynesCummings::new(0, 0, 1.0.into())))]
+#[tedt_case(SingleModeOperation::from(SingleExcitationLoad::new(1, 0)))]
+#[tedt_case(SingleModeOperation::from(SingleExcitationStore::new(1, 0)))]
+#[tedt_case(SingleModeOperation::from(CZQubitResonator::new(1, 0)))]
 fn single_mode_op(op: SingleModeOperation) {
     assert_eq!(op.mode(), &0_usize);
 }
@@ -195,6 +296,9 @@ fn single_mode_op(op: SingleModeOperation) {
 #[test_case(SingleQubitOperation::from(QuantumRabi::new(0, 0, 1.0.into())))]
 #[test_case(SingleQubitOperation::from(LongitudinalCoupling::new(0, 0, 1.0.into())))]
 #[test_case(SingleQubitOperation::from(JaynesCummings::new(0, 0, 1.0.into())))]
+#[tedt_case(SingleQubitOperation::from(SingleExcitationLoad::new(1, 0)))]
+#[tedt_case(SingleQubitOperation::from(SingleExcitationStore::new(1, 0)))]
+#[tedt_case(SingleQubitOperation::from(CZQubitResonator::new(1, 0)))]
 fn single_qubit_op(op: SingleQubitOperation) {
     assert_eq!(op.qubit(), &0_usize);
 }
@@ -331,6 +435,114 @@ fn jaynes_cummings_serde() {
     );
 }
 
+#[cfg(feature = "serialize")]
+#[test]
+fn single_excitation_load_serde() {
+    let op = SingleExcitationLoad::new(0, 0);
+
+    assert_tokens(
+        &op.clone().readable(),
+        &[
+            Token::Struct {
+                name: "SingleExcitationLoad",
+                len: 2,
+            },
+            Token::Str("qubit"),
+            Token::U64(0),
+            Token::Str("mode"),
+            Token::U64(0),
+            Token::StructEnd,
+        ],
+    );
+
+    assert_tokens(
+        &op.compact(),
+        &[
+            Token::Struct {
+                name: "SingleExcitationLoad",
+                len: 2,
+            },
+            Token::Str("qubit"),
+            Token::U64(0),
+            Token::Str("mode"),
+            Token::U64(0),
+            Token::StructEnd,
+        ],
+    );
+}
+
+#[cfg(feature = "serialize")]
+#[test]
+fn single_excitation_store_serde() {
+    let op = SingleExcitationStore::new(0, 0);
+
+    assert_tokens(
+        &op.clone().readable(),
+        &[
+            Token::Struct {
+                name: "SingleExcitationStore",
+                len: 2,
+            },
+            Token::Str("qubit"),
+            Token::U64(0),
+            Token::Str("mode"),
+            Token::U64(0),
+            Token::StructEnd,
+        ],
+    );
+
+    assert_tokens(
+        &op.compact(),
+        &[
+            Token::Struct {
+                name: "SingleExcitationStore",
+                len: 2,
+            },
+            Token::Str("qubit"),
+            Token::U64(0),
+            Token::Str("mode"),
+            Token::U64(0),
+            Token::StructEnd,
+        ],
+    );
+}
+
+#[cfg(feature = "serialize")]
+#[test]
+fn cz_qubit_resonator_serde() {
+    let op = CZQubitResonator::new(0, 0);
+
+    assert_tokens(
+        &op.clone().readable(),
+        &[
+            Token::Struct {
+                name: "CZQubitResonator",
+                len: 2,
+            },
+            Token::Str("qubit"),
+            Token::U64(0),
+            Token::Str("mode"),
+            Token::U64(0),
+            Token::StructEnd,
+        ],
+    );
+
+    assert_tokens(
+        &op.compact(),
+        &[
+            Token::Struct {
+                name: "CZQubitResonator",
+                len: 2,
+            },
+            Token::Str("qubit"),
+            Token::U64(0),
+            Token::Str("mode"),
+            Token::U64(0),
+            Token::StructEnd,
+        ],
+    );
+}
+
 #[cfg(feature = "json_schema")]
 #[test]
 fn quantumrabi_json_schema() {
@@ -383,6 +595,69 @@ fn jaynes_cummings_json_schema() {
 
     // Create JSONSchema
     let test_schema = schema_for!(JaynesCummings);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
+#[cfg(feature = "json_schema")]
+#[test]
+fn single_excitation_load_json_schema() {
+    let def = SingleExcitationLoad::new(0, 0);
+    // Serialize
+    let test_json = serde_json::to_string(&def).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(SingleExcitationLoad);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
+#[cfg(feature = "json_schema")]
+#[test]
+fn single_excitation_store_json_schema() {
+    let def = SingleExcitationStore::new(0, 0);
+    // Serialize
+    let test_json = serde_json::to_string(&def).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(SingleExcitationStore);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
+#[cfg(feature = "json_schema")]
+#[test]
+fn cz_qubit_resonator_json_schema() {
+    let def = CZQubitResonator::new(0, 0);
+    // Serialize
+    let test_json = serde_json::to_string(&def).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(CZQubitResonator);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
     let compiled_schema = JSONSchema::options()
