@@ -13,7 +13,14 @@
 use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
-use qoqo::operations::{JaynesCummingsWrapper, LongitudinalCouplingWrapper, QuantumRabiWrapper};
+use qoqo::operations::{
+    JaynesCummingsWrapper,
+    LongitudinalCouplingWrapper,
+    QuantumRabiWrapper,
+    SingleExcitationLoadWrapper,
+    SingleExcitationStoreWrapper,
+    CZQubitResonatorWrapper,
+};
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use qoqo_calculator_pyo3::CalculatorFloatWrapper;
 use roqoqo::operations::Operation;
@@ -264,7 +271,7 @@ fn test_new_single_excitation_load(input_operation: Operation, arguments: (u32, 
 /// Test new() function for SingleExcitationStore
 #[test_case(Operation::from(SingleExcitationStore::new(1, 0)), (1, 0), "__eq__"; "SingleExcitationStore_eq")]
 #[test_case(Operation::from(SingleExcitationStore::new(1, 0)), (0, 1), "__ne__"; "SingleExcitationStore_ne")]
-fn test_new_single_excitation_load(input_operation: Operation, arguments: (u32, u32), method: &str) {
+fn test_new_single_excitation_store(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -306,7 +313,7 @@ fn test_new_single_excitation_load(input_operation: Operation, arguments: (u32, 
 /// Test new() function for CZQubitResonator
 #[test_case(Operation::from(CZQubitResonator::new(1, 0)), (1, 0), "__eq__"; "CZQubitResonator_eq")]
 #[test_case(Operation::from(CZQubitResonator::new(1, 0)), (0, 1), "__ne__"; "CZQubitResonator_ne")]
-fn test_new_single_excitation_load(input_operation: Operation, arguments: (u32, u32), method: &str) {
+fn test_new_cz_qubit_resonator(input_operation: Operation, arguments: (u32, u32), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
