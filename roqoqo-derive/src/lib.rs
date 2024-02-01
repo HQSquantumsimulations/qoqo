@@ -301,7 +301,7 @@ fn extract_variants_with_types(de: DataEnum) -> Vec<(Ident, Option<String>, Type
             .expect("Trait can only be derived for enums with newtype structs as variants")
             .ty
             .clone();
-        let type_path =match &ty {
+        let type_path = match &ty {
             Type::Path(TypePath{path:p,..}) => p,
             _ => panic!("Trait only supports newtype variants with normal types of form path (e.g. CalculatorFloat, qoqo_calculator::CalculatorFloat)")
         };
@@ -311,6 +311,6 @@ fn extract_variants_with_types(de: DataEnum) -> Vec<(Ident, Option<String>, Type
             .segments
             .last().map(|segment|{segment.ident.to_string()})
         };
-        (vident, type_string ,ty)
+        (vident, type_string , ty)
     }).collect()
 }

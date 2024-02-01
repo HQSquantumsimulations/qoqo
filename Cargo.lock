@@ -56,9 +56,9 @@ dependencies = [
 
 [[package]]
 name = "anstyle"
-version = "1.0.4"
+version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7079075b41f533b8c61d2a4d073c4676e1f8b249ff94a393b0595db304e0dd87"
+checksum = "2faccea4cc4ab4a667ce676a30e8ec13922a692c99bb8f5b11f1502c72e04220"
 
 [[package]]
 name = "anstyle-parse"
@@ -610,9 +610,9 @@ dependencies = [
 
 [[package]]
 name = "itertools"
-version = "0.12.0"
+version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "25db6b064527c5d482d0423354fcd07a89a2dfe07b67892e62411946db7f07b0"
+checksum = "ba291022dbbd398a455acf126c1e341954079855bc60dfdda641363bd6922569"
 dependencies = [
  "either",
 ]
@@ -1073,7 +1073,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "1.9.2"
+version = "1.10.0"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -1100,7 +1100,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "1.9.2"
+version = "1.10.0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1263,7 +1263,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.9.2"
+version = "1.10.0"
 dependencies = [
  "async-trait",
  "bincode",
@@ -1293,7 +1293,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "1.9.2"
+version = "1.10.0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1302,7 +1302,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "1.9.2"
+version = "1.10.0"
 dependencies = [
  "nalgebra",
  "ndarray",
@@ -1917,9 +1917,9 @@ dependencies = [
 
 [[package]]
 name = "wide"
-version = "0.7.14"
+version = "0.7.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b31891d644eba1789fb6715f27fbc322e4bdf2ecdc412ede1993246159271613"
+checksum = "89beec544f246e679fc25490e3f8e08003bc4bf612068f325120dad4cea02c1c"
 dependencies = [
  "bytemuck",
  "safe_arch",

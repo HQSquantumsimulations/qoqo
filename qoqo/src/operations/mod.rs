@@ -30,6 +30,10 @@ mod multi_qubit_gate_operations;
 pub use multi_qubit_gate_operations::*;
 mod bosonic_operations;
 pub use bosonic_operations::*;
+#[cfg(feature = "unstable_spin_boson_operations")]
+mod spin_boson_operations;
+#[cfg(feature = "unstable_spin_boson_operations")]
+pub use spin_boson_operations::*;
 include!(concat!(
     env!("OUT_DIR"),
     "/_auto_generated_operation_conversion.rs"
@@ -148,5 +152,12 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<EchoCrossResonanceWrapper>()?;
     m.add_class::<PragmaAnnotatedOpWrapper>()?;
     // 1.9
+    // 1.10
+    #[cfg(feature = "unstable_spin_boson_operations")]
+    m.add_class::<QuantumRabiWrapper>()?;
+    #[cfg(feature = "unstable_spin_boson_operations")]
+    m.add_class::<LongitudinalCouplingWrapper>()?;
+    #[cfg(feature = "unstable_spin_boson_operations")]
+    m.add_class::<JaynesCummingsWrapper>()?;
     Ok(())
 }

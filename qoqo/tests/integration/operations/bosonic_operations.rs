@@ -461,7 +461,7 @@ fn test_pyo3_mode0_mode_1(mode_0: usize, mode_1: usize, input_operation: Operati
     })
 }
 
-/// Test Squeezing hqslang() function for SingleModeGate Operations
+/// Test hqslang() function for SingleModeGate Operations
 #[test_case("Squeezing", Operation::from(Squeezing::new(0, CalculatorFloat::from(0), 0.0.into())); "Squeezing")]
 #[test_case("PhaseDisplacement", Operation::from(PhaseDisplacement::new(0, CalculatorFloat::from(0), 0.1.into())); "PhaseDisplacement")]
 #[test_case("PhaseShift", Operation::from(PhaseShift::new(0, CalculatorFloat::from(0))); "PhaseShift")]
@@ -567,7 +567,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        // test initial mode
+        // test initial qubit
         let involved_qubits: HashSet<usize> = HashSet::<usize>::extract(
             operation
                 .call_method0(py, "involved_qubits")
@@ -576,7 +576,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
         )
         .unwrap();
         assert_eq!(involved_qubits, HashSet::<usize>::new());
-        // remap modes
+        // remap qubits
         let result = operation
             .call_method1(py, "remap_qubits", (HashMap::<usize, usize>::new(),))
             .unwrap();

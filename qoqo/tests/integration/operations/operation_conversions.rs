@@ -136,6 +136,19 @@ fn test_conversion(input: Operation) {
     })
 }
 
+#[cfg(feature = "unstable_spin_boson_operations")]
+#[test_case(Operation::from(QuantumRabi::new(0, 1, 1.0.into())); "QuantumRabi")]
+#[test_case(Operation::from(LongitudinalCoupling::new(0, 1, 1.0.into())); "LongitudinalCoupling")]
+#[test_case(Operation::from(JaynesCummings::new(0, 1, 1.0.into())); "JaynesCummings")]
+fn test_conversion_feature(input: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input.clone()).unwrap();
+        let output = convert_pyany_to_operation(operation.as_ref(py)).unwrap();
+        assert_eq!(input, output)
+    })
+}
+
 // ---------------- Helper functions ---------------- //
 
 fn reordering() -> HashMap<usize, usize> {

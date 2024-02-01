@@ -56,10 +56,15 @@ pub use two_qubit_gate_operations::*;
 #[doc(hidden)]
 mod three_qubit_gate_operations;
 pub use three_qubit_gate_operations::*;
-/// Collection of roqoqo three qubit gate operations.
+/// Collection of roqoqo bosonic operations.
 #[doc(hidden)]
 mod bosonic_operations;
 pub use bosonic_operations::*;
+/// Collection of roqoqo spin-boson operations.
+#[cfg(feature = "unstable_spin_boson_operations")]
+mod spin_boson_operations;
+#[cfg(feature = "unstable_spin_boson_operations")]
+pub use spin_boson_operations::*;
 
 include!(concat!(env!("OUT_DIR"), "/_auto_generated_operations.rs"));
 
@@ -804,8 +809,6 @@ pub trait OperateMultiQubitGate:
     fn circuit(&self) -> crate::Circuit;
 }
 
-// Implementing DynOperation for storing dynamic operations from extern crates in trait object
-
 /// Marker trait to show that some operation has been implemented in roqoqo 1.1.0
 pub(crate) trait ImplementedIn1point1: Operate {}
 
@@ -832,6 +835,9 @@ pub(crate) trait ImplementedIn1point8: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.9.0
 pub(crate) trait ImplementedIn1point9: Operate {}
+
+/// Marker trait to show that some operation has been implemented in roqoqo 1.10.0
+pub(crate) trait ImplementedIn1point10: Operate {}
 
 #[cfg(feature = "dynamic")]
 /// A wrapper for Operate trait objects.

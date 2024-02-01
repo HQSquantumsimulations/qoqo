@@ -137,6 +137,16 @@ fn test_version_1_8_0_single_mode_gate(operation: operations::SingleModeGateOper
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 8, 0));
 }
 
+#[cfg(feature = "unstable_spin_boson_operations")]
+#[test_case(operations::SingleModeGateOperation::from(operations::QuantumRabi::new(1, 0, 1.0.into()));"QuantumRabi")]
+#[test_case(operations::SingleModeGateOperation::from(operations::LongitudinalCoupling::new(1, 0, 1.0.into()));"LongitudinalCoupling")]
+#[test_case(operations::SingleModeGateOperation::from(operations::JaynesCummings::new(1, 0, 1.0.into()));"JaynesCummings")]
+fn test_version_1_10_0_single_mode_gate(operation: operations::SingleModeGateOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 10, 0));
+    let op = operations::Operation::try_from(operation).unwrap();
+    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 10, 0));
+}
+
 #[test_case(operations::TwoModeGateOperation::from(operations::BeamSplitter::new(0, 1, 0.5.into(), 1.0.into())); "BeamSplitter")]
 fn test_version_1_6_0_two_mode_gate(operation: operations::TwoModeGateOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 6, 0));

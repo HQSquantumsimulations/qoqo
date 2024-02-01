@@ -124,6 +124,8 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/measurement_operations.rs",
     "src/operations/define_operations.rs",
     "src/operations/bosonic_operations.rs",
+    #[cfg(feature = "unstable_spin_boson_operations")]
+    "src/operations/spin_boson_operations.rs",
 ];
 
 fn main() {
@@ -288,7 +290,7 @@ fn extract_fields_with_types(input_fields: Fields) -> Vec<(Ident, Option<String>
         let ty = f.ty;
         let type_path =match &ty {
             Type::Path(TypePath{path:p,..}) => p,
-            _ => panic!("Trait  only supports fields with normal types of form path (e.g. CalculatorFloat, qoqo_calculator::CalculatorFloat)")
+            _ => panic!("Trait only supports fields with normal types of form path (e.g. CalculatorFloat, qoqo_calculator::CalculatorFloat)")
         };
         let mut type_string = match type_path.get_ident(){
             Some(ident_path) => Some(ident_path.to_string()),
