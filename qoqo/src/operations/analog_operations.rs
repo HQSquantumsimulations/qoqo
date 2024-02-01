@@ -24,7 +24,7 @@ use struqture_py::spins::SpinHamiltonianSystemWrapper;
 use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
-#[wrap(Operate, OperateModeGate)]
+#[wrap(Operate)]
 ///  Constant Hamiltonian operation on analog quantum device (PASCAL)
 ///
 ///
@@ -36,7 +36,7 @@ pub struct ApplyConstantSpinHamiltonian {
     time: CalculatorFloat,
 }
 
-#[wrap(Operate, OperateModeGate)]
+#[wrap(Operate)]
 ///  Constant Hamiltonian operation on analog quantum device (PASCAL)
 ///
 ///

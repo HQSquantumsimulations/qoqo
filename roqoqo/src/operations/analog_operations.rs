@@ -11,7 +11,7 @@
 // limitations under the License.
 
 use crate::operations::{
-    InvolveQubits, InvolvedQubits, Operate, OperateSpinsAnalog, Substitute, SubstituteModes,
+    InvolveQubits, InvolvedQubits, Operate, OperateSpinsAnalog, Substitute,
     SupportedVersion,
 };
 use crate::RoqoqoError;
@@ -22,15 +22,12 @@ use struqture::OperateOnDensityMatrix;
 use struqture::SpinIndex;
 
 /// Implements the continuous time spin Hamiltonian
-///
-///
 #[derive(
     Debug,
     Clone,
     PartialEq,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
-    roqoqo_derive::SubstituteModes,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
@@ -78,7 +75,6 @@ impl InvolveQubits for ApplyConstantSpinHamiltonian {
     PartialEq,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
-    roqoqo_derive::SubstituteModes,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]

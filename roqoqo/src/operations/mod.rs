@@ -1068,6 +1068,6 @@ pub trait OperateTwoModeGate:
 ///
 ///
 pub trait OperateSpinsAnalog: Operate + Clone + PartialEq + SupportedVersion {
-    /// Returns spin incomplete docstring
+/// Trait for all analog operations acting on spins.
     fn spin(&self) -> Vec<usize>;
 }

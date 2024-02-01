@@ -15,7 +15,6 @@ use proc_macro2::TokenStream;
 use quote::{format_ident, quote};
 use std::collections::HashSet;
 use syn::{Data, DataStruct, DeriveInput, Ident};
-// use struqture_py::spins::SpinHamiltonianSystemWrapper;
 
 /// Dispatch to derive Operate for enums and structs
 
@@ -163,7 +162,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     quote! {
                         #[doc = #msg]
                         pub fn #id(&self) -> SpinHamiltonianSystemWrapper{
-                            let shs = struqture::spins::SpinHamiltonianSystem::from_hamiltonian(self.internal.#id().clone(), None).expect("Unexpected unfail");
+                            let shs = struqture::spins::SpinHamiltonianSystem::from_hamiltonian(self.internal.#id().clone(), None).expect("Unexpectedly could not construct SpinHamiltonianSystem from SpinHamiltonian");
                             SpinHamiltonianSystemWrapper{internal: shs}
                         }
                     }
