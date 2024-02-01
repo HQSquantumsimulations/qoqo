@@ -120,13 +120,13 @@ fn test_bincode_compatibility_1_9(operation: test_roqoqo_1_9::operations::Operat
     let mut test_circuit = test_roqoqo_1_9::Circuit::new();
     test_circuit += operation;
 
-    let test_measurement_input = test_roqoqo_1_8::measurements::PauliZProductInput::new(3, false);
-    let test_measurement = test_roqoqo_1_8::measurements::PauliZProduct {
+    let test_measurement_input = test_roqoqo_1_9::measurements::PauliZProductInput::new(3, false);
+    let test_measurement = test_roqoqo_1_9::measurements::PauliZProduct {
         constant_circuit: Some(test_circuit.clone()),
         circuits: vec![test_circuit],
         input: test_measurement_input,
     };
-    let test_program = test_roqoqo_1_8::QuantumProgram::PauliZProduct {
+    let test_program = test_roqoqo_1_9::QuantumProgram::PauliZProduct {
         measurement: test_measurement,
         input_parameter_names: vec!["test".to_string()],
     };
@@ -138,7 +138,7 @@ fn test_bincode_compatibility_1_9(operation: test_roqoqo_1_9::operations::Operat
 
 #[test]
 fn test_device_compat() {
-    let test_device = test_roqoqo_1_8::devices::AllToAllDevice::new(
+    let test_device = test_roqoqo_1_9::devices::AllToAllDevice::new(
         3,
         &["RotateZ".to_string()],
         &["CNOT".to_string()],
