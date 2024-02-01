@@ -11,7 +11,7 @@
 // limitations under the License.
 
 use crate::operations::{
-    InvolveQubits, InvolvedQubits, Operate, OperateSpinsAnalog, Substitute,
+    ImplementedIn1point10, InvolveQubits, InvolvedQubits, Operate, OperateSpinsAnalog, Substitute,
     SupportedVersion,
 };
 use crate::RoqoqoError;
@@ -21,7 +21,7 @@ use struqture::spins::{PauliProduct, SpinHamiltonian};
 use struqture::OperateOnDensityMatrix;
 use struqture::SpinIndex;
 
-/// Implements the continuous time spin Hamiltonian
+/// Implements the continuous time, constant spin Hamiltonian
 #[derive(
     Debug,
     Clone,
@@ -32,7 +32,9 @@ use struqture::SpinIndex;
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct ApplyConstantSpinHamiltonian {
+    /// Hamiltonian to be simulated.
     pub hamiltonian: SpinHamiltonian,
+    /// Time of evolution.
     pub time: CalculatorFloat,
 }
 
@@ -43,6 +45,8 @@ const TAGS_ApplyConstantSpinHamiltonian: &[&str; 4] = &[
     "OperateSpinsAnalog",
     "ApplyConstantSpinHamiltonian",
 ];
+
+impl ImplementedIn1point10 for ApplyConstantSpinHamiltonian {}
 
 impl OperateSpinsAnalog for ApplyConstantSpinHamiltonian {
     fn spin(&self) -> Vec<usize> {
@@ -59,7 +63,7 @@ impl OperateSpinsAnalog for ApplyConstantSpinHamiltonian {
 }
 impl SupportedVersion for ApplyConstantSpinHamiltonian {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 6, 0)
+        (1, 10, 0)
     }
 }
 
@@ -69,6 +73,7 @@ impl InvolveQubits for ApplyConstantSpinHamiltonian {
     }
 }
 
+/// Implements the continuous time , time-dependent spin Hamiltonian
 #[derive(
     Debug,
     Clone,
@@ -79,7 +84,9 @@ impl InvolveQubits for ApplyConstantSpinHamiltonian {
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct ApplyTimeDependentSpinHamiltonian {
+    /// Hamiltonian to be simulated.
     hamiltonian: SpinHamiltonian,
+    /// Time of evolution.
     time: Vec<f64>,
     values: HashMap<String, Vec<f64>>,
 }
@@ -91,6 +98,9 @@ const TAGS_ApplyTimeDependentSpinHamiltonian: &[&str; 4] = &[
     "OperateSpinsAnalog",
     "ApplyTimeDependentSpinHamiltonian",
 ];
+
+impl ImplementedIn1point10 for ApplyTimeDependentSpinHamiltonian {}
+
 
 impl OperateSpinsAnalog for ApplyTimeDependentSpinHamiltonian {
     fn spin(&self) -> Vec<usize> {
@@ -108,7 +118,7 @@ impl OperateSpinsAnalog for ApplyTimeDependentSpinHamiltonian {
 
 impl SupportedVersion for ApplyTimeDependentSpinHamiltonian {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 6, 0)
+        (1, 10, 0)
     }
 }
 

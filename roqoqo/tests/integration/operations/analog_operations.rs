@@ -3,13 +3,6 @@ use roqoqo::operations::*;
 use std::collections::HashMap;
 use struqture::prelude::*;
 use struqture::spins::{PauliProduct, SpinHamiltonian};
-#[test]
-fn squeezing_inputs() {
-    let op = Squeezing::new(1, 0.1.into(), 0.0.into());
-    assert_eq!(op.mode(), &1_usize);
-    assert_eq!(op.squeezing(), &CalculatorFloat::from(0.1));
-    assert_eq!(op.phase(), &CalculatorFloat::from(0.0));
-}
 
 #[test]
 fn operate_analog_const_spin() {

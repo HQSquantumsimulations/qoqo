@@ -66,8 +66,9 @@ mod spin_boson_operations;
 #[cfg(feature = "unstable_spin_boson_operations")]
 pub use spin_boson_operations::*;
 /// Collection of roqoqo analog gate operations
-#[doc(hidden)]
+// #[cfg(feature = "unstable_analog_operations")]
 mod analog_operations;
+// #[cfg(feature = "unstable_analog_operations")]
 pub use analog_operations::*;
 
 include!(concat!(env!("OUT_DIR"), "/_auto_generated_operations.rs"));
