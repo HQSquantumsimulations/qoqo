@@ -21,7 +21,7 @@ use roqoqo::operations::*;
 use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
-/// The quantum Rabi interaction exp(-i * θ * X * (b^{dagger} + b))
+/// The quantum Rabi interaction exp(-i * θ * X * (b^† + b))
 ///
 /// Args:
 ///     qubit (int): The qubit the gate is applied to.
@@ -43,7 +43,7 @@ pub struct QuantumRabi {
     theta: CalculatorFloat,
 }
 
-/// Longitudinal coupling gate exp(-i * θ * Z * (b^{dagger} + b))
+/// Longitudinal coupling gate exp(-i * θ * Z * (b^† + b))
 ///
 /// Args:
 ///     qubit (int): The qubit the gate is applied to.
@@ -65,7 +65,7 @@ pub struct LongitudinalCoupling {
     theta: CalculatorFloat,
 }
 
-/// The Jaynes-Cummings gate exp(-i * θ * (σ^- * b^{dagger} + σ^+ * b))
+/// The Jaynes-Cummings gate exp(-i * θ * (σ^- * b^† + σ^+ * b))
 ///
 /// Args:
 ///     qubit (int): The qubit the gate is applied to.
@@ -90,7 +90,7 @@ pub struct JaynesCummings {
 /// Loads a single excitation from a bosonic mode into a qubit as follows
 /// (c1 |0⟩_B + c2 |1⟩_B) ⨂ |0⟩_Q -> |0⟩_B ⨂ (c1 |0⟩_Q + c2 |1⟩_Q)
 ///
-/// Note: if the initial qubit state is |1>_Q the operation is only defined if c2 = 0
+/// Note: if the initial qubit state is |1⟩_Q the operation is only defined if c2 = 0
 ///
 /// Args:
 ///     qubit (int): The qubit the gate is applied to.
@@ -113,7 +113,7 @@ pub struct SingleExcitationLoad {
 /// Stores a single excitation from the involved qubit into the involved bosonic mode as follows
 /// |0⟩_B ⨂ (a |0⟩_Q + b |1⟩_Q) -> (a|0⟩_B + b |1⟩_B ) ⨂ |0⟩_Q
 ///
-/// Note: not defined if the bosonic mode is in a state |n> with n != 0
+/// Note: not defined if the bosonic mode is in a state |n⟩ with n != 0
 ///
 /// Args:
 ///     qubit (int): The qubit the gate is applied to.
@@ -133,7 +133,9 @@ pub struct SingleExcitationStore {
     mode: usize,
 }
 
-/// Controlled-Z operation between a qubit and a bosonic mode.
+/// Controlled-Z operation between a qubit and a bosonic mode, where the two-dimensional subspace of
+/// the bosonic mode spanned by the occupation number states |0⟩_B and |1⟩_B is considered
+/// as the second qubit involved in the CZ operation.
 ///
 /// Args:
 ///     qubit (int): The qubit the gate is applied to.

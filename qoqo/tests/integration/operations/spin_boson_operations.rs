@@ -14,12 +14,8 @@ use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
-    JaynesCummingsWrapper,
-    LongitudinalCouplingWrapper,
-    QuantumRabiWrapper,
-    SingleExcitationLoadWrapper,
-    SingleExcitationStoreWrapper,
-    CZQubitResonatorWrapper,
+    CZQubitResonatorWrapper, JaynesCummingsWrapper, LongitudinalCouplingWrapper,
+    QuantumRabiWrapper, SingleExcitationLoadWrapper, SingleExcitationStoreWrapper,
 };
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use qoqo_calculator_pyo3::CalculatorFloatWrapper;
@@ -229,7 +225,11 @@ fn test_new_jaynes_cummings(input_operation: Operation, arguments: (u32, u32, f6
 /// Test new() function for SingleExcitationLoad
 #[test_case(Operation::from(SingleExcitationLoad::new(1, 0)), (1, 0), "__eq__"; "SingleExcitationLoad_eq")]
 #[test_case(Operation::from(SingleExcitationLoad::new(1, 0)), (0, 1), "__ne__"; "SingleExcitationLoad_ne")]
-fn test_new_single_excitation_load(input_operation: Operation, arguments: (u32, u32), method: &str) {
+fn test_new_single_excitation_load(
+    input_operation: Operation,
+    arguments: (u32, u32),
+    method: &str,
+) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -249,13 +249,17 @@ fn test_new_single_excitation_load(input_operation: Operation, arguments: (u32, 
         .unwrap();
         assert!(comparison);
 
-        let def_wrapper = operation_py.extract::<SingleExcitationLoadWrapper>().unwrap();
+        let def_wrapper = operation_py
+            .extract::<SingleExcitationLoadWrapper>()
+            .unwrap();
         let new_op_diff = operation_type
             .call1((2, 3))
             .unwrap()
             .downcast::<PyCell<SingleExcitationLoadWrapper>>()
             .unwrap();
-        let def_wrapper_diff = new_op_diff.extract::<SingleExcitationLoadWrapper>().unwrap();
+        let def_wrapper_diff = new_op_diff
+            .extract::<SingleExcitationLoadWrapper>()
+            .unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
         let helper_eq: bool = def_wrapper == def_wrapper.clone();
@@ -271,7 +275,11 @@ fn test_new_single_excitation_load(input_operation: Operation, arguments: (u32, 
 /// Test new() function for SingleExcitationStore
 #[test_case(Operation::from(SingleExcitationStore::new(1, 0)), (1, 0), "__eq__"; "SingleExcitationStore_eq")]
 #[test_case(Operation::from(SingleExcitationStore::new(1, 0)), (0, 1), "__ne__"; "SingleExcitationStore_ne")]
-fn test_new_single_excitation_store(input_operation: Operation, arguments: (u32, u32), method: &str) {
+fn test_new_single_excitation_store(
+    input_operation: Operation,
+    arguments: (u32, u32),
+    method: &str,
+) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -291,13 +299,17 @@ fn test_new_single_excitation_store(input_operation: Operation, arguments: (u32,
         .unwrap();
         assert!(comparison);
 
-        let def_wrapper = operation_py.extract::<SingleExcitationStoreWrapper>().unwrap();
+        let def_wrapper = operation_py
+            .extract::<SingleExcitationStoreWrapper>()
+            .unwrap();
         let new_op_diff = operation_type
             .call1((2, 3))
             .unwrap()
             .downcast::<PyCell<SingleExcitationStoreWrapper>>()
             .unwrap();
-        let def_wrapper_diff = new_op_diff.extract::<SingleExcitationStoreWrapper>().unwrap();
+        let def_wrapper_diff = new_op_diff
+            .extract::<SingleExcitationStoreWrapper>()
+            .unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
         let helper_eq: bool = def_wrapper == def_wrapper.clone();
