@@ -71,11 +71,11 @@ fn clone(op: Operation) {
 )]
 #[test_case(
     Operation::from(LongitudinalCoupling::new(4, 0, 1.5.into())),
-    "LongitudinalCoupling(LongitudinalCoupling { qubit: 4, mode: 0, theta: Float(1.5) })"  
+   "LongitudinalCoupling(LongitudinalCoupling { qubit: 4, mode: 0, theta: Float(1.5) })"  
 )]
 #[test_case(
     Operation::from(JaynesCummings::new(4, 0, 1.5.into())),
-    "JaynesCummings(JaynesCummings { qubit: 4, mode: 0, theta: Float(1.5) })"  
+   "JaynesCummings(JaynesCummings { qubit: 4, mode: 0, theta: Float(1.5) })"  
 )]
 #[test_case(
     Operation::from(SingleExcitationLoad::new(4, 0)),

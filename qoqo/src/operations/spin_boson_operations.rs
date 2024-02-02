@@ -87,7 +87,6 @@ pub struct JaynesCummings {
     theta: CalculatorFloat,
 }
 
-
 /// Loads a single excitation from a bosonic mode into a qubit as follows
 /// (c1 |0⟩_B + c2 |1⟩_B) ⨂ |0⟩_Q -> |0⟩_B ⨂ (c1 |0⟩_Q + c2 |1⟩_Q)
 ///
@@ -115,6 +114,7 @@ pub struct SingleExcitationLoad {
 /// |0⟩_B ⨂ (a |0⟩_Q + b |1⟩_Q) -> (a|0⟩_B + b |1⟩_B ) ⨂ |0⟩_Q
 ///
 /// Note: not defined if the bosonic mode is in a state |n> with n != 0
+///
 /// Args:
 ///     qubit (int): The qubit the gate is applied to.
 ///     mode (int): The mode the gate is applied to.
@@ -134,6 +134,7 @@ pub struct SingleExcitationStore {
 }
 
 /// Controlled-Z operation between a qubit and a bosonic mode.
+///
 /// Args:
 ///     qubit (int): The qubit the gate is applied to.
 ///     mode (int): The mode the gate is applied to.
