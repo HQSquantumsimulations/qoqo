@@ -40,7 +40,7 @@ fn constant_spin_hamiltonian_json_schema() {
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
     // Create JSONSchema
-    let test_schema = schema_for!(Squeezing);
+    let test_schema = schema_for!(ApplyConstantSpinHamiltonian);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
     let compiled_schema = JSONSchema::options()
@@ -71,7 +71,7 @@ fn timedependent_spin_hamiltonian_json_schema() {
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
 
     // Create JSONSchema
-    let test_schema = schema_for!(Squeezing);
+    let test_schema = schema_for!(ApplyTimeDependentSpinHamiltonian);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
     let compiled_schema = JSONSchema::options()
