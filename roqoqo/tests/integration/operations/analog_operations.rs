@@ -16,13 +16,13 @@
 use jsonschema::{Draft, JSONSchema};
 use qoqo_calculator::CalculatorFloat;
 use roqoqo::operations::*;
-use std::collections::HashMap;
-use struqture::prelude::*;
-use struqture::spins::{PauliProduct, SpinHamiltonian};
 #[cfg(feature = "json_schema")]
 use schemars::schema_for;
 #[cfg(feature = "serialize")]
 use serde_test::{assert_tokens, Configure, Token};
+use std::collections::HashMap;
+use struqture::prelude::*;
+use struqture::spins::{PauliProduct, SpinHamiltonian};
 
 #[cfg(feature = "json_schema")]
 #[test]
@@ -34,7 +34,7 @@ fn constant_spin_hamiltonian_json_schema() {
         .unwrap();
     let time = CalculatorFloat::from(1.0);
     let op = ApplyConstantSpinHamiltonian::new(hamiltonian, time.clone());
-    
+
     // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
@@ -60,12 +60,12 @@ fn timedependent_spin_hamiltonian_json_schema() {
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(1.0))
         .unwrap();
-    
+
     let mut values = HashMap::new();
     values.insert("omega".to_string(), vec![1.0]);
 
     let op = ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
-    
+
     // Serialize
     let test_json = serde_json::to_string(&op).unwrap();
     let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
@@ -83,6 +83,221 @@ fn timedependent_spin_hamiltonian_json_schema() {
     assert!(validation_result.is_ok());
 }
 
+#[cfg(feature = "serialize")]
+#[test]
+fn constant_spin_hamiltonian_serde() {
+    let pp = PauliProduct::new().z(0);
+    let mut hamiltonian = SpinHamiltonian::new();
+    hamiltonian
+        .add_operator_product(pp.clone(), CalculatorFloat::from(1.0))
+        .unwrap();
+    let time = CalculatorFloat::from(1.0);
+    let op = ApplyConstantSpinHamiltonian::new(hamiltonian, time.clone());
+
+    assert_tokens(
+        &op.clone().readable(),
+        &[
+            Token::Struct {
+                name: "ApplyConstantSpinHamiltonian",
+                len: 2,
+            },
+            Token::Str("hamiltonian"),
+            Token::Struct {
+                name: "SpinHamiltonianSerialize",
+                len: 2,
+            },
+            Token::Str("items"),
+            Token::Seq { len: Some(1) },
+            Token::Tuple { len: 2 },
+            Token::Str("0Z"),
+            Token::F64(1.0),
+            Token::TupleEnd,
+            Token::SeqEnd,
+            Token::Str("_struqture_version"),
+            Token::Struct {
+                name: "StruqtureVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(1),
+            Token::Str("minor_version"),
+            Token::U32(0),
+            Token::StructEnd,
+            Token::StructEnd,
+            Token::Str("time"),
+            Token::F64(1.0),
+            Token::StructEnd,
+        ],
+    );
+
+    assert_tokens(
+        &op.compact(),
+        &[
+            Token::Struct {
+                name: "ApplyConstantSpinHamiltonian",
+                len: 2,
+            },
+            Token::Str("hamiltonian"),
+            Token::Struct {
+                name: "SpinHamiltonianSerialize",
+                len: 2,
+            },
+            Token::Str("items"),
+            Token::Seq { len: Some(1) },
+            Token::Tuple { len: 2 },
+            Token::Seq { len: Some(1) },
+            Token::Tuple { len: 2 },
+            Token::U64(0),
+            Token::UnitVariant {
+                name: "SingleSpinOperator",
+                variant: "Z",
+            },
+            Token::TupleEnd,
+            Token::SeqEnd,
+            Token::NewtypeVariant {
+                name: "CalculatorFloat",
+                variant: "Float",
+            },
+            Token::F64(1.0),
+            Token::TupleEnd,
+            Token::SeqEnd,
+            Token::Str("_struqture_version"),
+            Token::Struct {
+                name: "StruqtureVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(1),
+            Token::Str("minor_version"),
+            Token::U32(0),
+            Token::StructEnd,
+            Token::StructEnd,
+            Token::Str("time"),
+            Token::NewtypeVariant {
+                name: "CalculatorFloat",
+                variant: "Float",
+            },
+            Token::F64(1.0),
+            Token::StructEnd,
+        ],
+    );
+}
+
+#[cfg(feature = "serialize")]
+#[test]
+fn timedependent_hamiltonian_serde() {
+    let pp = PauliProduct::new().z(0);
+    let mut hamiltonian = SpinHamiltonian::new();
+    hamiltonian
+        .add_operator_product(pp.clone(), CalculatorFloat::from(1.0))
+        .unwrap();
+
+    let mut values = HashMap::new();
+    values.insert("omega".to_string(), vec![1.0]);
+
+    let op = ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
+    assert_tokens(
+        &op.clone().readable(),
+        &[
+            Token::Struct {
+                name: "ApplyTimeDependentSpinHamiltonian",
+                len: 3,
+            },
+            Token::Str("hamiltonian"),
+            Token::Struct {
+                name: "SpinHamiltonianSerialize",
+                len: 2,
+            },
+            Token::Str("items"),
+            Token::Seq { len: Some(1) },
+            Token::Tuple { len: 2 },
+            Token::Str("0Z"),
+            Token::F64(1.0),
+            Token::TupleEnd,
+            Token::SeqEnd,
+            Token::Str("_struqture_version"),
+            Token::Struct {
+                name: "StruqtureVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(1),
+            Token::Str("minor_version"),
+            Token::U32(0),
+            Token::StructEnd,
+            Token::StructEnd,
+            Token::Str("time"),
+            Token::Seq { len: Some(1) },
+            Token::F64(1.0),
+            Token::SeqEnd,
+            Token::Str("values"),
+            Token::Map { len: Some(1) },
+            Token::Str("omega"),
+            Token::Seq { len: Some(1) },
+            Token::F64(1.0),
+            Token::SeqEnd,
+            Token::MapEnd,
+            Token::StructEnd,
+        ],
+    );
+
+    assert_tokens(
+        &op.compact(),
+        &[
+            Token::Struct {
+                name: "ApplyTimeDependentSpinHamiltonian",
+                len: 3,
+            },
+            Token::Str("hamiltonian"),
+            Token::Struct {
+                name: "SpinHamiltonianSerialize",
+                len: 2,
+            },
+            Token::Str("items"),
+            Token::Seq { len: Some(1) },
+            Token::Tuple { len: 2 },
+            Token::Seq { len: Some(1) },
+            Token::Tuple { len: 2 },
+            Token::U64(0),
+            Token::UnitVariant {
+                name: "SingleSpinOperator",
+                variant: "Z",
+            },
+            Token::TupleEnd,
+            Token::SeqEnd,
+            Token::NewtypeVariant {
+                name: "CalculatorFloat",
+                variant: "Float",
+            },
+            Token::F64(1.0),
+            Token::TupleEnd,
+            Token::SeqEnd,
+            Token::Str("_struqture_version"),
+            Token::Struct {
+                name: "StruqtureVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(1),
+            Token::Str("minor_version"),
+            Token::U32(0),
+            Token::StructEnd,
+            Token::StructEnd,
+            Token::Str("time"),
+            Token::Seq { len: Some(1) },
+            Token::F64(1.0),
+            Token::SeqEnd,
+            Token::Str("values"),
+            Token::Map { len: Some(1) },
+            Token::Str("omega"),
+            Token::Seq { len: Some(1) },
+            Token::F64(1.0),
+            Token::SeqEnd,
+            Token::MapEnd,
+            Token::StructEnd,
+        ],
+    );
+}
 
 #[test]
 fn operate_analog_const_spin() {
