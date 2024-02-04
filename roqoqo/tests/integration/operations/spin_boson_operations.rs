@@ -52,7 +52,6 @@ fn inputs() {
     let op = CZQubitResonator::new(1, 0);
     assert_eq!(op.qubit(), &1_usize);
     assert_eq!(op.mode(), &0_usize);
-
 }
 
 #[test_case(Operation::from(QuantumRabi::new(4, 0, 1.5.into())))]
@@ -80,17 +79,14 @@ fn clone(op: Operation) {
 #[test_case(
     Operation::from(SingleExcitationLoad::new(4, 0)),
     "SingleExcitationLoad(SingleExcitationLoad { qubit: 4, mode: 0 })"
-
 )]
 #[test_case(
     Operation::from(SingleExcitationStore::new(4, 0)),
     "SingleExcitationStore(SingleExcitationStore { qubit: 4, mode: 0 })"
-
 )]
 #[test_case(
     Operation::from(CZQubitResonator::new(4, 0)),
     "CZQubitResonator(CZQubitResonator { qubit: 4, mode: 0 })"
-
 )]
 fn debug(op: Operation, string: &str) {
     assert_eq!(format!("{:?}", op), string);
@@ -194,15 +190,15 @@ fn involved_qubits_classical_modes(
 )]
 #[test_case(
     SingleModeOperation::from(SingleExcitationLoad::new(1, 0)),
-    SingleModeOperation::from(SingleExcitationLoad::new(2, 3)), 
+    SingleModeOperation::from(SingleExcitationLoad::new(2, 3))
 )]
 #[test_case(
     SingleModeOperation::from(SingleExcitationStore::new(1, 0)),
-    SingleModeOperation::from(SingleExcitationStore::new(2, 3)), 
+    SingleModeOperation::from(SingleExcitationStore::new(2, 3))
 )]
 #[test_case(
     SingleModeOperation::from(CZQubitResonator::new(1, 0)),
-    SingleModeOperation::from(CZQubitResonator::new(2, 3)), 
+    SingleModeOperation::from(CZQubitResonator::new(2, 3))
 )]
 fn substitute_subsitutemodes(op: SingleModeOperation, op_test: SingleModeOperation) {
     let mut mapping_test: HashMap<usize, usize> = HashMap::new();
@@ -245,19 +241,15 @@ fn substitute_subsitutemodes(op: SingleModeOperation, op_test: SingleModeOperati
     Operation::from(SingleExcitationStore::new(1, 0)),
     "SingleExcitationStore"
 )]
-#[test_case(
-    Operation::from(CZQubitResonator::new(1, 0)),
-    "CZQubitResonator"
-)]
-fn operate_one_mode_one_spin(op: Operation, name: &str) {
+#[test_case(Operation::from(CZQubitResonator::new(1, 0)), "CZQubitResonator")]
+fn operate_tags_hqslang(op: Operation, name: &str) {
     // (1) Test tags function
-    let tags: &[&str; 7] = &[
+    let tags: &[&str; 6] = &[
         "Operation",
         "GateOperation",
         "ModeGateOperation",
         "SingleModeGateOperation",
         "SingleQubitGateOperation",
-        "SingleQubitGate",
         name,
     ];
     assert_eq!(op.tags(), tags);
@@ -267,38 +259,44 @@ fn operate_one_mode_one_spin(op: Operation, name: &str) {
 }
 
 #[test_case(
-    Operation::from(QuantumRabi::new(1, 0, "test".into())),
-    "QuantumRabi"
+    Operation::from(QuantumRabi::new(1, 0, "test".into()))
 )]
 #[test_case(
-    Operation::from(LongitudinalCoupling::new(1, 0, "test".into())),
-    "LongitudinalCoupling"
+    Operation::from(LongitudinalCoupling::new(1, 0, "test".into()))
 )]
 #[test_case(
-    Operation::from(JaynesCummings::new(1, 0, "test".into())),
-    "JaynesCummings"
+    Operation::from(JaynesCummings::new(1, 0, "test".into()))
 )]
-fn is_parametrized(op_param: Operation, name: &str) {
-    assert!(!op.is_parametrized());
+fn is_parametrized(op_param: Operation) {
     assert!(op_param.is_parametrized());
+}
+
+#[test_case(Operation::from(QuantumRabi::new(1, 0, 1.0.into())))]
+#[test_case(Operation::from(LongitudinalCoupling::new(1, 0, 1.0.into())))]
+#[test_case(Operation::from(JaynesCummings::new(1, 0, 1.0.into())))]
+#[test_case(Operation::from(SingleExcitationLoad::new(1, 0)))]
+#[test_case(Operation::from(SingleExcitationStore::new(1, 0)))]
+#[test_case(Operation::from(CZQubitResonator::new(1, 0)))]
+fn is_parametrized_false(op: Operation) {
+    assert!(!op.is_parametrized());
 }
 
 #[test_case(SingleModeOperation::from(QuantumRabi::new(0, 0, 1.0.into())))]
 #[test_case(SingleModeOperation::from(LongitudinalCoupling::new(0, 0, 1.0.into())))]
 #[test_case(SingleModeOperation::from(JaynesCummings::new(0, 0, 1.0.into())))]
-#[tedt_case(SingleModeOperation::from(SingleExcitationLoad::new(1, 0)))]
-#[tedt_case(SingleModeOperation::from(SingleExcitationStore::new(1, 0)))]
-#[tedt_case(SingleModeOperation::from(CZQubitResonator::new(1, 0)))]
+#[test_case(SingleModeOperation::from(SingleExcitationLoad::new(1, 0)))]
+#[test_case(SingleModeOperation::from(SingleExcitationStore::new(1, 0)))]
+#[test_case(SingleModeOperation::from(CZQubitResonator::new(1, 0)))]
 fn single_mode_op(op: SingleModeOperation) {
     assert_eq!(op.mode(), &0_usize);
 }
 
-#[test_case(SingleQubitOperation::from(QuantumRabi::new(0, 0, 1.0.into())))]
-#[test_case(SingleQubitOperation::from(LongitudinalCoupling::new(0, 0, 1.0.into())))]
-#[test_case(SingleQubitOperation::from(JaynesCummings::new(0, 0, 1.0.into())))]
-#[tedt_case(SingleQubitOperation::from(SingleExcitationLoad::new(1, 0)))]
-#[tedt_case(SingleQubitOperation::from(SingleExcitationStore::new(1, 0)))]
-#[tedt_case(SingleQubitOperation::from(CZQubitResonator::new(1, 0)))]
+#[test_case(SingleQubitOperation::from(QuantumRabi::new(0, 1, 1.0.into())))]
+#[test_case(SingleQubitOperation::from(LongitudinalCoupling::new(0, 1, 1.0.into())))]
+#[test_case(SingleQubitOperation::from(JaynesCummings::new(0, 1, 1.0.into())))]
+#[test_case(SingleQubitOperation::from(SingleExcitationLoad::new(0, 1)))]
+#[test_case(SingleQubitOperation::from(SingleExcitationStore::new(0, 1)))]
+#[test_case(SingleQubitOperation::from(CZQubitResonator::new(0, 1)))]
 fn single_qubit_op(op: SingleQubitOperation) {
     assert_eq!(op.qubit(), &0_usize);
 }
@@ -307,7 +305,6 @@ fn single_qubit_op(op: SingleQubitOperation) {
 #[test]
 fn quantumrabi_serde() {
     let op = QuantumRabi::new(0, 0, 1.0.into());
-
     assert_tokens(
         &op.clone().readable(),
         &[
@@ -324,7 +321,6 @@ fn quantumrabi_serde() {
             Token::StructEnd,
         ],
     );
-
     assert_tokens(
         &op.compact(),
         &[
@@ -346,12 +342,10 @@ fn quantumrabi_serde() {
         ],
     );
 }
-
 #[cfg(feature = "serialize")]
 #[test]
 fn longitudinal_coupling_serde() {
     let op = LongitudinalCoupling::new(0, 0, 1.0.into());
-
     assert_tokens(
         &op.clone().readable(),
         &[
@@ -368,7 +362,6 @@ fn longitudinal_coupling_serde() {
             Token::StructEnd,
         ],
     );
-
     assert_tokens(
         &op.compact(),
         &[
@@ -390,12 +383,10 @@ fn longitudinal_coupling_serde() {
         ],
     );
 }
-
 #[cfg(feature = "serialize")]
 #[test]
 fn jaynes_cummings_serde() {
     let op = JaynesCummings::new(0, 0, 1.0.into());
-
     assert_tokens(
         &op.clone().readable(),
         &[
@@ -412,7 +403,6 @@ fn jaynes_cummings_serde() {
             Token::StructEnd,
         ],
     );
-
     assert_tokens(
         &op.compact(),
         &[

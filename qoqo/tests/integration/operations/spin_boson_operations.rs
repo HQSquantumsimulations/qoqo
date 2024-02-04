@@ -459,7 +459,6 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         "ModeGateOperation",
         "SingleModeGateOperation",
         "SingleQubitGateOperation",
-        "SingleQubitGate",
         "QuantumRabi",
     ];
     "QuantumRabi")]
@@ -471,7 +470,6 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         "ModeGateOperation",
         "SingleModeGateOperation",
         "SingleQubitGateOperation",
-        "SingleQubitGate",
         "LongitudinalCoupling",
     ];
     "LongitudinalCoupling")]
@@ -483,7 +481,6 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         "ModeGateOperation",
         "SingleModeGateOperation",
         "SingleQubitGateOperation",
-        "SingleQubitGate",
         "JaynesCummings",
     ];
     "JaynesCummings")]
@@ -495,7 +492,6 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         "ModeGateOperation",
         "SingleModeGateOperation",
         "SingleQubitGateOperation",
-        "SingleQubitGate",
         "SingleExcitationLoad",
     ];
     "SingleExcitationLoad")]
@@ -507,7 +503,6 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         "ModeGateOperation",
         "SingleModeGateOperation",
         "SingleQubitGateOperation",
-        "SingleQubitGate",
         "SingleExcitationStore",
     ];
     "SingleExcitationStore")]
@@ -519,7 +514,6 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         "ModeGateOperation",
         "SingleModeGateOperation",
         "SingleQubitGateOperation",
-        "SingleQubitGate",
         "CZQubitResonator",
     ];
     "CZQubitResonator")]
