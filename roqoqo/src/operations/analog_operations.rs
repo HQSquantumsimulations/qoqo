@@ -28,15 +28,14 @@ use struqture::SpinIndex;
 pub struct ApplyConstantSpinHamiltonian {
     /// Hamiltonian to be simulated.
     pub hamiltonian: SpinHamiltonian,
-    /// Time of evolution.
+    /// The duration for which the state evolution takes place.
     pub time: CalculatorFloat,
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_ApplyConstantSpinHamiltonian: &[&str; 4] = &[
+const TAGS_ApplyConstantSpinHamiltonian: &[&str; 3] = &[
     "Operation",
-    "ModeGateOperation",
-    "OperateSpinsAnalog",
+    "SpinsAnalogOperation",
     "ApplyConstantSpinHamiltonian",
 ];
 
@@ -74,16 +73,16 @@ impl InvolveQubits for ApplyConstantSpinHamiltonian {
 pub struct ApplyTimeDependentSpinHamiltonian {
     /// Hamiltonian to be simulated.
     hamiltonian: SpinHamiltonian,
-    /// Time of evolution.
+    /// Range of time stored as a vector. The total duration of the simulations is given by the last value in the range.
     time: Vec<f64>,
+    /// Values of time-dependent parameters, appearing in `hamiltonian`, at instances given by the vector `time`.
     values: HashMap<String, Vec<f64>>,
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_ApplyTimeDependentSpinHamiltonian: &[&str; 4] = &[
+const TAGS_ApplyTimeDependentSpinHamiltonian: &[&str; 3] = &[
     "Operation",
-    "ModeGateOperation",
-    "OperateSpinsAnalog",
+    "SpinsAnalogOperation",
     "ApplyTimeDependentSpinHamiltonian",
 ];
 
