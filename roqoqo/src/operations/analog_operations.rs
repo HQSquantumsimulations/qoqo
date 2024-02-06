@@ -17,7 +17,7 @@ use crate::operations::{
 use crate::RoqoqoError;
 use qoqo_calculator::CalculatorFloat;
 use std::collections::{HashMap, HashSet};
-use struqture::spins::{PauliProduct, SpinHamiltonian};
+use struqture::spins:: SpinHamiltonian;
 use struqture::OperateOnDensityMatrix;
 use struqture::SpinIndex;
 
@@ -92,7 +92,7 @@ impl OperateSpinsAnalog for ApplyTimeDependentSpinHamiltonian {
     fn spin(&self) -> Vec<usize> {
         let mut qubit_set = HashSet::new();
         for pps in self.hamiltonian.keys() {
-            for (index, _) in pps.iter(){
+            for (index, _) in pps.iter() {
                 qubit_set.insert(*index);
             }
         }

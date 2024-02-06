@@ -37,7 +37,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 "CalculatorFloat" => quote! {#id: &pyo3::PyAny},
                 "Circuit" => quote! {#id: &pyo3::PyAny},
                 "Option<Circuit>" => quote! {#id: &pyo3::PyAny},
-                "SpinHamiltonian" => quote! {#id: &pyo3::PyAny},
+                "SpinHamiltonian" => quote! {#id: pyo3::Py<pyo3::PyAny>},
                 _ => quote! {#id: #ty},
             },
             _ => quote! {#id: #ty},

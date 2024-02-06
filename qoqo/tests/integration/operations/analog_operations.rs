@@ -16,7 +16,7 @@ use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
     ApplyConstantSpinHamiltonianWrapper, ApplyTimeDependentSpinHamiltonianWrapper,
 };
-use qoqo_calculator::CalculatorFloat;
+use qoqo_calculator::{Calculator,CalculatorFloat};
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
 #[cfg(feature = "json_schema")]
@@ -26,6 +26,35 @@ use std::collections::HashMap;
 use struqture::prelude::*;
 use struqture::spins::{PauliProduct, SpinHamiltonian};
 use struqture_py::spins::SpinHamiltonianSystemWrapper;
+use test_case::test_case;
+
+fn create_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantSpinHamiltonian
+where
+    CalculatorFloat: From<T>,
+{
+    let pp = PauliProduct::new().z(0);
+    let mut hamiltonian = SpinHamiltonian::new();
+    hamiltonian
+        .add_operator_product(pp.clone(), CalculatorFloat::from(p))
+        .unwrap();
+    return ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
+}
+
+fn create_apply_timedependent_spin_hamiltonian<T>(p: T) -> ApplyTimeDependentSpinHamiltonian
+where
+    CalculatorFloat: From<T>,
+{
+    let pp = PauliProduct::new().z(0);
+    let mut hamiltonian = SpinHamiltonian::new();
+    hamiltonian
+        .add_operator_product(pp.clone(), CalculatorFloat::from(p))
+        .unwrap();
+
+    let mut values = HashMap::new();
+    values.insert("omega".to_string(), vec![1.0]);
+
+    return ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
+}
 
 fn new_system(py: Python, number_spins: Option<usize>) -> &PyCell<SpinHamiltonianSystemWrapper> {
     let system_type = py.get_type::<SpinHamiltonianSystemWrapper>();
@@ -39,16 +68,7 @@ fn new_system(py: Python, number_spins: Option<usize>) -> &PyCell<SpinHamiltonia
 /// Test new() function for ApplyConstantSpinHamiltonian
 #[test]
 fn test_new_constantspinhamiltionian() {
-    let pp = PauliProduct::new().z(0);
-    let mut hamiltonian = SpinHamiltonian::new();
-    hamiltonian
-        .add_operator_product(pp.clone(), CalculatorFloat::from(1.0))
-        .unwrap();
-
-    let input_operation = Operation::from(ApplyConstantSpinHamiltonian::new(
-        hamiltonian.clone(),
-        (0.1).into(),
-    ));
+    let input_operation = Operation::from(create_apply_constant_spin_hamiltonian(1.0));
     let method = "__eq__";
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
@@ -64,7 +84,7 @@ fn test_new_constantspinhamiltionian() {
 
         let operation_type = py.get_type::<ApplyConstantSpinHamiltonianWrapper>();
         let operation_py = operation_type
-            .call1((system_wrapper.clone(), 0.1))
+            .call1((system_wrapper.clone(), 1.0))
             .unwrap()
             .downcast::<PyCell<ApplyConstantSpinHamiltonianWrapper>>()
             .unwrap();
@@ -104,21 +124,9 @@ fn test_new_constantspinhamiltionian() {
 /// Test new() function for ApplyTimeDepenendentSpinHamiltonian
 #[test]
 fn test_new_timedependentspinhamiltionian() {
-    let pp = PauliProduct::new().z(0);
-    let mut hamiltonian = SpinHamiltonian::new();
-    hamiltonian
-        .add_operator_product(pp.clone(), CalculatorFloat::from(1.0))
-        .unwrap();
 
-    let times = vec![1.0];
-    let mut values = HashMap::new();
-    values.insert("omega".to_string(), vec![1.0]);
 
-    let input_operation = Operation::from(ApplyTimeDependentSpinHamiltonian::new(
-        hamiltonian.clone(),
-        times.clone(),
-        values.clone(),
-    ));
+    let input_operation = Operation::from(create_apply_timedependent_spin_hamiltonian(1.0));
     let method = "__eq__";
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
@@ -175,4 +183,310 @@ fn test_new_timedependentspinhamiltionian() {
             "ApplyTimeDependentSpinHamiltonianWrapper { internal: ApplyTimeDependentSpinHamiltonian { hamiltonian: SpinHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: [0.1], values: {\"omega\": [0.1]} } }"
         );
     })
+}
+
+/// Test is_parametrized() function for Analog Operations
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian("theta")); "constant_spin_hamiltonian")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")); "time_depenent")]
+fn test_pyo3_is_parametrized(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        assert!(bool::extract(
+            operation
+                .call_method0(py, "is_parametrized")
+                .unwrap()
+                .as_ref(py)
+        )
+        .unwrap());
+    })
+}
+
+/// Test is_parametrized = false for Analog Operations
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "constant_spin_hamiltonian")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian(1.0)); "time_depenent")]
+fn test_pyo3_is_not_parametrized(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        assert!(!bool::extract(
+            operation
+                .call_method0(py, "is_parametrized")
+                .unwrap()
+                .as_ref(py)
+        )
+        .unwrap());
+    })
+}
+
+
+/// Test hqslang() function for Analog Operations
+#[test_case("ApplyConstantSpinHamiltonian", Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantSpinHamiltonian")]
+#[test_case("ApplyTimeDependentSpinHamiltonian", Operation::from(create_apply_timedependent_spin_hamiltonian("omega")); "ApplyTimeDependentSpinHamiltonian")]
+fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let name_op: String =
+            String::extract(operation.call_method0(py, "hqslang").unwrap().as_ref(py)).unwrap();
+        assert_eq!(name_op, name.to_string());
+    })
+}
+
+#[test_case(
+    Operation::from(create_apply_constant_spin_hamiltonian(1.0)),
+    vec![
+        "Operation",
+        "SpinsAnalogOperation",
+        "ApplyConstantSpinHamiltonian",
+        ];
+    "ApplyConstantSpinHamiltonian")]
+#[test_case(
+    Operation::from(create_apply_timedependent_spin_hamiltonian("omega")),
+    vec![
+        "Operation",
+        "SpinsAnalogOperation",
+        "ApplyTimeDependentSpinHamiltonian",
+        ];
+    "ApplyTimeDependentSpinHamiltonian")]
+/// Test tags() function for Analog Operations
+fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let tags_op: Vec<String> =
+            Vec::<String>::extract(operation.call_method0(py, "tags").unwrap().as_ref(py)).unwrap();
+        assert_eq!(tags_op.len(), tags.len());
+        for i in 0..tags.len() {
+            assert_eq!(tags_op[i], tags[i]);
+        }
+    })
+}
+
+/// Test copy and deepcopy functions
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantSpinHamiltonian")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")); "ApplyTimeDependentSpinHamiltonian")]
+fn test_pyo3_copy_deepcopy(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let copy_op = operation.call_method0(py, "__copy__").unwrap();
+        let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
+        let copy_deepcopy_param = operation;
+
+        let comparison_copy = bool::extract(
+            copy_op
+                .as_ref(py)
+                .call_method1("__eq__", (copy_deepcopy_param.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_copy);
+        let comparison_deepcopy = bool::extract(
+            deepcopy_op
+                .as_ref(py)
+                .call_method1("__eq__", (copy_deepcopy_param,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_deepcopy);
+    })
+}
+
+/// Test format and repr functions
+#[test_case(
+    "ApplyConstantSpinHamiltonian { hamiltonian: SpinHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Float(1.0)} }, time: Float(1.0) }",
+    Operation::from(create_apply_constant_spin_hamiltonian(1.0));
+    "ApplyConstantSpinHamiltonian")]
+#[test_case(
+    "ApplyTimeDependentSpinHamiltonian { hamiltonian: SpinHamiltonian { internal_map: {PauliProduct { items: [(0, Z)] }: Str(\"omega\")} }, time: [1.0], values: {\"omega\": [1.0]} }",
+    Operation::from(create_apply_timedependent_spin_hamiltonian("omega"));
+    "ApplyTimeDependentSpinHamiltonian")]
+fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
+        let format_op: &str = <&str>::extract(to_format.as_ref(py)).unwrap();
+        assert_eq!(format_op, format_repr);
+        let to_repr = operation.call_method0(py, "__repr__").unwrap();
+        let repr_op: &str = <&str>::extract(to_repr.as_ref(py)).unwrap();
+        assert_eq!(repr_op, format_repr);
+    })
+}
+
+#[test_case(
+    Operation::from(create_apply_constant_spin_hamiltonian("theta"))
+    ; "ApplyConstantSpinHamiltonian_theta")]
+fn test_pyo3_substitute_parameters(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
+        let mut substitution_dict_py: HashMap<&str, f64> = HashMap::new();
+        substitution_dict_py.insert("theta", 1.0);
+        let substitute_op = operation
+            .call_method1(py, "substitute_parameters", (substitution_dict_py,))
+            .unwrap();
+
+        let mut substitution_dict: Calculator = Calculator::new();
+        substitution_dict.set_variable("theta", 1.0);
+        let substitute_param = input_operation
+            .substitute_parameters(&substitution_dict)
+            .unwrap();
+        let test_operation = convert_operation_to_pyobject(substitute_param).unwrap();
+
+        let comparison = bool::extract(
+            substitute_op
+                .as_ref(py)
+                .call_method1("__eq__", (test_operation,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+    })
+}
+
+#[test_case(
+    Operation::from(create_apply_constant_spin_hamiltonian("theta"))
+    ; "ApplyConstantSpinHamiltonian_theta")]
+fn test_pyo3_substitute_params_single(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
+        let mut substitution_dict_py: HashMap<&str, f64> = HashMap::new();
+        substitution_dict_py.insert("theta", 1.0);
+        let substitute_op = operation
+            .call_method1(py, "substitute_parameters", (substitution_dict_py,))
+            .unwrap();
+
+        let mut substitution_dict: Calculator = Calculator::new();
+        substitution_dict.set_variable("theta", 1.0);
+        let substitute_param = input_operation
+            .substitute_parameters(&substitution_dict)
+            .unwrap();
+        let test_operation = convert_operation_to_pyobject(substitute_param).unwrap();
+
+        let comparison = bool::extract(
+            substitute_op
+                .as_ref(py)
+                .call_method1("__eq__", (test_operation,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+    })
+}
+
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantSpinHamiltonian")]
+fn test_pyo3_substitute_params_error(input_operation: Operation) {
+    Python::with_gil(|py| {
+        pyo3::prepare_freethreaded_python();
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let substitution_dict: HashMap<&str, f64> = HashMap::new();
+        println!("{}",operation);
+        let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
+        println!("{:?}",result.as_ref());
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+    })
+    
+}
+
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantSpinHamiltonian")]
+fn test_ineffective_substitute_parameters(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
+        let mut substitution_dict_py: HashMap<&str, f64> = HashMap::new();
+        substitution_dict_py.insert("theta", 0.0);
+        let substitute_op = operation
+            .call_method1(py, "substitute_parameters", (substitution_dict_py,))
+            .unwrap();
+
+        let comparison = bool::extract(
+            substitute_op
+                .as_ref(py)
+                .call_method1("__eq__", (operation,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+    })
+}
+
+#[test_case(
+    Operation::from(create_apply_constant_spin_hamiltonian(1.0)),
+    Operation::from(create_apply_constant_spin_hamiltonian(2.0)); "ApplyConstantSpinHamiltonian")]
+#[test_case(
+    Operation::from(create_apply_timedependent_spin_hamiltonian("omega1")),
+    Operation::from(create_apply_timedependent_spin_hamiltonian("omega2")); "ApplyTimeDependentSpinHamiltonian")]
+fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation_one = convert_operation_to_pyobject(definition_1).unwrap();
+        let operation_two = convert_operation_to_pyobject(definition_2).unwrap();
+
+        let comparison = bool::extract(
+            operation_one
+                .as_ref(py)
+                .call_method1("__eq__", (operation_two.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(!comparison);
+
+        let comparison = bool::extract(
+            operation_one
+                .as_ref(py)
+                .call_method1("__ne__", (operation_two.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        let comparison = operation_one.call_method1(py, "__eq__", (vec!["fails"],));
+        assert!(comparison.is_err());
+
+        let comparison = operation_one.call_method1(py, "__ge__", (operation_two,));
+        assert!(comparison.is_err());
+    })
+}
+
+#[cfg(feature = "json_schema")]
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantSpinHamiltonian")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")); "ApplyTimeDependentSpinHamiltonian")]
+fn test_pyo3_json_schema(operation: Operation) {
+    let rust_schema = match operation {
+        Operation::ApplyConstantSpinHamiltonian(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(ApplyConstantSpinHamiltonian))
+                .unwrap()
+        }
+        Operation::ApplyTimeDependentSpinHamiltonian(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(ApplyTimeDependentSpinHamiltonian))
+                .unwrap()
+        }
+        _ => unreachable!(),
+    };
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let minimum_version: String = match operation {
+            Operation::ApplyConstantSpinHamiltonian(_) => "1.10.0".to_string(),
+            _ => "1.9.0".to_string(),
+        };
+        let pyobject = convert_operation_to_pyobject(operation).unwrap();
+        let operation = pyobject.as_ref(py);
+
+        let schema: String =
+            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+
+        assert_eq!(schema, rust_schema);
+
+        let current_version_string =
+            String::extract(operation.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(operation.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, minimum_version);
+    });
 }

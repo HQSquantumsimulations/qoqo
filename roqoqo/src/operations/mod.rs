@@ -1065,6 +1065,7 @@ pub trait OperateTwoModeGate:
     + SupportedVersion
 {
 }
+
 #[cfg(feature = "unstable_analog_operations")]
 /// Trait for all continuous time spin operations
 ///
