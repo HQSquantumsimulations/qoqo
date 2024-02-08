@@ -333,6 +333,7 @@ fn test_pyo3_substitute_parameters(input_operation: Operation) {
         let substitute_param = input_operation
             .substitute_parameters(&substitution_dict)
             .unwrap();
+
         let test_operation = convert_operation_to_pyobject(substitute_param).unwrap();
 
         let comparison = bool::extract(
@@ -342,6 +343,7 @@ fn test_pyo3_substitute_parameters(input_operation: Operation) {
                 .unwrap(),
         )
         .unwrap();
+        
         assert!(comparison);
     })
 }
@@ -377,15 +379,13 @@ fn test_pyo3_substitute_params_single(input_operation: Operation) {
     })
 }
 
-#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantSpinHamiltonian")]
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian("theta")); "ApplyConstantSpinHamiltonian")]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
     Python::with_gil(|py| {
         pyo3::prepare_freethreaded_python();
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let substitution_dict: HashMap<&str, f64> = HashMap::new();
-        println!("{}",operation);
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
-        println!("{:?}",result.as_ref());
         let result_ref = result.as_ref();
         assert!(result_ref.is_err());
     })
