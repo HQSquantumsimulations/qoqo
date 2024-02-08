@@ -16,7 +16,7 @@ use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
     ApplyConstantSpinHamiltonianWrapper, ApplyTimeDependentSpinHamiltonianWrapper,
 };
-use qoqo_calculator::{Calculator,CalculatorFloat};
+use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
 #[cfg(feature = "json_schema")]
@@ -124,8 +124,6 @@ fn test_new_constantspinhamiltionian() {
 /// Test new() function for ApplyTimeDepenendentSpinHamiltonian
 #[test]
 fn test_new_timedependentspinhamiltionian() {
-
-
     let input_operation = Operation::from(create_apply_timedependent_spin_hamiltonian(1.0));
     let method = "__eq__";
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -218,7 +216,6 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
         .unwrap());
     })
 }
-
 
 /// Test hqslang() function for Analog Operations
 #[test_case("ApplyConstantSpinHamiltonian", Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantSpinHamiltonian")]
@@ -343,7 +340,7 @@ fn test_pyo3_substitute_parameters(input_operation: Operation) {
                 .unwrap(),
         )
         .unwrap();
-        
+
         assert!(comparison);
     })
 }
@@ -389,7 +386,6 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
         let result_ref = result.as_ref();
         assert!(result_ref.is_err());
     })
-    
 }
 
 #[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantSpinHamiltonian")]

@@ -25,31 +25,37 @@ use struqture::prelude::*;
 use struqture::spins::{PauliProduct, SpinHamiltonian};
 use test_case::test_case;
 
-
-fn create_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantSpinHamiltonian where CalculatorFloat: From<T>{
+fn create_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantSpinHamiltonian
+where
+    CalculatorFloat: From<T>,
+{
     let pp = PauliProduct::new().z(0);
     let mut hamiltonian = SpinHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
-    return ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into())
+    return ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
 }
 
-fn create_param_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantSpinHamiltonian where CalculatorFloat: From<T>{
+fn create_param_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantSpinHamiltonian
+where
+    CalculatorFloat: From<T>,
+{
     let pp = PauliProduct::new().z(0);
     let mut hamiltonian = SpinHamiltonian::new();
     hamiltonian
         .add_operator_product(pp, CalculatorFloat::from(p))
         .unwrap();
     let pp = PauliProduct::new().x(1);
-    hamiltonian
-        .add_operator_product(pp, 1.0.into())
-        .unwrap();
+    hamiltonian.add_operator_product(pp, 1.0.into()).unwrap();
 
-    return ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into())
+    return ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
 }
 
-fn create_apply_timedependent_spin_hamiltonian<T>(p: T) -> ApplyTimeDependentSpinHamiltonian  where CalculatorFloat: From<T>{
+fn create_apply_timedependent_spin_hamiltonian<T>(p: T) -> ApplyTimeDependentSpinHamiltonian
+where
+    CalculatorFloat: From<T>,
+{
     let pp = PauliProduct::new().z(0);
     let mut hamiltonian = SpinHamiltonian::new();
     hamiltonian
@@ -62,8 +68,16 @@ fn create_apply_timedependent_spin_hamiltonian<T>(p: T) -> ApplyTimeDependentSpi
     return ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
 }
 
-#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)),Operation::from(create_apply_constant_spin_hamiltonian(1.0)),Operation::from(create_apply_constant_spin_hamiltonian(2.0)))]
-#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")),Operation::from(create_apply_timedependent_spin_hamiltonian("omega")),Operation::from(create_apply_timedependent_spin_hamiltonian("alpha")))]
+#[test_case(
+    Operation::from(create_apply_constant_spin_hamiltonian(1.0)),
+    Operation::from(create_apply_constant_spin_hamiltonian(1.0)),
+    Operation::from(create_apply_constant_spin_hamiltonian(2.0))
+)]
+#[test_case(
+    Operation::from(create_apply_timedependent_spin_hamiltonian("omega")),
+    Operation::from(create_apply_timedependent_spin_hamiltonian("omega")),
+    Operation::from(create_apply_timedependent_spin_hamiltonian("alpha"))
+)]
 fn partial_eq(op: Operation, op_0: Operation, op_1: Operation) {
     assert!(op_0 == op);
     assert!(op == op_0);
@@ -102,7 +116,6 @@ fn substitute_subsitutemodes(op: Operation, op_test: Operation) {
     // (1) Substitute parameters function
     let result = op.substitute_parameters(&substitution_dict).unwrap();
     assert_eq!(result, op_test);
-
 }
 
 #[cfg(feature = "json_schema")]
@@ -352,10 +365,9 @@ fn timedependent_hamiltonian_serde() {
 
 #[test]
 fn operate_analog_const_spin() {
-
     let name = "ApplyConstantSpinHamiltonian";
     let unparam_analog = create_apply_constant_spin_hamiltonian(1.0);
-    let param_analog =  create_apply_constant_spin_hamiltonian("parametrized");
+    let param_analog = create_apply_constant_spin_hamiltonian("parametrized");
 
     // (1) Test tags functionval
     let tags: &[&str; 3] = &["Operation", "SpinsAnalogOperation", name];
@@ -388,7 +400,6 @@ fn analog_spins() {
 
 #[test]
 fn operate_analog_timedependent_spin() {
-
     let name = "ApplyTimeDependentSpinHamiltonian";
     let unparam_analog = create_apply_timedependent_spin_hamiltonian(1.0);
     let param_analog = create_apply_timedependent_spin_hamiltonian("omega");
