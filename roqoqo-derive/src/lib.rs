@@ -21,6 +21,7 @@ use syn::{
 mod involve_modes;
 mod involve_qubits;
 mod operate;
+#[cfg(feature = "unstable_analog_operations")]
 mod operate_analog;
 mod operate_n_mode;
 mod operate_n_qubit;
@@ -240,6 +241,7 @@ pub fn derive_operate_two_mode_gate(input: proc_macro::TokenStream) -> proc_macr
     operate_unitary_modes::dispatch_struct_enum_two_mode_gate(parsed_input).into()
 }
 
+#[cfg(feature = "unstable_analog_operations")]
 /// Derive macro for the [roqoqo::OperateSpinsAnalog] trait
 #[proc_macro_derive(OperateSpinsAnalog)]
 pub fn derive_operate_spins_analog(input: proc_macro::TokenStream) -> proc_macro::TokenStream {

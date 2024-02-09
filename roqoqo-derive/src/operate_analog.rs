@@ -26,9 +26,21 @@ pub fn dispatch_struct_enum_operate_spins_analog(input: DeriveInput) -> TokenStr
 
 fn operate_spins_analog_enum(de: DataEnum, ident: Ident) -> TokenStream {
     let _variants_with_type = extract_variants_with_types(de).into_iter();
+    let match_quotes = _variants_with_type.map(|(vident, _, _)| {
+        quote! {
+            &#ident::#vident(ref inner) => {OperateSpinsAnalog::spin(&(*inner))},
+        }
+    });
+
     quote! {
         #[automatically_derived]
         impl OperateSpinsAnalog for #ident{
+            fn spin(&self) -> Vec<usize> {
+                match self{
+                    #(#match_quotes)*
+                    _ => panic!("Unexpectedly cannot match variant")
+                }
+            }
         }
     }
 }
@@ -37,6 +49,9 @@ fn operate_spins_analog_struct(ident: Ident) -> TokenStream {
     quote! {
         #[automatically_derived]
         impl OperateSpinsAnalog for #ident{
+            fn spin(&self) -> usize {
+                self.spin
+            }
         }
     }
 }
