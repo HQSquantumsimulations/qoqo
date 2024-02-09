@@ -31,6 +31,8 @@ use schemars::{
     JsonSchema,
 };
 use std::str::FromStr;
+#[cfg(feature = "unstable_analog_operations")]
+use struqture::StruqtureError;
 use thiserror::Error;
 
 /// roqoqo version information, used for roqoqo import/export checks
@@ -266,6 +268,11 @@ pub enum RoqoqoError {
     /// Transparent propagation of CalculatorError.
     #[error(transparent)]
     CalculatorError(#[from] CalculatorError),
+
+    /// Transparent propagation of StruqtureError.
+    #[cfg(feature = "unstable_analog_operations")]
+    #[error(transparent)]
+    StruqtureError(#[from] StruqtureError),
 }
 
 /// Errors that can occur in roqoqo backends.

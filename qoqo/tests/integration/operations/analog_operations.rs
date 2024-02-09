@@ -16,9 +16,10 @@ use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
     ApplyConstantSpinHamiltonianWrapper, ApplyTimeDependentSpinHamiltonianWrapper,
 };
-use qoqo_calculator::{Calculator, CalculatorFloat};
+use qoqo_calculator::{Calculator, CalculatorError::VariableNotSet, CalculatorFloat};
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
+use roqoqo::RoqoqoError;
 #[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
 
@@ -376,8 +377,8 @@ fn test_pyo3_substitute_params_single(input_operation: Operation) {
     })
 }
 
-#[test_case(Operation::from(create_apply_constant_spin_hamiltonian("theta")); "ApplyConstantSpinHamiltonian")]
-fn test_pyo3_substitute_params_error(input_operation: Operation) {
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian("theta")), "theta"; "ApplyConstantSpinHamiltonian_theta")]
+fn test_pyo3_substitute_params_error(input_operation: Operation, val: &str) {
     Python::with_gil(|py| {
         pyo3::prepare_freethreaded_python();
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -385,6 +386,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
         let result_ref = result.as_ref();
         assert!(result_ref.is_err());
+        let e = result.unwrap_err();
     })
 }
 

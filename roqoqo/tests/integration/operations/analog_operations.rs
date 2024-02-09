@@ -14,8 +14,9 @@
 
 #[cfg(feature = "json_schema")]
 use jsonschema::{Draft, JSONSchema};
-use qoqo_calculator::{Calculator, CalculatorFloat};
+use qoqo_calculator::{Calculator, CalculatorError::VariableNotSet, CalculatorFloat};
 use roqoqo::operations::*;
+use roqoqo::RoqoqoError;
 #[cfg(feature = "json_schema")]
 use schemars::schema_for;
 #[cfg(feature = "serialize")]
@@ -23,6 +24,7 @@ use serde_test::{assert_tokens, Configure, Token};
 use std::collections::HashMap;
 use struqture::prelude::*;
 use struqture::spins::{PauliProduct, SpinHamiltonian};
+use struqture::StruqtureError;
 use test_case::test_case;
 
 fn create_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantSpinHamiltonian
@@ -35,6 +37,15 @@ where
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
     return ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
+}
+
+fn create_apply_constant_spin_hamiltonian_param_time() -> ApplyConstantSpinHamiltonian {
+    let pp = PauliProduct::new().z(0);
+    let mut hamiltonian = SpinHamiltonian::new();
+    hamiltonian
+        .add_operator_product(pp.clone(), CalculatorFloat::from(1.0))
+        .unwrap();
+    return ApplyConstantSpinHamiltonian::new(hamiltonian, "time".into());
 }
 
 fn create_param_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantSpinHamiltonian
@@ -109,13 +120,39 @@ fn debug(op: Operation, string: &str) {
     Operation::from(create_apply_timedependent_spin_hamiltonian("omega")),
     Operation::from(create_apply_timedependent_spin_hamiltonian(1.5))
 )]
-fn substitute_subsitutemodes(op: Operation, op_test: Operation) {
+fn substitute(op: Operation, op_test: Operation) {
     let mut substitution_dict: Calculator = Calculator::new();
     substitution_dict.set_variable("omega", 1.5);
 
     // (1) Substitute parameters function
     let result = op.substitute_parameters(&substitution_dict).unwrap();
     assert_eq!(result, op_test);
+}
+
+#[test_case(
+    Operation::from(create_apply_constant_spin_hamiltonian("omega")),
+    "omega"
+)]
+#[test_case(
+    Operation::from(create_apply_constant_spin_hamiltonian_param_time()),
+    "time"
+)]
+#[test_case(
+    Operation::from(create_apply_timedependent_spin_hamiltonian("omega")),
+    "omega"
+)]
+fn test_substitute_parameters_error(op: Operation, val: &str) {
+    let mut substitution_dict: Calculator = Calculator::new();
+    substitution_dict.set_variable("error", 0.0);
+    let result = op.substitute_parameters(&substitution_dict);
+    assert!(result.is_err());
+    let e = result.unwrap_err();
+    assert_eq!(
+        e,
+        RoqoqoError::CalculatorError(VariableNotSet {
+            name: val.to_string()
+        })
+    )
 }
 
 #[cfg(feature = "json_schema")]
