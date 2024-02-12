@@ -408,6 +408,9 @@ fn test_pyo3_substitute_params_error(input_operation: Operation, val: &str) {
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
         let result_ref = result.as_ref();
         assert!(result_ref.is_err());
+        let binding = result.unwrap_err();
+        let e = binding.value(py);
+        assert_eq!(format!("{:?}", e), "RuntimeError('Parameter Substitution failed: CalculatorError(VariableNotSet { name: \"theta\" })')");
     })
 }
 
