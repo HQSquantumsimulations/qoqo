@@ -41,6 +41,15 @@ where
     return ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
 }
 
+fn create_apply_constant_spin_hamiltonian_spin_test() -> ApplyConstantSpinHamiltonian{
+    let pp = PauliProduct::new().z(0).x(2).y(4);
+    let mut hamiltonian = SpinHamiltonian::new();
+    hamiltonian
+        .add_operator_product(pp.clone(), CalculatorFloat::from(1.0))
+        .unwrap();
+    return ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
+}
+
 fn create_apply_timedependent_spin_hamiltonian<T>(p: T) -> ApplyTimeDependentSpinHamiltonian
 where
     CalculatorFloat: From<T>,
@@ -49,6 +58,20 @@ where
     let mut hamiltonian = SpinHamiltonian::new();
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
+        .unwrap();
+
+    let mut values = HashMap::new();
+    values.insert("omega".to_string(), vec![1.0]);
+
+    return ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
+}
+
+fn create_apply_timedependent_spin_hamiltonian_spin_test() -> ApplyTimeDependentSpinHamiltonian
+{
+    let pp = PauliProduct::new().z(0).x(2).y(4);
+    let mut hamiltonian = SpinHamiltonian::new();
+    hamiltonian
+        .add_operator_product(pp.clone(), CalculatorFloat::from("omega"))
         .unwrap();
 
     let mut values = HashMap::new();
@@ -313,9 +336,8 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     })
 }
 
-#[test_case(
-    Operation::from(create_apply_constant_spin_hamiltonian("theta"))
-    ; "ApplyConstantSpinHamiltonian_theta")]
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian("theta")); "ApplyConstantSpinHamiltonian_theta")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("theta")); "ApplyTimeDependentSpinHamiltonian_theta")]
 fn test_pyo3_substitute_parameters(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -346,9 +368,8 @@ fn test_pyo3_substitute_parameters(input_operation: Operation) {
     })
 }
 
-#[test_case(
-    Operation::from(create_apply_constant_spin_hamiltonian("theta"))
-    ; "ApplyConstantSpinHamiltonian_theta")]
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian("theta")); "ApplyConstantSpinHamiltonian_theta")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("theta")); "ApplyTimeDependentSpinHamiltonian_theta")]
 fn test_pyo3_substitute_params_single(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -378,6 +399,7 @@ fn test_pyo3_substitute_params_single(input_operation: Operation) {
 }
 
 #[test_case(Operation::from(create_apply_constant_spin_hamiltonian("theta")), "theta"; "ApplyConstantSpinHamiltonian_theta")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("theta")), "theta"; "ApplyTimeDependentSpinHamiltonian_theta")]
 fn test_pyo3_substitute_params_error(input_operation: Operation, val: &str) {
     Python::with_gil(|py| {
         pyo3::prepare_freethreaded_python();
@@ -389,18 +411,21 @@ fn test_pyo3_substitute_params_error(input_operation: Operation, val: &str) {
     })
 }
 
-#[test_case(Operation::from(create_apply_constant_spin_hamiltonian("theta")); "ApplyConstantSpinHamiltonian_theta")]
-fn test_spin(input_operation: Operation) {
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(0.1)), vec![0]; "ApplyConstantSpinHamiltonian_0")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")), vec![0]; "ApplyTimeDependentSpinHamiltonian_0")]
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian_spin_test()), vec![0,2,4]; "ApplyConstantSpinHamiltonian_024")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian_spin_test()), vec![0,2,4]; "ApplyTimeDependentSpinHamiltonian_024")]
+fn test_spin(input_operation: Operation, test_result: Vec<usize>) {
     Python::with_gil(|py| {
         pyo3::prepare_freethreaded_python();
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let result = operation.call_method1(py, "spin", ());
-        println!("{:?}",result);
-        assert!(false);
+        let result : Vec<usize> = Vec::<usize>::extract(operation.call_method1(py, "spin", ()).unwrap().as_ref(py)).unwrap();
+        assert_eq!(result, test_result);
     })
 }
 
 #[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantSpinHamiltonian")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian(1.0)); "ApplyTimeDependentSpinHamiltonian_theta")]
 fn test_ineffective_substitute_parameters(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {

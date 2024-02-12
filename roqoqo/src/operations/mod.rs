@@ -1084,5 +1084,5 @@ pub trait OperateTwoModeGate:
 ///
 pub trait OperateSpinsAnalog: Operate + Clone + PartialEq + SupportedVersion {
     /// Returns a vector of all the spins present in the analog operation (Hamiltonian).
-    fn spin(&self) -> Vec<usize>;
+    fn spin(&self) -> Result<Vec<usize>, RoqoqoError>;
 }

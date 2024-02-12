@@ -42,7 +42,7 @@ const TAGS_ApplyConstantSpinHamiltonian: &[&str; 3] = &[
 impl ImplementedIn1point10 for ApplyConstantSpinHamiltonian {}
 
 impl OperateSpinsAnalog for ApplyConstantSpinHamiltonian {
-    fn spin(&self) -> Vec<usize> {
+    fn spin(&self) -> Result<Vec<usize>,RoqoqoError> {
         let mut qubit_set = HashSet::new();
         for pps in self.hamiltonian.keys() {
             for (index, _) in pps.iter() {
@@ -51,7 +51,7 @@ impl OperateSpinsAnalog for ApplyConstantSpinHamiltonian {
         }
         let mut qubits = Vec::from_iter(qubit_set);
         qubits.sort();
-        qubits
+        Ok(qubits)
     }
 }
 impl SupportedVersion for ApplyConstantSpinHamiltonian {
@@ -89,7 +89,7 @@ const TAGS_ApplyTimeDependentSpinHamiltonian: &[&str; 3] = &[
 impl ImplementedIn1point10 for ApplyTimeDependentSpinHamiltonian {}
 
 impl OperateSpinsAnalog for ApplyTimeDependentSpinHamiltonian {
-    fn spin(&self) -> Vec<usize> {
+    fn spin(&self) -> Result<Vec<usize>,RoqoqoError> {
         let mut qubit_set = HashSet::new();
         for pps in self.hamiltonian.keys() {
             for (index, _) in pps.iter() {
@@ -98,7 +98,7 @@ impl OperateSpinsAnalog for ApplyTimeDependentSpinHamiltonian {
         }
         let mut qubits = Vec::from_iter(qubit_set);
         qubits.sort();
-        qubits
+        Ok(qubits)
     }
 }
 

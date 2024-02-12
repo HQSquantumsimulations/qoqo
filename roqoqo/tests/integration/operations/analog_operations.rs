@@ -432,7 +432,7 @@ fn analog_spins() {
 
     let analog = ApplyConstantSpinHamiltonian::new(hamlitonian, time);
 
-    assert_eq!(analog.spin(), vec![0, 2, 3]);
+    assert_eq!(analog.spin().unwrap(), vec![0, 2, 3]);
 }
 
 #[test]

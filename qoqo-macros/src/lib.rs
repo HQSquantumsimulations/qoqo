@@ -527,9 +527,9 @@ pub fn wrap(
             ///
             /// Returns:
             ///     Vec<usize>
-            pub fn spin(&self) -> PyResult<Py<PyVec<usize>>>{
-                Python::with_gil(|py| -> PyResult<Py<PyVec<usize>>> {
-                    Ok(self.internal.spin().map_err(|x| PyValueError::new_err(format!("Error operation cannot return spins {:?}",x)))?.to_pyarray(py).to_owned())
+            pub fn spin(&self) -> PyResult<Vec<usize>> {
+                Python::with_gil(|py| -> PyResult<Vec<usize>> {
+                    Ok(self.internal.spin().map_err(|x| PyValueError::new_err(format!("Error operation cannot return spins {:?}",x)))?.to_owned())
                 })
             }
         }
