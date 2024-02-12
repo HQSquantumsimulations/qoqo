@@ -41,7 +41,7 @@ where
     return ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
 }
 
-fn create_apply_constant_spin_hamiltonian_spin_test() -> ApplyConstantSpinHamiltonian{
+fn create_apply_constant_spin_hamiltonian_spin_test() -> ApplyConstantSpinHamiltonian {
     let pp = PauliProduct::new().z(0).x(2).y(4);
     let mut hamiltonian = SpinHamiltonian::new();
     hamiltonian
@@ -66,8 +66,7 @@ where
     return ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
 }
 
-fn create_apply_timedependent_spin_hamiltonian_spin_test() -> ApplyTimeDependentSpinHamiltonian
-{
+fn create_apply_timedependent_spin_hamiltonian_spin_test() -> ApplyTimeDependentSpinHamiltonian {
     let pp = PauliProduct::new().z(0).x(2).y(4);
     let mut hamiltonian = SpinHamiltonian::new();
     hamiltonian
@@ -422,7 +421,9 @@ fn test_spin(input_operation: Operation, test_result: Vec<usize>) {
     Python::with_gil(|py| {
         pyo3::prepare_freethreaded_python();
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let result : Vec<usize> = Vec::<usize>::extract(operation.call_method1(py, "spin", ()).unwrap().as_ref(py)).unwrap();
+        let result: Vec<usize> =
+            Vec::<usize>::extract(operation.call_method1(py, "spin", ()).unwrap().as_ref(py))
+                .unwrap();
         assert_eq!(result, test_result);
     })
 }

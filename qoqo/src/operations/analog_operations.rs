@@ -10,9 +10,9 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use pyo3::prelude::*;
-use pyo3::exceptions::PyValueError;
 use pyo3::exceptions::PyRuntimeError;
+use pyo3::exceptions::PyValueError;
+use pyo3::prelude::*;
 use pyo3::types::PySet;
 use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::{convert_into_calculator_float, CalculatorFloatWrapper};

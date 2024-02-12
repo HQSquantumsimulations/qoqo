@@ -19,6 +19,10 @@ use roqoqo::operations::*;
 use roqoqo::Circuit;
 use std::collections::HashMap;
 use std::f64::consts::PI;
+#[cfg(feature = "unstable_analog_operations")]
+use struqture::prelude::*;
+#[cfg(feature = "unstable_analog_operations")]
+use struqture::spins::*;
 use test_case::test_case;
 
 /// Test convert_operation_to_pyobject and convert_pyany_to_operation
@@ -140,6 +144,47 @@ fn test_conversion(input: Operation) {
 #[test_case(Operation::from(QuantumRabi::new(0, 1, 1.0.into())); "QuantumRabi")]
 #[test_case(Operation::from(LongitudinalCoupling::new(0, 1, 1.0.into())); "LongitudinalCoupling")]
 #[test_case(Operation::from(JaynesCummings::new(0, 1, 1.0.into())); "JaynesCummings")]
+fn test_conversion_feature(input: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input.clone()).unwrap();
+        let output = convert_pyany_to_operation(operation.as_ref(py)).unwrap();
+        assert_eq!(input, output)
+    })
+}
+
+#[cfg(feature = "unstable_analog_operations")]
+fn create_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantSpinHamiltonian
+where
+    CalculatorFloat: From<T>,
+{
+    let pp = PauliProduct::new().z(0);
+    let mut hamiltonian = SpinHamiltonian::new();
+    hamiltonian
+        .add_operator_product(pp.clone(), CalculatorFloat::from(p))
+        .unwrap();
+    return ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
+}
+#[cfg(feature = "unstable_analog_operations")]
+fn create_apply_timedependent_spin_hamiltonian<T>(p: T) -> ApplyTimeDependentSpinHamiltonian
+where
+    CalculatorFloat: From<T>,
+{
+    let pp = PauliProduct::new().z(0);
+    let mut hamiltonian = SpinHamiltonian::new();
+    hamiltonian
+        .add_operator_product(pp.clone(), CalculatorFloat::from(p))
+        .unwrap();
+
+    let mut values = HashMap::new();
+    values.insert("omega".to_string(), vec![1.0]);
+
+    return ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
+}
+
+#[cfg(feature = "unstable_analog_operations")]
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantSpinHamiltonian")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")); "ApplyTimeDependentSpinHamiltonian")]
 fn test_conversion_feature(input: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {

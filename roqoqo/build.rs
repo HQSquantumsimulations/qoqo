@@ -21,7 +21,7 @@ use syn::punctuated::Punctuated;
 use syn::visit::{self, Visit};
 use syn::{AttrStyle, File, Ident, ItemImpl, ItemStruct, Path, Token, Type, TypePath};
 
-const NUMBER_OF_MINOR_VERSIONS: usize = 11;
+const NUMBER_OF_MINOR_VERSIONS: usize = 12;
 
 /// Visitor scanning rust source code for struct belonging to enums
 struct Visitor {
@@ -336,6 +336,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 if trait_name.as_str() == "ImplementedIn1point10" {
                     self.roqoqo_version_register.insert(id.clone(), 10);
                 }
+                if trait_name.as_str() == "ImplementedIn1point11" {
+                    self.roqoqo_version_register.insert(id.clone(), 11);
+                }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());
                 }
@@ -582,7 +585,7 @@ fn main() {
     for i in 0..NUMBER_OF_MINOR_VERSIONS {
         let res: Vec<proc_macro2::TokenStream> =
             build_quotes(&vis, i, vis.spins_analog_operations.clone());
-            spins_analog_operations_quote.extend(res);
+        spins_analog_operations_quote.extend(res);
     }
 
     // Construct TokenStream for auto-generated rust file containing the enums
@@ -780,8 +783,7 @@ fn main() {
         pub enum TwoModeGateOperation {
             #(#two_mode_gate_operations_quote),*
         }
-        
-        #[cfg(feature = "unstable_analog_operations")]
+
         /// Enum of all Operations implementing [OperateSpinsAnalog]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, SupportedVersion)]
         #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
