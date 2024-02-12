@@ -26,6 +26,12 @@ use roqoqo::prelude::*;
 #[cfg(feature = "circuitdag")]
 use roqoqo::QuantumProgram;
 use std::collections::HashMap;
+#[cfg(feature="unstable_analog_operations")]
+use qoqo_calculator::CalculatorFloat;
+#[cfg(feature="unstable_analog_operations")]
+use struqture::prelude::*;
+#[cfg(feature="unstable_analog_operations")]
+use struqture::spins;
 use test_case::test_case;
 
 #[test_case(operations::TwoQubitGateOperation::from(operations::CNOT::new(1,0)); "CNOT")]
@@ -142,6 +148,44 @@ fn test_version_1_8_0_single_mode_gate(operation: operations::SingleModeGateOper
 #[test_case(operations::SingleModeGateOperation::from(operations::LongitudinalCoupling::new(1, 0, 1.0.into()));"LongitudinalCoupling")]
 #[test_case(operations::SingleModeGateOperation::from(operations::JaynesCummings::new(1, 0, 1.0.into()));"JaynesCummings")]
 fn test_version_1_10_0_single_mode_gate(operation: operations::SingleModeGateOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 10, 0));
+    let op = operations::Operation::try_from(operation).unwrap();
+    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 10, 0));
+}
+
+#[cfg(feature="unstable_analog_operations")]
+fn create_apply_constant_spin_hamiltonian<T>(p: T) -> operations::ApplyConstantSpinHamiltonian
+where
+    CalculatorFloat: From<T>,
+{
+    let pp = spins::PauliProduct::new().z(0);
+    let mut hamiltonian = spins::SpinHamiltonian::new();
+    hamiltonian
+        .add_operator_product(pp.clone(), CalculatorFloat::from(p))
+        .unwrap();
+    return operations::ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
+}
+#[cfg(feature="unstable_analog_operations")]
+fn create_apply_timedependent_spin_hamiltonian<T>(p: T) -> operations::ApplyTimeDependentSpinHamiltonian
+where
+    CalculatorFloat: From<T>,
+{
+    let pp = spins::PauliProduct::new().z(0);
+    let mut hamiltonian = spins::SpinHamiltonian::new();
+    hamiltonian
+        .add_operator_product(pp.clone(), CalculatorFloat::from(p))
+        .unwrap();
+
+    let mut values = HashMap::new();
+    values.insert("omega".to_string(), vec![1.0]);
+
+    return operations::ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
+}
+
+#[cfg(feature = "unstable_analog_operations")]
+#[test_case(operations::SpinsAnalogOperation::from(create_apply_constant_spin_hamiltonian(1.0));"ApplyConstantSpinHamiltonian")]
+#[test_case(operations::SpinsAnalogOperation::from(create_apply_timedependent_spin_hamiltonian("omega"));"ApplyTimeDependentHamiltonian")]
+fn test_version_1_10_0_single_mode_gate(operation: operations::SpinsAnalogOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 10, 0));
     let op = operations::Operation::try_from(operation).unwrap();
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 10, 0));

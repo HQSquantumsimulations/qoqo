@@ -30,4 +30,6 @@ pub use crate::operations::{
     OperateThreeQubitGate, OperateTwoMode, OperateTwoModeGate, OperateTwoQubit,
     OperateTwoQubitGate, Rotate, Substitute, SubstituteModes, SupportedVersion,
 };
+#[cfg(features="unstable_analog_operations")]
+pub use crate::operations::OperateSpinsAnalog;
 pub use crate::{RoqoqoBackendError, RoqoqoError};
