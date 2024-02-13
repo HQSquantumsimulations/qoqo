@@ -20,7 +20,7 @@ use crate::operations::{
 use crate::RoqoqoError;
 use qoqo_calculator::CalculatorFloat;
 
-/// The quantum Rabi interaction exp(-i * θ * X * (b^{\dagger} + b))
+/// The quantum Rabi interaction exp(-i * θ * X * (b^† + b))
 #[derive(
     Debug,
     Clone,
@@ -47,13 +47,12 @@ pub struct QuantumRabi {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_QuantumRabi: &[&str; 7] = &[
+const TAGS_QuantumRabi: &[&str; 6] = &[
     "Operation",
     "GateOperation",
     "ModeGateOperation",
     "SingleModeGateOperation",
     "SingleQubitGateOperation",
-    "SingleQubitGate",
     "QuantumRabi",
 ];
 
@@ -65,7 +64,7 @@ impl SupportedVersion for QuantumRabi {
     }
 }
 
-/// Longitudinal coupling gate exp(-i * θ * Z * (b^{\dagger} + b))
+/// Longitudinal coupling gate exp(-i * θ * Z * (b^† + b))
 #[derive(
     Debug,
     Clone,
@@ -92,13 +91,12 @@ pub struct LongitudinalCoupling {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_LongitudinalCoupling: &[&str; 7] = &[
+const TAGS_LongitudinalCoupling: &[&str; 6] = &[
     "Operation",
     "GateOperation",
     "ModeGateOperation",
     "SingleModeGateOperation",
     "SingleQubitGateOperation",
-    "SingleQubitGate",
     "LongitudinalCoupling",
 ];
 
@@ -110,7 +108,7 @@ impl SupportedVersion for LongitudinalCoupling {
     }
 }
 
-/// The Jaynes-Cummings gate exp(-i * θ * (σ^- * b^{\dagger} + σ^+ * b))
+/// The Jaynes-Cummings gate exp(-i * θ * (σ^- * b^† + σ^+ * b))
 #[derive(
     Debug,
     Clone,
@@ -137,19 +135,152 @@ pub struct JaynesCummings {
 }
 
 #[allow(non_upper_case_globals)]
-const TAGS_JaynesCummings: &[&str; 7] = &[
+const TAGS_JaynesCummings: &[&str; 6] = &[
     "Operation",
     "GateOperation",
     "ModeGateOperation",
     "SingleModeGateOperation",
     "SingleQubitGateOperation",
-    "SingleQubitGate",
     "JaynesCummings",
 ];
 
 impl ImplementedIn1point10 for JaynesCummings {}
 
 impl SupportedVersion for JaynesCummings {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 10, 0)
+    }
+}
+
+/// Stores a single excitation from the involved qubit into the involved bosonic mode as follows
+/// |0⟩_B ⨂ (a |0⟩_Q + b |1⟩_Q) -> (a|0⟩_B + b |1⟩_B ) ⨂ |0⟩_Q
+///
+/// Note: not defined if the bosonic mode is in a state |n⟩ with n != 0
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    OperateModeGate,
+    OperateSingleModeGate,
+    roqoqo_derive::Operate,
+    roqoqo_derive::OperateSingleQubit,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateSingleMode,
+    roqoqo_derive::InvolveModes,
+    roqoqo_derive::SubstituteModes,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct SingleExcitationStore {
+    /// The qubit involved.
+    qubit: usize,
+    /// The bosonic mode involved.
+    mode: usize,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_SingleExcitationStore: &[&str; 6] = &[
+    "Operation",
+    "GateOperation",
+    "ModeGateOperation",
+    "SingleModeGateOperation",
+    "SingleQubitGateOperation",
+    "SingleExcitationStore",
+];
+
+impl ImplementedIn1point10 for SingleExcitationStore {}
+
+impl SupportedVersion for SingleExcitationStore {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 10, 0)
+    }
+}
+
+/// Loads a single excitation from a bosonic mode into a qubit as follows
+/// (c1 |0⟩_B + c2 |1⟩_B) ⨂ |0⟩_Q -> |0⟩_B ⨂ (c1 |0⟩_Q + c2 |1⟩_Q)
+///
+/// Note: if the initial qubit state is |1⟩_Q the operation is only defined if c2 = 0
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    OperateModeGate,
+    OperateSingleModeGate,
+    roqoqo_derive::Operate,
+    roqoqo_derive::OperateSingleQubit,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateSingleMode,
+    roqoqo_derive::InvolveModes,
+    roqoqo_derive::SubstituteModes,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct SingleExcitationLoad {
+    /// The qubit involved.
+    qubit: usize,
+    /// The bosonic mode involved.
+    mode: usize,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_SingleExcitationLoad: &[&str; 6] = &[
+    "Operation",
+    "GateOperation",
+    "ModeGateOperation",
+    "SingleModeGateOperation",
+    "SingleQubitGateOperation",
+    "SingleExcitationLoad",
+];
+
+impl ImplementedIn1point10 for SingleExcitationLoad {}
+
+impl SupportedVersion for SingleExcitationLoad {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 10, 0)
+    }
+}
+
+/// Controlled-Z operation between a qubit and a bosonic mode, where the two-dimensional subspace of
+/// the bosonic mode spanned by the occupation number states |0⟩_B and |1⟩_B is considered
+/// as the second qubit involved in the CZ operation.
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    OperateModeGate,
+    OperateSingleModeGate,
+    roqoqo_derive::Operate,
+    roqoqo_derive::OperateSingleQubit,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateSingleMode,
+    roqoqo_derive::InvolveModes,
+    roqoqo_derive::SubstituteModes,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct CZQubitResonator {
+    /// The qubit involved.
+    qubit: usize,
+    /// The bosonic mode involved.
+    mode: usize,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_CZQubitResonator: &[&str; 6] = &[
+    "Operation",
+    "GateOperation",
+    "ModeGateOperation",
+    "SingleModeGateOperation",
+    "SingleQubitGateOperation",
+    "CZQubitResonator",
+];
+
+impl ImplementedIn1point10 for CZQubitResonator {}
+
+impl SupportedVersion for CZQubitResonator {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 10, 0)
     }
