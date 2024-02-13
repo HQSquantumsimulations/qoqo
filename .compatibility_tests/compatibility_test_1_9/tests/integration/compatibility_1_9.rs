@@ -116,6 +116,9 @@ use test_roqoqo_1_9;
 // #[test_case(test_roqoqo_1_9::operations::QuantumRabi::new(0, 1, 0.1.into()).into(); "QuantumRabi")]
 // #[test_case(test_roqoqo_1_9::operations::LongitudinalCoupling::new(0, 1, 0.1.into()).into(); "LongitudinalCoupling")]
 // #[test_case(test_roqoqo_1_9::operations::JaynesCummings::new(0, 1, 0.1.into()).into(); "JaynesCummings")]
+// #[test_case(test_roqoqo_1_9::operations::SingleExcitationLoad::new(0, 1).into(); "SingleExcitationLoad")]
+// #[test_case(test_roqoqo_1_9::operations::SingleExcitationStore::new(0, 1).into(); "SingleExcitationStore")]
+// #[test_case(test_roqoqo_1_9::operations::CZQubitResonator::new(0, 1).into(); "CZQubitResonator")]
 // Operations from 1.10.1
 // #[test_case(create_apply_constant_spin_hamiltonian(); "ApplyConstantSpinHamiltonian")]
 // #[test_case(create_apply_timedependent_spin_hamiltonian(); "ApplyTimeDependentHamiltonian")]
