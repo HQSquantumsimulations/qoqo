@@ -16,7 +16,7 @@ use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
     ApplyConstantSpinHamiltonianWrapper, ApplyTimeDependentSpinHamiltonianWrapper,
 };
-use qoqo_calculator::{Calculator, CalculatorError::VariableNotSet, CalculatorFloat};
+use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
 use roqoqo::RoqoqoError;
@@ -397,9 +397,9 @@ fn test_pyo3_substitute_params_single(input_operation: Operation) {
     })
 }
 
-#[test_case(Operation::from(create_apply_constant_spin_hamiltonian("theta")), "theta"; "ApplyConstantSpinHamiltonian_theta")]
-#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("theta")), "theta"; "ApplyTimeDependentSpinHamiltonian_theta")]
-fn test_pyo3_substitute_params_error(input_operation: Operation, val: &str) {
+#[test_case(Operation::from(create_apply_constant_spin_hamiltonian("theta")); "ApplyConstantSpinHamiltonian_theta")]
+#[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("theta")); "ApplyTimeDependentSpinHamiltonian_theta")]
+fn test_pyo3_substitute_params_error(input_operation: Operation) {
     Python::with_gil(|py| {
         pyo3::prepare_freethreaded_python();
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
@@ -448,6 +448,72 @@ fn test_ineffective_substitute_parameters(input_operation: Operation) {
         )
         .unwrap();
         assert!(comparison);
+    })
+}
+
+#[test]
+fn test_pyo3_remapqubits() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+
+        let pp1 = PauliProduct::new().z(0).x(1);
+    let pp2 = PauliProduct::new().z(2).x(3);
+    let mut hamiltonian = SpinHamiltonian::new();
+    hamiltonian
+        .add_operator_product(pp1, CalculatorFloat::from(1.0))
+        .unwrap();
+    hamiltonian
+        .add_operator_product(pp2, CalculatorFloat::from(2.0))
+        .unwrap();
+
+    let pp1 = PauliProduct::new().z(2).x(1);
+    let pp2 = PauliProduct::new().z(0).x(3);
+    let mut test_hamiltonian = SpinHamiltonian::new();
+    test_hamiltonian
+        .add_operator_product(pp1, CalculatorFloat::from(1.0))
+        .unwrap();
+    test_hamiltonian
+        .add_operator_product(pp2, CalculatorFloat::from(2.0))
+        .unwrap();
+
+    let input_op = Operation::from(ApplyConstantSpinHamiltonian::new(hamiltonian.clone(), 1.0.into()));
+    let test_op = Operation::from(ApplyConstantSpinHamiltonian::new(test_hamiltonian.clone(), 1.0.into()));
+    let operation = convert_operation_to_pyobject(input_op).unwrap();
+    let operation_2 = convert_operation_to_pyobject(test_op).unwrap();
+    // remap qubits
+    let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
+    let result = operation.call_method1(py, "remap_qubits", (qubit_mapping_test.clone(),)).unwrap();
+    
+    let comparison = bool::extract(
+        result
+            .as_ref(py)
+            .call_method1("__eq__", (operation_2.clone(),))
+            .unwrap(),
+    )
+    .unwrap();
+    assert!(comparison);
+
+
+    let mut values = HashMap::new();
+    values.insert("omega".to_string(), vec![1.0]);
+    let input_op = Operation::from(ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone()));
+    let test_op = Operation::from(ApplyTimeDependentSpinHamiltonian::new(test_hamiltonian, vec![1.0], values.clone()));
+    let operation = convert_operation_to_pyobject(input_op).unwrap();
+    let operation_2 = convert_operation_to_pyobject(test_op).unwrap();
+
+    let result = operation.call_method1(py, "remap_qubits", (qubit_mapping_test,)).unwrap();
+    
+    let comparison = bool::extract(
+        result
+            .as_ref(py)
+            .call_method1("__eq__", (operation_2.clone(),))
+            .unwrap(),
+    )
+    .unwrap();
+    assert!(comparison);
+
     })
 }
 

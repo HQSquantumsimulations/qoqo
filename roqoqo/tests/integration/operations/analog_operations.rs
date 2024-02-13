@@ -150,6 +150,47 @@ fn substitute(op: Operation, op_test: Operation) {
     assert_eq!(result, op_test);
 }
 
+#[test]
+fn remap_qubit() {
+    let pp1 = PauliProduct::new().z(0).x(1);
+    let pp2 = PauliProduct::new().z(2).x(3);
+    let mut hamiltonian = SpinHamiltonian::new();
+    hamiltonian
+        .add_operator_product(pp1, CalculatorFloat::from(1.0))
+        .unwrap();
+    hamiltonian
+        .add_operator_product(pp2, CalculatorFloat::from(2.0))
+        .unwrap();
+
+    let pp1 = PauliProduct::new().z(2).x(1);
+    let pp2 = PauliProduct::new().z(0).x(3);
+    let mut test_hamiltonian = SpinHamiltonian::new();
+    test_hamiltonian
+        .add_operator_product(pp1, CalculatorFloat::from(1.0))
+        .unwrap();
+    test_hamiltonian
+        .add_operator_product(pp2, CalculatorFloat::from(2.0))
+        .unwrap();
+
+    let op = ApplyConstantSpinHamiltonian::new(hamiltonian.clone(), 1.0.into());
+    let test_op = ApplyConstantSpinHamiltonian::new(test_hamiltonian.clone(), 1.0.into());
+
+    let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping_test.insert(0, 2);
+    qubit_mapping_test.insert(2, 0);
+    let result = op.remap_qubits(&qubit_mapping_test).unwrap();
+    assert_eq!(result, test_op);
+
+    let mut values = HashMap::new();
+    values.insert("omega".to_string(), vec![1.0]);
+    let op = ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
+    let test_op =
+        ApplyTimeDependentSpinHamiltonian::new(test_hamiltonian, vec![1.0], values.clone());
+
+    let result = op.remap_qubits(&qubit_mapping_test).unwrap();
+    assert_eq!(result, test_op);
+}
+
 #[test_case(
     Operation::from(create_apply_constant_spin_hamiltonian("omega")),
     "omega"
@@ -454,6 +495,21 @@ fn analog_spins() {
     let analog = ApplyConstantSpinHamiltonian::new(hamlitonian, time);
 
     assert_eq!(analog.spin().unwrap(), vec![0, 2, 3]);
+
+    let pp1 = PauliProduct::new().z(0).x(2);
+    let pp2 = PauliProduct::new().y(3).z(0);
+    let mut hamiltonian_p = SpinHamiltonian::new();
+    hamiltonian_p
+        .add_operator_product(pp1, (1.0).into())
+        .unwrap();
+    hamiltonian_p
+        .add_operator_product(pp2, ("omega").into())
+        .unwrap();
+
+    let values: HashMap<_, _> = [("omega".to_string(), vec![1.0])].iter().cloned().collect();
+    let analog_td = ApplyTimeDependentSpinHamiltonian::new(hamiltonian_p, vec![1.0], values);
+
+    assert_eq!(analog_td.spin().unwrap(), vec![0, 2, 3]);
 }
 
 #[test]

@@ -66,6 +66,37 @@ impl InvolveQubits for ApplyConstantSpinHamiltonian {
     }
 }
 
+impl Substitute for ApplyConstantSpinHamiltonian {
+    /// Remaps qubits in operations in clone of the operation.
+    fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        crate::operations::check_valid_mapping(mapping)?;
+        let mut new_hamiltonian = SpinHamiltonian::new();
+        for (pp, value) in &self.hamiltonian {
+            let new_pp = pp.remap_qubits(mapping);
+            new_hamiltonian.add_operator_product(new_pp, value.clone())?;
+        }
+
+        Ok(ApplyConstantSpinHamiltonian::new(
+            new_hamiltonian,
+            self.time.clone(),
+        ))
+    }
+
+    /// Substitutes symbolic parameters in clone of the operation.
+    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
+        let mut new_hamiltonian = self.hamiltonian.clone();
+        for (key, value) in &self.hamiltonian {
+            let new_value = calculator.parse_get(value.clone())?;
+            new_hamiltonian.set(key.clone(), new_value.into())?;
+        }
+        let new_time = calculator.parse_get(self.time.clone())?;
+        Ok(ApplyConstantSpinHamiltonian::new(
+            new_hamiltonian,
+            new_time.into(),
+        ))
+    }
+}
+
 /// Implements the continuous time, time-dependent spin Hamiltonian
 #[derive(Debug, Clone, PartialEq, roqoqo_derive::Operate)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
@@ -114,35 +145,18 @@ impl InvolveQubits for ApplyTimeDependentSpinHamiltonian {
     }
 }
 
-impl Substitute for ApplyConstantSpinHamiltonian {
-    /// Remaps qubits in operations in clone of the operation.
-    fn remap_qubits(&self, _mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
-        Ok(ApplyConstantSpinHamiltonian::new(
-            self.hamiltonian.clone(),
-            self.time.clone(),
-        ))
-    }
-
-    /// Substitutes symbolic parameters in clone of the operation.
-    fn substitute_parameters(&self, calculator: &Calculator) -> Result<Self, RoqoqoError> {
-        let mut new_hamiltonian = self.hamiltonian.clone();
-        for (key, value) in &self.hamiltonian {
-            let new_value = calculator.parse_get(value.clone())?;
-            new_hamiltonian.set(key.clone(), new_value.into())?;
-        }
-        let new_time = calculator.parse_get(self.time.clone())?;
-        Ok(ApplyConstantSpinHamiltonian::new(
-            new_hamiltonian,
-            new_time.into(),
-        ))
-    }
-}
-
 impl Substitute for ApplyTimeDependentSpinHamiltonian {
     /// Remaps qubits in operations in clone of the operation.
-    fn remap_qubits(&self, _mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+    fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        crate::operations::check_valid_mapping(mapping)?;
+        let mut new_hamiltonian = SpinHamiltonian::new();
+        for (pp, value) in &self.hamiltonian {
+            let new_pp = pp.remap_qubits(mapping);
+            new_hamiltonian.add_operator_product(new_pp, value.clone())?;
+        }
+
         Ok(ApplyTimeDependentSpinHamiltonian::new(
-            self.hamiltonian.clone(),
+            new_hamiltonian,
             self.time.clone(),
             self.values.clone(),
         ))
