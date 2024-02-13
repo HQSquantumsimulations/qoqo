@@ -164,17 +164,17 @@ fn test_device_compat() {
 // Operations from 1.10.1
 // use struqture;
 // use struqture::prelude::*;
-// fn create_apply_constant_spin_hamiltonian() -> test_roqoqo_1_10::operations::ApplyConstantSpinHamiltonian
+// fn create_apply_constant_spin_hamiltonian() -> test_roqoqo_1_9::operations::ApplyConstantSpinHamiltonian
 // {
 //     let pp = struqture::spins::PauliProduct::new().z(0);
 //     let mut hamiltonian = struqture::spins::SpinHamiltonian::new();
 //     hamiltonian
 //         .add_operator_product(pp.clone(), 1.0.into())
 //         .unwrap();
-//     return test_roqoqo_1_10::operations::ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
+//     return test_roqoqo_1_9::operations::ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
 // }
 
-// fn create_apply_timedependent_spin_hamiltonian() -> test_roqoqo_1_10::operations::ApplyTimeDependentSpinHamiltonian
+// fn create_apply_timedependent_spin_hamiltonian() -> test_roqoqo_1_9::operations::ApplyTimeDependentSpinHamiltonian
 // {
 //     let pp = struqture::spins::PauliProduct::new().z(0);
 //     let mut hamiltonian = struqture::spins::SpinHamiltonian::new();
@@ -183,5 +183,5 @@ fn test_device_compat() {
 //         .unwrap();
 //     let mut values = HashMap::new();
 //     values.insert("omega".to_string(), vec![1.0]);
-//     return test_roqoqo_1_10::operations::ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
+//     return test_roqoqo_1_9::operations::ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
 // }
