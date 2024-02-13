@@ -189,7 +189,7 @@ fn main() {
                                     let #pyobject_name = op
                                     .call_method0(#ident_string)
                                     .map_err(|_| QoqoError::ConversionError)?;
-                                    let temp_op: struqture::spins::SpinHamiltonianSystem = SpinHamiltonianSystemWrapper::from_pyany(#pyobject_name.into()).map_err(|_| QoqoError::ConversionError)?;
+                                    let temp_op: struqture::spins::SpinHamiltonianSystem = struqture_py::spins::SpinHamiltonianSystemWrapper::from_pyany(#pyobject_name.into()).map_err(|_| QoqoError::ConversionError)?;
                                     let #ident = temp_op.hamiltonian().clone();
                                 }},
                                 _ => {
@@ -249,7 +249,6 @@ fn main() {
         use ndarray::Array1;
         use num_complex::Complex64;
         use numpy::{PyArray2, PyReadonlyArray1};
-        use struqture_py::spins::SpinHamiltonianSystemWrapper;
 
         /// Tries to convert a [roqoqo::operations::Operation] to a PyObject
         pub fn convert_operation_to_pyobject(operation: Operation) -> PyResult<PyObject> {

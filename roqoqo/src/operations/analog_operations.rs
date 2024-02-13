@@ -11,7 +11,7 @@
 // limitations under the License.
 
 use crate::operations::{
-    ImplementedIn1point11, InvolveQubits, InvolvedQubits, Operate, OperateSpinsAnalog, Substitute,
+    ImplementedIn1point10, InvolveQubits, InvolvedQubits, Operate, OperateSpinsAnalog, Substitute,
     SupportedVersion,
 };
 use crate::RoqoqoError;
@@ -39,7 +39,7 @@ const TAGS_ApplyConstantSpinHamiltonian: &[&str; 3] = &[
     "ApplyConstantSpinHamiltonian",
 ];
 
-impl ImplementedIn1point11 for ApplyConstantSpinHamiltonian {}
+impl ImplementedIn1point10 for ApplyConstantSpinHamiltonian {}
 
 impl OperateSpinsAnalog for ApplyConstantSpinHamiltonian {
     fn spin(&self) -> Result<Vec<usize>, RoqoqoError> {
@@ -56,7 +56,7 @@ impl OperateSpinsAnalog for ApplyConstantSpinHamiltonian {
 }
 impl SupportedVersion for ApplyConstantSpinHamiltonian {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 11, 0)
+        (1, 10, 1)
     }
 }
 
@@ -86,7 +86,7 @@ const TAGS_ApplyTimeDependentSpinHamiltonian: &[&str; 3] = &[
     "ApplyTimeDependentSpinHamiltonian",
 ];
 
-impl ImplementedIn1point11 for ApplyTimeDependentSpinHamiltonian {}
+impl ImplementedIn1point10 for ApplyTimeDependentSpinHamiltonian {}
 
 impl OperateSpinsAnalog for ApplyTimeDependentSpinHamiltonian {
     fn spin(&self) -> Result<Vec<usize>, RoqoqoError> {
@@ -104,7 +104,7 @@ impl OperateSpinsAnalog for ApplyTimeDependentSpinHamiltonian {
 
 impl SupportedVersion for ApplyTimeDependentSpinHamiltonian {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 11, 0)
+        (1, 10, 1)
     }
 }
 

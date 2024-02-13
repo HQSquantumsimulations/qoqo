@@ -191,10 +191,10 @@ where
 #[cfg(feature = "unstable_analog_operations")]
 #[test_case(operations::SpinsAnalogOperation::from(create_apply_constant_spin_hamiltonian(1.0));"ApplyConstantSpinHamiltonian")]
 #[test_case(operations::SpinsAnalogOperation::from(create_apply_timedependent_spin_hamiltonian("omega"));"ApplyTimeDependentHamiltonian")]
-fn test_version_1_11_0_single_mode_gate(operation: operations::SpinsAnalogOperation) {
-    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 11, 0));
+fn test_version_1_10_1_spin_analog_operations(operation: operations::SpinsAnalogOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 10, 1));
     let op = operations::Operation::try_from(operation).unwrap();
-    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 11, 0));
+    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 10, 1));
 }
 
 #[test_case(operations::TwoModeGateOperation::from(operations::BeamSplitter::new(0, 1, 0.5.into(), 1.0.into())); "BeamSplitter")]

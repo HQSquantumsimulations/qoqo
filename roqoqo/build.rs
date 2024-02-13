@@ -70,7 +70,6 @@ struct Visitor {
     // Identifiers of structs belonging to TwoModeGateOperation enum
     two_mode_gate_operations: Vec<Ident>,
     // Identifiers of structs belonging to SpinsAnalogOperation enum
-    #[cfg(feature = "unstable_analog_operations")]
     spins_analog_operations: Vec<Ident>,
 }
 
@@ -99,7 +98,6 @@ impl Visitor {
             two_mode_operations: Vec::new(),
             single_mode_gate_operations: Vec::new(),
             two_mode_gate_operations: Vec::new(),
-            #[cfg(feature = "unstable_analog_operations")]
             spins_analog_operations: Vec::new(),
         }
     }
@@ -256,7 +254,6 @@ impl<'ast> Visit<'ast> for Visitor {
                 {
                     self.two_mode_gate_operations.push(i.ident.clone());
                 }
-                #[cfg(feature = "unstable_analog_operations")]
                 if parsed_arguments.contains("Operate")
                     && parsed_arguments.contains("OperateSpinsAnalog")
                 {
@@ -375,7 +372,6 @@ impl<'ast> Visit<'ast> for Visitor {
                 if trait_name.as_str() == "OperateTwoModeGate" {
                     self.two_mode_gate_operations.push(id.clone());
                 }
-                #[cfg(feature = "unstable_analog_operations")]
                 if trait_name.as_str() == "OperateSpinsAnalog" {
                     self.spins_analog_operations.push(id);
                 }
@@ -581,7 +577,6 @@ fn main() {
 
     // Construct TokenStreams for variants of operation enum
     let mut spins_analog_operations_quote: Vec<proc_macro2::TokenStream> = Vec::new();
-    #[cfg(feature = "unstable_analog_operations")]
     for i in 0..NUMBER_OF_MINOR_VERSIONS {
         let res: Vec<proc_macro2::TokenStream> =
             build_quotes(&vis, i, vis.spins_analog_operations.clone());
