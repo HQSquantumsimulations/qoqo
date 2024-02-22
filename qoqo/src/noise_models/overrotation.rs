@@ -17,16 +17,22 @@ use roqoqo::noise_models::{SingleQubitOverrotationDescription, SingleQubitOverro
 use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 use struqture_py;
 
-///
+/// Single qubit overrotation description
 #[pyclass(frozen, name = "SingleQubitOverrotationDescription")]
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct SingleQubitOverrotationDescriptionWrapper {
-    ///
+    /// Single qubit overrotation description
     pub internal: SingleQubitOverrotationDescription,
 }
 
 impl SingleQubitOverrotationDescriptionWrapper {
-    ///
+    /// Returns description to generate single qubit overotation noise
+    /// 
+    /// Args:
+    ///     gate: single qubit gate
+    ///     theta_mean: mean value of Gaussian distribution
+    ///     theta_std: standard deviation of Gaussian distribution
+    /// 
     pub fn new(gate:&str , theta_mean:f64, theta_std:f64) -> SingleQubitOverrotationDescriptionWrapper {
         SingleQubitOverrotationDescriptionWrapper{
             internal: SingleQubitOverrotationDescription::new(gate, theta_mean, theta_std),
@@ -50,7 +56,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
     pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
         self.clone()
     }
-    ///
+    /// Fallible conversion of generic python object..
     pub fn from_pyany(input: Py<PyAny>) -> PyResult<SingleQubitOverrotationDescription> {
         Python::with_gil(|py| -> PyResult<SingleQubitOverrotationDescription> {
             let input = input.as_ref(py);
@@ -68,6 +74,13 @@ impl SingleQubitOverrotationDescriptionWrapper {
             }
         })
     }
+    /// Return the bincode representation of SingleQubitOverrotationDescription using the bincode crate.
+    ///
+    /// Returns:
+    ///     ByteArray: The serialized SingleQubitOverrotationDescription (in bincode form).
+    ///
+    /// Raises:
+    ///     ValueError: Cannot serialize SingleQubitOverrotationDescription to bytes.
     ///
     pub fn to_bincode(&self) -> PyResult<Py<pyo3::types::PyByteArray>> {
         let noise_descp = SingleQubitOverrotationDescription::from(self.internal.clone());
@@ -79,13 +92,13 @@ impl SingleQubitOverrotationDescriptionWrapper {
         Ok(b)
     }
 
-    /// Return the json representation of the single qubit overrotation description.
+    /// Return the json representation of the SingleQubitOverrotationDescription.
     ///
     /// Returns:
-    ///     str: The serialized form of single qubit overrotation description.
+    ///     str: The serialized form of SingleQubitOverrotationDescription.
     ///
     /// Raises:
-    ///     ValueError: Cannot serialize single qubit overrotation description to json.
+    ///     ValueError: Cannot serialize SingleQubitOverrotationDescription.
     ///
     pub fn to_json(&self) -> PyResult<String> {
         let noise_descp = SingleQubitOverrotationDescription::from(self.internal.clone());
