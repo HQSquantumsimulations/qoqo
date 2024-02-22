@@ -22,6 +22,8 @@ pub use imperfect_readout::ImperfectReadoutModel;
 mod decoherence_on_gate;
 use super::operations::SupportedVersion;
 pub use decoherence_on_gate::DecoherenceOnGateModel;
+mod overrotation;
+pub use overrotation::{SingleQubitOverrotationDescription,SingleQubitOverrotationOnGate};
 
 /// Collection of all available noise models in this version of qoqo/roqoqo
 ///
@@ -37,6 +39,8 @@ pub enum NoiseModel {
     ImperfectReadoutModel(ImperfectReadoutModel),
     /// additional error only when applying gate
     DecoherenceOnGateModel(DecoherenceOnGateModel),
+    /// additional error only when applying gate
+    SingleQubitOverrotationOnGate(SingleQubitOverrotationOnGate),
 }
 
 impl From<ContinuousDecoherenceModel> for NoiseModel {
@@ -57,6 +61,12 @@ impl From<DecoherenceOnGateModel> for NoiseModel {
     }
 }
 
+impl From<SingleQubitOverrotationOnGate> for NoiseModel {
+    fn from(value: SingleQubitOverrotationOnGate) -> Self {
+        Self::SingleQubitOverrotationOnGate(value)
+    }
+}
+
 impl SupportedVersion for NoiseModel {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         match self {
@@ -67,6 +77,9 @@ impl SupportedVersion for NoiseModel {
                 internal.minimum_supported_roqoqo_version()
             }
             NoiseModel::DecoherenceOnGateModel(internal) => {
+                internal.minimum_supported_roqoqo_version()
+            }
+            NoiseModel::SingleQubitOverrotationOnGate(internal) => {
                 internal.minimum_supported_roqoqo_version()
             }
         }
@@ -93,5 +106,11 @@ mod tests {
         let noise = ImperfectReadoutModel::new();
         let noise_model: NoiseModel = noise.into();
         assert_eq!(noise_model.minimum_supported_roqoqo_version(), (1, 6, 0));
+    }
+    #[test]
+    fn minimum_supported_roqoqo_version_overrotations() {
+        let noise = SingleQubitOverrotationOnGate::new();
+        let noise_model: NoiseModel = noise.into();
+        assert_eq!(noise_model.minimum_supported_roqoqo_version(), (1, 10, 0));
     }
 }

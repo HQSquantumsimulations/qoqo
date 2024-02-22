@@ -13,3 +13,4 @@
 mod continuous_decoherence;
 mod decoherence_on_gate;
 mod imperfect_readout;
+mod overrotation;
