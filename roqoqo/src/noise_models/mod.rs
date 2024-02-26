@@ -23,7 +23,7 @@ mod decoherence_on_gate;
 use super::operations::SupportedVersion;
 pub use decoherence_on_gate::DecoherenceOnGateModel;
 mod overrotation;
-pub use overrotation::{SingleQubitOverrotationDescription,SingleQubitOverrotationOnGate};
+pub use overrotation::{SingleQubitOverrotationDescription, SingleQubitOverrotationOnGate};
 
 /// Collection of all available noise models in this version of qoqo/roqoqo
 ///
