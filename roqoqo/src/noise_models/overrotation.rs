@@ -164,6 +164,7 @@ impl SingleQubitOverrotationDescription {
 /// ```
 /// use roqoqo::noise_models::SingleQubitOverrotationDescription;
 /// use roqoqo::noise_models::SingleQubitOverrotationOnGate;
+/// use roqoqo::noise_models::NoiseModel;
 /// let gate = "RotateX";
 /// let theta_mean = 0.0;
 /// let theta_std = 1.0;
@@ -172,7 +173,7 @@ impl SingleQubitOverrotationDescription {
 /// let mut noise = SingleQubitOverrotationOnGate::new();
 /// let circuit_gate_with_noise = "RotateZ";
 /// let qubit = 0;
-/// noise.set_single_qubit_overrotations(circuit_gate_with_noise, qubit, noise_desc);
+/// noise = noise.set_single_qubit_overrotations(circuit_gate_with_noise, qubit, noise_desc);
 /// let noise_model = NoiseModel::SingleQubitOverrotationOnGate(noise);
 /// ```
 #[derive(Debug, Default, Clone, PartialEq)]
