@@ -12,7 +12,20 @@
 
 use super::SupportedVersion;
 use std::collections::HashMap;
+/// Description of single qubit overrotation noise model, [roqoqo::noise_models::SingleQubitOverrotationOnGate].
 ///
+/// Consists of the raw data needed to construct a rotation gate that adds
+/// overrotation: gate name and statistics (mean and standard deviation) of a Gaussian distribution
+/// from which the overrotation angle is sampled.
+/// Example:
+///
+/// ```
+/// use roqoqo::noise_models::SingleQubitOverrotationDescription;
+/// let gate = "RotateX";
+/// let theta_mean = 0.0;
+/// let theta_std = 1.0;
+/// let mut noise_desc = SingleQubitOverrotationDescription::new(gate, theta_mean, theta_std);
+/// ```
 #[derive(Debug, Default, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -24,7 +37,7 @@ use std::collections::HashMap;
     serde(into = "SingleQubitOverrotationDescriptionSerialize")
 )]
 pub struct SingleQubitOverrotationDescription {
-    /// Single qubit gate that describes the overrotation added
+    /// Name of the single qubit rotation gate
     gate: String,
     /// Mean value for the overroation: overroations are stochatically distributed around this base overroation value
     theta_mean: f64,
@@ -51,8 +64,11 @@ impl schemars::JsonSchema for SingleQubitOverrotationDescription {
     schemars(deny_unknown_fields)
 )]
 struct SingleQubitOverrotationDescriptionSerialize {
+    /// Rotation gate name.
     gate: String,
+    /// Mean of Gaussian distribution to sample overrotation angle.
     theta_mean: f64,
+    /// Standard deviation of Gaussian distribution to sample overrotation angle.
     theta_std: f64,
 }
 
@@ -93,29 +109,72 @@ impl SupportedVersion for SingleQubitOverrotationDescription {
 }
 
 impl SingleQubitOverrotationDescription {
+    /// Creates a new SingleQubitOverrotationDescription.
     ///
+    /// # Arguments
+    ///
+    /// * `gate` - The name of the gate.
+    /// * `theta_mean` - The mean of Gaussian distrbution from which overrotation angle is sampled.
+    /// * `theta_std` - The standard deviation of Gaussian distrbution from which overrotation angle is sampled.
+    ///
+    /// # Returns
+    ///
+    /// `Self` - New description for overrotation noise model.
     pub fn new(gate: &str, theta_mean: f64, theta_std: f64) -> Self {
         SingleQubitOverrotationDescription {
             gate: gate.to_string(),
-            theta_mean: theta_mean,
-            theta_std: theta_std,
+            theta_mean,
+            theta_std,
         }
     }
 
+    /// Return gate name of SingleQubitOverrotationDescription.
     ///
-    pub fn gate(&self) -> String {
-        return self.gate.clone();
+    /// # Returns
+    ///
+    /// `gate` - Returns gate name.
+    pub fn gate(&self) -> &String {
+        &self.gate
     }
+
+    /// Return mean of Gaussian distrbution of overrotation angles name of SingleQubitOverrotationDescription.
     ///
+    /// # Returns
+    ///
+    /// `theta_mean` - mean of distrbution.
     pub fn theta_mean(&self) -> f64 {
-        return self.theta_mean.clone();
+        self.theta_mean
     }
+
+    /// Return standard deviation of Gaussian distrbution of overrotation angles name of SingleQubitOverrotationDescription.
     ///
+    /// # Returns
+    ///
+    /// `theta_std` - standard deviation of distrbution.
     pub fn theta_std(&self) -> f64 {
-        return self.theta_std.clone();
+        self.theta_std
     }
 }
+
+/// Single qubit overrotation noise model on gate.
 ///
+/// Adds a rotatation gate with a randomly distributed rotation angle after specified gates in a quantum circuit.
+/// Example:
+///
+/// ```
+/// use roqoqo::noise_models::SingleQubitOverrotationDescription;
+/// use roqoqo::noise_models::SingleQubitOverrotationOnGate;
+/// let gate = "RotateX";
+/// let theta_mean = 0.0;
+/// let theta_std = 1.0;
+/// let mut noise_desc = SingleQubitOverrotationDescription::new(gate, theta_mean, theta_std);
+///
+/// let mut noise = SingleQubitOverrotationOnGate::new();
+/// let circuit_gate_with_noise = "RotateZ";
+/// let qubit = 0;
+/// noise.set_single_qubit_overrotations(circuit_gate_with_noise, qubit, noise_desc);
+/// let noise_model = NoiseModel::SingleQubitOverrotationOnGate(noise);
+/// ```
 #[derive(Debug, Default, Clone, PartialEq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(
@@ -127,10 +186,16 @@ impl SingleQubitOverrotationDescription {
     serde(into = "SingleQubitOverrotationOnGateSerialize")
 )]
 pub struct SingleQubitOverrotationOnGate {
-    // Description of overroations. For each single gate in a circuit that corresponds to the String value acting on a qubit corresponding to the usize value, a single qubit overrotation gate is applied. The overrotation gate is described by the SingleQubitOverrotationDescription. The angle of the overrotation is randomly drawn from a normal distribution also given by the SingleQubitOverroation Description
+    /// Overrotation noise information for single qubit gates in a quantum circuit.
     single_qubit_overrotations: HashMap<(String, usize), SingleQubitOverrotationDescription>,
-    two_qubit_overrotations:
-        HashMap<(String, (usize, usize)), (SingleQubitOverrotationDescription, SingleQubitOverrotationDescription)>,
+    /// Overrotation noise information for two qubit gates in a quantum circuit.
+    two_qubit_overrotations: HashMap<
+        (String, (usize, usize)),
+        (
+            SingleQubitOverrotationDescription,
+            SingleQubitOverrotationDescription,
+        ),
+    >,
 }
 
 #[cfg(feature = "json_schema")]
@@ -149,7 +214,10 @@ type SingleQubitOverroation = Vec<(SingleQGateIndex, SingleQubitOverrotationDesc
 type TwoQubitGateIndex = (String, (usize, usize));
 type TwoQubitOverrotation = Vec<(
     TwoQubitGateIndex,
-    (SingleQubitOverrotationDescription, SingleQubitOverrotationDescription),
+    (
+        SingleQubitOverrotationDescription,
+        SingleQubitOverrotationDescription,
+    ),
 )>;
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Debug, Clone, PartialEq)]
@@ -159,9 +227,9 @@ type TwoQubitOverrotation = Vec<(
     schemars(deny_unknown_fields)
 )]
 struct SingleQubitOverrotationOnGateSerialize {
-    /// Extra noise for single qubit gates.
+    /// Overrotation for single qubit gates.
     single_qubit_overrotations: SingleQubitOverroation,
-    /// Extra noise for two qubit gates.
+    /// Overrotation for two qubit gates.
     two_qubit_overrotations: TwoQubitOverrotation,
 }
 
@@ -188,7 +256,10 @@ impl From<SingleQubitOverrotationOnGateSerialize> for SingleQubitOverrotationOnG
         > = value.single_qubit_overrotations.into_iter().collect();
         let two_qubit_overrotations: HashMap<
             (String, (usize, usize)),
-            (SingleQubitOverrotationDescription, SingleQubitOverrotationDescription),
+            (
+                SingleQubitOverrotationDescription,
+                SingleQubitOverrotationDescription,
+            ),
         > = value.two_qubit_overrotations.into_iter().collect();
 
         SingleQubitOverrotationOnGate {
@@ -205,7 +276,7 @@ impl SupportedVersion for SingleQubitOverrotationOnGate {
 }
 
 impl SingleQubitOverrotationOnGate {
-    /// Creates a new DecoherenceOnGateModel with default values.
+    /// Creates a new SingleQubitOverrotationOnGate with default values.
     pub fn new() -> Self {
         Self {
             single_qubit_overrotations: HashMap::new(),
@@ -213,17 +284,17 @@ impl SingleQubitOverrotationOnGate {
         }
     }
 
-    /// Sets for a single qubit gate.
+    /// Sets overrotation for a single qubit gate.
     ///
     /// # Arguments
     ///
     /// * `gate` - The name of the gate.
     /// * `qubit` - The qubit the gate acts on.
-    /// * `noise_operator` - The noise affecting system when gate is applied.
+    /// * `noise_description` - overrotation description for gate.
     ///
     /// # Returns
     ///
-    /// `Self` - The error model with the new noise on gate set.
+    /// `Self` - The overrotation model with the new overrotation on gate set.
     pub fn set_single_qubit_overrotations(
         mut self,
         gate: &str,
@@ -234,7 +305,7 @@ impl SingleQubitOverrotationOnGate {
             .insert((gate.to_string(), qubit), noise_description);
         self
     }
-    /// Returns the extra noise for a single qubit gate, if it exists.
+    /// Returns the overrotation description for a single qubit gate, if it exists.
     ///
     /// # Arguments
     ///
@@ -243,7 +314,7 @@ impl SingleQubitOverrotationOnGate {
     ///
     /// # Returns
     ///
-    /// `Option<struqture::spins::PlusMinusLindbladNoiseOperator>` - The error model applied when gate is applied.
+    /// `Option<SingleQubitOverrotation>` - The overrotation applied when gate is applied.
     pub fn get_single_qubit_overrotations(
         &self,
         gate: &str,
@@ -253,31 +324,34 @@ impl SingleQubitOverrotationOnGate {
             .get(&(gate.to_string(), qubit))
     }
 
-    /// Sets extra noise
+    /// Sets overrotation for a single qubit gate.
     ///
     /// # Arguments
     ///
     /// * `gate` - The name of the gate.
     /// * `control` - Controlling qubit.
     /// * `target` - Target qubit.
-    /// * `noise_operator` - The noise affecting system when gate is applied.
+    /// * `noise_description` - overrotation description for gate.
     ///
     /// # Returns
     ///
-    /// `Option<struqture::spins::PlusMinusLindbladNoiseOperator>` - The error model applied when gate is applied.
+    /// `Self` - The overrotation model with the new overrotation on gate set.
     pub fn set_two_qubit_overrotations(
         mut self,
         gate: &str,
         control: usize,
         target: usize,
-        noise_operator: (SingleQubitOverrotationDescription, SingleQubitOverrotationDescription),
+        noise_description: (
+            SingleQubitOverrotationDescription,
+            SingleQubitOverrotationDescription,
+        ),
     ) -> Self {
         self.two_qubit_overrotations
-            .insert((gate.to_string(), (control, target)), noise_operator);
+            .insert((gate.to_string(), (control, target)), noise_description);
         self
     }
 
-    /// Returns the extra noise for a two qubit gate, if it exists.
+    /// Returns the overrotation description for a two qubit gate, if it exists.
     ///
     /// # Arguments
     ///
@@ -287,13 +361,16 @@ impl SingleQubitOverrotationOnGate {
     ///
     /// # Returns
     ///
-    /// `Option<struqture::spins::PlusMinusLindbladNoiseOperator>` - The error model applied when gate is applied.
+    /// `Option<(SingleQubitOverrotation,SingleQubitOverrotation)>` - The overrotation applied when gate is applied.
     pub fn get_two_qubit_overrotations(
         &self,
         gate: &str,
         control: usize,
         target: usize,
-    ) -> Option<&(SingleQubitOverrotationDescription,SingleQubitOverrotationDescription)> {
+    ) -> Option<&(
+        SingleQubitOverrotationDescription,
+        SingleQubitOverrotationDescription,
+    )> {
         self.two_qubit_overrotations
             .get(&(gate.to_string(), (control, target)))
     }
@@ -322,11 +399,11 @@ mod tests {
             "CNOT",
             0,
             1,
-            (noise_descp.clone(),noise_descp.clone()),
+            (noise_descp.clone(), noise_descp.clone()),
         );
         assert_eq!(
             noise_model.get_two_qubit_overrotations("CNOT", 0, 1),
-            Some(&(noise_descp.clone(),noise_descp.clone()))
+            Some(&(noise_descp.clone(), noise_descp.clone()))
         );
     }
 

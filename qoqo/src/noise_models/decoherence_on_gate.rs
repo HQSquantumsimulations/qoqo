@@ -110,7 +110,7 @@ impl DecoherenceOnGateModelWrapper {
             )
     }
 
-    /// Sets extra noise for a single qubit gate.
+    /// Sets extra noise for a two qubit gate.
     ///
     /// Args:
     ///     gate (str): The name of the gate.

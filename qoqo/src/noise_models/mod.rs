@@ -21,7 +21,9 @@ pub use imperfect_readout::ImperfectReadoutModelWrapper;
 mod decoherence_on_gate;
 pub use decoherence_on_gate::DecoherenceOnGateModelWrapper;
 mod overrotation;
-pub use overrotation::{SingleQubitOverrotationDescriptionWrapper, SingleQubitOverrotationOnGateWrapper};
+pub use overrotation::{
+    SingleQubitOverrotationDescriptionWrapper, SingleQubitOverrotationOnGateWrapper,
+};
 use pyo3::prelude::*;
 
 /// A collection of noise models that represent different types of noise that can be present in Quantum Computing hardware.

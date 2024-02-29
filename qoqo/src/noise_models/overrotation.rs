@@ -12,12 +12,26 @@
 
 use pyo3::prelude::*;
 use qoqo_macros::noise_model_wrapper;
-use roqoqo::noise_models::{SingleQubitOverrotationDescription, SingleQubitOverrotationOnGate, NoiseModel};
+use roqoqo::noise_models::{
+    NoiseModel, SingleQubitOverrotationDescription, SingleQubitOverrotationOnGate,
+};
 #[cfg(feature = "json_schema")]
 use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
-use struqture_py;
 
-/// Single qubit overrotation description
+/// Description of single qubit overrotation noise model, [roqoqo::noise_models::SingleQubitOverrotationOnGate].
+///
+/// Consists of the raw data needed to construct a rotation gate that adds
+/// overrotation: gate name and statistics (mean and standard deviation) of a Gaussian distribution
+/// from which the overrotation angle is sampled.
+/// Example:
+///
+/// ```
+/// from qoqo.noise_models import SingleQubitOverrotationDescription;
+/// gate = "RotateX";
+/// theta_mean = 0.0;
+/// theta_std = 1.0;
+/// noise_desc = SingleQubitOverrotationDescription(gate, theta_mean, theta_std);
+/// ```
 #[pyclass(frozen, name = "SingleQubitOverrotationDescription")]
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct SingleQubitOverrotationDescriptionWrapper {
@@ -25,16 +39,34 @@ pub struct SingleQubitOverrotationDescriptionWrapper {
     pub internal: SingleQubitOverrotationDescription,
 }
 
+/// Creates a new SingleQubitOverrotationDescription.
+///
+/// # Arguments
+///
+/// * `gate` - The name of the gate.
+/// * `theta_mean` - The mean of Gaussian distrbution from which overrotation angle is sampled.
+/// * `theta_std` - The standard deviation of Gaussian distrbution from which overrotation angle is sampled.
+///
+/// # Returns
+///
+/// `Self` - New description for overrotation noise model.
+
 impl SingleQubitOverrotationDescriptionWrapper {
     /// Returns description to generate single qubit overotation noise
-    /// 
+    ///
     /// Args:
-    ///     gate: single qubit gate
-    ///     theta_mean: mean value of Gaussian distribution
-    ///     theta_std: standard deviation of Gaussian distribution
-    /// 
-    pub fn new(gate:&str , theta_mean:f64, theta_std:f64) -> SingleQubitOverrotationDescriptionWrapper {
-        SingleQubitOverrotationDescriptionWrapper{
+    ///     gate: The name qubit gate.
+    ///     theta_mean: The mean of Gaussian distrbution from which overrotation angle is sampled.
+    ///     theta_std: The standard deviation of Gaussian distrbution from which overrotation angle is sampled.
+    ///
+    /// Return:
+    ///     `self`.
+    pub fn new(
+        gate: &str,
+        theta_mean: f64,
+        theta_std: f64,
+    ) -> SingleQubitOverrotationDescriptionWrapper {
+        SingleQubitOverrotationDescriptionWrapper {
             internal: SingleQubitOverrotationDescription::new(gate, theta_mean, theta_std),
         }
     }
@@ -61,7 +93,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
         Python::with_gil(|py| -> PyResult<SingleQubitOverrotationDescription> {
             let input = input.as_ref(py);
             if let Ok(try_downcast) = input.extract::<SingleQubitOverrotationDescriptionWrapper>() {
-                Ok(try_downcast.internal.into())
+                Ok(try_downcast.internal)
             } else {
                 let get_bytes = input.call_method0("to_bincode")?;
                 let bytes = get_bytes.extract::<Vec<u8>>()?;
@@ -83,12 +115,16 @@ impl SingleQubitOverrotationDescriptionWrapper {
     ///     ValueError: Cannot serialize SingleQubitOverrotationDescription to bytes.
     ///
     pub fn to_bincode(&self) -> PyResult<Py<pyo3::types::PyByteArray>> {
-        let noise_descp = SingleQubitOverrotationDescription::from(self.internal.clone());
-        let serialized = bincode::serialize(&noise_descp)
-            .map_err(|_| pyo3::exceptions::PyValueError::new_err("Cannot serialize Noise-Overrotation description to bytes"))?;
-        let b: Py<pyo3::types::PyByteArray> = Python::with_gil(|py| -> Py<pyo3::types::PyByteArray> {
-            pyo3::types::PyByteArray::new(py, &serialized[..]).into()
-        });
+        let noise_descp = self.internal.clone();
+        let serialized = bincode::serialize(&noise_descp).map_err(|_| {
+            pyo3::exceptions::PyValueError::new_err(
+                "Cannot serialize Noise-Overrotation description to bytes",
+            )
+        })?;
+        let b: Py<pyo3::types::PyByteArray> =
+            Python::with_gil(|py| -> Py<pyo3::types::PyByteArray> {
+                pyo3::types::PyByteArray::new(py, &serialized[..]).into()
+            });
         Ok(b)
     }
 
@@ -101,9 +137,12 @@ impl SingleQubitOverrotationDescriptionWrapper {
     ///     ValueError: Cannot serialize SingleQubitOverrotationDescription.
     ///
     pub fn to_json(&self) -> PyResult<String> {
-        let noise_descp = SingleQubitOverrotationDescription::from(self.internal.clone());
-        let serialized = serde_json::to_string(&noise_descp)
-            .map_err(|_| pyo3::exceptions::PyValueError::new_err("Cannot serialize single qubit overrotation description to json."))?;
+        let noise_descp = self.internal.clone();
+        let serialized = serde_json::to_string(&noise_descp).map_err(|_| {
+            pyo3::exceptions::PyValueError::new_err(
+                "Cannot serialize single qubit overrotation description to json.",
+            )
+        })?;
         Ok(serialized)
     }
 
@@ -114,7 +153,9 @@ impl SingleQubitOverrotationDescriptionWrapper {
     ///     str: The minimum version of the qoqo library to deserialize this object.
     pub fn min_supported_version(&self) -> String {
         let min_version: (u32, u32, u32) =
-            SingleQubitOverrotationDescription::minimum_supported_roqoqo_version(&SingleQubitOverrotationDescription::from(self.internal.clone()));
+            SingleQubitOverrotationDescription::minimum_supported_roqoqo_version(
+                &self.internal.clone(),
+            );
         format!("{}.{}.{}", min_version.0, min_version.1, min_version.2)
     }
 
@@ -135,11 +176,11 @@ impl SingleQubitOverrotationDescriptionWrapper {
 
         match op {
             pyo3::class::basic::CompareOp::Eq => match other {
-                Ok(osystem) => Ok(SingleQubitOverrotationDescription::from(self.internal.clone()) == osystem),
+                Ok(osystem) => Ok(self.internal.clone() == osystem),
                 _ => Ok(false),
             },
             pyo3::class::basic::CompareOp::Ne => match other {
-                Ok(osystem) => Ok(SingleQubitOverrotationDescription::from(self.internal.clone()) != osystem),
+                Ok(osystem) => Ok(self.internal.clone() != osystem),
                 _ => Ok(true),
             },
             _ => Err(pyo3::exceptions::PyNotImplementedError::new_err(
@@ -149,27 +190,23 @@ impl SingleQubitOverrotationDescriptionWrapper {
     }
 }
 
-/// .
+/// Single qubit overrotation noise model on gate.
 ///
+/// Adds a rotatation gate with a randomly distributed rotation angle after specified gates in a quantum circuit.
 /// Example:
 ///
 /// ```
-/// from qoqo.noise_models import DecoherenceOnGateModel
-/// from struqture_py.spins import (PlusMinusLindbladNoiseOperator, PlusMinusProduct)
+/// from qoqo.noise_models import SingleQubitOverrotationDescription
+/// from qoqo.noise_models import SingleQubitOverrotationOnGate
+/// gate = "RotateX"
+/// theta_mean = 0.0
+/// theta_std = 1.0
+/// noise_desc = SingleQubitOverrotationDescription(gate, theta_mean, theta_std)
 ///
-/// noise_model = DecoherenceOnGateModel()
-/// lindblad_noise = PlusMinusLindbladNoiseOperator()
-/// lindblad_noise.add_operator_product(
-///    (PlusMinusProduct().z(0), PlusMinusProduct().z(0)),
-///    0.9)
-/// lindblad_noise.add_operator_product(
-///    (PlusMinusProduct().z(1), PlusMinusProduct().z(1)),
-///    0.9)
-///
-/// noise_model = noise_model.set_two_qubit_term(
-/// "CNOT", 0,1,
-/// lindblad_noise
-/// )
+/// noise = SingleQubitOverrotationOnGate();
+/// circuit_gate_with_noise = "RotateZ";
+/// qubit = 0;
+/// noise.set_single_qubit_overrotations(circuit_gate_with_noise, qubit, noise_desc);
 /// ```
 #[pyclass(frozen, name = "SingleQubitOverrotationOnGate")]
 #[derive(Debug, Default, Clone, PartialEq)]
@@ -179,7 +216,7 @@ pub struct SingleQubitOverrotationOnGateWrapper {
 
 #[noise_model_wrapper]
 impl SingleQubitOverrotationOnGateWrapper {
-    /// Creates a new DecoherenceOnGateModel.
+    /// Creates a new SingleQubitOverrotationOnGate.
     #[new]
     pub fn new() -> SingleQubitOverrotationOnGateWrapper {
         SingleQubitOverrotationOnGateWrapper {
@@ -187,42 +224,44 @@ impl SingleQubitOverrotationOnGateWrapper {
         }
     }
 
-    /// Sets extra noise for a single qubit gate.
+    /// Sets overrotation for a single qubit gate.
     ///
     /// Args:
     ///     gate (str): The name of the gate.
     ///     qubit (int): The qubit the gate acts on.
-    ///     noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): The noise affecting system when gate is applied.
+    ///     noise_description (SingleQubitOverrotationDescription) - overrotation description for gate.
+    ///
     ///
     /// Returns:
-    ///     Self: The error model with the new noise on gate set.
+    ///     Self: The overotation model with the new overrotation on gate set.
     ///
     /// Raises:
-    ///     PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
+    ///     PyTypeError: Noise description is not a SingleQubitOverrotationDescription.
     pub fn set_single_qubit_overrotations(
         &self,
         gate: &str,
         qubit: usize,
-        noise_descp: Py<PyAny>,
+        noise_description: Py<PyAny>,
     ) -> PyResult<Self> {
-        let noise_descp = SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_descp)?;
+        let noise_description =
+            SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_description)?;
         Ok(Self {
             internal: self.internal.clone().set_single_qubit_overrotations(
                 gate,
                 qubit,
-                noise_descp
+                noise_description,
             ),
         })
     }
 
-    /// Returns the extra noise for a single qubit gate, if it exists.
+    /// Returns the overrotation description for a single qubit gate, if it exists.
     ///
     /// Args:
     ///     gate (str): The name of the gate.
     ///     qubit (int): The qubit the gate acts on.
     ///
     /// Returns
-    ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
+    ///     Optional[SingleQubitOverrotationDescription]: The overrotation applied when gate is applied.
     pub fn get_single_qubit_overrotations(
         &self,
         gate: &str,
@@ -230,41 +269,40 @@ impl SingleQubitOverrotationOnGateWrapper {
     ) -> Option<SingleQubitOverrotationDescriptionWrapper> {
         self.internal
             .get_single_qubit_overrotations(gate, qubit)
-            .map(
-                |noise_descp| SingleQubitOverrotationDescriptionWrapper {
-                    internal: noise_descp.clone(),
-                },
-            )
+            .map(|noise_descp| SingleQubitOverrotationDescriptionWrapper {
+                internal: noise_descp.clone(),
+            })
     }
 
-    /// Sets extra noise for a single qubit gate.
+    /// Sets extra noise for a two qubit gate.
     ///
     /// Args:
     ///     gate (str): The name of the gate.
     ///     control (int): The control qubit the gate acts on.
     ///     target (int): The target qubit the gate acts on.
-    ///     noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): The noise affecting system when gate is applied.
+    ///     noise_description ((SingleQubitOverrotationDescription, SingleQubitOverrotationDescription)) - overrotation description for gate.
     ///
     /// Returns:
-    ///     Self: The error model with the new noise on gate set.
+    ///     Self: The overrotation model with the new overrotation on gate set.
     ///
     /// Raises:
-    ///     PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
+    ///     PyTypeError: Noise description is not a (SingleQubitOverrotationDescription, SingleQubitOverrotationDescription).
     pub fn set_two_qubit_overrotations(
         &self,
         gate: &str,
         control: usize,
         target: usize,
-        noise_operator: Py<PyAny>,
+        noise_operator: (Py<PyAny>, Py<PyAny>),
     ) -> PyResult<Self> {
-        let noise_operator =
-            struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany(noise_operator)?;
+        let noise1 = SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_operator.0)?;
+        let noise2 = SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_operator.1)?;
+
         Ok(Self {
             internal: self.internal.clone().set_two_qubit_overrotations(
                 gate,
                 control,
                 target,
-                noise_operator,
+                (noise1, noise2),
             ),
         })
     }
@@ -277,20 +315,28 @@ impl SingleQubitOverrotationOnGateWrapper {
     ///     target (int) - The target qubit the gate acts on.
     ///
     /// Returns
-    ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
+    ///     Optional[(SingleQubitOverrotationDescription, SingleQubitOverrotationDescription)]: The overrotation applied when gate is applied.
     pub fn get_two_qubit_overrotations(
         &self,
         gate: &str,
         control: usize,
         target: usize,
-    ) -> Option<struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper> {
+    ) -> Option<(
+        SingleQubitOverrotationDescriptionWrapper,
+        SingleQubitOverrotationDescriptionWrapper,
+    )> {
         self.internal
             .get_two_qubit_overrotations(gate, control, target)
-            .map(
-                |noise_operator| struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper {
-                    internal: noise_operator.clone(),
-                },
-            )
+            .map(|noise| {
+                (
+                    SingleQubitOverrotationDescriptionWrapper {
+                        internal: noise.0.clone(),
+                    },
+                    SingleQubitOverrotationDescriptionWrapper {
+                        internal: noise.1.clone(),
+                    },
+                )
+            })
     }
 
     /// Convert the bincode representation of the Noise-Model to a device using the bincode crate.

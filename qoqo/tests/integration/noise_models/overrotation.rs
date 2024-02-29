@@ -14,8 +14,6 @@ use pyo3::prelude::*;
 use qoqo::noise_models::*;
 #[cfg(feature = "json_schema")]
 use roqoqo::{noise_models::SingleQubitOverrotationOnGate, ROQOQO_VERSION};
-use struqture::OperateOnDensityMatrix;
-use struqture_py::spins;
 
 /// Test copy
 #[test]
@@ -33,7 +31,9 @@ fn test_pyo3_init() {
             .unwrap()
             .extract::<SingleQubitOverrotationOnGateWrapper>()
             .unwrap();
-        let br_wrapper = br.extract::<SingleQubitOverrotationOnGateWrapper>().unwrap();
+        let br_wrapper = br
+            .extract::<SingleQubitOverrotationOnGateWrapper>()
+            .unwrap();
         assert_eq!(br_copied, br_wrapper);
     })
 }
@@ -49,7 +49,9 @@ fn test_pyo3_debug() {
             .unwrap()
             .downcast::<PyCell<SingleQubitOverrotationOnGateWrapper>>()
             .unwrap();
-        let br_wrapper = br.extract::<SingleQubitOverrotationOnGateWrapper>().unwrap();
+        let br_wrapper = br
+            .extract::<SingleQubitOverrotationOnGateWrapper>()
+            .unwrap();
 
         let br_clone = br_wrapper.clone();
         assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
@@ -137,7 +139,8 @@ fn test_singe_qubit_noise_term() {
             .downcast::<PyCell<SingleQubitOverrotationOnGateWrapper>>()
             .unwrap();
 
-        let internal_desc = roqoqo::noise_models::SingleQubitOverrotationDescription::new("RotateX", 1.0, 1.0);
+        let internal_desc =
+            roqoqo::noise_models::SingleQubitOverrotationDescription::new("RotateX", 1.0, 1.0);
         let desc = SingleQubitOverrotationDescriptionWrapper {
             internal: internal_desc,
         };
@@ -169,21 +172,19 @@ fn test_two_qubit_noise_term() {
             .downcast::<PyCell<SingleQubitOverrotationOnGateWrapper>>()
             .unwrap();
 
-        let mut internal_plus_minus = struqture::spins::PlusMinusLindbladNoiseOperator::new();
-        let _ = internal_plus_minus.add_operator_product(
-            (
-                struqture::spins::PlusMinusProduct::new().plus(0),
-                struqture::spins::PlusMinusProduct::new().plus(0),
-            ),
-            0.1.into(),
-        );
-        let plus_minus_operator = spins::PlusMinusLindbladNoiseOperatorWrapper {
-            internal: internal_plus_minus,
+        let internal_desc =
+            roqoqo::noise_models::SingleQubitOverrotationDescription::new("RotateX", 1.0, 1.0);
+        let desc1 = SingleQubitOverrotationDescriptionWrapper {
+            internal: internal_desc.clone(),
         };
+        let desc2 = SingleQubitOverrotationDescriptionWrapper {
+            internal: internal_desc.clone(),
+        };
+
         let br = br
             .call_method1(
                 "set_two_qubit_overrotations",
-                ("CNOT", 0, 1, plus_minus_operator.clone()),
+                ("CNOT", 0, 1, (desc1.clone(), desc2.clone())),
             )
             .unwrap()
             .downcast::<PyCell<SingleQubitOverrotationOnGateWrapper>>()
@@ -191,14 +192,16 @@ fn test_two_qubit_noise_term() {
         let operator = br
             .call_method1("get_two_qubit_overrotations", ("CNOT", 0, 1))
             .unwrap()
-            .extract::<spins::PlusMinusLindbladNoiseOperatorWrapper>()
+            .extract::<(
+                SingleQubitOverrotationDescriptionWrapper,
+                SingleQubitOverrotationDescriptionWrapper,
+            )>()
             .unwrap();
-        assert_eq!(operator, plus_minus_operator);
+        assert_eq!(operator, (desc1, desc2));
     })
 }
 
-
-/// Test json_schema function of DecoherenceOnGateModel
+/// Test json_schema function of SingleQubitOverrotationOnGate
 #[cfg(feature = "json_schema")]
 #[test]
 fn test_json_schema() {
@@ -213,7 +216,8 @@ fn test_json_schema() {
 
         let schema: String = String::extract(br.call_method0("json_schema").unwrap()).unwrap();
         let rust_schema =
-            serde_json::to_string_pretty(&schemars::schema_for!(SingleQubitOverrotationOnGate)).unwrap();
+            serde_json::to_string_pretty(&schemars::schema_for!(SingleQubitOverrotationOnGate))
+                .unwrap();
         assert_eq!(schema, rust_schema);
 
         let current_version_string =
