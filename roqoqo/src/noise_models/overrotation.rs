@@ -17,6 +17,7 @@ use std::collections::HashMap;
 /// Consists of the raw data needed to construct a rotation gate that adds
 /// overrotation: gate name and statistics (mean and standard deviation) of a Gaussian distribution
 /// from which the overrotation angle is sampled.
+///
 /// Example:
 ///
 /// ```
