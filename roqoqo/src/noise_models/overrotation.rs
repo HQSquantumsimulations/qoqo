@@ -41,7 +41,7 @@ use std::collections::HashMap;
 pub struct SingleQubitOverrotationDescription {
     /// Name of the single qubit rotation gate
     gate: String,
-    /// Mean value for the overroation: overroations are stochatically distributed around this base overroation value
+    /// Mean value for the overrotation: overrotations are stochastically distributed around this base overrotation value
     theta_mean: f64,
     /// Standard deviation of Gaussian distribution around mean value of theta
     theta_std: f64,
