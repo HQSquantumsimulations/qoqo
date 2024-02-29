@@ -12,6 +12,7 @@
 
 use super::SupportedVersion;
 use std::collections::HashMap;
+
 /// Description of single qubit overrotation noise model, [roqoqo::noise_models::SingleQubitOverrotationOnGate].
 ///
 /// Consists of the raw data needed to construct a rotation gate that adds
