@@ -69,6 +69,8 @@ struct Visitor {
     single_mode_gate_operations: Vec<Ident>,
     // Identifiers of structs belonging to TwoModeGateOperation enum
     two_mode_gate_operations: Vec<Ident>,
+    // Identifiers of structs belonging to SpinsAnalogOperation enum
+    spins_analog_operations: Vec<Ident>,
 }
 
 impl Visitor {
@@ -96,6 +98,7 @@ impl Visitor {
             two_mode_operations: Vec::new(),
             single_mode_gate_operations: Vec::new(),
             two_mode_gate_operations: Vec::new(),
+            spins_analog_operations: Vec::new(),
         }
     }
 
@@ -251,6 +254,11 @@ impl<'ast> Visit<'ast> for Visitor {
                 {
                     self.two_mode_gate_operations.push(i.ident.clone());
                 }
+                if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateSpinsAnalog")
+                {
+                    self.spins_analog_operations.push(i.ident.clone());
+                }
             }
         }
 
@@ -359,7 +367,10 @@ impl<'ast> Visit<'ast> for Visitor {
                     self.single_mode_gate_operations.push(id.clone());
                 }
                 if trait_name.as_str() == "OperateTwoModeGate" {
-                    self.two_mode_gate_operations.push(id);
+                    self.two_mode_gate_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateSpinsAnalog" {
+                    self.spins_analog_operations.push(id);
                 }
             }
         }
@@ -378,6 +389,8 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/bosonic_operations.rs",
     #[cfg(feature = "unstable_spin_boson_operations")]
     "src/operations/spin_boson_operations.rs",
+    #[cfg(feature = "unstable_analog_operations")]
+    "src/operations/analog_operations.rs",
 ];
 
 fn main() {
@@ -557,6 +570,14 @@ fn main() {
         let res: Vec<proc_macro2::TokenStream> =
             build_quotes(&vis, i, vis.two_mode_gate_operations.clone());
         two_mode_gate_operations_quote.extend(res);
+    }
+
+    // Construct TokenStreams for variants of operation enum
+    let mut spins_analog_operations_quote: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.spins_analog_operations.clone());
+        spins_analog_operations_quote.extend(res);
     }
 
     // Construct TokenStream for auto-generated rust file containing the enums
@@ -753,6 +774,15 @@ fn main() {
         #[non_exhaustive]
         pub enum TwoModeGateOperation {
             #(#two_mode_gate_operations_quote),*
+        }
+
+        /// Enum of all Operations implementing [OperateSpinsAnalog]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, SupportedVersion)]
+        #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+        #[non_exhaustive]
+        pub enum SpinsAnalogOperation {
+            #(#spins_analog_operations_quote),*
         }
 
     };

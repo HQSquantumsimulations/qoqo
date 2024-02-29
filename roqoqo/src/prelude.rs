@@ -22,6 +22,8 @@
 pub use crate::backends::EvaluatingBackend;
 pub use crate::circuit::AsVec;
 pub use crate::measurements::{Measure, MeasureExpectationValues};
+#[cfg(feature = "unstable_analog_operations")]
+pub use crate::operations::OperateSpinsAnalog;
 pub use crate::operations::{
     Define, InvolveModes, InvolveQubits, InvolvedModes, InvolvedQubits, Operate,
     OperateConstantGate, OperateGate, OperateModeGate, OperateMultiQubit, OperateMultiQubitGate,

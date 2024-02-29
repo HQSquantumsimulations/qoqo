@@ -2,6 +2,12 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.10.1
+
+### Added in 1.10.1
+
+* Unstable feature `unstable_analog_operations` adding new analog operations: ApplyConstantSpinHamiltonian, ApplyTimeDependentSpinHamiltonian
+
 ## 1.10.0
 
 ### Added in 1.10.0

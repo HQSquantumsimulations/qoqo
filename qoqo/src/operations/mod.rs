@@ -34,6 +34,11 @@ pub use bosonic_operations::*;
 mod spin_boson_operations;
 #[cfg(feature = "unstable_spin_boson_operations")]
 pub use spin_boson_operations::*;
+#[cfg(feature = "unstable_analog_operations")]
+mod analog_operations;
+#[cfg(feature = "unstable_analog_operations")]
+pub use analog_operations::*;
+
 include!(concat!(
     env!("OUT_DIR"),
     "/_auto_generated_operation_conversion.rs"
@@ -159,5 +164,10 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<LongitudinalCouplingWrapper>()?;
     #[cfg(feature = "unstable_spin_boson_operations")]
     m.add_class::<JaynesCummingsWrapper>()?;
+    #[cfg(feature = "unstable_analog_operations")]
+    m.add_class::<ApplyConstantSpinHamiltonianWrapper>()?;
+    #[cfg(feature = "unstable_analog_operations")]
+    m.add_class::<ApplyTimeDependentSpinHamiltonianWrapper>()?;
+
     Ok(())
 }

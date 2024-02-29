@@ -65,6 +65,11 @@ pub use bosonic_operations::*;
 mod spin_boson_operations;
 #[cfg(feature = "unstable_spin_boson_operations")]
 pub use spin_boson_operations::*;
+/// Collection of roqoqo analog gate operations
+#[cfg(feature = "unstable_analog_operations")]
+mod analog_operations;
+#[cfg(feature = "unstable_analog_operations")]
+pub use analog_operations::*;
 
 include!(concat!(env!("OUT_DIR"), "/_auto_generated_operations.rs"));
 
@@ -1059,4 +1064,25 @@ pub trait OperateTwoModeGate:
     + PartialEq
     + SupportedVersion
 {
+}
+
+#[cfg(feature = "unstable_analog_operations")]
+/// Trait for all continuous time spin operations
+///
+/// # Example
+/// ```
+/// use roqoqo::operations::{OperateSpinAnalog, ApplyConstantSpinHamiltonian};
+/// use struqture::prelude::*;
+/// use struqture::spins::{PauliProduct, SpinHamiltonian};
+/// use qoqo_calculator::CalculatorFloat;
+///
+/// let pp = PauliProduct::new().z(0);
+/// let mut hamiltonian = SpinHamiltonian::new();
+/// hamiltonian.add_operator_product(pp.clone(), CalculatorFloat::from(1.0)).unwrap();
+/// let _op = ApplyConstantSpinHamiltonian::new(hamiltonian, CalculatorFloat::from(1.0));
+/// ```
+///
+pub trait OperateSpinsAnalog: Operate + Clone + PartialEq + SupportedVersion {
+    /// Returns a vector of all the spins present in the analog operation (Hamiltonian).
+    fn spin(&self) -> Result<Vec<usize>, RoqoqoError>;
 }

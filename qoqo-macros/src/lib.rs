@@ -521,7 +521,21 @@ pub fn wrap(
     } else {
         TokenStream::new()
     };
-
+    let operate_spins_analog_quote = if attribute_arguments.contains("OperateSpinsAnalog") {
+        quote! {
+            /// /// Returns a vector of all the spins present in the analog operation (Hamiltonian)..
+            ///
+            /// Returns:
+            ///     Vec<usize>
+            pub fn spin(&self) -> PyResult<Vec<usize>> {
+                Python::with_gil(|py| -> PyResult<Vec<usize>> {
+                    Ok(self.internal.spin().map_err(|x| PyValueError::new_err(format!("Error operation cannot return spins {:?}",x)))?.to_owned())
+                })
+            }
+        }
+    } else {
+        TokenStream::new()
+    };
     let operate_two_mode_quote = if attribute_arguments.contains("OperateTwoMode") {
         quote! {
         /// Return `mode_0` bosonic mode of two bosonic mode Operation.
@@ -625,6 +639,7 @@ pub fn wrap(
             #operate_two_mode_quote
             #operate_single_mode_gate_quote
             #operate_two_mode_gate_quote
+            #operate_spins_analog_quote
             #json_schema_quote
             fn __format__(&self, _format_spec: &str) -> PyResult<String> {
                 Ok(format!("{:?}", self.internal))

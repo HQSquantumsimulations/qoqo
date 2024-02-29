@@ -126,6 +126,8 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/bosonic_operations.rs",
     #[cfg(feature = "unstable_spin_boson_operations")]
     "src/operations/spin_boson_operations.rs",
+    #[cfg(feature = "unstable_analog_operations")]
+    "src/operations/analog_operations.rs",
 ];
 
 fn main() {
@@ -182,6 +184,13 @@ fn main() {
                                         .map_err(|_| QoqoError::ConversionError)?),
                                         _ => None
                                     };
+                                }},
+                                "SpinHamiltonian" => {quote!{
+                                    let #pyobject_name = op
+                                    .call_method0(#ident_string)
+                                    .map_err(|_| QoqoError::ConversionError)?;
+                                    let temp_op: struqture::spins::SpinHamiltonianSystem = struqture_py::spins::SpinHamiltonianSystemWrapper::from_pyany(#pyobject_name.into()).map_err(|_| QoqoError::ConversionError)?;
+                                    let #ident = temp_op.hamiltonian().clone();
                                 }},
                                 _ => {
                                     quote!{
