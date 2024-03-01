@@ -12,11 +12,13 @@
 
 use super::SupportedVersion;
 use std::collections::HashMap;
+
 /// Description of single qubit overrotation noise model, [roqoqo::noise_models::SingleQubitOverrotationOnGate].
 ///
 /// Consists of the raw data needed to construct a rotation gate that adds
 /// overrotation: gate name and statistics (mean and standard deviation) of a Gaussian distribution
 /// from which the overrotation angle is sampled.
+///
 /// Example:
 ///
 /// ```
@@ -32,7 +34,7 @@ use std::collections::HashMap;
 pub struct SingleQubitOverrotationDescription {
     /// Name of the single qubit rotation gate
     gate: String,
-    /// Mean value for the overrotation: overrotation are stochatically distributed around this base overrotation value
+    /// Mean value for the overrotation: overrottation are stochastically distributed around this base overrotation value
     theta_mean: f64,
     /// Standard deviation of Gaussian distribution around mean value of theta
     theta_std: f64,
