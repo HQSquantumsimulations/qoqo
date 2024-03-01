@@ -107,7 +107,7 @@ fn circuit_remapped() -> Circuit {
     circuit
 }
 
-fn new_circuit(py: Python) -> &PyCell<CircuitWrapper> {
+pub(crate) fn new_circuit(py: Python) -> &PyCell<CircuitWrapper> {
     let circuit_type = py.get_type::<CircuitWrapper>();
     circuit_type
         .call0()

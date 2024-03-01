@@ -176,6 +176,10 @@ impl Circuit {
             Operation::InputSymbolic(_) => {
                 self.definitions.push(input);
             }
+            #[cfg(feature = "unstable_operation_definition")]
+            Operation::GateDefinition(_) => {
+                self.definitions.push(input);
+            }
             _ => self.operations.push(input),
         }
     }

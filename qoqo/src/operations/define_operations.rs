@@ -10,11 +10,15 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+#[cfg(feature = "unstable_operation_definition")]
+use crate::{convert_into_circuit, CircuitWrapper};
 use pyo3::exceptions::PyRuntimeError;
 use pyo3::prelude::*;
 use pyo3::types::PySet;
 use qoqo_macros::*;
 use roqoqo::operations::*;
+#[cfg(feature = "unstable_operation_definition")]
+use roqoqo::Circuit;
 #[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
@@ -98,4 +102,20 @@ pub struct InputBit {
     name: String,
     index: usize,
     value: bool,
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+#[wrap(Operate, Define, JsonSchema)]
+/// GateDefinition is the Definition for a Bit type register.
+///
+/// Args:
+///     circuit (Circuit): The circuit where the definition is stored.
+///     name (String): The name of the gate that is defined.
+///     qubits (Vec<usize>): The indices of the qubits used in the internal definition.
+///     free_parameter (Vec<String>): Names of the free CalculatorFloat variables in the internal definition.
+pub struct GateDefinition {
+    circuit: Circuit,
+    name: String,
+    qubits: Vec<usize>,
+    free_parameters: Vec<String>,
 }

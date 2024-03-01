@@ -168,6 +168,9 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<ApplyConstantSpinHamiltonianWrapper>()?;
     #[cfg(feature = "unstable_analog_operations")]
     m.add_class::<ApplyTimeDependentSpinHamiltonianWrapper>()?;
-
+    #[cfg(feature = "unstable_operation_definition")]
+    m.add_class::<GateDefinitionWrapper>()?;
+    #[cfg(feature = "unstable_operation_definition")]
+    m.add_class::<CallDefinedGateWrapper>()?;
     Ok(())
 }

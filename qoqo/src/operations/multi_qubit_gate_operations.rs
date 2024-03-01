@@ -64,3 +64,20 @@ pub struct MultiQubitZZ {
     /// The angle of the multi qubit Molmer-Sorensen gate.
     theta: CalculatorFloat,
 }
+
+#[allow(clippy::upper_case_acronyms)]
+#[cfg(feature = "unstable_operation_definition")]
+#[wrap(Operate, OperateMultiQubit, JsonSchema)]
+/// The gate to be replaced by a gate defined by GateDefinition gate.
+///
+/// The gate applies the gate defined by GateDefinition with the same name.
+pub struct CallDefinedGate {
+    /// The name of the called defined operations.
+    name: String,
+    /// The qubits that for this call replace the qubits in the internal definition of the called gate
+    /// (get replaced in order of apppearance in gate defintion).
+    qubits: Vec<usize>,
+    /// List of float values that replace the free parameters in the internal defintion of the called gate
+    /// (get replaced in order of apppearance in gate defintion).
+    free_parameters: Vec<f64>,
+}

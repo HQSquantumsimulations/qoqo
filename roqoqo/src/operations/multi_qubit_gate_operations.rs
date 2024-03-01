@@ -160,3 +160,45 @@ impl OperateMultiQubitGate for MultiQubitZZ {
         circuit
     }
 }
+
+/// The gate to be replaced by a gate defined by GateDefinition gate.
+///
+/// The gate applies the gate defined by GateDefinition with the same name.
+#[cfg(feature = "unstable_operation_definition")]
+#[allow(clippy::upper_case_acronyms)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateMultiQubit,
+)]
+#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct CallDefinedGate {
+    /// The name of the called defined operations.
+    name: String,
+    /// The qubits that for this call replace the qubits in the internal definition of the called gate
+    /// (get replaced in order of apppearance in gate defintion).
+    qubits: Vec<usize>,
+    /// List of float values that replace the free parameters in the internal defintion of the called gate
+    /// (get replaced in order of apppearance in gate defintion).
+    free_parameters: Vec<f64>,
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+impl super::ImplementedIn1point10 for CallDefinedGate {}
+
+#[cfg(feature = "unstable_operation_definition")]
+impl SupportedVersion for CallDefinedGate {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 10, 1)
+    }
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+#[allow(non_upper_case_globals)]
+const TAGS_CallDefinedGate: &[&str; 3] =
+    &["Operation", "MultiQubitGateOperation", "CallDefinedGate"];

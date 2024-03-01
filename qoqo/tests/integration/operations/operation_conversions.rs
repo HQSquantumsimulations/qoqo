@@ -194,6 +194,17 @@ fn test_conversion_feature(input: Operation) {
     })
 }
 
+#[cfg(feature = "unstable_operation_definition")]
+#[test_case(Operation::from(GateDefinition::new(create_circuit(), "ro".into(), vec![1, 2], vec!["test".into()])); "GateDefinition")]
+fn test_conversion_gate_definition(input: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input.clone()).unwrap();
+        let output = convert_pyany_to_operation(operation.as_ref(py)).unwrap();
+        assert_eq!(input, output)
+    })
+}
+
 // ---------------- Helper functions ---------------- //
 
 fn reordering() -> HashMap<usize, usize> {

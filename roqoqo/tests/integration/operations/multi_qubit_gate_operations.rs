@@ -601,3 +601,48 @@ pub fn test_json_schema_multi_qubit_gate_operations(gate: MultiQubitGateOperatio
     let validation_result = compiled_schema.validate(&test_value);
     assert!(validation_result.is_ok());
 }
+
+// Test circuit function of CallDefinedGate
+#[cfg(feature = "unstable_operation_definition")]
+#[test]
+fn test_clone_partial_eq_call_defined_gate() {
+    let qubits = vec![0, 1, 2];
+
+    let gate = CallDefinedGate::new("name".into(), qubits.clone(), vec![0.6]);
+    assert_eq!(gate.hqslang(), "CallDefinedGate");
+    assert_eq!(
+        gate.tags(),
+        &["Operation", "MultiQubitGateOperation", "CallDefinedGate",]
+    );
+    assert!(!gate.is_parametrized());
+    let gate1 = CallDefinedGate::new("name".into(), qubits, vec![0.7]);
+    let helper = gate != gate1;
+    assert!(helper);
+    #[allow(clippy::redundant_clone)]
+    let gate2 = gate1.clone();
+    assert_eq!(gate2, gate1);
+}
+
+#[test]
+#[cfg(feature = "unstable_operation_definition")]
+fn test_format_call_defined_gate() {
+    let qubits = vec![0, 1, 2];
+    let gate = CallDefinedGate::new("name".into(), qubits.clone(), vec![0.6]);
+    let string = format!("{:?}", gate);
+    assert!(
+        string == "CallDefinedGate { name: \"name\", qubits: [0, 1, 2], free_parameters: [0.6] }"
+    );
+}
+
+#[test]
+#[cfg(feature = "unstable_operation_definition")]
+fn test_involved_qubits_call_defined_gate() {
+    let qubits = vec![0, 1, 2];
+    let gate = CallDefinedGate::new("name".into(), qubits.clone(), vec![0.6]);
+    let involved_qubits = gate.involved_qubits();
+    let mut comp_set: HashSet<usize> = HashSet::new();
+    let _ = comp_set.insert(0);
+    let _ = comp_set.insert(1);
+    let _ = comp_set.insert(2);
+    assert_eq!(involved_qubits, InvolvedQubits::Set(comp_set));
+}

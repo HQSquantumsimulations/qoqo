@@ -16,6 +16,8 @@
 use jsonschema::{Draft, JSONSchema};
 use qoqo_calculator::Calculator;
 use roqoqo::operations::*;
+#[cfg(feature = "unstable_operation_definition")]
+use roqoqo::Circuit;
 #[cfg(feature = "json_schema")]
 use schemars::schema_for;
 #[cfg(feature = "serialize")]
@@ -870,6 +872,266 @@ pub fn input_bit_json_schema() {
 
     // Create JSONSchema
     let test_schema = schema_for!(InputBit);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
+/// Test GateDefinition inputs and involved qubits
+#[cfg(feature = "unstable_operation_definition")]
+#[test]
+fn gate_definition_inputs_qubits() {
+    let def = GateDefinition::new(
+        Circuit::new(),
+        String::from("test"),
+        vec![0],
+        vec!["test".to_owned()],
+    );
+
+    // Test inputs are correct
+    assert_eq!(def.circuit(), &Circuit::new());
+    assert_eq!(def.name(), &String::from("test"));
+    assert_eq!(def.qubits(), &[0_usize]);
+    assert_eq!(def.free_parameters(), &["test"]);
+
+    // Test InvolveQubits trait
+    assert_eq!(def.involved_qubits(), InvolvedQubits::None);
+}
+
+/// Test GateDefinition standard derived traits (Debug, Clone, PartialEq)
+#[test]
+#[cfg(feature = "unstable_operation_definition")]
+fn gate_definition_simple_traits() {
+    let def = GateDefinition::new(
+        Circuit::new(),
+        String::from("test"),
+        vec![0],
+        vec!["test".to_owned()],
+    );
+
+    // Test Debug trait
+    assert_eq!(
+        format!("{:?}", def),
+        "GateDefinition { circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }, name: \"test\", qubits: [0], free_parameters: [\"test\"] }"
+    );
+
+    // Test Clone trait
+    assert_eq!(def.clone(), def);
+
+    // Test PartialEq trait
+    let def_0 = GateDefinition::new(
+        Circuit::new(),
+        String::from("test"),
+        vec![0],
+        vec!["test".to_owned()],
+    );
+    let def_1 = GateDefinition::new(
+        Circuit::new(),
+        String::from("test"),
+        vec![1],
+        vec!["test1".to_owned()],
+    );
+    assert!(def_0 == def);
+    assert!(def == def_0);
+    assert!(def_1 != def);
+    assert!(def != def_1);
+}
+
+/// Test GateDefinition Operate trait
+#[cfg(feature = "unstable_operation_definition")]
+#[test]
+fn gate_definition_operate_trait() {
+    let def = GateDefinition::new(
+        Circuit::new(),
+        String::from("test"),
+        vec![0],
+        vec!["test".to_owned()],
+    );
+
+    // (1) Test tags function
+    let tags: &[&str; 3] = &["Operation", "Definition", "GateDefinition"];
+    assert_eq!(def.tags(), tags);
+
+    // (2) Test hqslang function
+    assert_eq!(def.hqslang(), String::from("GateDefinition"));
+
+    // (3) Test is_parametrized function
+    assert!(!def.is_parametrized());
+}
+
+/// Test GateDefinition Substitute trait
+#[cfg(feature = "unstable_operation_definition")]
+#[test]
+fn gate_definition_substitute_trait() {
+    let def = GateDefinition::new(
+        Circuit::new(),
+        String::from("test"),
+        vec![0],
+        vec!["test".to_owned()],
+    );
+    let def_test = GateDefinition::new(
+        Circuit::new(),
+        String::from("test"),
+        vec![0],
+        vec!["test".to_owned()],
+    );
+    let def_test2 = GateDefinition::new(
+        Circuit::new(),
+        String::from("test"),
+        vec![2],
+        vec!["test".to_owned()],
+    );
+
+    // (1) Substitute parameters function
+    let mut substitution_dict: Calculator = Calculator::new();
+    substitution_dict.set_variable("test", 0.0);
+    let result = def_test.substitute_parameters(&substitution_dict).unwrap();
+    assert_eq!(def, result);
+
+    // (2) Remap qubits function
+    let newqubit: usize = 2;
+    let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
+    qubit_mapping_test.insert(0, newqubit);
+    qubit_mapping_test.insert(newqubit, 0);
+    let result = def.remap_qubits(&qubit_mapping_test).unwrap();
+    assert_eq!(result, def_test2);
+}
+
+/// Test GateDefinition Serialization and Deserialization traits (readable)
+#[cfg(feature = "serialize")]
+#[cfg(feature = "unstable_operation_definition")]
+#[test]
+fn gate_definition_serde_readable() {
+    let def = GateDefinition::new(
+        Circuit::new(),
+        String::from("test"),
+        vec![0],
+        vec!["test".to_owned()],
+    );
+
+    assert_tokens(
+        &def.readable(),
+        &[
+            Token::Struct {
+                name: "GateDefinition",
+                len: 4,
+            },
+            Token::Str("circuit"),
+            Token::Struct {
+                name: "Circuit",
+                len: 3,
+            },
+            Token::Str("definitions"),
+            Token::Seq { len: Some(0) },
+            Token::SeqEnd,
+            Token::Str("operations"),
+            Token::Seq { len: Some(0) },
+            Token::SeqEnd,
+            Token::Str("_roqoqo_version"),
+            Token::Struct {
+                name: "RoqoqoVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(1),
+            Token::Str("minor_version"),
+            Token::U32(0),
+            Token::StructEnd,
+            Token::StructEnd,
+            Token::Str("name"),
+            Token::Str("test"),
+            Token::Str("qubits"),
+            Token::Seq { len: Some(1) },
+            Token::U64(0),
+            Token::SeqEnd,
+            Token::Str("free_parameters"),
+            Token::Seq { len: Some(1) },
+            Token::Str("test"),
+            Token::SeqEnd,
+            Token::StructEnd,
+        ],
+    );
+}
+
+/// Test GateDefinition Serialization and Deserialization traits (compact)
+#[cfg(feature = "serialize")]
+#[cfg(feature = "unstable_operation_definition")]
+#[test]
+fn gate_definition_serde_compact() {
+    let def = GateDefinition::new(
+        Circuit::new(),
+        String::from("test"),
+        vec![0],
+        vec!["test".to_owned()],
+    );
+
+    assert_tokens(
+        &def.compact(),
+        &[
+            Token::Struct {
+                name: "GateDefinition",
+                len: 4,
+            },
+            Token::Str("circuit"),
+            Token::Struct {
+                name: "Circuit",
+                len: 3,
+            },
+            Token::Str("definitions"),
+            Token::Seq { len: Some(0) },
+            Token::SeqEnd,
+            Token::Str("operations"),
+            Token::Seq { len: Some(0) },
+            Token::SeqEnd,
+            Token::Str("_roqoqo_version"),
+            Token::Struct {
+                name: "RoqoqoVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(1),
+            Token::Str("minor_version"),
+            Token::U32(0),
+            Token::StructEnd,
+            Token::StructEnd,
+            Token::Str("name"),
+            Token::Str("test"),
+            Token::Str("qubits"),
+            Token::Seq { len: Some(1) },
+            Token::U64(0),
+            Token::SeqEnd,
+            Token::Str("free_parameters"),
+            Token::Seq { len: Some(1) },
+            Token::Str("test"),
+            Token::SeqEnd,
+            Token::StructEnd,
+        ],
+    );
+}
+
+/// Test GateDefinition JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[cfg(feature = "unstable_operation_definition")]
+#[test]
+pub fn gate_definition_json_schema() {
+    let def = GateDefinition::new(
+        Circuit::new(),
+        String::from("test"),
+        vec![0],
+        vec!["test".to_owned()],
+    );
+    // Serialize
+    let test_json = serde_json::to_string(&def).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(GateDefinition);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
     let compiled_schema = JSONSchema::options()

@@ -10,11 +10,12 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+use super::pragma_operations::new_circuit;
 use pyo3::prelude::*;
 use qoqo::operations::*;
-use roqoqo::operations::*;
 #[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
+use roqoqo::{operations::*, Circuit};
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
 
@@ -241,7 +242,65 @@ fn test_pyo3_new_input_bit() {
     })
 }
 
-/// Test DefinitionFloat, DefinitionComplex, DefinitionUsize, DefinitionBit, InputSymbolic name() function/input
+/// Test InputBit new() function
+#[test]
+#[cfg(feature = "unstable_operation_definition")]
+fn test_pyo3_new_gate_definition() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = py.get_type::<GateDefinitionWrapper>();
+        let new_op = operation
+            .call1((
+                new_circuit(py),
+                String::from("ro"),
+                vec![1],
+                vec!["a".to_owned(), "b".to_owned()],
+            ))
+            .unwrap()
+            .downcast::<PyCell<GateDefinitionWrapper>>()
+            .unwrap();
+
+        let input_definition = Operation::from(GateDefinition::new(
+            Circuit::new(),
+            "ro".into(),
+            vec![1],
+            vec!["a".into(), "b".into()],
+        ));
+        let copy_param = convert_operation_to_pyobject(input_definition)
+            .unwrap()
+            .extract::<GateDefinitionWrapper>(py)
+            .unwrap()
+            .into_py(py);
+
+        let comparison_copy =
+            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+        assert!(comparison_copy);
+
+        let def_wrapper = new_op.extract::<GateDefinitionWrapper>().unwrap();
+        let new_op_diff = operation
+            .call1((
+                new_circuit(py),
+                String::from("ro"),
+                vec![2],
+                vec!["a".to_owned(), "c".to_owned()],
+            ))
+            .unwrap()
+            .downcast::<PyCell<GateDefinitionWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<GateDefinitionWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", def_wrapper),
+            "GateDefinitionWrapper { internal: GateDefinition { circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }, name: \"ro\", qubits: [1], free_parameters: [\"a\", \"b\"] } }"
+        );
+    })
+}
+
+/// Test DefinitionFloat, DefinitionComplex, DefinitionUsize, DefinitionBit, InputSymbolic, name() function/input
 #[test_case(Operation::from(DefinitionFloat::new(String::from("ro"), 1, false)); "DefinitionFloat")]
 #[test_case(Operation::from(DefinitionComplex::new(String::from("ro"), 1, false)); "DefinitionComplex")]
 #[test_case(Operation::from(DefinitionUsize::new(String::from("ro"), 1, false)); "DefinitionUsize")]
@@ -343,7 +402,55 @@ fn test_pyo3_input_bit_value() {
     })
 }
 
-/// Test DefinitionFloat, DefinitionComplex, DefinitionUsize, DefinitionBit, InputSymbolic involved_qubits function
+#[cfg(feature = "unstable_operation_definition")]
+/// Test inputs for GateDefinition
+#[test]
+fn test_pyo3_gate_definition_inputs() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(Operation::from(GateDefinition::new(
+            Circuit::new(),
+            String::from("ro"),
+            vec![1, 2],
+            vec!["test".into()],
+        )))
+        .unwrap();
+
+        // Test circuit()
+        let to_circuit = operation.call_method0(py, "circuit").unwrap();
+        let circuit_op = to_circuit.as_ref(py);
+        let circuit = new_circuit(py);
+        let comparison_circuit =
+            bool::extract(circuit_op.call_method1("__eq__", (circuit,)).unwrap()).unwrap();
+        assert!(comparison_circuit);
+
+        // Test name()
+        let name_op: String =
+            String::extract(operation.call_method0(py, "name").unwrap().as_ref(py)).unwrap();
+        let name_param: String = String::from("ro");
+        assert_eq!(name_op, name_param);
+
+        // Test qubits()
+        let qubits: Vec<usize> = operation
+            .call_method0(py, "qubits")
+            .unwrap()
+            .as_ref(py)
+            .extract()
+            .unwrap();
+        assert_eq!(qubits, vec![1, 2]);
+
+        // Test free_parameters()
+        let free_parameters: Vec<String> = operation
+            .call_method0(py, "free_parameters")
+            .unwrap()
+            .as_ref(py)
+            .extract()
+            .unwrap();
+        assert_eq!(free_parameters, vec!["test".to_owned()]);
+    })
+}
+
+/// Test DefinitionFloat, DefinitionComplex, DefinitionUsize, DefinitionBit, InputSymbolic, involved_qubits function
 #[test_case(Operation::from(DefinitionFloat::new(String::from("ro"), 1, false)); "DefinitionFloat")]
 #[test_case(Operation::from(DefinitionComplex::new(String::from("ro"), 1, false)); "DefinitionComplex")]
 #[test_case(Operation::from(DefinitionUsize::new(String::from("ro"), 1, false)); "DefinitionUsize")]
@@ -365,6 +472,25 @@ fn test_pyo3_involved_qubits(input_definition: Operation) {
         assert_eq!(involved_op, involved_param);
     })
 }
+
+#[cfg(feature = "unstable_operation_definition")]
+#[test_case(Operation::from(GateDefinition::new(Circuit::new(), String::from("ro"), vec![1], vec!["test".into()])); "GateDefinition")]
+fn test_pyo3_involved_qubits_gate_definition(input_definition: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_definition).unwrap();
+        let involved_op: HashSet<String> = HashSet::extract(
+            operation
+                .call_method0(py, "involved_qubits")
+                .unwrap()
+                .as_ref(py),
+        )
+        .unwrap();
+        let involved_param: HashSet<_> = HashSet::new();
+        assert_eq!(involved_op, involved_param);
+    })
+}
+
 /// Test DefinitionFloat, DefinitionComplex, DefinitionUsize, DefinitionBit format and repr functions
 #[test_case(Operation::from(DefinitionFloat::new(String::from("ro"), 1, false)), "DefinitionFloat"; "DefinitionFloat")]
 #[test_case(Operation::from(DefinitionComplex::new(String::from("ro"), 1, false)), "DefinitionComplex"; "DefinitionComplex")]
@@ -401,6 +527,30 @@ fn test_pyo3_input_symbolic_format_repr() {
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
         let repr_op: &str = <&str>::extract(to_repr.as_ref(py)).unwrap();
         let format_repr_param: String = String::from("InputSymbolic { name: \"ro\", input: 1.0 }");
+        let comparison = format_repr_param.as_str();
+        assert_eq!(format_op, comparison);
+        assert_eq!(repr_op, comparison);
+    })
+}
+
+/// Test GateDefinition format and repr functions
+#[cfg(feature = "unstable_operation_definition")]
+#[test]
+fn test_pyo3_gate_definition_format_repr() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(Operation::from(GateDefinition::new(
+            Circuit::new(),
+            String::from("ro"),
+            vec![1],
+            vec!["test".into()],
+        )))
+        .unwrap();
+        let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
+        let format_op: &str = <&str>::extract(to_format.as_ref(py)).unwrap();
+        let to_repr = operation.call_method0(py, "__repr__").unwrap();
+        let repr_op: &str = <&str>::extract(to_repr.as_ref(py)).unwrap();
+        let format_repr_param: String = String::from("GateDefinition { circuit: Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }, name: \"ro\", qubits: [1], free_parameters: [\"test\"] }");
         let comparison = format_repr_param.as_str();
         assert_eq!(format_op, comparison);
         assert_eq!(repr_op, comparison);
@@ -497,7 +647,34 @@ fn test_pyo3_is_parametrized(input_definition: Operation) {
     })
 }
 
-/// Test DefinitionFloat, DefinitionComplex, DefinitionUsize, DefinitionBit substitute_parameters functions
+// Test GateDefinitions's tagd, hslang and is_parametrized functions
+#[cfg(feature = "unstable_operation_definition")]
+#[test_case(Operation::from(GateDefinition::new(Circuit::new(), String::from("ro"), vec![1], vec!["test".into()])); "GateDefinition")]
+fn test_pyo3_gate_definition(input_definition: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_definition).unwrap();
+
+        let to_tag = operation.call_method0(py, "tags").unwrap();
+        let tags_op: &Vec<&str> = &Vec::extract(to_tag.as_ref(py)).unwrap();
+        let tags_param: &[&str] = &["Operation", "Definition", "GateDefinition"];
+        assert_eq!(tags_op, tags_param);
+
+        let hqslang_op: String =
+            String::extract(operation.call_method0(py, "hqslang").unwrap().as_ref(py)).unwrap();
+        assert_eq!(hqslang_op, "GateDefinition");
+
+        assert!(!bool::extract(
+            operation
+                .call_method0(py, "is_parametrized")
+                .unwrap()
+                .as_ref(py)
+        )
+        .unwrap());
+    })
+}
+
+/// Test DefinitionFloat, DefinitionComplex, DefinitionUsize, DefinitionBit, InputSymbolic, InputBit substitute_parameters functions
 #[test_case(Operation::from(DefinitionFloat::new(String::from("ro"), 1, false)); "DefinitionFloat")]
 #[test_case(Operation::from(DefinitionComplex::new(String::from("ro"), 1, false)); "DefinitionComplex")]
 #[test_case(Operation::from(DefinitionUsize::new(String::from("ro"), 1, false)); "DefinitionUsize")]
@@ -545,7 +722,7 @@ fn test_pyo3_substitute_parameters_error(input_operation: Operation) {
     })
 }
 
-/// Test DefinitionFloat, DefinitionComplex, DefinitionUsize, DefinitionBit remap_qubits functions
+/// Test DefinitionFloat, DefinitionComplex, DefinitionUsize, DefinitionBit, InputSymbolic, InputBit remap_qubits functions
 #[test_case(Operation::from(DefinitionFloat::new(String::from("ro"), 1, false)); "DefinitionFloat")]
 #[test_case(Operation::from(DefinitionComplex::new(String::from("ro"), 1, false)); "DefinitionComplex")]
 #[test_case(Operation::from(DefinitionUsize::new(String::from("ro"), 1, false)); "DefinitionUsize")]
