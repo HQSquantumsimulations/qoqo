@@ -36,7 +36,7 @@ use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct SingleQubitOverrotationDescriptionWrapper {
     /// Single qubit overrotation description
-    pub internal: SingleQubitOverrotationDescription,
+    internal: SingleQubitOverrotationDescription,
 }
 
 /// Creates a new SingleQubitOverrotationDescription.
@@ -51,6 +51,7 @@ pub struct SingleQubitOverrotationDescriptionWrapper {
 ///
 /// `Self` - New description for overrotation noise model.
 
+#[pymethods]
 impl SingleQubitOverrotationDescriptionWrapper {
     /// Returns description to generate single qubit overotation noise
     ///
@@ -59,8 +60,9 @@ impl SingleQubitOverrotationDescriptionWrapper {
     ///     theta_mean: The mean of Gaussian distrbution from which overrotation angle is sampled.
     ///     theta_std: The standard deviation of Gaussian distrbution from which overrotation angle is sampled.
     ///
-    /// Return:
+    /// Returns:
     ///     `self`.
+    #[new]
     pub fn new(
         gate: &str,
         theta_mean: f64,
@@ -88,25 +90,8 @@ impl SingleQubitOverrotationDescriptionWrapper {
     pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
         self.clone()
     }
-    /// Fallible conversion of generic python object..
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<SingleQubitOverrotationDescription> {
-        Python::with_gil(|py| -> PyResult<SingleQubitOverrotationDescription> {
-            let input = input.as_ref(py);
-            if let Ok(try_downcast) = input.extract::<SingleQubitOverrotationDescriptionWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode")?;
-                let bytes = get_bytes.extract::<Vec<u8>>()?;
-                bincode::deserialize(&bytes[..]).map_err(|err| {
-                    pyo3::exceptions::PyValueError::new_err(format!(
-                        "Cannot treat input as Overrotation Description: {}",
-                        err
-                    ))
-                })
-            }
-        })
-    }
-    /// Return the bincode representation of SingleQubitOverrotationDescription using the bincode crate.
+
+    /// Returns the bincode representation of SingleQubitOverrotationDescription using the bincode crate.
     ///
     /// Returns:
     ///     ByteArray: The serialized SingleQubitOverrotationDescription (in bincode form).
@@ -128,7 +113,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
         Ok(b)
     }
 
-    /// Return the json representation of the SingleQubitOverrotationDescription.
+    /// Returns the json representation of the SingleQubitOverrotationDescription.
     ///
     /// Returns:
     ///     str: The serialized form of SingleQubitOverrotationDescription.
@@ -146,20 +131,60 @@ impl SingleQubitOverrotationDescriptionWrapper {
         Ok(serialized)
     }
 
-    #[cfg(feature = "json_schema")]
-    /// Return the minimum version of qoqo that supports this object.
+    /// Convert the bincode representation of the overotation description to a device using the bincode crate.
+    ///
+    /// Args:
+    ///     input (ByteArray): The serialized Noise-Model (in bincode form).
     ///
     /// Returns:
-    ///     str: The minimum version of the qoqo library to deserialize this object.
-    pub fn min_supported_version(&self) -> String {
-        let min_version: (u32, u32, u32) =
-            SingleQubitOverrotationDescription::minimum_supported_roqoqo_version(
-                &self.internal.clone(),
-            );
-        format!("{}.{}.{}", min_version.0, min_version.1, min_version.2)
+    ///     The deserialized Noise-Model.
+    ///
+    /// Raises:
+    ///     TypeError: Input cannot be converted to byte array.
+    ///     ValueError: Input cannot be deserialized to selected Noise-Model.
+    #[staticmethod]
+    #[pyo3(text_signature = "(input)")]
+    pub fn from_bincode(input: &PyAny) -> PyResult<SingleQubitOverrotationDescriptionWrapper> {
+        let bytes = input.extract::<Vec<u8>>().map_err(|_| {
+            pyo3::exceptions::PyTypeError::new_err("Input cannot be converted to byte array")
+        })?;
+        let noise_description: SingleQubitOverrotationDescription =
+            bincode::deserialize(&bytes[..]).map_err(|_| {
+                pyo3::exceptions::PyValueError::new_err(
+                    "Input cannot be deserialized to overrotation description.",
+                )
+            })?;
+
+        Ok(SingleQubitOverrotationDescriptionWrapper {
+            internal: noise_description,
+        })
     }
 
-    /// Return the __richcmp__ magic method to perform rich comparison operations on mixed system.
+    /// Convert the json representation of a device to a overotation description.
+    ///
+    /// Args:
+    ///     input (str): The serialized device in json form.
+    ///
+    /// Returns:
+    ///     The deserialized device.
+    ///
+    /// Raises:
+    ///     ValueError: Input cannot be deserialized to selected Noise-Model.
+    #[staticmethod]
+    #[pyo3(text_signature = "(input)")]
+    pub fn from_json(input: &str) -> PyResult<SingleQubitOverrotationDescriptionWrapper> {
+        let noise_description: SingleQubitOverrotationDescription = serde_json::from_str(input)
+            .map_err(|_| {
+                pyo3::exceptions::PyValueError::new_err(
+                    "Input cannot be deserialized to overrotation description.",
+                )
+            })?;
+        Ok(SingleQubitOverrotationDescriptionWrapper {
+            internal: noise_description,
+        })
+    }
+
+    /// Returns the __richcmp__ magic method to perform rich comparison operations on mixed system.
     ///
     /// Args:
     ///     other: The object to compare self to.
@@ -188,11 +213,65 @@ impl SingleQubitOverrotationDescriptionWrapper {
             )),
         }
     }
+
+    #[cfg(feature = "json_schema")]
+    /// Returns the minimum version of qoqo that supports this object.
+    ///
+    /// Returns:
+    ///     str: The minimum version of the qoqo library to deserialize this object.
+    pub fn min_supported_version(&self) -> String {
+        let min_version: (u32, u32, u32) =
+            SingleQubitOverrotationDescription::minimum_supported_roqoqo_version(
+                &self.internal.clone(),
+            );
+        format!("{}.{}.{}", min_version.0, min_version.1, min_version.2)
+    }
+
+    #[cfg(feature = "json_schema")]
+    #[staticmethod]
+    /// Returns the current version of the qoqo library .
+    ///
+    /// Returns:
+    ///     str: The current version of the library.
+    pub fn current_version() -> String {
+        ROQOQO_VERSION.to_string()
+    }
+
+    #[cfg(feature = "json_schema")]
+    #[staticmethod]
+    /// Returns the JsonSchema for the json serialisation of the class.
+    ///
+    /// Returns:
+    ///     str: The json schema serialized to json
+    pub fn json_schema() -> String {
+        let schema = schemars::schema_for!(SingleQubitOverrotationDescription);
+        serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
+    }
 }
 
+impl SingleQubitOverrotationDescriptionWrapper {
+    /// Fallible conversion of generic python object..
+    pub fn from_pyany(input: Py<PyAny>) -> PyResult<SingleQubitOverrotationDescription> {
+        Python::with_gil(|py| -> PyResult<SingleQubitOverrotationDescription> {
+            let input = input.as_ref(py);
+            if let Ok(try_downcast) = input.extract::<SingleQubitOverrotationDescriptionWrapper>() {
+                Ok(try_downcast.internal)
+            } else {
+                let get_bytes = input.call_method0("to_bincode")?;
+                let bytes = get_bytes.extract::<Vec<u8>>()?;
+                bincode::deserialize(&bytes[..]).map_err(|err| {
+                    pyo3::exceptions::PyValueError::new_err(format!(
+                        "Cannot treat input as Overrotation Description: {}",
+                        err
+                    ))
+                })
+            }
+        })
+    }
+}
 /// Single qubit overrotation noise model on gate.
 ///
-/// Adds a rotatation gate with a randomly distributed rotation angle after specified gates in a quantum circuit.
+/// Adds a rotation gate with a randomly distributed rotation angle after specified gates in a quantum circuit.
 /// Example:
 ///
 /// ```
@@ -206,7 +285,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
 /// noise = SingleQubitOverrotationOnGate();
 /// circuit_gate_with_noise = "RotateZ";
 /// qubit = 0;
-/// noise.set_single_qubit_overrotations(circuit_gate_with_noise, qubit, noise_desc);
+/// noise.set_single_qubit_overrotation(circuit_gate_with_noise, qubit, noise_desc);
 /// ```
 #[pyclass(frozen, name = "SingleQubitOverrotationOnGate")]
 #[derive(Debug, Default, Clone, PartialEq)]
@@ -231,13 +310,12 @@ impl SingleQubitOverrotationOnGateWrapper {
     ///     qubit (int): The qubit the gate acts on.
     ///     noise_description (SingleQubitOverrotationDescription) - overrotation description for gate.
     ///
-    ///
     /// Returns:
     ///     Self: The overotation model with the new overrotation on gate set.
     ///
     /// Raises:
     ///     PyTypeError: Noise description is not a SingleQubitOverrotationDescription.
-    pub fn set_single_qubit_overrotations(
+    pub fn set_single_qubit_overrotation(
         &self,
         gate: &str,
         qubit: usize,
@@ -246,7 +324,7 @@ impl SingleQubitOverrotationOnGateWrapper {
         let noise_description =
             SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_description)?;
         Ok(Self {
-            internal: self.internal.clone().set_single_qubit_overrotations(
+            internal: self.internal.clone().set_single_qubit_overrotation(
                 gate,
                 qubit,
                 noise_description,
@@ -262,13 +340,13 @@ impl SingleQubitOverrotationOnGateWrapper {
     ///
     /// Returns
     ///     Optional[SingleQubitOverrotationDescription]: The overrotation applied when gate is applied.
-    pub fn get_single_qubit_overrotations(
+    pub fn get_single_qubit_overrotation(
         &self,
         gate: &str,
         qubit: usize,
     ) -> Option<SingleQubitOverrotationDescriptionWrapper> {
         self.internal
-            .get_single_qubit_overrotations(gate, qubit)
+            .get_single_qubit_overrotation(gate, qubit)
             .map(|noise_descp| SingleQubitOverrotationDescriptionWrapper {
                 internal: noise_descp.clone(),
             })
@@ -287,7 +365,7 @@ impl SingleQubitOverrotationOnGateWrapper {
     ///
     /// Raises:
     ///     PyTypeError: Noise description is not a (SingleQubitOverrotationDescription, SingleQubitOverrotationDescription).
-    pub fn set_two_qubit_overrotations(
+    pub fn set_two_qubit_overrotation(
         &self,
         gate: &str,
         control: usize,
@@ -298,7 +376,7 @@ impl SingleQubitOverrotationOnGateWrapper {
         let noise2 = SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_operator.1)?;
 
         Ok(Self {
-            internal: self.internal.clone().set_two_qubit_overrotations(
+            internal: self.internal.clone().set_two_qubit_overrotation(
                 gate,
                 control,
                 target,
@@ -316,7 +394,7 @@ impl SingleQubitOverrotationOnGateWrapper {
     ///
     /// Returns
     ///     Optional[(SingleQubitOverrotationDescription, SingleQubitOverrotationDescription)]: The overrotation applied when gate is applied.
-    pub fn get_two_qubit_overrotations(
+    pub fn get_two_qubit_overrotation(
         &self,
         gate: &str,
         control: usize,
@@ -326,7 +404,7 @@ impl SingleQubitOverrotationOnGateWrapper {
         SingleQubitOverrotationDescriptionWrapper,
     )> {
         self.internal
-            .get_two_qubit_overrotations(gate, control, target)
+            .get_two_qubit_overrotation(gate, control, target)
             .map(|noise| {
                 (
                     SingleQubitOverrotationDescriptionWrapper {
@@ -396,7 +474,7 @@ impl SingleQubitOverrotationOnGateWrapper {
     }
 
     #[cfg(feature = "json_schema")]
-    /// Return the JsonSchema for the json serialisation of the class.
+    /// Returns the JsonSchema for the json serialisation of the class.
     ///
     /// Returns:
     ///     str: The json schema serialized to json
