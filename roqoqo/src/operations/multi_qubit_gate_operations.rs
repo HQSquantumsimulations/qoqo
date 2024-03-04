@@ -161,9 +161,9 @@ impl OperateMultiQubitGate for MultiQubitZZ {
     }
 }
 
-/// The gate to be replaced by a gate defined by GateDefinition gate.
+/// The gate to be replaced by a gate defined with GateDefinition gate.
 ///
-/// The gate applies the gate defined by GateDefinition with the same name.
+/// The gate applies a gate previously defined by GateDefinition with the name gate_name.
 #[cfg(feature = "unstable_operation_definition")]
 #[allow(clippy::upper_case_acronyms)]
 #[derive(

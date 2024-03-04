@@ -242,7 +242,7 @@ fn test_pyo3_new_input_bit() {
     })
 }
 
-/// Test InputBit new() function
+/// Test GateDefinition new() function
 #[test]
 #[cfg(feature = "unstable_operation_definition")]
 fn test_pyo3_new_gate_definition() {
@@ -473,6 +473,7 @@ fn test_pyo3_involved_qubits(input_definition: Operation) {
     })
 }
 
+/// Test GateDefinition involved_qubits function
 #[cfg(feature = "unstable_operation_definition")]
 #[test_case(Operation::from(GateDefinition::new(Circuit::new(), String::from("ro"), vec![1], vec!["test".into()])); "GateDefinition")]
 fn test_pyo3_involved_qubits_gate_definition(input_definition: Operation) {
@@ -591,9 +592,9 @@ fn test_pyo3_copy_deepcopy(input_definition: Operation) {
     })
 }
 
+/// Test GateDefinition copy and deepcopy functions
 #[test]
 #[cfg(feature = "unstable_operation_definition")]
-/// Test GateDefinition copy and deepcopy functions
 fn test_pyo3_copy_deepcopy_gate_definition() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {

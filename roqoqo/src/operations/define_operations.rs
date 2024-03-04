@@ -274,7 +274,7 @@ impl InvolveQubits for InputBit {
     }
 }
 
-/// GateDefinition is the Definition for a Bit type register.
+/// GateDefinition is the Definition of a new gate.
 ///
 #[cfg(feature = "unstable_operation_definition")]
 #[derive(

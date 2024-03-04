@@ -360,6 +360,6 @@ fn test_version_circuit(circuit: roqoqo::Circuit, version: (u32, u32, u32)) {
 
 #[cfg(feature = "unstable_operation_definition")]
 #[test_case(operations::Operation::from(operations::GateDefinition::new(roqoqo::Circuit::new(), "name".to_string(), vec![2], vec!["name".to_owned()])); "GateDefinition")]
-fn test_version_1_10_1_features(operation: operations::Operation) {
+fn test_version_1_10_1_gate_definition(operation: operations::Operation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 10, 1));
 }

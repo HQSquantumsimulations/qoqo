@@ -343,10 +343,10 @@ fn test_pyo3_gate_definition(input_definition: Operation) {
     })
 }
 
+/// Test inputs for CallDefinedGate
 #[cfg(feature = "unstable_operation_definition")]
-/// Test inputs for GateDefinition
 #[test]
-fn test_pyo3_gate_definition_inputs() {
+fn test_pyo3_call_defined_gate_inputs() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
@@ -418,8 +418,8 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
     })
 }
 
+/// Test remap_qubits() function for CallDefinedGate
 #[cfg(feature = "unstable_operation_definition")]
-/// Test inputs for GateDefinition
 #[test]
 fn test_pyo3_remapqubits_call_defined_gate() {
     pyo3::prepare_freethreaded_python();
@@ -476,8 +476,8 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
     })
 }
 
+/// test remap_qubits() function returning an error.
 #[cfg(feature = "unstable_operation_definition")]
-/// Test inputs for GateDefinition
 #[test]
 fn test_pyo3_remapqubits_error_call_defined_gate() {
     // preparation
@@ -613,8 +613,8 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     })
 }
 
+/// Test copy and deepcopy functions for CallDefinedGate
 #[cfg(feature = "unstable_operation_definition")]
-/// Test inputs for GateDefinition
 #[test]
 fn test_pyo3_copy_deepcopy_call_defined_gate() {
     pyo3::prepare_freethreaded_python();
@@ -670,8 +670,8 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     })
 }
 
+/// Test format and repr functions for CallDefinedGate
 #[cfg(feature = "unstable_operation_definition")]
-/// Test inputs for GateDefinition
 #[test]
 fn test_pyo3_format_repr_call_defined_gate() {
     pyo3::prepare_freethreaded_python();
@@ -807,8 +807,8 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     })
 }
 
+/// Test the __richcmp__ function for CallDefinedGate
 #[cfg(feature = "unstable_operation_definition")]
-/// Test inputs for GateDefinition
 #[test]
 fn test_pyo3_richcmp_call_defined_gate() {
     pyo3::prepare_freethreaded_python();
@@ -885,8 +885,8 @@ fn test_pyo3_json_schema(operation: Operation) {
     });
 }
 
+/// Test the json schema for CallDefinedGate
 #[cfg(feature = "unstable_operation_definition")]
-/// Test inputs for GateDefinition
 #[test]
 fn test_pyo3_json_schema_call_defined_gate() {
     let operation = Operation::from(CallDefinedGate::new(

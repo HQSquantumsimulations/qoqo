@@ -602,7 +602,7 @@ pub fn test_json_schema_multi_qubit_gate_operations(gate: MultiQubitGateOperatio
     assert!(validation_result.is_ok());
 }
 
-// Test circuit function of CallDefinedGate
+// Test partialEq function of CallDefinedGate
 #[cfg(feature = "unstable_operation_definition")]
 #[test]
 fn test_clone_partial_eq_call_defined_gate() {
