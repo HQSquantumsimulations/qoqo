@@ -630,7 +630,8 @@ fn test_format_call_defined_gate() {
     let gate = CallDefinedGate::new("name".into(), qubits.clone(), vec![0.6]);
     let string = format!("{:?}", gate);
     assert!(
-        string == "CallDefinedGate { name: \"name\", qubits: [0, 1, 2], free_parameters: [0.6] }"
+        string
+            == "CallDefinedGate { gate_name: \"name\", qubits: [0, 1, 2], free_parameters: [0.6] }"
     );
 }
 

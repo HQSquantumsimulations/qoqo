@@ -682,7 +682,7 @@ fn test_pyo3_is_parametrized(input_definition: Operation) {
     })
 }
 
-// Test GateDefinitions's tagd, hslang and is_parametrized functions
+// Test GateDefinitions's tags, hslang and is_parametrized functions
 #[cfg(feature = "unstable_operation_definition")]
 #[test_case(Operation::from(GateDefinition::new(Circuit::new(), String::from("ro"), vec![1], vec!["test".into()])); "GateDefinition")]
 fn test_pyo3_gate_definition(input_definition: Operation) {

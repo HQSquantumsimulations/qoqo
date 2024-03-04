@@ -16,6 +16,7 @@ use numpy::PyArray2;
 use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
+use qoqo::operations::CallDefinedGateWrapper;
 use qoqo::operations::{MultiQubitMSWrapper, MultiQubitZZWrapper};
 use qoqo::CircuitWrapper;
 use qoqo_calculator::Calculator;
@@ -144,6 +145,58 @@ fn test_new_multi_qubit_zz(input_operation: Operation, arguments: (Vec<u32>, f64
     })
 }
 
+#[cfg(feature = "unstable_operation_definition")]
+#[test_case(Operation::from(CallDefinedGate::new("name".to_owned(), vec![0, 1], vec![0.0])), ("name".to_owned(), vec![0, 1], vec![0.0],), "__eq__"; "CallDefinedGate_eq")]
+#[test_case(Operation::from(CallDefinedGate::new("name".to_owned(), vec![2, 3], vec![0.0])), ("name".to_owned(), vec![0, 1], vec![0.0],), "__ne__"; "CallDefinedGate_ne")]
+fn test_new_call_defined_gate(
+    input_operation: Operation,
+    arguments: (String, Vec<u32>, Vec<f64>),
+    method: &str,
+) {
+    let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type::<CallDefinedGateWrapper>();
+        let operation_py = operation_type
+            .call1(arguments)
+            .unwrap()
+            .downcast::<PyCell<CallDefinedGateWrapper>>()
+            .unwrap();
+        let comparison = bool::extract(
+            operation
+                .as_ref(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        // Error initialisation
+        let result = operation_type.call1(([0, 1], vec!["fails"]));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py.extract::<CallDefinedGateWrapper>().unwrap();
+        let new_op_diff = operation_type
+            .call1(("name".to_owned(), vec![1, 2], vec![0.0]))
+            .unwrap()
+            .downcast::<PyCell<CallDefinedGateWrapper>>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<CallDefinedGateWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "CallDefinedGateWrapper { internal: CallDefinedGate { gate_name: \"name\", qubits: [1, 2], free_parameters: [0.0] } }"
+        );
+    })
+}
+
 /// Test is_parametrized() function for MultiQubitGate Operations
 #[test_case(Operation::from(MultiQubitMS::new(vec![0, 1], CalculatorFloat::from("theta"))); "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1], CalculatorFloat::from("theta"))); "MultiQubitZZ")]
@@ -263,6 +316,72 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
     })
 }
 
+// Test CallDefinedGate's tags, hslang and is_parametrized functions
+#[cfg(feature = "unstable_operation_definition")]
+#[test_case(Operation::from(CallDefinedGate::new("name".to_owned(), vec![0, 1], vec![0.0])); "CallDefinedGate")]
+fn test_pyo3_gate_definition(input_definition: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_definition).unwrap();
+
+        let to_tag = operation.call_method0(py, "tags").unwrap();
+        let tags_op: &Vec<&str> = &Vec::extract(to_tag.as_ref(py)).unwrap();
+        let tags_param: &[&str] = &["Operation", "MultiQubitGateOperation", "CallDefinedGate"];
+        assert_eq!(tags_op, tags_param);
+
+        let hqslang_op: String =
+            String::extract(operation.call_method0(py, "hqslang").unwrap().as_ref(py)).unwrap();
+        assert_eq!(hqslang_op, "CallDefinedGate");
+
+        assert!(!bool::extract(
+            operation
+                .call_method0(py, "is_parametrized")
+                .unwrap()
+                .as_ref(py)
+        )
+        .unwrap());
+    })
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+/// Test inputs for GateDefinition
+#[test]
+fn test_pyo3_gate_definition_inputs() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
+            "name".to_owned(),
+            vec![1, 2],
+            vec![0.0],
+        )))
+        .unwrap();
+
+        // Test gate_name()
+        let name_op: String =
+            String::extract(operation.call_method0(py, "gate_name").unwrap().as_ref(py)).unwrap();
+        let name_param: String = String::from("name");
+        assert_eq!(name_op, name_param);
+
+        // Test qubits()
+        let qubits: Vec<usize> = operation
+            .call_method0(py, "qubits")
+            .unwrap()
+            .as_ref(py)
+            .extract()
+            .unwrap();
+        assert_eq!(qubits, vec![1, 2]);
+
+        // Test free_parameters()
+        let free_parameters: Vec<f64> = operation
+            .call_method0(py, "free_parameters")
+            .unwrap()
+            .as_ref(py)
+            .extract()
+            .unwrap();
+        assert_eq!(free_parameters, vec![0.0]);
+    })
+}
+
 /// Test remap_qubits() function for MultiQubitGate Operations
 #[test_case(Operation::from(MultiQubitMS::new(vec![0, 1, 2], CalculatorFloat::from(1.3))); "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(1.3))); "MultiQubitZZ")]
@@ -270,6 +389,47 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        // test initial qubit
+        let qubits: Vec<usize> = operation
+            .call_method0(py, "qubits")
+            .unwrap()
+            .as_ref(py)
+            .extract()
+            .unwrap();
+        assert_eq!(qubits, vec![0, 1, 2]);
+        // remap qubits
+        let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
+        qubit_mapping.insert(0, 1);
+        qubit_mapping.insert(1, 2);
+        qubit_mapping.insert(2, 0);
+        let result = operation
+            .call_method1(py, "remap_qubits", (qubit_mapping,))
+            .unwrap();
+        // test re-mapped qubit
+        let qubits_new: Vec<usize> = result
+            .call_method0(py, "qubits")
+            .unwrap()
+            .as_ref(py)
+            .extract()
+            .unwrap();
+        assert_eq!(qubits_new, vec![1, 2, 0]);
+        // test that initial and rempapped qubits are different
+        assert_ne!(qubits, qubits_new);
+    })
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+/// Test inputs for GateDefinition
+#[test]
+fn test_pyo3_remapqubits_call_defined_gate() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
+            "name".to_owned(),
+            vec![0, 1, 2],
+            vec![0.0],
+        )))
+        .unwrap();
         // test initial qubit
         let qubits: Vec<usize> = operation
             .call_method0(py, "qubits")
@@ -307,6 +467,28 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        // remap qubits
+        let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
+        qubit_mapping.insert(2, 0);
+        let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+    })
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+/// Test inputs for GateDefinition
+#[test]
+fn test_pyo3_remapqubits_error_call_defined_gate() {
+    // preparation
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
+            "name".to_owned(),
+            vec![1, 2],
+            vec![0.0],
+        )))
+        .unwrap();
         // remap qubits
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(2, 0);
@@ -431,6 +613,41 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     })
 }
 
+#[cfg(feature = "unstable_operation_definition")]
+/// Test inputs for GateDefinition
+#[test]
+fn test_pyo3_copy_deepcopy_call_defined_gate() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
+            "name".to_owned(),
+            vec![1, 2],
+            vec![0.0],
+        )))
+        .unwrap();
+        let copy_op = operation.call_method0(py, "__copy__").unwrap();
+        let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
+        let copy_deepcopy_param = operation;
+
+        let comparison_copy = bool::extract(
+            copy_op
+                .as_ref(py)
+                .call_method1("__eq__", (copy_deepcopy_param.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_copy);
+        let comparison_deepcopy = bool::extract(
+            deepcopy_op
+                .as_ref(py)
+                .call_method1("__eq__", (copy_deepcopy_param,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_deepcopy);
+    })
+}
+
 /// Test format and repr functions
 #[test_case(
     "MultiQubitMS { qubits: [0, 1, 2], theta: Float(0.0) }",
@@ -450,6 +667,33 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
         let repr_op: &str = <&str>::extract(to_repr.as_ref(py)).unwrap();
         assert_eq!(repr_op, format_repr);
+    })
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+/// Test inputs for GateDefinition
+#[test]
+fn test_pyo3_format_repr_call_defined_gate() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
+            "name".to_owned(),
+            vec![1, 2],
+            vec![0.0],
+        )))
+        .unwrap();
+        let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
+        let format_op: &str = <&str>::extract(to_format.as_ref(py)).unwrap();
+        assert_eq!(
+            format_op,
+            "CallDefinedGate { gate_name: \"name\", qubits: [1, 2], free_parameters: [0.0] }"
+        );
+        let to_repr = operation.call_method0(py, "__repr__").unwrap();
+        let repr_op: &str = <&str>::extract(to_repr.as_ref(py)).unwrap();
+        assert_eq!(
+            repr_op,
+            "CallDefinedGate { gate_name: \"name\", qubits: [1, 2], free_parameters: [0.0] }"
+        );
     })
 }
 
@@ -563,6 +807,51 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     })
 }
 
+#[cfg(feature = "unstable_operation_definition")]
+/// Test inputs for GateDefinition
+#[test]
+fn test_pyo3_richcmp_call_defined_gate() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation_one = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
+            "name".to_owned(),
+            vec![0, 1, 2],
+            vec![0.0],
+        )))
+        .unwrap();
+        let operation_two = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
+            "name".to_owned(),
+            vec![1, 2],
+            vec![0.0],
+        )))
+        .unwrap();
+
+        let comparison = bool::extract(
+            operation_one
+                .as_ref(py)
+                .call_method1("__eq__", (operation_two.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(!comparison);
+
+        let comparison = bool::extract(
+            operation_one
+                .as_ref(py)
+                .call_method1("__ne__", (operation_two.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        let comparison = operation_one.call_method1(py, "__eq__", (vec!["fails"],));
+        assert!(comparison.is_err());
+
+        let comparison = operation_one.call_method1(py, "__ge__", (operation_two,));
+        assert!(comparison.is_err());
+    })
+}
+
 #[cfg(feature = "json_schema")]
 #[test_case(Operation::from(MultiQubitMS::new(vec![0, 1, 2], CalculatorFloat::from(0))); "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![0, 1, 2], CalculatorFloat::from(0))); "MultiQubitZZ")]
@@ -593,5 +882,36 @@ fn test_pyo3_json_schema(operation: Operation) {
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, "1.0.0");
+    });
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+/// Test inputs for GateDefinition
+#[test]
+fn test_pyo3_json_schema_call_defined_gate() {
+    let operation = Operation::from(CallDefinedGate::new(
+        "name".to_owned(),
+        vec![1, 2],
+        vec![0.0],
+    ));
+    let rust_schema =
+        serde_json::to_string_pretty(&schemars::schema_for!(CallDefinedGate)).unwrap();
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let pyobject = convert_operation_to_pyobject(operation).unwrap();
+        let operation = pyobject.as_ref(py);
+
+        let schema: String =
+            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+
+        assert_eq!(schema, rust_schema);
+
+        let current_version_string =
+            String::extract(operation.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(operation.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, "1.10.1");
     });
 }

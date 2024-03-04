@@ -72,7 +72,7 @@ pub struct MultiQubitZZ {
 /// The gate applies the gate defined by GateDefinition with the same name.
 pub struct CallDefinedGate {
     /// The name of the called defined operations.
-    name: String,
+    gate_name: String,
     /// The qubits that for this call replace the qubits in the internal definition of the called gate
     /// (get replaced in order of apppearance in gate defintion).
     qubits: Vec<usize>,
