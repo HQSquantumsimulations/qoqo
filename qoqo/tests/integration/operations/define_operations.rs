@@ -410,7 +410,7 @@ fn test_pyo3_gate_definition_inputs() {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(Operation::from(GateDefinition::new(
             Circuit::new(),
-            String::from("ro"),
+            String::from("name"),
             vec![1, 2],
             vec!["test".into()],
         )))
@@ -427,7 +427,7 @@ fn test_pyo3_gate_definition_inputs() {
         // Test name()
         let name_op: String =
             String::extract(operation.call_method0(py, "name").unwrap().as_ref(py)).unwrap();
-        let name_param: String = String::from("ro");
+        let name_param: String = String::from("name");
         assert_eq!(name_op, name_param);
 
         // Test qubits()
@@ -591,6 +591,41 @@ fn test_pyo3_copy_deepcopy(input_definition: Operation) {
     })
 }
 
+#[test]
+#[cfg(feature = "unstable_operation_definition")]
+/// Test GateDefinition copy and deepcopy functions
+fn test_pyo3_copy_deepcopy_gate_definition() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(Operation::from(GateDefinition::new(
+            Circuit::new(),
+            "name".to_owned(),
+            vec![0],
+            vec!["param".to_owned()],
+        )))
+        .unwrap();
+        let copy_op = operation.call_method0(py, "__copy__").unwrap();
+        let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
+        let copy_deepcopy_param = operation;
+
+        let comparison_copy = bool::extract(
+            copy_op
+                .as_ref(py)
+                .call_method1("__eq__", (copy_deepcopy_param.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_copy);
+        let comparison_deepcopy = bool::extract(
+            deepcopy_op
+                .as_ref(py)
+                .call_method1("__eq__", (copy_deepcopy_param,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_deepcopy);
+    })
+}
 /// Test DefinitionFloat, DefinitionComplex, DefinitionUsize, DefinitionBit, InputSymbolic tags function
 #[test_case(Operation::from(DefinitionFloat::new(String::from("ro"), 1, false)), "DefinitionFloat"; "DefinitionFloat")]
 #[test_case(Operation::from(DefinitionComplex::new(String::from("ro"), 1, false)), "DefinitionComplex"; "DefinitionComplex")]
@@ -703,6 +738,37 @@ fn test_pyo3_substitute_parameters(input_definition: Operation) {
     })
 }
 
+/// Test GateDefinitions's substitute_parameters functions
+#[cfg(feature = "unstable_operation_definition")]
+#[test]
+fn test_pyo3_substitute_parameters_gate_definition() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(Operation::from(GateDefinition::new(
+            Circuit::new(),
+            String::from("name"),
+            vec![1],
+            vec!["test".into()],
+        )))
+        .unwrap();
+        let mut substitution_dict: HashMap<&str, f64> = HashMap::new();
+        substitution_dict.insert("name", 1.0);
+        let substitute_op = operation
+            .call_method1(py, "substitute_parameters", (substitution_dict,))
+            .unwrap();
+        let substitute_param = operation;
+
+        let comparison_copy = bool::extract(
+            substitute_op
+                .as_ref(py)
+                .call_method1("__eq__", (substitute_param,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_copy);
+    })
+}
+
 /// Test substitute_parameters() causing an error `not-a-real-number`
 #[test_case(Operation::from(DefinitionFloat::new(String::from("ro"), 1, false)); "DefinitionFloat")]
 #[test_case(Operation::from(DefinitionComplex::new(String::from("ro"), 1, false)); "DefinitionComplex")]
@@ -716,6 +782,27 @@ fn test_pyo3_substitute_parameters_error(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let mut substitution_dict: HashMap<&str, &str> = HashMap::new();
         substitution_dict.insert("ro", "test");
+        let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+    })
+}
+
+/// Test GateDefinitions's substitute_parameters() causing an error `not-a-real-number`
+#[cfg(feature = "unstable_operation_definition")]
+#[test]
+fn test_pyo3_substitute_parameters_error_gate_definition() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(Operation::from(GateDefinition::new(
+            Circuit::new(),
+            String::from("name"),
+            vec![1],
+            vec!["test".into()],
+        )))
+        .unwrap();
+        let mut substitution_dict: HashMap<&str, &str> = HashMap::new();
+        substitution_dict.insert("name", "test");
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
         let result_ref = result.as_ref();
         assert!(result_ref.is_err());
@@ -740,6 +827,46 @@ fn test_pyo3_remap_qubits(input_definition: Operation) {
             .call_method1(py, "remap_qubits", (qubit_mapping,))
             .unwrap();
         let remap_param = operation;
+
+        let comparison_copy = bool::extract(
+            remap_op
+                .as_ref(py)
+                .call_method1("__eq__", (remap_param,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison_copy);
+    })
+}
+
+/// Test GateDefinitions's remap_qubits functions
+#[cfg(feature = "unstable_operation_definition")]
+#[test]
+fn test_pyo3_remap_qubits_gate_definition() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(Operation::from(GateDefinition::new(
+            Circuit::new(),
+            String::from("name"),
+            vec![0],
+            vec!["test".into()],
+        )))
+        .unwrap();
+        let remaped_operation =
+            convert_operation_to_pyobject(Operation::from(GateDefinition::new(
+                Circuit::new(),
+                String::from("name"),
+                vec![1],
+                vec!["test".into()],
+            )))
+            .unwrap();
+        let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
+        qubit_mapping.insert(0, 1);
+        qubit_mapping.insert(1, 0);
+        let remap_op = operation
+            .call_method1(py, "remap_qubits", (qubit_mapping,))
+            .unwrap();
+        let remap_param = remaped_operation;
 
         let comparison_copy = bool::extract(
             remap_op
@@ -803,6 +930,53 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     })
 }
 
+/// Test the __richcmp__ function for GateDefinitions
+#[test]
+#[cfg(feature = "unstable_operation_definition")]
+fn test_pyo3_richcmp_gate_definition() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation_one = convert_operation_to_pyobject(Operation::from(GateDefinition::new(
+            Circuit::new(),
+            String::from("name"),
+            vec![0],
+            vec!["test".into()],
+        )))
+        .unwrap();
+        let operation_two = convert_operation_to_pyobject(Operation::from(GateDefinition::new(
+            Circuit::new(),
+            String::from("name"),
+            vec![1],
+            vec!["testing".into()],
+        )))
+        .unwrap();
+
+        let comparison = bool::extract(
+            operation_one
+                .as_ref(py)
+                .call_method1("__eq__", (operation_two.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(!comparison);
+
+        let comparison = bool::extract(
+            operation_one
+                .as_ref(py)
+                .call_method1("__ne__", (operation_two.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        let comparison = operation_one.call_method1(py, "__eq__", (vec!["fails"],));
+        assert!(comparison.is_err());
+
+        let comparison = operation_one.call_method1(py, "__ge__", (operation_two,));
+        assert!(comparison.is_err());
+    })
+}
+
 /// Test json_schema function for all define operations
 #[cfg(feature = "json_schema")]
 #[test_case(Operation::from(DefinitionFloat::new(String::from("ro"), 1, false)); "DefinitionFloat")]
@@ -839,6 +1013,39 @@ fn test_pyo3_json_schema(operation: Operation) {
             Operation::InputBit(_) => "1.1.0".to_string(),
             _ => "1.0.0".to_string(),
         };
+        let pyobject = convert_operation_to_pyobject(operation).unwrap();
+        let operation = pyobject.as_ref(py);
+
+        let schema: String =
+            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+
+        assert_eq!(schema, rust_schema);
+
+        let current_version_string =
+            String::extract(operation.call_method0("current_version").unwrap()).unwrap();
+        let minimum_supported_version_string =
+            String::extract(operation.call_method0("min_supported_version").unwrap()).unwrap();
+
+        assert_eq!(current_version_string, ROQOQO_VERSION);
+        assert_eq!(minimum_supported_version_string, minimum_version);
+    });
+}
+
+/// Test json_schema function for GateDefinitions
+#[test]
+#[cfg(feature = "unstable_operation_definition")]
+#[cfg(feature = "json_schema")]
+fn test_pyo3_json_schema_gate_definition() {
+    let operation = Operation::from(GateDefinition::new(
+        Circuit::new(),
+        String::from("name"),
+        vec![0],
+        vec!["test".into()],
+    ));
+    let rust_schema = serde_json::to_string_pretty(&schemars::schema_for!(GateDefinition)).unwrap();
+    pyo3::prepare_freethreaded_python();
+    pyo3::Python::with_gil(|py| {
+        let minimum_version: String = "1.10.1".to_owned();
         let pyobject = convert_operation_to_pyobject(operation).unwrap();
         let operation = pyobject.as_ref(py);
 

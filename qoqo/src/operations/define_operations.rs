@@ -105,7 +105,7 @@ pub struct InputBit {
 }
 
 #[cfg(feature = "unstable_operation_definition")]
-#[wrap(Operate, Define, JsonSchema)]
+#[wrap(Operate, Define, OperateMultiQubit, JsonSchema)]
 /// GateDefinition is the Definition for a Bit type register.
 ///
 /// Args:

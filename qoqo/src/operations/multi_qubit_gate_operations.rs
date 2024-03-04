@@ -65,7 +65,6 @@ pub struct MultiQubitZZ {
     theta: CalculatorFloat,
 }
 
-#[allow(clippy::upper_case_acronyms)]
 #[cfg(feature = "unstable_operation_definition")]
 #[wrap(Operate, OperateMultiQubit, JsonSchema)]
 /// The gate to be replaced by a gate defined by GateDefinition gate.

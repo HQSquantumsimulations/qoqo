@@ -636,6 +636,32 @@ fn test_format_call_defined_gate() {
 
 #[test]
 #[cfg(feature = "unstable_operation_definition")]
+fn test_remap_defined_gate() {
+    let qubits = vec![0, 1, 2];
+    let gate = CallDefinedGate::new("name".into(), qubits.clone(), vec![0.6]);
+    let mut mapping: HashMap<usize, usize> = std::collections::HashMap::new();
+    let _ = mapping.insert(0, 1);
+    let _ = mapping.insert(1, 2);
+    let _ = mapping.insert(2, 0);
+    let remapped = gate.remap_qubits(&mapping).unwrap();
+    let qubits = remapped.qubits();
+    assert_eq!(qubits, &vec![1, 2, 0]);
+}
+
+#[test]
+#[cfg(feature = "unstable_operation_definition")]
+fn test_remap_error_call_defined_gate() {
+    let qubits = vec![0, 1, 2];
+    let gate = CallDefinedGate::new("name".into(), qubits.clone(), vec![0.6]);
+    let mut mapping: HashMap<usize, usize> = std::collections::HashMap::new();
+    let _ = mapping.insert(1, 2);
+    let _ = mapping.insert(2, 0);
+    let remapped = gate.remap_qubits(&mapping);
+    assert!(remapped.is_err());
+}
+
+#[test]
+#[cfg(feature = "unstable_operation_definition")]
 fn test_involved_qubits_call_defined_gate() {
     let qubits = vec![0, 1, 2];
     let gate = CallDefinedGate::new("name".into(), qubits.clone(), vec![0.6]);
@@ -645,4 +671,27 @@ fn test_involved_qubits_call_defined_gate() {
     let _ = comp_set.insert(1);
     let _ = comp_set.insert(2);
     assert_eq!(involved_qubits, InvolvedQubits::Set(comp_set));
+}
+
+#[test]
+#[cfg(feature = "unstable_operation_definition")]
+#[cfg(feature = "json_schema")]
+pub fn test_json_schema_multi_qubit_call_gate() {
+    let qubits = vec![0, 1, 2];
+    let gate = CallDefinedGate::new("name".into(), qubits.clone(), vec![0.6]);
+    // Serialize
+    let test_json = serde_json::to_string(&gate).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(CallDefinedGate);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }

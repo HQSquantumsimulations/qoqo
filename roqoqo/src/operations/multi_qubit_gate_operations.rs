@@ -170,10 +170,10 @@ impl OperateMultiQubitGate for MultiQubitZZ {
     Debug,
     Clone,
     PartialEq,
-    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::OperateMultiQubit,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
-    roqoqo_derive::OperateMultiQubit,
+    roqoqo_derive::InvolveQubits,
 )]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
