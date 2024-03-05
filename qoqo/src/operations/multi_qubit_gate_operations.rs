@@ -67,9 +67,9 @@ pub struct MultiQubitZZ {
 
 #[cfg(feature = "unstable_operation_definition")]
 #[wrap(Operate, OperateMultiQubit, JsonSchema)]
-/// The gate to be replaced by a gate defined by GateDefinition gate.
+/// The gate to be replaced by a gate defined with GateDefinition gate.
 ///
-/// The gate applies the gate defined by GateDefinition with the same name.
+/// The gate applies a gate previously defined by GateDefinition with the name gate_name.
 pub struct CallDefinedGate {
     /// The name of the called defined operations.
     gate_name: String,

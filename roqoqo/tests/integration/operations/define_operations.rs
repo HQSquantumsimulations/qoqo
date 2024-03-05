@@ -943,7 +943,7 @@ fn gate_definition_simple_traits() {
     assert!(def != def_1);
 }
 
-/// Test GateDefinition Operate trait
+/// Test GateDefinition tags, hslang and is_parametized() trait
 #[cfg(feature = "unstable_operation_definition")]
 #[test]
 fn gate_definition_operate_trait() {
@@ -965,7 +965,7 @@ fn gate_definition_operate_trait() {
     assert!(!def.is_parametrized());
 }
 
-/// Test GateDefinition Substitute trait
+/// Test GateDefinition Substitute and remap qubits functions
 #[cfg(feature = "unstable_operation_definition")]
 #[test]
 fn gate_definition_substitute_trait() {
