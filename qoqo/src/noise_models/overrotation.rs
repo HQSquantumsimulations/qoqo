@@ -120,7 +120,6 @@ impl SingleQubitOverrotationDescriptionWrapper {
     ///
     /// Raises:
     ///     ValueError: Cannot serialize SingleQubitOverrotationDescription.
-    ///
     pub fn to_json(&self) -> PyResult<String> {
         let noise_descp = self.internal.clone();
         let serialized = serde_json::to_string(&noise_descp).map_err(|_| {
