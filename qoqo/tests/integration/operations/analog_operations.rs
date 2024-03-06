@@ -588,8 +588,8 @@ fn test_pyo3_json_schema(operation: Operation) {
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
         let minimum_version: String = match operation {
-            Operation::ApplyConstantSpinHamiltonian(_) => "1.10.0".to_string(),
-            _ => "1.9.0".to_string(),
+            Operation::ApplyConstantSpinHamiltonian(_) => "1.11.0".to_string(),
+            _ => "1.10.0".to_string(),
         };
         let pyobject = convert_operation_to_pyobject(operation).unwrap();
         let operation = pyobject.as_ref(py);

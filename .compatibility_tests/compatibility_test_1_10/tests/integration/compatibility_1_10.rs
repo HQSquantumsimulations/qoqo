@@ -113,13 +113,19 @@ use test_roqoqo_1_10;
 #[test_case(test_roqoqo_1_10::operations::PragmaAnnotatedOp::new(test_roqoqo_1_10::operations::PauliX::new(0).into(), "test".to_string()).into(); "PragmaAnnotatedOp")]
 // Operations from 1.9 - nothing was added
 // Operations from 1.10 - uncomment for next unittests
-// #[test_case(test_roqoqo_1_10::operations::QuantumRabi::new(0, 1, 0.1.into()).into(); "QuantumRabi")]
-// #[test_case(test_roqoqo_1_10::operations::LongitudinalCoupling::new(0, 1, 0.1.into()).into(); "LongitudinalCoupling")]
-// #[test_case(test_roqoqo_1_10::operations::JaynesCummings::new(0, 1, 0.1.into()).into(); "JaynesCummings")]
-// #[test_case(test_roqoqo_1_10::operations::SingleExcitationLoad::new(0, 1).into(); "SingleExcitationLoad")]
-// #[test_case(test_roqoqo_1_10::operations::SingleExcitationStore::new(0, 1).into(); "SingleExcitationStore")]
-// #[test_case(test_roqoqo_1_10::operations::CZQubitResonator::new(0, 1).into(); "CZQubitResonator")]
-// Operations from 1.10.1
+#[cfg(feature = "unstable_spin_boson_operations")]
+#[test_case(test_roqoqo_1_10::operations::QuantumRabi::new(0, 1, 0.1.into()).into(); "QuantumRabi")]
+#[cfg(feature = "unstable_spin_boson_operations")]
+#[test_case(test_roqoqo_1_10::operations::LongitudinalCoupling::new(0, 1, 0.1.into()).into(); "LongitudinalCoupling")]
+#[cfg(feature = "unstable_spin_boson_operations")]
+#[test_case(test_roqoqo_1_10::operations::JaynesCummings::new(0, 1, 0.1.into()).into(); "JaynesCummings")]
+#[cfg(feature = "unstable_spin_boson_operations")]
+#[test_case(test_roqoqo_1_10::operations::SingleExcitationLoad::new(0, 1).into(); "SingleExcitationLoad")]
+#[cfg(feature = "unstable_spin_boson_operations")]
+#[test_case(test_roqoqo_1_10::operations::SingleExcitationStore::new(0, 1).into(); "SingleExcitationStore")]
+#[cfg(feature = "unstable_spin_boson_operations")]
+#[test_case(test_roqoqo_1_10::operations::CZQubitResonator::new(0, 1).into(); "CZQubitResonator")]
+// Operations from 1.11
 // #[test_case(create_apply_constant_spin_hamiltonian(); "ApplyConstantSpinHamiltonian")]
 // #[test_case(create_apply_timedependent_spin_hamiltonian(); "ApplyTimeDependentHamiltonian")]
 fn test_bincode_compatibility_1_10(operation: test_roqoqo_1_10::operations::Operation) {
@@ -164,7 +170,7 @@ fn test_device_compat() {
     assert_eq!(test_deserialisation, comparsion_device);
 }
 
-// Operations from 1.10.1
+// Operations from 1.11
 // use struqture;
 // use struqture::prelude::*;
 // fn create_apply_constant_spin_hamiltonian() -> test_roqoqo_1_10::operations::ApplyConstantSpinHamiltonian
