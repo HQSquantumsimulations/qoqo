@@ -73,7 +73,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
         }
     }
 
-    /// Returns a copy of the device (copy here produces a deepcopy).
+    /// Return a copy of the device (copy here produces a deepcopy).
     ///
     /// Returns:
     ///     A deep copy of self.
