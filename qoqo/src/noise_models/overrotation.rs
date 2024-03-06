@@ -91,7 +91,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
         self.clone()
     }
 
-    /// Returns the bincode representation of SingleQubitOverrotationDescription using the bincode crate.
+    /// Return the bincode representation of SingleQubitOverrotationDescription using the bincode crate.
     ///
     /// Returns:
     ///     ByteArray: The serialized SingleQubitOverrotationDescription (in bincode form).
