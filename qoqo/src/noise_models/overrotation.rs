@@ -229,7 +229,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
 
     #[cfg(feature = "json_schema")]
     #[staticmethod]
-    /// Returns the current version of the qoqo library .
+    /// Return the current version of the qoqo library.
     ///
     /// Returns:
     ///     str: The current version of the library.
