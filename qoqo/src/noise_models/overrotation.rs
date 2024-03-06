@@ -53,7 +53,7 @@ pub struct SingleQubitOverrotationDescriptionWrapper {
 
 #[pymethods]
 impl SingleQubitOverrotationDescriptionWrapper {
-    /// Returns description to generate single qubit overotation noise
+    /// Return description to generate single qubit overrotation noise
     ///
     /// Args:
     ///     gate: The name qubit gate.
