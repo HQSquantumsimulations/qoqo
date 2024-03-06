@@ -98,7 +98,6 @@ impl SingleQubitOverrotationDescriptionWrapper {
     ///
     /// Raises:
     ///     ValueError: Cannot serialize SingleQubitOverrotationDescription to bytes.
-    ///
     pub fn to_bincode(&self) -> PyResult<Py<pyo3::types::PyByteArray>> {
         let noise_descp = self.internal.clone();
         let serialized = bincode::serialize(&noise_descp).map_err(|_| {
