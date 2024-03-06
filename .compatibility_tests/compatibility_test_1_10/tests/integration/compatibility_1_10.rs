@@ -112,7 +112,7 @@ use test_roqoqo_1_10;
 #[test_case(test_roqoqo_1_10::operations::EchoCrossResonance::new(0, 1).into(); "EchoCrossResonance")]
 #[test_case(test_roqoqo_1_10::operations::PragmaAnnotatedOp::new(test_roqoqo_1_10::operations::PauliX::new(0).into(), "test".to_string()).into(); "PragmaAnnotatedOp")]
 // Operations from 1.9 - nothing was added
-// Operations from 1.10 - uncomment for next unittests
+// Operations from 1.10 
 #[cfg(feature = "unstable_spin_boson_operations")]
 #[test_case(test_roqoqo_1_10::operations::QuantumRabi::new(0, 1, 0.1.into()).into(); "QuantumRabi")]
 #[cfg(feature = "unstable_spin_boson_operations")]
@@ -125,7 +125,7 @@ use test_roqoqo_1_10;
 #[test_case(test_roqoqo_1_10::operations::SingleExcitationStore::new(0, 1).into(); "SingleExcitationStore")]
 #[cfg(feature = "unstable_spin_boson_operations")]
 #[test_case(test_roqoqo_1_10::operations::CZQubitResonator::new(0, 1).into(); "CZQubitResonator")]
-// Operations from 1.11
+// Operations from 1.11 - uncomment for next unittests
 // #[test_case(create_apply_constant_spin_hamiltonian(); "ApplyConstantSpinHamiltonian")]
 // #[test_case(create_apply_timedependent_spin_hamiltonian(); "ApplyTimeDependentHamiltonian")]
 fn test_bincode_compatibility_1_10(operation: test_roqoqo_1_10::operations::Operation) {
