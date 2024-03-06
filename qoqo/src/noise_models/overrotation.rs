@@ -77,7 +77,6 @@ impl SingleQubitOverrotationDescriptionWrapper {
     ///
     /// Returns:
     ///     A deep copy of self.
-    ///
     pub fn __copy__(&self) -> Self {
         self.clone()
     }
