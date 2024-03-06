@@ -51,7 +51,7 @@ pub struct DecoherenceOnGateModelWrapper {
 
 #[noise_model_wrapper]
 impl DecoherenceOnGateModelWrapper {
-    /// Creates a new DecoherenceOnGateModel.
+    /// Create a new DecoherenceOnGateModel.
     #[new]
     pub fn new() -> DecoherenceOnGateModelWrapper {
         DecoherenceOnGateModelWrapper {
@@ -59,7 +59,7 @@ impl DecoherenceOnGateModelWrapper {
         }
     }
 
-    /// Sets extra noise for a single qubit gate.
+    /// Set extra noise for a single qubit gate.
     ///
     /// Args:
     ///     gate (str): The name of the gate.
@@ -88,7 +88,7 @@ impl DecoherenceOnGateModelWrapper {
         })
     }
 
-    /// Returns the extra noise for a single qubit gate, if it exists.
+    /// Return the extra noise for a single qubit gate, if it exists.
     ///
     /// Args:
     ///     gate (str): The name of the gate.
@@ -110,7 +110,7 @@ impl DecoherenceOnGateModelWrapper {
             )
     }
 
-    /// Sets extra noise for a two qubit gate.
+    /// Set extra noise for a two qubit gate.
     ///
     /// Args:
     ///     gate (str): The name of the gate.
@@ -142,7 +142,7 @@ impl DecoherenceOnGateModelWrapper {
         })
     }
 
-    /// Returns the extra noise for a single qubit gate, if it exists.
+    /// Return the extra noise for a single qubit gate, if it exists.
     ///
     /// Args:
     ///     gate (str): The name of the gate.
@@ -166,7 +166,7 @@ impl DecoherenceOnGateModelWrapper {
             )
     }
 
-    /// Sets extra noise for a single qubit gate.
+    /// Set extra noise for a single qubit gate.
     ///
     /// Args:
     ///     gate (str): The name of the gate.
@@ -201,7 +201,7 @@ impl DecoherenceOnGateModelWrapper {
         })
     }
 
-    /// Returns the extra noise for a three qubit gate, if it exists.
+    /// Return the extra noise for a three qubit gate, if it exists.
     ///
     /// Args:
     ///     gate (str): The name of the gate.
@@ -227,7 +227,7 @@ impl DecoherenceOnGateModelWrapper {
             )
     }
 
-    /// Sets extra noise for a multi qubit gate.
+    /// Set extra noise for a multi qubit gate.
     ///
     /// Args:
     ///     gate (str): The name of the gate.
@@ -256,7 +256,7 @@ impl DecoherenceOnGateModelWrapper {
         })
     }
 
-    /// Returns the extra noise for a multi qubit gate, if it exists.
+    /// Return the extra noise for a multi qubit gate, if it exists.
     ///
     /// Args:
     ///     gate (str): The name of the gate.

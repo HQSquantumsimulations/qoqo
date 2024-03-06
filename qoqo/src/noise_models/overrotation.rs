@@ -39,7 +39,7 @@ pub struct SingleQubitOverrotationDescriptionWrapper {
     internal: SingleQubitOverrotationDescription,
 }
 
-/// Creates a new SingleQubitOverrotationDescription.
+/// Create a new SingleQubitOverrotationDescription.
 ///
 /// # Arguments
 ///
@@ -85,7 +85,6 @@ impl SingleQubitOverrotationDescriptionWrapper {
     ///
     /// Returns:
     ///     A deep copy of self.
-    ///
     pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
         self.clone()
     }
@@ -292,7 +291,7 @@ pub struct SingleQubitOverrotationOnGateWrapper {
 
 #[noise_model_wrapper]
 impl SingleQubitOverrotationOnGateWrapper {
-    /// Creates a new SingleQubitOverrotationOnGate.
+    /// Create a new SingleQubitOverrotationOnGate.
     #[new]
     pub fn new() -> SingleQubitOverrotationOnGateWrapper {
         SingleQubitOverrotationOnGateWrapper {
@@ -300,7 +299,7 @@ impl SingleQubitOverrotationOnGateWrapper {
         }
     }
 
-    /// Sets overrotation for a single qubit gate.
+    /// Set overrotation for a single qubit gate.
     ///
     /// Args:
     ///     gate (str): The name of the gate.
@@ -329,7 +328,7 @@ impl SingleQubitOverrotationOnGateWrapper {
         })
     }
 
-    /// Returns the overrotation description for a single qubit gate, if it exists.
+    /// Return the overrotation description for a single qubit gate, if it exists.
     ///
     /// Args:
     ///     gate (str): The name of the gate.
@@ -349,7 +348,7 @@ impl SingleQubitOverrotationOnGateWrapper {
             })
     }
 
-    /// Sets extra noise for a two qubit gate.
+    /// Set extra noise for a two qubit gate.
     ///
     /// Args:
     ///     gate (str): The name of the gate.
@@ -382,7 +381,7 @@ impl SingleQubitOverrotationOnGateWrapper {
         })
     }
 
-    /// Returns the extra noise for a single qubit gate, if it exists.
+    /// Return the extra noise for a single qubit gate, if it exists.
     ///
     /// Args:
     ///     gate (str): The name of the gate.
@@ -471,7 +470,7 @@ impl SingleQubitOverrotationOnGateWrapper {
     }
 
     #[cfg(feature = "json_schema")]
-    /// Returns the JsonSchema for the json serialisation of the class.
+    /// Return the JsonSchema for the json serialisation of the class.
     ///
     /// Returns:
     ///     str: The json schema serialized to json
