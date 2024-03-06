@@ -82,7 +82,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
         self.clone()
     }
 
-    /// Creates deep copy of Noise-Model.
+    /// Create deep copy of Noise-Model.
     ///
     /// Returns:
     ///     A deep copy of self.
