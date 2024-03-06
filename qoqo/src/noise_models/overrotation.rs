@@ -113,7 +113,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
         Ok(b)
     }
 
-    /// Returns the json representation of the SingleQubitOverrotationDescription.
+    /// Return the json representation of the SingleQubitOverrotationDescription.
     ///
     /// Returns:
     ///     str: The serialized form of SingleQubitOverrotationDescription.
