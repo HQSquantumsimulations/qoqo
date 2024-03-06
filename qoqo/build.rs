@@ -21,8 +21,8 @@ use syn::parse::{Parse, ParseStream};
 use syn::punctuated::Punctuated;
 use syn::visit::{self, Visit};
 use syn::{
-    AttrStyle, Fields, File, GenericArgument, Ident, ItemStruct, Macro, Path, PathArguments, Token,
-    Type, TypePath,
+    AttrStyle, Fields, File, GenericArgument, Ident, ItemStruct, LitStr, Macro, Path,
+    PathArguments, Token, Type, TypePath,
 };
 
 type StructFieldInfo = Vec<(Ident, Option<String>, Type)>;
@@ -45,6 +45,18 @@ impl Visitor {
             pyany_to_operation: Vec::new(),
             operation_to_pyobject: Vec::new(),
         }
+    }
+}
+
+#[derive(Debug, Eq, PartialEq)]
+struct CfgFeatureMacroArgument(String);
+
+impl Parse for CfgFeatureMacroArgument {
+    fn parse(input: ParseStream) -> syn::parse::Result<Self> {
+        input.parse::<Ident>()?;
+        input.parse::<Token![=]>()?;
+        let feature_name: LitStr = input.parse()?;
+        Ok(Self(feature_name.value()))
     }
 }
 
@@ -84,8 +96,16 @@ impl<'ast> Visit<'ast> for Visitor {
     // Only visit struct declarations
     fn visit_item_struct(&mut self, itemstruct: &'ast ItemStruct) {
         // Check attributes
-        for att in itemstruct.attrs.clone() {
-            let path = att.path().get_ident().map(|id| id.to_string());
+        for att in itemstruct.attrs.clone() {#[cfg(feature = "unstable_operation_definition")]
+                && path == Some("cfg".to_string())
+                && !cfg!(feature = "unstable_operation_definition")
+            {
+                let cfg_feature_name: CfgFeatureMacroArgument =
+                    att.parse_args().expect("parsing failed 1");
+                if cfg_feature_name.0.contains("unstable_") {
+                    return;
+                }
+            }
             // only consider the wrap attribute, if no derive attribute is present don't add anything
             // to the internal storage of the visitor
             if matches!(att.style, AttrStyle::Outer) && path == Some("wrap".to_string()) {

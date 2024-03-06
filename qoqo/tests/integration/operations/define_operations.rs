@@ -10,12 +10,15 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
+#[cfg(feature = "unstable_operation_definition")]
 use super::pragma_operations::new_circuit;
 use pyo3::prelude::*;
 use qoqo::operations::*;
+use roqoqo::operations::*;
+#[cfg(feature = "unstable_operation_definition")]
+use roqoqo::Circuit;
 #[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
-use roqoqo::{operations::*, Circuit};
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
 

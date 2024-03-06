@@ -16,6 +16,7 @@ use numpy::PyArray2;
 use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
+#[cfg(feature = "unstable_operation_definition")]
 use qoqo::operations::CallDefinedGateWrapper;
 use qoqo::operations::{MultiQubitMSWrapper, MultiQubitZZWrapper};
 use qoqo::CircuitWrapper;
@@ -887,6 +888,7 @@ fn test_pyo3_json_schema(operation: Operation) {
 
 /// Test the json schema for CallDefinedGate
 #[cfg(feature = "unstable_operation_definition")]
+#[cfg(feature = "json_schema")]
 #[test]
 fn test_pyo3_json_schema_call_defined_gate() {
     let operation = Operation::from(CallDefinedGate::new(
