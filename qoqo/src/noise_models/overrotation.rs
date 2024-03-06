@@ -182,7 +182,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
         })
     }
 
-    /// Returns the __richcmp__ magic method to perform rich comparison operations on mixed system.
+    /// Return the __richcmp__ magic method to perform rich comparison operations on mixed system.
     ///
     /// Args:
     ///     other: The object to compare self to.
