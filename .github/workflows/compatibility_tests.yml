@@ -156,7 +156,7 @@ jobs:
     - uses: Swatinem/rust-cache@v2
     - run: |
         cd ./.compatibility_tests/compatibility_test_1_10/
-        cargo test
+        cargo test --features=unstable_spin_boson_operations
   
   unittests_check_circuit_decompositions:
     name: unittests_check_circuit_decompositions
