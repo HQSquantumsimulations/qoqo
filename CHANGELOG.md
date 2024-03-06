@@ -2,22 +2,20 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
-## 1.10.1
+## 1.11
 
 ### Added in 1.11
 
 * Unstable feature `unstable_analog_operations` adding new analog operations: `ApplyConstantSpinHamiltonian`, `ApplyTimeDependentSpinHamiltonian`
 * Added `SingleQubitOverrotationDescription`
 * Added `SingleQubitOverrotationOnGate` noise model
+* Updated cargo (including updating mio from v0.8.10 to v0.8.11)
 
 ## 1.10.0
 
 ### Added in 1.10.0
 
 * Unstable feature `unstable_spin_boson_operations` adding new spin-boson operations: QuantumRabi, LongitudinalCoupling, JaynesCummings
-
-
-## Unreleased - 1.9.2
 
 ### Fixed in 1.9.2
 
