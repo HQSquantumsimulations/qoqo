@@ -239,7 +239,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
 
     #[cfg(feature = "json_schema")]
     #[staticmethod]
-    /// Returns the JsonSchema for the json serialisation of the class.
+    /// Return the JsonSchema for the json serialisation of the class.
     ///
     /// Returns:
     ///     str: The json schema serialized to json
