@@ -215,7 +215,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
     }
 
     #[cfg(feature = "json_schema")]
-    /// Returns the minimum version of qoqo that supports this object.
+    /// Return the minimum version of qoqo that supports this object.
     ///
     /// Returns:
     ///     str: The minimum version of the qoqo library to deserialize this object.
