@@ -52,7 +52,7 @@ pub struct ContinuousDecoherenceModelWrapper {
 
 #[noise_model_wrapper]
 impl ContinuousDecoherenceModelWrapper {
-    /// Creates a new ContinuousDecoherenceModel
+    /// Create a new ContinuousDecoherenceModel
     #[new]
     pub fn new(noise_operator: Option<Py<PyAny>>) -> PyResult<Self> {
         if let Some(lindblad_operator) = noise_operator {
@@ -70,7 +70,7 @@ impl ContinuousDecoherenceModelWrapper {
         }
     }
 
-    /// Returns the internal Lindblad noise operator of the continuous noise model.
+    /// Return the internal Lindblad noise operator of the continuous noise model.
     ///
     /// Returns:
     ///     PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the continuous noise
