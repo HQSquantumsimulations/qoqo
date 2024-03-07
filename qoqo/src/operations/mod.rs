@@ -164,6 +164,7 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<LongitudinalCouplingWrapper>()?;
     #[cfg(feature = "unstable_spin_boson_operations")]
     m.add_class::<JaynesCummingsWrapper>()?;
+    // 1.11
     #[cfg(feature = "unstable_analog_operations")]
     m.add_class::<ApplyConstantSpinHamiltonianWrapper>()?;
     #[cfg(feature = "unstable_analog_operations")]

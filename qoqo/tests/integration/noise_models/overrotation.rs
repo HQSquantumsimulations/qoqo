@@ -12,6 +12,7 @@
 
 use pyo3::prelude::*;
 use qoqo::noise_models::*;
+#[cfg(feature = "json_schema")]
 use roqoqo::noise_models::{SingleQubitOverrotationDescription, SingleQubitOverrotationOnGate};
 #[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
@@ -331,7 +332,7 @@ fn test_json_schema() {
             String::extract(br.call_method0("min_supported_version").unwrap()).unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
-        assert_eq!(minimum_supported_version_string, "1.10.0");
+        assert_eq!(minimum_supported_version_string, "1.11.0");
     });
 }
 
@@ -360,6 +361,6 @@ fn test_json_schema_description() {
             String::extract(br.call_method0("min_supported_version").unwrap()).unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
-        assert_eq!(minimum_supported_version_string, "1.10.0");
+        assert_eq!(minimum_supported_version_string, "1.11.0");
     });
 }

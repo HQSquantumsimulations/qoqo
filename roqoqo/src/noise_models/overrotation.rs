@@ -42,7 +42,7 @@ pub struct SingleQubitOverrotationDescription {
 
 impl SupportedVersion for SingleQubitOverrotationDescription {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 10, 0)
+        (1, 11, 0)
     }
 }
 
@@ -210,7 +210,7 @@ impl From<SingleQubitOverrotationOnGateSerialize> for SingleQubitOverrotationOnG
 
 impl SupportedVersion for SingleQubitOverrotationOnGate {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 10, 0)
+        (1, 11, 0)
     }
 }
 
