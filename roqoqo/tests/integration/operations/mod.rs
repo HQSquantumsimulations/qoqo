@@ -30,7 +30,6 @@ mod supported_version;
 
 mod bosonic_operations;
 
-#[cfg(feature = "unstable_spin_boson_operations")]
 mod spin_boson_operations;
 
 #[cfg(feature = "unstable_analog_operations")]

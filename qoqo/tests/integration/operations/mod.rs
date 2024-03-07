@@ -28,7 +28,6 @@ mod three_qubit_gate_operations;
 
 mod bosonic_operations;
 
-#[cfg(feature = "unstable_spin_boson_operations")]
 mod spin_boson_operations;
 
 #[cfg(feature = "unstable_analog_operations")]
