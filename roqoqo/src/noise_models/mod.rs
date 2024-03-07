@@ -111,6 +111,6 @@ mod tests {
     fn minimum_supported_roqoqo_version_overrotations() {
         let noise = SingleQubitOverrotationOnGate::new();
         let noise_model: NoiseModel = noise.into();
-        assert_eq!(noise_model.minimum_supported_roqoqo_version(), (1, 10, 0));
+        assert_eq!(noise_model.minimum_supported_roqoqo_version(), (1, 11, 0));
     }
 }
