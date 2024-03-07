@@ -333,6 +333,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 if trait_name.as_str() == "ImplementedIn1point10" {
                     self.roqoqo_version_register.insert(id.clone(), 10);
                 }
+                if trait_name.as_str() == "ImplementedIn1point11" {
+                    self.roqoqo_version_register.insert(id.clone(), 11);
+                }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());
                 }
