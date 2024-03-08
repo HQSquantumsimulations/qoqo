@@ -49,7 +49,7 @@ fn convert_cf_to_pyobject(
 /// Test new() function for QuantumRabi
 #[test_case(Operation::from(QuantumRabi::new(1, 0, 1.0.into())), (1, 0, 1.0,), "__eq__"; "QuantumRabi_eq")]
 #[test_case(Operation::from(QuantumRabi::new(1, 0, 1.0.into())), (0, 1, 1.0,), "__ne__"; "QuantumRabi_ne")]
-fn test_new_quantumrabi(input_operation: Operation, arguments: (u32, u32, f64), method: &str) {
+fn test_new_quantum_rabi(input_operation: Operation, arguments: (u32, u32, f64), method: &str) {
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -386,6 +386,9 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
 #[test_case(Operation::from(QuantumRabi::new(1, 0, 1.0.into())); "QuantumRabi")]
 #[test_case(Operation::from(LongitudinalCoupling::new(1, 0, 1.0.into())); "LongitudinalCoupling")]
 #[test_case(Operation::from(JaynesCummings::new(1, 0, 1.0.into())); "JaynesCummings")]
+#[test_case(Operation::from(SingleExcitationLoad::new(1, 0)); "SingleExcitationLoad")]
+#[test_case(Operation::from(SingleExcitationStore::new(1, 0)); "SingleExcitationStore")]
+#[test_case(Operation::from(CZQubitResonator::new(1, 0)); "CZQubitResonator")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -780,6 +783,9 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 #[test_case(Operation::from(QuantumRabi::new(1, 0, CalculatorFloat::from(1.0))); "QuantumRabi")]
 #[test_case(Operation::from(LongitudinalCoupling::new(1, 0, CalculatorFloat::from(1.0))); "LongitudinalCoupling")]
 #[test_case(Operation::from(JaynesCummings::new(1, 0, CalculatorFloat::from(1.0))); "JaynesCummings")]
+#[test_case(Operation::from(SingleExcitationLoad::new(1, 0)); "SingleExcitationLoad")]
+#[test_case(Operation::from(SingleExcitationStore::new(1, 0)); "SingleExcitationStore")]
+#[test_case(Operation::from(CZQubitResonator::new(1, 0)); "CZQubitResonator")]
 fn test_ineffective_substitute_parameters(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -877,11 +883,20 @@ fn test_pyo3_json_schema(operation: Operation) {
         Operation::JaynesCummings(_) => {
             serde_json::to_string_pretty(&schemars::schema_for!(JaynesCummings)).unwrap()
         }
+        Operation::SingleExcitationLoad(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(SingleExcitationLoad)).unwrap()
+        }
+        Operation::SingleExcitationStore(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(SingleExcitationStore)).unwrap()
+        }
+        Operation::CZQubitResonator(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(CZQubitResonator)).unwrap()
+        }
         _ => unreachable!(),
     };
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
-        let minimum_version: String = "1.10.0".to_string();
+        let minimum_version: String = "1.11.0".to_string();
         let pyobject = convert_operation_to_pyobject(operation).unwrap();
         let operation = pyobject.as_ref(py);
 

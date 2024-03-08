@@ -13,7 +13,7 @@
 //! Abstract operations for qubit-resonator hardware
 
 use crate::operations::{
-    ImplementedIn1point10, InvolveModes, InvolveQubits, InvolvedModes, InvolvedQubits, Operate,
+    ImplementedIn1point11, InvolveModes, InvolveQubits, InvolvedModes, InvolvedQubits, Operate,
     OperateModeGate, OperateSingleMode, OperateSingleModeGate, OperateSingleQubit, Substitute,
     SubstituteModes, SupportedVersion,
 };
@@ -56,11 +56,11 @@ const TAGS_QuantumRabi: &[&str; 6] = &[
     "QuantumRabi",
 ];
 
-impl ImplementedIn1point10 for QuantumRabi {}
+impl ImplementedIn1point11 for QuantumRabi {}
 
 impl SupportedVersion for QuantumRabi {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 10, 0)
+        (1, 11, 0)
     }
 }
 
@@ -100,11 +100,11 @@ const TAGS_LongitudinalCoupling: &[&str; 6] = &[
     "LongitudinalCoupling",
 ];
 
-impl ImplementedIn1point10 for LongitudinalCoupling {}
+impl ImplementedIn1point11 for LongitudinalCoupling {}
 
 impl SupportedVersion for LongitudinalCoupling {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 10, 0)
+        (1, 11, 0)
     }
 }
 
@@ -144,11 +144,11 @@ const TAGS_JaynesCummings: &[&str; 6] = &[
     "JaynesCummings",
 ];
 
-impl ImplementedIn1point10 for JaynesCummings {}
+impl ImplementedIn1point11 for JaynesCummings {}
 
 impl SupportedVersion for JaynesCummings {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 10, 0)
+        (1, 11, 0)
     }
 }
 
@@ -189,11 +189,11 @@ const TAGS_SingleExcitationStore: &[&str; 6] = &[
     "SingleExcitationStore",
 ];
 
-impl ImplementedIn1point10 for SingleExcitationStore {}
+impl ImplementedIn1point11 for SingleExcitationStore {}
 
 impl SupportedVersion for SingleExcitationStore {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 10, 0)
+        (1, 11, 0)
     }
 }
 
@@ -234,11 +234,11 @@ const TAGS_SingleExcitationLoad: &[&str; 6] = &[
     "SingleExcitationLoad",
 ];
 
-impl ImplementedIn1point10 for SingleExcitationLoad {}
+impl ImplementedIn1point11 for SingleExcitationLoad {}
 
 impl SupportedVersion for SingleExcitationLoad {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 10, 0)
+        (1, 11, 0)
     }
 }
 
@@ -278,10 +278,10 @@ const TAGS_CZQubitResonator: &[&str; 6] = &[
     "CZQubitResonator",
 ];
 
-impl ImplementedIn1point10 for CZQubitResonator {}
+impl ImplementedIn1point11 for CZQubitResonator {}
 
 impl SupportedVersion for CZQubitResonator {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 10, 0)
+        (1, 11, 0)
     }
 }
