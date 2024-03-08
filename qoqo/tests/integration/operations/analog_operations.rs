@@ -19,7 +19,6 @@ use qoqo::operations::{
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
-use roqoqo::RoqoqoError;
 #[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
 
@@ -38,7 +37,7 @@ where
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
-    return ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
+    ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into())
 }
 
 fn create_apply_constant_spin_hamiltonian_spin_test() -> ApplyConstantSpinHamiltonian {
@@ -47,7 +46,7 @@ fn create_apply_constant_spin_hamiltonian_spin_test() -> ApplyConstantSpinHamilt
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(1.0))
         .unwrap();
-    return ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
+    ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into())
 }
 
 fn create_apply_timedependent_spin_hamiltonian<T>(p: T) -> ApplyTimeDependentSpinHamiltonian
@@ -63,7 +62,7 @@ where
     let mut values = HashMap::new();
     values.insert("omega".to_string(), vec![1.0]);
 
-    return ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
+    ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone())
 }
 
 fn create_apply_timedependent_spin_hamiltonian_spin_test() -> ApplyTimeDependentSpinHamiltonian {
@@ -76,7 +75,7 @@ fn create_apply_timedependent_spin_hamiltonian_spin_test() -> ApplyTimeDependent
     let mut values = HashMap::new();
     values.insert("omega".to_string(), vec![1.0]);
 
-    return ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
+    ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone())
 }
 
 fn new_system(py: Python, number_spins: Option<usize>) -> &PyCell<SpinHamiltonianSystemWrapper> {

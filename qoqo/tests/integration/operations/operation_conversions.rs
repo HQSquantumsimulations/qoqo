@@ -163,7 +163,7 @@ where
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
-    return ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
+    ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into())
 }
 #[cfg(feature = "unstable_analog_operations")]
 fn create_apply_timedependent_spin_hamiltonian<T>(p: T) -> ApplyTimeDependentSpinHamiltonian
@@ -179,13 +179,13 @@ where
     let mut values = HashMap::new();
     values.insert("omega".to_string(), vec![1.0]);
 
-    return ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
+    ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone())
 }
 
 #[cfg(feature = "unstable_analog_operations")]
 #[test_case(Operation::from(create_apply_constant_spin_hamiltonian(1.0)); "ApplyConstantSpinHamiltonian")]
 #[test_case(Operation::from(create_apply_timedependent_spin_hamiltonian("omega")); "ApplyTimeDependentSpinHamiltonian")]
-fn test_conversion_feature(input: Operation) {
+fn test_conversion_feature2(input: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input.clone()).unwrap();
