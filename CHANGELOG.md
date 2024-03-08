@@ -20,7 +20,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 ### Added in 1.10.0
 
 * Unstable feature `unstable_spin_boson_operations` adding new spin-boson operations: QuantumRabi, LongitudinalCoupling, JaynesCummings
-* Added to `unstable_spin_boson_operations` with three new operations: SingleExcitationLoad, SingleExcitationStore, CZQubitResonator
+* Added three new operations to `unstable_spin_boson_operations`: SingleExcitationLoad, SingleExcitationStore, CZQubitResonator
 
 ### Fixed in 1.9.2
 
