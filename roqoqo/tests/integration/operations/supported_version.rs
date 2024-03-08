@@ -143,17 +143,16 @@ fn test_version_1_8_0_single_mode_gate(operation: operations::SingleModeGateOper
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 8, 0));
 }
 
-#[cfg(feature = "unstable_spin_boson_operations")]
 #[test_case(operations::SingleModeGateOperation::from(operations::QuantumRabi::new(1, 0, 1.0.into()));"QuantumRabi")]
 #[test_case(operations::SingleModeGateOperation::from(operations::LongitudinalCoupling::new(1, 0, 1.0.into()));"LongitudinalCoupling")]
 #[test_case(operations::SingleModeGateOperation::from(operations::JaynesCummings::new(1, 0, 1.0.into()));"JaynesCummings")]
 #[test_case(operations::SingleModeGateOperation::from(operations::SingleExcitationLoad::new(1, 0));"SingleExcitationLoad")]
 #[test_case(operations::SingleModeGateOperation::from(operations::SingleExcitationStore::new(1, 0));"SingleExcitationStore")]
 #[test_case(operations::SingleModeGateOperation::from(operations::CZQubitResonator::new(1, 0));"CZQubitResonator")]
-fn test_version_1_10_0_single_mode_gate(operation: operations::SingleModeGateOperation) {
-    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 10, 0));
+fn test_version_1_11_0_single_mode_gate(operation: operations::SingleModeGateOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 11, 0));
     let op = operations::Operation::from(operation);
-    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 10, 0));
+    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 11, 0));
 }
 
 #[cfg(feature = "unstable_analog_operations")]
