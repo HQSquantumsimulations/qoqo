@@ -183,11 +183,7 @@ where
     let mut values = HashMap::new();
     values.insert("omega".to_string(), vec![1.0]);
 
-    operations::ApplyTimeDependentSpinHamiltonian::new(
-        hamiltonian,
-        vec![1.0],
-        values.clone(),
-    )
+    operations::ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone())
 }
 
 #[cfg(feature = "unstable_analog_operations")]
