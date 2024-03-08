@@ -303,6 +303,7 @@ const TAGS_PragmaGetPauliProduct: &[&str; 4] = &[
 impl Substitute for PragmaGetPauliProduct {
     /// Remaps qubits in operations in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        #[cfg(not(feature = "unstable_remapping_validity_check"))]
         crate::operations::check_valid_mapping(mapping)?;
 
         let mut mutable_mapping: HashMap<usize, usize> = HashMap::new();
@@ -386,6 +387,7 @@ const TAGS_PragmaRepeatedMeasurement: &[&str; 4] = &[
 impl Substitute for PragmaRepeatedMeasurement {
     /// Remaps qubits in operations in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        #[cfg(not(feature = "unstable_remapping_validity_check"))]
         crate::operations::check_valid_mapping(mapping)?;
         let new_mapping = match &self.qubit_mapping {
             Some(hm) => {

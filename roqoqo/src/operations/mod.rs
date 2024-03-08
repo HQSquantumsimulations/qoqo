@@ -903,6 +903,7 @@ impl PartialEq for DynOperation {
     }
 }
 
+#[allow(dead_code)]
 /// Check if a HashMap is a valid mapping for remapping_qubits
 #[inline]
 pub(crate) fn check_valid_mapping(mapping: &HashMap<usize, usize>) -> Result<(), RoqoqoError> {

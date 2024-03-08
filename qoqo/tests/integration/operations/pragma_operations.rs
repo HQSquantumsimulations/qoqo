@@ -2683,6 +2683,7 @@ fn test_pyo3_new_annotated_op() {
     })
 }
 
+#[cfg(not(feature = "unstable_remapping_validity_check"))]
 // test remap_qubits() function returning an error.
 #[test_case(Operation::from(PragmaStopParallelBlock::new(vec![0, 1], CalculatorFloat::from(0.0000001))); "PragmaStopParallelBlock")]
 #[test_case(Operation::from(PragmaSleep::new(vec![0, 1], CalculatorFloat::from(0.0000001))); "PragmaSleep")]

@@ -70,6 +70,7 @@ fn substitute_modes_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         impl SubstituteModes for #ident{
             /// Remaps the modes in clone of the operation.
             fn remap_modes(&self, mapping: &std::collections::HashMap<usize, usize>) -> Result<Self, RoqoqoError>{
+                #[cfg(not(feature = "unstable_remapping_validity_check"))]
                 crate::operations::check_valid_mapping(mapping)?;
                 Ok(Self::new(#(#remap_quote),*))
             }
