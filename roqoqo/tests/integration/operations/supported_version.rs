@@ -133,9 +133,9 @@ fn test_version_1_0_0_multi_qubit_gate(operation: operations::MultiQubitGateOper
 #[cfg(feature = "unstable_operation_definition")]
 #[test_case(operations::MultiQubitOperation::from(operations::CallDefinedGate::new("test".into(), vec![0,1,2,3], vec![CalculatorFloat::Float(1.0)])); "CallDefinedGate")]
 fn test_version_1_10_1_multi_qubit_gate(operation: operations::MultiQubitOperation) {
-    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 10, 1));
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 11, 0));
     let op = operations::Operation::from(operation);
-    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 10, 1));
+    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 11, 0));
 }
 
 #[test_case(operations::SingleModeGateOperation::from(operations::Squeezing::new(0, 1.0.into(), 0.0.into())); "Squeezing")]
@@ -153,17 +153,16 @@ fn test_version_1_8_0_single_mode_gate(operation: operations::SingleModeGateOper
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 8, 0));
 }
 
-#[cfg(feature = "unstable_spin_boson_operations")]
 #[test_case(operations::SingleModeGateOperation::from(operations::QuantumRabi::new(1, 0, 1.0.into()));"QuantumRabi")]
 #[test_case(operations::SingleModeGateOperation::from(operations::LongitudinalCoupling::new(1, 0, 1.0.into()));"LongitudinalCoupling")]
 #[test_case(operations::SingleModeGateOperation::from(operations::JaynesCummings::new(1, 0, 1.0.into()));"JaynesCummings")]
 #[test_case(operations::SingleModeGateOperation::from(operations::SingleExcitationLoad::new(1, 0));"SingleExcitationLoad")]
 #[test_case(operations::SingleModeGateOperation::from(operations::SingleExcitationStore::new(1, 0));"SingleExcitationStore")]
 #[test_case(operations::SingleModeGateOperation::from(operations::CZQubitResonator::new(1, 0));"CZQubitResonator")]
-fn test_version_1_10_0_single_mode_gate(operation: operations::SingleModeGateOperation) {
-    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 10, 0));
-    let op = operations::Operation::try_from(operation).unwrap();
-    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 10, 0));
+fn test_version_1_11_0_single_mode_gate(operation: operations::SingleModeGateOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 11, 0));
+    let op = operations::Operation::from(operation);
+    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 11, 0));
 }
 
 #[cfg(feature = "unstable_analog_operations")]
@@ -363,5 +362,5 @@ fn test_version_circuit(circuit: roqoqo::Circuit, version: (u32, u32, u32)) {
 #[cfg(feature = "unstable_operation_definition")]
 #[test_case(operations::Operation::from(operations::GateDefinition::new(roqoqo::Circuit::new(), "name".to_string(), vec![2], vec!["name".to_owned()])); "GateDefinition")]
 fn test_version_1_10_1_gate_definition(operation: operations::Operation) {
-    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 10, 1));
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 11, 0));
 }

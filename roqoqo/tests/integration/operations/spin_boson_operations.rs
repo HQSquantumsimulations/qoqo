@@ -303,7 +303,7 @@ fn single_qubit_op(op: SingleQubitOperation) {
 
 #[cfg(feature = "serialize")]
 #[test]
-fn quantumrabi_serde() {
+fn quantum_rabi_serde() {
     let op = QuantumRabi::new(0, 0, 1.0.into());
     assert_tokens(
         &op.clone().readable(),
@@ -535,7 +535,7 @@ fn cz_qubit_resonator_serde() {
 
 #[cfg(feature = "json_schema")]
 #[test]
-fn quantumrabi_json_schema() {
+fn quantum_rabi_json_schema() {
     let def = QuantumRabi::new(0, 0, 1.0.into());
     // Serialize
     let test_json = serde_json::to_string(&def).unwrap();

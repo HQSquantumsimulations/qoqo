@@ -232,12 +232,12 @@ impl Substitute for CallDefinedGate {
 }
 
 #[cfg(feature = "unstable_operation_definition")]
-impl super::ImplementedIn1point10 for CallDefinedGate {}
+impl super::ImplementedIn1point11 for CallDefinedGate {}
 
 #[cfg(feature = "unstable_operation_definition")]
 impl SupportedVersion for CallDefinedGate {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 10, 1)
+        (1, 11, 0)
     }
 }
 

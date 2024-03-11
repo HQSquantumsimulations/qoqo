@@ -30,9 +30,7 @@ mod multi_qubit_gate_operations;
 pub use multi_qubit_gate_operations::*;
 mod bosonic_operations;
 pub use bosonic_operations::*;
-#[cfg(feature = "unstable_spin_boson_operations")]
 mod spin_boson_operations;
-#[cfg(feature = "unstable_spin_boson_operations")]
 pub use spin_boson_operations::*;
 #[cfg(feature = "unstable_analog_operations")]
 mod analog_operations;
@@ -158,20 +156,24 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<PragmaAnnotatedOpWrapper>()?;
     // 1.9
     // 1.10
-    #[cfg(feature = "unstable_spin_boson_operations")]
-    m.add_class::<QuantumRabiWrapper>()?;
-    #[cfg(feature = "unstable_spin_boson_operations")]
-    m.add_class::<LongitudinalCouplingWrapper>()?;
-    #[cfg(feature = "unstable_spin_boson_operations")]
-    m.add_class::<JaynesCummingsWrapper>()?;
+    // unstable version of QuantumRabiWrapper, LongitudinalCouplingWrapper,
+    // JaynesCummingsWrapper, SingleExcitationStoreWrapper, SingleExcitationLoadWrapper
+    // and CZQubitResonatorWrapper now released as stable in 1.11
     // 1.11
     #[cfg(feature = "unstable_analog_operations")]
     m.add_class::<ApplyConstantSpinHamiltonianWrapper>()?;
     #[cfg(feature = "unstable_analog_operations")]
     m.add_class::<ApplyTimeDependentSpinHamiltonianWrapper>()?;
+    m.add_class::<QuantumRabiWrapper>()?;
+    m.add_class::<LongitudinalCouplingWrapper>()?;
+    m.add_class::<JaynesCummingsWrapper>()?;
+    m.add_class::<SingleExcitationStoreWrapper>()?;
+    m.add_class::<SingleExcitationLoadWrapper>()?;
+    m.add_class::<CZQubitResonatorWrapper>()?;
     #[cfg(feature = "unstable_operation_definition")]
     m.add_class::<GateDefinitionWrapper>()?;
     #[cfg(feature = "unstable_operation_definition")]
     m.add_class::<CallDefinedGateWrapper>()?;
+
     Ok(())
 }
