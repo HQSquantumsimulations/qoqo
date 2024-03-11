@@ -4,9 +4,12 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## 1.11.0
 
-### Added in 1.11.0-alpha.1
+### Added in 1.11.0-alpha.2
 
 * Added `unstable_remapping_validity_check` feature
+
+### Added in 1.11.0-alpha.1
+
 * Made operations in `unstable_spin_boson_operations` stable
 
 ### Added in 1.11.0-alpha.0
