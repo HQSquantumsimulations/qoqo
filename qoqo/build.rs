@@ -96,7 +96,9 @@ impl<'ast> Visit<'ast> for Visitor {
     // Only visit struct declarations
     fn visit_item_struct(&mut self, itemstruct: &'ast ItemStruct) {
         // Check attributes
-        for att in itemstruct.attrs.clone() {#[cfg(feature = "unstable_operation_definition")]
+        for att in itemstruct.attrs.clone() {
+            let path = att.path().get_ident().map(|id| id.to_string());
+            if matches!(att.style, AttrStyle::Outer)
                 && path == Some("cfg".to_string())
                 && !cfg!(feature = "unstable_operation_definition")
             {
@@ -317,7 +319,7 @@ fn extract_fields_with_types(input_fields: Fields) -> Vec<(Ident, Option<String>
             .ident
             .expect("Operate can only be derived on structs with named fields");
         let ty = f.ty;
-        let type_path =match &ty {
+        let type_path = match &ty {
             Type::Path(TypePath{path:p,..}) => p,
             _ => panic!("Trait only supports fields with normal types of form path (e.g. CalculatorFloat, qoqo_calculator::CalculatorFloat)")
         };

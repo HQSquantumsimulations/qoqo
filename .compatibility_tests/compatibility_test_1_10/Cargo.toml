@@ -1,5 +1,5 @@
 [package]
-name = "compatibility_test_1_4"
+name = "compatibility_test_1_10"
 version ="1.11.0-alpha.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
@@ -19,12 +19,15 @@ publish = false
 [workspace]
 
 [dependencies]
-test_roqoqo_1_4 = {package = "roqoqo", version="=1.4.0"}
-test_roqoqo_derive_1_4 = {package = "roqoqo-derive", version="=1.4.0"}
+test_roqoqo_1_10 = {package = "roqoqo", version="=1.10.0", features=["unstable_spin_boson_operations"]}
+test_roqoqo_derive_1_10 = {package = "roqoqo-derive", version="=1.10.0"}
 qoqo_calculator = { version="1.1" }
-roqoqo = {version="1.11.0-alpha.0", path="../../roqoqo", features=["serialize", "overrotate"]}
+roqoqo = {version="1.11.0-alpha.0", path="../../roqoqo", features=["serialize", "unstable_spin_boson_operations"]}
 bincode = {version="1.3"}
 ndarray = "0.15"
 
 [dev-dependencies]
 test-case = "3.0"
+
+[features]
+unstable_spin_boson_operations = []

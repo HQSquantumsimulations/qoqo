@@ -147,8 +147,8 @@ fn test_new_multi_qubit_zz(input_operation: Operation, arguments: (Vec<u32>, f64
 }
 
 #[cfg(feature = "unstable_operation_definition")]
-#[test_case(Operation::from(CallDefinedGate::new("name".to_owned(), vec![0, 1], vec![0.0])), ("name".to_owned(), vec![0, 1], vec![0.0],), "__eq__"; "CallDefinedGate_eq")]
-#[test_case(Operation::from(CallDefinedGate::new("name".to_owned(), vec![2, 3], vec![0.0])), ("name".to_owned(), vec![0, 1], vec![0.0],), "__ne__"; "CallDefinedGate_ne")]
+#[test_case(Operation::from(CallDefinedGate::new("name".to_owned(), vec![0, 1], vec![CalculatorFloat::from(0.0)])), ("name".to_owned(), vec![0, 1], vec![0.0],), "__eq__"; "CallDefinedGate_eq")]
+#[test_case(Operation::from(CallDefinedGate::new("name".to_owned(), vec![2, 3], vec![CalculatorFloat::from(0.0)])), ("name".to_owned(), vec![0, 1], vec![0.0],), "__ne__"; "CallDefinedGate_ne")]
 fn test_new_call_defined_gate(
     input_operation: Operation,
     arguments: (String, Vec<u32>, Vec<f64>),
@@ -193,7 +193,7 @@ fn test_new_call_defined_gate(
 
         assert_eq!(
             format!("{:?}", def_wrapper_diff),
-            "CallDefinedGateWrapper { internal: CallDefinedGate { gate_name: \"name\", qubits: [1, 2], free_parameters: [0.0] } }"
+            "CallDefinedGateWrapper { internal: CallDefinedGate { gate_name: \"name\", qubits: [1, 2], free_parameters: [Float(0.0)] } }"
         );
     })
 }
@@ -319,7 +319,7 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
 
 // Test CallDefinedGate's tags, hslang and is_parametrized functions
 #[cfg(feature = "unstable_operation_definition")]
-#[test_case(Operation::from(CallDefinedGate::new("name".to_owned(), vec![0, 1], vec![0.0])); "CallDefinedGate")]
+#[test_case(Operation::from(CallDefinedGate::new("name".to_owned(), vec![0, 1], vec![CalculatorFloat::from(0.0)])); "CallDefinedGate")]
 fn test_pyo3_gate_definition(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -353,7 +353,7 @@ fn test_pyo3_call_defined_gate_inputs() {
         let operation = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
             "name".to_owned(),
             vec![1, 2],
-            vec![0.0],
+            vec![CalculatorFloat::from(0.0)],
         )))
         .unwrap();
 
@@ -373,13 +373,14 @@ fn test_pyo3_call_defined_gate_inputs() {
         assert_eq!(qubits, vec![1, 2]);
 
         // Test free_parameters()
-        let free_parameters: Vec<f64> = operation
-            .call_method0(py, "free_parameters")
-            .unwrap()
-            .as_ref(py)
-            .extract()
-            .unwrap();
-        assert_eq!(free_parameters, vec![0.0]);
+        let mut free_parameters: Vec<CalculatorFloat> = vec![];
+        let py_params = operation.call_method0(py, "free_parameters").unwrap();
+        let params: &pyo3::types::PyList = py_params.as_ref(py).extract().unwrap();
+        for param in params.iter() {
+            free_parameters
+                .push(qoqo_calculator_pyo3::convert_into_calculator_float(param).unwrap());
+        }
+        assert_eq!(free_parameters, vec![CalculatorFloat::from(0.0)]);
     })
 }
 
@@ -428,7 +429,7 @@ fn test_pyo3_remapqubits_call_defined_gate() {
         let operation = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
             "name".to_owned(),
             vec![0, 1, 2],
-            vec![0.0],
+            vec![CalculatorFloat::from(0.0)],
         )))
         .unwrap();
         // test initial qubit
@@ -487,7 +488,7 @@ fn test_pyo3_remapqubits_error_call_defined_gate() {
         let operation = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
             "name".to_owned(),
             vec![1, 2],
-            vec![0.0],
+            vec![CalculatorFloat::from(0.0)],
         )))
         .unwrap();
         // remap qubits
@@ -623,7 +624,7 @@ fn test_pyo3_copy_deepcopy_call_defined_gate() {
         let operation = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
             "name".to_owned(),
             vec![1, 2],
-            vec![0.0],
+            vec![CalculatorFloat::from(0.0)],
         )))
         .unwrap();
         let copy_op = operation.call_method0(py, "__copy__").unwrap();
@@ -680,20 +681,20 @@ fn test_pyo3_format_repr_call_defined_gate() {
         let operation = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
             "name".to_owned(),
             vec![1, 2],
-            vec![0.0],
+            vec![CalculatorFloat::from(0.0)],
         )))
         .unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
         let format_op: &str = <&str>::extract(to_format.as_ref(py)).unwrap();
         assert_eq!(
             format_op,
-            "CallDefinedGate { gate_name: \"name\", qubits: [1, 2], free_parameters: [0.0] }"
+            "CallDefinedGate { gate_name: \"name\", qubits: [1, 2], free_parameters: [Float(0.0)] }"
         );
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
         let repr_op: &str = <&str>::extract(to_repr.as_ref(py)).unwrap();
         assert_eq!(
             repr_op,
-            "CallDefinedGate { gate_name: \"name\", qubits: [1, 2], free_parameters: [0.0] }"
+            "CallDefinedGate { gate_name: \"name\", qubits: [1, 2], free_parameters: [Float(0.0)] }"
         );
     })
 }
@@ -729,6 +730,45 @@ fn test_pyo3_substitute_params_rotate(input_operation: Operation) {
     })
 }
 
+#[cfg(feature = "unstable_operation_definition")]
+#[test]
+fn test_pyo3_substitute_call_defined_gate() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
+            "name".to_owned(),
+            vec![1, 2],
+            vec![CalculatorFloat::from("theta")],
+        )))
+        .unwrap();
+        let mut substitution_dict_py: HashMap<&str, f64> = HashMap::new();
+        substitution_dict_py.insert("theta", 1.0);
+        let substitute_op = operation
+            .call_method1(py, "substitute_parameters", (substitution_dict_py,))
+            .unwrap();
+
+        let mut substitution_dict: Calculator = Calculator::new();
+        substitution_dict.set_variable("theta", 1.0);
+        let substitute_param = Operation::from(CallDefinedGate::new(
+            "name".to_owned(),
+            vec![1, 2],
+            vec![CalculatorFloat::from("theta")],
+        ))
+        .substitute_parameters(&substitution_dict)
+        .unwrap();
+        let test_operation = convert_operation_to_pyobject(substitute_param).unwrap();
+
+        let comparison = bool::extract(
+            substitute_op
+                .as_ref(py)
+                .call_method1("__eq__", (test_operation,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+    })
+}
+
 /// Test substitute_parameters() causing an error `None`
 #[test_case(Operation::from(MultiQubitMS::new(vec![1, 2], CalculatorFloat::from("test"))); "MultiQubitMS")]
 #[test_case(Operation::from(MultiQubitZZ::new(vec![1, 2], CalculatorFloat::from("test"))); "MultiQubitZZ")]
@@ -736,6 +776,24 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let substitution_dict: HashMap<&str, f64> = HashMap::new();
+        let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
+        let result_ref = result.as_ref();
+        assert!(result_ref.is_err());
+    })
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+#[test]
+fn test_pyo3_substitute_params_error_call_defined_gate() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
+            "name".to_owned(),
+            vec![1, 2],
+            vec![CalculatorFloat::from("test")],
+        )))
+        .unwrap();
         let substitution_dict: HashMap<&str, f64> = HashMap::new();
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
         let result_ref = result.as_ref();
@@ -817,13 +875,13 @@ fn test_pyo3_richcmp_call_defined_gate() {
         let operation_one = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
             "name".to_owned(),
             vec![0, 1, 2],
-            vec![0.0],
+            vec![CalculatorFloat::from(0.0)],
         )))
         .unwrap();
         let operation_two = convert_operation_to_pyobject(Operation::from(CallDefinedGate::new(
             "name".to_owned(),
             vec![1, 2],
-            vec![0.0],
+            vec![CalculatorFloat::from(0.0)],
         )))
         .unwrap();
 
@@ -894,7 +952,7 @@ fn test_pyo3_json_schema_call_defined_gate() {
     let operation = Operation::from(CallDefinedGate::new(
         "name".to_owned(),
         vec![1, 2],
-        vec![0.0],
+        vec![CalculatorFloat::from(0.0)],
     ));
     let rust_schema =
         serde_json::to_string_pretty(&schemars::schema_for!(CallDefinedGate)).unwrap();

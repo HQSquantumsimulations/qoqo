@@ -13,8 +13,10 @@
 //! Integration test for supported version trait
 
 use ndarray::array;
-#[cfg(feature = "unstable_analog_operations")]
+#[cfg(feature = "unstable_operation_definition")]
 use qoqo_calculator::CalculatorFloat;
+// #[cfg(feature = "unstable_analog_operations")]
+// use qoqo_calculator::CalculatorFloat;
 #[cfg(feature = "circuitdag")]
 use roqoqo::measurements::Cheated;
 #[cfg(feature = "circuitdag")]
@@ -129,7 +131,7 @@ fn test_version_1_0_0_multi_qubit_gate(operation: operations::MultiQubitGateOper
 }
 
 #[cfg(feature = "unstable_operation_definition")]
-#[test_case(operations::MultiQubitOperation::from(operations::CallDefinedGate::new("test".into(), vec![0,1,2,3], vec![1.0])); "CallDefinedGate")]
+#[test_case(operations::MultiQubitOperation::from(operations::CallDefinedGate::new("test".into(), vec![0,1,2,3], vec![CalculatorFloat::Float(1.0)])); "CallDefinedGate")]
 fn test_version_1_10_1_multi_qubit_gate(operation: operations::MultiQubitOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 10, 1));
     let op = operations::Operation::from(operation);
@@ -202,10 +204,10 @@ where
 #[cfg(feature = "unstable_analog_operations")]
 #[test_case(operations::SpinsAnalogOperation::from(create_apply_constant_spin_hamiltonian(1.0));"ApplyConstantSpinHamiltonian")]
 #[test_case(operations::SpinsAnalogOperation::from(create_apply_timedependent_spin_hamiltonian("omega"));"ApplyTimeDependentHamiltonian")]
-fn test_version_1_10_1_spin_analog_operations(operation: operations::SpinsAnalogOperation) {
-    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 10, 1));
+fn test_version_1_11_0_spin_analog_operations(operation: operations::SpinsAnalogOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 11, 0));
     let op = operations::Operation::try_from(operation).unwrap();
-    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 10, 1));
+    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 11, 0));
 }
 
 #[test_case(operations::TwoModeGateOperation::from(operations::BeamSplitter::new(0, 1, 0.5.into(), 1.0.into())); "BeamSplitter")]

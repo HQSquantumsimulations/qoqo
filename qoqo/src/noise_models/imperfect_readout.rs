@@ -44,7 +44,7 @@ pub struct ImperfectReadoutModelWrapper {
 
 #[noise_model_wrapper]
 impl ImperfectReadoutModelWrapper {
-    /// Creates a new ContinuousDecoherenceModel
+    /// Create a new ContinuousDecoherenceModel
     #[new]
     pub fn new() -> Self {
         ImperfectReadoutModelWrapper {

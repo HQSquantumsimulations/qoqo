@@ -122,8 +122,10 @@ use test_roqoqo_1_9;
 // Operations from 1.10.1
 // #[test_case(create_apply_constant_spin_hamiltonian(); "ApplyConstantSpinHamiltonian")]
 // #[test_case(create_apply_timedependent_spin_hamiltonian(); "ApplyTimeDependentHamiltonian")]
+// Operations added in 1.?
 // #[test_case(test_roqoqo_1_9::operations::GateDefinition::new(test_roqoqo_1_9::Circuit::new(), "name".into(), vec![0, 1], vec!["param".into()]).into(); "GateDefinition")]
 // #[test_case(test_roqoqo_1_9::operations::CallDefinedGate::new("name".into(), vec![0, 1], vec![0.0]).into(); "CallDefinedGate")]
+
 fn test_bincode_compatibility_1_9(operation: test_roqoqo_1_9::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_9::Circuit::new();
     test_circuit += operation;

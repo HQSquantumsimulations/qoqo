@@ -172,7 +172,6 @@ impl OperateMultiQubitGate for MultiQubitZZ {
     PartialEq,
     roqoqo_derive::OperateMultiQubit,
     roqoqo_derive::Operate,
-    roqoqo_derive::Substitute,
     roqoqo_derive::InvolveQubits,
 )]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
@@ -185,7 +184,51 @@ pub struct CallDefinedGate {
     qubits: Vec<usize>,
     /// List of float values that replace the free parameters in the internal defintion of the called gate
     /// (get replaced in order of apppearance in gate defintion).
-    free_parameters: Vec<f64>,
+    free_parameters: Vec<CalculatorFloat>,
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+impl Substitute for CallDefinedGate {
+    fn substitute_parameters(
+        &self,
+        calculator: &qoqo_calculator::Calculator,
+    ) -> Result<Self, RoqoqoError> {
+        let mut new_params: Vec<CalculatorFloat> = vec![];
+        for param in &self.free_parameters.clone() {
+            new_params.push(CalculatorFloat::from(
+                calculator
+                    .parse_get(param.clone())
+                    .map_err(|err| RoqoqoError::CalculatorError(err))?,
+            ));
+        }
+
+        Ok(CallDefinedGate::new(
+            self.gate_name.clone(),
+            self.qubits.clone(),
+            new_params,
+        ))
+    }
+
+    fn remap_qubits(
+        &self,
+        mapping: &std::collections::HashMap<usize, usize>,
+    ) -> Result<Self, RoqoqoError> {
+        crate::operations::check_valid_mapping(mapping)?;
+        let mut new_qubits: Vec<usize> = Vec::new();
+        for q in &self.qubits {
+            new_qubits.push(*mapping.get(q).ok_or(Err("")).map_err(
+                |_x: std::result::Result<&usize, &str>| RoqoqoError::QubitMappingError {
+                    qubit: *q,
+                },
+            )?)
+        }
+
+        Ok(CallDefinedGate::new(
+            self.gate_name.clone(),
+            new_qubits,
+            self.free_parameters.clone(),
+        ))
+    }
 }
 
 #[cfg(feature = "unstable_operation_definition")]
