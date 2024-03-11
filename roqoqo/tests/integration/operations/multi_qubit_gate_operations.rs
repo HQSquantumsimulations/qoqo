@@ -601,3 +601,157 @@ pub fn test_json_schema_multi_qubit_gate_operations(gate: MultiQubitGateOperatio
     let validation_result = compiled_schema.validate(&test_value);
     assert!(validation_result.is_ok());
 }
+
+// Test partialEq function of CallDefinedGate
+#[cfg(feature = "unstable_operation_definition")]
+#[test]
+fn test_clone_partial_eq_call_defined_gate() {
+    let qubits = vec![0, 1, 2];
+
+    let gate = CallDefinedGate::new(
+        "name".into(),
+        qubits.clone(),
+        vec![CalculatorFloat::from(0.6)],
+    );
+    assert_eq!(gate.hqslang(), "CallDefinedGate");
+    assert_eq!(
+        gate.tags(),
+        &["Operation", "MultiQubitGateOperation", "CallDefinedGate",]
+    );
+    assert!(!gate.is_parametrized());
+    let gate1 = CallDefinedGate::new("name".into(), qubits, vec![CalculatorFloat::from(0.7)]);
+    let helper = gate != gate1;
+    assert!(helper);
+    #[allow(clippy::redundant_clone)]
+    let gate2 = gate1.clone();
+    assert_eq!(gate2, gate1);
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+#[test]
+fn test_substitute_call_defined_gate() {
+    let qubits = vec![0, 1, 2];
+    let gate1 = CallDefinedGate::new("name".to_owned(), qubits.clone(), vec!["theta".into()]);
+    let gate = CallDefinedGate::new("name".to_owned(), qubits, vec![CalculatorFloat::FRAC_PI_2]);
+    let mut calc = Calculator::new();
+    calc.set_variable("theta", std::f64::consts::FRAC_PI_2);
+    let gate_substituted = roqoqo::operations::Substitute::substitute_parameters(&gate1, &calc);
+    let subs = gate_substituted.unwrap();
+    assert_eq!(gate, subs);
+    let mut mapping: HashMap<usize, usize> = std::collections::HashMap::new();
+    let _ = mapping.insert(0, 1);
+    let _ = mapping.insert(1, 2);
+    let _ = mapping.insert(2, 0);
+    let remapped = gate1.remap_qubits(&mapping).unwrap();
+    let qubits = remapped.qubits();
+    assert_eq!(qubits, &vec![1, 2, 0]);
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+#[test]
+fn test_substitute_error_call_defined_gate() {
+    let qubits = vec![0, 1, 2];
+    let gate1 = CallDefinedGate::new("name".to_owned(), qubits, vec!["theta".into()]);
+    let calc = Calculator::new();
+    let gate_substituted = gate1.substitute_parameters(&calc);
+    assert!(gate_substituted.is_err());
+    let mut mapping: HashMap<usize, usize> = std::collections::HashMap::new();
+    let _ = mapping.insert(1, 2);
+    let _ = mapping.insert(2, 0);
+    let remapped = gate1.remap_qubits(&mapping);
+    assert!(remapped.is_err());
+}
+
+#[test]
+#[cfg(feature = "unstable_operation_definition")]
+fn test_format_call_defined_gate() {
+    let qubits = vec![0, 1, 2];
+    let gate = CallDefinedGate::new(
+        "name".into(),
+        qubits.clone(),
+        vec![CalculatorFloat::from(0.6)],
+    );
+    let string = format!("{:?}", gate);
+    assert!(
+        string
+            == "CallDefinedGate { gate_name: \"name\", qubits: [0, 1, 2], free_parameters: [Float(0.6)] }"
+    );
+}
+
+#[test]
+#[cfg(feature = "unstable_operation_definition")]
+fn test_remap_defined_gate() {
+    let qubits = vec![0, 1, 2];
+    let gate = CallDefinedGate::new(
+        "name".into(),
+        qubits.clone(),
+        vec![CalculatorFloat::from(0.6)],
+    );
+    let mut mapping: HashMap<usize, usize> = std::collections::HashMap::new();
+    let _ = mapping.insert(0, 1);
+    let _ = mapping.insert(1, 2);
+    let _ = mapping.insert(2, 0);
+    let remapped = gate.remap_qubits(&mapping).unwrap();
+    let qubits = remapped.qubits();
+    assert_eq!(qubits, &vec![1, 2, 0]);
+}
+
+#[test]
+#[cfg(feature = "unstable_operation_definition")]
+fn test_remap_error_call_defined_gate() {
+    let qubits = vec![0, 1, 2];
+    let gate = CallDefinedGate::new(
+        "name".into(),
+        qubits.clone(),
+        vec![CalculatorFloat::from(0.6)],
+    );
+    let mut mapping: HashMap<usize, usize> = std::collections::HashMap::new();
+    let _ = mapping.insert(1, 2);
+    let _ = mapping.insert(2, 0);
+    let remapped = gate.remap_qubits(&mapping);
+    assert!(remapped.is_err());
+}
+
+#[test]
+#[cfg(feature = "unstable_operation_definition")]
+fn test_involved_qubits_call_defined_gate() {
+    let qubits = vec![0, 1, 2];
+    let gate = CallDefinedGate::new(
+        "name".into(),
+        qubits.clone(),
+        vec![CalculatorFloat::Float(0.6)],
+    );
+    let involved_qubits = gate.involved_qubits();
+    let mut comp_set: HashSet<usize> = HashSet::new();
+    let _ = comp_set.insert(0);
+    let _ = comp_set.insert(1);
+    let _ = comp_set.insert(2);
+    assert_eq!(involved_qubits, InvolvedQubits::Set(comp_set));
+}
+
+#[test]
+#[cfg(feature = "unstable_operation_definition")]
+#[cfg(feature = "json_schema")]
+pub fn test_json_schema_multi_qubit_call_gate() {
+    let qubits = vec![0, 1, 2];
+    let gate = CallDefinedGate::new(
+        "name".into(),
+        qubits.clone(),
+        vec![CalculatorFloat::Float(0.6)],
+    );
+    // Serialize
+    let test_json = serde_json::to_string(&gate).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(CallDefinedGate);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}

@@ -4,12 +4,17 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## 1.11.0
 
+### Added in 1.11.0-alpha.2
+
+* Unstable feature `unstable_operation_definition` adding a new operation: CallDefinedGate and a new Definition: DefinitionGate
+
 ### Added in 1.11.0-alpha.1
 
 * Made operations in `unstable_spin_boson_operations` stable
 
 ### Added in 1.11.0-alpha.0
 
+* Unstable feature `unstable_analog_operations` adding new analog operations: ApplyConstantSpinHamiltonian, ApplyTimeDependentSpinHamiltonian
 * Unstable feature `unstable_analog_operations` adding new analog operations: `ApplyConstantSpinHamiltonian`, `ApplyTimeDependentSpinHamiltonian`
 * Added `SingleQubitOverrotationDescription`
 * Added `SingleQubitOverrotationOnGate` noise model
