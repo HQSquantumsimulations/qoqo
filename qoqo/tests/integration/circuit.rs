@@ -150,7 +150,11 @@ fn test_remap_qubits() {
         let mut qubit_mapping_error = HashMap::new();
         qubit_mapping_error.insert(5, 3);
         let comparison = circuit.call_method1("remap_qubits", (qubit_mapping_error,));
-        assert!(comparison.is_err());
+        if !cfg!(feature = "unstable_remapping_validity_check") {
+            assert!(comparison.is_err());
+        } else {
+            assert!(comparison.is_ok());
+        }
     })
 }
 
@@ -782,11 +786,11 @@ fn test_circuit_add_magic_method() {
     let added_op1 = Operation::from(DefinitionBit::new("ro".to_string(), 1, false));
     let added_op2 = Operation::from(RotateX::new(0, CalculatorFloat::from(1.0)));
     let added_op3 = Operation::from(PauliX::new(0));
-    let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
-    let operation2 = convert_operation_to_pyobject(added_op2).unwrap();
-    let operation3 = convert_operation_to_pyobject(added_op3).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
+        let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
+        let operation2 = convert_operation_to_pyobject(added_op2).unwrap();
+        let operation3 = convert_operation_to_pyobject(added_op3).unwrap();
         let added_circuit = new_circuit(py);
         added_circuit
             .call_method1("add", (operation3.clone(),))

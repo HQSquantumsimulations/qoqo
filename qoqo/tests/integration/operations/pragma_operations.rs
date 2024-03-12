@@ -1393,7 +1393,11 @@ fn test_pyo3_remap_qubits_overrotation() {
         qubit_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
         let result_ref = result.as_ref();
-        assert!(result_ref.is_err());
+        if !cfg!(feature = "unstable_remapping_validity_check") {
+            assert!(result_ref.is_err());
+        } else {
+            assert!(result_ref.is_ok());
+        }
     })
 }
 
@@ -2683,12 +2687,10 @@ fn test_pyo3_new_annotated_op() {
     })
 }
 
-#[cfg(not(feature = "unstable_remapping_validity_check"))]
 // test remap_qubits() function returning an error.
 #[test_case(Operation::from(PragmaStopParallelBlock::new(vec![0, 1], CalculatorFloat::from(0.0000001))); "PragmaStopParallelBlock")]
 #[test_case(Operation::from(PragmaSleep::new(vec![0, 1], CalculatorFloat::from(0.0000001))); "PragmaSleep")]
 #[test_case(Operation::from(PragmaActiveReset::new(0)); "PragmaActiveReset")]
-#[test_case(Operation::from(PragmaStartDecompositionBlock::new(vec![0, 1], reordering())); "PragmaStartDecompositionBlock")]
 #[test_case(Operation::from(PragmaStopDecompositionBlock::new(vec![0, 1])); "PragmaStopDecompositionBlock")]
 #[test_case(Operation::from(PragmaDamping::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDamping")]
 #[test_case(Operation::from(PragmaDepolarising::new(0, CalculatorFloat::from(0.005), CalculatorFloat::from(0.02))); "PragmaDepolarising")]
@@ -2707,7 +2709,32 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
         qubit_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
         let result_ref = result.as_ref();
-        assert!(result_ref.is_err());
+        if !cfg!(feature = "unstable_remapping_validity_check") {
+            assert!(result_ref.is_err());
+        } else {
+            assert!(result_ref.is_ok());
+        }
+    })
+}
+
+// test remap_qubits() function returning an error (specific for PragmaStartDecompositionBlock).
+#[test_case(Operation::from(PragmaStartDecompositionBlock::new(vec![0, 1], reordering())); "PragmaStartDecompositionBlock")]
+fn test_pyo3_remapqubits_error_start_decomposition_block(input_operation: Operation) {
+    // preparation
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        // remap qubits
+        let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
+        qubit_mapping.insert(0, 2);
+        qubit_mapping.insert(1, 3);
+        let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
+        let result_ref = result.as_ref();
+        if !cfg!(feature = "unstable_remapping_validity_check") {
+            assert!(result_ref.is_err());
+        } else {
+            assert!(result_ref.is_ok());
+        }
     })
 }
 

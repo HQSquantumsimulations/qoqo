@@ -1295,7 +1295,11 @@ fn pragma_stop_substitute_trait() {
     let mut qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_err.insert(1, 2);
     let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 2 }));
+    if !cfg!(feature = "unstable_remapping_validity_check") {
+        assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 2 }));
+    } else {
+        assert!(result.is_ok());
+    }
 }
 
 /// Test PragmaStopParallelBlock Serialization and Deserialization traits (readable)
@@ -1600,7 +1604,11 @@ fn pragma_sleep_substitute_trait() {
     let mut qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_err.insert(1, 2);
     let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 2 }));
+    if !cfg!(feature = "unstable_remapping_validity_check") {
+        assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 2 }));
+    } else {
+        assert!(result.is_ok());
+    }
 }
 
 /// Test PragmaSleep Serialization and Deserialization traits (readable)
@@ -2087,7 +2095,11 @@ fn pragma_stop_decomp_block_substitute_trait() {
     let mut qubit_mapping_err: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_err.insert(1, 2);
     let result = pragma_test.remap_qubits(&qubit_mapping_err);
-    assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 2 }));
+    if !cfg!(feature = "unstable_remapping_validity_check") {
+        assert_eq!(result, Err(RoqoqoError::QubitMappingError { qubit: 2 }));
+    } else {
+        assert!(result.is_ok());
+    }
 }
 
 /// Test PragmaStopDecompositionBlock Serialization and Deserialization traits (readable)
