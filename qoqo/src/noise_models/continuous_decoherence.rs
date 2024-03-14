@@ -10,7 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use pyo3::prelude::*;
+use pyo3::{exceptions::PyValueError, prelude::*};
 use qoqo_macros::noise_model_wrapper;
 use roqoqo::noise_models::{ContinuousDecoherenceModel, NoiseModel};
 #[cfg(feature = "json_schema")]
@@ -56,10 +56,16 @@ impl ContinuousDecoherenceModelWrapper {
     #[new]
     pub fn new(noise_operator: Option<Py<PyAny>>) -> PyResult<Self> {
         if let Some(lindblad_operator) = noise_operator {
-            let noise_operator =
-                struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany(
-                    lindblad_operator,
-                )?;
+            let noise_operator: struqture::spins::PlusMinusLindbladNoiseOperator =
+                match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany(
+                    lindblad_operator.clone(),
+                ) {
+                    Ok(x) => x,
+                    Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_two(lindblad_operator) {
+                        Ok(x) => x.internal,
+                        Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {:?}", err))),
+                    }
+                };
             Ok(Self {
                 internal: ContinuousDecoherenceModel::from(noise_operator),
             })

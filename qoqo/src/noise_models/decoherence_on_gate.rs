@@ -10,7 +10,7 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use pyo3::prelude::*;
+use pyo3::{exceptions::PyValueError, prelude::*};
 use qoqo_macros::noise_model_wrapper;
 use roqoqo::noise_models::{DecoherenceOnGateModel, NoiseModel};
 #[cfg(feature = "json_schema")]
@@ -77,8 +77,16 @@ impl DecoherenceOnGateModelWrapper {
         qubit: usize,
         noise_operator: Py<PyAny>,
     ) -> PyResult<Self> {
-        let noise_operator =
-            struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany(noise_operator)?;
+        let noise_operator: struqture::spins::PlusMinusLindbladNoiseOperator =
+            match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany(
+                noise_operator.clone(),
+            ) {
+                Ok(x) => x,
+                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_two(noise_operator) {
+                    Ok(x) => x.internal,
+                    Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {:?}", err))),
+                }
+            };
         Ok(Self {
             internal: self.internal.clone().set_single_qubit_gate_error(
                 gate,
@@ -130,8 +138,16 @@ impl DecoherenceOnGateModelWrapper {
         target: usize,
         noise_operator: Py<PyAny>,
     ) -> PyResult<Self> {
-        let noise_operator =
-            struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany(noise_operator)?;
+        let noise_operator: struqture::spins::PlusMinusLindbladNoiseOperator =
+            match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany(
+                noise_operator.clone(),
+            ) {
+                Ok(x) => x,
+                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_two(noise_operator) {
+                    Ok(x) => x.internal,
+                    Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {:?}", err))),
+                }
+            };
         Ok(Self {
             internal: self.internal.clone().set_two_qubit_gate_error(
                 gate,
@@ -188,8 +204,16 @@ impl DecoherenceOnGateModelWrapper {
         target: usize,
         noise_operator: Py<PyAny>,
     ) -> PyResult<Self> {
-        let noise_operator =
-            struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany(noise_operator)?;
+        let noise_operator: struqture::spins::PlusMinusLindbladNoiseOperator =
+            match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany(
+                noise_operator.clone(),
+            ) {
+                Ok(x) => x,
+                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_two(noise_operator) {
+                    Ok(x) => x.internal,
+                    Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {:?}", err))),
+                }
+            };
         Ok(Self {
             internal: self.internal.clone().set_three_qubit_gate_error(
                 gate,
@@ -245,8 +269,16 @@ impl DecoherenceOnGateModelWrapper {
         qubits: Vec<usize>,
         noise_operator: Py<PyAny>,
     ) -> PyResult<Self> {
-        let noise_operator =
-            struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany(noise_operator)?;
+        let noise_operator: struqture::spins::PlusMinusLindbladNoiseOperator =
+            match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany(
+                noise_operator.clone(),
+            ) {
+                Ok(x) => x,
+                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_two(noise_operator) {
+                    Ok(x) => x.internal,
+                    Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {:?}", err))),
+                }
+            };
         Ok(Self {
             internal: self.internal.clone().set_multi_qubit_gate_error(
                 gate,
