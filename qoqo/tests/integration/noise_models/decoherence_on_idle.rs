@@ -298,8 +298,7 @@ fn test_json_schema() {
 
         let schema: String = String::extract(br.call_method0("json_schema").unwrap()).unwrap();
         let rust_schema =
-            serde_json::to_string_pretty(&schemars::schema_for!(DecoherenceOnIdleModel))
-                .unwrap();
+            serde_json::to_string_pretty(&schemars::schema_for!(DecoherenceOnIdleModel)).unwrap();
         assert_eq!(schema, rust_schema);
 
         let current_version_string =

@@ -20,10 +20,10 @@ use struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper;
 
 /// Noise model representing a continuous decoherence process on idle qubits.
 ///
-/// The purpose of this noise model is to enable defining background noise models that exclude the qubits involved 
-/// in a gate, as these might be decoupled from the background noise.The noise for each qubit can be different but 
+/// The purpose of this noise model is to enable defining background noise models that exclude the qubits involved
+/// in a gate, as these might be decoupled from the background noise.The noise for each qubit can be different but
 /// only single qubit noise is included in the model.
-/// 
+///
 /// Noise is given by the rates of the Lindblad equation.
 /// The Lindblad equation is a so-called master equation for the time evolution of a density matrix.
 /// For the example of a single qubit the non-coherent part of the Lindblad equation can take the following form:

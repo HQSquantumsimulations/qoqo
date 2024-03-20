@@ -44,8 +44,7 @@ pub enum NoiseModel {
     /// Additional error only when applying gate
     SingleQubitOverrotationOnGate(SingleQubitOverrotationOnGate),
     /// Dechoherence on idle qubits model
-    DecoherenceOnIdleModel(DecoherenceOnIdleModel)
-    
+    DecoherenceOnIdleModel(DecoherenceOnIdleModel),
 }
 
 impl From<ContinuousDecoherenceModel> for NoiseModel {
@@ -73,7 +72,7 @@ impl From<SingleQubitOverrotationOnGate> for NoiseModel {
 }
 
 impl From<DecoherenceOnIdleModel> for NoiseModel {
-    fn from(value:DecoherenceOnIdleModel ) -> Self {
+    fn from(value: DecoherenceOnIdleModel) -> Self {
         Self::DecoherenceOnIdleModel(value)
     }
 }
