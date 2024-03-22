@@ -36,6 +36,9 @@ use pyo3::prelude::*;
 ///     ContinuousDecoherenceModel
 ///     ImperfectReadoutModel
 ///     DecoherenceOnGateModel
+///     SingleQubitOverrotationDescription
+///     SingleQubitOverrotationOnGate
+///     DecoherenceOnIdleModel
 #[pymodule]
 pub fn noise_models(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<ContinuousDecoherenceModelWrapper>()?;

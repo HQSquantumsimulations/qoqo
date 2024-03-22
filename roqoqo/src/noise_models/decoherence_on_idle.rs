@@ -68,7 +68,7 @@ impl DecoherenceOnIdleModel {
     ///
     /// # Returns
     ///
-    /// `self` - The DecoherenceOnIdleModel with the damping added.
+    /// * `self` - The DecoherenceOnIdleModel with the damping added.
     pub fn add_damping_rate(mut self, qubits: &[usize], rate: f64) -> Self {
         for qubit in qubits {
             // This can never fail here
