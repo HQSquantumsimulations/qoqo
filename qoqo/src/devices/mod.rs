@@ -116,6 +116,13 @@ impl ChainWithEnvironmentDevice for ChainWithEnvironmentCapsule {
 ///
 /// The devices were introduced after qoqo 1.0.0, but their design may be refactored later for backwards compatibility
 /// 
+/// .. autosummary::
+///     :toctree: generated/
+///     
+///     AllToAllDevice
+///     GenericDevice
+///     SquareLatticeDevice
+
 #[pymodule]
 pub fn devices(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<AllToAllDeviceWrapper>()?;
