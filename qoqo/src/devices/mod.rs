@@ -115,7 +115,7 @@ impl ChainWithEnvironmentDevice for ChainWithEnvironmentCapsule {
 ///     accessing the quantum computing hardware. The devices also encode a connectivity model.
 ///
 /// The devices were introduced after qoqo 1.0.0, but their design may be refactored later for backwards compatibility
-/// 
+///
 /// .. autosummary::
 ///     :toctree: generated/
 ///     
