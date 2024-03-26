@@ -473,6 +473,7 @@ const TAGS_PragmaStartDecompositionBlock: &[&str; 4] = &[
 impl Substitute for PragmaStartDecompositionBlock {
     /// Remaps qubits in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        #[cfg(not(feature = "unstable_remapping_validity_check"))]
         crate::operations::check_valid_mapping(mapping)?;
         let mut new_qubits: Vec<usize> = Vec::new();
         for q in &self.qubits {
@@ -1157,6 +1158,7 @@ impl Substitute for PragmaControlledCircuit {
     /// Remaps qubits in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
         let new_circuit = self.circuit.remap_qubits(mapping).unwrap();
+        #[cfg(not(feature = "unstable_remapping_validity_check"))]
         crate::operations::check_valid_mapping(mapping)?;
         let new_controlling_qubit = mapping
             .get(&self.controlling_qubit)
@@ -1250,6 +1252,7 @@ impl Substitute for PragmaChangeDevice {
     /// This is not supported  for PragmaChangeDevice and should throw and error when a non-trivial remapping
     /// is used
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        #[cfg(not(feature = "unstable_remapping_validity_check"))]
         crate::operations::check_valid_mapping(mapping)?;
         match mapping.iter().find(|(x, y)| x != y) {
             Some((x, _)) => Err(RoqoqoError::QubitMappingError { qubit: *x }),

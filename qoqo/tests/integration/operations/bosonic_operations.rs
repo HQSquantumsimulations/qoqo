@@ -670,7 +670,11 @@ fn test_pyo3_remapmodes_error(input_operation: Operation) {
         mode_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_modes", (mode_mapping,));
         let result_ref = result.as_ref();
-        assert!(result_ref.is_err());
+        if !cfg!(feature = "unstable_remapping_validity_check") {
+            assert!(result_ref.is_err());
+        } else {
+            assert!(result_ref.is_ok());
+        }
     })
 }
 

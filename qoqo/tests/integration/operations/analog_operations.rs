@@ -19,7 +19,6 @@ use qoqo::operations::{
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
-use roqoqo::RoqoqoError;
 #[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
 

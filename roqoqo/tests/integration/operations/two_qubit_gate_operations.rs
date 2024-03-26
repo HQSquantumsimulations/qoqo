@@ -561,7 +561,11 @@ fn remap_qubits_error0(gate: GateOperation) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(1, 0);
     let result = gate.remap_qubits(&qubit_mapping);
-    assert_eq!(result, Err(QubitMappingError { qubit: 0 }));
+    if !cfg!(feature = "unstable_remapping_validity_check") {
+        assert_eq!(result, Err(QubitMappingError { qubit: 0 }));
+    } else {
+        assert!(result.is_ok());
+    }
 }
 
 #[test_case(GateOperation::from(CNOT::new(0, 1)); "CNOT")]
@@ -593,7 +597,11 @@ fn remap_qubits_error1(gate: GateOperation) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(0, 2);
     let result = gate.remap_qubits(&qubit_mapping);
-    assert_eq!(result, Err(QubitMappingError { qubit: 2 }));
+    if !cfg!(feature = "unstable_remapping_validity_check") {
+        assert_eq!(result, Err(QubitMappingError { qubit: 2 }));
+    } else {
+        assert!(result.is_ok());
+    }
 }
 
 #[test_case(

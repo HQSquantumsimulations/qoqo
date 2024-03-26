@@ -121,6 +121,7 @@ fn substitute_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             }
             /// Remaps the qubits in clone of the operation.
             fn remap_qubits(&self, mapping: &std::collections::HashMap<usize, usize>) -> Result<Self, RoqoqoError>{
+                #[cfg(not(feature = "unstable_remapping_validity_check"))]
                 crate::operations::check_valid_mapping(mapping)?;
                 #new_qubits_quote
                 Ok(Self::new(#(#remap_quote),*))

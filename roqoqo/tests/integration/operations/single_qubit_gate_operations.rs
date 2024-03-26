@@ -1537,7 +1537,11 @@ fn remap_qubits_error(gate: SingleQubitGateOperation) {
     let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
     qubit_mapping.insert(1, 0);
     let result = gate.remap_qubits(&qubit_mapping);
-    assert_eq!(result, Err(QubitMappingError { qubit: 0 }));
+    if !cfg!(feature = "unstable_remapping_validity_check") {
+        assert_eq!(result, Err(QubitMappingError { qubit: 0 }));
+    } else {
+        assert!(result.is_ok());
+    }
 }
 
 /// Test debug for SingleQubitGate Operations

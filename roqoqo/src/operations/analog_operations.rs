@@ -69,6 +69,7 @@ impl InvolveQubits for ApplyConstantSpinHamiltonian {
 impl Substitute for ApplyConstantSpinHamiltonian {
     /// Remaps qubits in operations in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        #[cfg(not(feature = "unstable_remapping_validity_check"))]
         crate::operations::check_valid_mapping(mapping)?;
         let mut new_hamiltonian = SpinHamiltonian::new();
         for (pp, value) in &self.hamiltonian {
@@ -148,6 +149,7 @@ impl InvolveQubits for ApplyTimeDependentSpinHamiltonian {
 impl Substitute for ApplyTimeDependentSpinHamiltonian {
     /// Remaps qubits in operations in clone of the operation.
     fn remap_qubits(&self, mapping: &HashMap<usize, usize>) -> Result<Self, RoqoqoError> {
+        #[cfg(not(feature = "unstable_remapping_validity_check"))]
         crate::operations::check_valid_mapping(mapping)?;
         let mut new_hamiltonian = SpinHamiltonian::new();
         for (pp, value) in &self.hamiltonian {

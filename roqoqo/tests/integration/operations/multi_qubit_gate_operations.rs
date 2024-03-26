@@ -260,7 +260,11 @@ fn test_substitute_error() {
     let _ = mapping.insert(1, 2);
     let _ = mapping.insert(2, 0);
     let remapped = gate1.remap_qubits(&mapping);
-    assert!(remapped.is_err());
+    if !cfg!(feature = "unstable_remapping_validity_check") {
+        assert!(remapped.is_err());
+    } else {
+        assert!(remapped.is_ok());
+    }
 }
 
 #[test]
@@ -530,7 +534,11 @@ fn test_substitute_error_multi_qubit_zz() {
     let _ = mapping.insert(1, 2);
     let _ = mapping.insert(2, 0);
     let remapped = gate1.remap_qubits(&mapping);
-    assert!(remapped.is_err());
+    if !cfg!(feature = "unstable_remapping_validity_check") {
+        assert!(remapped.is_err());
+    } else {
+        assert!(remapped.is_ok());
+    }
 }
 
 #[test]
