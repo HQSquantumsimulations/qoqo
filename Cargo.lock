@@ -1102,7 +1102,6 @@ dependencies = [
  "serde",
  "serde_json",
  "struqture 1.6.2",
- "struqture 2.0.0",
  "struqture-py",
  "syn 2.0.52",
  "test-case",
