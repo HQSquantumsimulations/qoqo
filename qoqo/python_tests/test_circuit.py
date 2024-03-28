@@ -14,6 +14,7 @@ import pytest
 import sys
 from qoqo import operations as ops
 from qoqo import Circuit
+import struqture_py
 
 
 @pytest.mark.parametrize(
@@ -42,6 +43,18 @@ def test_circuit(measurement):
     circuit += ops.PauliX(qubit=0)
     circuit += measurement[0]
     assert len(circuit) > 0
+
+
+# def test_struqture_2_0():
+#     """Testing the new 2.0 struqture serialisation."""
+#     hamiltonian = struqture_py.spins.SpinHamiltonianSystem()
+#     hamiltonian.add_operator_product(struqture_py.spins.PauliProduct().z(0).x(2), 1.0)
+#     hamiltonian.add_operator_product("1Z", 2.0)
+
+#     circuit = Circuit()
+#     circuit += ops.ApplyConstantSpinHamiltonian(hamiltonian, 5.0)
+#     circuit += ops.ApplyTimeDependentSpinHamiltonian(hamiltonian, [2.0], {"omega": [1.0]})
+#     assert len(circuit) > 0
 
 
 if __name__ == "__main__":

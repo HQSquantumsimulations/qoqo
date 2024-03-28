@@ -1101,7 +1101,8 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "struqture",
+ "struqture 1.6.2",
+ "struqture 2.0.0",
  "struqture-py",
  "syn 2.0.52",
  "test-case",
@@ -1114,7 +1115,7 @@ version = "1.11.0-alpha.1"
 dependencies = [
  "proc-macro2",
  "quote",
- "struqture",
+ "struqture 1.6.2",
  "syn 2.0.52",
 ]
 
@@ -1296,7 +1297,7 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_test",
- "struqture",
+ "struqture 1.6.2",
  "syn 2.0.52",
  "test-case",
  "thiserror",
@@ -1508,10 +1509,39 @@ dependencies = [
 ]
 
 [[package]]
+name = "struqture"
+version = "1.6.2"
+dependencies = [
+ "itertools",
+ "ndarray",
+ "num-complex",
+ "qoqo_calculator",
+ "schemars",
+ "serde",
+ "test-case",
+ "thiserror",
+ "tinyvec",
+]
+
+[[package]]
+name = "struqture"
+version = "2.0.0"
+dependencies = [
+ "indexmap",
+ "itertools",
+ "ndarray",
+ "num-complex",
+ "qoqo_calculator",
+ "serde",
+ "struqture 1.6.1",
+ "test-case",
+ "thiserror",
+ "tinyvec",
+]
+
+[[package]]
 name = "struqture-py"
-version = "1.6.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bd549b80a7e8a929b9125c37c8ec8f74916df3ed2fbc427462ee93812c1f450e"
+version = "1.6.2"
 dependencies = [
  "bincode",
  "num-complex",
@@ -1525,7 +1555,8 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "struqture",
+ "struqture 1.6.2",
+ "struqture 2.0.0",
  "struqture-py-macros",
  "syn 2.0.52",
  "thiserror",
@@ -1533,9 +1564,7 @@ dependencies = [
 
 [[package]]
 name = "struqture-py-macros"
-version = "1.6.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3215f75379ad75b4847b3166e5fd39de65ae2723a9cdd382ad92966925a8f48e"
+version = "1.6.2"
 dependencies = [
  "num-complex",
  "proc-macro2",
