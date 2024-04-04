@@ -49,6 +49,7 @@ impl Visitor {
 }
 
 /// Struct for parsed derive macro arguments. Used to identify structs belonging to enums
+#[allow(dead_code)]
 #[derive(Debug)]
 struct DeriveMacroArguments(HashSet<String>);
 
