@@ -10804,7 +10804,7 @@ limitations under the License.
 
 
 ====================================================
-h2 0.3.25
+h2 0.3.26
 https://github.com/hyperium/h2
 by Carl Lerche <me@carllerche.com>, Sean McArthur <sean@seanmonstar.com>
 An HTTP/2 client and server
@@ -16536,7 +16536,7 @@ THE SOFTWARE.
 
 
 ====================================================
-nalgebra 0.32.4
+nalgebra 0.32.5
 https://nalgebra.org
 by Sébastien Crozet <developer@crozet.re>
 General-purpose linear algebra library with transformations and statically-sized or dynamically-sized matrices.
@@ -21052,7 +21052,7 @@ limitations under the License.
 
 
 ====================================================
-pin-project-lite 0.2.13
+pin-project-lite 0.2.14
 https://github.com/taiki-e/pin-project-lite
 by 
 A lightweight version of pin-project written with declarative macros.
@@ -23565,7 +23565,7 @@ LICENSE-APACHE:
 
 
 ====================================================
-qoqo 1.11.0-alpha.2
+qoqo 1.11.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoqo
@@ -23777,7 +23777,7 @@ LICENSE:
 
 
 ====================================================
-qoqo-macros 1.11.0-alpha.2
+qoqo-macros 1.11.0
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -26783,7 +26783,7 @@ limitations under the License.
 
 
 ====================================================
-roqoqo 1.11.0-alpha.2
+roqoqo 1.11.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
@@ -26995,7 +26995,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-derive 1.11.0-alpha.2
+roqoqo-derive 1.11.0
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the roqoqo crate
 License: Apache-2.0
@@ -27206,7 +27206,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-test 1.11.0-alpha.2
+roqoqo-test 1.11.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
@@ -30566,7 +30566,7 @@ limitations under the License.
 
 
 ====================================================
-strsim 0.11.0
+strsim 0.11.1
 https://github.com/rapidfuzz/strsim-rs
 by Danny Guo <danny@dannyguo.com>, maxbachmann <oss@maxbachmann.de>
 Implementations of string similarity metrics. Includes Hamming, Levenshtein,
@@ -31269,7 +31269,7 @@ limitations under the License.
 
 
 ====================================================
-syn 2.0.55
+syn 2.0.58
 https://github.com/dtolnay/syn
 by David Tolnay <dtolnay@gmail.com>
 Parser for Rust source code
@@ -33649,7 +33649,7 @@ SOFTWARE.
 
 
 ====================================================
-tokio 1.36.0
+tokio 1.37.0
 https://tokio.rs
 by Tokio Contributors <team@tokio.rs>
 An event-driven, non-blocking I/O platform for writing asynchronous I/O
