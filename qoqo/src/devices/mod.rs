@@ -124,7 +124,7 @@ impl ChainWithEnvironmentDevice for ChainWithEnvironmentCapsule {
 ///     SquareLatticeDevice
 
 #[pymodule]
-pub fn devices(_py: Python, module: &PyModule) -> PyResult<()> {
+pub fn devices(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     module.add_class::<AllToAllDeviceWrapper>()?;
     module.add_class::<GenericDeviceWrapper>()?;
     module.add_class::<SquareLatticeDeviceWrapper>()?;

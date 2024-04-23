@@ -72,7 +72,7 @@ fn test_new_paulix(input_operation: Operation, arguments: (u32,), method: &str) 
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -114,7 +114,7 @@ fn test_new_pauliy(input_operation: Operation, arguments: (u32,), method: &str) 
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -156,7 +156,7 @@ fn test_new_pauliz(input_operation: Operation, arguments: (u32,), method: &str) 
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -198,7 +198,7 @@ fn test_new_sqrtpaulix(input_operation: Operation, arguments: (u32,), method: &s
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -240,7 +240,7 @@ fn test_new_invsqrtpaulix(input_operation: Operation, arguments: (u32,), method:
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -281,7 +281,7 @@ fn test_new_sgate(input_operation: Operation, arguments: (u32,), method: &str) {
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -322,7 +322,7 @@ fn test_new_tgate(input_operation: Operation, arguments: (u32,), method: &str) {
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -363,7 +363,7 @@ fn test_new_hadamard(input_operation: Operation, arguments: (u32,), method: &str
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -404,7 +404,7 @@ fn test_new_rotatex(input_operation: Operation, arguments: (u32, f64), method: &
             .unwrap();
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -413,7 +413,7 @@ fn test_new_rotatex(input_operation: Operation, arguments: (u32, f64), method: &
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"]));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -451,7 +451,7 @@ fn test_new_rotatey(input_operation: Operation, arguments: (u32, f64), method: &
             .unwrap();
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -460,7 +460,7 @@ fn test_new_rotatey(input_operation: Operation, arguments: (u32, f64), method: &
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"]));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -499,7 +499,7 @@ fn test_new_rotatez(input_operation: Operation, arguments: (u32, f64), method: &
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -508,7 +508,7 @@ fn test_new_rotatez(input_operation: Operation, arguments: (u32, f64), method: &
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"]));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -547,7 +547,7 @@ fn test_new_phaseshiftstate0(input_operation: Operation, arguments: (u32, f64), 
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -556,7 +556,7 @@ fn test_new_phaseshiftstate0(input_operation: Operation, arguments: (u32, f64), 
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"]));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -595,7 +595,7 @@ fn test_new_phaseshiftstate1(input_operation: Operation, arguments: (u32, f64), 
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -604,7 +604,7 @@ fn test_new_phaseshiftstate1(input_operation: Operation, arguments: (u32, f64), 
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"]));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -643,7 +643,7 @@ fn test_new_gpi(input_operation: Operation, arguments: (u32, f64), method: &str)
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -652,7 +652,7 @@ fn test_new_gpi(input_operation: Operation, arguments: (u32, f64), method: &str)
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"]));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -691,7 +691,7 @@ fn test_new_gpi2(input_operation: Operation, arguments: (u32, f64), method: &str
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -700,7 +700,7 @@ fn test_new_gpi2(input_operation: Operation, arguments: (u32, f64), method: &str
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"]));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -752,7 +752,7 @@ fn test_new_rotate(input_operation: Operation, arguments: (u32, f64, f64, f64), 
             .unwrap();
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -761,13 +761,13 @@ fn test_new_rotate(input_operation: Operation, arguments: (u32, f64, f64, f64), 
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"], 0.0, 0.0));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
         let result = operation_type.call1((0, 0.0, vec!["fails"], 0.0));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
         let result = operation_type.call1((0, 0.0, 0.0, vec!["fails"]));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -821,7 +821,7 @@ fn test_new_rotatexy(input_operation: Operation, arguments: (u32, f64, f64), met
             .unwrap();
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -830,10 +830,10 @@ fn test_new_rotatexy(input_operation: Operation, arguments: (u32, f64, f64), met
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"], 0.0));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
         let result = operation_type.call1((0, vec!["fails"], 0.0));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -893,7 +893,7 @@ fn test_new_singlequbitgate(
             .unwrap();
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -902,23 +902,23 @@ fn test_new_singlequbitgate(
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"], 0.0, 0.0, 0.0, 0.0));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
 
         let result = operation_type.call1((0, 0.0, vec!["fails"], 0.0, 0.0, 0.0));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
 
         let result = operation_type.call1((0, 0.0, 0.0, vec!["fails"], 0.0, 0.0));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
 
         let result = operation_type.call1((0, 0.0, 0.0, 0.0, vec!["fails"], 0.0));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
 
         let result = operation_type.call1((0, 0.0, 0.0, 0.0, 0.0, vec!["fails"]));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -957,7 +957,7 @@ fn test_new_identity(input_operation: Operation, arguments: (u32,), method: &str
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -1027,7 +1027,7 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
             operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
-                .as_ref(py)
+                .bind(py)
         )
         .unwrap());
     })
@@ -1086,7 +1086,7 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
             operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
-                .as_ref(py)
+                .bind(py)
         )
         .unwrap());
     })
@@ -1114,10 +1114,9 @@ fn test_pyo3_theta(theta: CalculatorFloat, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let theta_op: CalculatorFloatWrapper = CalculatorFloatWrapper::extract(
-            operation.call_method0(py, "theta").unwrap().as_ref(py),
-        )
-        .unwrap();
+        let theta_op: CalculatorFloatWrapper =
+            CalculatorFloatWrapper::extract(operation.call_method0(py, "theta").unwrap().bind(py))
+                .unwrap();
         let theta_param: CalculatorFloatWrapper =
             CalculatorFloatWrapper::extract(convert_cf_to_pyobject(py, theta)).unwrap();
         assert_eq!(theta_op.internal, theta_param.internal);
@@ -1163,7 +1162,7 @@ fn test_pyo3_qubit(qubit: usize, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let qubit_op: usize =
-            usize::extract(operation.call_method0(py, "qubit").unwrap().as_ref(py)).unwrap();
+            usize::extract(operation.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
         assert_eq!(qubit_op, qubit);
     })
 }
@@ -1217,7 +1216,7 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let name_op: String =
-            String::extract(operation.call_method0(py, "hqslang").unwrap().as_ref(py)).unwrap();
+            String::extract(operation.call_method0(py, "hqslang").unwrap().bind(py)).unwrap();
         assert_eq!(name_op, name.to_string());
     })
 }
@@ -1412,7 +1411,7 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let tags_op: Vec<String> =
-            Vec::<String>::extract(operation.call_method0(py, "tags").unwrap().as_ref(py)).unwrap();
+            Vec::<String>::extract(operation.call_method0(py, "tags").unwrap().bind(py)).unwrap();
         assert_eq!(tags_op.len(), tags.len());
         for i in 0..tags.len() {
             assert_eq!(tags_op[i], tags[i]);
@@ -1471,7 +1470,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial qubit
         let qubit: usize =
-            usize::extract(operation.call_method0(py, "qubit").unwrap().as_ref(py)).unwrap();
+            usize::extract(operation.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
         assert_eq!(qubit.clone(), 0);
         // remap qubits
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
@@ -1482,7 +1481,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
             .unwrap();
         // test re-mapped qubit
         let qubit_new: usize =
-            usize::extract(result.call_method0(py, "qubit").unwrap().as_ref(py)).unwrap();
+            usize::extract(result.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
         assert_eq!(qubit_new.clone(), 1);
         // test that initial and rempapped qubits are different
         assert_ne!(qubit, qubit_new);
@@ -1543,7 +1542,7 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
     })
 }
@@ -1642,7 +1641,7 @@ fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let py_result = operation.call_method0(py, "unitary_matrix");
-        let result_ref = py_result.as_ref();
+        let result_ref = py_result.bind();
         assert!(result_ref.is_err());
     })
 }
@@ -1675,7 +1674,7 @@ fn test_pyo3_unitarymatrix_singlequbitgate(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let py_result = operation.call_method0(py, "unitary_matrix");
-        let result_ref = py_result.as_ref();
+        let result_ref = py_result.bind();
         assert!(result_ref.is_err());
     })
 }
@@ -1735,7 +1734,7 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 
         let comparison_copy = bool::extract(
             copy_op
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param.clone(),))
                 .unwrap(),
         )
@@ -1743,7 +1742,7 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
         assert!(comparison_copy);
         let comparison_deepcopy = bool::extract(
             deepcopy_op
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param,))
                 .unwrap(),
         )
@@ -1809,7 +1808,7 @@ fn test_pyo3_alpha_r(input_operation: Operation) {
         let method_op = operation.call_method0(py, "alpha_r").unwrap();
         let comparison_alpha_r = bool::extract(
             method_op
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (alpha_r_param,))
                 .unwrap(),
         )
@@ -1875,7 +1874,7 @@ fn test_pyo3_alpha_i(input_operation: Operation) {
         let method_op = operation.call_method0(py, "alpha_i").unwrap();
         let comparison_alpha_i = bool::extract(
             method_op
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (alpha_i_param,))
                 .unwrap(),
         )
@@ -1941,7 +1940,7 @@ fn test_pyo3_beta_r(input_operation: Operation) {
         let method_op = operation.call_method0(py, "beta_r").unwrap();
         let comparison_beta_r = bool::extract(
             method_op
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (beta_r_param,))
                 .unwrap(),
         )
@@ -2007,7 +2006,7 @@ fn test_pyo3_beta_i(input_operation: Operation) {
         let method_op = operation.call_method0(py, "beta_i").unwrap();
         let comparison_beta_i = bool::extract(
             method_op
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (beta_i_param,))
                 .unwrap(),
         )
@@ -2073,7 +2072,7 @@ fn test_pyo3_global_phase(input_operation: Operation) {
         let method_op = operation.call_method0(py, "global_phase").unwrap();
         let comparison_global_phase = bool::extract(
             method_op
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (global_phase_param,))
                 .unwrap(),
         )
@@ -2175,10 +2174,10 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: &str = <&str>::extract(to_format.as_ref(py)).unwrap();
+        let format_op: &str = <&str>::extract(to_format.bind(py)).unwrap();
         assert_eq!(format_op, format_repr);
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: &str = <&str>::extract(to_repr.as_ref(py)).unwrap();
+        let repr_op: &str = <&str>::extract(to_repr.bind(py)).unwrap();
         assert_eq!(repr_op, format_repr);
     })
 }
@@ -2225,7 +2224,7 @@ fn test_pyo3_substitute_parameters(input_operation: Operation) {
 
         let comparison = bool::extract(
             substitute_op
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (test_operation,))
                 .unwrap(),
         )
@@ -2261,7 +2260,7 @@ fn test_pyo3_substitute_params_rotate(input_operation: Operation) {
 
         let comparison = bool::extract(
             substitute_op
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (test_operation,))
                 .unwrap(),
         )
@@ -2304,7 +2303,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let substitution_dict: HashMap<&str, f64> = HashMap::new();
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
     })
 }
@@ -2338,7 +2337,7 @@ fn test_ineffective_substitute_parameters(input_operation: Operation) {
 
         let comparison = bool::extract(
             substitute_op
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (operation,))
                 .unwrap(),
         )
@@ -2398,7 +2397,7 @@ fn test_pyo3_rotate_powercf(first_op: Operation, second_op: Operation) {
             remapped_op
                 .call_method1(py, "__eq__", (comparison_op,))
                 .unwrap()
-                .as_ref(py),
+                .bind(py),
         )
         .unwrap();
         assert!(comparison);
@@ -2640,7 +2639,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 
         let comparison = bool::extract(
             operation_one
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (operation_two.clone(),))
                 .unwrap(),
         )
@@ -2649,7 +2648,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 
         let comparison = bool::extract(
             operation_one
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__ne__", (operation_two.clone(),))
                 .unwrap(),
         )
@@ -2781,7 +2780,7 @@ fn test_pyo3_json_schema(operation: SingleQubitGateOperation) {
         };
         let converted_op = Operation::from(operation);
         let pyobject = convert_operation_to_pyobject(converted_op).unwrap();
-        let operation = pyobject.as_ref(py);
+        let operation = pyobject.bind(py);
 
         let schema: String =
             String::extract(operation.call_method0("json_schema").unwrap()).unwrap();

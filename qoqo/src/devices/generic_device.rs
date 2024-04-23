@@ -85,7 +85,7 @@ impl GenericDeviceWrapper {
     /// Fallible conversion of generic python object..
     pub fn from_pyany(input: Py<PyAny>) -> PyResult<GenericDevice> {
         Python::with_gil(|py| -> PyResult<GenericDevice> {
-            let input = input.as_ref(py);
+            let input = input.bind(py);
             if let Ok(try_downcast) = input.extract::<GenericDeviceWrapper>() {
                 Ok(try_downcast.internal)
             } else {

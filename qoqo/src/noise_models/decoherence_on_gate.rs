@@ -291,8 +291,8 @@ impl DecoherenceOnGateModelWrapper {
     ///     ValueError: Input cannot be deserialized to selected Noise-Model.
     #[staticmethod]
     #[pyo3(text_signature = "(input)")]
-    pub fn from_bincode(input: &PyAny) -> PyResult<DecoherenceOnGateModelWrapper> {
-        let bytes = input.extract::<Vec<u8>>().map_err(|_| {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<DecoherenceOnGateModelWrapper> {
+        let bytes = input.as_gil_ref().extract::<Vec<u8>>().map_err(|_| {
             pyo3::exceptions::PyTypeError::new_err("Input cannot be converted to byte array")
         })?;
         let noise_model: NoiseModel = bincode::deserialize(&bytes[..]).map_err(|_| {

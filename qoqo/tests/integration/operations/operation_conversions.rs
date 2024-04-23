@@ -141,7 +141,7 @@ fn test_conversion(input: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input.clone()).unwrap();
-        let output = convert_pyany_to_operation(operation.as_ref(py)).unwrap();
+        let output = convert_pyany_to_operation(operation.bind(py)).unwrap();
         assert_eq!(input, output)
     })
 }
@@ -182,7 +182,7 @@ fn test_conversion_feature(input: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input.clone()).unwrap();
-        let output = convert_pyany_to_operation(operation.as_ref(py)).unwrap();
+        let output = convert_pyany_to_operation(operation.bind(py)).unwrap();
         assert_eq!(input, output)
     })
 }

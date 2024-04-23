@@ -40,7 +40,7 @@ use pyo3::prelude::*;
 ///     SingleQubitOverrotationOnGate
 ///     DecoherenceOnIdleModel
 #[pymodule]
-pub fn noise_models(_py: Python, module: &PyModule) -> PyResult<()> {
+pub fn noise_models(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     module.add_class::<ContinuousDecoherenceModelWrapper>()?;
     module.add_class::<ImperfectReadoutModelWrapper>()?;
     module.add_class::<DecoherenceOnGateModelWrapper>()?;

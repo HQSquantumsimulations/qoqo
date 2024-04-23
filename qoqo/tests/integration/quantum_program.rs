@@ -622,7 +622,7 @@ fn test_convert_into_program() {
         let comparison = program.call_method1("convert_into_quantum_program", (operation.clone(),));
         assert!(comparison.is_err());
         assert_eq!(
-            convert_into_quantum_program(operation.as_ref(py)),
+            convert_into_quantum_program(operation.bind(py)),
             Err(QoqoError::CannotExtractObject)
         );
         // assert_eq!(convert_into_quantum_program(circ), Err(QoqoError::VersionMismatch));

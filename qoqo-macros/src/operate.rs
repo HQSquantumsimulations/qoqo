@@ -150,7 +150,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     quote! {
                             #[doc = #msg]
                             pub fn #id(&self) -> Option<CircuitWrapper>{
-                                match self.internal.#id().as_ref(){
+                                match self.internal.#id().bind(){
                                     None => None,
                                     Some(x) => Some(CircuitWrapper{internal: x.clone()})
                             }

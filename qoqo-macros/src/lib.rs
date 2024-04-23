@@ -299,7 +299,7 @@ pub fn wrap(
             ///
             pub fn mul(&self, other: Py<PyAny>) -> PyResult<SingleQubitGateWrapper> {
                 Python::with_gil(|py| -> PyResult<SingleQubitGateWrapper> {
-                    let other_ref = other.as_ref(py);
+                    let other_ref = other.bind(py);
                     let other: Operation = crate::operations::convert_pyany_to_operation(other_ref).map_err(|x| {
                         pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
                     })?;
@@ -664,7 +664,7 @@ pub fn wrap(
             ///
             fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
                 Python::with_gil(|py| -> PyResult<bool> {
-                    let other_ref = other.as_ref(py);
+                    let other_ref = other.bind(py);
                     let other: Operation = crate::operations::convert_pyany_to_operation(other_ref).map_err(|x| {
                         pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
                     })?;

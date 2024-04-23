@@ -112,7 +112,7 @@ impl PauliZProductWrapper {
         let bit_registers_bool: PyResult<HashMap<String, Vec<Vec<bool>>>> =
             Python::with_gil(|py| -> PyResult<HashMap<String, Vec<Vec<bool>>>> {
                 input_bit_registers
-                    .as_ref(py)
+                    .bind(py)
                     .extract::<HashMap<String, BitOutputRegister>>()
             });
         if let Ok(try_downcast) = bit_registers_bool {
@@ -121,7 +121,7 @@ impl PauliZProductWrapper {
             let tmp_bit_registers =
                 Python::with_gil(|py| -> PyResult<HashMap<String, Vec<Vec<usize>>>> {
                     input_bit_registers
-                        .as_ref(py)
+                        .bind(py)
                         .extract::<HashMap<String, Vec<Vec<usize>>>>()
                 })?;
             for (name, output_reg) in tmp_bit_registers {
@@ -221,7 +221,7 @@ impl PauliZProductWrapper {
             PyValueError::new_err("Cannot serialize PauliZProductMeasurement to bytes")
         })?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(("PauliZProduct", b))
     }
@@ -237,7 +237,7 @@ impl PauliZProductWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize PauliZProduct to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -254,8 +254,9 @@ impl PauliZProductWrapper {
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to PauliZProduct.
     #[staticmethod]
-    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
+            .as_gil_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -378,7 +379,7 @@ impl PauliZProductWrapper {
     /// `input` - The Python object that should be casted to a [roqoqo::PauliZProduct]
     pub fn from_pyany(input: Py<PyAny>) -> PyResult<PauliZProduct> {
         Python::with_gil(|py| -> PyResult<PauliZProduct> {
-            let input = input.as_ref(py);
+            let input = input.bind(py);
             if let Ok(try_downcast) = input.extract::<PauliZProductWrapper>() {
                 Ok(try_downcast.internal)
             } else {

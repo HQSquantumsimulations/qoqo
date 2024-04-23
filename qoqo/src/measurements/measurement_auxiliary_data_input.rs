@@ -163,7 +163,7 @@ impl PauliZProductInputWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize PauliZProductInput to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -180,8 +180,9 @@ impl PauliZProductInputWrapper {
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to PauliZProductInput.
     #[staticmethod]
-    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
+            .as_gil_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -387,7 +388,7 @@ impl CheatedPauliZProductInputWrapper {
             PyValueError::new_err("Cannot serialize CheatedPauliZProductInput to bytes")
         })?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -404,8 +405,9 @@ impl CheatedPauliZProductInputWrapper {
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to CheatedPauliZProductInput.
     #[staticmethod]
-    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
+            .as_gil_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -575,7 +577,7 @@ impl CheatedInputWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize CheatedInput to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -592,8 +594,9 @@ impl CheatedInputWrapper {
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to CheatedInput.
     #[staticmethod]
-    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
+            .as_gil_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -677,7 +680,7 @@ impl CheatedPauliZProductInputWrapper {
     /// `input` - The Python object that should be casted to a [roqoqo::CheatedPauliZProductInput]
     pub fn from_pyany(input: Py<PyAny>) -> PyResult<CheatedPauliZProductInput> {
         Python::with_gil(|py| -> PyResult<CheatedPauliZProductInput> {
-            let input = input.as_ref(py);
+            let input = input.bind(py);
             if let Ok(try_downcast) = input.extract::<CheatedPauliZProductInputWrapper>() {
                 Ok(try_downcast.internal)
             } else {
@@ -710,7 +713,7 @@ impl PauliZProductInputWrapper {
     /// `input` - The Python object that should be casted to a [roqoqo::PauliZProductInput]
     pub fn from_pyany(input: Py<PyAny>) -> PyResult<PauliZProductInput> {
         Python::with_gil(|py| -> PyResult<PauliZProductInput> {
-            let input = input.as_ref(py);
+            let input = input.bind(py);
             if let Ok(try_downcast) = input.extract::<PauliZProductInputWrapper>() {
                 Ok(try_downcast.internal)
             } else {
@@ -743,7 +746,7 @@ impl CheatedInputWrapper {
     /// `input` - The Python object that should be casted to a [roqoqo::CheatedInput]
     pub fn from_pyany(input: Py<PyAny>) -> PyResult<CheatedInput> {
         Python::with_gil(|py| -> PyResult<CheatedInput> {
-            let input = input.as_ref(py);
+            let input = input.bind(py);
             if let Ok(try_downcast) = input.extract::<CheatedInputWrapper>() {
                 Ok(try_downcast.internal)
             } else {

@@ -232,7 +232,7 @@ impl SquareLatticeDeviceWrapper {
     /// Fallible conversion of generic python object..
     pub fn from_pyany(input: Py<PyAny>) -> PyResult<SquareLatticeDevice> {
         Python::with_gil(|py| -> PyResult<SquareLatticeDevice> {
-            let input = input.as_ref(py);
+            let input = input.bind(py);
             if let Ok(try_downcast) = input.extract::<SquareLatticeDeviceWrapper>() {
                 Ok(try_downcast.internal)
             } else {

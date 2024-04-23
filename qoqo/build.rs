@@ -160,9 +160,9 @@ fn main() {
                         Some(type_str) =>
                             match  type_str.as_str(){
                                 "CalculatorFloat" => {quote!{
-                                    let #pyobject_name = op
+                                    let #pyobject_name = &Bound<op
                                     .call_method0(#ident_string)
-                                    .map_err(|_| QoqoError::ConversionError)?;
+                                    .map_err(|_| QoqoError::ConversionError)?>;
                                     let #ident = convert_into_calculator_float(#pyobject_name).map_err(|_|
                                         QoqoError::ConversionError)?;
                                 }},
@@ -262,8 +262,9 @@ fn main() {
         }
 
         /// Tries to convert any python object to a [roqoqo::operations::Operation]
-        pub fn convert_pyany_to_operation(op: &PyAny) -> Result<Operation, QoqoError> {
+        pub fn convert_pyany_to_operation(op: &Bound<PyAny>) -> Result<Operation, QoqoError> {
             let hqslang_pyobject = op
+                .as_gil_ref()
                 .call_method0("hqslang")
                 .map_err(|_| QoqoError::ConversionError)?;
             let hqslang: String = String::extract(hqslang_pyobject)

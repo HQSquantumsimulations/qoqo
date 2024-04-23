@@ -113,13 +113,13 @@ impl PragmaSetStateVectorWrapper {
     fn new(statevector: Py<PyAny>) -> PyResult<Self> {
         let try_cast: PyResult<Array1<Complex64>> =
             Python::with_gil(|py| -> PyResult<Array1<Complex64>> {
-                let extracted: PyReadonlyArray1<Complex64> = statevector.as_ref(py).extract()?;
+                let extracted: PyReadonlyArray1<Complex64> = statevector.bind(py).extract()?;
                 let statevec: Array1<Complex64> = extracted.to_owned_array();
                 Ok(statevec)
             });
         let try_cast = try_cast.or_else(|_| {
             Python::with_gil(|py| -> PyResult<Array1<Complex64>> {
-                let extracted: PyReadonlyArray1<f64> = statevector.as_ref(py).extract()?;
+                let extracted: PyReadonlyArray1<f64> = statevector.bind(py).extract()?;
                 let statevec: Array1<f64> = extracted.to_owned_array();
                 let statevec: Array1<Complex64> = statevec
                     .into_iter()
@@ -130,7 +130,7 @@ impl PragmaSetStateVectorWrapper {
         });
         let try_cast = try_cast.or_else(|_| {
             Python::with_gil(|py| -> PyResult<Array1<Complex64>> {
-                let extracted: PyReadonlyArray1<isize> = statevector.as_ref(py).extract()?;
+                let extracted: PyReadonlyArray1<isize> = statevector.bind(py).extract()?;
                 let statevec: Array1<isize> = extracted.to_owned_array();
                 let statevec: Array1<Complex64> = statevec
                     .into_iter()
@@ -146,7 +146,7 @@ impl PragmaSetStateVectorWrapper {
             Err(_) => {
                 let statevec_casted: Vec<Complex64> =
                     Python::with_gil(|py| -> PyResult<Vec<Complex64>> {
-                        Vec::extract(statevector.as_ref(py))
+                        Vec::extract(statevector.bind(py))
                     })?;
                 let statevec_array: Array1<Complex64> = Array1::from(statevec_casted);
                 Ok(Self {
@@ -296,7 +296,7 @@ impl PragmaSetStateVectorWrapper {
     ///     bool: Whether the two operations compared evaluated to True or False.
     fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
         let other: Operation = Python::with_gil(|py| -> PyResult<Operation> {
-            let other_ref = other.as_ref(py);
+            let other_ref = other.bind(py);
 
             crate::operations::convert_pyany_to_operation(other_ref).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
@@ -551,7 +551,7 @@ impl PragmaSetDensityMatrixWrapper {
     ///     bool: Whether the two operations compared evaluated to True or False.
     fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
         let other: Operation = Python::with_gil(|py| -> PyResult<Operation> {
-            let other_ref = other.as_ref(py);
+            let other_ref = other.bind(py);
             crate::operations::convert_pyany_to_operation(other_ref).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
                     "Right hand side cannot be converted to Operation",
@@ -1059,7 +1059,7 @@ impl PragmaGeneralNoiseWrapper {
     fn new(qubit: usize, gate_time: Py<PyAny>, rates: PyReadonlyArray2<f64>) -> PyResult<Self> {
         let rates_array = rates.as_array().to_owned();
         let gate_time_cf = Python::with_gil(|py| -> PyResult<CalculatorFloat> {
-            convert_into_calculator_float(gate_time.as_ref(py)).map_err(|_| {
+            convert_into_calculator_float(gate_time.bind(py)).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
                     "Argument gate time cannot be converted to CalculatorFloat",
                 )
@@ -1245,7 +1245,7 @@ impl PragmaGeneralNoiseWrapper {
     ///     bool: Whether the two operations compared evaluated to True or False.
     fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
         let other: Operation = Python::with_gil(|py| -> PyResult<Operation> {
-            let other_ref = other.as_ref(py);
+            let other_ref = other.bind(py);
             crate::operations::convert_pyany_to_operation(other_ref).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
                     "Right hand side cannot be converted to Operation",
@@ -1538,7 +1538,7 @@ impl PragmaChangeDeviceWrapper {
     ///     bool: Whether the two operations compared evaluated to True or False.
     fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
         let other: Operation = Python::with_gil(|py| -> PyResult<Operation> {
-            let other_ref = other.as_ref(py);
+            let other_ref = other.bind(py);
             crate::operations::convert_pyany_to_operation(other_ref).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
                     "Right hand side cannot be converted to Operation",
@@ -1643,7 +1643,7 @@ impl PragmaAnnotatedOpWrapper {
     #[new]
     fn new(operation: Py<PyAny>, annotation: String) -> PyResult<Self> {
         let op: Operation = Python::with_gil(|py| -> PyResult<Operation> {
-            let op_ref = operation.as_ref(py);
+            let op_ref = operation.bind(py);
             crate::operations::convert_pyany_to_operation(op_ref).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
                     "Input operation cannot be converted to Operation",
@@ -1823,7 +1823,7 @@ impl PragmaAnnotatedOpWrapper {
     ///     bool: Whether the two operations compared evaluated to True or False.
     fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
         let other: Operation = Python::with_gil(|py| -> PyResult<Operation> {
-            let other_ref = other.as_ref(py);
+            let other_ref = other.bind(py);
             crate::operations::convert_pyany_to_operation(other_ref).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
                     "Right hand side cannot be converted to Operation",
@@ -1893,7 +1893,7 @@ mod tests {
         Python::with_gil(|py| {
             let operation = convert_operation_to_pyobject(input_definition).unwrap();
             let to_involved = operation.call_method0(py, "involved_qubits").unwrap();
-            let involved_op: HashSet<&str> = HashSet::extract(to_involved.as_ref(py)).unwrap();
+            let involved_op: HashSet<&str> = HashSet::extract(to_involved.bind(py)).unwrap();
             let mut involved_param: HashSet<&str> = HashSet::new();
             involved_param.insert("All");
             assert_eq!(involved_op, involved_param);
@@ -1912,9 +1912,9 @@ mod tests {
         Python::with_gil(|py| {
             let operation = convert_operation_to_pyobject(input_measurement).unwrap();
             let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-            let format_op: &str = <&str>::extract(to_format.as_ref(py)).unwrap();
+            let format_op: &str = <&str>::extract(to_format.bind(py)).unwrap();
             let to_repr = operation.call_method0(py, "__repr__").unwrap();
-            let repr_op: &str = <&str>::extract(to_repr.as_ref(py)).unwrap();
+            let repr_op: &str = <&str>::extract(to_repr.bind(py)).unwrap();
             assert_eq!(format_op, format_repr);
             assert_eq!(repr_op, format_repr);
         })
@@ -1934,7 +1934,7 @@ mod tests {
 
             let comparison_copy = bool::extract(
                 copy_op
-                    .as_ref(py)
+                    .bind(py)
                     .call_method1("__eq__", (copy_deepcopy_param.clone(),))
                     .unwrap(),
             )
@@ -1942,7 +1942,7 @@ mod tests {
             assert!(comparison_copy);
             let comparison_deepcopy = bool::extract(
                 deepcopy_op
-                    .as_ref(py)
+                    .bind(py)
                     .call_method1("__eq__", (copy_deepcopy_param,))
                     .unwrap(),
             )
@@ -1960,7 +1960,7 @@ mod tests {
         Python::with_gil(|py| {
             let operation = convert_operation_to_pyobject(input_measurement).unwrap();
             let to_tag = operation.call_method0(py, "tags").unwrap();
-            let tags_op: &Vec<&str> = &Vec::extract(to_tag.as_ref(py)).unwrap();
+            let tags_op: &Vec<&str> = &Vec::extract(to_tag.bind(py)).unwrap();
             let tags_param: &[&str] = &["Operation", "PragmaOperation", "PragmaChangeDevice"];
             assert_eq!(tags_op, tags_param);
         })
@@ -1975,7 +1975,7 @@ mod tests {
         Python::with_gil(|py| {
             let operation = convert_operation_to_pyobject(input_measurement).unwrap();
             let hqslang_op: String =
-                String::extract(operation.call_method0(py, "hqslang").unwrap().as_ref(py)).unwrap();
+                String::extract(operation.call_method0(py, "hqslang").unwrap().bind(py)).unwrap();
             assert_eq!(hqslang_op, "PragmaChangeDevice".to_string());
         })
     }
@@ -1992,7 +1992,7 @@ mod tests {
                 operation
                     .call_method0(py, "is_parametrized")
                     .unwrap()
-                    .as_ref(py)
+                    .bind(py)
             )
             .unwrap());
         })
@@ -2016,7 +2016,7 @@ mod tests {
 
             let comparison = bool::extract(
                 substitute_op
-                    .as_ref(py)
+                    .bind(py)
                     .call_method1("__eq__", (substitute_param,))
                     .unwrap(),
             )
@@ -2046,7 +2046,7 @@ mod tests {
                 remapped_op
                     .call_method1(py, "__eq__", (comparison_op,))
                     .unwrap()
-                    .as_ref(py),
+                    .bind(py),
             )
             .unwrap();
             assert!(comparison);
@@ -2083,7 +2083,7 @@ mod tests {
 
             let comparison = bool::extract(
                 operation_one
-                    .as_ref(py)
+                    .bind(py)
                     .call_method1("__eq__", (operation_two.clone(),))
                     .unwrap(),
             )
@@ -2092,7 +2092,7 @@ mod tests {
 
             let comparison = bool::extract(
                 operation_one
-                    .as_ref(py)
+                    .bind(py)
                     .call_method1("__ne__", (operation_two.clone(),))
                     .unwrap(),
             )

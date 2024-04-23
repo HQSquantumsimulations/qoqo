@@ -985,7 +985,7 @@ fn test_circuit_overrotate() {
 
         let comparison = bool::extract(
             circuit
-                .as_ref()
+                .bind()
                 .call_method1("__ne__", (circuit_overrotated,))
                 .unwrap(),
         )

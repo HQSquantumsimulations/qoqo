@@ -210,7 +210,7 @@ impl AllToAllDeviceWrapper {
     /// Fallible conversion of generic python object.
     pub fn from_pyany(input: Py<PyAny>) -> PyResult<AllToAllDevice> {
         Python::with_gil(|py| -> PyResult<AllToAllDevice> {
-            let input = input.as_ref(py);
+            let input = input.bind(py);
             if let Ok(try_downcast) = input.extract::<AllToAllDeviceWrapper>() {
                 Ok(try_downcast.internal)
             } else {

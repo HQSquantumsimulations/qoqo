@@ -861,7 +861,7 @@ mod test_chain_with_environment {
         /// Fallible conversion of generic python object..
         fn from_pyany(input: Py<PyAny>) -> PyResult<TestDevice> {
             Python::with_gil(|py| -> PyResult<TestDevice> {
-                let input = input.as_ref(py);
+                let input = input.bind(py);
                 if let Ok(try_downcast) = input.extract::<TestDeviceWrapper>() {
                     Ok(try_downcast.internal)
                 } else {

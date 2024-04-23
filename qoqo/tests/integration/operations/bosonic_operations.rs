@@ -63,7 +63,7 @@ fn test_new_squeezing(input_operation: Operation, arguments: (u32, f64, f64), me
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -91,7 +91,7 @@ fn test_new_squeezing(input_operation: Operation, arguments: (u32, f64, f64), me
             operation
                 .call_method0(py, "squeezing")
                 .unwrap()
-                .as_ref(py)
+                .bind(py)
                 .call_method1(
                     "__eq__",
                     (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
@@ -105,7 +105,7 @@ fn test_new_squeezing(input_operation: Operation, arguments: (u32, f64, f64), me
             operation
                 .call_method0(py, "phase")
                 .unwrap()
-                .as_ref(py)
+                .bind(py)
                 .call_method1(
                     "__eq__",
                     (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
@@ -137,7 +137,7 @@ fn test_new_phasedisplacement(
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -165,7 +165,7 @@ fn test_new_phasedisplacement(
             operation
                 .call_method0(py, "displacement")
                 .unwrap()
-                .as_ref(py)
+                .bind(py)
                 .call_method1(
                     "__eq__",
                     (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
@@ -178,7 +178,7 @@ fn test_new_phasedisplacement(
             operation
                 .call_method0(py, "phase")
                 .unwrap()
-                .as_ref(py)
+                .bind(py)
                 .call_method1(
                     "__eq__",
                     (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
@@ -206,7 +206,7 @@ fn test_new_phaseshift(input_operation: Operation, arguments: (u32, f64), method
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -234,7 +234,7 @@ fn test_new_phaseshift(input_operation: Operation, arguments: (u32, f64), method
             operation
                 .call_method0(py, "phase")
                 .unwrap()
-                .as_ref(py)
+                .bind(py)
                 .call_method1(
                     "__eq__",
                     (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
@@ -266,7 +266,7 @@ fn test_new_beamsplitter(
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -294,7 +294,7 @@ fn test_new_beamsplitter(
             operation
                 .call_method0(py, "theta")
                 .unwrap()
-                .as_ref(py)
+                .bind(py)
                 .call_method1(
                     "__eq__",
                     (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.1)),),
@@ -307,7 +307,7 @@ fn test_new_beamsplitter(
             operation
                 .call_method0(py, "phi")
                 .unwrap()
-                .as_ref(py)
+                .bind(py)
                 .call_method1(
                     "__eq__",
                     (convert_cf_to_pyobject(py, CalculatorFloat::Float(0.5)),),
@@ -339,7 +339,7 @@ fn test_new_photondetection(
 
         let comparison = bool::extract(
             operation
-                .as_ref(py)
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -367,7 +367,7 @@ fn test_new_photondetection(
             operation
                 .call_method0(py, "readout")
                 .unwrap()
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", ("ro",))
                 .unwrap(),
         )
@@ -378,7 +378,7 @@ fn test_new_photondetection(
             operation
                 .call_method0(py, "readout_index")
                 .unwrap()
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (0_u32,))
                 .unwrap(),
         )
@@ -405,7 +405,7 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
             operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
-                .as_ref(py)
+                .bind(py)
         )
         .unwrap());
     })
@@ -425,7 +425,7 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
             operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
-                .as_ref(py)
+                .bind(py)
         )
         .unwrap());
     })
@@ -441,7 +441,7 @@ fn test_pyo3_mode(mode: usize, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let mode_op: usize =
-            usize::extract(operation.call_method0(py, "mode").unwrap().as_ref(py)).unwrap();
+            usize::extract(operation.call_method0(py, "mode").unwrap().bind(py)).unwrap();
         assert_eq!(mode_op, mode);
     })
 }
@@ -453,10 +453,10 @@ fn test_pyo3_mode0_mode_1(mode_0: usize, mode_1: usize, input_operation: Operati
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let mode_op_0: usize =
-            usize::extract(operation.call_method0(py, "mode_0").unwrap().as_ref(py)).unwrap();
+            usize::extract(operation.call_method0(py, "mode_0").unwrap().bind(py)).unwrap();
         assert_eq!(mode_op_0, mode_0);
         let mode_op_1: usize =
-            usize::extract(operation.call_method0(py, "mode_1").unwrap().as_ref(py)).unwrap();
+            usize::extract(operation.call_method0(py, "mode_1").unwrap().bind(py)).unwrap();
         assert_eq!(mode_op_1, mode_1);
     })
 }
@@ -472,7 +472,7 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let name_op: String =
-            String::extract(operation.call_method0(py, "hqslang").unwrap().as_ref(py)).unwrap();
+            String::extract(operation.call_method0(py, "hqslang").unwrap().bind(py)).unwrap();
         assert_eq!(name_op, name.to_string());
     })
 }
@@ -527,7 +527,7 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let tags_op: Vec<String> =
-            Vec::<String>::extract(operation.call_method0(py, "tags").unwrap().as_ref(py)).unwrap();
+            Vec::<String>::extract(operation.call_method0(py, "tags").unwrap().bind(py)).unwrap();
         assert_eq!(tags_op.len(), tags.len());
         for i in 0..tags.len() {
             assert_eq!(tags_op[i], tags[i]);
@@ -550,7 +550,7 @@ fn test_pyo3_involved_modes(input_operation: Operation, modes: HashSet<usize>) {
             operation
                 .call_method0(py, "involved_modes")
                 .unwrap()
-                .as_ref(py),
+                .bind(py),
         )
         .unwrap();
         assert_eq!(involved_modes, modes);
@@ -572,7 +572,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
             operation
                 .call_method0(py, "involved_qubits")
                 .unwrap()
-                .as_ref(py),
+                .bind(py),
         )
         .unwrap();
         assert_eq!(involved_qubits, HashSet::<usize>::new());
@@ -581,13 +581,9 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
             .call_method1(py, "remap_qubits", (HashMap::<usize, usize>::new(),))
             .unwrap();
         // test re-mapped qubit
-        let involved_qubits: HashSet<usize> = HashSet::<usize>::extract(
-            result
-                .call_method0(py, "involved_qubits")
-                .unwrap()
-                .as_ref(py),
-        )
-        .unwrap();
+        let involved_qubits: HashSet<usize> =
+            HashSet::<usize>::extract(result.call_method0(py, "involved_qubits").unwrap().bind(py))
+                .unwrap();
         assert_eq!(involved_qubits, HashSet::<usize>::new());
     })
 }
@@ -603,7 +599,7 @@ fn test_pyo3_remapmodes_single(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial mode
         let mode: usize =
-            usize::extract(operation.call_method0(py, "mode").unwrap().as_ref(py)).unwrap();
+            usize::extract(operation.call_method0(py, "mode").unwrap().bind(py)).unwrap();
         assert_eq!(mode.clone(), 0);
         // remap modes
         let mut mode_mapping: HashMap<usize, usize> = HashMap::new();
@@ -614,7 +610,7 @@ fn test_pyo3_remapmodes_single(input_operation: Operation) {
             .unwrap();
         // test re-mapped mode
         let mode_new: usize =
-            usize::extract(result.call_method0(py, "mode").unwrap().as_ref(py)).unwrap();
+            usize::extract(result.call_method0(py, "mode").unwrap().bind(py)).unwrap();
         assert_eq!(mode_new.clone(), 1);
         // test that initial and rempapped modes are different
         assert_ne!(mode, mode_new);
@@ -629,10 +625,10 @@ fn test_pyo3_remapmodes_two(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial mode
         let mode_0: usize =
-            usize::extract(operation.call_method0(py, "mode_0").unwrap().as_ref(py)).unwrap();
+            usize::extract(operation.call_method0(py, "mode_0").unwrap().bind(py)).unwrap();
         assert_eq!(mode_0.clone(), 0);
         let mode_1: usize =
-            usize::extract(operation.call_method0(py, "mode_1").unwrap().as_ref(py)).unwrap();
+            usize::extract(operation.call_method0(py, "mode_1").unwrap().bind(py)).unwrap();
         assert_eq!(mode_1.clone(), 1);
         // remap modes
         let mut mode_mapping: HashMap<usize, usize> = HashMap::new();
@@ -643,10 +639,10 @@ fn test_pyo3_remapmodes_two(input_operation: Operation) {
             .unwrap();
         // test re-mapped mode
         let mode_new_0: usize =
-            usize::extract(result.call_method0(py, "mode_0").unwrap().as_ref(py)).unwrap();
+            usize::extract(result.call_method0(py, "mode_0").unwrap().bind(py)).unwrap();
         assert_eq!(mode_new_0.clone(), 1);
         let mode_new_1: usize =
-            usize::extract(result.call_method0(py, "mode_1").unwrap().as_ref(py)).unwrap();
+            usize::extract(result.call_method0(py, "mode_1").unwrap().bind(py)).unwrap();
         assert_eq!(mode_new_1.clone(), 0);
         // test that initial and rempapped modes are different
         assert_ne!(mode_0, mode_new_0);
@@ -669,7 +665,7 @@ fn test_pyo3_remapmodes_error(input_operation: Operation) {
         let mut mode_mapping: HashMap<usize, usize> = HashMap::new();
         mode_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_modes", (mode_mapping,));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
     })
 }
@@ -690,7 +686,7 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 
         let comparison_copy = bool::extract(
             copy_op
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param.clone(),))
                 .unwrap(),
         )
@@ -698,7 +694,7 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
         assert!(comparison_copy);
         let comparison_deepcopy = bool::extract(
             deepcopy_op
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param,))
                 .unwrap(),
         )
@@ -733,10 +729,10 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: &str = <&str>::extract(to_format.as_ref(py)).unwrap();
+        let format_op: &str = <&str>::extract(to_format.bind(py)).unwrap();
         assert_eq!(format_op, format_repr);
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: &str = <&str>::extract(to_repr.as_ref(py)).unwrap();
+        let repr_op: &str = <&str>::extract(to_repr.bind(py)).unwrap();
         assert_eq!(repr_op, format_repr);
     })
 }
@@ -796,7 +792,7 @@ fn test_pyo3_substitute_parameters(input_operation: Operation) {
 
         let comparison = bool::extract(
             substitute_op
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (test_operation,))
                 .unwrap(),
         )
@@ -826,7 +822,7 @@ fn test_pyo3_substitute_params_single(input_operation: Operation) {
 
         let comparison = bool::extract(
             substitute_op
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (test_operation,))
                 .unwrap(),
         )
@@ -846,7 +842,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let substitution_dict: HashMap<&str, f64> = HashMap::new();
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
-        let result_ref = result.as_ref();
+        let result_ref = result.bind();
         assert!(result_ref.is_err());
     })
 }
@@ -869,7 +865,7 @@ fn test_ineffective_substitute_parameters(input_operation: Operation) {
 
         let comparison = bool::extract(
             substitute_op
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (operation,))
                 .unwrap(),
         )
@@ -902,7 +898,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 
         let comparison = bool::extract(
             operation_one
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__eq__", (operation_two.clone(),))
                 .unwrap(),
         )
@@ -911,7 +907,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 
         let comparison = bool::extract(
             operation_one
-                .as_ref(py)
+                .bind(py)
                 .call_method1("__ne__", (operation_two.clone(),))
                 .unwrap(),
         )
@@ -959,7 +955,7 @@ fn test_pyo3_json_schema(operation: Operation) {
             _ => "1.6.0".to_string(),
         };
         let pyobject = convert_operation_to_pyobject(operation).unwrap();
-        let operation = pyobject.as_ref(py);
+        let operation = pyobject.bind(py);
 
         let schema: String =
             String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
