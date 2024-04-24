@@ -64,11 +64,8 @@ fn test_to_from_json() {
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
-        let deserialised = new_br
-            .call_method1("from_json", (serialised,))
-            .unwrap()
-            .downcast::<DecoherenceOnGateModelWrapper>()
-            .unwrap();
+        let binding = new_br.call_method1("from_json", (serialised,)).unwrap();
+        let deserialised = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
         let deserialised_error =
@@ -94,11 +91,8 @@ fn test_to_from_bincode() {
         let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
         let new_br = br;
         let serialised = br.call_method0("to_bincode").unwrap();
-        let deserialised = new_br
-            .call_method1("from_bincode", (serialised,))
-            .unwrap()
-            .downcast::<DecoherenceOnGateModelWrapper>()
-            .unwrap();
+        let binding = new_br.call_method1("from_bincode", (serialised,)).unwrap();
+        let deserialised = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
         let deserialised_error =

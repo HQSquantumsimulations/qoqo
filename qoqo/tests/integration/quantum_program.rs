@@ -456,11 +456,10 @@ fn test_value_error_bincode() {
 
         let program_clone = program;
         let serialised = program.call_method0("to_bincode").unwrap();
-        let deserialised = program_clone
+        let binding = program_clone
             .call_method1("from_bincode", (&serialised,))
-            .unwrap()
-            .downcast::<QuantumProgramWrapper>()
             .unwrap();
+        let deserialised = binding.downcast::<QuantumProgramWrapper>().unwrap();
 
         let binding = program_type
             .call1((&input, vec!["new".to_string()]))

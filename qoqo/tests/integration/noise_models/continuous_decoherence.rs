@@ -57,9 +57,8 @@ fn test_add_damping() {
         let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
             .unwrap();
-        let br = br
-            .call_method1("add_damping_rate", ([0], 0.1))
-            .unwrap()
+        let binding = br.call_method1("add_damping_rate", ([0], 0.1)).unwrap();
+        let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
             .unwrap();
         let comparison = br
@@ -91,9 +90,8 @@ fn test_add_dephasing() {
         let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
             .unwrap();
-        let br = br
-            .call_method1("add_dephasing_rate", ([0], 0.1))
-            .unwrap()
+        let binding = br.call_method1("add_dephasing_rate", ([0], 0.1)).unwrap();
+        let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
             .unwrap();
         let comparison = br
@@ -139,9 +137,10 @@ fn test_add_depolarising() {
         let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
             .unwrap();
-        let br = br
+        let binding = br
             .call_method1("add_depolarising_rate", ([0], 0.2))
-            .unwrap()
+            .unwrap();
+        let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
             .unwrap();
         let comparison = br
@@ -173,9 +172,8 @@ fn test_add_excitation() {
         let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
             .unwrap();
-        let br = br
-            .call_method1("add_excitation_rate", ([0], 0.1))
-            .unwrap()
+        let binding = br.call_method1("add_excitation_rate", ([0], 0.1)).unwrap();
+        let br = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
             .unwrap();
         let comparison = br
@@ -223,9 +221,8 @@ fn test_to_from_json() {
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
-        let deserialised = new_br
-            .call_method1("from_json", (serialised,))
-            .unwrap()
+        let binding = new_br.call_method1("from_json", (serialised,)).unwrap();
+        let deserialised = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
             .unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
@@ -255,9 +252,8 @@ fn test_to_from_bincode() {
             .unwrap();
         let new_br = br;
         let serialised = br.call_method0("to_bincode").unwrap();
-        let deserialised = new_br
-            .call_method1("from_bincode", (serialised,))
-            .unwrap()
+        let binding = new_br.call_method1("from_bincode", (serialised,)).unwrap();
+        let deserialised = binding
             .downcast::<ContinuousDecoherenceModelWrapper>()
             .unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));

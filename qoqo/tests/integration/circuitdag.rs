@@ -246,11 +246,8 @@ fn test_from_circuit() {
         circuit.call_method1("add", (cnot_01.clone(),)).unwrap();
 
         let dag = new_circuitdag(py);
-        let dag = dag
-            .call_method1("from_circuit", (circuit,))
-            .unwrap()
-            .downcast::<CircuitDagWrapper>()
-            .unwrap();
+        let binding = dag.call_method1("from_circuit", (circuit,)).unwrap();
+        let dag = binding.downcast::<CircuitDagWrapper>().unwrap();
 
         let comp_op = dag.call_method1("get", (0,)).unwrap();
         let helper1 =

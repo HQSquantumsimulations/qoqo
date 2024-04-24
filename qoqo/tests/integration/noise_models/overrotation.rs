@@ -127,9 +127,8 @@ fn test_to_from_json() {
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
-        let deserialised = new_br
-            .call_method1("from_json", (serialised,))
-            .unwrap()
+        let binding = new_br.call_method1("from_json", (serialised,)).unwrap();
+        let deserialised = binding
             .downcast::<SingleQubitOverrotationOnGateWrapper>()
             .unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
@@ -159,9 +158,8 @@ fn test_to_from_json_description() {
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
-        let deserialised = new_br
-            .call_method1("from_json", (serialised,))
-            .unwrap()
+        let binding = new_br.call_method1("from_json", (serialised,)).unwrap();
+        let deserialised = binding
             .downcast::<SingleQubitOverrotationDescriptionWrapper>()
             .unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
@@ -191,9 +189,8 @@ fn test_to_from_bincode() {
             .unwrap();
         let new_br = br;
         let serialised = br.call_method0("to_bincode").unwrap();
-        let deserialised = new_br
-            .call_method1("from_bincode", (serialised,))
-            .unwrap()
+        let binding = new_br.call_method1("from_bincode", (serialised,)).unwrap();
+        let deserialised = binding
             .downcast::<SingleQubitOverrotationOnGateWrapper>()
             .unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
@@ -222,9 +219,8 @@ fn test_to_from_bincode_description() {
             .unwrap();
         let new_br = br;
         let serialised = br.call_method0("to_bincode").unwrap();
-        let deserialised = new_br
-            .call_method1("from_bincode", (serialised,))
-            .unwrap()
+        let binding = new_br.call_method1("from_bincode", (serialised,)).unwrap();
+        let deserialised = binding
             .downcast::<SingleQubitOverrotationDescriptionWrapper>()
             .unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));

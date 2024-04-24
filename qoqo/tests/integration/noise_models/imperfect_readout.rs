@@ -31,16 +31,14 @@ fn test_new_with_uniform_error_init() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let br_type = py.get_type_bound::<ImperfectReadoutModelWrapper>();
-        let br = br_type
+        let binding = br_type
             .call_method1("new_with_uniform_error", (2, 0.2, 0.1))
-            .unwrap()
-            .downcast::<ImperfectReadoutModelWrapper>()
             .unwrap();
-        let br = br
+        let br = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
+        let binding = br
             .call_method1("set_error_probabilites", (0, 0.3, 0.4))
-            .unwrap()
-            .downcast::<ImperfectReadoutModelWrapper>()
             .unwrap();
+        let br = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
         let zero_as_1_qubit_0: f64 = br
             .call_method1("prob_detect_0_as_1", (0,))
             .unwrap()
@@ -97,11 +95,8 @@ fn test_to_from_json() {
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
-        let deserialised = new_br
-            .call_method1("from_json", (serialised,))
-            .unwrap()
-            .downcast::<ImperfectReadoutModelWrapper>()
-            .unwrap();
+        let binding = new_br.call_method1("from_json", (serialised,)).unwrap();
+        let deserialised = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
         let deserialised_error =
@@ -127,11 +122,8 @@ fn test_to_from_bincode() {
         let br = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
         let new_br = br;
         let serialised = br.call_method0("to_bincode").unwrap();
-        let deserialised = new_br
-            .call_method1("from_bincode", (serialised,))
-            .unwrap()
-            .downcast::<ImperfectReadoutModelWrapper>()
-            .unwrap();
+        let binding = new_br.call_method1("from_bincode", (serialised,)).unwrap();
+        let deserialised = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
         let deserialised_error =

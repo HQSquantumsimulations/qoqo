@@ -377,9 +377,10 @@ fn test_to_from_bincode() {
 
         let serialised = input.call_method0("to_bincode").unwrap();
         let new_input = input;
-        let deserialised = new_input
+        let binding = new_input
             .call_method1("from_bincode", (serialised,))
-            .unwrap()
+            .unwrap();
+        let deserialised = binding
             .downcast::<CheatedPauliZProductInputWrapper>()
             .unwrap();
         assert_eq!(format!("{:?}", input), format!("{:?}", deserialised));
@@ -395,11 +396,8 @@ fn test_to_from_bincode() {
         let new_br = br;
 
         let serialised = br.call_method0("to_bincode").unwrap();
-        let deserialised = new_br
-            .call_method1("from_bincode", (serialised,))
-            .unwrap()
-            .downcast::<CheatedPauliZProductWrapper>()
-            .unwrap();
+        let binding = new_br.call_method1("from_bincode", (serialised,)).unwrap();
+        let deserialised = binding.downcast::<CheatedPauliZProductWrapper>().unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
         let deserialised_error =
@@ -429,9 +427,8 @@ fn test_to_from_json() {
 
         let serialised = input.call_method0("to_json").unwrap();
         let new_input = input;
-        let deserialised = new_input
-            .call_method1("from_json", (serialised,))
-            .unwrap()
+        let binding = new_input.call_method1("from_json", (serialised,)).unwrap();
+        let deserialised = binding
             .downcast::<CheatedPauliZProductInputWrapper>()
             .unwrap();
         assert_eq!(format!("{:?}", input), format!("{:?}", deserialised));
@@ -446,11 +443,8 @@ fn test_to_from_json() {
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
-        let deserialised = new_br
-            .call_method1("from_json", (serialised,))
-            .unwrap()
-            .downcast::<CheatedPauliZProductWrapper>()
-            .unwrap();
+        let binding = new_br.call_method1("from_json", (serialised,)).unwrap();
+        let deserialised = binding.downcast::<CheatedPauliZProductWrapper>().unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
         let deserialised_error =
@@ -490,11 +484,8 @@ fn test_substitute_parameters() {
 
         let mut map: HashMap<String, f64> = HashMap::<String, f64>::new();
         map.insert("theta".to_string(), 0.0);
-        let br_sub = br
-            .call_method1("substitute_parameters", (map,))
-            .unwrap()
-            .downcast::<CheatedPauliZProductWrapper>()
-            .unwrap();
+        let binding = br.call_method1("substitute_parameters", (map,)).unwrap();
+        let br_sub = binding.downcast::<CheatedPauliZProductWrapper>().unwrap();
 
         let br_wrapper = br.extract::<CheatedPauliZProductWrapper>().unwrap();
         let br_sub_wrapper = br_sub.extract::<CheatedPauliZProductWrapper>().unwrap();

@@ -53,11 +53,8 @@ fn test_add_damping() {
         let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
-        let br = br
-            .call_method1("add_damping_rate", ([0], 0.1))
-            .unwrap()
-            .downcast::<DecoherenceOnIdleModelWrapper>()
-            .unwrap();
+        let binding = br.call_method1("add_damping_rate", ([0], 0.1)).unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let comparison = br
             .call_method0("get_noise_operator")
             .unwrap()
@@ -85,11 +82,8 @@ fn test_add_dephasing() {
         let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
-        let br = br
-            .call_method1("add_dephasing_rate", ([0], 0.1))
-            .unwrap()
-            .downcast::<DecoherenceOnIdleModelWrapper>()
-            .unwrap();
+        let binding = br.call_method1("add_dephasing_rate", ([0], 0.1)).unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let comparison = br
             .call_method0("get_noise_operator")
             .unwrap()
@@ -131,11 +125,10 @@ fn test_add_depolarising() {
         let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
-        let br = br
+        let binding = br
             .call_method1("add_depolarising_rate", ([0], 0.2))
-            .unwrap()
-            .downcast::<DecoherenceOnIdleModelWrapper>()
             .unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let comparison = br
             .call_method0("get_noise_operator")
             .unwrap()
@@ -163,11 +156,8 @@ fn test_add_excitation() {
         let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
-        let br = br
-            .call_method1("add_excitation_rate", ([0], 0.1))
-            .unwrap()
-            .downcast::<DecoherenceOnIdleModelWrapper>()
-            .unwrap();
+        let binding = br.call_method1("add_excitation_rate", ([0], 0.1)).unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let comparison = br
             .call_method0("get_noise_operator")
             .unwrap()
@@ -209,11 +199,8 @@ fn test_to_from_json() {
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
-        let deserialised = new_br
-            .call_method1("from_json", (serialised,))
-            .unwrap()
-            .downcast::<DecoherenceOnIdleModelWrapper>()
-            .unwrap();
+        let binding = new_br.call_method1("from_json", (serialised,)).unwrap();
+        let deserialised = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
         let deserialised_error =
@@ -239,11 +226,8 @@ fn test_to_from_bincode() {
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let new_br = br;
         let serialised = br.call_method0("to_bincode").unwrap();
-        let deserialised = new_br
-            .call_method1("from_bincode", (serialised,))
-            .unwrap()
-            .downcast::<DecoherenceOnIdleModelWrapper>()
-            .unwrap();
+        let binding = new_br.call_method1("from_bincode", (serialised,)).unwrap();
+        let deserialised = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
         let deserialised_error =
