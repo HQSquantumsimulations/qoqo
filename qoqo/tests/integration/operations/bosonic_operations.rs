@@ -31,18 +31,18 @@ use test_case::test_case;
 fn convert_cf_to_pyobject(
     py: Python,
     parameter: CalculatorFloat,
-) -> &PyCell<CalculatorFloatWrapper> {
-    let parameter_type = py.get_type::<CalculatorFloatWrapper>();
+) -> &Bound<CalculatorFloatWrapper> {
+    let parameter_type = py.get_type_bound::<CalculatorFloatWrapper>();
     match parameter {
         CalculatorFloat::Float(x) => parameter_type
             .call1((x,))
             .unwrap()
-            .downcast::<PyCell<CalculatorFloatWrapper>>()
+            .downcast::<CalculatorFloatWrapper>()
             .unwrap(),
         CalculatorFloat::Str(x) => parameter_type
             .call1((x,))
             .unwrap()
-            .downcast::<PyCell<CalculatorFloatWrapper>>()
+            .downcast::<CalculatorFloatWrapper>()
             .unwrap(),
     }
 }
@@ -54,15 +54,12 @@ fn test_new_squeezing(input_operation: Operation, arguments: (u32, f64, f64), me
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type::<SqueezingWrapper>();
-        let operation_py = operation_type
-            .call1(arguments)
-            .unwrap()
-            .downcast::<PyCell<SqueezingWrapper>>()
-            .unwrap();
+        let operation_type = py.get_type_bound::<SqueezingWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<SqueezingWrapper>().unwrap();
 
-        let comparison = bool::extract(
-            operation
+        let comparison = bool::extract_bound(
+            &operation
                 .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
@@ -71,11 +68,8 @@ fn test_new_squeezing(input_operation: Operation, arguments: (u32, f64, f64), me
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<SqueezingWrapper>().unwrap();
-        let new_op_diff = operation_type
-            .call1((2, 0.1, 0.0))
-            .unwrap()
-            .downcast::<PyCell<SqueezingWrapper>>()
-            .unwrap();
+        let binding = operation_type.call1((2, 0.1, 0.0)).unwrap();
+        let new_op_diff = binding.downcast::<SqueezingWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<SqueezingWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -87,8 +81,8 @@ fn test_new_squeezing(input_operation: Operation, arguments: (u32, f64, f64), me
             "SqueezingWrapper { internal: Squeezing { mode: 2, squeezing: Float(0.1), phase: Float(0.0) } }"
         );
 
-        let comparison_copy = bool::extract(
-            operation
+        let comparison_copy = bool::extract_bound(
+            &operation
                 .call_method0(py, "squeezing")
                 .unwrap()
                 .bind(py)
@@ -101,8 +95,8 @@ fn test_new_squeezing(input_operation: Operation, arguments: (u32, f64, f64), me
         .unwrap();
         assert!(comparison_copy);
 
-        let comparison_copy = bool::extract(
-            operation
+        let comparison_copy = bool::extract_bound(
+            &operation
                 .call_method0(py, "phase")
                 .unwrap()
                 .bind(py)
@@ -128,15 +122,12 @@ fn test_new_phasedisplacement(
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type::<PhaseDisplacementWrapper>();
-        let operation_py = operation_type
-            .call1(arguments)
-            .unwrap()
-            .downcast::<PyCell<PhaseDisplacementWrapper>>()
-            .unwrap();
+        let operation_type = py.get_type_bound::<PhaseDisplacementWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<PhaseDisplacementWrapper>().unwrap();
 
-        let comparison = bool::extract(
-            operation
+        let comparison = bool::extract_bound(
+            &operation
                 .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
@@ -145,11 +136,8 @@ fn test_new_phasedisplacement(
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<PhaseDisplacementWrapper>().unwrap();
-        let new_op_diff = operation_type
-            .call1((2, 0.1, 0.1))
-            .unwrap()
-            .downcast::<PyCell<PhaseDisplacementWrapper>>()
-            .unwrap();
+        let binding = operation_type.call1((2, 0.1, 0.1)).unwrap();
+        let new_op_diff = binding.downcast::<PhaseDisplacementWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<PhaseDisplacementWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -161,8 +149,8 @@ fn test_new_phasedisplacement(
             "PhaseDisplacementWrapper { internal: PhaseDisplacement { mode: 2, displacement: Float(0.1), phase: Float(0.1) } }"
         );
 
-        let comparison_copy = bool::extract(
-            operation
+        let comparison_copy = bool::extract_bound(
+            &operation
                 .call_method0(py, "displacement")
                 .unwrap()
                 .bind(py)
@@ -174,8 +162,8 @@ fn test_new_phasedisplacement(
         )
         .unwrap();
         assert!(comparison_copy);
-        let comparison_copy = bool::extract(
-            operation
+        let comparison_copy = bool::extract_bound(
+            &operation
                 .call_method0(py, "phase")
                 .unwrap()
                 .bind(py)
@@ -197,15 +185,12 @@ fn test_new_phaseshift(input_operation: Operation, arguments: (u32, f64), method
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type::<PhaseShiftWrapper>();
-        let operation_py = operation_type
-            .call1(arguments)
-            .unwrap()
-            .downcast::<PyCell<PhaseShiftWrapper>>()
-            .unwrap();
+        let operation_type = py.get_type_bound::<PhaseShiftWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<PhaseShiftWrapper>().unwrap();
 
-        let comparison = bool::extract(
-            operation
+        let comparison = bool::extract_bound(
+            &operation
                 .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
@@ -214,11 +199,8 @@ fn test_new_phaseshift(input_operation: Operation, arguments: (u32, f64), method
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<PhaseShiftWrapper>().unwrap();
-        let new_op_diff = operation_type
-            .call1((2, 0.1))
-            .unwrap()
-            .downcast::<PyCell<PhaseShiftWrapper>>()
-            .unwrap();
+        let binding = operation_type.call1((2, 0.1)).unwrap();
+        let new_op_diff = binding.downcast::<PhaseShiftWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<PhaseShiftWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -230,8 +212,8 @@ fn test_new_phaseshift(input_operation: Operation, arguments: (u32, f64), method
             "PhaseShiftWrapper { internal: PhaseShift { mode: 2, phase: Float(0.1) } }"
         );
 
-        let comparison_copy = bool::extract(
-            operation
+        let comparison_copy = bool::extract_bound(
+            &operation
                 .call_method0(py, "phase")
                 .unwrap()
                 .bind(py)
@@ -257,15 +239,12 @@ fn test_new_beamsplitter(
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type::<BeamSplitterWrapper>();
-        let operation_py = operation_type
-            .call1(arguments)
-            .unwrap()
-            .downcast::<PyCell<BeamSplitterWrapper>>()
-            .unwrap();
+        let operation_type = py.get_type_bound::<BeamSplitterWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<BeamSplitterWrapper>().unwrap();
 
-        let comparison = bool::extract(
-            operation
+        let comparison = bool::extract_bound(
+            &operation
                 .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
@@ -274,11 +253,8 @@ fn test_new_beamsplitter(
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<BeamSplitterWrapper>().unwrap();
-        let new_op_diff = operation_type
-            .call1((2, 1, 0.1, 0.1))
-            .unwrap()
-            .downcast::<PyCell<BeamSplitterWrapper>>()
-            .unwrap();
+        let binding = operation_type.call1((2, 1, 0.1, 0.1)).unwrap();
+        let new_op_diff = binding.downcast::<BeamSplitterWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<BeamSplitterWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -290,8 +266,8 @@ fn test_new_beamsplitter(
             "BeamSplitterWrapper { internal: BeamSplitter { mode_0: 2, mode_1: 1, theta: Float(0.1), phi: Float(0.1) } }"
         );
 
-        let comparison_copy: bool = bool::extract(
-            operation
+        let comparison_copy: bool = bool::extract_bound(
+            &operation
                 .call_method0(py, "theta")
                 .unwrap()
                 .bind(py)
@@ -303,8 +279,8 @@ fn test_new_beamsplitter(
         )
         .unwrap();
         assert!(comparison_copy);
-        let comparison_copy: bool = bool::extract(
-            operation
+        let comparison_copy: bool = bool::extract_bound(
+            &operation
                 .call_method0(py, "phi")
                 .unwrap()
                 .bind(py)
@@ -330,15 +306,12 @@ fn test_new_photondetection(
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type::<PhotonDetectionWrapper>();
-        let operation_py = operation_type
-            .call1(arguments)
-            .unwrap()
-            .downcast::<PyCell<PhotonDetectionWrapper>>()
-            .unwrap();
+        let operation_type = py.get_type_bound::<PhotonDetectionWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<PhotonDetectionWrapper>().unwrap();
 
-        let comparison = bool::extract(
-            operation
+        let comparison = bool::extract_bound(
+            &operation
                 .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
@@ -347,11 +320,8 @@ fn test_new_photondetection(
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<PhotonDetectionWrapper>().unwrap();
-        let new_op_diff = operation_type
-            .call1((2, "ro", 0))
-            .unwrap()
-            .downcast::<PyCell<PhotonDetectionWrapper>>()
-            .unwrap();
+        let binding = operation_type.call1((2, "ro", 0)).unwrap();
+        let new_op_diff = binding.downcast::<PhotonDetectionWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<PhotonDetectionWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -363,8 +333,8 @@ fn test_new_photondetection(
             "PhotonDetectionWrapper { internal: PhotonDetection { mode: 2, readout: \"ro\", readout_index: 0 } }"
         );
 
-        let comparison_copy = bool::extract(
-            operation
+        let comparison_copy = bool::extract_bound(
+            &operation
                 .call_method0(py, "readout")
                 .unwrap()
                 .bind(py)
@@ -374,8 +344,8 @@ fn test_new_photondetection(
         .unwrap();
         assert!(comparison_copy);
 
-        let comparison_copy = bool::extract(
-            operation
+        let comparison_copy = bool::extract_bound(
+            &operation
                 .call_method0(py, "readout_index")
                 .unwrap()
                 .bind(py)
@@ -401,8 +371,8 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        assert!(bool::extract(
-            operation
+        assert!(bool::extract_bound(
+            &operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
                 .bind(py)
@@ -421,8 +391,8 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        assert!(!bool::extract(
-            operation
+        assert!(!bool::extract_bound(
+            &operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
                 .bind(py)
@@ -441,7 +411,7 @@ fn test_pyo3_mode(mode: usize, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let mode_op: usize =
-            usize::extract(operation.call_method0(py, "mode").unwrap().bind(py)).unwrap();
+            usize::extract_bound(&operation.call_method0(py, "mode").unwrap().bind(py)).unwrap();
         assert_eq!(mode_op, mode);
     })
 }
@@ -453,10 +423,10 @@ fn test_pyo3_mode0_mode_1(mode_0: usize, mode_1: usize, input_operation: Operati
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let mode_op_0: usize =
-            usize::extract(operation.call_method0(py, "mode_0").unwrap().bind(py)).unwrap();
+            usize::extract_bound(&operation.call_method0(py, "mode_0").unwrap().bind(py)).unwrap();
         assert_eq!(mode_op_0, mode_0);
         let mode_op_1: usize =
-            usize::extract(operation.call_method0(py, "mode_1").unwrap().bind(py)).unwrap();
+            usize::extract_bound(&operation.call_method0(py, "mode_1").unwrap().bind(py)).unwrap();
         assert_eq!(mode_op_1, mode_1);
     })
 }
@@ -472,7 +442,8 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let name_op: String =
-            String::extract(operation.call_method0(py, "hqslang").unwrap().bind(py)).unwrap();
+            String::extract_bound(&operation.call_method0(py, "hqslang").unwrap().bind(py))
+                .unwrap();
         assert_eq!(name_op, name.to_string());
     })
 }
@@ -527,7 +498,8 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let tags_op: Vec<String> =
-            Vec::<String>::extract(operation.call_method0(py, "tags").unwrap().bind(py)).unwrap();
+            Vec::<String>::extract_bound(&operation.call_method0(py, "tags").unwrap().bind(py))
+                .unwrap();
         assert_eq!(tags_op.len(), tags.len());
         for i in 0..tags.len() {
             assert_eq!(tags_op[i], tags[i]);
@@ -546,8 +518,8 @@ fn test_pyo3_involved_modes(input_operation: Operation, modes: HashSet<usize>) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial mode
-        let involved_modes: HashSet<usize> = HashSet::<usize>::extract(
-            operation
+        let involved_modes: HashSet<usize> = HashSet::<usize>::extract_bound(
+            &operation
                 .call_method0(py, "involved_modes")
                 .unwrap()
                 .bind(py),
@@ -568,8 +540,8 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial qubit
-        let involved_qubits: HashSet<usize> = HashSet::<usize>::extract(
-            operation
+        let involved_qubits: HashSet<usize> = HashSet::<usize>::extract_bound(
+            &operation
                 .call_method0(py, "involved_qubits")
                 .unwrap()
                 .bind(py),
@@ -581,9 +553,10 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
             .call_method1(py, "remap_qubits", (HashMap::<usize, usize>::new(),))
             .unwrap();
         // test re-mapped qubit
-        let involved_qubits: HashSet<usize> =
-            HashSet::<usize>::extract(result.call_method0(py, "involved_qubits").unwrap().bind(py))
-                .unwrap();
+        let involved_qubits: HashSet<usize> = HashSet::<usize>::extract_bound(
+            &result.call_method0(py, "involved_qubits").unwrap().bind(py),
+        )
+        .unwrap();
         assert_eq!(involved_qubits, HashSet::<usize>::new());
     })
 }
@@ -599,7 +572,7 @@ fn test_pyo3_remapmodes_single(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial mode
         let mode: usize =
-            usize::extract(operation.call_method0(py, "mode").unwrap().bind(py)).unwrap();
+            usize::extract_bound(&operation.call_method0(py, "mode").unwrap().bind(py)).unwrap();
         assert_eq!(mode.clone(), 0);
         // remap modes
         let mut mode_mapping: HashMap<usize, usize> = HashMap::new();
@@ -610,7 +583,7 @@ fn test_pyo3_remapmodes_single(input_operation: Operation) {
             .unwrap();
         // test re-mapped mode
         let mode_new: usize =
-            usize::extract(result.call_method0(py, "mode").unwrap().bind(py)).unwrap();
+            usize::extract_bound(&result.call_method0(py, "mode").unwrap().bind(py)).unwrap();
         assert_eq!(mode_new.clone(), 1);
         // test that initial and rempapped modes are different
         assert_ne!(mode, mode_new);
@@ -625,10 +598,10 @@ fn test_pyo3_remapmodes_two(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial mode
         let mode_0: usize =
-            usize::extract(operation.call_method0(py, "mode_0").unwrap().bind(py)).unwrap();
+            usize::extract_bound(&operation.call_method0(py, "mode_0").unwrap().bind(py)).unwrap();
         assert_eq!(mode_0.clone(), 0);
         let mode_1: usize =
-            usize::extract(operation.call_method0(py, "mode_1").unwrap().bind(py)).unwrap();
+            usize::extract_bound(&operation.call_method0(py, "mode_1").unwrap().bind(py)).unwrap();
         assert_eq!(mode_1.clone(), 1);
         // remap modes
         let mut mode_mapping: HashMap<usize, usize> = HashMap::new();
@@ -639,10 +612,10 @@ fn test_pyo3_remapmodes_two(input_operation: Operation) {
             .unwrap();
         // test re-mapped mode
         let mode_new_0: usize =
-            usize::extract(result.call_method0(py, "mode_0").unwrap().bind(py)).unwrap();
+            usize::extract_bound(&result.call_method0(py, "mode_0").unwrap().bind(py)).unwrap();
         assert_eq!(mode_new_0.clone(), 1);
         let mode_new_1: usize =
-            usize::extract(result.call_method0(py, "mode_1").unwrap().bind(py)).unwrap();
+            usize::extract_bound(&result.call_method0(py, "mode_1").unwrap().bind(py)).unwrap();
         assert_eq!(mode_new_1.clone(), 0);
         // test that initial and rempapped modes are different
         assert_ne!(mode_0, mode_new_0);
@@ -665,7 +638,7 @@ fn test_pyo3_remapmodes_error(input_operation: Operation) {
         let mut mode_mapping: HashMap<usize, usize> = HashMap::new();
         mode_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_modes", (mode_mapping,));
-        let result_ref = result.bind();
+        let result_ref = result.map(|op| op.bind(py));
         assert!(result_ref.is_err());
     })
 }
@@ -684,16 +657,16 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
         let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
         let copy_deepcopy_param = operation;
 
-        let comparison_copy = bool::extract(
-            copy_op
+        let comparison_copy = bool::extract_bound(
+            &copy_op
                 .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param.clone(),))
                 .unwrap(),
         )
         .unwrap();
         assert!(comparison_copy);
-        let comparison_deepcopy = bool::extract(
-            deepcopy_op
+        let comparison_deepcopy = bool::extract_bound(
+            &deepcopy_op
                 .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param,))
                 .unwrap(),
@@ -729,10 +702,10 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: &str = <&str>::extract(to_format.bind(py)).unwrap();
+        let format_op: String = String::extract_bound(&to_format.bind(py)).unwrap();
         assert_eq!(format_op, format_repr);
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: &str = <&str>::extract(to_repr.bind(py)).unwrap();
+        let repr_op: String = String::extract_bound(&to_repr.bind(py)).unwrap();
         assert_eq!(repr_op, format_repr);
     })
 }
@@ -790,8 +763,8 @@ fn test_pyo3_substitute_parameters(input_operation: Operation) {
             .unwrap();
         let test_operation = convert_operation_to_pyobject(substitute_param).unwrap();
 
-        let comparison = bool::extract(
-            substitute_op
+        let comparison = bool::extract_bound(
+            &substitute_op
                 .bind(py)
                 .call_method1("__eq__", (test_operation,))
                 .unwrap(),
@@ -820,8 +793,8 @@ fn test_pyo3_substitute_params_single(input_operation: Operation) {
             .unwrap();
         let test_operation = convert_operation_to_pyobject(substitute_param).unwrap();
 
-        let comparison = bool::extract(
-            substitute_op
+        let comparison = bool::extract_bound(
+            &substitute_op
                 .bind(py)
                 .call_method1("__eq__", (test_operation,))
                 .unwrap(),
@@ -842,7 +815,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let substitution_dict: HashMap<String, f64> = HashMap::new();
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
-        let result_ref = result.bind();
+        let result_ref = result.map(|op| op.bind(py));
         assert!(result_ref.is_err());
     })
 }
@@ -863,8 +836,8 @@ fn test_ineffective_substitute_parameters(input_operation: Operation) {
             .call_method1(py, "substitute_parameters", (substitution_dict_py,))
             .unwrap();
 
-        let comparison = bool::extract(
-            substitute_op
+        let comparison = bool::extract_bound(
+            &substitute_op
                 .bind(py)
                 .call_method1("__eq__", (operation,))
                 .unwrap(),
@@ -896,8 +869,8 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
         let operation_one = convert_operation_to_pyobject(definition_1).unwrap();
         let operation_two = convert_operation_to_pyobject(definition_2).unwrap();
 
-        let comparison = bool::extract(
-            operation_one
+        let comparison = bool::extract_bound(
+            &operation_one
                 .bind(py)
                 .call_method1("__eq__", (operation_two.clone(),))
                 .unwrap(),
@@ -905,8 +878,8 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
         .unwrap();
         assert!(!comparison);
 
-        let comparison = bool::extract(
-            operation_one
+        let comparison = bool::extract_bound(
+            &operation_one
                 .bind(py)
                 .call_method1("__ne__", (operation_two.clone(),))
                 .unwrap(),
@@ -958,14 +931,15 @@ fn test_pyo3_json_schema(operation: Operation) {
         let operation = pyobject.bind(py);
 
         let schema: String =
-            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+            String::extract_bound(&operation.call_method0("json_schema").unwrap()).unwrap();
 
         assert_eq!(schema, rust_schema);
 
         let current_version_string =
-            String::extract(operation.call_method0("current_version").unwrap()).unwrap();
+            String::extract_bound(&operation.call_method0("current_version").unwrap()).unwrap();
         let minimum_supported_version_string =
-            String::extract(operation.call_method0("min_supported_version").unwrap()).unwrap();
+            String::extract_bound(&operation.call_method0("min_supported_version").unwrap())
+                .unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, minimum_version);

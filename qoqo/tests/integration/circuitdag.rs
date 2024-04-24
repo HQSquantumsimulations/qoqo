@@ -19,21 +19,21 @@ use roqoqo::operations::*;
 use roqoqo::ROQOQO_VERSION;
 
 // Helper functions
-fn new_circuitdag(py: Python) -> &PyCell<CircuitDagWrapper> {
-    let circuitdag_type = py.get_type::<CircuitDagWrapper>();
+fn new_circuitdag(py: Python) -> &Bound<CircuitDagWrapper> {
+    let circuitdag_type = py.get_type_bound::<CircuitDagWrapper>();
     circuitdag_type
         .call0()
         .unwrap()
-        .downcast::<PyCell<CircuitDagWrapper>>()
+        .downcast::<CircuitDagWrapper>()
         .unwrap()
 }
 
-fn new_circuit(py: Python) -> &PyCell<CircuitWrapper> {
-    let circuit_type = py.get_type::<CircuitWrapper>();
+fn new_circuit(py: Python) -> &Bound<CircuitWrapper> {
+    let circuit_type = py.get_type_bound::<CircuitWrapper>();
     circuit_type
         .call0()
         .unwrap()
-        .downcast::<PyCell<CircuitWrapper>>()
+        .downcast::<CircuitWrapper>()
         .unwrap()
 }
 
@@ -87,13 +87,15 @@ fn test_get() {
         let comp_op = dag.call_method1("get", (0,)).unwrap();
         let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
 
-        let helper1 = bool::extract(comp_op.call_method1("__eq__", (operation,)).unwrap()).unwrap();
+        let helper1 =
+            bool::extract_bound(&comp_op.call_method1("__eq__", (operation,)).unwrap()).unwrap();
         assert!(helper1);
 
         let comp_op = dag.call_method1("get", (1,)).unwrap();
         let operation = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
 
-        let helper2 = bool::extract(comp_op.call_method1("__eq__", (operation,)).unwrap()).unwrap();
+        let helper2 =
+            bool::extract_bound(&comp_op.call_method1("__eq__", (operation,)).unwrap()).unwrap();
         assert!(helper2);
     })
 }
@@ -116,11 +118,12 @@ fn test_copy() {
         let empty_dag_copy = empty_dag.call_method0("__copy__").unwrap();
 
         let full_dag_comparison =
-            bool::extract(dag_copy.call_method1("__eq__", (dag,)).unwrap()).unwrap();
+            bool::extract_bound(&dag_copy.call_method1("__eq__", (dag,)).unwrap()).unwrap();
         assert!(full_dag_comparison);
 
         let empty_dag_comparison =
-            bool::extract(empty_dag_copy.call_method1("__eq__", (empty_dag,)).unwrap()).unwrap();
+            bool::extract_bound(&empty_dag_copy.call_method1("__eq__", (empty_dag,)).unwrap())
+                .unwrap();
         assert!(empty_dag_comparison);
     })
 }
@@ -146,9 +149,11 @@ fn test_richcmp() {
         dag2.call_method1("add_to_back", (pauliy_0.clone(),))
             .unwrap();
 
-        let comparison = bool::extract(dag1.call_method1("__eq__", (dag2,)).unwrap()).unwrap();
+        let comparison =
+            bool::extract_bound(&dag1.call_method1("__eq__", (dag2,)).unwrap()).unwrap();
         assert!(!comparison);
-        let comparison = bool::extract(dag1.call_method1("__ne__", (dag2,)).unwrap()).unwrap();
+        let comparison =
+            bool::extract_bound(&dag1.call_method1("__ne__", (dag2,)).unwrap()).unwrap();
         assert!(comparison);
         let comparison = dag1.call_method1("__ge__", (dag2,));
         assert!(comparison.is_err());
@@ -178,7 +183,7 @@ fn test_qoqo_versions() {
         );
 
         let comparison_copy: Vec<&str> =
-            Vec::extract(dag.call_method0("_qoqo_versions").unwrap()).unwrap();
+            Vec::extract_bound(&dag.call_method0("_qoqo_versions").unwrap()).unwrap();
         assert_eq!(comparison_copy, vec![rver.as_str(), qver.as_str()]);
     })
 }
@@ -198,7 +203,7 @@ fn test_to_from_bincode() {
         let new = new_circuitdag(py);
         let deserialised = new.call_method1("from_bincode", (serialised,)).unwrap();
         let comparison =
-            bool::extract(deserialised.call_method1("__eq__", (dag,)).unwrap()).unwrap();
+            bool::extract_bound(&deserialised.call_method1("__eq__", (dag,)).unwrap()).unwrap();
         assert!(comparison);
 
         let deserialised_error =
@@ -216,13 +221,13 @@ fn test_to_from_bincode() {
         assert!(serialised_error.is_err());
 
         // testing that 'from_bincode' can be called directly on a circuitdag (python staticmethod)
-        let circuitdag_type = py.get_type::<CircuitDagWrapper>();
+        let circuitdag_type = py.get_type_bound::<CircuitDagWrapper>();
         let deserialised_py = circuitdag_type
             .call_method1("from_bincode", (serialised,))
             .unwrap();
 
         let comparison =
-            bool::extract(deserialised_py.call_method1("__eq__", (dag,)).unwrap()).unwrap();
+            bool::extract_bound(&deserialised_py.call_method1("__eq__", (dag,)).unwrap()).unwrap();
         assert!(comparison);
     })
 }
@@ -244,19 +249,22 @@ fn test_from_circuit() {
         let dag = dag
             .call_method1("from_circuit", (circuit,))
             .unwrap()
-            .downcast::<PyCell<CircuitDagWrapper>>()
+            .downcast::<CircuitDagWrapper>()
             .unwrap();
 
         let comp_op = dag.call_method1("get", (0,)).unwrap();
-        let helper1 = bool::extract(comp_op.call_method1("__eq__", (paulix_0,)).unwrap()).unwrap();
+        let helper1 =
+            bool::extract_bound(&comp_op.call_method1("__eq__", (paulix_0,)).unwrap()).unwrap();
         assert!(helper1);
 
         let comp_op = dag.call_method1("get", (1,)).unwrap();
-        let helper2 = bool::extract(comp_op.call_method1("__eq__", (pauliy_0,)).unwrap()).unwrap();
+        let helper2 =
+            bool::extract_bound(&comp_op.call_method1("__eq__", (pauliy_0,)).unwrap()).unwrap();
         assert!(helper2);
 
         let comp_op = dag.call_method1("get", (2,)).unwrap();
-        let helper3 = bool::extract(comp_op.call_method1("__eq__", (cnot_01,)).unwrap()).unwrap();
+        let helper3 =
+            bool::extract_bound(&comp_op.call_method1("__eq__", (cnot_01,)).unwrap()).unwrap();
         assert!(helper3);
     })
 }
@@ -283,15 +291,18 @@ fn test_to_circuit() {
         let new_circuit = dag.call_method0("to_circuit").unwrap();
 
         let comp_op = new_circuit.call_method1("get", (0,)).unwrap();
-        let helper1 = bool::extract(comp_op.call_method1("__eq__", (paulix_0,)).unwrap()).unwrap();
+        let helper1 =
+            bool::extract_bound(&comp_op.call_method1("__eq__", (paulix_0,)).unwrap()).unwrap();
         assert!(helper1);
 
         let comp_op = new_circuit.call_method1("get", (1,)).unwrap();
-        let helper2 = bool::extract(comp_op.call_method1("__eq__", (pauliy_0,)).unwrap()).unwrap();
+        let helper2 =
+            bool::extract_bound(&comp_op.call_method1("__eq__", (pauliy_0,)).unwrap()).unwrap();
         assert!(helper2);
 
         let comp_op = new_circuit.call_method1("get", (2,)).unwrap();
-        let helper3 = bool::extract(comp_op.call_method1("__eq__", (cnot_01,)).unwrap()).unwrap();
+        let helper3 =
+            bool::extract_bound(&comp_op.call_method1("__eq__", (cnot_01,)).unwrap()).unwrap();
         assert!(helper3);
     })
 }
@@ -330,7 +341,8 @@ fn test_execution_blocked() {
         let comp = dag
             .call_method1("execution_blocked", (vec![a, b, c], e))
             .unwrap();
-        let helper = bool::extract(comp.call_method1("__eq__", (vec![d],)).unwrap()).unwrap();
+        let helper =
+            bool::extract_bound(&comp.call_method1("__eq__", (vec![d],)).unwrap()).unwrap();
         assert!(helper);
 
         let comp = dag
@@ -346,14 +358,16 @@ fn test_execution_blocked() {
         let comp = dag
             .call_method1("execution_blocked", (vec![d, e], b))
             .unwrap();
-        let helper = bool::extract(comp.call_method1("__eq__", (vec![a],)).unwrap()).unwrap();
+        let helper =
+            bool::extract_bound(&comp.call_method1("__eq__", (vec![a],)).unwrap()).unwrap();
         assert!(helper);
 
         let comp = dag
             .call_method1("execution_blocked", (Vec::<usize>::new(), e))
             .unwrap();
         let helper =
-            bool::extract(comp.call_method1("__eq__", (vec![a, b, c, d],)).unwrap()).unwrap();
+            bool::extract_bound(&comp.call_method1("__eq__", (vec![a, b, c, d],)).unwrap())
+                .unwrap();
         assert!(helper);
     })
 }
@@ -397,7 +411,8 @@ fn test_blocking_predecessors() {
         let comp = dag
             .call_method1("blocking_predecessors", (vec![a, b], d))
             .unwrap();
-        let helper = bool::extract(comp.call_method1("__eq__", (vec![c],)).unwrap()).unwrap();
+        let helper =
+            bool::extract_bound(&comp.call_method1("__eq__", (vec![c],)).unwrap()).unwrap();
         assert!(helper);
     })
 }
@@ -435,26 +450,30 @@ fn test_new_front_layer() {
         let comp = dag
             .call_method1("new_front_layer", (vec![a, c], vec![b], b))
             .unwrap();
-        let helper = bool::extract(comp.call_method1("__eq__", (vec![d],)).unwrap()).unwrap();
+        let helper =
+            bool::extract_bound(&comp.call_method1("__eq__", (vec![d],)).unwrap()).unwrap();
         assert!(helper);
 
         let comp = dag
             .call_method1("new_front_layer", (vec![a], vec![b], b))
             .unwrap();
-        let helper = bool::extract(comp.call_method1("__eq__", (vec![b],)).unwrap()).unwrap();
+        let helper =
+            bool::extract_bound(&comp.call_method1("__eq__", (vec![b],)).unwrap()).unwrap();
         assert!(helper);
 
         let comp = dag
             .call_method1("new_front_layer", (vec![a, b, c], vec![d], d))
             .unwrap();
-        let helper = bool::extract(comp.call_method1("__eq__", (vec![e],)).unwrap()).unwrap();
+        let helper =
+            bool::extract_bound(&comp.call_method1("__eq__", (vec![e],)).unwrap()).unwrap();
         assert!(helper);
 
         let comp = dag
             .call_method1("new_front_layer", (vec![a, b, c, d], vec![e], e))
             .unwrap();
         let helper =
-            bool::extract(comp.call_method1("__eq__", (Vec::<usize>::new(),)).unwrap()).unwrap();
+            bool::extract_bound(&comp.call_method1("__eq__", (Vec::<usize>::new(),)).unwrap())
+                .unwrap();
         assert!(helper);
     })
 }
@@ -484,15 +503,15 @@ fn test_parallel_blocks() {
 
         let vec0 = par_bl.get_item(0).unwrap();
         if let Ok(el) = vec0.call0() {
-            let helper1 = bool::extract(
-                el.get_item(0)
+            let helper1 = bool::extract_bound(
+                &el.get_item(0)
                     .unwrap()
                     .call_method1("__eq__", (0,))
                     .unwrap(),
             )
             .unwrap();
-            let helper2 = bool::extract(
-                el.get_item(0)
+            let helper2 = bool::extract_bound(
+                &el.get_item(0)
                     .unwrap()
                     .call_method1("__eq__", (2,))
                     .unwrap(),
@@ -503,15 +522,15 @@ fn test_parallel_blocks() {
 
         let vec1 = par_bl.get_item(1).unwrap();
         if let Ok(el) = vec1.call0() {
-            let helper1 = bool::extract(
-                el.get_item(0)
+            let helper1 = bool::extract_bound(
+                &el.get_item(0)
                     .unwrap()
                     .call_method1("__eq__", (1,))
                     .unwrap(),
             )
             .unwrap();
-            let helper2 = bool::extract(
-                el.get_item(0)
+            let helper2 = bool::extract_bound(
+                &el.get_item(0)
                     .unwrap()
                     .call_method1("__eq__", (3,))
                     .unwrap(),
@@ -522,8 +541,8 @@ fn test_parallel_blocks() {
 
         let vec2 = par_bl.get_item(2).unwrap();
         if let Ok(el) = vec2.call0() {
-            let helper1 = bool::extract(
-                el.get_item(0)
+            let helper1 = bool::extract_bound(
+                &el.get_item(0)
                     .unwrap()
                     .call_method1("__eq__", (4,))
                     .unwrap(),
@@ -553,15 +572,15 @@ fn test_successors() {
 
         let vec = dag.call_method1("successors", (a,)).unwrap();
 
-        let len_op: usize = usize::extract(vec.call_method0("__len__").unwrap()).unwrap();
+        let len_op: usize = usize::extract_bound(&vec.call_method0("__len__").unwrap()).unwrap();
         assert_eq!(len_op, 2);
 
         let el = vec.call_method1("__getitem__", (0,)).unwrap();
-        let comp = bool::extract(el.call_method1("__eq__", (c,)).unwrap()).unwrap();
+        let comp = bool::extract_bound(&el.call_method1("__eq__", (c,)).unwrap()).unwrap();
         assert!(comp);
 
         let el = vec.call_method1("__getitem__", (1,)).unwrap();
-        let comp = bool::extract(el.call_method1("__eq__", (b,)).unwrap()).unwrap();
+        let comp = bool::extract_bound(&el.call_method1("__eq__", (b,)).unwrap()).unwrap();
         assert!(comp);
     })
 }

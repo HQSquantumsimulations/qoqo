@@ -189,7 +189,7 @@ fn main() {
                                     let #pyobject_name = &op
                                     .call_method0(#ident_string)
                                     .map_err(|_| QoqoError::ConversionError)?;
-                                    let temp_op: struqture::spins::SpinHamiltonianSystem = struqture_py::spins::SpinHamiltonianSystemWrapper::from_pyany(#pyobject_name.as_gil_ref().into()).map_err(|_| QoqoError::ConversionError)?;
+                                    let temp_op: struqture::spins::SpinHamiltonianSystem = struqture_py::spins::SpinHamiltonianSystemWrapper::from_pyany(#pyobject_name.unbind()).map_err(|_| QoqoError::ConversionError)?;
                                     let #ident = temp_op.hamiltonian().clone();
                                 }},
                                 _ => {
@@ -263,11 +263,10 @@ fn main() {
 
         /// Tries to convert any python object to a [roqoqo::operations::Operation]
         pub fn convert_pyany_to_operation(op: &Bound<PyAny>) -> Result<Operation, QoqoError> {
-            let hqslang_pyobject = op
-                .as_gil_ref()
+            let hqslang_pyobject = &op
                 .call_method0("hqslang")
                 .map_err(|_| QoqoError::ConversionError)?;
-            let hqslang: String = String::extract(hqslang_pyobject)
+            let hqslang: String = String::extract_bound(hqslang_pyobject)
                 .map_err(|_| QoqoError::ConversionError)?;
             match hqslang.as_str() {
                 #(#pyany_to_operation_quotes),*

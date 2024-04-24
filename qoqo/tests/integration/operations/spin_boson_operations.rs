@@ -30,18 +30,18 @@ use test_case::test_case;
 fn convert_cf_to_pyobject(
     py: Python,
     parameter: CalculatorFloat,
-) -> &PyCell<CalculatorFloatWrapper> {
-    let parameter_type = py.get_type::<CalculatorFloatWrapper>();
+) -> &Bound<CalculatorFloatWrapper> {
+    let parameter_type = py.get_type_bound::<CalculatorFloatWrapper>();
     match parameter {
         CalculatorFloat::Float(x) => parameter_type
             .call1((x,))
             .unwrap()
-            .downcast::<PyCell<CalculatorFloatWrapper>>()
+            .downcast::<CalculatorFloatWrapper>()
             .unwrap(),
         CalculatorFloat::Str(x) => parameter_type
             .call1((x,))
             .unwrap()
-            .downcast::<PyCell<CalculatorFloatWrapper>>()
+            .downcast::<CalculatorFloatWrapper>()
             .unwrap(),
     }
 }
@@ -53,15 +53,12 @@ fn test_new_quantum_rabi(input_operation: Operation, arguments: (u32, u32, f64),
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type::<QuantumRabiWrapper>();
-        let operation_py = operation_type
-            .call1(arguments)
-            .unwrap()
-            .downcast::<PyCell<QuantumRabiWrapper>>()
-            .unwrap();
+        let operation_type = py.get_type_bound::<QuantumRabiWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<QuantumRabiWrapper>().unwrap();
 
-        let comparison = bool::extract(
-            operation
+        let comparison = bool::extract_bound(
+            &operation
                 .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
@@ -70,11 +67,8 @@ fn test_new_quantum_rabi(input_operation: Operation, arguments: (u32, u32, f64),
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<QuantumRabiWrapper>().unwrap();
-        let new_op_diff = operation_type
-            .call1((2, 3, 1.0))
-            .unwrap()
-            .downcast::<PyCell<QuantumRabiWrapper>>()
-            .unwrap();
+        let binding = operation_type.call1((2, 3, 1.0)).unwrap();
+        let new_op_diff = binding.downcast::<QuantumRabiWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<QuantumRabiWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -86,8 +80,8 @@ fn test_new_quantum_rabi(input_operation: Operation, arguments: (u32, u32, f64),
             "QuantumRabiWrapper { internal: QuantumRabi { qubit: 2, mode: 3, theta: Float(1.0) } }"
         );
 
-        let comparison_copy = bool::extract(
-            operation
+        let comparison_copy = bool::extract_bound(
+            &operation
                 .call_method0(py, "theta")
                 .unwrap()
                 .bind(py)
@@ -113,15 +107,12 @@ fn test_new_longitudinal_coupling(
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type::<LongitudinalCouplingWrapper>();
-        let operation_py = operation_type
-            .call1(arguments)
-            .unwrap()
-            .downcast::<PyCell<LongitudinalCouplingWrapper>>()
-            .unwrap();
+        let operation_type = py.get_type_bound::<LongitudinalCouplingWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<LongitudinalCouplingWrapper>().unwrap();
 
-        let comparison = bool::extract(
-            operation
+        let comparison = bool::extract_bound(
+            &operation
                 .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
@@ -132,11 +123,8 @@ fn test_new_longitudinal_coupling(
         let def_wrapper = operation_py
             .extract::<LongitudinalCouplingWrapper>()
             .unwrap();
-        let new_op_diff = operation_type
-            .call1((2, 3, 1.0))
-            .unwrap()
-            .downcast::<PyCell<LongitudinalCouplingWrapper>>()
-            .unwrap();
+        let binding = operation_type.call1((2, 3, 1.0)).unwrap();
+        let new_op_diff = binding.downcast::<LongitudinalCouplingWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff
             .extract::<LongitudinalCouplingWrapper>()
             .unwrap();
@@ -150,8 +138,8 @@ fn test_new_longitudinal_coupling(
             "LongitudinalCouplingWrapper { internal: LongitudinalCoupling { qubit: 2, mode: 3, theta: Float(1.0) } }"
         );
 
-        let comparison_copy = bool::extract(
-            operation
+        let comparison_copy = bool::extract_bound(
+            &operation
                 .call_method0(py, "theta")
                 .unwrap()
                 .bind(py)
@@ -173,15 +161,12 @@ fn test_new_jaynes_cummings(input_operation: Operation, arguments: (u32, u32, f6
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type::<JaynesCummingsWrapper>();
-        let operation_py = operation_type
-            .call1(arguments)
-            .unwrap()
-            .downcast::<PyCell<JaynesCummingsWrapper>>()
-            .unwrap();
+        let operation_type = py.get_type_bound::<JaynesCummingsWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<JaynesCummingsWrapper>().unwrap();
 
-        let comparison = bool::extract(
-            operation
+        let comparison = bool::extract_bound(
+            &operation
                 .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
@@ -190,11 +175,8 @@ fn test_new_jaynes_cummings(input_operation: Operation, arguments: (u32, u32, f6
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<JaynesCummingsWrapper>().unwrap();
-        let new_op_diff = operation_type
-            .call1((2, 3, 1.0))
-            .unwrap()
-            .downcast::<PyCell<JaynesCummingsWrapper>>()
-            .unwrap();
+        let binding = operation_type.call1((2, 3, 1.0)).unwrap();
+        let new_op_diff = binding.downcast::<JaynesCummingsWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<JaynesCummingsWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -206,8 +188,8 @@ fn test_new_jaynes_cummings(input_operation: Operation, arguments: (u32, u32, f6
             "JaynesCummingsWrapper { internal: JaynesCummings { qubit: 2, mode: 3, theta: Float(1.0) } }"
         );
 
-        let comparison_copy = bool::extract(
-            operation
+        let comparison_copy = bool::extract_bound(
+            &operation
                 .call_method0(py, "theta")
                 .unwrap()
                 .bind(py)
@@ -233,15 +215,12 @@ fn test_new_single_excitation_load(
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type::<SingleExcitationLoadWrapper>();
-        let operation_py = operation_type
-            .call1(arguments)
-            .unwrap()
-            .downcast::<PyCell<SingleExcitationLoadWrapper>>()
-            .unwrap();
+        let operation_type = py.get_type_bound::<SingleExcitationLoadWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<SingleExcitationLoadWrapper>().unwrap();
 
-        let comparison = bool::extract(
-            operation
+        let comparison = bool::extract_bound(
+            &operation
                 .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
@@ -252,11 +231,8 @@ fn test_new_single_excitation_load(
         let def_wrapper = operation_py
             .extract::<SingleExcitationLoadWrapper>()
             .unwrap();
-        let new_op_diff = operation_type
-            .call1((2, 3))
-            .unwrap()
-            .downcast::<PyCell<SingleExcitationLoadWrapper>>()
-            .unwrap();
+        let binding = operation_type.call1((2, 3)).unwrap();
+        let new_op_diff = binding.downcast::<SingleExcitationLoadWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff
             .extract::<SingleExcitationLoadWrapper>()
             .unwrap();
@@ -283,15 +259,12 @@ fn test_new_single_excitation_store(
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type::<SingleExcitationStoreWrapper>();
-        let operation_py = operation_type
-            .call1(arguments)
-            .unwrap()
-            .downcast::<PyCell<SingleExcitationStoreWrapper>>()
-            .unwrap();
+        let operation_type = py.get_type_bound::<SingleExcitationStoreWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<SingleExcitationStoreWrapper>().unwrap();
 
-        let comparison = bool::extract(
-            operation
+        let comparison = bool::extract_bound(
+            &operation
                 .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
@@ -302,11 +275,8 @@ fn test_new_single_excitation_store(
         let def_wrapper = operation_py
             .extract::<SingleExcitationStoreWrapper>()
             .unwrap();
-        let new_op_diff = operation_type
-            .call1((2, 3))
-            .unwrap()
-            .downcast::<PyCell<SingleExcitationStoreWrapper>>()
-            .unwrap();
+        let binding = operation_type.call1((2, 3)).unwrap();
+        let new_op_diff = binding.downcast::<SingleExcitationStoreWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff
             .extract::<SingleExcitationStoreWrapper>()
             .unwrap();
@@ -329,15 +299,12 @@ fn test_new_cz_qubit_resonator(input_operation: Operation, arguments: (u32, u32)
     let operation = convert_operation_to_pyobject(input_operation).unwrap();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation_type = py.get_type::<CZQubitResonatorWrapper>();
-        let operation_py = operation_type
-            .call1(arguments)
-            .unwrap()
-            .downcast::<PyCell<CZQubitResonatorWrapper>>()
-            .unwrap();
+        let operation_type = py.get_type_bound::<CZQubitResonatorWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<CZQubitResonatorWrapper>().unwrap();
 
-        let comparison = bool::extract(
-            operation
+        let comparison = bool::extract_bound(
+            &operation
                 .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
@@ -346,11 +313,8 @@ fn test_new_cz_qubit_resonator(input_operation: Operation, arguments: (u32, u32)
         assert!(comparison);
 
         let def_wrapper = operation_py.extract::<CZQubitResonatorWrapper>().unwrap();
-        let new_op_diff = operation_type
-            .call1((2, 3))
-            .unwrap()
-            .downcast::<PyCell<CZQubitResonatorWrapper>>()
-            .unwrap();
+        let binding = operation_type.call1((2, 3)).unwrap();
+        let new_op_diff = binding.downcast::<CZQubitResonatorWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<CZQubitResonatorWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -372,8 +336,8 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        assert!(bool::extract(
-            operation
+        assert!(bool::extract_bound(
+            &operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
                 .bind(py)
@@ -393,8 +357,8 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        assert!(!bool::extract(
-            operation
+        assert!(!bool::extract_bound(
+            &operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
                 .bind(py)
@@ -415,7 +379,7 @@ fn test_pyo3_mode(mode: usize, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let mode_op: usize =
-            usize::extract(operation.call_method0(py, "mode").unwrap().bind(py)).unwrap();
+            usize::extract_bound(&operation.call_method0(py, "mode").unwrap().bind(py)).unwrap();
         assert_eq!(mode_op, mode);
     })
 }
@@ -431,7 +395,7 @@ fn test_pyo3_qubit(qubit: usize, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let qubit_op: usize =
-            usize::extract(operation.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
+            usize::extract_bound(&operation.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
         assert_eq!(qubit_op, qubit);
     })
 }
@@ -448,7 +412,8 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let name_op: String =
-            String::extract(operation.call_method0(py, "hqslang").unwrap().bind(py)).unwrap();
+            String::extract_bound(&operation.call_method0(py, "hqslang").unwrap().bind(py))
+                .unwrap();
         assert_eq!(name_op, name.to_string());
     })
 }
@@ -525,7 +490,8 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let tags_op: Vec<String> =
-            Vec::<String>::extract(operation.call_method0(py, "tags").unwrap().bind(py)).unwrap();
+            Vec::<String>::extract_bound(&operation.call_method0(py, "tags").unwrap().bind(py))
+                .unwrap();
         assert_eq!(tags_op.len(), tags.len());
         for i in 0..tags.len() {
             assert_eq!(tags_op[i], tags[i]);
@@ -545,8 +511,8 @@ fn test_pyo3_involved_modes(input_operation: Operation, modes: HashSet<usize>) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial mode
-        let involved_modes: HashSet<usize> = HashSet::<usize>::extract(
-            operation
+        let involved_modes: HashSet<usize> = HashSet::<usize>::extract_bound(
+            &operation
                 .call_method0(py, "involved_modes")
                 .unwrap()
                 .bind(py),
@@ -569,7 +535,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial qubit
         let qubit: usize =
-            usize::extract(operation.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
+            usize::extract_bound(&operation.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
         assert_eq!(qubit.clone(), 1);
         // remap qubits
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
@@ -580,7 +546,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
             .unwrap();
         // test re-mapped qubit
         let qubit_new: usize =
-            usize::extract(result.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
+            usize::extract_bound(&result.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
         assert_eq!(qubit_new.clone(), 0);
         // test that initial and rempapped qubits are different
         assert_ne!(qubit, qubit_new);
@@ -600,7 +566,7 @@ fn test_pyo3_remapmodes_single(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial mode
         let mode: usize =
-            usize::extract(operation.call_method0(py, "mode").unwrap().bind(py)).unwrap();
+            usize::extract_bound(&operation.call_method0(py, "mode").unwrap().bind(py)).unwrap();
         assert_eq!(mode.clone(), 0);
         // remap modes
         let mut mode_mapping: HashMap<usize, usize> = HashMap::new();
@@ -611,7 +577,7 @@ fn test_pyo3_remapmodes_single(input_operation: Operation) {
             .unwrap();
         // test re-mapped mode
         let mode_new: usize =
-            usize::extract(result.call_method0(py, "mode").unwrap().bind(py)).unwrap();
+            usize::extract_bound(&result.call_method0(py, "mode").unwrap().bind(py)).unwrap();
         assert_eq!(mode_new.clone(), 1);
         // test that initial and rempapped modes are different
         assert_ne!(mode, mode_new);
@@ -634,8 +600,8 @@ fn test_pyo3_remapmodes_error(input_operation: Operation) {
         let mut mode_mapping: HashMap<usize, usize> = HashMap::new();
         mode_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_modes", (mode_mapping,));
-        let result_ref = result.bind();
-        assert!(result_ref.is_err());
+        ();
+        assert!(result.is_err());
     })
 }
 
@@ -655,8 +621,8 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
-        let result_ref = result.bind();
-        assert!(result_ref.is_err());
+        ();
+        assert!(result.is_err());
     })
 }
 
@@ -675,16 +641,16 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
         let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
         let copy_deepcopy_param = operation;
 
-        let comparison_copy = bool::extract(
-            copy_op
+        let comparison_copy = bool::extract_bound(
+            &copy_op
                 .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param.clone(),))
                 .unwrap(),
         )
         .unwrap();
         assert!(comparison_copy);
-        let comparison_deepcopy = bool::extract(
-            deepcopy_op
+        let comparison_deepcopy = bool::extract_bound(
+            &deepcopy_op
                 .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param,))
                 .unwrap(),
@@ -724,10 +690,10 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: &str = <&str>::extract(to_format.bind(py)).unwrap();
+        let format_op: String = String::extract_bound(&to_format.bind(py)).unwrap();
         assert_eq!(format_op, format_repr);
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: &str = <&str>::extract(to_repr.bind(py)).unwrap();
+        let repr_op: String = String::extract_bound(&to_repr.bind(py)).unwrap();
         assert_eq!(repr_op, format_repr);
     })
 }
@@ -753,8 +719,8 @@ fn test_pyo3_substitute_params_single(input_operation: Operation) {
             .unwrap();
         let test_operation = convert_operation_to_pyobject(substitute_param).unwrap();
 
-        let comparison = bool::extract(
-            substitute_op
+        let comparison = bool::extract_bound(
+            &substitute_op
                 .bind(py)
                 .call_method1("__eq__", (test_operation,))
                 .unwrap(),
@@ -774,8 +740,8 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let substitution_dict: HashMap<String, f64> = HashMap::new();
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
-        let result_ref = result.bind();
-        assert!(result_ref.is_err());
+        ();
+        assert!(result.is_err());
     })
 }
 
@@ -796,8 +762,8 @@ fn test_ineffective_substitute_parameters(input_operation: Operation) {
             .call_method1(py, "substitute_parameters", (substitution_dict_py,))
             .unwrap();
 
-        let comparison = bool::extract(
-            substitute_op
+        let comparison = bool::extract_bound(
+            &substitute_op
                 .bind(py)
                 .call_method1("__eq__", (operation,))
                 .unwrap(),
@@ -838,8 +804,8 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
         let operation_one = convert_operation_to_pyobject(definition_1).unwrap();
         let operation_two = convert_operation_to_pyobject(definition_2).unwrap();
 
-        let comparison = bool::extract(
-            operation_one
+        let comparison = bool::extract_bound(
+            &operation_one
                 .bind(py)
                 .call_method1("__eq__", (operation_two.clone(),))
                 .unwrap(),
@@ -847,8 +813,8 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
         .unwrap();
         assert!(!comparison);
 
-        let comparison = bool::extract(
-            operation_one
+        let comparison = bool::extract_bound(
+            &operation_one
                 .bind(py)
                 .call_method1("__ne__", (operation_two.clone(),))
                 .unwrap(),
@@ -901,14 +867,15 @@ fn test_pyo3_json_schema(operation: Operation) {
         let operation = pyobject.bind(py);
 
         let schema: String =
-            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+            String::extract_bound(&operation.call_method0("json_schema").unwrap()).unwrap();
 
         assert_eq!(schema, rust_schema);
 
         let current_version_string =
-            String::extract(operation.call_method0("current_version").unwrap()).unwrap();
+            String::extract_bound(&operation.call_method0("current_version").unwrap()).unwrap();
         let minimum_supported_version_string =
-            String::extract(operation.call_method0("min_supported_version").unwrap()).unwrap();
+            String::extract_bound(&operation.call_method0("min_supported_version").unwrap())
+                .unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, minimum_version);

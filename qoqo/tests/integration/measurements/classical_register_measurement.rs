@@ -30,12 +30,11 @@ fn test_returning_circuits() {
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, 0.0.into());
         circs.push(circ1);
-        let br_type = py.get_type::<ClassicalRegisterWrapper>();
-        let br = br_type
+        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
-            .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
+        let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
 
         let circuits: Vec<CircuitWrapper> = br.call_method0("circuits").unwrap().extract().unwrap();
         for (index, b) in circuits.iter().enumerate() {
@@ -59,12 +58,11 @@ fn test_pyo3_copy() {
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, 0.0.into());
         circs.push(circ1);
-        let br_type = py.get_type::<ClassicalRegisterWrapper>();
-        let br = br_type
+        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
-            .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
+        let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
         let br_clone = br;
 
         let circuits: Vec<CircuitWrapper> = br.call_method0("circuits").unwrap().extract().unwrap();
@@ -96,12 +94,9 @@ fn test_pyo3_debug() {
     Python::with_gil(|py| {
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type::<ClassicalRegisterWrapper>();
-        let br = br_type
-            .call1((Some(CircuitWrapper::new()), circs))
-            .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
-            .unwrap();
+        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let binding = br_type.call1((Some(CircuitWrapper::new()), circs)).unwrap();
+        let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
         let br_wrapper = br.extract::<ClassicalRegisterWrapper>().unwrap();
 
         #[allow(clippy::redundant_clone)]
@@ -120,12 +115,9 @@ fn test_internal_to_bincode() {
     Python::with_gil(|py| {
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type::<ClassicalRegisterWrapper>();
-        let br = br_type
-            .call1((Some(CircuitWrapper::new()), circs))
-            .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
-            .unwrap();
+        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let binding = br_type.call1((Some(CircuitWrapper::new()), circs)).unwrap();
+        let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
 
         let circs: Vec<Circuit> = vec![Circuit::new()];
         let roqoqo_br = ClassicalRegister {
@@ -134,7 +126,7 @@ fn test_internal_to_bincode() {
         };
         let comparison_serialised = serialize(&roqoqo_br).unwrap();
 
-        let serialised: (&str, Vec<u8>) = br
+        let serialised: (String, Vec<u8>) = br
             .call_method0("_internal_to_bincode")
             .unwrap()
             .extract()
@@ -151,19 +143,16 @@ fn test_to_from_json() {
     Python::with_gil(|py| {
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type::<ClassicalRegisterWrapper>();
-        let br = br_type
-            .call1((Some(CircuitWrapper::new()), circs))
-            .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
-            .unwrap();
+        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let binding = br_type.call1((Some(CircuitWrapper::new()), circs)).unwrap();
+        let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
         let deserialised = new_br
             .call_method1("from_json", (serialised,))
             .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<ClassicalRegisterWrapper>()
             .unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
@@ -187,19 +176,16 @@ fn test_to_from_bincode() {
     Python::with_gil(|py| {
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
 
-        let br_type = py.get_type::<ClassicalRegisterWrapper>();
-        let br = br_type
-            .call1((Some(CircuitWrapper::new()), circs))
-            .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
-            .unwrap();
+        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let binding = br_type.call1((Some(CircuitWrapper::new()), circs)).unwrap();
+        let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
 
         let new_br = br;
         let serialised = br.call_method0("to_bincode").unwrap();
         let deserialised = new_br
             .call_method1("from_bincode", (serialised,))
             .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<ClassicalRegisterWrapper>()
             .unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
@@ -224,19 +210,18 @@ fn test_substitute_parameters() {
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
         circs.push(circ1);
-        let br_type = py.get_type::<ClassicalRegisterWrapper>();
-        let br = br_type
+        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
-            .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
+        let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
 
         let mut map: HashMap<String, f64> = HashMap::<String, f64>::new();
         map.insert("theta".to_string(), 0.0);
         let br_sub = br
             .call_method1("substitute_parameters", (map,))
             .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
+            .downcast::<ClassicalRegisterWrapper>()
             .unwrap();
 
         let br_wrapper = br.extract::<ClassicalRegisterWrapper>().unwrap();
@@ -254,12 +239,11 @@ fn test_substitute_parameters_error() {
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
         circs.push(circ1);
-        let br_type = py.get_type::<ClassicalRegisterWrapper>();
-        let br = br_type
+        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
-            .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
+        let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
 
         let map: HashMap<String, f64> = HashMap::<String, f64>::new();
         let br_sub = br.call_method1("substitute_parameters", (map,));
@@ -275,12 +259,11 @@ fn test_measurement_type() {
         let mut circ1 = CircuitWrapper::new();
         circ1.internal += roqoqo::operations::RotateX::new(0, "theta".into());
         circs.push(circ1);
-        let br_type = py.get_type::<ClassicalRegisterWrapper>();
-        let br = br_type
+        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
-            .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
+        let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
 
         let measurement_type = br.call_method0("measurement_type").unwrap();
         assert_eq!(measurement_type.to_string(), "ClassicalRegister");
@@ -293,16 +276,13 @@ fn test_pyo3_format_repr() {
     Python::with_gil(|py| {
         let format_repr = "ClassicalRegister { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }] }";
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
-        let br_type = py.get_type::<ClassicalRegisterWrapper>();
-        let br = br_type
-            .call1((Some(CircuitWrapper::new()), circs))
-            .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
-            .unwrap();
+        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let binding = br_type.call1((Some(CircuitWrapper::new()), circs)).unwrap();
+        let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
         let to_format = br.call_method1("__format__", ("",)).unwrap();
-        let format_op: &str = <&str>::extract(to_format).unwrap();
+        let format_op: String = String::extract_bound(&to_format).unwrap();
         let to_repr = br.call_method0("__repr__").unwrap();
-        let repr_op: &str = <&str>::extract(to_repr).unwrap();
+        let repr_op: String = String::extract_bound(&to_repr).unwrap();
         assert_eq!(format_op, format_repr);
         assert_eq!(repr_op, format_repr);
     })
@@ -313,25 +293,22 @@ fn test_pyo3_copy_deepcopy() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
-        let br_type = py.get_type::<ClassicalRegisterWrapper>();
-        let br = br_type
-            .call1((Some(CircuitWrapper::new()), circs))
-            .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
-            .unwrap();
+        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let binding = br_type.call1((Some(CircuitWrapper::new()), circs)).unwrap();
+        let br = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
         let copy_op = br.call_method0("__copy__").unwrap();
         let deepcopy_op = br.call_method1("__deepcopy__", ("",)).unwrap();
         let copy_deepcopy_param = br;
 
-        let comparison_copy = bool::extract(
-            copy_op
+        let comparison_copy = bool::extract_bound(
+            &copy_op
                 .call_method1("__eq__", (copy_deepcopy_param,))
                 .unwrap(),
         )
         .unwrap();
         assert!(comparison_copy);
-        let comparison_deepcopy = bool::extract(
-            deepcopy_op
+        let comparison_deepcopy = bool::extract_bound(
+            &deepcopy_op
                 .call_method1("__eq__", (copy_deepcopy_param,))
                 .unwrap(),
         )
@@ -345,22 +322,20 @@ fn test_pyo3_richcmp() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
-        let br_type = py.get_type::<ClassicalRegisterWrapper>();
-        let br_one = br_type
+        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
+        let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
-            .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
+        let br_one = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
         let arg: Option<CircuitWrapper> = None;
-        let br_two = br_type
-            .call1((arg, circs))
-            .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
-            .unwrap();
-        let comparison = bool::extract(br_one.call_method1("__eq__", (br_two,)).unwrap()).unwrap();
+        let binding = br_type.call1((arg, circs)).unwrap();
+        let br_two = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
+        let comparison =
+            bool::extract_bound(&br_one.call_method1("__eq__", (br_two,)).unwrap()).unwrap();
         assert!(!comparison);
 
-        let comparison = bool::extract(br_one.call_method1("__ne__", (br_two,)).unwrap()).unwrap();
+        let comparison =
+            bool::extract_bound(&br_one.call_method1("__ne__", (br_two,)).unwrap()).unwrap();
         assert!(comparison);
 
         let comparison = br_one.call_method1("__ge__", (br_two,));
@@ -377,22 +352,22 @@ fn test_pyo3_json_schema() {
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
         let circs: Vec<CircuitWrapper> = vec![CircuitWrapper::new()];
-        let br_type = py.get_type::<ClassicalRegisterWrapper>();
+        let br_type = py.get_type_bound::<ClassicalRegisterWrapper>();
         #[allow(clippy::redundant_clone)]
-        let br_one = br_type
+        let binding = br_type
             .call1((Some(CircuitWrapper::new()), circs.clone()))
-            .unwrap()
-            .downcast::<PyCell<ClassicalRegisterWrapper>>()
             .unwrap();
+        let br_one = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
 
-        let schema: String = String::extract(br_one.call_method0("json_schema").unwrap()).unwrap();
+        let schema: String =
+            String::extract_bound(&br_one.call_method0("json_schema").unwrap()).unwrap();
 
         assert_eq!(schema, rust_schema);
 
         let current_version_string =
-            String::extract(br_one.call_method0("current_version").unwrap()).unwrap();
+            String::extract_bound(&br_one.call_method0("current_version").unwrap()).unwrap();
         let minimum_supported_version_string =
-            String::extract(br_one.call_method0("min_supported_version").unwrap()).unwrap();
+            String::extract_bound(&br_one.call_method0("min_supported_version").unwrap()).unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, "1.0.0");

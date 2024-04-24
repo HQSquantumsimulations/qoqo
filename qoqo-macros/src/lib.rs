@@ -151,9 +151,9 @@ pub fn wrap(
             /// Returns:
             ///     np.ndarray
             ///
-            pub fn superoperator(&self) -> PyResult<Bound<PyArray2<f64>>>{
-                Python::with_gil(|py| -> PyResult<Bound<PyArray2<f64>>> {
-                    Ok(self.internal.superoperator().unwrap().to_pyarray_bound(py).into())
+            pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>>{
+                Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
+                    Ok(self.internal.superoperator().unwrap().to_pyarray_bound(py).as_gil_ref().into())
                 })
             }
             /// Return the power of the noise gate
@@ -380,9 +380,12 @@ pub fn wrap(
             ///
             /// Raises:
             ///     ValueError: Error symbolic operation cannot return float unitary matrix
-            pub fn unitary_matrix(&self) -> PyResult<Bound<PyArray2<Complex64>>>{
-                Python::with_gil(|py| -> PyResult<Bound<PyArray2<Complex64>>> {
-                    Ok(self.internal.unitary_matrix().map_err(|x| PyValueError::new_err(format!("Error symbolic operation cannot return float unitary matrix {:?}",x)))?.to_pyarray_bound(py).to_owned())
+            pub fn unitary_matrix(&self) -> PyResult<Py<PyArray2<Complex64>>>{
+                Python::with_gil(|py| -> PyResult<Py<PyArray2<Complex64>>> {
+                    Ok(self.internal.unitary_matrix().map_err(|x| PyValueError::new_err(format!("Error symbolic operation cannot return float unitary matrix {:?}",x)))?
+                        .to_pyarray_bound(py)
+                        .as_gil_ref()
+                        .into())
                 })
             }
         }

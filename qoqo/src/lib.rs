@@ -123,7 +123,8 @@ fn qoqo(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     module.add_wrapped(wrapper4)?;
     // Adding nice imports corresponding to maturin example
     let system = PyModule::import_bound(_py, "sys")?;
-    let system_modules: &Bound<PyDict> = system.getattr("modules")?.downcast()?;
+    let binding = system.getattr("modules")?;
+    let system_modules: &Bound<PyDict> = binding.downcast()?;
     system_modules.set_item("qoqo.operations", module.getattr("operations")?)?;
     system_modules.set_item("qoqo.measurements", module.getattr("measurements")?)?;
     system_modules.set_item("qoqo.devices", module.getattr("devices")?)?;

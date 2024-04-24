@@ -633,37 +633,38 @@ impl CircuitWrapper {
     /// Implement the `+` (__add__) magic method to add two Circuits.
     ///
     /// Args:
-    ///     lhs (Circuit): The first Circuit object in this operation.
+    ///     self (CircuitWrapper): The first Circuit object in this operation.
     ///     rhs (Circuit): The second Circuit object in this operation.
     ///
     /// Returns:
-    ///     lhs + rhs (Circuit): the two Circuits added together.
+    ///     self + rhs (Circuit): the two Circuits added together.
     ///
     /// Raises:
     ///     TypeError: Left hand side can not be converted to Circuit.
     ///     TypeError: Right hand side cannot be converted to Operation or Circuit.
-    fn __add__(lhs: &Bound<PyAny>, rhs: &Bound<PyAny>) -> PyResult<CircuitWrapper> {
-        let res = Python::with_gil(|py| -> PyResult<CircuitWrapper> {
-            let self_circ = convert_into_circuit(lhs).map_err(|_| {
-                PyTypeError::new_err("Left hand side can not be converted to Circuit")
-            })?;
-            match convert_pyany_to_operation(rhs) {
+    fn __add__(&mut self, other: Py<PyAny>) -> PyResult<CircuitWrapper> {
+        Python::with_gil(|py| -> PyResult<CircuitWrapper> {
+            let other_ref = other.bind(py);
+            match convert_pyany_to_operation(other_ref) {
                 Ok(x) => Ok(CircuitWrapper {
-                    internal: self_circ + x,
+                    internal: self.internal.clone() + x,
                 }),
                 Err(_) => {
-                    let other = convert_into_circuit(rhs).map_err(|_| {
-                        pyo3::exceptions::PyTypeError::new_err(
-                            "Right hand side cannot be converted to Operation or Circuit",
-                        )
-                    })?;
-                    Ok(CircuitWrapper {
-                        internal: self_circ + other,
-                    })
+                    let other = convert_into_circuit(other_ref).map_err(|x| {
+                        pyo3::exceptions::PyTypeError::new_err(format!(
+                            "Right hand side cannot be converted to Operation or Circuit {:?}",
+                            x
+                        ))
+                    });
+                    match other {
+                        Ok(x) => Ok(CircuitWrapper {
+                            internal: self.internal.clone() + x,
+                        }),
+                        Err(y) => Err(y),
+                    }
                 }
             }
-        });
-        res
+        })
     }
 }
 

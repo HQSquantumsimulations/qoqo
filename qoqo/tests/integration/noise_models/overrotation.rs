@@ -22,11 +22,11 @@ use roqoqo::ROQOQO_VERSION;
 fn test_pyo3_init() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type::<SingleQubitOverrotationOnGateWrapper>();
-        let br: &PyCell<SingleQubitOverrotationOnGateWrapper> = br_type
+        let br_type = py.get_type_bound::<SingleQubitOverrotationOnGateWrapper>();
+        let br: &Bound<SingleQubitOverrotationOnGateWrapper> = br_type
             .call0()
             .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationOnGateWrapper>>()
+            .downcast::<SingleQubitOverrotationOnGateWrapper>()
             .unwrap();
         let br_copied = br
             .call_method0("__copy__")
@@ -44,11 +44,11 @@ fn test_pyo3_init() {
 fn test_pyo3_init_description() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type::<SingleQubitOverrotationDescriptionWrapper>();
-        let br: &PyCell<SingleQubitOverrotationDescriptionWrapper> = br_type
+        let br_type = py.get_type_bound::<SingleQubitOverrotationDescriptionWrapper>();
+        let br: &Bound<SingleQubitOverrotationDescriptionWrapper> = br_type
             .call1(("RotateX", 0.0, 1.0))
             .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationDescriptionWrapper>>()
+            .downcast::<SingleQubitOverrotationDescriptionWrapper>()
             .unwrap();
         let br_copied = br
             .call_method0("__copy__")
@@ -74,16 +74,18 @@ fn test_debug_description() {
 fn test_debug() {
     Python::with_gil(|py| {
         // Overrotation Model Wrapper
-        let wrapper_description_type = py.get_type::<SingleQubitOverrotationDescriptionWrapper>();
-        let py_wrapper_description = wrapper_description_type
+        let wrapper_description_type =
+            py.get_type_bound::<SingleQubitOverrotationDescriptionWrapper>();
+        let binding = wrapper_description_type
             .call1(("RotateX", 0.0, 1.0))
-            .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationDescriptionWrapper>>()
+            .unwrap();
+        let py_wrapper_description = binding
+            .downcast::<SingleQubitOverrotationDescriptionWrapper>()
             .unwrap();
 
         let mut wrapper = SingleQubitOverrotationOnGateWrapper::new();
         wrapper = wrapper
-            .set_single_qubit_overrotation("RotateZ", 0, py_wrapper_description.into())
+            .set_single_qubit_overrotation("RotateZ", 0, py_wrapper_description.as_any().unbind())
             .unwrap();
 
         let compare = "SingleQubitOverrotationOnGateWrapper { internal: SingleQubitOverrotationOnGate { single_qubit_overrotation: {(\"RotateZ\", 0): SingleQubitOverrotationDescription { gate: \"RotateX\", theta_mean: 0.0, theta_std: 1.0 }}, two_qubit_overrotation: {} } }";
@@ -117,11 +119,10 @@ fn test_partialeq_description() {
 fn test_to_from_json() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type::<SingleQubitOverrotationOnGateWrapper>();
-        let br = br_type
-            .call0()
-            .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationOnGateWrapper>>()
+        let br_type = py.get_type_bound::<SingleQubitOverrotationOnGateWrapper>();
+        let binding = br_type.call0().unwrap();
+        let br = binding
+            .downcast::<SingleQubitOverrotationOnGateWrapper>()
             .unwrap();
 
         let new_br = br;
@@ -129,7 +130,7 @@ fn test_to_from_json() {
         let deserialised = new_br
             .call_method1("from_json", (serialised,))
             .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationOnGateWrapper>>()
+            .downcast::<SingleQubitOverrotationOnGateWrapper>()
             .unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
@@ -150,11 +151,10 @@ fn test_to_from_json() {
 fn test_to_from_json_description() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type::<SingleQubitOverrotationDescriptionWrapper>();
-        let br = br_type
-            .call1(("RotateX", 0.0, 1.0))
-            .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationDescriptionWrapper>>()
+        let br_type = py.get_type_bound::<SingleQubitOverrotationDescriptionWrapper>();
+        let binding = br_type.call1(("RotateX", 0.0, 1.0)).unwrap();
+        let br = binding
+            .downcast::<SingleQubitOverrotationDescriptionWrapper>()
             .unwrap();
 
         let new_br = br;
@@ -162,7 +162,7 @@ fn test_to_from_json_description() {
         let deserialised = new_br
             .call_method1("from_json", (serialised,))
             .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationDescriptionWrapper>>()
+            .downcast::<SingleQubitOverrotationDescriptionWrapper>()
             .unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
@@ -184,18 +184,17 @@ fn test_to_from_json_description() {
 fn test_to_from_bincode() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type::<SingleQubitOverrotationOnGateWrapper>();
-        let br = br_type
-            .call0()
-            .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationOnGateWrapper>>()
+        let br_type = py.get_type_bound::<SingleQubitOverrotationOnGateWrapper>();
+        let binding = br_type.call0().unwrap();
+        let br = binding
+            .downcast::<SingleQubitOverrotationOnGateWrapper>()
             .unwrap();
         let new_br = br;
         let serialised = br.call_method0("to_bincode").unwrap();
         let deserialised = new_br
             .call_method1("from_bincode", (serialised,))
             .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationOnGateWrapper>>()
+            .downcast::<SingleQubitOverrotationOnGateWrapper>()
             .unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
@@ -216,18 +215,17 @@ fn test_to_from_bincode() {
 fn test_to_from_bincode_description() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type::<SingleQubitOverrotationDescriptionWrapper>();
-        let br = br_type
-            .call1(("RotateX", 0.0, 1.0))
-            .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationDescriptionWrapper>>()
+        let br_type = py.get_type_bound::<SingleQubitOverrotationDescriptionWrapper>();
+        let binding = br_type.call1(("RotateX", 0.0, 1.0)).unwrap();
+        let br = binding
+            .downcast::<SingleQubitOverrotationDescriptionWrapper>()
             .unwrap();
         let new_br = br;
         let serialised = br.call_method0("to_bincode").unwrap();
         let deserialised = new_br
             .call_method1("from_bincode", (serialised,))
             .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationDescriptionWrapper>>()
+            .downcast::<SingleQubitOverrotationDescriptionWrapper>()
             .unwrap();
         assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
 
@@ -248,11 +246,10 @@ fn test_to_from_bincode_description() {
 fn test_single_qubit_noise_term() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type::<SingleQubitOverrotationOnGateWrapper>();
-        let br = br_type
-            .call0()
-            .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationOnGateWrapper>>()
+        let br_type = py.get_type_bound::<SingleQubitOverrotationOnGateWrapper>();
+        let binding = br_type.call0().unwrap();
+        let br = binding
+            .downcast::<SingleQubitOverrotationOnGateWrapper>()
             .unwrap();
 
         let desc = SingleQubitOverrotationDescriptionWrapper::new("RotateX", 1.0, 1.0);
@@ -262,7 +259,7 @@ fn test_single_qubit_noise_term() {
                 ("RotateX", 0, desc.clone()),
             )
             .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationOnGateWrapper>>()
+            .downcast::<SingleQubitOverrotationOnGateWrapper>()
             .unwrap();
         let description = br
             .call_method1("get_single_qubit_overrotation", ("RotateX", 0))
@@ -277,11 +274,10 @@ fn test_single_qubit_noise_term() {
 fn test_two_qubit_noise_term() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type::<SingleQubitOverrotationOnGateWrapper>();
-        let br = br_type
-            .call0()
-            .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationOnGateWrapper>>()
+        let br_type = py.get_type_bound::<SingleQubitOverrotationOnGateWrapper>();
+        let binding = br_type.call0().unwrap();
+        let br = binding
+            .downcast::<SingleQubitOverrotationOnGateWrapper>()
             .unwrap();
 
         let desc1 = SingleQubitOverrotationDescriptionWrapper::new("RotateX", 1.0, 1.0);
@@ -293,7 +289,7 @@ fn test_two_qubit_noise_term() {
                 ("CNOT", 0, 1, (desc1.clone(), desc2.clone())),
             )
             .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationOnGateWrapper>>()
+            .downcast::<SingleQubitOverrotationOnGateWrapper>()
             .unwrap();
         let operator = br
             .call_method1("get_two_qubit_overrotation", ("CNOT", 0, 1))
@@ -313,23 +309,23 @@ fn test_two_qubit_noise_term() {
 fn test_json_schema() {
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
-        let br_type = py.get_type::<SingleQubitOverrotationOnGateWrapper>();
-        let br = br_type
-            .call0()
-            .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationOnGateWrapper>>()
+        let br_type = py.get_type_bound::<SingleQubitOverrotationOnGateWrapper>();
+        let binding = br_type.call0().unwrap();
+        let br = binding
+            .downcast::<SingleQubitOverrotationOnGateWrapper>()
             .unwrap();
 
-        let schema: String = String::extract(br.call_method0("json_schema").unwrap()).unwrap();
+        let schema: String =
+            String::extract_bound(&br.call_method0("json_schema").unwrap()).unwrap();
         let rust_schema =
             serde_json::to_string_pretty(&schemars::schema_for!(SingleQubitOverrotationOnGate))
                 .unwrap();
         assert_eq!(schema, rust_schema);
 
         let current_version_string =
-            String::extract(br.call_method0("current_version").unwrap()).unwrap();
+            String::extract_bound(&br.call_method0("current_version").unwrap()).unwrap();
         let minimum_supported_version_string =
-            String::extract(br.call_method0("min_supported_version").unwrap()).unwrap();
+            String::extract_bound(&br.call_method0("min_supported_version").unwrap()).unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, "1.11.0");
@@ -341,14 +337,14 @@ fn test_json_schema() {
 fn test_json_schema_description() {
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
-        let br_type = py.get_type::<SingleQubitOverrotationDescriptionWrapper>();
-        let br = br_type
-            .call1(("RotateX", 0.0, 1.0))
-            .unwrap()
-            .downcast::<PyCell<SingleQubitOverrotationDescriptionWrapper>>()
+        let br_type = py.get_type_bound::<SingleQubitOverrotationDescriptionWrapper>();
+        let binding = br_type.call1(("RotateX", 0.0, 1.0)).unwrap();
+        let br = binding
+            .downcast::<SingleQubitOverrotationDescriptionWrapper>()
             .unwrap();
 
-        let schema: String = String::extract(br.call_method0("json_schema").unwrap()).unwrap();
+        let schema: String =
+            String::extract_bound(&br.call_method0("json_schema").unwrap()).unwrap();
         let rust_schema = serde_json::to_string_pretty(&schemars::schema_for!(
             SingleQubitOverrotationDescription
         ))
@@ -356,9 +352,9 @@ fn test_json_schema_description() {
         assert_eq!(schema, rust_schema);
 
         let current_version_string =
-            String::extract(br.call_method0("current_version").unwrap()).unwrap();
+            String::extract_bound(&br.call_method0("current_version").unwrap()).unwrap();
         let minimum_supported_version_string =
-            String::extract(br.call_method0("min_supported_version").unwrap()).unwrap();
+            String::extract_bound(&br.call_method0("min_supported_version").unwrap()).unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, "1.11.0");

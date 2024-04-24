@@ -160,9 +160,9 @@ impl PragmaSetStateVectorWrapper {
     ///
     /// Returns:
     ///     np.ndarray: The statevector representing the qubit register.
-    fn statevector(&self) -> Bound<PyArray1<Complex64>> {
-        Python::with_gil(|py| -> Bound<PyArray1<Complex64>> {
-            self.internal.statevector().to_pyarray_bound(py)
+    fn statevector(&self) -> Py<PyArray1<Complex64>> {
+        Python::with_gil(|py| -> Py<PyArray1<Complex64>> {
+            self.internal.statevector().to_pyarray_bound(py).unbind()
         })
     }
 
@@ -416,9 +416,9 @@ impl PragmaSetDensityMatrixWrapper {
     /// Returns:
     ///     np.ndarray: The density matrix (2d array) representing the qubit register.
 
-    fn density_matrix(&self) -> Bound<PyArray2<Complex64>> {
-        Python::with_gil(|py| -> Bound<PyArray2<Complex64>> {
-            self.internal.density_matrix().to_pyarray_bound(py)
+    fn density_matrix(&self) -> Py<PyArray2<Complex64>> {
+        Python::with_gil(|py| -> Py<PyArray2<Complex64>> {
+            self.internal.density_matrix().to_pyarray_bound(py).unbind()
         })
     }
 
@@ -1095,9 +1095,9 @@ impl PragmaGeneralNoiseWrapper {
     ///
     /// Returns:
     ///     np.ndarray: The rates of the PRAGMA operation.
-    fn rates(&self) -> Bound<PyArray2<f64>> {
-        Python::with_gil(|py| -> Bound<PyArray2<f64>> {
-            self.internal.rates().to_pyarray_bound(py)
+    fn rates(&self) -> Py<PyArray2<f64>> {
+        Python::with_gil(|py| -> Py<PyArray2<f64>> {
+            self.internal.rates().to_pyarray_bound(py).unbind()
         })
     }
 
@@ -1105,10 +1105,10 @@ impl PragmaGeneralNoiseWrapper {
     ///
     /// Returns:
     ///     np.ndarray: The matrix form of the superoperator of the PRAGMA operation.
-    fn superoperator(&self) -> PyResult<Bound<PyArray2<f64>>> {
-        Python::with_gil(|py| -> PyResult<Bound<PyArray2<f64>>> {
+    fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
+        Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
             match self.internal.superoperator() {
-                Ok(x) => Ok(x.to_pyarray_bound(py)),
+                Ok(x) => Ok(x.to_pyarray_bound(py).unbind()),
                 Err(err) => Err(PyRuntimeError::new_err(format!("{:?}", err))),
             }
         })
