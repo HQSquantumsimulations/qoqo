@@ -199,9 +199,12 @@ fn test_to_from_json() {
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
-        let binding = new_br.call_method1("from_json", (serialised,)).unwrap();
+        let binding = new_br.call_method1("from_json", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
-        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
+        assert_eq!(
+            format!("{:?}", br.as_gil_ref()),
+            format!("{:?}", deserialised.as_gil_ref())
+        );
 
         let deserialised_error =
             new_br.call_method1("from_json", (serde_json::to_string("fails").unwrap(),));
@@ -226,9 +229,12 @@ fn test_to_from_bincode() {
         let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let new_br = br;
         let serialised = br.call_method0("to_bincode").unwrap();
-        let binding = new_br.call_method1("from_bincode", (serialised,)).unwrap();
+        let binding = new_br.call_method1("from_bincode", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
-        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
+        assert_eq!(
+            format!("{:?}", br.as_gil_ref()),
+            format!("{:?}", deserialised.as_gil_ref())
+        );
 
         let deserialised_error =
             new_br.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));
@@ -265,6 +271,6 @@ fn test_json_schema() {
             String::extract_bound(&br.call_method0("min_supported_version").unwrap()).unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
-        assert_eq!(minimum_supported_version_string, "1.6.0");
+        assert_eq!(minimum_supported_version_string, "1.11.0");
     });
 }

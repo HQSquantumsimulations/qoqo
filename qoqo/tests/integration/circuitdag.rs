@@ -19,22 +19,24 @@ use roqoqo::operations::*;
 use roqoqo::ROQOQO_VERSION;
 
 // Helper functions
-fn new_circuitdag(py: Python) -> &Bound<CircuitDagWrapper> {
+fn new_circuitdag(py: Python) -> Bound<CircuitDagWrapper> {
     let circuitdag_type = py.get_type_bound::<CircuitDagWrapper>();
     circuitdag_type
         .call0()
         .unwrap()
         .downcast::<CircuitDagWrapper>()
         .unwrap()
+        .to_owned()
 }
 
-fn new_circuit(py: Python) -> &Bound<CircuitWrapper> {
+fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
     let circuit_type = py.get_type_bound::<CircuitWrapper>();
     circuit_type
         .call0()
         .unwrap()
         .downcast::<CircuitWrapper>()
         .unwrap()
+        .to_owned()
 }
 
 /// Test default
@@ -150,10 +152,10 @@ fn test_richcmp() {
             .unwrap();
 
         let comparison =
-            bool::extract_bound(&dag1.call_method1("__eq__", (dag2,)).unwrap()).unwrap();
+            bool::extract_bound(&dag1.call_method1("__eq__", (&dag2,)).unwrap()).unwrap();
         assert!(!comparison);
         let comparison =
-            bool::extract_bound(&dag1.call_method1("__ne__", (dag2,)).unwrap()).unwrap();
+            bool::extract_bound(&dag1.call_method1("__ne__", (&dag2,)).unwrap()).unwrap();
         assert!(comparison);
         let comparison = dag1.call_method1("__ge__", (dag2,));
         assert!(comparison.is_err());
@@ -182,7 +184,7 @@ fn test_qoqo_versions() {
             qsplit.next().expect("QOQO_VERSION badly formatted")
         );
 
-        let comparison_copy: Vec<&str> =
+        let comparison_copy: Vec<String> =
             Vec::extract_bound(&dag.call_method0("_qoqo_versions").unwrap()).unwrap();
         assert_eq!(comparison_copy, vec![rver.as_str(), qver.as_str()]);
     })
@@ -201,9 +203,9 @@ fn test_to_from_bincode() {
         // testing 'to_bincode' and 'from_bincode' functions
         let serialised = dag.call_method0("to_bincode").unwrap();
         let new = new_circuitdag(py);
-        let deserialised = new.call_method1("from_bincode", (serialised,)).unwrap();
+        let deserialised = new.call_method1("from_bincode", (&serialised,)).unwrap();
         let comparison =
-            bool::extract_bound(&deserialised.call_method1("__eq__", (dag,)).unwrap()).unwrap();
+            bool::extract_bound(&deserialised.call_method1("__eq__", (&dag,)).unwrap()).unwrap();
         assert!(comparison);
 
         let deserialised_error =
@@ -223,7 +225,7 @@ fn test_to_from_bincode() {
         // testing that 'from_bincode' can be called directly on a circuitdag (python staticmethod)
         let circuitdag_type = py.get_type_bound::<CircuitDagWrapper>();
         let deserialised_py = circuitdag_type
-            .call_method1("from_bincode", (serialised,))
+            .call_method1("from_bincode", (&serialised,))
             .unwrap();
 
         let comparison =
@@ -316,17 +318,17 @@ fn test_execution_blocked() {
     Python::with_gil(|py| {
         let dag = new_circuitdag(py);
 
-        let a = dag
+        let a = &dag
             .call_method1("add_to_back", (paulix_0.clone(),))
             .unwrap();
-        let b = dag
+        let b = &dag
             .call_method1("add_to_back", (pauliz_0.clone(),))
             .unwrap();
-        let c = dag
+        let c = &dag
             .call_method1("add_to_back", (pauliy_1.clone(),))
             .unwrap();
-        let d = dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
-        let e = dag
+        let d = &dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
+        let e = &dag
             .call_method1("add_to_back", (cpauliz_12.clone(),))
             .unwrap();
 
@@ -379,16 +381,16 @@ fn test_blocking_predecessors() {
     Python::with_gil(|py| {
         let dag = new_circuitdag(py);
 
-        let a = dag
+        let a = &dag
             .call_method1("add_to_back", (paulix_0.clone(),))
             .unwrap();
-        let b = dag
+        let b = &dag
             .call_method1("add_to_back", (pauliz_0.clone(),))
             .unwrap();
-        let c = dag
+        let c = &dag
             .call_method1("add_to_back", (pauliy_1.clone(),))
             .unwrap();
-        let d = dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
+        let d = &dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
 
         let comp = dag
             .call_method1("blocking_predecessors", (vec![a, b, c], d))
@@ -426,17 +428,17 @@ fn test_new_front_layer() {
     Python::with_gil(|py| {
         let dag = new_circuitdag(py);
 
-        let a = dag
+        let a = &dag
             .call_method1("add_to_back", (paulix_0.clone(),))
             .unwrap();
-        let b = dag
+        let b = &dag
             .call_method1("add_to_back", (pauliz_0.clone(),))
             .unwrap();
-        let c = dag
+        let c = &dag
             .call_method1("add_to_back", (pauliy_1.clone(),))
             .unwrap();
-        let d = dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
-        let e = dag
+        let d = &dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
+        let e = &dag
             .call_method1("add_to_back", (cpauliz_12.clone(),))
             .unwrap();
 

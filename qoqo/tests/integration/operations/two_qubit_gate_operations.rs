@@ -463,9 +463,8 @@ fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let py_result = operation.call_method0(py, "unitary_matrix");
-        let result_ref = py_result.map(|op| op.bind(py));
         ();
-        assert!(result_ref.is_err());
+        assert!(py_result.is_err());
     })
 }
 

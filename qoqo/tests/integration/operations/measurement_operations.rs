@@ -59,13 +59,14 @@ fn circuit_remapped() -> Circuit {
     circuit
 }
 
-fn new_circuit(py: Python) -> &Bound<CircuitWrapper> {
+fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
     let circuit_type = py.get_type_bound::<CircuitWrapper>();
     circuit_type
         .call0()
         .unwrap()
         .downcast::<CircuitWrapper>()
         .unwrap()
+        .to_owned()
 }
 
 /// Test readout() input/function
@@ -383,8 +384,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
         let mut substitution_dict: HashMap<&str, &str> = HashMap::new();
         substitution_dict.insert("ro", "test");
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
-        let result_ref = result.map(|op| op.bind(py));
-        assert!(result_ref.is_err());
+        assert!(result.is_err());
     })
 }
 
@@ -444,8 +444,7 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(0, 2);
         let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
-        let result_ref = result.map(|op| op.bind(py));
-        assert!(result_ref.is_err());
+        assert!(result.is_err());
     })
 }
 

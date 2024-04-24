@@ -95,9 +95,12 @@ fn test_to_from_json() {
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
-        let binding = new_br.call_method1("from_json", (serialised,)).unwrap();
+        let binding = new_br.call_method1("from_json", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
-        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
+        assert_eq!(
+            format!("{:?}", br.as_gil_ref()),
+            format!("{:?}", deserialised.as_gil_ref())
+        );
 
         let deserialised_error =
             new_br.call_method1("from_json", (serde_json::to_string("fails").unwrap(),));
@@ -122,9 +125,12 @@ fn test_to_from_bincode() {
         let br = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
         let new_br = br;
         let serialised = br.call_method0("to_bincode").unwrap();
-        let binding = new_br.call_method1("from_bincode", (serialised,)).unwrap();
+        let binding = new_br.call_method1("from_bincode", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
-        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
+        assert_eq!(
+            format!("{:?}", br.as_gil_ref()),
+            format!("{:?}", deserialised.as_gil_ref())
+        );
 
         let deserialised_error =
             new_br.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));

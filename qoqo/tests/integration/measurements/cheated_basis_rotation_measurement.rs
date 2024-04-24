@@ -297,11 +297,11 @@ fn test_pyo3_debug() {
         assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
 
         let debug_string = "RefCell { value: CheatedPauliZProductWrapper { internal: CheatedPauliZProduct { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: CheatedPauliZProductInput { measured_exp_vals: {}, pauli_product_keys: {\"ro\": 0} } } } }";
-        assert_eq!(format!("{:?}", br), debug_string);
+        assert_eq!(format!("{:?}", br.as_gil_ref()), debug_string);
 
         let debug_input = input;
         let debug_input_string = "RefCell { value: CheatedPauliZProductInputWrapper { internal: CheatedPauliZProductInput { measured_exp_vals: {}, pauli_product_keys: {\"ro\": 0} } } }";
-        assert_eq!(format!("{:?}", input), debug_input_string);
+        assert_eq!(format!("{:?}", input.as_gil_ref()), debug_input_string);
         assert_eq!(
             CheatedPauliZProductInputWrapper::default().internal,
             CheatedPauliZProductInputWrapper::new().internal
@@ -378,7 +378,7 @@ fn test_to_from_bincode() {
         let serialised = input.call_method0("to_bincode").unwrap();
         let new_input = input;
         let binding = new_input
-            .call_method1("from_bincode", (serialised,))
+            .call_method1("from_bincode", (&serialised,))
             .unwrap();
         let deserialised = binding
             .downcast::<CheatedPauliZProductInputWrapper>()
@@ -396,9 +396,12 @@ fn test_to_from_bincode() {
         let new_br = br;
 
         let serialised = br.call_method0("to_bincode").unwrap();
-        let binding = new_br.call_method1("from_bincode", (serialised,)).unwrap();
+        let binding = new_br.call_method1("from_bincode", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<CheatedPauliZProductWrapper>().unwrap();
-        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
+        assert_eq!(
+            format!("{:?}", br.as_gil_ref()),
+            format!("{:?}", deserialised.as_gil_ref())
+        );
 
         let deserialised_error =
             new_br.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));
@@ -427,7 +430,7 @@ fn test_to_from_json() {
 
         let serialised = input.call_method0("to_json").unwrap();
         let new_input = input;
-        let binding = new_input.call_method1("from_json", (serialised,)).unwrap();
+        let binding = new_input.call_method1("from_json", (&serialised,)).unwrap();
         let deserialised = binding
             .downcast::<CheatedPauliZProductInputWrapper>()
             .unwrap();
@@ -443,9 +446,12 @@ fn test_to_from_json() {
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
-        let binding = new_br.call_method1("from_json", (serialised,)).unwrap();
+        let binding = new_br.call_method1("from_json", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<CheatedPauliZProductWrapper>().unwrap();
-        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
+        assert_eq!(
+            format!("{:?}", br.as_gil_ref()),
+            format!("{:?}", deserialised.as_gil_ref())
+        );
 
         let deserialised_error =
             new_br.call_method1("from_json", (serde_json::to_string("fails").unwrap(),));
@@ -568,9 +574,8 @@ fn test_return_input() {
             .unwrap();
         let br = binding.downcast::<CheatedPauliZProductWrapper>().unwrap();
 
-        let input_returned = br
-            .call_method0("input")
-            .unwrap()
+        let binding = br.call_method0("input").unwrap();
+        let input_returned = binding
             .downcast::<CheatedPauliZProductInputWrapper>()
             .unwrap();
 

@@ -37,22 +37,21 @@ use std::f64::consts::PI;
 use test_case::test_case;
 
 // helper function to convert CalculatorFloat into a python object
-fn convert_cf_to_pyobject(
-    py: Python,
-    parameter: CalculatorFloat,
-) -> &Bound<CalculatorFloatWrapper> {
+fn convert_cf_to_pyobject(py: Python, parameter: CalculatorFloat) -> Bound<CalculatorFloatWrapper> {
     let parameter_type = py.get_type_bound::<CalculatorFloatWrapper>();
     match parameter {
         CalculatorFloat::Float(x) => parameter_type
             .call1((x,))
             .unwrap()
             .downcast::<CalculatorFloatWrapper>()
-            .unwrap(),
+            .unwrap()
+            .to_owned(),
         CalculatorFloat::Str(x) => parameter_type
             .call1((x,))
             .unwrap()
             .downcast::<CalculatorFloatWrapper>()
-            .unwrap(),
+            .unwrap()
+            .to_owned(),
     }
 }
 
@@ -1539,9 +1538,8 @@ fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let py_result = operation.call_method0(py, "unitary_matrix");
-        let result_ref = py_result.map(|op| op.bind(py));
         ();
-        assert!(result_ref.is_err());
+        assert!(py_result.is_err());
     })
 }
 
@@ -1573,9 +1571,8 @@ fn test_pyo3_unitarymatrix_singlequbitgate(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let py_result = operation.call_method0(py, "unitary_matrix");
-        let result_ref = py_result.map(|op| op.bind(py));
         ();
-        assert!(result_ref.is_err());
+        assert!(py_result.is_err());
     })
 }
 

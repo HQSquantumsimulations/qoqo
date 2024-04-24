@@ -28,22 +28,21 @@ use std::collections::{HashMap, HashSet};
 use test_case::test_case;
 
 // helper function to convert CalculatorFloat into a python object
-fn convert_cf_to_pyobject(
-    py: Python,
-    parameter: CalculatorFloat,
-) -> &Bound<CalculatorFloatWrapper> {
+fn convert_cf_to_pyobject(py: Python, parameter: CalculatorFloat) -> Bound<CalculatorFloatWrapper> {
     let parameter_type = py.get_type_bound::<CalculatorFloatWrapper>();
     match parameter {
         CalculatorFloat::Float(x) => parameter_type
             .call1((x,))
             .unwrap()
             .downcast::<CalculatorFloatWrapper>()
-            .unwrap(),
+            .unwrap()
+            .to_owned(),
         CalculatorFloat::Str(x) => parameter_type
             .call1((x,))
             .unwrap()
             .downcast::<CalculatorFloatWrapper>()
-            .unwrap(),
+            .unwrap()
+            .to_owned(),
     }
 }
 
@@ -638,8 +637,7 @@ fn test_pyo3_remapmodes_error(input_operation: Operation) {
         let mut mode_mapping: HashMap<usize, usize> = HashMap::new();
         mode_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_modes", (mode_mapping,));
-        let result_ref = result.map(|op| op.bind(py));
-        assert!(result_ref.is_err());
+        assert!(result.is_err());
     })
 }
 
@@ -815,8 +813,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let substitution_dict: HashMap<String, f64> = HashMap::new();
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
-        let result_ref = result.map(|op| op.bind(py));
-        assert!(result_ref.is_err());
+        assert!(result.is_err());
     })
 }
 

@@ -276,10 +276,10 @@ fn test_pyo3_debug() {
         assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
 
         let debug_string = "RefCell { value: CheatedWrapper { internal: Cheated { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: CheatedInput { measured_operators: {\"test_diagonal\": ([(0, 0, Complex { re: 1.0, im: 0.0 }), (0, 1, Complex { re: 0.0, im: 0.0 }), (1, 0, Complex { re: 0.0, im: 0.0 }), (1, 1, Complex { re: -1.0, im: 0.0 })], \"ro\")}, number_qubits: 3 } } } }";
-        assert_eq!(format!("{:?}", br), debug_string);
+        assert_eq!(format!("{:?}", br.as_gil_ref()), debug_string);
 
         let debug_input_string = "RefCell { value: CheatedInputWrapper { internal: CheatedInput { measured_operators: {\"test_diagonal\": ([(0, 0, Complex { re: 1.0, im: 0.0 }), (0, 1, Complex { re: 0.0, im: 0.0 }), (1, 0, Complex { re: 0.0, im: 0.0 }), (1, 1, Complex { re: -1.0, im: 0.0 })], \"ro\")}, number_qubits: 3 } } }";
-        assert_eq!(format!("{:?}", input), debug_input_string);
+        assert_eq!(format!("{:?}", input.as_gil_ref()), debug_input_string);
 
         let debug_input = input;
         let error = debug_input.call_method1(
@@ -366,7 +366,7 @@ fn test_to_from_bincode() {
         let serialised = input.call_method0("to_bincode").unwrap();
         let new_input = input;
         let binding = new_input
-            .call_method1("from_bincode", (serialised,))
+            .call_method1("from_bincode", (&serialised,))
             .unwrap();
         let deserialised = binding.downcast::<CheatedInputWrapper>().unwrap();
         assert_eq!(format!("{:?}", input), format!("{:?}", deserialised));
@@ -382,9 +382,12 @@ fn test_to_from_bincode() {
         let new_br = br;
 
         let serialised = br.call_method0("to_bincode").unwrap();
-        let binding = new_br.call_method1("from_bincode", (serialised,)).unwrap();
+        let binding = new_br.call_method1("from_bincode", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<CheatedWrapper>().unwrap();
-        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
+        assert_eq!(
+            format!("{:?}", br.as_gil_ref()),
+            format!("{:?}", deserialised.as_gil_ref())
+        );
 
         let deserialised_error =
             new_br.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));
@@ -419,7 +422,7 @@ fn test_to_from_json() {
 
         let serialised = input.call_method0("to_json").unwrap();
         let new_input = input;
-        let binding = new_input.call_method1("from_json", (serialised,)).unwrap();
+        let binding = new_input.call_method1("from_json", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<CheatedInputWrapper>().unwrap();
         assert_eq!(format!("{:?}", input), format!("{:?}", deserialised));
 
@@ -433,9 +436,12 @@ fn test_to_from_json() {
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
-        let binding = new_br.call_method1("from_json", (serialised,)).unwrap();
+        let binding = new_br.call_method1("from_json", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<CheatedWrapper>().unwrap();
-        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
+        assert_eq!(
+            format!("{:?}", br.as_gil_ref()),
+            format!("{:?}", deserialised.as_gil_ref())
+        );
 
         let deserialised_error =
             new_br.call_method1("from_json", (serde_json::to_string("fails").unwrap(),));
@@ -582,11 +588,8 @@ fn test_return_input() {
             .unwrap();
         let br = binding.downcast::<CheatedWrapper>().unwrap();
 
-        let input_returned = br
-            .call_method0("input")
-            .unwrap()
-            .downcast::<CheatedInputWrapper>()
-            .unwrap();
+        let binding = br.call_method0("input").unwrap();
+        let input_returned = binding.downcast::<CheatedInputWrapper>().unwrap();
 
         assert_eq!(format!("{:?}", input_returned), format!("{:?}", input));
     })

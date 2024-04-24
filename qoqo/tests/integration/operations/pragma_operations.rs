@@ -28,22 +28,21 @@ use std::collections::{HashMap, HashSet};
 use test_case::test_case;
 
 // helper function to convert CalculatorFloat into a python object
-fn convert_cf_to_pyobject(
-    py: Python,
-    parameter: CalculatorFloat,
-) -> &Bound<CalculatorFloatWrapper> {
+fn convert_cf_to_pyobject(py: Python, parameter: CalculatorFloat) -> Bound<CalculatorFloatWrapper> {
     let parameter_type = py.get_type_bound::<CalculatorFloatWrapper>();
     match parameter {
         CalculatorFloat::Float(x) => parameter_type
             .call1((x,))
             .unwrap()
             .downcast::<CalculatorFloatWrapper>()
-            .unwrap(),
+            .unwrap()
+            .to_owned(),
         CalculatorFloat::Str(x) => parameter_type
             .call1((x,))
             .unwrap()
             .downcast::<CalculatorFloatWrapper>()
-            .unwrap(),
+            .unwrap()
+            .to_owned(),
     }
 }
 
@@ -107,13 +106,14 @@ fn circuit_remapped() -> Circuit {
     circuit
 }
 
-fn new_circuit(py: Python) -> &Bound<CircuitWrapper> {
+fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
     let circuit_type = py.get_type_bound::<CircuitWrapper>();
     circuit_type
         .call0()
         .unwrap()
         .downcast::<CircuitWrapper>()
         .unwrap()
+        .to_owned()
 }
 
 /// Test inputs of PragmaSetNumberOfMeasurements
@@ -2563,14 +2563,13 @@ fn test_pyo3_new_annotated_op() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = py.get_type_bound::<PragmaAnnotatedOpWrapper>();
-        let new_op = operation
+        let binding = operation
             .call1((
                 convert_operation_to_pyobject(internal_op_0).unwrap(),
                 "test",
             ))
-            .unwrap()
-            .downcast::<PragmaAnnotatedOpWrapper>()
             .unwrap();
+        let new_op = binding.downcast::<PragmaAnnotatedOpWrapper>().unwrap();
 
         let input_definition = Operation::from(PragmaAnnotatedOp::new(
             Operation::from(PauliX::new(0)),
@@ -2582,14 +2581,13 @@ fn test_pyo3_new_annotated_op() {
         assert!(comparison_copy);
 
         let pragma_wrapper = new_op.extract::<PragmaAnnotatedOpWrapper>().unwrap();
-        let new_op_diff = operation
+        let binding = operation
             .call1((
                 convert_operation_to_pyobject(internal_op_1).unwrap(),
                 "test",
             ))
-            .unwrap()
-            .downcast::<PragmaAnnotatedOpWrapper>()
             .unwrap();
+        let new_op_diff = binding.downcast::<PragmaAnnotatedOpWrapper>().unwrap();
         let pragma_wrapper_diff = new_op_diff.extract::<PragmaAnnotatedOpWrapper>().unwrap();
         let helper_ne: bool = pragma_wrapper_diff != pragma_wrapper;
         assert!(helper_ne);

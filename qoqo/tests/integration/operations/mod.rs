@@ -41,18 +41,20 @@ use qoqo_calculator_pyo3::CalculatorFloatWrapper;
 pub fn convert_cf_to_pyobject(
     py: Python,
     parameter: CalculatorFloat,
-) -> &Bound<CalculatorFloatWrapper> {
+) -> Bound<CalculatorFloatWrapper> {
     let parameter_type = py.get_type_bound::<CalculatorFloatWrapper>();
     match parameter {
         CalculatorFloat::Float(x) => parameter_type
             .call1((x,))
             .unwrap()
             .downcast::<CalculatorFloatWrapper>()
-            .unwrap(),
+            .unwrap()
+            .to_owned(),
         CalculatorFloat::Str(x) => parameter_type
             .call1((x,))
             .unwrap()
             .downcast::<CalculatorFloatWrapper>()
-            .unwrap(),
+            .unwrap()
+            .to_owned(),
     }
 }

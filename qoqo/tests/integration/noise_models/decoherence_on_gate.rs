@@ -64,9 +64,12 @@ fn test_to_from_json() {
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
-        let binding = new_br.call_method1("from_json", (serialised,)).unwrap();
+        let binding = new_br.call_method1("from_json", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
-        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
+        assert_eq!(
+            format!("{:?}", br.as_gil_ref()),
+            format!("{:?}", deserialised.as_gil_ref())
+        );
 
         let deserialised_error =
             new_br.call_method1("from_json", (serde_json::to_string("fails").unwrap(),));
@@ -91,9 +94,12 @@ fn test_to_from_bincode() {
         let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
         let new_br = br;
         let serialised = br.call_method0("to_bincode").unwrap();
-        let binding = new_br.call_method1("from_bincode", (serialised,)).unwrap();
+        let binding = new_br.call_method1("from_bincode", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
-        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
+        assert_eq!(
+            format!("{:?}", br.as_gil_ref()),
+            format!("{:?}", deserialised.as_gil_ref())
+        );
 
         let deserialised_error =
             new_br.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));
@@ -127,14 +133,13 @@ fn test_singe_qubit_noise_term() {
         let plus_minus_operator = spins::PlusMinusLindbladNoiseOperatorWrapper {
             internal: internal_plus_minus,
         };
-        let br = br
+        let binding = br
             .call_method1(
                 "set_single_qubit_gate_error",
                 ("RotateX", 0, plus_minus_operator.clone()),
             )
-            .unwrap()
-            .downcast::<DecoherenceOnGateModelWrapper>()
             .unwrap();
+        let br = binding.downcast::<DecoherenceOnGateModelWrapper>().unwrap();
         let operator = br
             .call_method1("get_single_qubit_gate_error", ("RotateX", 0))
             .unwrap()
@@ -168,10 +173,10 @@ fn test_two_qubit_noise_term() {
                 "set_two_qubit_gate_error",
                 ("CNOT", 0, 1, plus_minus_operator.clone()),
             )
-            .unwrap()
-            .downcast::<DecoherenceOnGateModelWrapper>()
             .unwrap();
         let operator = br
+            .downcast::<DecoherenceOnGateModelWrapper>()
+            .unwrap()
             .call_method1("get_two_qubit_gate_error", ("CNOT", 0, 1))
             .unwrap()
             .extract::<spins::PlusMinusLindbladNoiseOperatorWrapper>()
@@ -210,10 +215,10 @@ fn test_three_qubit_noise_term() {
                     plus_minus_operator.clone(),
                 ),
             )
-            .unwrap()
-            .downcast::<DecoherenceOnGateModelWrapper>()
             .unwrap();
         let operator = br
+            .downcast::<DecoherenceOnGateModelWrapper>()
+            .unwrap()
             .call_method1(
                 "get_three_qubit_gate_error",
                 ("ControlledControlledPauliZ", 0, 1, 2),
@@ -249,10 +254,10 @@ fn test_multi_qubit_noise_term() {
                 "set_multi_qubit_gate_error",
                 ("MultiQubitMS", vec![0, 1, 2], plus_minus_operator.clone()),
             )
-            .unwrap()
-            .downcast::<DecoherenceOnGateModelWrapper>()
             .unwrap();
         let operator = br
+            .downcast::<DecoherenceOnGateModelWrapper>()
+            .unwrap()
             .call_method1(
                 "get_multi_qubit_gate_error",
                 ("MultiQubitMS", vec![0, 1, 2]),

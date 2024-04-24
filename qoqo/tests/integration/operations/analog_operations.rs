@@ -19,7 +19,6 @@ use qoqo::operations::{
 use qoqo_calculator::{Calculator, CalculatorFloat};
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
-use roqoqo::RoqoqoError;
 #[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
 
@@ -79,13 +78,14 @@ fn create_apply_timedependent_spin_hamiltonian_spin_test() -> ApplyTimeDependent
     ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone())
 }
 
-fn new_system(py: Python, number_spins: Option<usize>) -> &Bound<SpinHamiltonianSystemWrapper> {
+fn new_system(py: Python, number_spins: Option<usize>) -> Bound<SpinHamiltonianSystemWrapper> {
     let system_type = py.get_type_bound::<SpinHamiltonianSystemWrapper>();
     system_type
         .call1((number_spins,))
         .unwrap()
         .downcast::<SpinHamiltonianSystemWrapper>()
         .unwrap()
+        .to_owned()
 }
 
 /// Test new() function for ApplyConstantSpinHamiltonian
@@ -106,9 +106,7 @@ fn test_new_constantspinhamiltionian() {
             .unwrap();
 
         let operation_type = py.get_type_bound::<ApplyConstantSpinHamiltonianWrapper>();
-        let binding = operation_type
-            .call1(((system_wrapper.clone(), 1.0)))
-            .unwrap();
+        let binding = operation_type.call1((system_wrapper.clone(), 1.0)).unwrap();
         let operation_py = binding
             .downcast::<ApplyConstantSpinHamiltonianWrapper>()
             .unwrap();
@@ -125,9 +123,7 @@ fn test_new_constantspinhamiltionian() {
         let def_wrapper = operation_py
             .extract::<ApplyConstantSpinHamiltonianWrapper>()
             .unwrap();
-        let binding = operation_type
-            .call1(((system_wrapper.clone(), 0.0)))
-            .unwrap();
+        let binding = operation_type.call1((system_wrapper.clone(), 0.0)).unwrap();
         let new_op_diff = binding
             .downcast::<ApplyConstantSpinHamiltonianWrapper>()
             .unwrap();
@@ -168,7 +164,7 @@ fn test_new_timedependentspinhamiltionian() {
 
         let operation_type = py.get_type_bound::<ApplyTimeDependentSpinHamiltonianWrapper>();
         let binding = operation_type
-            .call1(((system_wrapper.clone(), vec![1.0], values.clone())))
+            .call1((system_wrapper.clone(), vec![1.0], values.clone()))
             .unwrap();
         let operation_py = binding
             .downcast::<ApplyTimeDependentSpinHamiltonianWrapper>()
@@ -190,7 +186,7 @@ fn test_new_timedependentspinhamiltionian() {
             .extract::<ApplyTimeDependentSpinHamiltonianWrapper>()
             .unwrap();
         let binding = operation_type
-            .call1(((system_wrapper.clone(), vec![0.1], values.clone())))
+            .call1((system_wrapper.clone(), vec![0.1], values.clone()))
             .unwrap();
         let new_op_diff = binding
             .downcast::<ApplyTimeDependentSpinHamiltonianWrapper>()
@@ -348,7 +344,7 @@ fn test_pyo3_substitute_parameters(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let mut substitution_dict_py: HashMap<String, f64> = HashMap::new();
-        substitution_dict_py.insert("theta", 1.0);
+        substitution_dict_py.insert("theta".to_owned(), 1.0);
         let substitute_op = operation
             .call_method1(py, "substitute_parameters", (substitution_dict_py,))
             .unwrap();
@@ -380,7 +376,7 @@ fn test_pyo3_substitute_params_single(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let mut substitution_dict_py: HashMap<String, f64> = HashMap::new();
-        substitution_dict_py.insert("theta", 1.0);
+        substitution_dict_py.insert("theta".to_owned(), 1.0);
         let substitute_op = operation
             .call_method1(py, "substitute_parameters", (substitution_dict_py,))
             .unwrap();
@@ -414,7 +410,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
         ();
         assert!(result.is_err());
         let binding = result.unwrap_err();
-        let e = binding.value(py);
+        let e = binding.value_bound(py);
         assert_eq!(format!("{:?}", e), "RuntimeError('Parameter Substitution failed: CalculatorError(VariableNotSet { name: \"theta\" })')");
     })
 }
@@ -441,7 +437,7 @@ fn test_ineffective_substitute_parameters(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let mut substitution_dict_py: HashMap<String, f64> = HashMap::new();
-        substitution_dict_py.insert("theta", 0.0);
+        substitution_dict_py.insert("theta".to_owned(), 0.0);
         let substitute_op = operation
             .call_method1(py, "substitute_parameters", (substitution_dict_py,))
             .unwrap();

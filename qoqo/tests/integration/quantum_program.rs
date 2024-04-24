@@ -433,7 +433,7 @@ fn test_to_from_bincode() {
 
         // testing that 'from_bincode' can be called directly on a QuantumProgram (python staticmethod)
         let deserialised_py = program_type
-            .call_method1("from_bincode", (serialised,))
+            .call_method1("from_bincode", (&serialised,))
             .unwrap();
 
         let comparison =
@@ -509,7 +509,7 @@ fn test_to_from_json() {
 
         // testing that 'from_json' can be called directly on a QuantumProgram (python staticmethod)
         let deserialised_py = program_type
-            .call_method1("from_json", (serialised,))
+            .call_method1("from_json", (&serialised,))
             .unwrap();
 
         let comparison =
@@ -641,11 +641,8 @@ fn test_return_measurement_cheatedpaulizproduct() {
             .unwrap();
         let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
 
-        let measurement_returned = &program
-            .call_method0("measurement")
-            .unwrap()
-            .downcast::<CheatedPauliZProductWrapper>()
-            .unwrap();
+        let binding = program.call_method0("measurement").unwrap();
+        let measurement_returned = &binding.downcast::<CheatedPauliZProductWrapper>().unwrap();
 
         assert_eq!(
             format!("{:?}", measurement_returned),
@@ -727,11 +724,8 @@ fn test_return_measurement_cheated() {
             .unwrap();
         let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
 
-        let measurement_returned = program
-            .call_method0("measurement")
-            .unwrap()
-            .downcast::<CheatedWrapper>()
-            .unwrap();
+        let binding = program.call_method0("measurement").unwrap();
+        let measurement_returned = binding.downcast::<CheatedWrapper>().unwrap();
 
         assert_eq!(
             format!("{:?}", measurement_returned),
@@ -762,11 +756,8 @@ fn test_return_measurement_classicalreg() {
             .unwrap();
         let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
 
-        let measurement_returned = program
-            .call_method0("measurement")
-            .unwrap()
-            .downcast::<ClassicalRegisterWrapper>()
-            .unwrap();
+        let binding = program.call_method0("measurement").unwrap();
+        let measurement_returned = binding.downcast::<ClassicalRegisterWrapper>().unwrap();
 
         assert_eq!(
             format!("{:?}", measurement_returned),

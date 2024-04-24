@@ -506,8 +506,7 @@ fn test_pyo3_substitute_parameters_error(input_operation: Operation) {
         let mut substitution_dict: HashMap<&str, &str> = HashMap::new();
         substitution_dict.insert("ro", "test");
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
-        let result_ref = result.map(|op| op.bind(py));
-        assert!(result_ref.is_err());
+        assert!(result.is_err());
     })
 }
 

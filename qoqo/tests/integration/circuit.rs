@@ -326,7 +326,7 @@ fn test_to_from_bincode() {
         // testing that 'from_bincode' can be called directly on a circuit (python staticmethod)
         let circuit_type = py.get_type_bound::<CircuitWrapper>();
         let deserialised_py = circuit_type
-            .call_method1("from_bincode", (serialised,))
+            .call_method1("from_bincode", (&serialised,))
             .unwrap();
 
         let comparison =
@@ -358,7 +358,7 @@ fn test_value_error_bincode() {
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
-        let binding = &new_br.call_method1("from_json", (serialised,)).unwrap();
+        let binding = &new_br.call_method1("from_json", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<PauliZProductWrapper>().unwrap();
 
         let new = new_circuit(py);
@@ -684,7 +684,7 @@ fn test_fmt_circuititerator() {
 
         let fmt = "RefCell { value: OperationIteratorWrapper { internal: OperationIterator { definition_iter: IntoIter([]), operation_iter: IntoIter([RotateX(RotateX { qubit: 0, theta: Float(0.0) }), RotateX(RotateX { qubit: 1, theta: Float(1.0) })]) } } }";
 
-        assert_eq!(format!("{:?}", circuit_iter), fmt);
+        assert_eq!(format!("{:?}", circuit_iter.as_gil_ref()), fmt);
     })
 }
 
