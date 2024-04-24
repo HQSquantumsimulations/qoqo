@@ -182,7 +182,7 @@ fn test_pyo3_inputs_setstatevector() {
         let to_op: Py<PyAny> = operation.call_method0(py, "statevector").unwrap();
 
         let to_statevector_op: PyReadonlyArray1<Complex64> = to_op.bind(py).extract().unwrap();
-        let statevector_op: Array1<Complex64> = to_statevector_op.to_owned_array();
+        let statevector_op: Array1<Complex64> = to_statevector_op..as_array().to_owned()();
         assert_eq!(statevector_op, statevector());
     })
 }
@@ -199,7 +199,11 @@ fn test_pyo3_inputs_setdensitymatrix() {
             .bind(py)
             .downcast::<PyArray2<Complex64>>()
             .unwrap();
-        let densmat_array = to_operators_op.readonly().as_array().to_owned();
+        let densmat_array = to_operators_op
+            .as_gil_ref()
+            .readonly()
+            .as_array()
+            .to_owned();
 
         assert_eq!(densmat_array, densitymatrix());
     })
@@ -505,7 +509,11 @@ fn test_pyo3_inputs_generalnoise() {
             .bind(py)
             .downcast::<PyArray2<f64>>()
             .unwrap();
-        let operators_op = to_operators_op.readonly().as_array().to_owned();
+        let operators_op = to_operators_op
+            .as_gil_ref()
+            .readonly()
+            .as_array()
+            .to_owned();
         assert_eq!(operators_op, operators());
     })
 }
@@ -1150,8 +1158,8 @@ fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(first_op).unwrap();
-        let mut substitution_dict: HashMap<&str, f64> = HashMap::new();
-        substitution_dict.insert("test", 1.0);
+        let mut substitution_dict: HashMap<String, f64> = HashMap::new();
+        substitution_dict.insert("test".to_owned(), 1.0);
         let substitute_op = operation
             .call_method1(py, "substitute_parameters", (substitution_dict,))
             .unwrap();
@@ -1180,8 +1188,8 @@ fn test_pyo3_substitute_parameters_overrotation() {
         )))
         .unwrap();
 
-        let mut substitution_dict: HashMap<&str, f64> = HashMap::new();
-        substitution_dict.insert("test", 1.0);
+        let mut substitution_dict: HashMap<String, f64> = HashMap::new();
+        substitution_dict.insert("test".to_owned(), 1.0);
         let substitute_op = operation
             .call_method1(py, "substitute_parameters", (substitution_dict,))
             .unwrap();
@@ -1234,7 +1242,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let substitution_dict: HashMap<&str, f64> = HashMap::new();
+        let substitution_dict: HashMap<String, f64> = HashMap::new();
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
         let result_ref = result.bind();
         assert!(result_ref.is_err());
@@ -1409,10 +1417,8 @@ fn test_pyo3_noise_superoperator_damping() {
         ]);
 
         let to_superop_op = operation.call_method0(py, "superoperator").unwrap();
-        let superop_op = to_superop_op
-            .downcast::<PyArray2<f64>>(py)
-            .unwrap()
-            .to_owned_array();
+        let superop_op =
+            to_superop_op.downcast::<PyArray2<f64>>(py).unwrap()..as_array().to_owned()();
 
         assert_eq!(superop_op, superop_param);
     })
@@ -1443,10 +1449,8 @@ fn test_pyo3_noise_superoperator_depolarising() {
         ]);
 
         let to_superop_op = operation.call_method0(py, "superoperator").unwrap();
-        let superop_op = to_superop_op
-            .downcast::<PyArray2<f64>>(py)
-            .unwrap()
-            .to_owned_array();
+        let superop_op =
+            to_superop_op.downcast::<PyArray2<f64>>(py).unwrap()..as_array().to_owned()();
 
         assert_eq!(superop_op, superop_param);
     })
@@ -1475,10 +1479,8 @@ fn test_pyo3_noise_superoperator_dephasing() {
         ]);
 
         let to_superop_op = operation.call_method0(py, "superoperator").unwrap();
-        let superop_op = to_superop_op
-            .downcast::<PyArray2<f64>>(py)
-            .unwrap()
-            .to_owned_array();
+        let superop_op =
+            to_superop_op.downcast::<PyArray2<f64>>(py).unwrap()..as_array().to_owned()();
 
         assert_eq!(superop_op, superop_param);
     })
@@ -1508,10 +1510,8 @@ fn test_pyo3_noise_superoperator_randomnoise() {
         ]);
 
         let to_superop_op = operation.call_method0(py, "superoperator").unwrap();
-        let superop_op = to_superop_op
-            .downcast::<PyArray2<f64>>(py)
-            .unwrap()
-            .to_owned_array();
+        let superop_op =
+            to_superop_op.downcast::<PyArray2<f64>>(py).unwrap()..as_array().to_owned()();
 
         assert_eq!(superop_op, superop_param);
     })

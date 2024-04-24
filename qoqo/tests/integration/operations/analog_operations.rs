@@ -341,7 +341,7 @@ fn test_pyo3_substitute_parameters(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
-        let mut substitution_dict_py: HashMap<&str, f64> = HashMap::new();
+        let mut substitution_dict_py: HashMap<String, f64> = HashMap::new();
         substitution_dict_py.insert("theta", 1.0);
         let substitute_op = operation
             .call_method1(py, "substitute_parameters", (substitution_dict_py,))
@@ -373,7 +373,7 @@ fn test_pyo3_substitute_params_single(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
-        let mut substitution_dict_py: HashMap<&str, f64> = HashMap::new();
+        let mut substitution_dict_py: HashMap<String, f64> = HashMap::new();
         substitution_dict_py.insert("theta", 1.0);
         let substitute_op = operation
             .call_method1(py, "substitute_parameters", (substitution_dict_py,))
@@ -403,7 +403,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
     Python::with_gil(|py| {
         pyo3::prepare_freethreaded_python();
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let substitution_dict: HashMap<&str, f64> = HashMap::new();
+        let substitution_dict: HashMap<String, f64> = HashMap::new();
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
         let result_ref = result.bind();
         assert!(result_ref.is_err());
@@ -434,7 +434,7 @@ fn test_ineffective_substitute_parameters(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
-        let mut substitution_dict_py: HashMap<&str, f64> = HashMap::new();
+        let mut substitution_dict_py: HashMap<String, f64> = HashMap::new();
         substitution_dict_py.insert("theta", 0.0);
         let substitute_op = operation
             .call_method1(py, "substitute_parameters", (substitution_dict_py,))

@@ -58,7 +58,7 @@ pub struct PragmaLoop {
 
 /// Module containing the PragmaSetStateVector class.
 #[pymodule]
-fn pragma_set_statevector(_py: Python, module: &PyModule) -> PyResult<()> {
+fn pragma_set_statevector(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     module.add_class::<PragmaSetStateVectorWrapper>()?;
     Ok(())
 }
@@ -84,7 +84,7 @@ insert_pyany_to_operation!(
     "PragmaSetStateVector" =>{
         let array = op.call_method0("statevector").expect("error extracting");
         let statevec_casted: PyReadonlyArray1<Complex64> = array.extract().unwrap();
-        let statevec_array: Array1<Complex64> = statevec_casted.to_owned_array();
+        let statevec_array: Array1<Complex64> = statevec_casted.as_array().to_owned();;
         // let statevec_array: Array1<Complex64> = Array1::from(statevec_casted);
         Ok(PragmaSetStateVector::new(statevec_array).into())
     }
@@ -114,13 +114,13 @@ impl PragmaSetStateVectorWrapper {
         let try_cast: PyResult<Array1<Complex64>> =
             Python::with_gil(|py| -> PyResult<Array1<Complex64>> {
                 let extracted: PyReadonlyArray1<Complex64> = statevector.bind(py).extract()?;
-                let statevec: Array1<Complex64> = extracted.to_owned_array();
+                let statevec: Array1<Complex64> = extracted.as_array().to_owned().into();
                 Ok(statevec)
             });
         let try_cast = try_cast.or_else(|_| {
             Python::with_gil(|py| -> PyResult<Array1<Complex64>> {
                 let extracted: PyReadonlyArray1<f64> = statevector.bind(py).extract()?;
-                let statevec: Array1<f64> = extracted.to_owned_array();
+                let statevec: Array1<f64> = extracted.as_array().to_owned().into();
                 let statevec: Array1<Complex64> = statevec
                     .into_iter()
                     .map(|f| Complex64::new(f, 0.0))
@@ -131,7 +131,7 @@ impl PragmaSetStateVectorWrapper {
         let try_cast = try_cast.or_else(|_| {
             Python::with_gil(|py| -> PyResult<Array1<Complex64>> {
                 let extracted: PyReadonlyArray1<isize> = statevector.bind(py).extract()?;
-                let statevec: Array1<isize> = extracted.to_owned_array();
+                let statevec: Array1<isize> = extracted.as_array().to_owned();
                 let statevec: Array1<Complex64> = statevec
                     .into_iter()
                     .map(|f| Complex64::new(f as f64, 0.0))
@@ -146,7 +146,7 @@ impl PragmaSetStateVectorWrapper {
             Err(_) => {
                 let statevec_casted: Vec<Complex64> =
                     Python::with_gil(|py| -> PyResult<Vec<Complex64>> {
-                        Vec::extract(statevector.bind(py))
+                        Vec::extract_bound(statevector.bind(py))
                     })?;
                 let statevec_array: Array1<Complex64> = Array1::from(statevec_casted);
                 Ok(Self {
@@ -160,9 +160,9 @@ impl PragmaSetStateVectorWrapper {
     ///
     /// Returns:
     ///     np.ndarray: The statevector representing the qubit register.
-    fn statevector(&self) -> Py<PyArray1<Complex64>> {
-        Python::with_gil(|py| -> Py<PyArray1<Complex64>> {
-            self.internal.statevector().to_pyarray(py).to_owned()
+    fn statevector(&self) -> Bound<PyArray1<Complex64>> {
+        Python::with_gil(|py| -> Bound<PyArray1<Complex64>> {
+            self.internal.statevector().to_pyarray_bound(py)
         })
     }
 
@@ -171,8 +171,9 @@ impl PragmaSetStateVectorWrapper {
     /// Returns:
     ///     set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits(&self) -> PyObject {
-        let pyobject: PyObject =
-            Python::with_gil(|py| -> PyObject { PySet::new(py, &["All"]).unwrap().to_object(py) });
+        let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
+            PySet::new_bound(py, &["All"]).unwrap().to_object(py)
+        });
         pyobject
     }
 
@@ -214,7 +215,7 @@ impl PragmaSetStateVectorWrapper {
     ///     RuntimeError: The parameter substitution failed.
     fn substitute_parameters(
         &self,
-        substitution_parameters: std::collections::HashMap<&str, f64>,
+        substitution_parameters: std::collections::HashMap<String, f64>,
     ) -> PyResult<Self> {
         let mut calculator = qoqo_calculator::Calculator::new();
         for (key, val) in substitution_parameters.iter() {
@@ -352,7 +353,7 @@ impl PragmaSetStateVectorWrapper {
 
 /// Module containing the PragmaSetDensityMatrix class.
 #[pymodule]
-fn pragma_set_density_matrix(_py: Python, module: &PyModule) -> PyResult<()> {
+fn pragma_set_density_matrix(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     module.add_class::<PragmaSetDensityMatrixWrapper>()?;
     Ok(())
 }
@@ -378,7 +379,7 @@ insert_pyany_to_operation!(
                       .map_err(|_| QoqoError::ConversionError)?;
 
         let density_matrix_op = density_matrix.downcast::<PyArray2<Complex64>>().unwrap();
-        let densmat_array = density_matrix_op.readonly().as_array().to_owned();
+        let densmat_array = density_matrix_op.as_gil_ref().readonly().as_array().to_owned();
         Ok(PragmaSetDensityMatrix::new(densmat_array).into())
     }
 );
@@ -415,9 +416,9 @@ impl PragmaSetDensityMatrixWrapper {
     /// Returns:
     ///     np.ndarray: The density matrix (2d array) representing the qubit register.
 
-    fn density_matrix(&self) -> Py<PyArray2<Complex64>> {
-        Python::with_gil(|py| -> Py<PyArray2<Complex64>> {
-            self.internal.density_matrix().to_pyarray(py).to_owned()
+    fn density_matrix(&self) -> Bound<PyArray2<Complex64>> {
+        Python::with_gil(|py| -> Bound<PyArray2<Complex64>> {
+            self.internal.density_matrix().to_pyarray_bound(py)
         })
     }
 
@@ -426,8 +427,9 @@ impl PragmaSetDensityMatrixWrapper {
     /// Returns:
     ///     set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits(&self) -> PyObject {
-        let pyobject: PyObject =
-            Python::with_gil(|py| -> PyObject { PySet::new(py, &["All"]).unwrap().to_object(py) });
+        let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
+            PySet::new_bound(py, &["All"]).unwrap().to_object(py)
+        });
         pyobject
     }
 
@@ -469,7 +471,7 @@ impl PragmaSetDensityMatrixWrapper {
     ///     RuntimeError: The parameter substitution failed.
     fn substitute_parameters(
         &self,
-        substitution_parameters: std::collections::HashMap<&str, f64>,
+        substitution_parameters: std::collections::HashMap<String, f64>,
     ) -> PyResult<Self> {
         let mut calculator = qoqo_calculator::Calculator::new();
         for (key, val) in substitution_parameters.iter() {
@@ -970,7 +972,7 @@ pub struct PragmaRandomNoise {
 
 /// Module containing the PragmaGeneralNoise class.
 #[pymodule]
-fn pragma_general_noise(_py: Python, module: &PyModule) -> PyResult<()> {
+fn pragma_general_noise(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     module.add_class::<PragmaGeneralNoiseWrapper>()?;
     Ok(())
 }
@@ -998,7 +1000,7 @@ insert_pyany_to_operation!(
         let qubit: usize = qbt.extract()
                               .map_err(|_| QoqoError::ConversionError)?;
 
-        let gatetm = op.call_method0("gate_time")
+        let gatetm = &op.call_method0("gate_time")
                       .map_err(|_| QoqoError::ConversionError)?;
         let gate_time: CalculatorFloat = convert_into_calculator_float(gatetm).map_err(|_| {
             QoqoError::ConversionError
@@ -1007,7 +1009,7 @@ insert_pyany_to_operation!(
         let array = op.call_method0("rates")
                       .map_err(|_| QoqoError::ConversionError)?;
         let rates_array = array.downcast::<PyArray2<f64>>().unwrap();
-        let rates = rates_array.readonly().as_array().to_owned();
+        let rates = rates_array.as_gil_ref().readonly().as_array().to_owned();
 
         Ok(PragmaGeneralNoise::new(qubit, gate_time, rates).into())
     }
@@ -1093,9 +1095,9 @@ impl PragmaGeneralNoiseWrapper {
     ///
     /// Returns:
     ///     np.ndarray: The rates of the PRAGMA operation.
-    fn rates(&self) -> Py<PyArray2<f64>> {
-        Python::with_gil(|py| -> Py<PyArray2<f64>> {
-            self.internal.rates().to_pyarray(py).to_owned()
+    fn rates(&self) -> Bound<PyArray2<f64>> {
+        Python::with_gil(|py| -> Bound<PyArray2<f64>> {
+            self.internal.rates().to_pyarray_bound(py)
         })
     }
 
@@ -1103,10 +1105,10 @@ impl PragmaGeneralNoiseWrapper {
     ///
     /// Returns:
     ///     np.ndarray: The matrix form of the superoperator of the PRAGMA operation.
-    fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>> {
-        Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
+    fn superoperator(&self) -> PyResult<Bound<PyArray2<f64>>> {
+        Python::with_gil(|py| -> PyResult<Bound<PyArray2<f64>>> {
             match self.internal.superoperator() {
-                Ok(x) => Ok(x.to_pyarray(py).to_owned()),
+                Ok(x) => Ok(x.to_pyarray_bound(py)),
                 Err(err) => Err(PyRuntimeError::new_err(format!("{:?}", err))),
             }
         })
@@ -1118,7 +1120,7 @@ impl PragmaGeneralNoiseWrapper {
     ///     set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits(&self) -> PyObject {
         let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
-            PySet::new(py, &[*self.internal.qubit()])
+            PySet::new_bound(py, &[*self.internal.qubit()])
                 .unwrap()
                 .to_object(py)
         });
@@ -1163,7 +1165,7 @@ impl PragmaGeneralNoiseWrapper {
     ///     RuntimeError: The parameter substitution failed.
     fn substitute_parameters(
         &self,
-        substitution_parameters: std::collections::HashMap<&str, f64>,
+        substitution_parameters: std::collections::HashMap<String, f64>,
     ) -> PyResult<Self> {
         let mut calculator = qoqo_calculator::Calculator::new();
         for (key, val) in substitution_parameters.iter() {
@@ -1403,7 +1405,7 @@ impl PragmaChangeDeviceWrapper {
     fn wrapped_operation(&self) -> PyResult<Py<PyByteArray>> {
         let serialized: Vec<u8> = self.internal.wrapped_operation.clone();
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -1413,8 +1415,9 @@ impl PragmaChangeDeviceWrapper {
     /// Returns:
     ///     set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits(&self) -> PyObject {
-        let pyobject: PyObject =
-            Python::with_gil(|py| -> PyObject { PySet::new(py, &["All"]).unwrap().to_object(py) });
+        let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
+            PySet::new_bound(py, &["All"]).unwrap().to_object(py)
+        });
         pyobject
     }
 
@@ -1456,7 +1459,7 @@ impl PragmaChangeDeviceWrapper {
     ///     RuntimeError: The parameter substitution failed.
     fn substitute_parameters(
         &self,
-        substitution_parameters: std::collections::HashMap<&str, f64>,
+        substitution_parameters: std::collections::HashMap<String, f64>,
     ) -> PyResult<Self> {
         let mut calculator = qoqo_calculator::Calculator::new();
         for (key, val) in substitution_parameters.iter() {
@@ -1593,7 +1596,7 @@ impl PragmaChangeDeviceWrapper {
 
 /// Module containing the PragmaAnnotatedOp class.
 #[pymodule]
-fn pragma_annotated_op(_py: Python, module: &PyModule) -> PyResult<()> {
+fn pragma_annotated_op(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     module.add_class::<PragmaAnnotatedOpWrapper>()?;
     Ok(())
 }
@@ -1612,7 +1615,7 @@ pub struct PragmaAnnotatedOpWrapper {
 
 insert_pyany_to_operation!(
     "PragmaAnnotatedOp" =>{
-        let annot_op = op.call_method0( "operation").map_err(|_|QoqoError::ConversionError)?;
+        let annot_op = &op.call_method0( "operation").map_err(|_|QoqoError::ConversionError)?;
         let operation: Operation = convert_pyany_to_operation(annot_op)
                                   .map_err(|_| QoqoError::ConversionError)?;
         let annot = op.call_method0( "annotation").map_err(|_|QoqoError::ConversionError)?;
@@ -1681,13 +1684,13 @@ impl PragmaAnnotatedOpWrapper {
             let involved = self.internal.involved_qubits();
             match involved {
                 InvolvedQubits::All => {
-                    let pyref: &PySet = PySet::new(py, &["All"]).unwrap();
-                    let pyobject: PyObject = pyref.to_object(py);
+                    let pyref: &Bound<PySet> = &PySet::new_bound(py, &["All"]).unwrap();
+                    let pyobject: PyObject = pyref.as_any().to_object(py);
                     pyobject
                 }
                 InvolvedQubits::None => {
-                    let pyref: &PySet = PySet::empty(py).unwrap();
-                    let pyobject: PyObject = pyref.to_object(py);
+                    let pyref: &Bound<PySet> = &PySet::empty_bound(py).unwrap();
+                    let pyobject: PyObject = pyref.as_any().to_object(py);
                     pyobject
                 }
                 InvolvedQubits::Set(x) => {
@@ -1695,8 +1698,8 @@ impl PragmaAnnotatedOpWrapper {
                     for mode in x {
                         vector.push(mode)
                     }
-                    let pyref: &PySet = PySet::new(py, &vector[..]).unwrap();
-                    let pyobject: PyObject = pyref.to_object(py);
+                    let pyref: &Bound<PySet> = &PySet::new_bound(py, &vector[..]).unwrap();
+                    let pyobject: PyObject = pyref.as_any().to_object(py);
                     pyobject
                 }
             }
@@ -1741,7 +1744,7 @@ impl PragmaAnnotatedOpWrapper {
     ///     RuntimeError: The parameter substitution failed.
     fn substitute_parameters(
         &self,
-        substitution_parameters: std::collections::HashMap<&str, f64>,
+        substitution_parameters: std::collections::HashMap<String, f64>,
     ) -> PyResult<Self> {
         let mut calculator = qoqo_calculator::Calculator::new();
         for (key, val) in substitution_parameters.iter() {
@@ -1893,9 +1896,10 @@ mod tests {
         Python::with_gil(|py| {
             let operation = convert_operation_to_pyobject(input_definition).unwrap();
             let to_involved = operation.call_method0(py, "involved_qubits").unwrap();
-            let involved_op: HashSet<&str> = HashSet::extract(to_involved.bind(py)).unwrap();
-            let mut involved_param: HashSet<&str> = HashSet::new();
-            involved_param.insert("All");
+            let involved_op: HashSet<String> =
+                HashSet::extract_bound(to_involved.bind(py)).unwrap();
+            let mut involved_param: HashSet<String> = HashSet::new();
+            involved_param.insert("All".to_owned());
             assert_eq!(involved_op, involved_param);
 
             assert!(PragmaChangeDeviceWrapper::new().is_err());
@@ -1912,9 +1916,9 @@ mod tests {
         Python::with_gil(|py| {
             let operation = convert_operation_to_pyobject(input_measurement).unwrap();
             let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-            let format_op: &str = <&str>::extract(to_format.bind(py)).unwrap();
+            let format_op: String = String::extract_bound(to_format.bind(py)).unwrap();
             let to_repr = operation.call_method0(py, "__repr__").unwrap();
-            let repr_op: &str = <&str>::extract(to_repr.bind(py)).unwrap();
+            let repr_op: String = String::extract_bound(to_repr.bind(py)).unwrap();
             assert_eq!(format_op, format_repr);
             assert_eq!(repr_op, format_repr);
         })
@@ -1932,19 +1936,19 @@ mod tests {
             let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
             let copy_deepcopy_param = operation;
 
-            let comparison_copy = bool::extract(
+            let comparison_copy = bool::extract_bound(
                 copy_op
-                    .bind(py)
-                    .call_method1("__eq__", (copy_deepcopy_param.clone(),))
-                    .unwrap(),
+                    .call_method1(py, "__eq__", (copy_deepcopy_param.clone(),))
+                    .unwrap()
+                    .bind(py),
             )
             .unwrap();
             assert!(comparison_copy);
-            let comparison_deepcopy = bool::extract(
+            let comparison_deepcopy = bool::extract_bound(
                 deepcopy_op
-                    .bind(py)
-                    .call_method1("__eq__", (copy_deepcopy_param,))
-                    .unwrap(),
+                    .call_method1(py, "__eq__", (copy_deepcopy_param,))
+                    .unwrap()
+                    .bind(py),
             )
             .unwrap();
             assert!(comparison_deepcopy);
@@ -1960,7 +1964,7 @@ mod tests {
         Python::with_gil(|py| {
             let operation = convert_operation_to_pyobject(input_measurement).unwrap();
             let to_tag = operation.call_method0(py, "tags").unwrap();
-            let tags_op: &Vec<&str> = &Vec::extract(to_tag.bind(py)).unwrap();
+            let tags_op: &Vec<String> = &Vec::extract_bound(to_tag.bind(py)).unwrap();
             let tags_param: &[&str] = &["Operation", "PragmaOperation", "PragmaChangeDevice"];
             assert_eq!(tags_op, tags_param);
         })
@@ -1975,7 +1979,8 @@ mod tests {
         Python::with_gil(|py| {
             let operation = convert_operation_to_pyobject(input_measurement).unwrap();
             let hqslang_op: String =
-                String::extract(operation.call_method0(py, "hqslang").unwrap().bind(py)).unwrap();
+                String::extract_bound(operation.call_method0(py, "hqslang").unwrap().bind(py))
+                    .unwrap();
             assert_eq!(hqslang_op, "PragmaChangeDevice".to_string());
         })
     }
@@ -1988,7 +1993,7 @@ mod tests {
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
             let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-            assert!(!bool::extract(
+            assert!(!bool::extract_bound(
                 operation
                     .call_method0(py, "is_parametrized")
                     .unwrap()
@@ -2007,18 +2012,18 @@ mod tests {
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
             let operation = convert_operation_to_pyobject(first_op).unwrap();
-            let mut substitution_dict: HashMap<&str, f64> = HashMap::new();
-            substitution_dict.insert("test", 1.0);
+            let mut substitution_dict: HashMap<String, f64> = HashMap::new();
+            substitution_dict.insert("test".to_owned(), 1.0);
             let substitute_op = operation
                 .call_method1(py, "substitute_parameters", (substitution_dict,))
                 .unwrap();
             let substitute_param = convert_operation_to_pyobject(second_op).unwrap();
 
-            let comparison = bool::extract(
+            let comparison = bool::extract_bound(
                 substitute_op
-                    .bind(py)
-                    .call_method1("__eq__", (substitute_param,))
-                    .unwrap(),
+                    .call_method1(py, "__eq__", (substitute_param,))
+                    .unwrap()
+                    .bind(py),
             )
             .unwrap();
             assert!(comparison);
@@ -2042,7 +2047,7 @@ mod tests {
                 .unwrap();
             let comparison_op = convert_operation_to_pyobject(second_op).unwrap();
 
-            let comparison = bool::extract(
+            let comparison = bool::extract_bound(
                 remapped_op
                     .call_method1(py, "__eq__", (comparison_op,))
                     .unwrap()
@@ -2081,20 +2086,20 @@ mod tests {
             let operation_one = convert_operation_to_pyobject(definition_1).unwrap();
             let operation_two = convert_operation_to_pyobject(definition_2).unwrap();
 
-            let comparison = bool::extract(
+            let comparison = bool::extract_bound(
                 operation_one
-                    .bind(py)
-                    .call_method1("__eq__", (operation_two.clone(),))
-                    .unwrap(),
+                    .call_method1(py, "__eq__", (operation_two.clone(),))
+                    .unwrap()
+                    .bind(py),
             )
             .unwrap();
             assert!(!comparison);
 
-            let comparison = bool::extract(
+            let comparison = bool::extract_bound(
                 operation_one
-                    .bind(py)
-                    .call_method1("__ne__", (operation_two.clone(),))
-                    .unwrap(),
+                    .call_method1(py, "__ne__", (operation_two.clone(),))
+                    .unwrap()
+                    .bind(py),
             )
             .unwrap();
             assert!(comparison);

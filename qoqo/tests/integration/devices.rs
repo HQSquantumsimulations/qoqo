@@ -346,10 +346,8 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
         let matrix_py2 = device
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
-        let matrix_test2 = matrix_py2
-            .downcast::<PyArray2<f64>>(py)
-            .unwrap()
-            .to_owned_array();
+        let matrix_test2 =
+            matrix_py2.downcast::<PyArray2<f64>>(py).unwrap()..as_array().to_owned()();
         assert_eq!(matrix_test2, pyarray_testmatrix);
 
         let pyarray_testmatrix: Array2<f64> = array![
@@ -368,10 +366,8 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
         let matrix_py2 = device
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
-        let matrix_test2 = matrix_py2
-            .downcast::<PyArray2<f64>>(py)
-            .unwrap()
-            .to_owned_array();
+        let matrix_test2 =
+            matrix_py2.downcast::<PyArray2<f64>>(py).unwrap()..as_array().to_owned()();
         assert_eq!(matrix_test2, pyarray_testmatrix);
     })
 }
@@ -387,19 +383,14 @@ fn test_decoherence_rates(device: Py<PyAny>) {
         let matrix_py = device
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
-        let matrix_test = matrix_py
-            .downcast::<PyArray2<f64>>(py)
-            .unwrap()
-            .to_owned_array();
+        let matrix_test = matrix_py.downcast::<PyArray2<f64>>(py).unwrap()..as_array().to_owned()();
         assert_eq!(matrix_test, matrix_zeros_py);
 
         let matrix2_py = device
             .call_method1(py, "qubit_decoherence_rates", (100_i64,))
             .unwrap();
-        let matrix2_test = matrix2_py
-            .downcast::<PyArray2<f64>>(py)
-            .unwrap()
-            .to_owned_array();
+        let matrix2_test =
+            matrix2_py.downcast::<PyArray2<f64>>(py).unwrap()..as_array().to_owned()();
         assert_eq!(matrix2_test, matrix_zeros_py);
 
         // test that invalid matrix format is not accepted
@@ -429,10 +420,8 @@ fn test_decoherence_rates(device: Py<PyAny>) {
         let matrix_py2 = device
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
-        let matrix_test2 = matrix_py2
-            .downcast::<PyArray2<f64>>(py)
-            .unwrap()
-            .to_owned_array();
+        let matrix_test2 =
+            matrix_py2.downcast::<PyArray2<f64>>(py).unwrap()..as_array().to_owned()();
         assert_eq!(matrix_test2, pyarray_testmatrix);
 
         // testing add_damping, add_dephasing, add_depolarising
@@ -453,10 +442,8 @@ fn test_decoherence_rates(device: Py<PyAny>) {
         let matrix_py2 = device
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
-        let matrix_test2 = matrix_py2
-            .downcast::<PyArray2<f64>>(py)
-            .unwrap()
-            .to_owned_array();
+        let matrix_test2 =
+            matrix_py2.downcast::<PyArray2<f64>>(py).unwrap()..as_array().to_owned()();
         assert_eq!(matrix_test2, pyarray_testmatrix);
     })
 }

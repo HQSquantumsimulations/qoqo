@@ -34,9 +34,9 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         .clone()
         .map(|(id, type_string, ty)| match type_string {
             Some(s) => match s.as_str() {
-                "CalculatorFloat" => quote! {#id: &pyo3::PyAny},
-                "Circuit" => quote! {#id: &pyo3::PyAny},
-                "Option<Circuit>" => quote! {#id: &pyo3::PyAny},
+                "CalculatorFloat" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
+                "Circuit" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
+                "Option<Circuit>" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
                 "SpinHamiltonian" => quote! {#id: pyo3::Py<pyo3::PyAny>},
                 _ => quote! {#id: #ty},
             },
@@ -101,7 +101,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                         pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit {:?}",x))
                     })?;
                     let #id_extracted: Option<Circuit> = match tmp{
-                        Some(cw) => Some(convert_into_circuit(cw).map_err(|x| {
+                        Some(cw) => Some(convert_into_circuit(&cw.as_borrowed()).map_err(|x| {
                             pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit {:?}",x))
                     })?),
                         _ => None };
@@ -150,7 +150,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     quote! {
                             #[doc = #msg]
                             pub fn #id(&self) -> Option<CircuitWrapper>{
-                                match self.internal.#id().bind(){
+                                match self.internal.#id().as_ref(){
                                     None => None,
                                     Some(x) => Some(CircuitWrapper{internal: x.clone()})
                             }
@@ -237,7 +237,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         ///
         /// Raises:
         ///     RuntimeError: Parameter Substitution failed
-        fn substitute_parameters(&self, substitution_parameters: std::collections::HashMap<&str, f64>) -> PyResult<Self> {
+        fn substitute_parameters(&self, substitution_parameters: std::collections::HashMap<String, f64>) -> PyResult<Self> {
             let mut calculator = qoqo_calculator::Calculator::new();
             for (key, val) in substitution_parameters.iter(){
                 calculator.set_variable(key, *val);
@@ -273,12 +273,12 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 let involved = self.internal.involved_qubits();
                 match involved {
                     InvolvedQubits::All => {
-                        let pyref: &PySet = PySet::new(py, &["All"]).unwrap();
+                        let pyref: &Bound<PySet> = &PySet::new_bound(py, &["All"]).unwrap();
                         let pyobject: PyObject = pyref.to_object(py);
                         pyobject
                     },
                     InvolvedQubits::None => {
-                        let pyref: &PySet = PySet::empty(py).unwrap();
+                        let pyref: &Bound<PySet> = &PySet::empty_bound(py).unwrap();
                         let pyobject: PyObject = pyref.to_object(py);
                         pyobject
                     },
@@ -287,7 +287,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                         for qubit in x {
                             vector.push(qubit)
                         }
-                        let pyref: &PySet = PySet::new(py, &vector[..]).unwrap();
+                        let pyref: &Bound<PySet> = &PySet::new_bound(py, &vector[..]).unwrap();
                         let pyobject: PyObject = pyref.to_object(py);
                         pyobject
                     },

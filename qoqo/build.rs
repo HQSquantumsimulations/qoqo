@@ -160,41 +160,41 @@ fn main() {
                         Some(type_str) =>
                             match  type_str.as_str(){
                                 "CalculatorFloat" => {quote!{
-                                    let #pyobject_name = &Bound<op
+                                    let #pyobject_name = &op
                                     .call_method0(#ident_string)
-                                    .map_err(|_| QoqoError::ConversionError)?>;
+                                    .map_err(|_| QoqoError::ConversionError)?;
                                     let #ident = convert_into_calculator_float(#pyobject_name).map_err(|_|
                                         QoqoError::ConversionError)?;
                                 }},
                                 "Circuit" => {quote!{
-                                    let #pyobject_name = op
+                                    let #pyobject_name = &op
                                     .call_method0(#ident_string)
                                     .map_err(|_| QoqoError::ConversionError)?;
                                     let #ident = convert_into_circuit(#pyobject_name).map_err(|_|
                                         QoqoError::ConversionError)?;
                                 }},
                                 "Option<Circuit>" => {quote!{
-                                    let #pyobject_name = op
+                                    let #pyobject_name = &op
                                     .call_method0(#ident_string)
                                     .map_err(|_| QoqoError::ConversionError)?;
                                     let tmp: Option<&PyAny> = #pyobject_name.extract().map_err(|_|
                                         QoqoError::ConversionError)?;
                                     let #ident = match tmp{
-                                        Some(cw) => Some(convert_into_circuit(cw)
+                                        Some(cw) => Some(convert_into_circuit(&cw.as_borrowed())
                                         .map_err(|_| QoqoError::ConversionError)?),
                                         _ => None
                                     };
                                 }},
                                 "SpinHamiltonian" => {quote!{
-                                    let #pyobject_name = op
+                                    let #pyobject_name = &op
                                     .call_method0(#ident_string)
                                     .map_err(|_| QoqoError::ConversionError)?;
-                                    let temp_op: struqture::spins::SpinHamiltonianSystem = struqture_py::spins::SpinHamiltonianSystemWrapper::from_pyany(#pyobject_name.into()).map_err(|_| QoqoError::ConversionError)?;
+                                    let temp_op: struqture::spins::SpinHamiltonianSystem = struqture_py::spins::SpinHamiltonianSystemWrapper::from_pyany(#pyobject_name.as_gil_ref().into()).map_err(|_| QoqoError::ConversionError)?;
                                     let #ident = temp_op.hamiltonian().clone();
                                 }},
                                 _ => {
                                     quote!{
-                                    let #pyobject_name = op
+                                    let #pyobject_name = &op
                                     .call_method0(#ident_string)
                                     .map_err(|_| QoqoError::ConversionError)?;
                                     let #ident: #ty = #pyobject_name.extract()
@@ -203,7 +203,7 @@ fn main() {
                             },
                         None => {
                             quote!{
-                                let #pyobject_name = op
+                                let #pyobject_name = &op
                                 .call_method0(#ident_string)
                                 .map_err(|_| QoqoError::ConversionError)?;
                                 let #ident: #ty = #pyobject_name.extract()

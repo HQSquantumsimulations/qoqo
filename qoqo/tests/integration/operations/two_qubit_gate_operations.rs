@@ -497,10 +497,8 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let py_result = operation.call_method0(py, "unitary_matrix").unwrap();
-        let result_matrix = py_result
-            .downcast::<PyArray2<Complex64>>(py)
-            .unwrap()
-            .to_owned_array();
+        let result_matrix =
+            py_result.downcast::<PyArray2<Complex64>>(py).unwrap()..as_array().to_owned()();
 
         // compare to reference matrix obtained in Rust directly (without passing to Python)
         let gate: GateOperation = input_operation.try_into().unwrap();
@@ -734,8 +732,8 @@ fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(first_op).unwrap();
-        let mut substitution_dict: HashMap<&str, f64> = HashMap::new();
-        substitution_dict.insert("test", 1.0);
+        let mut substitution_dict: HashMap<String, f64> = HashMap::new();
+        substitution_dict.insert("test".to_owned(), 1.0);
         let substitute_op = operation
             .call_method1(py, "substitute_parameters", (substitution_dict,))
             .unwrap();
@@ -784,7 +782,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let substitution_dict: HashMap<&str, f64> = HashMap::new();
+        let substitution_dict: HashMap<String, f64> = HashMap::new();
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
         let result_ref = result.bind();
         assert!(result_ref.is_err());

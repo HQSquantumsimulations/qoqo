@@ -96,8 +96,8 @@ fn test_substitute_parameters() {
         let circuit = new_circuit(py);
         circuit.call_method1("add", (operation,)).unwrap();
 
-        let mut substitution_dict: HashMap<&str, f64> = HashMap::new();
-        substitution_dict.insert("test", 1.0);
+        let mut substitution_dict: HashMap<String, f64> = HashMap::new();
+        substitution_dict.insert("test".to_owned(), 1.0);
         let substitute_circ = circuit
             .call_method1("substitute_parameters", (substitution_dict,))
             .unwrap();

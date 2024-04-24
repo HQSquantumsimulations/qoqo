@@ -343,7 +343,7 @@ fn test_pyo3_substitute_parameters(input_measurement: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let mut substitution_dict: HashMap<&str, f64> = HashMap::new();
+        let mut substitution_dict: HashMap<String, f64> = HashMap::new();
         substitution_dict.insert("ro", 1.0);
         let substitute_op = operation
             .call_method1(py, "substitute_parameters", (substitution_dict,))

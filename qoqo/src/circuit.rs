@@ -68,8 +68,9 @@ impl CircuitWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::Circuit]
-    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<Circuit> {
+    pub fn from_pyany(input: Py<PyAny>) -> PyResult<Circuit> {
         Python::with_gil(|py| -> PyResult<Circuit> {
+            let input = input.bind(py);
             if let Ok(try_downcast) = input.extract::<CircuitWrapper>() {
                 Ok(try_downcast.internal)
             } else {
@@ -115,7 +116,7 @@ impl CircuitWrapper {
     ///     RuntimeError: The parameter substitution failed.
     pub fn substitute_parameters(
         &self,
-        substitution_parameters: std::collections::HashMap<&str, f64>,
+        substitution_parameters: std::collections::HashMap<String, f64>,
     ) -> PyResult<Self> {
         let mut calculator = qoqo_calculator::Calculator::new();
         for (key, val) in substitution_parameters.iter() {
@@ -188,10 +189,10 @@ impl CircuitWrapper {
     ///
     /// Returns:
     ///     int: The number of occurences of these operation tags.
-    pub fn count_occurences(&self, operations: Vec<&str>) -> usize {
+    pub fn count_occurences(&self, operations: Vec<String>) -> usize {
         let mut counter: usize = 0;
         for op in self.internal.iter() {
-            if operations.iter().any(|x| op.tags().contains(x)) {
+            if operations.iter().any(|x| op.tags().contains(&x.as_str())) {
                 counter += 1
             }
         }
