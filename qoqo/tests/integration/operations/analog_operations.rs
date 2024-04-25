@@ -593,15 +593,17 @@ fn test_pyo3_json_schema(operation: Operation) {
         let pyobject = convert_operation_to_pyobject(operation).unwrap();
         let operation = pyobject.bind(py);
 
+        let schema: String =
+            String::extract_bound(&operation.call_method0("json_schema").unwrap()).unwrap();
+
+        assert_eq!(schema, rust_schema);
+
         let minimum_supported_version_string =
             String::extract_bound(&operation.call_method0("min_supported_version").unwrap())
                 .unwrap();
         let current_version_string =
             String::extract_bound(&operation.call_method0("current_version").unwrap()).unwrap();
-        let schema: String =
-            String::extract_bound(&operation.call_method0("json_schema").unwrap()).unwrap();
 
-        assert_eq!(schema, rust_schema);
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, minimum_version);
     });
