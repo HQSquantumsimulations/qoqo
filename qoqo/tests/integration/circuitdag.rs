@@ -447,28 +447,28 @@ fn test_new_front_layer() {
             .is_err());
 
         let comp = dag
-            .call_method1("new_front_layer", (vec![a, c], vec![b], b))
+            .call_method1("new_front_layer", (vec![a, c], vec![b.clone()], b))
             .unwrap();
         let helper =
             bool::extract_bound(&comp.call_method1("__eq__", (vec![d],)).unwrap()).unwrap();
         assert!(helper);
 
         let comp = dag
-            .call_method1("new_front_layer", (vec![a], vec![b], b))
+            .call_method1("new_front_layer", (vec![a], vec![b.clone()], b))
             .unwrap();
         let helper =
             bool::extract_bound(&comp.call_method1("__eq__", (vec![b],)).unwrap()).unwrap();
         assert!(helper);
 
         let comp = dag
-            .call_method1("new_front_layer", (vec![a, b, c], vec![d], d))
+            .call_method1("new_front_layer", (vec![a, b, c], vec![d.clone()], d))
             .unwrap();
         let helper =
             bool::extract_bound(&comp.call_method1("__eq__", (vec![e],)).unwrap()).unwrap();
         assert!(helper);
 
         let comp = dag
-            .call_method1("new_front_layer", (vec![a, b, c, d], vec![e], e))
+            .call_method1("new_front_layer", (vec![a, b, c, d], vec![e.clone()], e))
             .unwrap();
         let helper =
             bool::extract_bound(&comp.call_method1("__eq__", (Vec::<usize>::new(),)).unwrap())
