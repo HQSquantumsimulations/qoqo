@@ -8,9 +8,3 @@ lto = true
 
 [profile.bench]
 lto = true
-
-[patch.crates-io]
-qoqo_calculator = { path = "../qoqo_calculator/qoqo_calculator" }
-qoqo_calculator_pyo3 = { path = "../qoqo_calculator/qoqo_calculator_pyo3" }
-struqture = { path = "../struqture/struqture" }
-struqture-py = { path = "../struqture/struqture-py" }
