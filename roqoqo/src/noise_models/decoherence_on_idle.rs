@@ -157,7 +157,7 @@ impl DecoherenceOnIdleModel {
                         PlusMinusProduct::new().plus(*qubit),
                         PlusMinusProduct::new().plus(*qubit),
                     ),
-                    (rate / 2.0).into(),
+                    (rate * 2.0 / 3.0).into(),
                 )
                 .expect("Internal struqture bug.");
             self.lindblad_noise
@@ -166,7 +166,7 @@ impl DecoherenceOnIdleModel {
                         PlusMinusProduct::new().minus(*qubit),
                         PlusMinusProduct::new().minus(*qubit),
                     ),
-                    (rate / 2.0).into(),
+                    (rate * 2.0 / 3.0).into(),
                 )
                 .expect("Internal struqture bug.");
             self.lindblad_noise
@@ -175,7 +175,7 @@ impl DecoherenceOnIdleModel {
                         PlusMinusProduct::new().z(*qubit),
                         PlusMinusProduct::new().z(*qubit),
                     ),
-                    (rate / 4.0).into(),
+                    (rate / 3.0).into(),
                 )
                 .expect("Internal struqture bug.");
         }
@@ -233,7 +233,7 @@ mod tests {
                     PlusMinusProduct::new().plus(0),
                     PlusMinusProduct::new().plus(0),
                 ),
-                0.9.into(),
+                1.2.into(),
             )
             .unwrap();
         lindblad_operator
@@ -242,13 +242,13 @@ mod tests {
                     PlusMinusProduct::new().minus(0),
                     PlusMinusProduct::new().minus(0),
                 ),
-                0.9.into(),
+                1.2.into(),
             )
             .unwrap();
         lindblad_operator
             .add_operator_product(
                 (PlusMinusProduct::new().z(0), PlusMinusProduct::new().z(0)),
-                0.45.into(),
+                0.6.into(),
             )
             .unwrap();
         assert_eq!(model.lindblad_noise, lindblad_operator);

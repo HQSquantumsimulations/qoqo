@@ -117,21 +117,21 @@ fn test_add_depolarising() {
                 struqture::spins::PlusMinusProduct::new().z(0),
                 struqture::spins::PlusMinusProduct::new().z(0),
             ),
-            0.05.into(),
+            0.06.into(),
         );
         let _ = internal_plus_minus.add_operator_product(
             (
                 struqture::spins::PlusMinusProduct::new().plus(0),
                 struqture::spins::PlusMinusProduct::new().plus(0),
             ),
-            0.1.into(),
+            0.12.into(),
         );
         let _ = internal_plus_minus.add_operator_product(
             (
                 struqture::spins::PlusMinusProduct::new().minus(0),
                 struqture::spins::PlusMinusProduct::new().minus(0),
             ),
-            0.1.into(),
+            0.12.into(),
         );
         let plus_minus_operator = spins::PlusMinusLindbladNoiseOperatorWrapper {
             internal: internal_plus_minus,
@@ -144,7 +144,7 @@ fn test_add_depolarising() {
             .downcast::<PyCell<DecoherenceOnIdleModelWrapper>>()
             .unwrap();
         let br = br
-            .call_method1("add_depolarising_rate", ([0], 0.2))
+            .call_method1("add_depolarising_rate", ([0], 0.18))
             .unwrap()
             .downcast::<PyCell<DecoherenceOnIdleModelWrapper>>()
             .unwrap();
