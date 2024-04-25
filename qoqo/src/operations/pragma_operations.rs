@@ -114,13 +114,13 @@ impl PragmaSetStateVectorWrapper {
         let try_cast: PyResult<Array1<Complex64>> =
             Python::with_gil(|py| -> PyResult<Array1<Complex64>> {
                 let extracted: PyReadonlyArray1<Complex64> = statevector.bind(py).extract()?;
-                let statevec: Array1<Complex64> = extracted.as_array().to_owned().into();
+                let statevec: Array1<Complex64> = extracted.as_array().to_owned();
                 Ok(statevec)
             });
         let try_cast = try_cast.or_else(|_| {
             Python::with_gil(|py| -> PyResult<Array1<Complex64>> {
                 let extracted: PyReadonlyArray1<f64> = statevector.bind(py).extract()?;
-                let statevec: Array1<f64> = extracted.as_array().to_owned().into();
+                let statevec: Array1<f64> = extracted.as_array().to_owned();
                 let statevec: Array1<Complex64> = statevec
                     .into_iter()
                     .map(|f| Complex64::new(f, 0.0))
