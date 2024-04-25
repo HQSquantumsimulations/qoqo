@@ -1121,6 +1121,7 @@ dependencies = [
 [[package]]
 name = "qoqo_calculator"
 version = "1.2.0"
+source = "git+https://github.com/dberthault/qoqo_calculator.git#b8b770bf9c8391e8e5a9217d92481564415fad18"
 dependencies = [
  "num-complex",
  "schemars",
@@ -1131,6 +1132,7 @@ dependencies = [
 [[package]]
 name = "qoqo_calculator_pyo3"
 version = "1.2.0"
+source = "git+https://github.com/dberthault/qoqo_calculator.git#b8b770bf9c8391e8e5a9217d92481564415fad18"
 dependencies = [
  "num-complex",
  "pyo3",
@@ -1489,6 +1491,7 @@ checksum = "7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f"
 [[package]]
 name = "struqture"
 version = "1.7.0"
+source = "git+https://github.com/dberthault/struqture.git#21e62fbba6551bb01acdd7a84e44c68fdc8b3cde"
 dependencies = [
  "itertools",
  "ndarray",
@@ -1504,6 +1507,7 @@ dependencies = [
 [[package]]
 name = "struqture-py"
 version = "1.7.0"
+source = "git+https://github.com/dberthault/struqture.git#21e62fbba6551bb01acdd7a84e44c68fdc8b3cde"
 dependencies = [
  "bincode",
  "num-complex",
@@ -1526,6 +1530,7 @@ dependencies = [
 [[package]]
 name = "struqture-py-macros"
 version = "1.7.0"
+source = "git+https://github.com/dberthault/struqture.git#21e62fbba6551bb01acdd7a84e44c68fdc8b3cde"
 dependencies = [
  "num-complex",
  "proc-macro2",
