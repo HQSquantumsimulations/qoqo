@@ -603,31 +603,28 @@ impl CircuitWrapper {
     ///
     /// Raises:
     ///     TypeError: Right hand side cannot be converted to Operation or Circuit.
-    fn __iadd__(&mut self, other: Py<PyAny>) -> PyResult<()> {
-        Python::with_gil(|py| -> PyResult<()> {
-            let other_ref = other.bind(py);
-            match convert_pyany_to_operation(other_ref) {
-                Ok(x) => {
-                    self.internal += x;
-                    Ok(())
-                }
-                Err(_) => {
-                    let other = convert_into_circuit(other_ref).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!(
-                            "Right hand side cannot be converted to Operation or Circuit {:?}",
-                            x
-                        ))
-                    });
-                    match other {
-                        Ok(x) => {
-                            self.internal += x;
-                            Ok(())
-                        }
-                        Err(y) => Err(y),
+    fn __iadd__(&mut self, other: &Bound<PyAny>) -> PyResult<()> {
+        match convert_pyany_to_operation(other) {
+            Ok(x) => {
+                self.internal += x;
+                Ok(())
+            }
+            Err(_) => {
+                let other = convert_into_circuit(other).map_err(|x| {
+                    pyo3::exceptions::PyTypeError::new_err(format!(
+                        "Right hand side cannot be converted to Operation or Circuit {:?}",
+                        x
+                    ))
+                });
+                match other {
+                    Ok(x) => {
+                        self.internal += x;
+                        Ok(())
                     }
+                    Err(y) => Err(y),
                 }
             }
-        })
+        }
     }
 
     /// Implement the `+` (__add__) magic method to add two Circuits.
@@ -642,29 +639,26 @@ impl CircuitWrapper {
     /// Raises:
     ///     TypeError: Left hand side can not be converted to Circuit.
     ///     TypeError: Right hand side cannot be converted to Operation or Circuit.
-    fn __add__(&mut self, other: Py<PyAny>) -> PyResult<CircuitWrapper> {
-        Python::with_gil(|py| -> PyResult<CircuitWrapper> {
-            let other_ref = other.bind(py);
-            match convert_pyany_to_operation(other_ref) {
-                Ok(x) => Ok(CircuitWrapper {
-                    internal: self.internal.clone() + x,
-                }),
-                Err(_) => {
-                    let other = convert_into_circuit(other_ref).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!(
-                            "Right hand side cannot be converted to Operation or Circuit {:?}",
-                            x
-                        ))
-                    });
-                    match other {
-                        Ok(x) => Ok(CircuitWrapper {
-                            internal: self.internal.clone() + x,
-                        }),
-                        Err(y) => Err(y),
-                    }
+    fn __add__(&mut self, other: &Bound<PyAny>) -> PyResult<CircuitWrapper> {
+        match convert_pyany_to_operation(other) {
+            Ok(x) => Ok(CircuitWrapper {
+                internal: self.internal.clone() + x,
+            }),
+            Err(_) => {
+                let other = convert_into_circuit(other).map_err(|x| {
+                    pyo3::exceptions::PyTypeError::new_err(format!(
+                        "Right hand side cannot be converted to Operation or Circuit {:?}",
+                        x
+                    ))
+                });
+                match other {
+                    Ok(x) => Ok(CircuitWrapper {
+                        internal: self.internal.clone() + x,
+                    }),
+                    Err(y) => Err(y),
                 }
             }
-        })
+        }
     }
 }
 

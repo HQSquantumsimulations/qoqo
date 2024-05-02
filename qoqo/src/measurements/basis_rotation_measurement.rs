@@ -104,26 +104,18 @@ impl PauliZProductWrapper {
     ///     RuntimeError: Error evaluating PauliZ product measurement.
     pub fn evaluate(
         &mut self,
-        input_bit_registers: Py<PyAny>,
+        input_bit_registers: &Bound<PyAny>,
         float_registers: HashMap<String, FloatOutputRegister>,
         complex_registers: HashMap<String, ComplexOutputRegister>,
     ) -> PyResult<Option<HashMap<String, f64>>> {
         let mut bit_registers: HashMap<String, BitOutputRegister> = HashMap::new();
         let bit_registers_bool: PyResult<HashMap<String, Vec<Vec<bool>>>> =
-            Python::with_gil(|py| -> PyResult<HashMap<String, Vec<Vec<bool>>>> {
-                input_bit_registers
-                    .bind(py)
-                    .extract::<HashMap<String, BitOutputRegister>>()
-            });
+            input_bit_registers.extract::<HashMap<String, BitOutputRegister>>();
         if let Ok(try_downcast) = bit_registers_bool {
             bit_registers = try_downcast
         } else {
             let tmp_bit_registers =
-                Python::with_gil(|py| -> PyResult<HashMap<String, Vec<Vec<usize>>>> {
-                    input_bit_registers
-                        .bind(py)
-                        .extract::<HashMap<String, Vec<Vec<usize>>>>()
-                })?;
+                input_bit_registers.extract::<HashMap<String, Vec<Vec<usize>>>>()?;
             for (name, output_reg) in tmp_bit_registers {
                 let mut tmp_output_reg: Vec<Vec<bool>> = Vec::with_capacity(output_reg.len());
                 for reg in output_reg {

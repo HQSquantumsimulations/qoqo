@@ -109,13 +109,8 @@ impl CircuitDagWrapper {
     /// Returns:
     ///     self: The new CircuitDag.
     #[pyo3(text_signature = "(circuit)")]
-    pub fn from_circuit(&self, circuit: Py<PyAny>) -> PyResult<Self> {
-        let circuit = Python::with_gil(|py| -> Result<Circuit, QoqoError> {
-            let circ_ref = circuit.bind(py);
-            crate::convert_into_circuit(circ_ref)
-        })
-        .unwrap();
-
+    pub fn from_circuit(&self, circuit: &Bound<PyAny>) -> PyResult<Self> {
+        let circuit = crate::convert_into_circuit(circuit).unwrap();
         Ok(Self {
             internal: CircuitDag::from(circuit),
         })
@@ -286,11 +281,12 @@ impl CircuitDagWrapper {
     ///
     /// Raises:
     ///     NotImplementedError: Other comparison not implemented.
-    fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
-        let other = Python::with_gil(|py| -> Result<CircuitDag, QoqoError> {
-            let other_ref = other.bind(py);
-            crate::convert_into_circuitdag(other_ref)
-        });
+    fn __richcmp__(
+        &self,
+        other: &Bound<PyAny>,
+        op: pyo3::class::basic::CompareOp,
+    ) -> PyResult<bool> {
+        let other = crate::convert_into_circuitdag(other);
         match op {
             pyo3::class::basic::CompareOp::Eq => match other {
                 Ok(dag) => Ok(self.internal == dag),

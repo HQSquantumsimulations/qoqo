@@ -446,11 +446,12 @@ impl QuantumProgramWrapper {
     ///
     /// Raises:
     ///     NotImplementedError: Other comparison not implemented
-    fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
-        let other = Python::with_gil(|py| -> Result<QuantumProgram, QoqoError> {
-            let other_ref = other.bind(py);
-            convert_into_quantum_program(other_ref)
-        });
+    fn __richcmp__(
+        &self,
+        other: &Bound<PyAny>,
+        op: pyo3::class::basic::CompareOp,
+    ) -> PyResult<bool> {
+        let other = convert_into_quantum_program(other);
         match op {
             pyo3::class::basic::CompareOp::Eq => match other {
                 Ok(qp) => Ok(self.internal == qp),
