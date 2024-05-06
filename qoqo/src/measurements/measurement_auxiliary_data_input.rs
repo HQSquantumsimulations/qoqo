@@ -272,6 +272,15 @@ impl PauliZProductInputWrapper {
 #[pyclass(name = "CheatedPauliZProductInput", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Collected information for executing a cheated basis rotation measurement.
+///
+/// The CheatedPauliZProductInput starts with just the number of qubtis and flipped measurements set.
+/// The pauli_poduct_qubit_masks and measured_exp_vals start empty
+/// and can be extended with [CheatedPauliZProductInput::add_linear_exp_val] and
+/// [CheatedPauliZProductInput::add_symbolic_exp_val].
+///
+/// Returns:
+///     self: The new instance of CheatedPauliZProductInput with measured_exp_vals = an empty
+///            HashMap and pauli_product_keys = an empty HashMap.
 pub struct CheatedPauliZProductInputWrapper {
     /// Internal storage of [roqoqo::CheatedPauliZProductInput].
     pub internal: CheatedPauliZProductInput,
@@ -293,9 +302,8 @@ impl CheatedPauliZProductInputWrapper {
     /// [CheatedPauliZProductInput::add_symbolic_exp_val].
     ///
     /// Returns:
-    ///     self: The new instance of PauliZProductInput with pauli_product_qubit_masks = an empty dictionary, the
-    ///           specified number of qubits in input, number_pauli_products = 0, measured_exp_vals = an empty
-    ///           dictionary, and whether to use flipped measurements as specified in input.
+    ///     self: The new instance of CheatedPauliZProductInput with measured_exp_vals = an empty
+    ///            HashMap and pauli_product_keys = an empty HashMap.
     #[new]
     pub fn new() -> Self {
         Self {
@@ -497,6 +505,18 @@ impl CheatedPauliZProductInputWrapper {
 #[pyclass(name = "CheatedInput", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Provides Necessary Information to run a cheated measurement.
+///
+/// The CheatedInput stores the number of qubits that are measured
+/// and a dictionary mapping expectation value names to operators on the Hilbert space
+/// of the qubits. The operators are represented by sparse lists of non-zero entry triples
+/// of an operator matrix.
+///
+/// Args:
+///     number_qubits (int): The number of qubits in the PauliZProduct measurement.
+///
+/// Returns:
+///     CheatedInput: The new instance of CheatedInput with the specified number of qubits in input,
+///                   and an empty dictionay of expectation values.
 pub struct CheatedInputWrapper {
     /// Internal storage of [roqoqo::CheatedInput].
     pub internal: CheatedInput,
