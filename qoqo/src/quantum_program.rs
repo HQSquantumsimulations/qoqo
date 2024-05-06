@@ -77,6 +77,34 @@ impl QuantumProgramWrapper {
             }
         })
     }
+
+    /// Extracts a QuantumProgram from a QuantumProgramWrapper python bound object.
+    ///
+    /// When working with qoqo and other rust based python packages compiled separately
+    /// a downcast will not detect that two QuantumProgramWrapper objects are compatible.
+    /// Provides a custom function to convert qoqo QuantumPrograms between different Python packages.
+    ///
+    /// # Arguments:
+    ///
+    /// `input` - The Python object that should be casted to a [roqoqo::QuantumProgram]
+    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<QuantumProgram> {
+        if let Ok(try_downcast) = input.extract::<QuantumProgramWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+                PyTypeError::new_err("Python object cannot be converted to qoqo QuantumProgram: Cast to binary representation failed".to_string())
+            })?;
+            let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+                PyTypeError::new_err("Python object cannot be converted to qoqo QuantumProgram: Cast to binary representation failed".to_string())
+            })?;
+            deserialize(&bytes[..]).map_err(|err| {
+                    PyTypeError::new_err(format!(
+                    "Python object cannot be converted to qoqo QuantumProgram: Deserialization failed: {}",
+                    err
+                ))
+                })
+        }
+    }
 }
 
 #[pymethods]
@@ -227,7 +255,7 @@ impl QuantumProgramWrapper {
     ///
     /// Args:
     ///     backend (Backend): The backend the program is executed on.
-    ///     parameters (Optional[List[float]): List of float  parameters of the function call in order of `input_parameter_names`
+    ///     parameters (Optional[List[float]]): List of float  parameters of the function call in order of `input_parameter_names`
     pub fn run(&self, backend: Py<PyAny>, parameters: Option<Vec<f64>>) -> PyResult<Py<PyAny>> {
         let parameters = parameters.unwrap_or_default();
         match &self.internal{
@@ -273,7 +301,7 @@ impl QuantumProgramWrapper {
     ///
     /// Args:
     ///     backend (Backend): The backend the program is executed on.
-    ///     parameters (Optional[List[float]): List of float  parameters of the function call in order of `input_parameter_names`
+    ///     parameters (Optional[List[float]]): List of float  parameters of the function call in order of `input_parameter_names`
     pub fn run_registers(
         &self,
         backend: Py<PyAny>,

@@ -132,7 +132,7 @@ impl SquareLatticeDeviceWrapper {
     /// Set the decoherence rates for all qubits in the SquareLatticeDevice device.
     ///
     /// Args:
-    ///     rates[2d array]: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
+    ///     rates (2darray):: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
     ///
     /// Returns:
     ///     SquareLatticeDevice
@@ -246,5 +246,21 @@ impl SquareLatticeDeviceWrapper {
                 })
             }
         })
+    }
+
+    /// Fallible conversion of generic python bound object..
+    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<SquareLatticeDevice> {
+        if let Ok(try_downcast) = input.extract::<SquareLatticeDeviceWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode")?;
+            let bytes = get_bytes.extract::<Vec<u8>>()?;
+            deserialize(&bytes[..]).map_err(|err| {
+                PyValueError::new_err(format!(
+                    "Cannot treat input as SquareLatticeDevice: {}",
+                    err
+                ))
+            })
+        }
     }
 }

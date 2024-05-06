@@ -27,6 +27,20 @@ use std::collections::HashMap;
 #[pyclass(name = "PauliZProductInput", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Provides Necessary Information to run a [roqoqo::measurements::PauliZProduct] measurement.
+///
+/// The PauliZProductInput starts with just the number of qubtis and flipped measurements set.
+/// The pauli_poduct_qubit_masks and measured_exp_vals start empty
+/// and can be extended with [PauliZProductInput::add_pauliz_product]
+/// [PauliZProductInput::add_linear_exp_val] and [PauliZProductInput::add_symbolic_exp_val]
+///
+/// Args:
+///     number_qubits (int): The number of qubits in the PauliZProduct measurement.
+///     use_flipped_measurement (bool): Whether or not to use flipped measurements.
+///
+/// Returns:
+///     self: The new instance of PauliZProductInput with pauli_product_qubit_masks = an empty dictionary, the
+///           specified number of qubits in input, number_pauli_products = 0, measured_exp_vals = an empty
+///           dictionary, and whether to use flipped measurements as specified in input.
 pub struct PauliZProductInputWrapper {
     /// Internal storage of [roqoqo::PauliZProductInput].
     pub internal: PauliZProductInput,
@@ -699,6 +713,34 @@ impl CheatedPauliZProductInputWrapper {
             }
         })
     }
+
+    /// Extracts a CheatedPauliZProductInput from a CheatedPauliZProductInputWrapper python bound object.
+    ///
+    /// When working with qoqo and other rust based python packages compiled separately
+    /// a downcast will not detect that two CheatedPauliZProductInputWrapper objects are compatible.
+    /// Provides a custom function to convert qoqo CheatedPauliZProductInputs between different Python packages.
+    ///
+    /// # Arguments:
+    ///
+    /// `input` - The Python object that should be casted to a [roqoqo::CheatedPauliZProductInput]
+    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<CheatedPauliZProductInput> {
+        if let Ok(try_downcast) = input.extract::<CheatedPauliZProductInputWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+                PyTypeError::new_err("Python object cannot be converted to qoqo CheatedPauliZInput: Cast to binary representation failed".to_string())
+            })?;
+            let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+                PyTypeError::new_err("Python object cannot be converted to qoqo CheatedPauliZInput: Cast to binary representation failed".to_string())
+            })?;
+            bincode::deserialize(&bytes[..]).map_err(|err| {
+                    PyTypeError::new_err(format!(
+                    "Python object cannot be converted to qoqo CheatedPauliZInput: Deserialization failed: {}",
+                    err
+                ))
+                })
+        }
+    }
 }
 
 impl PauliZProductInputWrapper {
@@ -732,6 +774,34 @@ impl PauliZProductInputWrapper {
             }
         })
     }
+
+    /// Extracts a PauliZProductInput from a PauliZProductInputWrapper python bound object.
+    ///
+    /// When working with qoqo and other rust based python packages compiled separately
+    /// a downcast will not detect that two PauliZProductInputWrapper objects are compatible.
+    /// Provides a custom function to convert qoqo PauliZProductInputs between different Python packages.
+    ///
+    /// # Arguments:
+    ///
+    /// `input` - The Python object that should be casted to a [roqoqo::PauliZProductInput]
+    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<PauliZProductInput> {
+        if let Ok(try_downcast) = input.extract::<PauliZProductInputWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+                PyTypeError::new_err("Python object cannot be converted to qoqo PauliZInput: Cast to binary representation failed".to_string())
+            })?;
+            let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+                PyTypeError::new_err("Python object cannot be converted to qoqo PauliZInput: Cast to binary representation failed".to_string())
+            })?;
+            bincode::deserialize(&bytes[..]).map_err(|err| {
+                    PyTypeError::new_err(format!(
+                    "Python object cannot be converted to qoqo PauliZInput: Deserialization failed: {}",
+                    err
+                ))
+                })
+        }
+    }
 }
 
 impl CheatedInputWrapper {
@@ -764,5 +834,33 @@ impl CheatedInputWrapper {
                 })
             }
         })
+    }
+
+    /// Extracts a CheatedInput from a CheatedInputWrapper python BOUND object.
+    ///
+    /// When working with qoqo and other rust based python packages compiled separately
+    /// a downcast will not detect that two CheatedInputWrapper objects are compatible.
+    /// Provides a custom function to convert qoqo CheatedPInputs between different Python packages.
+    ///
+    /// # Arguments:
+    ///
+    /// `input` - The Python object that should be casted to a [roqoqo::CheatedInput]
+    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<CheatedInput> {
+        if let Ok(try_downcast) = input.extract::<CheatedInputWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+                PyTypeError::new_err("Python object cannot be converted to qoqo CheatedInput: Cast to binary representation failed".to_string())
+            })?;
+            let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+                PyTypeError::new_err("Python object cannot be converted to qoqo CheatedInput: Cast to binary representation failed".to_string())
+            })?;
+            bincode::deserialize(&bytes[..]).map_err(|err| {
+                    PyTypeError::new_err(format!(
+                    "Python object cannot be converted to qoqo CheatedInput: Deserialization failed: {}",
+                    err
+                ))
+                })
+        }
     }
 }

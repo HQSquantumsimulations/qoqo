@@ -266,7 +266,24 @@ impl SingleQubitOverrotationDescriptionWrapper {
             }
         })
     }
+
+    /// Fallible conversion of generic python bound object..
+    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<SingleQubitOverrotationDescription> {
+        if let Ok(try_downcast) = input.extract::<SingleQubitOverrotationDescriptionWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode")?;
+            let bytes = get_bytes.extract::<Vec<u8>>()?;
+            bincode::deserialize(&bytes[..]).map_err(|err| {
+                pyo3::exceptions::PyValueError::new_err(format!(
+                    "Cannot treat input as Overrotation Description: {}",
+                    err
+                ))
+            })
+        }
+    }
 }
+
 /// Single qubit overrotation noise model on gate.
 ///
 /// Adds a rotation gate with a randomly distributed rotation angle after specified gates in a quantum circuit.

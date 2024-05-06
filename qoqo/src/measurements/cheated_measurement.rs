@@ -29,6 +29,14 @@ use std::collections::HashMap;
 #[pyclass(name = "Cheated", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Collected information for executing a cheated measurement.
+///
+/// Args:
+///     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
+///     circuits (list[Circuit]): The collection of quantum circuits executed for the measurement.
+///     input (CheatedInput): The additional input information required for measurement.
+///
+/// Returns:
+///     Cheated: The new measurement.
 pub struct CheatedWrapper {
     /// Internal storage of [roqoqo::Cheated]
     pub internal: Cheated,
@@ -93,11 +101,11 @@ impl CheatedWrapper {
     ///
     /// Args:
     ///     input_bit_registers (dict[str, Union[list[list[int]], list[list[bool]]]]): The classical bit registers with the register name as key.
-    ///     float_registers (dict[str, list[list[float]]): The classical float registers as a dictionary with the register name as key.
-    ///     complex_registers (dict[str, list[list[complex]]): The classical complex registers as a dictionary with the register name as key.
+    ///     float_registers (Dict[str, List[List[float]]]): The classical float registers as a dictionary with the register name as key.
+    ///     complex_registers (Dict[str, List[List[complex]]]): The classical complex registers as a dictionary with the register name as key.
     ///
     /// Returns:
-    ///     Optional[dict[str, float]: The evaluated expectation values.
+    ///     Optional[dict[str, float]]: The evaluated expectation values.
     ///
     /// Raises:
     ///     RuntimeError: Unexpected repetition of key in bit_register.
@@ -387,5 +395,33 @@ impl CheatedWrapper {
                 })
             }
         })
+    }
+
+    /// Extracts a Cheated from a CheatedWrapper python bound object.
+    ///
+    /// When working with qoqo and other rust based python packages compiled separately
+    /// a downcast will not detect that two CheatedWrapper objects are compatible.
+    /// Provides a custom function to convert qoqo Cheateds between different Python packages.
+    ///
+    /// # Arguments:
+    ///
+    /// `input` - The Python object that should be casted to a [roqoqo::Cheated]
+    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<Cheated> {
+        if let Ok(try_downcast) = input.extract::<CheatedWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+                PyTypeError::new_err("Python object cannot be converted to qoqo Cheated: Cast to binary representation failed".to_string())
+            })?;
+            let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+                PyTypeError::new_err("Python object cannot be converted to qoqo Cheated: Cast to binary representation failed".to_string())
+            })?;
+            deserialize(&bytes[..]).map_err(|err| {
+                PyTypeError::new_err(format!(
+                    "Python object cannot be converted to qoqo Cheated: Deserialization failed: {}",
+                    err
+                ))
+            })
+        }
     }
 }
