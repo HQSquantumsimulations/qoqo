@@ -297,20 +297,17 @@ pub fn wrap(
             /// print("Multiplied gate: ", multiplied)
             /// ```
             ///
-            pub fn mul(&self, other: Py<PyAny>) -> PyResult<SingleQubitGateWrapper> {
-                Python::with_gil(|py| -> PyResult<SingleQubitGateWrapper> {
-                    let other_ref = other.bind(py);
-                    let other: Operation = crate::operations::convert_pyany_to_operation(other_ref).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
-                    })?;
-                    let other_converted: SingleQubitGateOperation = other.clone().try_into().map_err(|x| {
-                        pyo3::exceptions::PyRuntimeError::new_err(format!("Conversion to SingleQubitGateOperation failed {:?}",x))
-                    })?;
-                    let multiplied = self.internal.mul(&other_converted).map_err(|x| {
-                        pyo3::exceptions::PyRuntimeError::new_err(format!("Multiplication failed {:?}",x))
-                    })?;
-                    Ok(SingleQubitGateWrapper{ internal: multiplied})
-                })
+            pub fn mul(&self, other: &Bound<PyAny>) -> PyResult<SingleQubitGateWrapper> {
+                let other: Operation = crate::operations::convert_pyany_to_operation(other).map_err(|x| {
+                    pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
+                })?;
+                let other_converted: SingleQubitGateOperation = other.clone().try_into().map_err(|x| {
+                    pyo3::exceptions::PyRuntimeError::new_err(format!("Conversion to SingleQubitGateOperation failed {:?}",x))
+                })?;
+                let multiplied = self.internal.mul(&other_converted).map_err(|x| {
+                    pyo3::exceptions::PyRuntimeError::new_err(format!("Multiplication failed {:?}",x))
+                })?;
+                Ok(SingleQubitGateWrapper{ internal: multiplied})
             }
         }
     } else {
@@ -665,22 +662,18 @@ pub fn wrap(
             ///
             /// `PyResult<bool>` - whether the two operations compared evaluated to True or False
             ///
-            fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
-                Python::with_gil(|py| -> PyResult<bool> {
-                    let other_ref = other.bind(py);
-                    let other: Operation = crate::operations::convert_pyany_to_operation(other_ref).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
-                    })?;
-                    match op {
-                        pyo3::class::basic::CompareOp::Eq => Ok(Operation::from(self.internal.clone()) == other),
-                        pyo3::class::basic::CompareOp::Ne => Ok(Operation::from(self.internal.clone()) != other),
-                        _ => Err(pyo3::exceptions::PyNotImplementedError::new_err(
-                            "Other comparison not implemented.",
-                        )),
-                    }
-                })
+            fn __richcmp__(&self, other: &Bound<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
+                let other: Operation = crate::operations::convert_pyany_to_operation(other).map_err(|x| {
+                    pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
+                })?;
+                match op {
+                    pyo3::class::basic::CompareOp::Eq => Ok(Operation::from(self.internal.clone()) == other),
+                    pyo3::class::basic::CompareOp::Ne => Ok(Operation::from(self.internal.clone()) != other),
+                    _ => Err(pyo3::exceptions::PyNotImplementedError::new_err(
+                        "Other comparison not implemented.",
+                    )),
+                }
             }
-
         }
     };
     q.into()

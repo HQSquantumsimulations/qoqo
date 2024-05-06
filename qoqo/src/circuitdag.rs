@@ -60,38 +60,7 @@ impl CircuitDagWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::Circuit]
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<CircuitDag> {
-        Python::with_gil(|py| -> PyResult<CircuitDag> {
-            let input = input.bind(py);
-            if let Ok(try_downcast) = input.extract::<CircuitDagWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
-                PyTypeError::new_err("Python object cannot be converted to qoqo CircuitDag: Cast to binary representation failed".to_string())
-            })?;
-                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
-                PyTypeError::new_err("Python object cannot be converted to qoqo CircuitDag: Cast to binary representation failed".to_string())
-            })?;
-                deserialize(&bytes[..]).map_err(|err| {
-                PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo CircuitDag: Deserialization failed: {}",
-                    err
-                ))}
-            )
-            }
-        })
-    }
-
-    /// Extracts a CircuitDag from a CircuitDagWrapper python bound object.
-    ///
-    /// When working with qoqo and other rust based python packages compiled separately
-    /// a downcast will not detect that two CircuitDagWrapper objects are compatible.
-    /// Provides a custom function to convert qoqo CircuitDags between different Python packages.
-    ///
-    /// # Arguments:
-    ///
-    /// `input` - The Python object that should be casted to a [roqoqo::Circuit]
-    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<CircuitDag> {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<CircuitDag> {
         if let Ok(try_downcast) = input.extract::<CircuitDagWrapper>() {
             Ok(try_downcast.internal)
         } else {

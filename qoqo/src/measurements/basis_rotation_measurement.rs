@@ -60,40 +60,42 @@ impl PauliZProductWrapper {
         circuits: Vec<Py<PyAny>>,
         input: Py<PyAny>,
     ) -> PyResult<Self> {
-        let mut new_circuits: Vec<Circuit> = Vec::new();
-        for c in circuits.into_iter() {
-            let tmp_c = CircuitWrapper::from_pyany(c).map_err(|err| {
-                PyTypeError::new_err(format!(
-                    "`circuits` argument is not a list of qoqo Circuits: {}",
-                    err
-                ))
-            })?;
-            new_circuits.push(tmp_c)
-        }
-        let new_constant: Option<Circuit> = match constant_circuit {
-            None => None,
-            Some(c) => {
-                let tmp_c = CircuitWrapper::from_pyany(c).map_err(|err| {
+        Python::with_gil(|py| -> PyResult<Self> {
+            let mut new_circuits: Vec<Circuit> = Vec::new();
+            for c in circuits.into_iter() {
+                let tmp_c = CircuitWrapper::from_pyany(c.bind(py)).map_err(|err| {
                     PyTypeError::new_err(format!(
-                        "`constant_circuit` argument is not None or a qoqo Circuit: {}",
+                        "`circuits` argument is not a list of qoqo Circuits: {}",
                         err
                     ))
                 })?;
-                Some(tmp_c)
+                new_circuits.push(tmp_c)
             }
-        };
-        let input = PauliZProductInputWrapper::from_pyany(input).map_err(|err| {
-            PyTypeError::new_err(format!(
-                "`input` argument is not a qoqo CheatedInput: {}",
-                err
-            ))
-        })?;
-        Ok(Self {
-            internal: PauliZProduct {
-                input,
-                constant_circuit: new_constant,
-                circuits: new_circuits,
-            },
+            let new_constant: Option<Circuit> = match constant_circuit {
+                None => None,
+                Some(c) => {
+                    let tmp_c = CircuitWrapper::from_pyany(c.bind(py)).map_err(|err| {
+                        PyTypeError::new_err(format!(
+                            "`constant_circuit` argument is not None or a qoqo Circuit: {}",
+                            err
+                        ))
+                    })?;
+                    Some(tmp_c)
+                }
+            };
+            let input = PauliZProductInputWrapper::from_pyany(input.bind(py)).map_err(|err| {
+                PyTypeError::new_err(format!(
+                    "`input` argument is not a qoqo CheatedInput: {}",
+                    err
+                ))
+            })?;
+            Ok(Self {
+                internal: PauliZProduct {
+                    input,
+                    constant_circuit: new_constant,
+                    circuits: new_circuits,
+                },
+            })
         })
     }
 
@@ -305,7 +307,7 @@ impl PauliZProductWrapper {
     }
 
     /// Return a deep copy of the Object.
-    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+    pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
         self.clone()
     }
 
@@ -368,7 +370,7 @@ impl PauliZProductWrapper {
 }
 
 impl PauliZProductWrapper {
-    /// Extracts a PauliZProduct from a PauliZProductWrapper python object.
+    /// Extracts a PauliZProduct from a PauliZProductWrapper python  object.
     ///
     /// When working with qoqo and other rust based python packages compiled separately
     /// a downcast will not detect that two PauliZProductWrapper objects are compatible.
@@ -377,38 +379,7 @@ impl PauliZProductWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::PauliZProduct]
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<PauliZProduct> {
-        Python::with_gil(|py| -> PyResult<PauliZProduct> {
-            let input = input.bind(py);
-            if let Ok(try_downcast) = input.extract::<PauliZProductWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
-                PyTypeError::new_err("Python object cannot be converted to qoqo PauliZProduct: Cast to binary representation failed".to_string())
-            })?;
-                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
-                PyTypeError::new_err("Python object cannot be converted to qoqo PauliZProduct: Cast to binary representation failed".to_string())
-            })?;
-                deserialize(&bytes[..]).map_err(|err| {
-                    PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo PauliZProduct: Deserialization failed: {}",
-                    err
-                ))
-                })
-            }
-        })
-    }
-
-    /// Extracts a PauliZProduct from a PauliZProductWrapper python bound object.
-    ///
-    /// When working with qoqo and other rust based python packages compiled separately
-    /// a downcast will not detect that two PauliZProductWrapper objects are compatible.
-    /// Provides a custom function to convert qoqo PauliZProducts between different Python packages.
-    ///
-    /// # Arguments:
-    ///
-    /// `input` - The Python object that should be casted to a [roqoqo::PauliZProduct]
-    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<PauliZProduct> {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<PauliZProduct> {
         if let Ok(try_downcast) = input.extract::<PauliZProductWrapper>() {
             Ok(try_downcast.internal)
         } else {

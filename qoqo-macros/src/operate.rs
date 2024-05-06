@@ -303,7 +303,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         }
 
         /// Creates deep copy of Operation
-        fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+        fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
             self.clone()
         }
     }

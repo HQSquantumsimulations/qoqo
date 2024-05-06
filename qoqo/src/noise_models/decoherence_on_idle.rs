@@ -53,7 +53,7 @@ pub struct DecoherenceOnIdleModelWrapper {
 impl DecoherenceOnIdleModelWrapper {
     /// Create a new DecoherenceOnIdleModel
     #[new]
-    pub fn new(noise_operator: Option<Py<PyAny>>) -> PyResult<Self> {
+    pub fn new(noise_operator: Option<&Bound<PyAny>>) -> PyResult<Self> {
         if let Some(lindblad_operator) = noise_operator {
             let noise_operator =
                 struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany(

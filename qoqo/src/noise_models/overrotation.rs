@@ -85,7 +85,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
     ///
     /// Returns:
     ///     A deep copy of self.
-    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+    pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
         self.clone()
     }
 
@@ -194,7 +194,11 @@ impl SingleQubitOverrotationDescriptionWrapper {
     /// Raises:
     ///     NotImplementedError: Other comparison not implemented.
     ///
-    fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
+    fn __richcmp__(
+        &self,
+        other: &Bound<PyAny>,
+        op: pyo3::class::basic::CompareOp,
+    ) -> PyResult<bool> {
         let other = SingleQubitOverrotationDescriptionWrapper::from_pyany(other);
 
         match op {
@@ -249,26 +253,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
 
 impl SingleQubitOverrotationDescriptionWrapper {
     /// Fallible conversion of generic python object..
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<SingleQubitOverrotationDescription> {
-        Python::with_gil(|py| -> PyResult<SingleQubitOverrotationDescription> {
-            let input = input.bind(py);
-            if let Ok(try_downcast) = input.extract::<SingleQubitOverrotationDescriptionWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode")?;
-                let bytes = get_bytes.extract::<Vec<u8>>()?;
-                bincode::deserialize(&bytes[..]).map_err(|err| {
-                    pyo3::exceptions::PyValueError::new_err(format!(
-                        "Cannot treat input as Overrotation Description: {}",
-                        err
-                    ))
-                })
-            }
-        })
-    }
-
-    /// Fallible conversion of generic python bound object..
-    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<SingleQubitOverrotationDescription> {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<SingleQubitOverrotationDescription> {
         if let Ok(try_downcast) = input.extract::<SingleQubitOverrotationDescriptionWrapper>() {
             Ok(try_downcast.internal)
         } else {
@@ -334,7 +319,7 @@ impl SingleQubitOverrotationOnGateWrapper {
         &self,
         gate: &str,
         qubit: usize,
-        noise_description: Py<PyAny>,
+        noise_description: &Bound<PyAny>,
     ) -> PyResult<Self> {
         let noise_description =
             SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_description)?;
@@ -387,16 +372,20 @@ impl SingleQubitOverrotationOnGateWrapper {
         target: usize,
         noise_operator: (Py<PyAny>, Py<PyAny>),
     ) -> PyResult<Self> {
-        let noise1 = SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_operator.0)?;
-        let noise2 = SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_operator.1)?;
+        Python::with_gil(|py| -> PyResult<Self> {
+            let noise1 =
+                SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_operator.0.bind(py))?;
+            let noise2 =
+                SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_operator.1.bind(py))?;
 
-        Ok(Self {
-            internal: self.internal.clone().set_two_qubit_overrotation(
-                gate,
-                control,
-                target,
-                (noise1, noise2),
-            ),
+            Ok(Self {
+                internal: self.internal.clone().set_two_qubit_overrotation(
+                    gate,
+                    control,
+                    target,
+                    (noise1, noise2),
+                ),
+            })
         })
     }
 

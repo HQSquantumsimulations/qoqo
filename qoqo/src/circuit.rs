@@ -68,38 +68,7 @@ impl CircuitWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::Circuit]
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<Circuit> {
-        Python::with_gil(|py| -> PyResult<Circuit> {
-            let input = input.bind(py);
-            if let Ok(try_downcast) = input.extract::<CircuitWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
-                PyTypeError::new_err("Python object cannot be converted to qoqo Circuit: Cast to binary representation failed".to_string())
-            })?;
-                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
-                PyTypeError::new_err("Python object cannot be converted to qoqo Circuit: Cast to binary representation failed".to_string())
-            })?;
-                deserialize(&bytes[..]).map_err(|err| {
-                    PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo Circuit: Deserialization failed: {}",
-                    err
-                ))
-                })
-            }
-        })
-    }
-
-    /// Extracts a Circuit from a CircuitWrapper python bound object.
-    ///
-    /// When working with qoqo and other rust based python packages compiled separately
-    /// a downcast will not detect that two CircuitWrapper objects are compatible.
-    /// Provides a custom function to convert qoqo Circuits between different Python packages.
-    ///
-    /// # Arguments:
-    ///
-    /// `input` - The Python object that should be casted to a [roqoqo::Circuit]
-    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<Circuit> {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<Circuit> {
         if let Ok(try_downcast) = input.extract::<CircuitWrapper>() {
             Ok(try_downcast.internal)
         } else {
@@ -251,7 +220,7 @@ impl CircuitWrapper {
     ///
     /// Returns:
     ///     Circuit: A deep copy of self.
-    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> CircuitWrapper {
+    pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> CircuitWrapper {
         self.clone()
     }
 
@@ -550,7 +519,11 @@ impl CircuitWrapper {
     ///
     /// Raises:
     ///     NotImplementedError: Other comparison not implemented
-    fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
+    fn __richcmp__(
+        &self,
+        other: &Bound<PyAny>,
+        op: pyo3::class::basic::CompareOp,
+    ) -> PyResult<bool> {
         let other = Self::from_pyany(other);
         match op {
             pyo3::class::basic::CompareOp::Eq => match other {

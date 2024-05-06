@@ -256,7 +256,7 @@ impl PragmaSetStateVectorWrapper {
     ///
     /// Returns:
     ///     PragmaSetStateVector: A deep copy of self.
-    fn __deepcopy__(&self, _memodict: Py<PyAny>) -> PragmaSetStateVectorWrapper {
+    fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> PragmaSetStateVectorWrapper {
         self.clone()
     }
 
@@ -512,7 +512,7 @@ impl PragmaSetDensityMatrixWrapper {
     ///
     /// Returns:
     ///     PragmaSetDensityMatrix: A deep copy of self.
-    fn __deepcopy__(&self, _memodict: Py<PyAny>) -> PragmaSetDensityMatrixWrapper {
+    fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> PragmaSetDensityMatrixWrapper {
         self.clone()
     }
 
@@ -1205,7 +1205,7 @@ impl PragmaGeneralNoiseWrapper {
     ///
     /// Returns:
     ///     PragmaGeneralNoise: A deep copy of self.
-    fn __deepcopy__(&self, _memodict: Py<PyAny>) -> PragmaGeneralNoiseWrapper {
+    fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> PragmaGeneralNoiseWrapper {
         self.clone()
     }
 
@@ -1500,7 +1500,7 @@ impl PragmaChangeDeviceWrapper {
     ///
     /// Returns:
     ///     PragmaChangeDevice: A deep copy of self.
-    fn __deepcopy__(&self, _memodict: Py<PyAny>) -> PragmaChangeDeviceWrapper {
+    fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> PragmaChangeDeviceWrapper {
         self.clone()
     }
 
@@ -1783,7 +1783,7 @@ impl PragmaAnnotatedOpWrapper {
     ///
     /// Returns:
     ///     PragmaAnnotatedOp: A deep copy of self.
-    fn __deepcopy__(&self, _memodict: Py<PyAny>) -> PragmaAnnotatedOpWrapper {
+    fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> PragmaAnnotatedOpWrapper {
         self.clone()
     }
 
