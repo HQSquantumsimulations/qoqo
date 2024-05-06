@@ -11,7 +11,10 @@
 // limitations under the License.
 
 use proc_macro2::TokenStream;
+// use pyo3::prelude::*;
+// use pyo3::types::PyDict;
 use quote::{format_ident, quote};
+// use regex::Regex;
 use std::collections::HashSet;
 use std::fs;
 use std::path::PathBuf;
@@ -129,6 +132,88 @@ const SOURCE_FILES: &[&str] = &[
     #[cfg(feature = "unstable_analog_operations")]
     "src/operations/analog_operations.rs",
 ];
+
+// fn extract_type(string: &str) -> Option<String> {
+//     let pattern = r"\(([a-zA-Z_\[\]]+?)\)";
+//     let re = Regex::new(pattern).unwrap();
+//     if let Some(captures) = re.captures(string) {
+//         if let Some(res) = captures.get(1).map(|s| s.as_str()) {
+//             match res {
+//                 "CalculatorFloat" => Some("Tuple[float, str]".to_string()),
+//                 "String" | "string" => Some("str".to_string()),
+//                 "Operation" | "" => None,
+//                 "uint" => Some("int".to_string()),
+//                 _ => Some(res.replace("list", "List").to_string()),
+//             }
+//         } else {
+//             None
+//         }
+//     } else {
+//         None
+//     }
+// }
+
+// fn create_doc(module: &str) -> String {
+//     let mut module_doc = if module == "qoqo" {
+//         "".to_owned()
+//     } else {
+//         "from qoqo import Circuit\nfrom typing import Tuple, List, Optional\n\n".to_owned()
+//     };
+//     pyo3::prepare_freethreaded_python();
+//     Python::with_gil(|py| {
+//         let python_module = PyModule::import_bound(py, module).unwrap();
+//         let dict = python_module.as_gil_ref().getattr("__dict__").unwrap();
+//         let r_dict = dict.downcast::<PyDict>().unwrap();
+//         println!("pydict: {r_dict:?}");
+//         for (fn_name, func) in r_dict.iter() {
+//             let name = fn_name.str().unwrap().extract::<String>().unwrap();
+//             if name.starts_with("__")
+//                 || (module == "qoqo"
+//                     && !["qoqo", "Circuit", "QuantumProgram", "CircuitDag"]
+//                         .contains(&name.as_str()))
+//             {
+//                 continue;
+//             }
+//             let doc = func
+//                 .getattr("__doc__")
+//                 .unwrap()
+//                 .extract::<String>()
+//                 .unwrap();
+//             let args_vec: Vec<_> = doc
+//                 .split("\n")
+//                 .skip_while(|&line| line != "Args:")
+//                 .skip(1)
+//                 .skip_while(|line| line.len() == 0)
+//                 .take_while(|line| line.len() != 0)
+//                 .collect();
+//             let args: Vec<_> = args_vec
+//                 .iter()
+//                 .filter_map(|&line| {
+//                     (line.contains(':') && line.trim().starts_with(char::is_alphabetic)).then(
+//                         || {
+//                             format!(
+//                                 "{}{}",
+//                                 line.trim()
+//                                     .split_once([' ', ':'])
+//                                     .unwrap_or(("", ""))
+//                                     .0
+//                                     .to_lowercase(),
+//                                 extract_type(line)
+//                                     .map(|arg_type| format!(": {}", arg_type))
+//                                     .unwrap_or_default()
+//                             )
+//                         },
+//                     )
+//                 })
+//                 .collect();
+//             module_doc.push_str(&format!(
+//                 "def {name}({}):\n    \"\"\"\n{doc}\n\"\"\"\n\n",
+//                 args.join(", ")
+//             ));
+//         }
+//     });
+//     module_doc
+// }
 
 fn main() {
     pyo3_build_config::add_extension_module_link_args();
@@ -285,6 +370,25 @@ fn main() {
     fs::write(&out_dir, final_str).expect("Could not write to file");
     // Try to format auto generated operations
     let _unused_output = Command::new("rustfmt").arg(&out_dir).output();
+
+    //     for &module in [
+    //         "qoqo",
+    //         "operations",
+    //         "measurements",
+    //         "noise_models",
+    //         "devices",
+    //     ]
+    //     .iter()
+    //     {
+    //         let qoqo_doc = create_doc(
+    //             module
+    //                 .eq("qoqo")
+    //                 .then_some(module)
+    //                 .unwrap_or(&format!("qoqo.{module}")),
+    //         );
+    //         let out_dir = PathBuf::from(format!("qoqo/{}.pyi", module));
+    //         fs::write(&out_dir, qoqo_doc).expect("Could not write to file");
+    //     }
 }
 
 fn extract_fields_with_types(input_fields: Fields) -> Vec<(Ident, Option<String>, Type)> {

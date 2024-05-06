@@ -54,12 +54,16 @@ schemars = "0.8"
 [dev-dependencies]
 test-case = "3.0"
 nalgebra = "0.32"
+regex = "1.10"
 
 [build-dependencies]
 quote = "1.0"
 syn = { version = "2.0", features = ["full", "visit"] }
 proc-macro2 = "1.0"
 pyo3-build-config = "0.21"
+# pyo3 = "0.21"
+# regex = "1.10"
+
 
 [package.metadata.docs.rs]
 no-default-features = true

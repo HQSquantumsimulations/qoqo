@@ -1097,6 +1097,7 @@ dependencies = [
  "qoqo_calculator",
  "qoqo_calculator_pyo3",
  "quote",
+ "regex",
  "roqoqo",
  "schemars",
  "serde",
@@ -1120,8 +1121,9 @@ dependencies = [
 
 [[package]]
 name = "qoqo_calculator"
-version = "1.2.0"
-source = "git+https://github.com/dberthault/qoqo_calculator.git#b8b770bf9c8391e8e5a9217d92481564415fad18"
+version = "1.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bd58cedb308cdf12c77a34e1295fb3885e0c85b4d4490a7866e318bccd9110a4"
 dependencies = [
  "num-complex",
  "schemars",
@@ -1131,8 +1133,9 @@ dependencies = [
 
 [[package]]
 name = "qoqo_calculator_pyo3"
-version = "1.2.0"
-source = "git+https://github.com/dberthault/qoqo_calculator.git#b8b770bf9c8391e8e5a9217d92481564415fad18"
+version = "1.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b8325878a7a119270ec3eacfcf133ade57111b45849eade9a297f356de79f07b"
 dependencies = [
  "num-complex",
  "pyo3",
