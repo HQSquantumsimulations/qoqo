@@ -2,7 +2,7 @@ use std::{fs, path::PathBuf};
 
 use pyo3::{
     types::{PyAnyMethods, PyDict, PyModule},
-    Python,
+    PyResult, Python,
 };
 use regex::Regex;
 
@@ -84,20 +84,20 @@ fn collect_return_from_doc(doc: &str) -> String {
     }
 }
 
-fn create_doc(module: &str) -> String {
-    let mut module_doc = if module == "qoqo" {
-        "from typing import Optional, List, Tuple, Dict, Set\n\n".to_owned()
+fn create_doc(module: &str) -> PyResult<String> {
+    let mut module_doc = "# This is an auto generated file containing the documentation.\n# To see the full implementation go to this page:\n# https://github.com/HQSquantumsimulations/qoqo\n\n".to_owned();
+    if module == "qoqo" {
+        module_doc.push_str("from typing import Optional, List, Tuple, Dict, Set\n\n");
     } else {
-        "from qoqo import Circuit, Operation\nfrom typing import Tuple, List, Optional, Dict\n\n"
-            .to_owned()
+        module_doc.push_str("from qoqo import Circuit, Operation\nfrom typing import Tuple, List, Optional, Dict\n\n");
     };
     pyo3::prepare_freethreaded_python();
-    Python::with_gil(|py| {
-        let python_module = PyModule::import_bound(py, module).unwrap();
-        let dict = python_module.as_gil_ref().getattr("__dict__").unwrap();
-        let r_dict = dict.downcast::<PyDict>().unwrap();
+    Python::with_gil(|py| -> PyResult<String> {
+        let python_module = PyModule::import_bound(py, module)?;
+        let dict = python_module.as_gil_ref().getattr("__dict__")?;
+        let r_dict = dict.downcast::<PyDict>()?;
         for (fn_name, func) in r_dict.iter() {
-            let name = fn_name.str().unwrap().extract::<String>().unwrap();
+            let name = fn_name.str()?.extract::<String>()?;
             if name.starts_with("__")
                 || (module == "qoqo"
                     && ![
@@ -111,28 +111,31 @@ fn create_doc(module: &str) -> String {
             {
                 continue;
             }
-            let doc = func
-                .getattr("__doc__")
-                .unwrap()
-                .extract::<String>()
-                .unwrap();
-            if name != "qoqo" {
+            let doc = func.getattr("__doc__")?.extract::<String>()?;
+            if name == "qoqo" {
+                module_doc.push_str(&format!(
+                    "def {name}({}):\n    \"\"\"\n{doc}\n\"\"\"\n\n",
+                    collect_args_from_doc(doc.as_str()).join(", "),
+                ));
+            } else if name == "operations" {
+                module_doc.push_str(&format!(
+                    "class Operation:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self):\n       return\n\n",
+                ));
+            } else {
                 let args = collect_args_from_doc(doc.as_str()).join(", ");
                 module_doc.push_str(&format!(
                     "class {name}{}:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self{}):\n       return\n\n",
-                    module.eq("operations").then_some("(Operation)").unwrap_or_default(),
+                    module.eq("qoqo.operations").then_some("(Operation)").unwrap_or_default(),
                     args.is_empty().then_some("").unwrap_or(format!(", {}", args).as_str()),
                 ));
-                let class_dict = func.getattr("__dict__").unwrap();
-                let items = class_dict.call_method0("items").unwrap();
+                let class_dict = func.getattr("__dict__")?;
+                let items = class_dict.call_method0("items")?;
                 let dict_obj = py
-                    .import_bound("builtins")
-                    .unwrap()
-                    .call_method1("dict", (items,))
-                    .unwrap();
-                let class_r_dict = dict_obj.as_gil_ref().downcast::<PyDict>().unwrap();
+                    .import_bound("builtins")?
+                    .call_method1("dict", (items,))?;
+                let class_r_dict = dict_obj.as_gil_ref().downcast::<PyDict>()?;
                 for (class_fn_name, meth) in class_r_dict.iter() {
-                    let meth_name = class_fn_name.str().unwrap().extract::<String>().unwrap();
+                    let meth_name = class_fn_name.str()?.extract::<String>()?;
                     let class_doc = match meth_name.as_str() {
                         "__add__" => r#"Implement the `+` (__add__) magic method to add two Circuits.
 
@@ -158,7 +161,7 @@ Raises:
                         "__new__" => "".to_owned(),
                         _ => meth
                             .getattr("__doc__")
-                            .unwrap()
+                            ?
                             .extract::<String>()
                             .unwrap_or_default(),
                     };
@@ -172,23 +175,10 @@ Raises:
                         collect_return_from_doc(class_doc.as_str())
                     ));
                 }
-            } else if name == "operations" {
-                module_doc.push_str(&format!(
-                    "class Operation:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self):\n       return\n\n",
-                ));
-            } else {
-                module_doc.push_str(&format!(
-                    "def {name}({}){}:\n    \"\"\"\n{doc}\n\"\"\"\n\n",
-                    collect_args_from_doc(doc.as_str()).join(", "),
-                    module
-                        .eq("qoqo.operations")
-                        .then(|| " -> Operation")
-                        .unwrap_or_default()
-                ));
             }
         }
-    });
-    module_doc
+        Ok(module_doc)
+    })
 }
 
 #[test]
@@ -207,7 +197,8 @@ fn test_doc() {
                 .eq("qoqo")
                 .then_some(module)
                 .unwrap_or(&format!("qoqo.{module}")),
-        );
+        )
+        .unwrap();
         let out_dir = PathBuf::from(format!("qoqo/{}.pyi", module));
         fs::write(&out_dir, qoqo_doc).expect("Could not write to file");
     }
