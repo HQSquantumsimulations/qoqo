@@ -772,13 +772,13 @@ fn test_circuit_iadd_magic_method() {
 
 #[test]
 fn test_circuit_add_magic_method() {
+    pyo3::prepare_freethreaded_python();
     let added_op1 = Operation::from(DefinitionBit::new("ro".to_string(), 1, false));
     let added_op2 = Operation::from(RotateX::new(0, CalculatorFloat::from(1.0)));
     let added_op3 = Operation::from(PauliX::new(0));
     let operation1 = convert_operation_to_pyobject(added_op1).unwrap();
     let operation2 = convert_operation_to_pyobject(added_op2).unwrap();
     let operation3 = convert_operation_to_pyobject(added_op3).unwrap();
-    pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let added_circuit = new_circuit(py);
         added_circuit
