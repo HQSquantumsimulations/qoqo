@@ -877,15 +877,12 @@ mod test_chain_with_environment {
 
     impl TestDeviceWrapper {
         /// Fallible conversion of generic python object..
-        fn from_pyany(input: Py<PyAny>) -> PyResult<TestDevice> {
-            Python::with_gil(|py| -> PyResult<TestDevice> {
-                let input = input.bind(py);
-                if let Ok(try_downcast) = input.extract::<TestDeviceWrapper>() {
-                    Ok(try_downcast.internal)
-                } else {
-                    panic!()
-                }
-            })
+        fn from_pyany(input: &Bound<PyAny>) -> PyResult<TestDevice> {
+            if let Ok(try_downcast) = input.extract::<TestDeviceWrapper>() {
+                Ok(try_downcast.internal)
+            } else {
+                panic!()
+            }
         }
     }
 
@@ -920,11 +917,11 @@ mod test_chain_with_environment {
     #[test]
     fn test_chain_with_environment_capsule() {
         pyo3::prepare_freethreaded_python();
-        let test_device = Python::with_gil(|py| -> Py<PyAny> {
+        let device_capsule = Python::with_gil(|py| -> ChainWithEnvironmentCapsule {
             let device_type = py.get_type_bound::<TestDeviceWrapper>();
-            device_type.call0().unwrap().into()
+            let test_device = device_type.call0().unwrap();
+            ChainWithEnvironmentCapsule::new(&test_device).unwrap()
         });
-        let device_capsule = ChainWithEnvironmentCapsule::new(test_device).unwrap();
         let chains_with_environment = device_capsule.environment_chains();
         let simple_test_device = TestDevice;
         let comparison = simple_test_device.environment_chains();
