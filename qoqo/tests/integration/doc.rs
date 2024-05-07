@@ -81,11 +81,11 @@ fn collect_return_from_doc(doc: &str) -> String {
 }
 
 fn create_doc(module: &str) -> PyResult<String> {
-    let mut module_doc = "# This is an auto generated file containing the documentation.\n# To see the full implementation go to this page:\n# https://github.com/HQSquantumsimulations/qoqo\n\n".to_owned();
+    let mut module_doc = "# This is an auto generated file containing only the documentation.\n# You can find the full implementation on this page:\n# https://github.com/HQSquantumsimulations/qoqo\n\n".to_owned();
     if module == "qoqo" {
         module_doc.push_str("from typing import Optional, List, Tuple, Dict, Set\n\n");
     } else {
-        module_doc.push_str("from qoqo import Circuit, Operation\nfrom typing import Tuple, List, Optional, Dict\n\n");
+        module_doc.push_str("from .qoqo import Circuit, Operation\nfrom typing import Tuple, List, Optional, Dict\n\n");
     };
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> PyResult<String> {
