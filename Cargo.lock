@@ -1120,8 +1120,9 @@ dependencies = [
 
 [[package]]
 name = "qoqo_calculator"
-version = "1.2.0"
-source = "git+https://github.com/dberthault/qoqo_calculator.git#b8b770bf9c8391e8e5a9217d92481564415fad18"
+version = "1.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6fa8b27bb34103af09afcca6d21ccb52dfa66a34c0ffa0f8103003bb1afd9d53"
 dependencies = [
  "num-complex",
  "schemars",
@@ -1131,8 +1132,9 @@ dependencies = [
 
 [[package]]
 name = "qoqo_calculator_pyo3"
-version = "1.2.0"
-source = "git+https://github.com/dberthault/qoqo_calculator.git#b8b770bf9c8391e8e5a9217d92481564415fad18"
+version = "1.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "76c7ab3901e5e23a81517803d3cecc9e3de2fe0fbf1355726ff9df6e7ff1b4fd"
 dependencies = [
  "num-complex",
  "pyo3",
@@ -1491,7 +1493,7 @@ checksum = "7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f"
 [[package]]
 name = "struqture"
 version = "1.7.0"
-source = "git+https://github.com/dberthault/struqture.git#21e62fbba6551bb01acdd7a84e44c68fdc8b3cde"
+source = "git+https://github.com/dberthault/struqture.git#934701aa1d2498de175870893b3ab216d71cd2f4"
 dependencies = [
  "itertools",
  "ndarray",
@@ -1507,7 +1509,7 @@ dependencies = [
 [[package]]
 name = "struqture-py"
 version = "1.7.0"
-source = "git+https://github.com/dberthault/struqture.git#21e62fbba6551bb01acdd7a84e44c68fdc8b3cde"
+source = "git+https://github.com/dberthault/struqture.git#934701aa1d2498de175870893b3ab216d71cd2f4"
 dependencies = [
  "bincode",
  "num-complex",
@@ -1530,7 +1532,7 @@ dependencies = [
 [[package]]
 name = "struqture-py-macros"
 version = "1.7.0"
-source = "git+https://github.com/dberthault/struqture.git#21e62fbba6551bb01acdd7a84e44c68fdc8b3cde"
+source = "git+https://github.com/dberthault/struqture.git#934701aa1d2498de175870893b3ab216d71cd2f4"
 dependencies = [
  "num-complex",
  "proc-macro2",
