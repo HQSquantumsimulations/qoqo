@@ -32,15 +32,11 @@ fn extract_type(string: &str) -> Option<String> {
     let re = Regex::new(pattern).unwrap();
     if let Some(captures) = re.captures(string) {
         if let Some(res) = captures.get(1).map(|s| s.as_str()) {
-            str_to_type(res)
-        } else {
-            None
+            return str_to_type(res);
         }
-    } else {
-        None
     }
+    None
 }
-
 fn collect_args_from_doc(doc: &str) -> Vec<String> {
     let args_vec: Vec<_> = doc
         .split("\n")
