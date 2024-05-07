@@ -30,6 +30,4 @@ mod quantum_program;
 mod measurements;
 
 #[cfg(test)]
-mod doc;
-#[cfg(test)]
 mod noise_models;
