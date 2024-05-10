@@ -145,14 +145,11 @@ fn test_new_call_defined_gate(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type::<CallDefinedGateWrapper>();
-        let operation_py = operation_type
-            .call1(arguments)
-            .unwrap()
-            .downcast::<PyCell<CallDefinedGateWrapper>>()
-            .unwrap();
-        let comparison = bool::extract(
-            operation
+        let operation_type = py.get_type_bound::<CallDefinedGateWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<CallDefinedGateWrapper>().unwrap();
+        let comparison = bool::extract_bound(
+            &operation
                 .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
@@ -162,17 +159,18 @@ fn test_new_call_defined_gate(
 
         // Error initialisation
         let result = operation_type.call1(([0, 1], vec!["fails"]));
-        let result_ref = result.bind();
-        assert!(result_ref.is_err());
+        assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
         let def_wrapper = operation_py.extract::<CallDefinedGateWrapper>().unwrap();
         let new_op_diff = operation_type
             .call1(("name".to_owned(), vec![1, 2], vec![0.0]))
-            .unwrap()
-            .downcast::<PyCell<CallDefinedGateWrapper>>()
             .unwrap();
-        let def_wrapper_diff = new_op_diff.extract::<CallDefinedGateWrapper>().unwrap();
+        let def_wrapper_diff = new_op_diff
+            .downcast::<CallDefinedGateWrapper>()
+            .unwrap()
+            .extract::<CallDefinedGateWrapper>()
+            .unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
         let helper_eq: bool = def_wrapper == def_wrapper.clone();
@@ -315,16 +313,17 @@ fn test_pyo3_gate_definition(input_definition: Operation) {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
 
         let to_tag = operation.call_method0(py, "tags").unwrap();
-        let tags_op: &Vec<&str> = &Vec::extract(to_tag.bind(py)).unwrap();
+        let tags_op: &Vec<String> = &Vec::extract_bound(&to_tag.bind(py)).unwrap();
         let tags_param: &[&str] = &["Operation", "MultiQubitGateOperation", "CallDefinedGate"];
         assert_eq!(tags_op, tags_param);
 
         let hqslang_op: String =
-            String::extract(operation.call_method0(py, "hqslang").unwrap().bind(py)).unwrap();
+            String::extract_bound(&operation.call_method0(py, "hqslang").unwrap().bind(py))
+                .unwrap();
         assert_eq!(hqslang_op, "CallDefinedGate");
 
-        assert!(!bool::extract(
-            operation
+        assert!(!bool::extract_bound(
+            &operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
                 .bind(py)
@@ -348,7 +347,8 @@ fn test_pyo3_call_defined_gate_inputs() {
 
         // Test gate_name()
         let name_op: String =
-            String::extract(operation.call_method0(py, "gate_name").unwrap().bind(py)).unwrap();
+            String::extract_bound(&operation.call_method0(py, "gate_name").unwrap().bind(py))
+                .unwrap();
         let name_param: String = String::from("name");
         assert_eq!(name_op, name_param);
 
@@ -366,8 +366,9 @@ fn test_pyo3_call_defined_gate_inputs() {
         let py_params = operation.call_method0(py, "free_parameters").unwrap();
         let params: &pyo3::types::PyList = py_params.bind(py).extract().unwrap();
         for param in params.iter() {
-            free_parameters
-                .push(qoqo_calculator_pyo3::convert_into_calculator_float(param).unwrap());
+            free_parameters.push(
+                qoqo_calculator_pyo3::convert_into_calculator_float(&param.as_borrowed()).unwrap(),
+            );
         }
         assert_eq!(free_parameters, vec![CalculatorFloat::from(0.0)]);
     })
@@ -483,8 +484,7 @@ fn test_pyo3_remapqubits_error_call_defined_gate() {
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
-        let result_ref = result.bind();
-        assert!(result_ref.is_err());
+        assert!(result.is_err());
     })
 }
 
@@ -621,16 +621,16 @@ fn test_pyo3_copy_deepcopy_call_defined_gate() {
         let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
         let copy_deepcopy_param = operation;
 
-        let comparison_copy = bool::extract(
-            copy_op
+        let comparison_copy = bool::extract_bound(
+            &copy_op
                 .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param.clone(),))
                 .unwrap(),
         )
         .unwrap();
         assert!(comparison_copy);
-        let comparison_deepcopy = bool::extract(
-            deepcopy_op
+        let comparison_deepcopy = bool::extract_bound(
+            &deepcopy_op
                 .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param,))
                 .unwrap(),
@@ -675,13 +675,13 @@ fn test_pyo3_format_repr_call_defined_gate() {
         )))
         .unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: &str = <&str>::extract(to_format.bind(py)).unwrap();
+        let format_op: String = String::extract_bound(&to_format.bind(py)).unwrap();
         assert_eq!(
             format_op,
             "CallDefinedGate { gate_name: \"name\", qubits: [1, 2], free_parameters: [Float(0.0)] }"
         );
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: &str = <&str>::extract(to_repr.bind(py)).unwrap();
+        let repr_op: String = String::extract_bound(&to_repr.bind(py)).unwrap();
         assert_eq!(
             repr_op,
             "CallDefinedGate { gate_name: \"name\", qubits: [1, 2], free_parameters: [Float(0.0)] }"
@@ -748,8 +748,8 @@ fn test_pyo3_substitute_call_defined_gate() {
         .unwrap();
         let test_operation = convert_operation_to_pyobject(substitute_param).unwrap();
 
-        let comparison = bool::extract(
-            substitute_op
+        let comparison = bool::extract_bound(
+            &substitute_op
                 .bind(py)
                 .call_method1("__eq__", (test_operation,))
                 .unwrap(),
@@ -785,8 +785,7 @@ fn test_pyo3_substitute_params_error_call_defined_gate() {
         .unwrap();
         let substitution_dict: HashMap<&str, f64> = HashMap::new();
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
-        let result_ref = result.bind();
-        assert!(result_ref.is_err());
+        assert!(result.is_err());
     })
 }
 
@@ -874,8 +873,8 @@ fn test_pyo3_richcmp_call_defined_gate() {
         )))
         .unwrap();
 
-        let comparison = bool::extract(
-            operation_one
+        let comparison = bool::extract_bound(
+            &operation_one
                 .bind(py)
                 .call_method1("__eq__", (operation_two.clone(),))
                 .unwrap(),
@@ -883,8 +882,8 @@ fn test_pyo3_richcmp_call_defined_gate() {
         .unwrap();
         assert!(!comparison);
 
-        let comparison = bool::extract(
-            operation_one
+        let comparison = bool::extract_bound(
+            &operation_one
                 .bind(py)
                 .call_method1("__ne__", (operation_two.clone(),))
                 .unwrap(),
@@ -952,14 +951,15 @@ fn test_pyo3_json_schema_call_defined_gate() {
         let operation = pyobject.bind(py);
 
         let schema: String =
-            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+            String::extract_bound(&operation.call_method0("json_schema").unwrap()).unwrap();
 
         assert_eq!(schema, rust_schema);
 
         let current_version_string =
-            String::extract(operation.call_method0("current_version").unwrap()).unwrap();
+            String::extract_bound(&operation.call_method0("current_version").unwrap()).unwrap();
         let minimum_supported_version_string =
-            String::extract(operation.call_method0("min_supported_version").unwrap()).unwrap();
+            String::extract_bound(&operation.call_method0("min_supported_version").unwrap())
+                .unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, "1.10.1");
