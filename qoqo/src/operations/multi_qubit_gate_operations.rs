@@ -68,7 +68,7 @@ pub struct MultiQubitZZ {
 /// Module containing the CallDefinedGate class.
 #[cfg(feature = "unstable_operation_definition")]
 #[pymodule]
-fn call_defined_gate(_py: Python, module: &PyModule) -> PyResult<()> {
+fn call_defined_gate(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     module.add_class::<CallDefinedGateWrapper>()?;
     Ok(())
 }
@@ -105,9 +105,9 @@ insert_pyany_to_operation!(
                         .map_err(|_| QoqoError::ConversionError)?;
         let param_vec: &pyo3::types::PyList = params.extract().map_err(|_| QoqoError::ConversionError)?;
         let mut free_parameters: Vec<CalculatorFloat> = vec![];
-        for param in param_vec.iter() {
-            free_parameters.push(convert_into_calculator_float(param).map_err(|_| QoqoError::ConversionError)?);
-        }
+            for param in param_vec.iter() {
+                free_parameters.push(convert_into_calculator_float(&param.as_borrowed()).map_err(|_| QoqoError::ConversionError)?);
+            }
         Ok(CallDefinedGate::new(gate_name, qubits, free_parameters).into())
     }
 );
@@ -144,13 +144,11 @@ impl CallDefinedGateWrapper {
             Python::with_gil(|py| -> PyResult<Vec<CalculatorFloat>> {
                 let mut a = vec![];
                 for param in free_parameters {
-                    a.push(
-                        convert_into_calculator_float(param.as_ref(py)).map_err(|_| {
-                            pyo3::exceptions::PyTypeError::new_err(
-                                "Argument gate time cannot be converted to CalculatorFloat",
-                            )
-                        })?,
-                    )
+                    a.push(convert_into_calculator_float(param.bind(py)).map_err(|_| {
+                        pyo3::exceptions::PyTypeError::new_err(
+                            "Argument gate time cannot be converted to CalculatorFloat",
+                        )
+                    })?)
                 }
                 Ok(a)
             })?;
@@ -196,7 +194,7 @@ impl CallDefinedGateWrapper {
     ///     set[int]: The involved qubits of the operation.
     fn involved_qubits(&self) -> PyObject {
         let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
-            PySet::new(py, &[self.internal.qubits().clone()])
+            PySet::new_bound(py, &[self.internal.qubits().clone()])
                 .unwrap()
                 .to_object(py)
         });
@@ -241,7 +239,7 @@ impl CallDefinedGateWrapper {
     ///     RuntimeError: The parameter substitution failed.
     fn substitute_parameters(
         &self,
-        substitution_parameters: std::collections::HashMap<&str, f64>,
+        substitution_parameters: std::collections::HashMap<String, f64>,
     ) -> PyResult<Self> {
         let mut calculator = qoqo_calculator::Calculator::new();
         for (key, val) in substitution_parameters.iter() {
@@ -321,15 +319,17 @@ impl CallDefinedGateWrapper {
     ///
     /// Returns:
     ///     bool: Whether the two operations compared evaluated to True or False.
-    fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
-        let other: Operation = Python::with_gil(|py| -> PyResult<Operation> {
-            let other_ref = other.as_ref(py);
-            crate::operations::convert_pyany_to_operation(other_ref).map_err(|_| {
+    fn __richcmp__(
+        &self,
+        other: &Bound<PyAny>,
+        op: pyo3::class::basic::CompareOp,
+    ) -> PyResult<bool> {
+        let other: Operation =
+            crate::operations::convert_pyany_to_operation(other).map_err(|_| {
                 pyo3::exceptions::PyTypeError::new_err(
                     "Right hand side cannot be converted to Operation",
                 )
-            })
-        })?;
+            })?;
         match op {
             pyo3::class::basic::CompareOp::Eq => {
                 Ok(Operation::from(self.internal.clone()) == other)
