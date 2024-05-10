@@ -13,7 +13,7 @@
 use pyo3::prelude::*;
 use qoqo::noise_models::*;
 #[cfg(feature = "json_schema")]
-use roqoqo::{noise_models::ContinuousDecoherenceModel, ROQOQO_VERSION};
+use roqoqo::{noise_models::DecoherenceOnIdleModel, ROQOQO_VERSION};
 use struqture::OperateOnDensityMatrix;
 use struqture_py::spins;
 
@@ -23,11 +23,9 @@ fn test_pyo3_init() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let plus_minus_operator = spins::PlusMinusLindbladNoiseOperatorWrapper::new();
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call1((plus_minus_operator.clone(),)).unwrap();
-        let br = binding
-            .downcast::<ContinuousDecoherenceModelWrapper>()
-            .unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let comparison = br
             .call_method0("get_noise_operator")
             .unwrap()
@@ -52,15 +50,11 @@ fn test_add_damping() {
             internal: internal_plus_minus,
         };
 
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
-        let br = binding
-            .downcast::<ContinuousDecoherenceModelWrapper>()
-            .unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let binding = br.call_method1("add_damping_rate", ([0], 0.1)).unwrap();
-        let br = binding
-            .downcast::<ContinuousDecoherenceModelWrapper>()
-            .unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let comparison = br
             .call_method0("get_noise_operator")
             .unwrap()
@@ -85,15 +79,11 @@ fn test_add_dephasing() {
             internal: internal_plus_minus,
         };
 
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
-        let br = binding
-            .downcast::<ContinuousDecoherenceModelWrapper>()
-            .unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let binding = br.call_method1("add_dephasing_rate", ([0], 0.1)).unwrap();
-        let br = binding
-            .downcast::<ContinuousDecoherenceModelWrapper>()
-            .unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let comparison = br
             .call_method0("get_noise_operator")
             .unwrap()
@@ -132,17 +122,13 @@ fn test_add_depolarising() {
             internal: internal_plus_minus,
         };
 
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
-        let br = binding
-            .downcast::<ContinuousDecoherenceModelWrapper>()
-            .unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let binding = br
             .call_method1("add_depolarising_rate", ([0], 0.2))
             .unwrap();
-        let br = binding
-            .downcast::<ContinuousDecoherenceModelWrapper>()
-            .unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let comparison = br
             .call_method0("get_noise_operator")
             .unwrap()
@@ -167,15 +153,11 @@ fn test_add_excitation() {
             internal: internal_plus_minus,
         };
 
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
-        let br = binding
-            .downcast::<ContinuousDecoherenceModelWrapper>()
-            .unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let binding = br.call_method1("add_excitation_rate", ([0], 0.1)).unwrap();
-        let br = binding
-            .downcast::<ContinuousDecoherenceModelWrapper>()
-            .unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let comparison = br
             .call_method0("get_noise_operator")
             .unwrap()
@@ -188,16 +170,14 @@ fn test_add_excitation() {
 fn test_pyo3_debug() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
-        let br = binding
-            .downcast::<ContinuousDecoherenceModelWrapper>()
-            .unwrap();
-        let br_wrapper = br.extract::<ContinuousDecoherenceModelWrapper>().unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
+        let br_wrapper = br.extract::<DecoherenceOnIdleModelWrapper>().unwrap();
         let br_copied = br
             .call_method0("__copy__")
             .unwrap()
-            .extract::<ContinuousDecoherenceModelWrapper>()
+            .extract::<DecoherenceOnIdleModelWrapper>()
             .unwrap();
         assert_eq!(br_copied, br_wrapper);
         let br_clone = br_wrapper.clone();
@@ -213,18 +193,14 @@ fn test_pyo3_debug() {
 fn test_to_from_json() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
-        let br = binding
-            .downcast::<ContinuousDecoherenceModelWrapper>()
-            .unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
         let binding = new_br.call_method1("from_json", (&serialised,)).unwrap();
-        let deserialised = binding
-            .downcast::<ContinuousDecoherenceModelWrapper>()
-            .unwrap();
+        let deserialised = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         assert_eq!(
             format!("{:?}", br.as_gil_ref()),
             format!("{:?}", deserialised.as_gil_ref())
@@ -248,17 +224,13 @@ fn test_to_from_json() {
 fn test_to_from_bincode() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
-        let br = binding
-            .downcast::<ContinuousDecoherenceModelWrapper>()
-            .unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         let new_br = br;
         let serialised = br.call_method0("to_bincode").unwrap();
         let binding = new_br.call_method1("from_bincode", (&serialised,)).unwrap();
-        let deserialised = binding
-            .downcast::<ContinuousDecoherenceModelWrapper>()
-            .unwrap();
+        let deserialised = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
         assert_eq!(
             format!("{:?}", br.as_gil_ref()),
             format!("{:?}", deserialised.as_gil_ref())
@@ -277,23 +249,20 @@ fn test_to_from_bincode() {
     })
 }
 
-/// Test json_schema function of ContinuousDecoherenceModel
+/// Test json_schema function of DecoherenceOnIdleModel
 #[cfg(feature = "json_schema")]
 #[test]
 fn test_json_schema() {
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
-        let br_type = py.get_type_bound::<ContinuousDecoherenceModelWrapper>();
+        let br_type = py.get_type_bound::<DecoherenceOnIdleModelWrapper>();
         let binding = br_type.call0().unwrap();
-        let br = binding
-            .downcast::<ContinuousDecoherenceModelWrapper>()
-            .unwrap();
+        let br = binding.downcast::<DecoherenceOnIdleModelWrapper>().unwrap();
 
         let schema: String =
             String::extract_bound(&br.call_method0("json_schema").unwrap()).unwrap();
         let rust_schema =
-            serde_json::to_string_pretty(&schemars::schema_for!(ContinuousDecoherenceModel))
-                .unwrap();
+            serde_json::to_string_pretty(&schemars::schema_for!(DecoherenceOnIdleModel)).unwrap();
         assert_eq!(schema, rust_schema);
 
         let current_version_string =
@@ -302,6 +271,6 @@ fn test_json_schema() {
             String::extract_bound(&br.call_method0("min_supported_version").unwrap()).unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
-        assert_eq!(minimum_supported_version_string, "1.6.0");
+        assert_eq!(minimum_supported_version_string, "1.11.0");
     });
 }

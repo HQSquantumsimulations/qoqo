@@ -12,18 +12,17 @@
 
 use pyo3::prelude::*;
 use qoqo_macros::noise_model_wrapper;
-use roqoqo::noise_models::{ContinuousDecoherenceModel, NoiseModel};
+use roqoqo::noise_models::{DecoherenceOnIdleModel, NoiseModel};
 #[cfg(feature = "json_schema")]
 use roqoqo::{operations::SupportedVersion, ROQOQO_VERSION};
 use struqture;
 use struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper;
 
-/// Noise model representing a continuous decoherence process on qubits.
+/// Noise model representing a continuous decoherence process on idle qubits.
 ///
-/// This noise model assumes that all qubits are constantly experiencing
-/// decoherence over time (e.g. due to coupling to the environment).
-/// The noise for each qubit can be different but only single qubit noise is
-/// included in the model.
+/// The purpose of this noise model is to enable defining background noise models that exclude the qubits involved
+/// in a gate, as these might be decoupled from the background noise.The noise for each qubit can be different but
+/// only single qubit noise is included in the model.
 ///
 /// Noise is given by the rates of the Lindblad equation.
 /// The Lindblad equation is a so-called master equation for the time evolution of a density matrix.
@@ -37,22 +36,22 @@ use struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper;
 ///
 /// Here the genreal incoherent part of the Lindblad equation is internally represented by a [struqture::spins::PlusMinusLindbladNoiseOperator].
 ///
-/// To create a complex decoherence model first create the Lindblad noise and then turn it into a ContinuousDecoherenceModel.
+/// To create a complex decoherence model first create the Lindblad noise and then turn it into a DecoherenceOnIdleModel.
 /// For a simple decoherence model, use new to create an empty model and use the add_damping, add_excitation and add_dephasing methods.
 /// For more fine control access the internal lindblad_noise directly and modify it.
 ///
 /// Args:
 ///
 ///     noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): Optional initialisation of Noise Model with given Lindblad operator.
-#[pyclass(frozen, name = "ContinuousDecoherenceModel")]
+#[pyclass(frozen, name = "DecoherenceOnIdleModel")]
 #[derive(Clone, Debug, PartialEq)]
-pub struct ContinuousDecoherenceModelWrapper {
-    internal: ContinuousDecoherenceModel,
+pub struct DecoherenceOnIdleModelWrapper {
+    internal: DecoherenceOnIdleModel,
 }
 
 #[noise_model_wrapper]
-impl ContinuousDecoherenceModelWrapper {
-    /// Create a new ContinuousDecoherenceModel
+impl DecoherenceOnIdleModelWrapper {
+    /// Create a new DecoherenceOnIdleModel
     #[new]
     pub fn new(noise_operator: Option<&Bound<PyAny>>) -> PyResult<Self> {
         if let Some(lindblad_operator) = noise_operator {
@@ -61,11 +60,11 @@ impl ContinuousDecoherenceModelWrapper {
                     lindblad_operator,
                 )?;
             Ok(Self {
-                internal: ContinuousDecoherenceModel::from(noise_operator),
+                internal: DecoherenceOnIdleModel::from(noise_operator),
             })
         } else {
-            Ok(ContinuousDecoherenceModelWrapper {
-                internal: ContinuousDecoherenceModel::new(),
+            Ok(DecoherenceOnIdleModelWrapper {
+                internal: DecoherenceOnIdleModel::new(),
             })
         }
     }
@@ -93,7 +92,7 @@ impl ContinuousDecoherenceModelWrapper {
     ///     ValueError: Input cannot be deserialized to selected Noise-Model.
     #[staticmethod]
     #[pyo3(text_signature = "(input)")]
-    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<ContinuousDecoherenceModelWrapper> {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<DecoherenceOnIdleModelWrapper> {
         let bytes = input.as_gil_ref().extract::<Vec<u8>>().map_err(|_| {
             pyo3::exceptions::PyTypeError::new_err("Input cannot be converted to byte array")
         })?;
@@ -101,8 +100,8 @@ impl ContinuousDecoherenceModelWrapper {
             pyo3::exceptions::PyValueError::new_err("Input cannot be deserialized to Noise-Model.")
         })?;
         match noise_model {
-            NoiseModel::ContinuousDecoherenceModel(internal) => {
-                Ok(ContinuousDecoherenceModelWrapper { internal })
+            NoiseModel::DecoherenceOnIdleModel(internal) => {
+                Ok(DecoherenceOnIdleModelWrapper { internal })
             }
             _ => Err(pyo3::exceptions::PyValueError::new_err(
                 "Input cannot be deserialized to selected Noise-Model.",
@@ -122,13 +121,13 @@ impl ContinuousDecoherenceModelWrapper {
     ///     ValueError: Input cannot be deserialized to selected Noise-Model.
     #[staticmethod]
     #[pyo3(text_signature = "(input)")]
-    pub fn from_json(input: &str) -> PyResult<ContinuousDecoherenceModelWrapper> {
+    pub fn from_json(input: &str) -> PyResult<DecoherenceOnIdleModelWrapper> {
         let noise_model: NoiseModel = serde_json::from_str(input).map_err(|_| {
             pyo3::exceptions::PyValueError::new_err("Input cannot be deserialized to Noise-Model.")
         })?;
         match noise_model {
-            NoiseModel::ContinuousDecoherenceModel(internal) => {
-                Ok(ContinuousDecoherenceModelWrapper { internal })
+            NoiseModel::DecoherenceOnIdleModel(internal) => {
+                Ok(DecoherenceOnIdleModelWrapper { internal })
             }
             _ => Err(pyo3::exceptions::PyValueError::new_err(
                 "Input cannot be deserialized to selected Noise-Model.",
@@ -143,7 +142,7 @@ impl ContinuousDecoherenceModelWrapper {
     ///     str: The json schema serialized to json
     #[staticmethod]
     pub fn json_schema() -> String {
-        let schema = schemars::schema_for!(ContinuousDecoherenceModel);
+        let schema = schemars::schema_for!(DecoherenceOnIdleModel);
         serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
     }
 
@@ -154,7 +153,7 @@ impl ContinuousDecoherenceModelWrapper {
     ///     rate (float): The damping rate.
     ///
     /// Returns:
-    ///     ContinuousDecoherenceModel: The model with the damping added.
+    ///     DecoherenceOnIdleModel: The model with the damping added.
     pub fn add_damping_rate(&self, qubits: Vec<usize>, rate: f64) -> Self {
         Self {
             internal: self.internal.clone().add_damping_rate(&qubits, rate),
@@ -168,7 +167,7 @@ impl ContinuousDecoherenceModelWrapper {
     ///     rate (float): The dephasing rate.
     ///
     /// Returns:
-    ///     ContinuousDecoherenceModel: The model with the dephasing added.
+    ///     DecoherenceOnIdleModel: The model with the dephasing added.
     pub fn add_dephasing_rate(&self, qubits: Vec<usize>, rate: f64) -> Self {
         Self {
             internal: self.internal.clone().add_dephasing_rate(&qubits, rate),
@@ -182,7 +181,7 @@ impl ContinuousDecoherenceModelWrapper {
     ///     rate (float): The depolarising rate.
     ///
     /// Returns:
-    ///     ContinuousDecoherenceModel: The model with the depolarising added.
+    ///     DecoherenceOnIdleModel: The model with the depolarising added.
     pub fn add_depolarising_rate(&self, qubits: Vec<usize>, rate: f64) -> Self {
         Self {
             internal: self.internal.clone().add_depolarising_rate(&qubits, rate),
@@ -196,7 +195,7 @@ impl ContinuousDecoherenceModelWrapper {
     ///     rate (float): The excitation rate.
     ///
     /// Returns:
-    ///     ContinuousDecoherenceModel: The model with the excitation added.
+    ///     DecoherenceOnIdleModel: The model with the excitation added.
     pub fn add_excitation_rate(&self, qubits: Vec<usize>, rate: f64) -> Self {
         Self {
             internal: self.internal.clone().add_excitation_rate(&qubits, rate),

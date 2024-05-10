@@ -286,9 +286,9 @@ pub enum RoqoqoBackendError {
         /// hqslang name of the operation.
         hqslang: &'static str,
     },
-    /// Error for backends missing authentification information.
-    #[error("Backend authentification information is missing: {msg} ")]
-    MissingAuthentification {
+    /// Error for backends missing authentication information.
+    #[error("Backend authentication information is missing: {msg} ")]
+    MissingAuthentication {
         /// Error msg
         msg: String,
     },

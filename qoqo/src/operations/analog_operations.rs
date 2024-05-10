@@ -18,14 +18,14 @@ use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::{convert_into_calculator_float, CalculatorFloatWrapper};
 use qoqo_macros::*;
 use roqoqo::operations::*;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use struqture::spins::SpinHamiltonian;
 use struqture_py::spins::SpinHamiltonianSystemWrapper;
 
-#[cfg(feature = "json_schema")]
-use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
-#[wrap(Operate, OperateSpinsAnalog)]
+#[wrap(Operate, OperateSpinsAnalog, JsonSchema)]
 ///  Constant Hamiltonian operation on analog quantum device (PASQAL)
 ///
 /// Args:
@@ -36,7 +36,7 @@ pub struct ApplyConstantSpinHamiltonian {
     time: CalculatorFloat,
 }
 
-#[wrap(Operate, OperateSpinsAnalog)]
+#[wrap(Operate, OperateSpinsAnalog, JsonSchema)]
 ///  Constant Hamiltonian operation on analog quantum device (PASCAL)
 ///
 /// Args:

@@ -41,11 +41,11 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        assert!(!bool::extract(
-            operation
+        assert!(!bool::extract_bound(
+            &operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
-                .as_ref(py)
+                .bind(py)
         )
         .unwrap());
     })
@@ -81,7 +81,8 @@ fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let tags_op: Vec<String> =
-            Vec::<String>::extract(operation.call_method0(py, "tags").unwrap().as_ref(py)).unwrap();
+            Vec::<String>::extract_bound(&operation.call_method0(py, "tags").unwrap().bind(py))
+                .unwrap();
         assert_eq!(tags_op.len(), tags.len());
         for i in 0..tags.len() {
             assert_eq!(tags_op[i], tags[i]);
@@ -97,7 +98,8 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let name_op: String =
-            String::extract(operation.call_method0(py, "hqslang").unwrap().as_ref(py)).unwrap();
+            String::extract_bound(&operation.call_method0(py, "hqslang").unwrap().bind(py))
+                .unwrap();
         assert_eq!(name_op, name.to_string());
     })
 }
@@ -112,13 +114,15 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 
         // test initial qubits
         let control_0: usize =
-            usize::extract(operation.call_method0(py, "control_0").unwrap().as_ref(py)).unwrap();
+            usize::extract_bound(&operation.call_method0(py, "control_0").unwrap().bind(py))
+                .unwrap();
         assert_eq!(control_0.clone(), 0);
         let control_1: usize =
-            usize::extract(operation.call_method0(py, "control_1").unwrap().as_ref(py)).unwrap();
+            usize::extract_bound(&operation.call_method0(py, "control_1").unwrap().bind(py))
+                .unwrap();
         assert_eq!(control_1.clone(), 1);
         let target: usize =
-            usize::extract(operation.call_method0(py, "target").unwrap().as_ref(py)).unwrap();
+            usize::extract_bound(&operation.call_method0(py, "target").unwrap().bind(py)).unwrap();
         assert_eq!(target.clone(), 2);
 
         // remap qubits
@@ -133,13 +137,13 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 
         // test re-mapped qubit
         let control_0_new: usize =
-            usize::extract(result.call_method0(py, "control_0").unwrap().as_ref(py)).unwrap();
+            usize::extract_bound(&result.call_method0(py, "control_0").unwrap().bind(py)).unwrap();
         assert_eq!(control_0_new.clone(), 2);
         let control_1_new: usize =
-            usize::extract(result.call_method0(py, "control_1").unwrap().as_ref(py)).unwrap();
+            usize::extract_bound(&result.call_method0(py, "control_1").unwrap().bind(py)).unwrap();
         assert_eq!(control_1_new.clone(), 3);
         let target_new: usize =
-            usize::extract(result.call_method0(py, "target").unwrap().as_ref(py)).unwrap();
+            usize::extract_bound(&result.call_method0(py, "target").unwrap().bind(py)).unwrap();
         assert_eq!(target_new.clone(), 0);
 
         // test that initial and rempapped qubits are different
@@ -161,8 +165,8 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
-        let result_ref = result.as_ref();
-        assert!(result_ref.is_err());
+        ();
+        assert!(result.is_err());
     })
 }
 
@@ -172,8 +176,8 @@ fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let py_result = operation.call_method0(py, "unitary_matrix");
-        let result_ref = py_result.as_ref();
-        assert!(result_ref.is_err());
+        ();
+        assert!(py_result.is_err());
     })
 }
 
@@ -186,9 +190,12 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let py_result = operation.call_method0(py, "unitary_matrix").unwrap();
         let result_matrix = py_result
-            .downcast::<PyArray2<Complex64>>(py)
+            .downcast_bound::<PyArray2<Complex64>>(py)
             .unwrap()
-            .to_owned_array();
+            .as_gil_ref()
+            .readonly()
+            .as_array()
+            .to_owned();
 
         // compare to reference matrix obtained in Rust directly (without passing to Python)
         let gate: GateOperation = input_operation.try_into().unwrap();
@@ -213,9 +220,9 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: &str = <&str>::extract(to_format.as_ref(py)).unwrap();
+        let format_op: String = String::extract_bound(&to_format.bind(py)).unwrap();
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: &str = <&str>::extract(to_repr.as_ref(py)).unwrap();
+        let repr_op: String = String::extract_bound(&to_repr.bind(py)).unwrap();
         assert_eq!(format_op, format_repr);
         assert_eq!(repr_op, format_repr);
     })
@@ -232,17 +239,17 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
         let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
         let copy_deepcopy_param = operation;
 
-        let comparison_copy = bool::extract(
-            copy_op
-                .as_ref(py)
+        let comparison_copy = bool::extract_bound(
+            &copy_op
+                .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param.clone(),))
                 .unwrap(),
         )
         .unwrap();
         assert!(comparison_copy);
-        let comparison_deepcopy = bool::extract(
-            deepcopy_op
-                .as_ref(py)
+        let comparison_deepcopy = bool::extract_bound(
+            &deepcopy_op
+                .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param,))
                 .unwrap(),
         )
@@ -261,16 +268,16 @@ fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(first_op).unwrap();
-        let mut substitution_dict: HashMap<&str, f64> = HashMap::new();
-        substitution_dict.insert("test", 1.0);
+        let mut substitution_dict: HashMap<String, f64> = HashMap::new();
+        substitution_dict.insert("test".to_owned(), 1.0);
         let substitute_op = operation
             .call_method1(py, "substitute_parameters", (substitution_dict,))
             .unwrap();
         let substitute_param = convert_operation_to_pyobject(second_op).unwrap();
 
-        let comparison = bool::extract(
-            substitute_op
-                .as_ref(py)
+        let comparison = bool::extract_bound(
+            &substitute_op
+                .bind(py)
                 .call_method1("__eq__", (substitute_param,))
                 .unwrap(),
         )
@@ -284,10 +291,10 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let substitution_dict: HashMap<&str, f64> = HashMap::new();
+        let substitution_dict: HashMap<String, f64> = HashMap::new();
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
-        let result_ref = result.as_ref();
-        assert!(result_ref.is_err());
+        ();
+        assert!(result.is_err());
     })
 }
 
@@ -302,11 +309,11 @@ fn test_pyo3_powercf(first_op: Operation, second_op: Operation) {
         let comparison_op = convert_operation_to_pyobject(second_op).unwrap();
 
         let remapped_op = operation.call_method1(py, "powercf", (power,)).unwrap();
-        let comparison = bool::extract(
-            remapped_op
+        let comparison = bool::extract_bound(
+            &remapped_op
                 .call_method1(py, "__eq__", (comparison_op,))
                 .unwrap()
-                .as_ref(py),
+                .bind(py),
         )
         .unwrap();
         assert!(comparison);
@@ -324,15 +331,14 @@ fn test_new_controlledcontrolledpauliz(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type::<ControlledControlledPauliZWrapper>();
-        let operation_py = operation_type
-            .call1(arguments)
-            .unwrap()
-            .downcast::<PyCell<ControlledControlledPauliZWrapper>>()
+        let operation_type = py.get_type_bound::<ControlledControlledPauliZWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding
+            .downcast::<ControlledControlledPauliZWrapper>()
             .unwrap();
-        let comparison = bool::extract(
-            operation
-                .as_ref(py)
+        let comparison = bool::extract_bound(
+            &operation
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -341,21 +347,20 @@ fn test_new_controlledcontrolledpauliz(
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"]));
-        let result_ref = result.as_ref();
-        assert!(result_ref.is_err());
+        ();
+        assert!(result.is_err());
 
         let result = operation_type.call1((0, vec!["fails"], 2));
-        let result_ref = result.as_ref();
-        assert!(result_ref.is_err());
+        ();
+        assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
         let def_wrapper = operation_py
             .extract::<ControlledControlledPauliZWrapper>()
             .unwrap();
-        let new_op_diff = operation_type
-            .call1((1, 2, 3))
-            .unwrap()
-            .downcast::<PyCell<ControlledControlledPauliZWrapper>>()
+        let binding = operation_type.call1((1, 2, 3)).unwrap();
+        let new_op_diff = binding
+            .downcast::<ControlledControlledPauliZWrapper>()
             .unwrap();
         let def_wrapper_diff = new_op_diff
             .extract::<ControlledControlledPauliZWrapper>()
@@ -383,15 +388,14 @@ fn test_new_controlledcontrolledphaseshift(
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type::<ControlledControlledPhaseShiftWrapper>();
-        let operation_py = operation_type
-            .call1(arguments)
-            .unwrap()
-            .downcast::<PyCell<ControlledControlledPhaseShiftWrapper>>()
+        let operation_type = py.get_type_bound::<ControlledControlledPhaseShiftWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding
+            .downcast::<ControlledControlledPhaseShiftWrapper>()
             .unwrap();
-        let comparison = bool::extract(
-            operation
-                .as_ref(py)
+        let comparison = bool::extract_bound(
+            &operation
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -400,21 +404,20 @@ fn test_new_controlledcontrolledphaseshift(
 
         // Error initialisation
         let result = operation_type.call1((0, 1, 2, vec!["fails"]));
-        let result_ref = result.as_ref();
-        assert!(result_ref.is_err());
+        ();
+        assert!(result.is_err());
 
         let result = operation_type.call1((0, vec!["fails"], 2));
-        let result_ref = result.as_ref();
-        assert!(result_ref.is_err());
+        ();
+        assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
         let def_wrapper = operation_py
             .extract::<ControlledControlledPhaseShiftWrapper>()
             .unwrap();
-        let new_op_diff = operation_type
-            .call1((1, 2, 3, 0.0))
-            .unwrap()
-            .downcast::<PyCell<ControlledControlledPhaseShiftWrapper>>()
+        let binding = operation_type.call1((1, 2, 3, 0.0)).unwrap();
+        let new_op_diff = binding
+            .downcast::<ControlledControlledPhaseShiftWrapper>()
             .unwrap();
         let def_wrapper_diff = new_op_diff
             .extract::<ControlledControlledPhaseShiftWrapper>()
@@ -438,15 +441,12 @@ fn test_new_toffoli(input_operation: Operation, arguments: (u32, u32, u32), meth
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         // Basic initialisation, no errors
-        let operation_type = py.get_type::<ToffoliWrapper>();
-        let operation_py = operation_type
-            .call1(arguments)
-            .unwrap()
-            .downcast::<PyCell<ToffoliWrapper>>()
-            .unwrap();
-        let comparison = bool::extract(
-            operation
-                .as_ref(py)
+        let operation_type = py.get_type_bound::<ToffoliWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<ToffoliWrapper>().unwrap();
+        let comparison = bool::extract_bound(
+            &operation
+                .bind(py)
                 .call_method1(method, (operation_py,))
                 .unwrap(),
         )
@@ -455,20 +455,17 @@ fn test_new_toffoli(input_operation: Operation, arguments: (u32, u32, u32), meth
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"]));
-        let result_ref = result.as_ref();
-        assert!(result_ref.is_err());
+        ();
+        assert!(result.is_err());
 
         let result = operation_type.call1((0, vec!["fails"], 2));
-        let result_ref = result.as_ref();
-        assert!(result_ref.is_err());
+        ();
+        assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
         let def_wrapper = operation_py.extract::<ToffoliWrapper>().unwrap();
-        let new_op_diff = operation_type
-            .call1((1, 2, 3))
-            .unwrap()
-            .downcast::<PyCell<ToffoliWrapper>>()
-            .unwrap();
+        let binding = operation_type.call1((1, 2, 3)).unwrap();
+        let new_op_diff = binding.downcast::<ToffoliWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<ToffoliWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -581,17 +578,18 @@ fn test_pyo3_json_schema(operation: ThreeQubitGateOperation) {
     pyo3::Python::with_gil(|py| {
         let converted_op = Operation::from(operation);
         let pyobject = convert_operation_to_pyobject(converted_op).unwrap();
-        let operation = pyobject.as_ref(py);
+        let operation = pyobject.bind(py);
 
         let schema: String =
-            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+            String::extract_bound(&operation.call_method0("json_schema").unwrap()).unwrap();
 
         assert_eq!(schema, rust_schema);
 
         let current_version_string =
-            String::extract(operation.call_method0("current_version").unwrap()).unwrap();
+            String::extract_bound(&operation.call_method0("current_version").unwrap()).unwrap();
         let minimum_supported_version_string =
-            String::extract(operation.call_method0("min_supported_version").unwrap()).unwrap();
+            String::extract_bound(&operation.call_method0("min_supported_version").unwrap())
+                .unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, "1.3.0");

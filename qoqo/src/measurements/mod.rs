@@ -27,9 +27,20 @@ mod classical_register_measurement;
 pub use classical_register_measurement::ClassicalRegisterWrapper;
 
 /// Measurements
-
+///     
+/// .. autosummary::
+///     :toctree: generated/
+///
+///     PauliZProductInput
+///     CheatedPauliZProductInput
+///     CheatedInput
+///     PauliZProduct
+///     CheatedPauliZProduct
+///     DecoherenceOnIdleModel
+///     Cheated
+///     ClassicalRegister
 #[pymodule]
-pub fn measurements(_py: Python, m: &PyModule) -> PyResult<()> {
+pub fn measurements(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     m.add_class::<PauliZProductInputWrapper>()?;
     m.add_class::<CheatedPauliZProductInputWrapper>()?;
     m.add_class::<CheatedInputWrapper>()?;

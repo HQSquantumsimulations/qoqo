@@ -29,6 +29,14 @@ use std::collections::HashMap;
 #[pyclass(name = "PauliZProduct", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Collected information for executing a measurement of PauliZ product.
+///
+/// Args:
+///     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
+///     circuits (list[Circuit]): The collection of quantum circuits for the separate basis rotations.
+///     input (PauliZProductInput): The additional input information required for measurement.
+///
+/// Returns:
+///     PauliZProduct: The PauliZProduct containing the new PauliZ product measurement.
 pub struct PauliZProductWrapper {
     /// Internal storage of [roqoqo::PauliZProduct].
     pub internal: PauliZProduct,
@@ -52,40 +60,42 @@ impl PauliZProductWrapper {
         circuits: Vec<Py<PyAny>>,
         input: Py<PyAny>,
     ) -> PyResult<Self> {
-        let mut new_circuits: Vec<Circuit> = Vec::new();
-        for c in circuits.into_iter() {
-            let tmp_c = CircuitWrapper::from_pyany(c).map_err(|err| {
-                PyTypeError::new_err(format!(
-                    "`circuits` argument is not a list of qoqo Circuits: {}",
-                    err
-                ))
-            })?;
-            new_circuits.push(tmp_c)
-        }
-        let new_constant: Option<Circuit> = match constant_circuit {
-            None => None,
-            Some(c) => {
-                let tmp_c = CircuitWrapper::from_pyany(c).map_err(|err| {
+        Python::with_gil(|py| -> PyResult<Self> {
+            let mut new_circuits: Vec<Circuit> = Vec::new();
+            for c in circuits.into_iter() {
+                let tmp_c = CircuitWrapper::from_pyany(c.bind(py)).map_err(|err| {
                     PyTypeError::new_err(format!(
-                        "`constant_circuit` argument is not None or a qoqo Circuit: {}",
+                        "`circuits` argument is not a list of qoqo Circuits: {}",
                         err
                     ))
                 })?;
-                Some(tmp_c)
+                new_circuits.push(tmp_c)
             }
-        };
-        let input = PauliZProductInputWrapper::from_pyany(input).map_err(|err| {
-            PyTypeError::new_err(format!(
-                "`input` argument is not a qoqo CheatedInput: {}",
-                err
-            ))
-        })?;
-        Ok(Self {
-            internal: PauliZProduct {
-                input,
-                constant_circuit: new_constant,
-                circuits: new_circuits,
-            },
+            let new_constant: Option<Circuit> = match constant_circuit {
+                None => None,
+                Some(c) => {
+                    let tmp_c = CircuitWrapper::from_pyany(c.bind(py)).map_err(|err| {
+                        PyTypeError::new_err(format!(
+                            "`constant_circuit` argument is not None or a qoqo Circuit: {}",
+                            err
+                        ))
+                    })?;
+                    Some(tmp_c)
+                }
+            };
+            let input = PauliZProductInputWrapper::from_pyany(input.bind(py)).map_err(|err| {
+                PyTypeError::new_err(format!(
+                    "`input` argument is not a qoqo CheatedInput: {}",
+                    err
+                ))
+            })?;
+            Ok(Self {
+                internal: PauliZProduct {
+                    input,
+                    constant_circuit: new_constant,
+                    circuits: new_circuits,
+                },
+            })
         })
     }
 
@@ -93,8 +103,8 @@ impl PauliZProductWrapper {
     ///
     /// Args:
     ///     input_bit_registers (dict[str, Union[list[list[int]], list[list[bool]]]]): The classical bit registers with the register name as key
-    ///     float_registers (dict[str, list[list[float]]): The classical float registers as a dictionary with the register name as key
-    ///     complex_registers (dict[str, list[list[complex]]): The classical complex registers as a dictionary with the register name as key
+    ///     float_registers (Dict[str, List[List[float]]]): The classical float registers as a dictionary with the register name as key
+    ///     complex_registers (Dict[str, List[List[complex]]]): The classical complex registers as a dictionary with the register name as key
     ///
     /// Returns:
     ///     Optional[dict[str, float]]: The evaluated measurement.
@@ -104,26 +114,18 @@ impl PauliZProductWrapper {
     ///     RuntimeError: Error evaluating PauliZ product measurement.
     pub fn evaluate(
         &mut self,
-        input_bit_registers: Py<PyAny>,
+        input_bit_registers: &Bound<PyAny>,
         float_registers: HashMap<String, FloatOutputRegister>,
         complex_registers: HashMap<String, ComplexOutputRegister>,
     ) -> PyResult<Option<HashMap<String, f64>>> {
         let mut bit_registers: HashMap<String, BitOutputRegister> = HashMap::new();
         let bit_registers_bool: PyResult<HashMap<String, Vec<Vec<bool>>>> =
-            Python::with_gil(|py| -> PyResult<HashMap<String, Vec<Vec<bool>>>> {
-                input_bit_registers
-                    .as_ref(py)
-                    .extract::<HashMap<String, BitOutputRegister>>()
-            });
+            input_bit_registers.extract::<HashMap<String, BitOutputRegister>>();
         if let Ok(try_downcast) = bit_registers_bool {
             bit_registers = try_downcast
         } else {
             let tmp_bit_registers =
-                Python::with_gil(|py| -> PyResult<HashMap<String, Vec<Vec<usize>>>> {
-                    input_bit_registers
-                        .as_ref(py)
-                        .extract::<HashMap<String, Vec<Vec<usize>>>>()
-                })?;
+                input_bit_registers.extract::<HashMap<String, Vec<Vec<usize>>>>()?;
             for (name, output_reg) in tmp_bit_registers {
                 let mut tmp_output_reg: Vec<Vec<bool>> = Vec::with_capacity(output_reg.len());
                 for reg in output_reg {
@@ -221,7 +223,7 @@ impl PauliZProductWrapper {
             PyValueError::new_err("Cannot serialize PauliZProductMeasurement to bytes")
         })?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(("PauliZProduct", b))
     }
@@ -237,7 +239,7 @@ impl PauliZProductWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize PauliZProduct to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -254,8 +256,9 @@ impl PauliZProductWrapper {
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to PauliZProduct.
     #[staticmethod]
-    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
+            .as_gil_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -304,7 +307,7 @@ impl PauliZProductWrapper {
     }
 
     /// Return a deep copy of the Object.
-    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+    pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
         self.clone()
     }
 
@@ -367,7 +370,7 @@ impl PauliZProductWrapper {
 }
 
 impl PauliZProductWrapper {
-    /// Extracts a PauliZProduct from a PauliZProductWrapper python object.
+    /// Extracts a PauliZProduct from a PauliZProductWrapper python  object.
     ///
     /// When working with qoqo and other rust based python packages compiled separately
     /// a downcast will not detect that two PauliZProductWrapper objects are compatible.
@@ -376,25 +379,22 @@ impl PauliZProductWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::PauliZProduct]
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<PauliZProduct> {
-        Python::with_gil(|py| -> PyResult<PauliZProduct> {
-            let input = input.as_ref(py);
-            if let Ok(try_downcast) = input.extract::<PauliZProductWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<PauliZProduct> {
+        if let Ok(try_downcast) = input.extract::<PauliZProductWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode").map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo PauliZProduct: Cast to binary representation failed".to_string())
             })?;
-                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+            let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo PauliZProduct: Cast to binary representation failed".to_string())
             })?;
-                deserialize(&bytes[..]).map_err(|err| {
+            deserialize(&bytes[..]).map_err(|err| {
                     PyTypeError::new_err(format!(
                     "Python object cannot be converted to qoqo PauliZProduct: Deserialization failed: {}",
                     err
                 ))
                 })
-            }
-        })
+        }
     }
 }

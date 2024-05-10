@@ -20,12 +20,9 @@ use roqoqo::{noise_models::ImperfectReadoutModel, ROQOQO_VERSION};
 fn test_pyo3_init() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type::<ImperfectReadoutModelWrapper>();
-        let _br = br_type
-            .call0()
-            .unwrap()
-            .downcast::<PyCell<ImperfectReadoutModelWrapper>>()
-            .unwrap();
+        let br_type = py.get_type_bound::<ImperfectReadoutModelWrapper>();
+        let binding = br_type.call0().unwrap();
+        let _br = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
     })
 }
 
@@ -33,17 +30,15 @@ fn test_pyo3_init() {
 fn test_new_with_uniform_error_init() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type::<ImperfectReadoutModelWrapper>();
-        let br = br_type
+        let br_type = py.get_type_bound::<ImperfectReadoutModelWrapper>();
+        let binding = br_type
             .call_method1("new_with_uniform_error", (2, 0.2, 0.1))
-            .unwrap()
-            .downcast::<PyCell<ImperfectReadoutModelWrapper>>()
             .unwrap();
-        let br = br
+        let br = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
+        let binding = br
             .call_method1("set_error_probabilites", (0, 0.3, 0.4))
-            .unwrap()
-            .downcast::<PyCell<ImperfectReadoutModelWrapper>>()
             .unwrap();
+        let br = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
         let zero_as_1_qubit_0: f64 = br
             .call_method1("prob_detect_0_as_1", (0,))
             .unwrap()
@@ -70,12 +65,9 @@ fn test_new_with_uniform_error_init() {
 fn test_pyo3_debug() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type::<ImperfectReadoutModelWrapper>();
-        let br = br_type
-            .call0()
-            .unwrap()
-            .downcast::<PyCell<ImperfectReadoutModelWrapper>>()
-            .unwrap();
+        let br_type = py.get_type_bound::<ImperfectReadoutModelWrapper>();
+        let binding = br_type.call0().unwrap();
+        let br = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
         let br_copied = br
             .call_method0("__copy__")
             .unwrap()
@@ -97,21 +89,18 @@ fn test_pyo3_debug() {
 fn test_to_from_json() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type::<ImperfectReadoutModelWrapper>();
-        let br = br_type
-            .call0()
-            .unwrap()
-            .downcast::<PyCell<ImperfectReadoutModelWrapper>>()
-            .unwrap();
+        let br_type = py.get_type_bound::<ImperfectReadoutModelWrapper>();
+        let binding = br_type.call0().unwrap();
+        let br = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
 
         let new_br = br;
         let serialised = br.call_method0("to_json").unwrap();
-        let deserialised = new_br
-            .call_method1("from_json", (serialised,))
-            .unwrap()
-            .downcast::<PyCell<ImperfectReadoutModelWrapper>>()
-            .unwrap();
-        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
+        let binding = new_br.call_method1("from_json", (&serialised,)).unwrap();
+        let deserialised = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
+        assert_eq!(
+            format!("{:?}", br.as_gil_ref()),
+            format!("{:?}", deserialised.as_gil_ref())
+        );
 
         let deserialised_error =
             new_br.call_method1("from_json", (serde_json::to_string("fails").unwrap(),));
@@ -131,20 +120,17 @@ fn test_to_from_json() {
 fn test_to_from_bincode() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let br_type = py.get_type::<ImperfectReadoutModelWrapper>();
-        let br = br_type
-            .call0()
-            .unwrap()
-            .downcast::<PyCell<ImperfectReadoutModelWrapper>>()
-            .unwrap();
+        let br_type = py.get_type_bound::<ImperfectReadoutModelWrapper>();
+        let binding = br_type.call0().unwrap();
+        let br = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
         let new_br = br;
         let serialised = br.call_method0("to_bincode").unwrap();
-        let deserialised = new_br
-            .call_method1("from_bincode", (serialised,))
-            .unwrap()
-            .downcast::<PyCell<ImperfectReadoutModelWrapper>>()
-            .unwrap();
-        assert_eq!(format!("{:?}", br), format!("{:?}", deserialised));
+        let binding = new_br.call_method1("from_bincode", (&serialised,)).unwrap();
+        let deserialised = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
+        assert_eq!(
+            format!("{:?}", br.as_gil_ref()),
+            format!("{:?}", deserialised.as_gil_ref())
+        );
 
         let deserialised_error =
             new_br.call_method1("from_bincode", (bincode::serialize("fails").unwrap(),));
@@ -165,22 +151,20 @@ fn test_to_from_bincode() {
 fn test_json_schema() {
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
-        let br_type = py.get_type::<ImperfectReadoutModelWrapper>();
-        let br = br_type
-            .call0()
-            .unwrap()
-            .downcast::<PyCell<ImperfectReadoutModelWrapper>>()
-            .unwrap();
+        let br_type = py.get_type_bound::<ImperfectReadoutModelWrapper>();
+        let binding = br_type.call0().unwrap();
+        let br = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
 
-        let schema: String = String::extract(br.call_method0("json_schema").unwrap()).unwrap();
+        let schema: String =
+            String::extract_bound(&br.call_method0("json_schema").unwrap()).unwrap();
         let rust_schema =
             serde_json::to_string_pretty(&schemars::schema_for!(ImperfectReadoutModel)).unwrap();
         assert_eq!(schema, rust_schema);
 
         let current_version_string =
-            String::extract(br.call_method0("current_version").unwrap()).unwrap();
+            String::extract_bound(&br.call_method0("current_version").unwrap()).unwrap();
         let minimum_supported_version_string =
-            String::extract(br.call_method0("min_supported_version").unwrap()).unwrap();
+            String::extract_bound(&br.call_method0("min_supported_version").unwrap()).unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, "1.6.0");

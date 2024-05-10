@@ -27,25 +27,19 @@ use test_case::test_case;
 fn test_pyo3_new_definition_float() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type::<DefinitionFloatWrapper>();
-        let new_op = operation
-            .call1(("ro".to_string(), 1, false))
-            .unwrap()
-            .downcast::<PyCell<DefinitionFloatWrapper>>()
-            .unwrap();
+        let operation = py.get_type_bound::<DefinitionFloatWrapper>();
+        let binding = operation.call1(("ro".to_string(), 1, false)).unwrap();
+        let new_op = binding.downcast::<DefinitionFloatWrapper>().unwrap();
 
         let input_definition = Operation::from(DefinitionFloat::new(String::from("ro"), 1, false));
         let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
         let comparison_copy =
-            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let def_wrapper = new_op.extract::<DefinitionFloatWrapper>().unwrap();
-        let new_op_diff = operation
-            .call1(("ro".to_string(), 1, true))
-            .unwrap()
-            .downcast::<PyCell<DefinitionFloatWrapper>>()
-            .unwrap();
+        let binding = operation.call1(("ro".to_string(), 1, true)).unwrap();
+        let new_op_diff = binding.downcast::<DefinitionFloatWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<DefinitionFloatWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -64,26 +58,20 @@ fn test_pyo3_new_definition_float() {
 fn test_pyo3_new_definition_complex() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type::<DefinitionComplexWrapper>();
-        let new_op = operation
-            .call1(("ro".to_string(), 1, false))
-            .unwrap()
-            .downcast::<PyCell<DefinitionComplexWrapper>>()
-            .unwrap();
+        let operation = py.get_type_bound::<DefinitionComplexWrapper>();
+        let binding = operation.call1(("ro".to_string(), 1, false)).unwrap();
+        let new_op = binding.downcast::<DefinitionComplexWrapper>().unwrap();
 
         let input_definition =
             Operation::from(DefinitionComplex::new(String::from("ro"), 1, false));
         let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
         let comparison_copy =
-            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let def_wrapper = new_op.extract::<DefinitionComplexWrapper>().unwrap();
-        let new_op_diff = operation
-            .call1(("ro".to_string(), 1, true))
-            .unwrap()
-            .downcast::<PyCell<DefinitionComplexWrapper>>()
-            .unwrap();
+        let binding = operation.call1(("ro".to_string(), 1, true)).unwrap();
+        let new_op_diff = binding.downcast::<DefinitionComplexWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<DefinitionComplexWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -102,25 +90,19 @@ fn test_pyo3_new_definition_complex() {
 fn test_pyo3_new_definition_usize() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type::<DefinitionUsizeWrapper>();
-        let new_op = operation
-            .call1(("ro".to_string(), 1, false))
-            .unwrap()
-            .downcast::<PyCell<DefinitionUsizeWrapper>>()
-            .unwrap();
+        let operation = py.get_type_bound::<DefinitionUsizeWrapper>();
+        let binding = operation.call1(("ro".to_string(), 1, false)).unwrap();
+        let new_op = binding.downcast::<DefinitionUsizeWrapper>().unwrap();
 
         let input_definition = Operation::from(DefinitionUsize::new(String::from("ro"), 1, false));
         let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
         let comparison_copy =
-            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let def_wrapper = new_op.extract::<DefinitionUsizeWrapper>().unwrap();
-        let new_op_diff = operation
-            .call1(("ro".to_string(), 1, true))
-            .unwrap()
-            .downcast::<PyCell<DefinitionUsizeWrapper>>()
-            .unwrap();
+        let binding = operation.call1(("ro".to_string(), 1, true)).unwrap();
+        let new_op_diff = binding.downcast::<DefinitionUsizeWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<DefinitionUsizeWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -139,25 +121,19 @@ fn test_pyo3_new_definition_usize() {
 fn test_pyo3_new_definition_bit() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type::<DefinitionBitWrapper>();
-        let new_op = operation
-            .call1(("ro".to_string(), 1, false))
-            .unwrap()
-            .downcast::<PyCell<DefinitionBitWrapper>>()
-            .unwrap();
+        let operation = py.get_type_bound::<DefinitionBitWrapper>();
+        let binding = operation.call1(("ro".to_string(), 1, false)).unwrap();
+        let new_op = binding.downcast::<DefinitionBitWrapper>().unwrap();
 
         let input_definition = Operation::from(DefinitionBit::new(String::from("ro"), 1, false));
         let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
         let comparison_copy =
-            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let def_wrapper = new_op.extract::<DefinitionBitWrapper>().unwrap();
-        let new_op_diff = operation
-            .call1(("ro".to_string(), 1, true))
-            .unwrap()
-            .downcast::<PyCell<DefinitionBitWrapper>>()
-            .unwrap();
+        let binding = operation.call1(("ro".to_string(), 1, true)).unwrap();
+        let new_op_diff = binding.downcast::<DefinitionBitWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<DefinitionBitWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -176,25 +152,19 @@ fn test_pyo3_new_definition_bit() {
 fn test_pyo3_new_input_symbolic() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type::<InputSymbolicWrapper>();
-        let new_op = operation
-            .call1(("ro".to_string(), 1.0))
-            .unwrap()
-            .downcast::<PyCell<InputSymbolicWrapper>>()
-            .unwrap();
+        let operation = py.get_type_bound::<InputSymbolicWrapper>();
+        let binding = operation.call1(("ro".to_string(), 1.0)).unwrap();
+        let new_op = binding.downcast::<InputSymbolicWrapper>().unwrap();
 
         let input_definition = Operation::from(InputSymbolic::new(String::from("ro"), 1.0));
         let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
         let comparison_copy =
-            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let def_wrapper = new_op.extract::<InputSymbolicWrapper>().unwrap();
-        let new_op_diff = operation
-            .call1(("ro".to_string(), 2.0))
-            .unwrap()
-            .downcast::<PyCell<InputSymbolicWrapper>>()
-            .unwrap();
+        let binding = operation.call1(("ro".to_string(), 2.0)).unwrap();
+        let new_op_diff = binding.downcast::<InputSymbolicWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<InputSymbolicWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -213,25 +183,19 @@ fn test_pyo3_new_input_symbolic() {
 fn test_pyo3_new_input_bit() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let operation = py.get_type::<InputBitWrapper>();
-        let new_op = operation
-            .call1(("ro".to_string(), 1, false))
-            .unwrap()
-            .downcast::<PyCell<InputBitWrapper>>()
-            .unwrap();
+        let operation = py.get_type_bound::<InputBitWrapper>();
+        let binding = operation.call1(("ro".to_string(), 1, false)).unwrap();
+        let new_op = binding.downcast::<InputBitWrapper>().unwrap();
 
         let input_definition = Operation::from(InputBit::new(String::from("ro"), 1, false));
         let copy_param = convert_operation_to_pyobject(input_definition).unwrap();
         let comparison_copy =
-            bool::extract(new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
+            bool::extract_bound(&new_op.call_method1("__eq__", (copy_param,)).unwrap()).unwrap();
         assert!(comparison_copy);
 
         let def_wrapper = new_op.extract::<InputBitWrapper>().unwrap();
-        let new_op_diff = operation
-            .call1(("ro".to_string(), 2, false))
-            .unwrap()
-            .downcast::<PyCell<InputBitWrapper>>()
-            .unwrap();
+        let binding = operation.call1(("ro".to_string(), 2, false)).unwrap();
+        let new_op_diff = binding.downcast::<InputBitWrapper>().unwrap();
         let def_wrapper_diff = new_op_diff.extract::<InputBitWrapper>().unwrap();
         let helper_ne: bool = def_wrapper_diff != def_wrapper;
         assert!(helper_ne);
@@ -315,7 +279,7 @@ fn test_pyo3_name(input_definition: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let name_op: String =
-            String::extract(operation.call_method0(py, "name").unwrap().as_ref(py)).unwrap();
+            String::extract_bound(&operation.call_method0(py, "name").unwrap().bind(py)).unwrap();
         let name_param: String = String::from("ro");
         assert_eq!(name_op, name_param);
     })
@@ -331,7 +295,7 @@ fn test_pyo3_length(input_definition: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let length_op: &usize =
-            &usize::extract(operation.call_method0(py, "length").unwrap().as_ref(py)).unwrap();
+            &usize::extract_bound(&operation.call_method0(py, "length").unwrap().bind(py)).unwrap();
         let length_param: &usize = &1_usize;
         assert_eq!(length_op, length_param);
     })
@@ -347,7 +311,8 @@ fn test_pyo3_is_output(input_definition: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         assert!(
-            !bool::extract(operation.call_method0(py, "is_output").unwrap().as_ref(py)).unwrap()
+            !bool::extract_bound(&operation.call_method0(py, "is_output").unwrap().bind(py))
+                .unwrap()
         );
     })
 }
@@ -363,7 +328,7 @@ fn test_pyo3_input_symbolic_input() {
         )))
         .unwrap();
         let input_op: &f64 =
-            &f64::extract(operation.call_method0(py, "input").unwrap().as_ref(py)).unwrap();
+            &f64::extract_bound(&operation.call_method0(py, "input").unwrap().bind(py)).unwrap();
         let input_param: &f64 = &1.0;
         assert_eq!(input_op, input_param);
     })
@@ -381,7 +346,7 @@ fn test_pyo3_input_bit_index() {
         )))
         .unwrap();
         let input_op: &usize =
-            &usize::extract(operation.call_method0(py, "index").unwrap().as_ref(py)).unwrap();
+            &usize::extract_bound(&operation.call_method0(py, "index").unwrap().bind(py)).unwrap();
         let input_param: &usize = &1;
         assert_eq!(input_op, input_param);
     })
@@ -399,7 +364,7 @@ fn test_pyo3_input_bit_value() {
         )))
         .unwrap();
         let input_op: &bool =
-            &bool::extract(operation.call_method0(py, "value").unwrap().as_ref(py)).unwrap();
+            &bool::extract_bound(&operation.call_method0(py, "value").unwrap().bind(py)).unwrap();
         let input_param: &bool = &true;
         assert_eq!(input_op, input_param);
     })
@@ -464,11 +429,11 @@ fn test_pyo3_involved_qubits(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
-        let involved_op: HashSet<String> = HashSet::extract(
-            operation
+        let involved_op: HashSet<String> = HashSet::extract_bound(
+            &operation
                 .call_method0(py, "involved_qubits")
                 .unwrap()
-                .as_ref(py),
+                .bind(py),
         )
         .unwrap();
         let involved_param: HashSet<_> = HashSet::new();
@@ -505,9 +470,9 @@ fn test_pyo3_format_repr(input_definition: Operation, format_repr: &str) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: &str = <&str>::extract(to_format.as_ref(py)).unwrap();
+        let format_op: String = String::extract_bound(&to_format.bind(py)).unwrap();
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: &str = <&str>::extract(to_repr.as_ref(py)).unwrap();
+        let repr_op: String = String::extract_bound(&to_repr.bind(py)).unwrap();
         let mut format_repr_param: String = String::from(format_repr);
         format_repr_param.push_str(" { name: \"ro\", length: 1, is_output: false }");
         let comparison = format_repr_param.as_str();
@@ -527,9 +492,9 @@ fn test_pyo3_input_symbolic_format_repr() {
         )))
         .unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: &str = <&str>::extract(to_format.as_ref(py)).unwrap();
+        let format_op: String = String::extract_bound(&to_format.bind(py)).unwrap();
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: &str = <&str>::extract(to_repr.as_ref(py)).unwrap();
+        let repr_op: String = String::extract_bound(&to_repr.bind(py)).unwrap();
         let format_repr_param: String = String::from("InputSymbolic { name: \"ro\", input: 1.0 }");
         let comparison = format_repr_param.as_str();
         assert_eq!(format_op, comparison);
@@ -576,17 +541,17 @@ fn test_pyo3_copy_deepcopy(input_definition: Operation) {
         let deepcopy_op = operation.call_method1(py, "__deepcopy__", ("",)).unwrap();
         let copy_deepcopy_param = operation;
 
-        let comparison_copy = bool::extract(
-            copy_op
-                .as_ref(py)
+        let comparison_copy = bool::extract_bound(
+            &copy_op
+                .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param.clone(),))
                 .unwrap(),
         )
         .unwrap();
         assert!(comparison_copy);
-        let comparison_deepcopy = bool::extract(
-            deepcopy_op
-                .as_ref(py)
+        let comparison_deepcopy = bool::extract_bound(
+            &deepcopy_op
+                .bind(py)
                 .call_method1("__eq__", (copy_deepcopy_param,))
                 .unwrap(),
         )
@@ -642,7 +607,7 @@ fn test_pyo3_tags(input_definition: Operation, tag_name: &str) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let to_tag = operation.call_method0(py, "tags").unwrap();
-        let tags_op: &Vec<&str> = &Vec::extract(to_tag.as_ref(py)).unwrap();
+        let tags_op: &Vec<String> = &Vec::extract_bound(&to_tag.bind(py)).unwrap();
         let tags_param: &[&str] = &["Operation", "Definition", tag_name];
         assert_eq!(tags_op, tags_param);
     })
@@ -660,7 +625,8 @@ fn test_pyo3_hqslang(input_definition: Operation, hqslang_param: String) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let hqslang_op: String =
-            String::extract(operation.call_method0(py, "hqslang").unwrap().as_ref(py)).unwrap();
+            String::extract_bound(&operation.call_method0(py, "hqslang").unwrap().bind(py))
+                .unwrap();
         assert_eq!(hqslang_op, hqslang_param);
     })
 }
@@ -676,11 +642,11 @@ fn test_pyo3_is_parametrized(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
-        assert!(!bool::extract(
-            operation
+        assert!(!bool::extract_bound(
+            &operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
-                .as_ref(py)
+                .bind(py)
         )
         .unwrap());
     })
@@ -724,16 +690,16 @@ fn test_pyo3_substitute_parameters(input_definition: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
-        let mut substitution_dict: HashMap<&str, f64> = HashMap::new();
-        substitution_dict.insert("ro", 1.0);
+        let mut substitution_dict: HashMap<String, f64> = HashMap::new();
+        substitution_dict.insert("ro".to_owned(), 1.0);
         let substitute_op = operation
             .call_method1(py, "substitute_parameters", (substitution_dict,))
             .unwrap();
         let substitute_param = operation;
 
-        let comparison_copy = bool::extract(
-            substitute_op
-                .as_ref(py)
+        let comparison_copy = bool::extract_bound(
+            &substitute_op
+                .bind(py)
                 .call_method1("__eq__", (substitute_param,))
                 .unwrap(),
         )
@@ -787,8 +753,7 @@ fn test_pyo3_substitute_parameters_error(input_operation: Operation) {
         let mut substitution_dict: HashMap<&str, &str> = HashMap::new();
         substitution_dict.insert("ro", "test");
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
-        let result_ref = result.as_ref();
-        assert!(result_ref.is_err());
+        assert!(result.is_err());
     })
 }
 
@@ -832,9 +797,9 @@ fn test_pyo3_remap_qubits(input_definition: Operation) {
             .unwrap();
         let remap_param = operation;
 
-        let comparison_copy = bool::extract(
-            remap_op
-                .as_ref(py)
+        let comparison_copy = bool::extract_bound(
+            &remap_op
+                .bind(py)
                 .call_method1("__eq__", (remap_param,))
                 .unwrap(),
         )
@@ -908,18 +873,18 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
         let operation_one = convert_operation_to_pyobject(definition_1).unwrap();
         let operation_two = convert_operation_to_pyobject(definition_2).unwrap();
 
-        let comparison = bool::extract(
-            operation_one
-                .as_ref(py)
+        let comparison = bool::extract_bound(
+            &operation_one
+                .bind(py)
                 .call_method1("__eq__", (operation_two.clone(),))
                 .unwrap(),
         )
         .unwrap();
         assert!(!comparison);
 
-        let comparison = bool::extract(
-            operation_one
-                .as_ref(py)
+        let comparison = bool::extract_bound(
+            &operation_one
+                .bind(py)
                 .call_method1("__ne__", (operation_two.clone(),))
                 .unwrap(),
         )
@@ -1018,17 +983,18 @@ fn test_pyo3_json_schema(operation: Operation) {
             _ => "1.0.0".to_string(),
         };
         let pyobject = convert_operation_to_pyobject(operation).unwrap();
-        let operation = pyobject.as_ref(py);
+        let operation = pyobject.bind(py);
 
         let schema: String =
-            String::extract(operation.call_method0("json_schema").unwrap()).unwrap();
+            String::extract_bound(&operation.call_method0("json_schema").unwrap()).unwrap();
 
         assert_eq!(schema, rust_schema);
 
         let current_version_string =
-            String::extract(operation.call_method0("current_version").unwrap()).unwrap();
+            String::extract_bound(&operation.call_method0("current_version").unwrap()).unwrap();
         let minimum_supported_version_string =
-            String::extract(operation.call_method0("min_supported_version").unwrap()).unwrap();
+            String::extract_bound(&operation.call_method0("min_supported_version").unwrap())
+                .unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, minimum_version);

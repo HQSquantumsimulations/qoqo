@@ -38,7 +38,7 @@ use crate::operations::{convert_operation_to_pyobject, convert_pyany_to_operatio
 ///
 
 #[pymodule]
-fn circuit(_py: Python, module: &PyModule) -> PyResult<()> {
+fn circuit(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     module.add_class::<CircuitWrapper>()?;
     Ok(())
 }
@@ -68,26 +68,23 @@ impl CircuitWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::Circuit]
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<Circuit> {
-        Python::with_gil(|py| -> PyResult<Circuit> {
-            let input = input.as_ref(py);
-            if let Ok(try_downcast) = input.extract::<CircuitWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<Circuit> {
+        if let Ok(try_downcast) = input.extract::<CircuitWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode").map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo Circuit: Cast to binary representation failed".to_string())
             })?;
-                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+            let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo Circuit: Cast to binary representation failed".to_string())
             })?;
-                deserialize(&bytes[..]).map_err(|err| {
-                    PyTypeError::new_err(format!(
+            deserialize(&bytes[..]).map_err(|err| {
+                PyTypeError::new_err(format!(
                     "Python object cannot be converted to qoqo Circuit: Deserialization failed: {}",
                     err
                 ))
-                })
-            }
-        })
+            })
+        }
     }
 }
 
@@ -116,7 +113,7 @@ impl CircuitWrapper {
     ///     RuntimeError: The parameter substitution failed.
     pub fn substitute_parameters(
         &self,
-        substitution_parameters: std::collections::HashMap<&str, f64>,
+        substitution_parameters: std::collections::HashMap<String, f64>,
     ) -> PyResult<Self> {
         let mut calculator = qoqo_calculator::Calculator::new();
         for (key, val) in substitution_parameters.iter() {
@@ -189,10 +186,10 @@ impl CircuitWrapper {
     ///
     /// Returns:
     ///     int: The number of occurences of these operation tags.
-    pub fn count_occurences(&self, operations: Vec<&str>) -> usize {
+    pub fn count_occurences(&self, operations: Vec<String>) -> usize {
         let mut counter: usize = 0;
         for op in self.internal.iter() {
-            if operations.iter().any(|x| op.tags().contains(x)) {
+            if operations.iter().any(|x| op.tags().contains(&x.as_str())) {
                 counter += 1
             }
         }
@@ -223,7 +220,7 @@ impl CircuitWrapper {
     ///
     /// Returns:
     ///     Circuit: A deep copy of self.
-    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> CircuitWrapper {
+    pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> CircuitWrapper {
         self.clone()
     }
 
@@ -258,7 +255,7 @@ impl CircuitWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize Circuit to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -275,8 +272,9 @@ impl CircuitWrapper {
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to Circuit.
     #[staticmethod]
-    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
+            .as_gil_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -485,7 +483,7 @@ impl CircuitWrapper {
     ///
     /// Args:
     ///     op (Operation): The Operation to add to the Circuit.
-    pub fn add(&mut self, op: &PyAny) -> PyResult<()> {
+    pub fn add(&mut self, op: &Bound<PyAny>) -> PyResult<()> {
         let operation = convert_pyany_to_operation(op).map_err(|x| {
             PyTypeError::new_err(format!("Cannot convert python object to Operation {:?}", x))
         })?;
@@ -521,7 +519,11 @@ impl CircuitWrapper {
     ///
     /// Raises:
     ///     NotImplementedError: Other comparison not implemented
-    fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
+    fn __richcmp__(
+        &self,
+        other: &Bound<PyAny>,
+        op: pyo3::class::basic::CompareOp,
+    ) -> PyResult<bool> {
         let other = Self::from_pyany(other);
         match op {
             pyo3::class::basic::CompareOp::Eq => match other {
@@ -584,7 +586,7 @@ impl CircuitWrapper {
     /// Raises:
     ///     TypeError: Cannot convert python object to Operation.
     ///     IndexError: Index out of range.
-    fn __setitem__(&mut self, index: usize, value: &PyAny) -> PyResult<()> {
+    fn __setitem__(&mut self, index: usize, value: &Bound<PyAny>) -> PyResult<()> {
         let operation = convert_pyany_to_operation(value)
             .map_err(|_| PyTypeError::new_err("Cannot convert python object to Operation"))?;
         let mut_reference = self
@@ -602,74 +604,69 @@ impl CircuitWrapper {
     ///
     /// Raises:
     ///     TypeError: Right hand side cannot be converted to Operation or Circuit.
-    fn __iadd__(&mut self, other: Py<PyAny>) -> PyResult<()> {
-        Python::with_gil(|py| -> PyResult<()> {
-            let other_ref = other.as_ref(py);
-            match convert_pyany_to_operation(other_ref) {
-                Ok(x) => {
-                    self.internal += x;
-                    Ok(())
-                }
-                Err(_) => {
-                    let other = convert_into_circuit(other_ref).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!(
-                            "Right hand side cannot be converted to Operation or Circuit {:?}",
-                            x
-                        ))
-                    });
-                    match other {
-                        Ok(x) => {
-                            self.internal += x;
-                            Ok(())
-                        }
-                        Err(y) => Err(y),
+    fn __iadd__(&mut self, other: &Bound<PyAny>) -> PyResult<()> {
+        match convert_pyany_to_operation(other) {
+            Ok(x) => {
+                self.internal += x;
+                Ok(())
+            }
+            Err(_) => {
+                let other = convert_into_circuit(other).map_err(|x| {
+                    pyo3::exceptions::PyTypeError::new_err(format!(
+                        "Right hand side cannot be converted to Operation or Circuit {:?}",
+                        x
+                    ))
+                });
+                match other {
+                    Ok(x) => {
+                        self.internal += x;
+                        Ok(())
                     }
+                    Err(y) => Err(y),
                 }
             }
-        })
+        }
     }
 
     /// Implement the `+` (__add__) magic method to add two Circuits.
     ///
     /// Args:
-    ///     lhs (Circuit): The first Circuit object in this operation.
+    ///     self (CircuitWrapper): The first Circuit object in this operation.
     ///     rhs (Circuit): The second Circuit object in this operation.
     ///
     /// Returns:
-    ///     lhs + rhs (Circuit): the two Circuits added together.
+    ///     self + rhs (Circuit): the two Circuits added together.
     ///
     /// Raises:
     ///     TypeError: Left hand side can not be converted to Circuit.
     ///     TypeError: Right hand side cannot be converted to Operation or Circuit.
-    fn __add__(lhs: Py<PyAny>, rhs: Py<PyAny>) -> PyResult<CircuitWrapper> {
-        Python::with_gil(|py| -> PyResult<CircuitWrapper> {
-            let (lhs_ref, rhs_ref) = (lhs.as_ref(py), rhs.as_ref(py));
-            let self_circ = convert_into_circuit(lhs_ref).map_err(|_| {
-                PyTypeError::new_err("Left hand side can not be converted to Circuit")
-            })?;
-            match convert_pyany_to_operation(rhs_ref) {
-                Ok(x) => Ok(CircuitWrapper {
-                    internal: self_circ + x,
-                }),
-                Err(_) => {
-                    let other = convert_into_circuit(rhs_ref).map_err(|_| {
-                        pyo3::exceptions::PyTypeError::new_err(
-                            "Right hand side cannot be converted to Operation or Circuit",
-                        )
-                    })?;
-                    Ok(CircuitWrapper {
-                        internal: self_circ + other,
-                    })
+    fn __add__(&mut self, other: &Bound<PyAny>) -> PyResult<CircuitWrapper> {
+        match convert_pyany_to_operation(other) {
+            Ok(x) => Ok(CircuitWrapper {
+                internal: self.internal.clone() + x,
+            }),
+            Err(_) => {
+                let other = convert_into_circuit(other).map_err(|x| {
+                    pyo3::exceptions::PyTypeError::new_err(format!(
+                        "Right hand side cannot be converted to Operation or Circuit {:?}",
+                        x
+                    ))
+                });
+                match other {
+                    Ok(x) => Ok(CircuitWrapper {
+                        internal: self.internal.clone() + x,
+                    }),
+                    Err(y) => Err(y),
                 }
             }
-        })
+        }
     }
 }
 
 /// Convert generic python object to [roqoqo::Circuit].
 ///
 /// Fallible conversion of generic python object to [roqoqo::Circuit].
-pub fn convert_into_circuit(input: &PyAny) -> Result<Circuit, QoqoError> {
+pub fn convert_into_circuit(input: &Bound<PyAny>) -> Result<Circuit, QoqoError> {
     if let Ok(try_downcast) = input.extract::<CircuitWrapper>() {
         return Ok(try_downcast.internal);
     }

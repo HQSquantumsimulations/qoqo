@@ -29,7 +29,7 @@ use crate::CircuitWrapper;
 /// of a quantum circuit in qoqo.
 ///
 #[pymodule]
-fn circuitdag(_py: Python, module: &PyModule) -> PyResult<()> {
+fn circuitdag(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     module.add_class::<CircuitDagWrapper>()?;
     Ok(())
 }
@@ -60,26 +60,23 @@ impl CircuitDagWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::Circuit]
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<CircuitDag> {
-        Python::with_gil(|py| -> PyResult<CircuitDag> {
-            let input = input.as_ref(py);
-            if let Ok(try_downcast) = input.extract::<CircuitDagWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<CircuitDag> {
+        if let Ok(try_downcast) = input.extract::<CircuitDagWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode").map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo CircuitDag: Cast to binary representation failed".to_string())
             })?;
-                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+            let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo CircuitDag: Cast to binary representation failed".to_string())
             })?;
-                deserialize(&bytes[..]).map_err(|err| {
+            deserialize(&bytes[..]).map_err(|err| {
                 PyTypeError::new_err(format!(
                     "Python object cannot be converted to qoqo CircuitDag: Deserialization failed: {}",
                     err
                 ))}
             )
-            }
-        })
+        }
     }
 }
 
@@ -109,13 +106,8 @@ impl CircuitDagWrapper {
     /// Returns:
     ///     self: The new CircuitDag.
     #[pyo3(text_signature = "(circuit)")]
-    pub fn from_circuit(&self, circuit: Py<PyAny>) -> PyResult<Self> {
-        let circuit = Python::with_gil(|py| -> Result<Circuit, QoqoError> {
-            let circ_ref = circuit.as_ref(py);
-            crate::convert_into_circuit(circ_ref)
-        })
-        .unwrap();
-
+    pub fn from_circuit(&self, circuit: &Bound<PyAny>) -> PyResult<Self> {
+        let circuit = crate::convert_into_circuit(circuit).unwrap();
         Ok(Self {
             internal: CircuitDag::from(circuit),
         })
@@ -138,7 +130,7 @@ impl CircuitDagWrapper {
     /// Raises:
     ///     TypeError: The Python Object cannot be converted to Operation.
     #[pyo3(text_signature = "($self, op)")]
-    pub fn add_to_back(&mut self, op: &PyAny) -> PyResult<Option<usize>> {
+    pub fn add_to_back(&mut self, op: &Bound<PyAny>) -> PyResult<Option<usize>> {
         let operation = convert_pyany_to_operation(op).map_err(|x| {
             PyTypeError::new_err(format!("Cannot convert python object to Operation {:?}", x))
         })?;
@@ -153,7 +145,7 @@ impl CircuitDagWrapper {
     /// Raises:
     ///     TypeError: The Python Object cannot be converted to Operation.
     #[pyo3(text_signature = "($self, op)")]
-    pub fn add_to_front(&mut self, op: &PyAny) -> PyResult<Option<usize>> {
+    pub fn add_to_front(&mut self, op: &Bound<PyAny>) -> PyResult<Option<usize>> {
         let operation = convert_pyany_to_operation(op).map_err(|x| {
             PyTypeError::new_err(format!("Cannot convert python object to Operation {:?}", x))
         })?;
@@ -187,7 +179,7 @@ impl CircuitDagWrapper {
     ///
     /// Args:
     ///     already_executed (list[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
-    ///     to_be_executed(int): NodeIndex of the Operation that should be executed next.
+    ///     to_be_executed (int): NodeIndex of the Operation that should be executed next.
     ///
     /// Returns:
     ///     list[int]: List containing the sorted blocking elements.
@@ -286,11 +278,12 @@ impl CircuitDagWrapper {
     ///
     /// Raises:
     ///     NotImplementedError: Other comparison not implemented.
-    fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
-        let other = Python::with_gil(|py| -> Result<CircuitDag, QoqoError> {
-            let other_ref = other.as_ref(py);
-            crate::convert_into_circuitdag(other_ref)
-        });
+    fn __richcmp__(
+        &self,
+        other: &Bound<PyAny>,
+        op: pyo3::class::basic::CompareOp,
+    ) -> PyResult<bool> {
+        let other = crate::convert_into_circuitdag(other);
         match op {
             pyo3::class::basic::CompareOp::Eq => match other {
                 Ok(dag) => Ok(self.internal == dag),
@@ -339,7 +332,7 @@ impl CircuitDagWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize CircuitDag to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -357,8 +350,9 @@ impl CircuitDagWrapper {
     ///     ValueError: Input cannot be deserialized to CircuitDag.
     #[staticmethod]
     #[pyo3(text_signature = "(input)")]
-    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
+            .as_gil_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -461,8 +455,8 @@ impl CircuitDagWrapper {
 /// Convert generic python object to [roqoqo::CircuitDag].
 ///
 /// Fallible conversion of generic python object to [roqoqo::CircuitDag].
-pub fn convert_into_circuitdag(input: &PyAny) -> Result<CircuitDag, QoqoError> {
-    if let Ok(try_downcast) = input.extract::<CircuitDagWrapper>() {
+pub fn convert_into_circuitdag(input: &Bound<PyAny>) -> Result<CircuitDag, QoqoError> {
+    if let Ok(try_downcast) = input.as_gil_ref().extract::<CircuitDagWrapper>() {
         return Ok(try_downcast.internal);
     }
     // Everything that follows tries to extract the circuitdag when two separately

@@ -48,29 +48,25 @@ impl ChainWithEnvironmentCapsule {
     /// # Arguments
     ///
     /// * `python_device` - The python object that should implement the
-    pub fn new(python_device: Py<PyAny>) -> Result<Self, RoqoqoError> {
-        let implements_protocol = Python::with_gil(|py| -> bool {
-            let __implements_environment_with_chains =
-                python_device.call_method0(py, "__implements_environment_chains");
-            if __implements_environment_with_chains.is_err() {
-                return false;
+    pub fn new(python_device: &Bound<PyAny>) -> Result<Self, RoqoqoError> {
+        let __implements_environment_with_chains =
+            python_device.call_method0("__implements_environment_chains");
+        let implements_protocol =
+            __implements_environment_with_chains.map(|implement| implement.extract::<bool>());
+
+        match implements_protocol {
+            Ok(Ok(true)) => Python::with_gil(|py| -> Result<Self, RoqoqoError> {
+                Ok(Self {
+                    internal: python_device.into_py(py),
+                })
+            }),
+            _ => {
+                return Err(RoqoqoError::GenericError {
+                    msg: "Python device does not implement `environment_chains` method."
+                        .to_string(),
+                })
             }
-            let __implements_environment_with_chains = __implements_environment_with_chains
-                .unwrap()
-                .extract::<bool>(py);
-            if __implements_environment_with_chains.is_err() {
-                return false;
-            }
-            __implements_environment_with_chains.unwrap()
-        });
-        if !implements_protocol {
-            return Err(RoqoqoError::GenericError {
-                msg: "Python device does not implement `environment_chains` method.".to_string(),
-            });
         }
-        Ok(Self {
-            internal: python_device,
-        })
     }
 }
 
@@ -115,9 +111,16 @@ impl ChainWithEnvironmentDevice for ChainWithEnvironmentCapsule {
 ///     accessing the quantum computing hardware. The devices also encode a connectivity model.
 ///
 /// The devices were introduced after qoqo 1.0.0, but their design may be refactored later for backwards compatibility
+///
+/// .. autosummary::
+///     :toctree: generated/
+///     
+///     AllToAllDevice
+///     GenericDevice
+///     SquareLatticeDevice
 
 #[pymodule]
-pub fn devices(_py: Python, module: &PyModule) -> PyResult<()> {
+pub fn devices(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     module.add_class::<AllToAllDeviceWrapper>()?;
     module.add_class::<GenericDeviceWrapper>()?;
     module.add_class::<SquareLatticeDeviceWrapper>()?;

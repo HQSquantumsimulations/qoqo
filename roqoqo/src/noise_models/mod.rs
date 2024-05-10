@@ -24,6 +24,8 @@ use super::operations::SupportedVersion;
 pub use decoherence_on_gate::DecoherenceOnGateModel;
 mod overrotation;
 pub use overrotation::{SingleQubitOverrotationDescription, SingleQubitOverrotationOnGate};
+mod decoherence_on_idle;
+pub use decoherence_on_idle::DecoherenceOnIdleModel;
 
 /// Collection of all available noise models in this version of qoqo/roqoqo
 ///
@@ -37,10 +39,12 @@ pub enum NoiseModel {
     ContinuousDecoherenceModel(ContinuousDecoherenceModel),
     /// Readout error model (probabilities to measure 0 instead of 1 and vice-versa).
     ImperfectReadoutModel(ImperfectReadoutModel),
-    /// additional error only when applying gate
+    /// Additional error only when applying gate
     DecoherenceOnGateModel(DecoherenceOnGateModel),
-    /// additional error only when applying gate
+    /// Additional error only when applying gate
     SingleQubitOverrotationOnGate(SingleQubitOverrotationOnGate),
+    /// Dechoherence on idle qubits model
+    DecoherenceOnIdleModel(DecoherenceOnIdleModel),
 }
 
 impl From<ContinuousDecoherenceModel> for NoiseModel {
@@ -67,6 +71,12 @@ impl From<SingleQubitOverrotationOnGate> for NoiseModel {
     }
 }
 
+impl From<DecoherenceOnIdleModel> for NoiseModel {
+    fn from(value: DecoherenceOnIdleModel) -> Self {
+        Self::DecoherenceOnIdleModel(value)
+    }
+}
+
 impl SupportedVersion for NoiseModel {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         match self {
@@ -80,6 +90,9 @@ impl SupportedVersion for NoiseModel {
                 internal.minimum_supported_roqoqo_version()
             }
             NoiseModel::SingleQubitOverrotationOnGate(internal) => {
+                internal.minimum_supported_roqoqo_version()
+            }
+            NoiseModel::DecoherenceOnIdleModel(internal) => {
                 internal.minimum_supported_roqoqo_version()
             }
         }
@@ -110,6 +123,12 @@ mod tests {
     #[test]
     fn minimum_supported_roqoqo_version_overrotations() {
         let noise = SingleQubitOverrotationOnGate::new();
+        let noise_model: NoiseModel = noise.into();
+        assert_eq!(noise_model.minimum_supported_roqoqo_version(), (1, 11, 0));
+    }
+    #[test]
+    fn minimum_supported_roqoqo_version_on_idle() {
+        let noise = DecoherenceOnIdleModel::new();
         let noise_model: NoiseModel = noise.into();
         assert_eq!(noise_model.minimum_supported_roqoqo_version(), (1, 11, 0));
     }
