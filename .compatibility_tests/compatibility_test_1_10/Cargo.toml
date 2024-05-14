@@ -1,5 +1,4 @@
 [package]
-
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 name = "compatibility_test_1_10"
 version = "1.13.0"

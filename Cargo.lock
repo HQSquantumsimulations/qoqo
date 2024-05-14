@@ -1504,7 +1504,8 @@ checksum = "7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f"
 [[package]]
 name = "struqture"
 version = "1.7.0"
-source = "git+https://github.com/dberthault/struqture.git#f00e5a1fe18c56b9ab2b3cdb1dbe5a35cfecfd63"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d2fe3b5ee158db81a424c6194639a689b67a37b133578ffd8fc9e07e3b6a1f57"
 dependencies = [
  "itertools",
  "ndarray",
@@ -1520,7 +1521,8 @@ dependencies = [
 [[package]]
 name = "struqture-py"
 version = "1.7.0"
-source = "git+https://github.com/dberthault/struqture.git#f00e5a1fe18c56b9ab2b3cdb1dbe5a35cfecfd63"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a608a0a151196d275cdead34c1a804da410a20abde8f8047e3b3603ab2b4271a"
 dependencies = [
  "bincode",
  "num-complex",
@@ -1543,7 +1545,8 @@ dependencies = [
 [[package]]
 name = "struqture-py-macros"
 version = "1.7.0"
-source = "git+https://github.com/dberthault/struqture.git#f00e5a1fe18c56b9ab2b3cdb1dbe5a35cfecfd63"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "577cbc9755cc3e7c83fbaa31b9c869d90ccd20c23cd36f5561c32454ea6d4e73"
 dependencies = [
  "num-complex",
  "proc-macro2",
