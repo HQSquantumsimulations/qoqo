@@ -18,7 +18,6 @@ use qoqo::operations::{
     QuantumRabiWrapper, SingleExcitationLoadWrapper, SingleExcitationStoreWrapper,
 };
 use qoqo_calculator::{Calculator, CalculatorFloat};
-use qoqo_calculator_pyo3::CalculatorFloatWrapper;
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
 #[cfg(feature = "json_schema")]
