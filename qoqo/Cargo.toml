@@ -44,7 +44,7 @@ roqoqo = { version = "1.12.0", path = "../roqoqo", features = [
     "serialize",
     "overrotate",
 ] }
-struqture = { version = "1.5" }
+struqture = { version = "1.7" }
 struqture-py = { version = "1.7", default-features = false }
 numpy = "0.21"
 bincode = "1.3"
