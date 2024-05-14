@@ -1830,7 +1830,6 @@ fn test_new_controlledrotatex(
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1876,7 +1875,6 @@ fn test_new_controlledrotatexy(
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"], vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1918,7 +1916,6 @@ fn test_new_echocrossresonance(input_operation: Operation, arguments: (u32, u32)
 
         // Error initialisation
         let result = operation_type.call1((0, 1, 0.0));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
