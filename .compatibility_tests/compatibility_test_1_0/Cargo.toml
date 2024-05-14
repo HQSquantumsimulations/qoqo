@@ -18,12 +18,6 @@ publish = false
 
 [workspace]
 
-[patch.crates-io]
-qoqo_calculator = { git = "https://github.com/dberthault/qoqo_calculator.git" }
-qoqo_calculator_pyo3 = { git = "https://github.com/dberthault/qoqo_calculator.git" }
-struqture = { git = "https://github.com/dberthault/struqture.git" }
-struqture-py = { git = "https://github.com/dberthault/struqture.git" }
-
 [dependencies]
 test_roqoqo_1_0 = { package = "roqoqo", version = "=1.0.0" }
 test_roqoqo_derive_1_0 = { package = "roqoqo-derive", version = "=1.0.0" }
