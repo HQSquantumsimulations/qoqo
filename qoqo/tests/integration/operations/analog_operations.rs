@@ -407,7 +407,6 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let substitution_dict: HashMap<String, f64> = HashMap::new();
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
-
         assert!(result.is_err());
         let binding = result.unwrap_err();
         let e = binding.value_bound(py);
