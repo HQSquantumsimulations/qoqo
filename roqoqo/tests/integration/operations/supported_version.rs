@@ -175,7 +175,7 @@ where
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
-    return operations::ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
+    operations::ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into())
 }
 #[cfg(feature = "unstable_analog_operations")]
 fn create_apply_timedependent_spin_hamiltonian<T>(
@@ -193,11 +193,11 @@ where
     let mut values = HashMap::new();
     values.insert("omega".to_string(), vec![1.0]);
 
-    return operations::ApplyTimeDependentSpinHamiltonian::new(
+    operations::ApplyTimeDependentSpinHamiltonian::new(
         hamiltonian,
         vec![1.0],
         values.clone(),
-    );
+    )
 }
 
 #[cfg(feature = "unstable_analog_operations")]
@@ -205,7 +205,7 @@ where
 #[test_case(operations::SpinsAnalogOperation::from(create_apply_timedependent_spin_hamiltonian("omega"));"ApplyTimeDependentHamiltonian")]
 fn test_version_1_11_0_spin_analog_operations(operation: operations::SpinsAnalogOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 11, 0));
-    let op = operations::Operation::try_from(operation).unwrap();
+    let op = operations::Operation::from(operation);
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 11, 0));
 }
 
