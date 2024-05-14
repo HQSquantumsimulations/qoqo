@@ -99,13 +99,15 @@ impl<'ast> Visit<'ast> for Visitor {
         // Check attributes
         for att in itemstruct.attrs.clone() {
             let path = att.path().get_ident().map(|id| id.to_string());
+            // TOFIX: REMOVE WHEN STABLED
             if matches!(att.style, AttrStyle::Outer)
                 && path == Some("cfg".to_string())
                 && !cfg!(feature = "unstable_operation_definition")
             {
+                // println!("cargo:warning={:?}", att);
                 let cfg_feature_name: CfgFeatureMacroArgument =
                     att.parse_args().expect("parsing failed 1");
-                if cfg_feature_name.0.contains("unstable_") {
+                if cfg_feature_name.0.contains("unstable_operation_definition") {
                     return;
                 }
             }
@@ -126,6 +128,14 @@ impl<'ast> Visit<'ast> for Visitor {
             Some(id) => Some(id.clone()),
             _ => i.path.segments.last().map(|segment| segment.ident.clone()),
         };
+        // TOFIX: REMOVE WHEN STABLED
+        if i.tokens.clone().into_iter().any(|tok| {
+            tok.to_string().contains("CallDefinedGate")
+                || tok.to_string().contains("DefinitionGate")
+        }) && !cfg!(feature = "unstable_operation_definition")
+        {
+            return;
+        }
         if let Some(ident) = id {
             if ident.to_string().as_str() == "insert_pyany_to_operation" {
                 self.pyany_to_operation.push(i.tokens.clone())
