@@ -65,13 +65,13 @@ pub struct MultiQubitZZ {
     theta: CalculatorFloat,
 }
 
-/// Module containing the CallDefinedGate class.
-#[cfg(feature = "unstable_operation_definition")]
-#[pymodule]
-fn call_defined_gate(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
-    module.add_class::<CallDefinedGateWrapper>()?;
-    Ok(())
-}
+// /// Module containing the CallDefinedGate class.
+// #[cfg(feature = "unstable_operation_definition")]
+// #[pymodule]
+// fn call_defined_gate(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
+//     module.add_class::<CallDefinedGateWrapper>()?;
+//     Ok(())
+// }
 
 /// The gate to be replaced by a gate defined with GateDefinition gate.
 /// The gate applies a gate previously defined by GateDefinition with the name gate_name.
