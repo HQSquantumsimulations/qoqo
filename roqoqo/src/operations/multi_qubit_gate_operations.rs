@@ -198,7 +198,7 @@ impl Substitute for CallDefinedGate {
             new_params.push(CalculatorFloat::from(
                 calculator
                     .parse_get(param.clone())
-                    .map_err(|err| RoqoqoError::CalculatorError(err))?,
+                    .map_err(RoqoqoError::CalculatorError)?,
             ));
         }
 
