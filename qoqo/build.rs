@@ -469,15 +469,15 @@ fn main() {
     ]
     .iter()
     {
-        if let Ok(qoqo_doc) = create_doc(
+        let qoqo_doc = create_doc(
             module
                 .eq("qoqo")
                 .then_some(module)
                 .unwrap_or(&format!("qoqo.{module}")),
-        ) {
-            let out_dir = PathBuf::from(format!("qoqo/{}.pyi", module));
-            fs::write(&out_dir, qoqo_doc).expect("Could not write to file");
-        }
+        )
+        .expect("Could not generate documentation.");
+        let out_dir = PathBuf::from(format!("qoqo/{}.pyi", module));
+        fs::write(&out_dir, qoqo_doc).expect("Could not write to file");
     }
 }
 
