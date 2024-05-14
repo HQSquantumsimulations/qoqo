@@ -599,7 +599,6 @@ fn test_pyo3_remapmodes_error(input_operation: Operation) {
         let mut mode_mapping: HashMap<usize, usize> = HashMap::new();
         mode_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_modes", (mode_mapping,));
-        ();
         assert!(result.is_err());
     })
 }
@@ -620,7 +619,6 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
-        ();
         assert!(result.is_err());
     })
 }
@@ -739,7 +737,6 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let substitution_dict: HashMap<String, f64> = HashMap::new();
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
-        ();
         assert!(result.is_err());
     })
 }

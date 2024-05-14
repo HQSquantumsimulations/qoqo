@@ -70,7 +70,6 @@ fn test_new_multi_qubit_ms(input_operation: Operation, arguments: (Vec<u32>, f64
 
         // Error initialisation
         let result = operation_type.call1(([0, 1], vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -111,7 +110,6 @@ fn test_new_multi_qubit_zz(input_operation: Operation, arguments: (Vec<u32>, f64
 
         // Error initialisation
         let result = operation_type.call1(([0, 1], vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug

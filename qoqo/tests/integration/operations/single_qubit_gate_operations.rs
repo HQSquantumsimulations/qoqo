@@ -361,7 +361,6 @@ fn test_new_rotatex(input_operation: Operation, arguments: (u32, f64), method: &
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -402,7 +401,6 @@ fn test_new_rotatey(input_operation: Operation, arguments: (u32, f64), method: &
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -444,7 +442,6 @@ fn test_new_rotatez(input_operation: Operation, arguments: (u32, f64), method: &
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -486,7 +483,6 @@ fn test_new_phaseshiftstate0(input_operation: Operation, arguments: (u32, f64), 
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -528,7 +524,6 @@ fn test_new_phaseshiftstate1(input_operation: Operation, arguments: (u32, f64), 
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -570,7 +565,6 @@ fn test_new_gpi(input_operation: Operation, arguments: (u32, f64), method: &str)
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -612,7 +606,6 @@ fn test_new_gpi2(input_operation: Operation, arguments: (u32, f64), method: &str
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -669,13 +662,10 @@ fn test_new_rotate(input_operation: Operation, arguments: (u32, f64, f64, f64), 
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"], 0.0, 0.0));
-        ();
         assert!(result.is_err());
         let result = operation_type.call1((0, 0.0, vec!["fails"], 0.0));
-        ();
         assert!(result.is_err());
         let result = operation_type.call1((0, 0.0, 0.0, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -734,10 +724,8 @@ fn test_new_rotatexy(input_operation: Operation, arguments: (u32, f64, f64), met
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"], 0.0));
-        ();
         assert!(result.is_err());
         let result = operation_type.call1((0, vec!["fails"], 0.0));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -802,23 +790,18 @@ fn test_new_singlequbitgate(
 
         // Error initialisation
         let result = operation_type.call1((0, vec!["fails"], 0.0, 0.0, 0.0, 0.0));
-        ();
         assert!(result.is_err());
 
         let result = operation_type.call1((0, 0.0, vec!["fails"], 0.0, 0.0, 0.0));
-        ();
         assert!(result.is_err());
 
         let result = operation_type.call1((0, 0.0, 0.0, vec!["fails"], 0.0, 0.0));
-        ();
         assert!(result.is_err());
 
         let result = operation_type.call1((0, 0.0, 0.0, 0.0, vec!["fails"], 0.0));
-        ();
         assert!(result.is_err());
 
         let result = operation_type.call1((0, 0.0, 0.0, 0.0, 0.0, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1436,7 +1419,6 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
-        ();
         assert!(result.is_err());
     })
 }
@@ -1538,7 +1520,6 @@ fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let py_result = operation.call_method0(py, "unitary_matrix");
-        ();
         assert!(py_result.is_err());
     })
 }
@@ -1571,7 +1552,6 @@ fn test_pyo3_unitarymatrix_singlequbitgate(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let py_result = operation.call_method0(py, "unitary_matrix");
-        ();
         assert!(py_result.is_err());
     })
 }
@@ -2201,7 +2181,6 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let substitution_dict: HashMap<String, f64> = HashMap::new();
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
-        ();
         assert!(result.is_err());
     })
 }
