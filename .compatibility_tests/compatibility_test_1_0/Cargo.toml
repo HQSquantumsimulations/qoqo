@@ -1,7 +1,6 @@
 [package]
-
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
-name = "compatibility_test_1_10"
+name = "compatibility_test_1_0"
 version = "1.13.0"
 license = "Apache-2.0"
 edition = "2021"
@@ -20,8 +19,8 @@ publish = false
 [workspace]
 
 [dependencies]
-test_roqoqo_1_10 = { package = "roqoqo", version = "=1.10.0" }
-test_roqoqo_derive_1_10 = { package = "roqoqo-derive", version = "=1.10.0" }
+test_roqoqo_1_0 = { package = "roqoqo", version = "=1.0.0" }
+test_roqoqo_derive_1_0 = { package = "roqoqo-derive", version = "=1.0.0" }
 qoqo_calculator = { version = "1.1" }
 roqoqo = { version = "1.13.0", path = "../../roqoqo", features = [
     "serialize",
