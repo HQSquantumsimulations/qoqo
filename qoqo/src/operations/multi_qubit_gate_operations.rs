@@ -281,7 +281,7 @@ impl CallDefinedGateWrapper {
     /// Return a copy of the operation (copy here produces a deepcopy).
     ///
     /// Returns:
-    ///     PragmaGeneralNoise: A deep copy of self.
+    ///     CallDefinedGate: A deep copy of self.
     fn __copy__(&self) -> CallDefinedGateWrapper {
         self.clone()
     }
@@ -289,7 +289,7 @@ impl CallDefinedGateWrapper {
     /// Return a deep copy of the operation.
     ///
     /// Returns:
-    ///     PragmaGeneralNoise: A deep copy of self.
+    ///     CallDefinedGate: A deep copy of self.
     fn __deepcopy__(&self, _memodict: Py<PyAny>) -> CallDefinedGateWrapper {
         self.clone()
     }
@@ -310,10 +310,10 @@ impl CallDefinedGateWrapper {
         Ok(format!("{:?}", self.internal))
     }
 
-    /// Return the __richcmp__ magic method to perform rich comparison operations on PragmaSetStateVector.
+    /// Return the __richcmp__ magic method to perform rich comparison operations on CallDefinedGate.
     ///
     /// Args:
-    ///     self: The PragmaGeneralNoise object.
+    ///     self: The CallDefinedGate object.
     ///     other: The object to compare self to.
     ///     op: Type of comparison.
     ///
