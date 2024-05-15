@@ -1,11 +1,5 @@
 [workspace]
-members = [
-    "roqoqo",
-    "roqoqo-derive",
-    "roqoqo-test",
-    "qoqo",
-    "qoqo-macros",
-]
+members = ["roqoqo", "roqoqo-derive", "roqoqo-test", "qoqo", "qoqo-macros"]
 
 resolver = "2"
 

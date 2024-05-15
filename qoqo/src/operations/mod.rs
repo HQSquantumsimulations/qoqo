@@ -57,7 +57,7 @@ use pyo3::prelude::*;
 ///
 #[pymodule]
 
-pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
+pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     // 1.0
     m.add_class::<SingleQubitGateWrapper>()?;
     m.add_class::<RotateZWrapper>()?;

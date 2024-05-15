@@ -40,7 +40,7 @@ pub fn noise_model_wrapper_def(
             /// Returns:
             ///     A deep copy of self.
             ///
-            pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+            pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
                 self.clone()
             }
 
@@ -57,7 +57,7 @@ pub fn noise_model_wrapper_def(
                 let serialized = bincode::serialize(&noise_model)
                     .map_err(|_| pyo3::exceptions::PyValueError::new_err("Cannot serialize Noise-Model to bytes"))?;
                 let b: Py<pyo3::types::PyByteArray> = Python::with_gil(|py| -> Py<pyo3::types::PyByteArray> {
-                    pyo3::types::PyByteArray::new(py, &serialized[..]).into()
+                    pyo3::types::PyByteArray::new_bound(py, &serialized[..]).into()
                 });
                 Ok(b)
             }
@@ -110,7 +110,7 @@ pub fn noise_model_wrapper_def(
             /// Raises:
             ///     NotImplementedError: Other comparison not implemented.
             ///
-            fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
+            fn __richcmp__(&self, other: &Bound<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
                 let other = #ident::from_pyany(other);
 
                 match op {
@@ -131,9 +131,7 @@ pub fn noise_model_wrapper_def(
 
         impl #ident {
             /// Fallible conversion of generic python object..
-            pub fn from_pyany(input: Py<PyAny>) -> PyResult<NoiseModel> {
-                Python::with_gil(|py| -> PyResult<NoiseModel> {
-                    let input = input.as_ref(py);
+            pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<NoiseModel> {
                     if let Ok(try_downcast) = input.extract::<#ident>() {
                         Ok(try_downcast.internal.into())
                     } else {
@@ -146,7 +144,6 @@ pub fn noise_model_wrapper_def(
                             ))
                         })
                     }
-                })
             }
         }
     };
