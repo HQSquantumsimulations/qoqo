@@ -122,7 +122,7 @@ use test_roqoqo_1_11;
 #[test_case(test_roqoqo_1_11::operations::SingleExcitationLoad::new(0, 1).into(); "SingleExcitationLoad")]
 #[test_case(test_roqoqo_1_11::operations::SingleExcitationStore::new(0, 1).into(); "SingleExcitationStore")]
 #[test_case(test_roqoqo_1_11::operations::CZQubitResonator::new(0, 1).into(); "CZQubitResonator")]
-// Operations from 1.11 - uncomment for next unittests once made stable
+// Operations from 1.11 - ApplyConstantSpinHamiltonian and ApplyTimeDependentHamiltonian are unstable in 1.11
 // #[test_case(create_apply_constant_spin_hamiltonian(); "ApplyConstantSpinHamiltonian")]
 // #[test_case(create_apply_timedependent_spin_hamiltonian(); "ApplyTimeDependentHamiltonian")]
 fn test_bincode_compatibility_1_10(operation: test_roqoqo_1_11::operations::Operation) {
@@ -167,7 +167,7 @@ fn test_device_compat() {
     assert_eq!(test_deserialisation, comparsion_device);
 }
 
-// // Operations from 1.11
+// Operations from 1.11 - ApplyConstantSpinHamiltonian and ApplyTimeDependentHamiltonian are unstable in 1.11
 // use struqture;
 // use struqture::prelude::*;
 // fn create_apply_constant_spin_hamiltonian(
