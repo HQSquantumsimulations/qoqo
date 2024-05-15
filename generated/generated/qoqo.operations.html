@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qoqo.operations &mdash; qoqo 1.11.0 documentation</title>
+  <title>qoqo.operations &mdash; qoqo 1.12.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -15,8 +15,8 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=07b2cff2"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/documentation_options.js?v=82e73063"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -40,7 +40,7 @@
             qoqo
           </a>
               <div class="version">
-                1.11.0
+                1.12.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -726,7 +726,7 @@ and <span class="math notranslate nohighlight">\(Y_t\)</span> is the Pauli matri
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>control</strong> (<em>int</em>) -- The index of the most significant qubit in the unitary representation.</p></li>
-<li><p><strong>target</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>target</strong> (<em>int</em>)</p></li>
 <li><p><strong>delta_real</strong> (<em>CalculatorFloat</em>) -- The real part of the complex Bogoliubov interaction strength <span class="math notranslate nohighlight">\(Re(\Delta)\)</span>.</p></li>
 <li><p><strong>delta_imag</strong> (<em>CalculatorFloat</em>) -- The imaginary part of the complex Bogoliubov interaction strength <span class="math notranslate nohighlight">\(Im(\Delta)\)</span>.</p></li>
 </ul>
@@ -1310,7 +1310,7 @@ and <span class="math notranslate nohighlight">\(Y_t\)</span> is the Pauli matri
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>control</strong> (<em>int</em>) -- The index of the most significant qubit in the unitary representation.</p></li>
-<li><p><strong>target</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>target</strong> (<em>int</em>)</p></li>
 <li><p><strong>t_real</strong> (<em>CalculatorFloat</em>) -- The real part of the strength of the rotation <span class="math notranslate nohighlight">\(Re(\theta)\)</span>.</p></li>
 <li><p><strong>t_imag</strong> (<em>CalculatorFloat</em>) -- The imaginary part of the strength of the rotation <span class="math notranslate nohighlight">\(Im(\theta)\)</span>.</p></li>
 </ul>
@@ -2521,7 +2521,7 @@ provided parameters.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>control</strong> (<em>int</em>) -- The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the Rotatex Operation on the target qubit.</p></li>
-<li><p><strong>target</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>target</strong> (<em>int</em>)</p></li>
 <li><p><strong>theta</strong> (<em>CalculatorFloat</em>) -- The angle $theta$ of the rotation.</p></li>
 </ul>
 </dd>
@@ -2730,7 +2730,7 @@ provided parameters.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>control</strong> (<em>int</em>) -- The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the Rotatex Operation on the target qubit.</p></li>
-<li><p><strong>target</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>target</strong> (<em>int</em>)</p></li>
 <li><p><strong>theta</strong> (<em>CalculatorFloat</em>) -- The angle $theta$ of the rotation.</p></li>
 <li><p><strong>phi</strong> (<em>CalculatorFloat</em>) -- The rotation axis, in spherical coordinates <span class="math notranslate nohighlight">\(\phi_{sph}\)</span>  gives the angle in the x-y plane.</p></li>
 </ul>
@@ -3646,7 +3646,7 @@ provided parameters.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>control</strong> (<em>int</em>) -- The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the Rotatex Operation on the target qubit.</p></li>
-<li><p><strong>target</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>target</strong> (<em>int</em>)</p></li>
 <li><p><strong>theta</strong> (<em>CalculatorFloat</em>) -- The angle $theta$ of the rotation.</p></li>
 <li><p><strong>phi</strong> (<em>CalculatorFloat</em>) -- The rotation axis, in spherical coordinates <span class="math notranslate nohighlight">\(\phi_{sph}\)</span>  gives the angle in the x-y plane.</p></li>
 </ul>
@@ -4016,7 +4016,7 @@ provided parameters.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>control</strong> (<em>int</em>) -- The index of the most significant qubit in the unitary representation.</p></li>
-<li><p><strong>target</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>target</strong> (<em>int</em>)</p></li>
 <li><p><strong>t</strong> (<em>CalculatorFloat</em>) -- The hopping strength.</p></li>
 <li><p><strong>u</strong> (<em>CalculatorFloat</em>) -- The interaction strength.</p></li>
 <li><p><strong>delta</strong> (<em>CalculatorFloat</em>) -- The Bogoliubov interaction strength <span class="math notranslate nohighlight">\(\Delta\)</span>.</p></li>
@@ -4399,7 +4399,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -4714,7 +4714,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -5460,7 +5460,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -5933,7 +5933,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -6749,7 +6749,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -8053,7 +8053,7 @@ and <span class="math notranslate nohighlight">\(Y_t\)</span> is the Pauli matri
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>control</strong> (<em>int</em>) -- The index of the most significant qubit in the unitary representation.</p></li>
-<li><p><strong>target</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>target</strong> (<em>int</em>)</p></li>
 <li><p><strong>t</strong> (<em>CalculatorFloat</em>) -- The strength of the rotation <span class="math notranslate nohighlight">\(\theta\)</span>.</p></li>
 </ul>
 </dd>
@@ -8416,7 +8416,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -8705,7 +8705,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -8994,7 +8994,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -9693,7 +9693,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -10009,7 +10009,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -10150,7 +10150,7 @@ provided parameters.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>control</strong> (<em>int</em>) -- The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the phase-shift on the target qubit.</p></li>
-<li><p><strong>target</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>target</strong> (<em>int</em>)</p></li>
 <li><p><strong>theta</strong> (<em>CalculatorFloat</em>) -- The phase rotation $theta$.</p></li>
 <li><p><strong>phi</strong> (<em>CalculatorFloat</em>) -- The single qubit phase $phi$.</p></li>
 </ul>
@@ -10367,7 +10367,7 @@ provided parameters.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>control</strong> (<em>int</em>) -- The index of the most significant qubit in the unitary representation. Here, the qubit that controls the application of the phase-shift on the target qubit.</p></li>
-<li><p><strong>target</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>target</strong> (<em>int</em>)</p></li>
 <li><p><strong>phi</strong> (<em>CalculatorFloat</em>) -- The single qubit phase $phi$.</p></li>
 </ul>
 </dd>
@@ -15039,8 +15039,7 @@ provided parameters.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>qubits</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) -- The qubits involved in the decomposition block.</p></li>
-<li><p><strong>dict</strong><strong>[</strong><strong>int</strong> (<em>reordering_dictionary</em>) -- The reordering dictionary of the block.</p></li>
-<li><p><strong>int</strong><strong>]</strong><strong>)</strong> -- The reordering dictionary of the block.</p></li>
+<li><p><strong>reordering_dictionary</strong> (<em>dict</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) -- The reordering dictionary of the block.</p></li>
 </ul>
 </dd>
 </dl>
@@ -15542,7 +15541,7 @@ provided parameters.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>control</strong> (<em>int</em>) -- The index of the most significant qubit in the unitary representation.</p></li>
-<li><p><strong>target</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>target</strong> (<em>int</em>)</p></li>
 <li><p><strong>x</strong> (<em>CalculatorFloat</em>) -- The prefactor of the XX interaction.</p></li>
 <li><p><strong>y</strong> (<em>CalculatorFloat</em>) -- The prefactor of the YY interaction.</p></li>
 <li><p><strong>z</strong> (<em>CalculatorFloat</em>) -- The prefactor of the ZZ interaction.</p></li>
@@ -16144,7 +16143,7 @@ v_z = \cos(\theta_{sph}) \ .\end{split}\]</div>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -16475,7 +16474,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -16791,7 +16790,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -17116,7 +17115,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -17435,7 +17434,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -17747,7 +17746,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -18639,7 +18638,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -18752,7 +18751,7 @@ with <span class="math notranslate nohighlight">\(XX \equiv \sigma_x \sigma_x\)<
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>control</strong> (<em>int</em>) -- The index of the most significant qubit in the unitary representation.</p></li>
-<li><p><strong>target</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>target</strong> (<em>int</em>)</p></li>
 <li><p><strong>x</strong> (<em>CalculatorFloat</em>) -- The prefactor of the XX interaction.</p></li>
 <li><p><strong>y</strong> (<em>CalculatorFloat</em>) -- The prefactor of the YY interaction.</p></li>
 <li><p><strong>z</strong> (<em>CalculatorFloat</em>) -- The prefactor of the ZZ interaction.</p></li>
@@ -19313,7 +19312,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
@@ -19811,7 +19810,7 @@ provided parameters.</p>
 Only Operations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>) -- </p>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
