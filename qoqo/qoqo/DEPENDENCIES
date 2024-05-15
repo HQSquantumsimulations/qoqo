@@ -29230,7 +29230,7 @@ limitations under the License.
 
 
 ====================================================
-serde 1.0.201
+serde 1.0.202
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A generic serialization/deserialization framework
@@ -29444,7 +29444,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-serde_derive 1.0.201
+serde_derive 1.0.202
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Macros 1.1 implementation of #[derive(Serialize, Deserialize)]
@@ -29658,7 +29658,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-serde_derive_internals 0.29.0
+serde_derive_internals 0.29.1
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 AST representation used by Serde derive macros. Unstable.
