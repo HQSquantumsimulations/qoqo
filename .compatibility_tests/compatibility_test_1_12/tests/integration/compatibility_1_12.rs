@@ -128,7 +128,7 @@ use test_roqoqo_1_12;
 // Operations from 1.12 - GateDefinition and CallDefined gate are unstable.
 // #[test_case(test_roqoqo_1_12::operations::GateDefinition::new(test_roqoqo_1_12::Circuit::new(), "name".into(), vec![0, 1], vec!["param".into()]).into(); "GateDefinition")]
 // #[test_case(test_roqoqo_1_12::operations::CallDefinedGate::new("name".into(), vec![0, 1], vec![0.0]).into(); "CallDefinedGate")]
-fn test_bincode_compatibility_1_10(operation: test_roqoqo_1_12::operations::Operation) {
+fn test_bincode_compatibility_1_12(operation: test_roqoqo_1_12::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_12::Circuit::new();
     test_circuit += operation;
 
