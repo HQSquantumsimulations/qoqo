@@ -2,34 +2,26 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.13.0
+
+### Added in 1.13.0
+
+
+* Unstable feature `unstable_operation_definition` adding new operations: GateDefinition and CallDefinedGate.
+
 ## 1.12.0
 
 ### Added in 1.12.0
 
-* Updated to pyo3 0.20.
+* Updated to pyo3 0.21.
 * Fix typo in name of RoqoqoBackendError::AuthenticationError
 
 ## 1.11.0
 
-<<<<<<< HEAD
-### Added in 1.11.0-alpha.2
-
-* Unstable feature `unstable_operation_definition` adding a new operation: CallDefinedGate and a new Definition: DefinitionGate
-
-### Added in 1.11.0-alpha.1
-
-* Made operations in `unstable_spin_boson_operations` stable
-
-### Added in 1.11.0-alpha.0
-
-* Unstable feature `unstable_analog_operations` adding new analog operations: ApplyConstantSpinHamiltonian, ApplyTimeDependentSpinHamiltonian
-* Unstable feature `unstable_analog_operations` adding new analog operations: `ApplyConstantSpinHamiltonian`, `ApplyTimeDependentSpinHamiltonian`
-=======
 ### Added in 1.11.0
 
 * Added the DecoherenceOnIdle noise model
 * Feature `unstable_analog_operations` adding new analog operations: `ApplyConstantSpinHamiltonian`, `ApplyTimeDependentSpinHamiltonian`
->>>>>>> Pyo3_0.12_update
 * Added `SingleQubitOverrotationDescription`
 * Added `SingleQubitOverrotationOnGate` noise model
 * Updated cargo (including updating mio from v0.8.10 to v0.8.11)

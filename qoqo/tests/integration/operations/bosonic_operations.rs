@@ -19,7 +19,6 @@ use qoqo::operations::{
 };
 use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorFloat;
-use qoqo_calculator_pyo3::CalculatorFloatWrapper;
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
 #[cfg(feature = "json_schema")]
@@ -27,24 +26,7 @@ use roqoqo::ROQOQO_VERSION;
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
 
-// helper function to convert CalculatorFloat into a python object
-fn convert_cf_to_pyobject(py: Python, parameter: CalculatorFloat) -> Bound<CalculatorFloatWrapper> {
-    let parameter_type = py.get_type_bound::<CalculatorFloatWrapper>();
-    match parameter {
-        CalculatorFloat::Float(x) => parameter_type
-            .call1((x,))
-            .unwrap()
-            .downcast::<CalculatorFloatWrapper>()
-            .unwrap()
-            .to_owned(),
-        CalculatorFloat::Str(x) => parameter_type
-            .call1((x,))
-            .unwrap()
-            .downcast::<CalculatorFloatWrapper>()
-            .unwrap()
-            .to_owned(),
-    }
-}
+use super::convert_cf_to_pyobject;
 
 /// Test new() function for Squeezing
 #[test_case(Operation::from(Squeezing::new(1, 0.1.into(), 0.1.into())), (1, 0.1, 0.1,), "__eq__"; "Squeezing_eq")]

@@ -112,10 +112,11 @@ use test_roqoqo_1_10;
 #[test_case(test_roqoqo_1_10::operations::EchoCrossResonance::new(0, 1).into(); "EchoCrossResonance")]
 #[test_case(test_roqoqo_1_10::operations::PragmaAnnotatedOp::new(test_roqoqo_1_10::operations::PauliX::new(0).into(), "test".to_string()).into(); "PragmaAnnotatedOp")]
 // Operations from 1.9 - nothing was added
-// Operations from 1.10 
+// Operations from 1.10
 // QuantumRabi, LongitudinalCoupling, JaynesCummings, SingleExcitationLoad, SingleExcitationStore and CZQubitResonator were all added
 // as unstable, but have been added as stable in 1.11
 // Operations from 1.11 - uncomment for next unittests
+// ApplyConstantSpinHamiltonian and ApplyTimeDependentHamiltonian are unstable in 1.11
 // #[test_case(test_roqoqo_1_10::operations::QuantumRabi::new(0, 1, 0.1.into()).into(); "QuantumRabi")]
 // #[test_case(test_roqoqo_1_10::operations::LongitudinalCoupling::new(0, 1, 0.1.into()).into(); "LongitudinalCoupling")]
 // #[test_case(test_roqoqo_1_10::operations::JaynesCummings::new(0, 1, 0.1.into()).into(); "JaynesCummings")]
@@ -165,28 +166,3 @@ fn test_device_compat() {
     );
     assert_eq!(test_deserialisation, comparsion_device);
 }
-
-// Operations from 1.11
-// use struqture;
-// use struqture::prelude::*;
-// fn create_apply_constant_spin_hamiltonian() -> test_roqoqo_1_10::operations::ApplyConstantSpinHamiltonian
-// {
-//     let pp = struqture::spins::PauliProduct::new().z(0);
-//     let mut hamiltonian = struqture::spins::SpinHamiltonian::new();
-//     hamiltonian
-//         .add_operator_product(pp.clone(), 1.0.into())
-//         .unwrap();
-//     return test_roqoqo_1_10::operations::ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
-// }
-
-// fn create_apply_timedependent_spin_hamiltonian() -> test_roqoqo_1_10::operations::ApplyTimeDependentSpinHamiltonian
-// {
-//     let pp = struqture::spins::PauliProduct::new().z(0);
-//     let mut hamiltonian = struqture::spins::SpinHamiltonian::new();
-//     hamiltonian
-//         .add_operator_product(pp.clone(), "omega".into())
-//         .unwrap();
-//     let mut values = HashMap::new();
-//     values.insert("omega".to_string(), vec![1.0]);
-//     return test_roqoqo_1_10::operations::ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
-// }
