@@ -125,7 +125,7 @@ use test_roqoqo_1_11;
 // Operations from 1.11 - ApplyConstantSpinHamiltonian and ApplyTimeDependentHamiltonian are unstable in 1.11
 // #[test_case(create_apply_constant_spin_hamiltonian(); "ApplyConstantSpinHamiltonian")]
 // #[test_case(create_apply_timedependent_spin_hamiltonian(); "ApplyTimeDependentHamiltonian")]
-fn test_bincode_compatibility_1_10(operation: test_roqoqo_1_11::operations::Operation) {
+fn test_bincode_compatibility_1_11(operation: test_roqoqo_1_11::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_11::Circuit::new();
     test_circuit += operation;
 
