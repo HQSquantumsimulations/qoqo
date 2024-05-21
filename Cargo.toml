@@ -8,7 +8,3 @@ lto = true
 
 [profile.bench]
 lto = true
-
-[patch.crates-io]
-struqture = { git = "https://github.com/dberthault/struqture.git" }
-struqture-py = { git = "https://github.com/dberthault/struqture.git" }

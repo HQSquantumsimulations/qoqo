@@ -166,37 +166,36 @@ fn extract_type(string: &str) -> Option<String> {
 }
 fn collect_args_from_doc(doc: &str) -> Vec<String> {
     let args_vec: Vec<_> = doc
-        .split("\n")
+        .split('\n')
         .skip_while(|&line| line != "Args:")
         .skip(1)
-        .skip_while(|line| line.len() == 0)
-        .take_while(|line| line.len() != 0)
+        .skip_while(|line| line.is_empty())
+        .take_while(|line| !line.is_empty())
         .collect();
     args_vec
         .iter()
-        .filter_map(|&line| {
-            (line.contains(':') && line.trim().starts_with(char::is_alphabetic)).then(|| {
-                format!(
-                    "{}{}",
-                    line.trim().split_once([' ', ':']).unwrap_or(("", "")).0,
-                    extract_type(line)
-                        .map(|arg_type| format!(": {}", arg_type))
-                        .unwrap_or_default()
-                )
-            })
+        .filter(|&line| line.contains(':') && line.trim().starts_with(char::is_alphabetic))
+        .map(|&line| {
+            format!(
+                "{}{}",
+                line.trim().split_once([' ', ':']).unwrap_or(("", "")).0,
+                extract_type(line)
+                    .map(|arg_type| format!(": {}", arg_type))
+                    .unwrap_or_default()
+            )
         })
         .collect()
 }
 
 fn collect_return_from_doc(doc: &str) -> String {
     let args_vec: Vec<_> = doc
-        .split("\n")
+        .split('\n')
         .skip_while(|&line| line != "Returns:")
         .skip(1)
         .take(1)
         .filter(|&line| line.contains(':') && line.trim().starts_with(char::is_alphabetic))
         .collect();
-    if args_vec.len() == 0 {
+    if args_vec.is_empty() {
         "".to_owned()
     } else if let Some(ret) =
         str_to_type(args_vec[0].trim().split_once([':']).unwrap_or(("", "")).0)
@@ -248,8 +247,8 @@ fn create_doc(module: &str) -> PyResult<String> {
                 let args = collect_args_from_doc(doc.as_str()).join(", ");
                 module_doc.push_str(&format!(
                     "class {name}{}:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self{}):\n       return\n\n",
-                    module.eq("qoqo.operations").then_some("(Operation)").unwrap_or_default(),
-                    args.is_empty().then_some("").unwrap_or(format!(", {}", args).as_str()),
+                    module.eq("qoqo.operations").then(|| "(Operation)").unwrap_or_default(),
+                    if args.is_empty() { "".to_owned() } else { format!(", {}", args) },
                 ));
                 let class_dict = func.getattr("__dict__")?;
                 let items = class_dict.call_method0("items")?;
@@ -294,7 +293,7 @@ Raises:
                     let meth_args = collect_args_from_doc(class_doc.as_str()).join(", ");
                     module_doc.push_str(&format!(
                         "    @classmethod\n    def {meth_name}(self{}){}: # type: ignore\n        \"\"\"\n{class_doc}\n\"\"\"\n\n",
-                        meth_args.is_empty().then_some("").unwrap_or(format!(", {}", meth_args).as_str()),
+                        if meth_args.is_empty() { "".to_owned() } else { format!(", {}", meth_args) },
                         collect_return_from_doc(class_doc.as_str())
                     ));
                 }
@@ -469,12 +468,11 @@ fn main() {
     ]
     .iter()
     {
-        let qoqo_doc = create_doc(
-            module
-                .eq("qoqo")
-                .then_some(module)
-                .unwrap_or(&format!("qoqo.{module}")),
-        )
+        let qoqo_doc = if module.eq("qoqo") {
+            create_doc(module)
+        } else {
+            create_doc(&format!("qoqo.{module}"))
+        }
         .expect("Could not generate documentation.");
         let out_dir = PathBuf::from(format!("qoqo/{}.pyi", module));
         fs::write(&out_dir, qoqo_doc).expect("Could not write to file");
