@@ -397,7 +397,7 @@ impl GenericDevice {
     /// # Arguments
     ///
     /// * `qubit` - The qubit for which the dampins is added
-    /// * `daming` - The damping rates.
+    /// * `damping` - The damping rates.
     pub fn add_damping(&mut self, qubit: usize, damping: f64) -> Result<(), RoqoqoError> {
         if qubit > self.number_qubits {
             return Err(RoqoqoError::GenericError {

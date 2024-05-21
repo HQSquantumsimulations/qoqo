@@ -321,9 +321,8 @@ impl AllToAllDevice {
 
     /// Adds damping to allnoise rates.
     ///
-    /// # Arguments
-    ///
-    /// * `damping` - The damping rates.
+    /// Args:
+    ///     damping (float): The damping rates.
     ///
     /// # Returns
     ///
@@ -339,9 +338,8 @@ impl AllToAllDevice {
 
     /// Adds dephasing to all noise rates.
     ///
-    /// # Arguments
-    ///
-    /// * `dephasing` - The dephasing rates.
+    /// Args:
+    ///     dephasing (float): The dephasing rates.
     ///
     /// # Returns
     ///

@@ -134,7 +134,7 @@ impl AllToAllDeviceWrapper {
     /// Adds qubit damping to noise rates.
     ///
     /// Args:
-    ///     daming[f64]: The damping rates.
+    ///     damping (float): The damping rates.
     ///
     /// Returns:
     ///     AllToAllDevice
@@ -148,7 +148,7 @@ impl AllToAllDeviceWrapper {
     /// Adds qubit dephasing to noise rates.
     ///
     /// Args:
-    ///     dephasing[f64]: The dephasing rates.
+    ///     dephasing (float): The dephasing rates.
     ///
     /// Returns:
     ///     AllToAllDevice

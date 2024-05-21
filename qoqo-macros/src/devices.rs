@@ -57,8 +57,8 @@ pub fn device_wrapper_def(
             /// Returns the gate time of a single qubit operation if the single qubit operation is available on device.
             ///
             /// Args:
-            ///     hqslang[str]: The hqslang name of a single qubit gate.
-            ///     qubit[int]: The qubit the gate acts on
+            ///     hqslang (str): The hqslang name of a single qubit gate.
+            ///     qubit (int): The qubit the gate acts on
             ///
             /// Returns:
             ///     Option[float]: None if gate is not available
@@ -73,9 +73,9 @@ pub fn device_wrapper_def(
             /// Returns the gate time of a two qubit operation if the two qubit operation is available on device.
             ///
             /// Args:
-            ///     hqslang[str]: The hqslang name of a single qubit gate.
-            ///     control[int]: The control qubit the gate acts on.
-            ///     target[int]: The target qubit the gate acts on.
+            ///     hqslang (str): The hqslang name of a single qubit gate.
+            ///     control (int): The control qubit the gate acts on.
+            ///     target (int): The target qubit the gate acts on.
             ///
             /// Returns:
             ///     Option[float]: None if gate is not available
@@ -92,10 +92,10 @@ pub fn device_wrapper_def(
             /// Returns the gate time of a three qubit operation if the three qubit operation is available on device.
             ///
             /// Args:
-            ///     hqslang[str]: The hqslang name of a single qubit gate.
-            ///     control_0[int]: The control_0 qubit the gate acts on.
-            ///     control_1[int]: The control_1 qubit the gate acts on.
-            ///     target[int]: The target qubit the gate acts on.
+            ///     hqslang (str): The hqslang name of a single qubit gate.
+            ///     control_0 (int): The control_0 qubit the gate acts on.
+            ///     control_1 (int): The control_1 qubit the gate acts on.
+            ///     target (int): The target qubit the gate acts on.
             ///
             /// Returns:
             ///     Option[float]: None if gate is not available
@@ -112,8 +112,8 @@ pub fn device_wrapper_def(
             /// Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
             ///
             /// Args:
-            ///     hqslang[str]: The hqslang name of a multi qubit gate.
-            ///     qubits[List[int]]: The qubits the gate acts on.
+            ///     hqslang (str): The hqslang name of a multi qubit gate.
+            ///     qubits (List[int]): The qubits the gate acts on.
             ///
             /// Returns:
             ///     Option[float]: None if gate is not available
@@ -214,7 +214,7 @@ pub fn device_wrapper_def(
             ///     qubit (int): The qubit for which the rate matrix M is returned
             ///
             /// Returns:
-            ///     numpy.array: 3 by 3 numpy array of decoherence rates
+            ///     np.array: 3 by 3 numpy array of decoherence rates
             ///
             #[pyo3(text_signature = "(qubit)")]
             fn qubit_decoherence_rates(&self, qubit: usize) -> Py<PyArray2<f64>> {
@@ -303,7 +303,7 @@ pub fn device_wrapper_def(
             /// Returns the names of a single qubit operations available on the device.
             ///
             /// Returns:
-            ///     List[strt]: The list of gate names.
+            ///     List[str]: The list of gate names.
             pub fn single_qubit_gate_names(&self) -> Vec<String>{
                 self.internal.single_qubit_gate_names()
             }
@@ -311,7 +311,7 @@ pub fn device_wrapper_def(
             /// Returns the names of a two qubit operations available on the device.
             ///
             /// Returns:
-            ///     List[strt]: The list of gate names.
+            ///     List[str]: The list of gate names.
             pub fn two_qubit_gate_names(&self) -> Vec<String>{
                 self.internal.two_qubit_gate_names()
             }
@@ -321,7 +321,7 @@ pub fn device_wrapper_def(
             /// The list of names also includes the three qubit gate operations.
             ///
             /// Returns:
-            ///     List[strt]: The list of gate names.
+            ///     List[str]: The list of gate names.
             ///
             pub fn multi_qubit_gate_names(&self) -> Vec<String>{
                 self.internal.multi_qubit_gate_names()
