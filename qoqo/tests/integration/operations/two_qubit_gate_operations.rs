@@ -67,13 +67,12 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        assert!(!bool::extract_bound(
-            &operation
-                .call_method0(py, "is_parametrized")
-                .unwrap()
-                .bind(py)
-        )
-        .unwrap());
+        assert!(!operation
+            .call_method0(py, "is_parametrized")
+            .unwrap()
+            .bind(py)
+            .extract::<bool>()
+            .unwrap());
     })
 }
 
@@ -289,9 +288,12 @@ fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let tags_op: Vec<String> =
-            Vec::<String>::extract_bound(&operation.call_method0(py, "tags").unwrap().bind(py))
-                .unwrap();
+        let tags_op: Vec<String> = operation
+            .call_method0(py, "tags")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(tags_op.len(), tags.len());
         for i in 0..tags.len() {
             assert_eq!(tags_op[i], tags[i]);
@@ -332,9 +334,12 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let name_op: String =
-            String::extract_bound(&operation.call_method0(py, "hqslang").unwrap().bind(py))
-                .unwrap();
+        let name_op: String = operation
+            .call_method0(py, "hqslang")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(name_op, name.to_string());
     })
 }
@@ -371,11 +376,19 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
 
         // test initial qubits
-        let control: usize =
-            usize::extract_bound(&operation.call_method0(py, "control").unwrap().bind(py)).unwrap();
+        let control: usize = operation
+            .call_method0(py, "control")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(control.clone(), 0);
-        let target: usize =
-            usize::extract_bound(&operation.call_method0(py, "target").unwrap().bind(py)).unwrap();
+        let target: usize = operation
+            .call_method0(py, "target")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(target.clone(), 1);
 
         // remap qubits
@@ -389,11 +402,19 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
             .unwrap();
 
         // test re-mapped qubit
-        let control_new: usize =
-            usize::extract_bound(&result.call_method0(py, "control").unwrap().bind(py)).unwrap();
+        let control_new: usize = result
+            .call_method0(py, "control")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(control_new.clone(), 2);
-        let target_new: usize =
-            usize::extract_bound(&result.call_method0(py, "target").unwrap().bind(py)).unwrap();
+        let target_new: usize = result
+            .call_method0(py, "target")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(target_new.clone(), 3);
 
         // test that initial and rempapped qubits are different
@@ -437,7 +458,6 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
         qubit_mapping.insert(2, 0);
         let result = operation.call_method1(py, "remap_qubits", (qubit_mapping,));
-        ();
         assert!(result.is_err());
     })
 }
@@ -463,7 +483,6 @@ fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let py_result = operation.call_method0(py, "unitary_matrix");
-        ();
         assert!(py_result.is_err());
     })
 }
@@ -598,9 +617,9 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: String = String::extract_bound(&to_format.bind(py)).unwrap();
+        let format_op: String = to_format.bind(py).extract().unwrap();
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: String = String::extract_bound(&to_repr.bind(py)).unwrap();
+        let repr_op: String = to_repr.bind(py).extract().unwrap();
         assert_eq!(format_op, format_repr);
         assert_eq!(repr_op, format_repr);
     })
@@ -791,7 +810,6 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let substitution_dict: HashMap<String, f64> = HashMap::new();
         let result = operation.call_method1(py, "substitute_parameters", (substitution_dict,));
-        ();
         assert!(result.is_err());
     })
 }
@@ -827,13 +845,12 @@ fn test_pyo3_powercf(first_op: Operation, second_op: Operation) {
         let comparison_op = convert_operation_to_pyobject(second_op).unwrap();
 
         let remapped_op = operation.call_method1(py, "powercf", (power,)).unwrap();
-        let comparison = bool::extract_bound(
-            &remapped_op
-                .call_method1(py, "__eq__", (comparison_op,))
-                .unwrap()
-                .bind(py),
-        )
-        .unwrap();
+        let comparison = remapped_op
+            .call_method1(py, "__eq__", (comparison_op,))
+            .unwrap()
+            .bind(py)
+            .extract::<bool>()
+            .unwrap();
         assert!(comparison);
     })
 }
@@ -1184,7 +1201,6 @@ fn test_new_xy(input_operation: Operation, arguments: (u32, u32, f64), method: &
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1230,7 +1246,6 @@ fn test_new_controlledphaseshift(
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1276,7 +1291,6 @@ fn test_new_variablemsxx(input_operation: Operation, arguments: (u32, u32, f64),
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1318,7 +1332,6 @@ fn test_new_pminteraction(input_operation: Operation, arguments: (u32, u32, f64)
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1364,11 +1377,9 @@ fn test_new_givensrotation(
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"], 0.0));
-        ();
         assert!(result.is_err());
 
         let result = operation_type.call1((0, 1, 0.0, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1416,11 +1427,9 @@ fn test_new_givensrotationlittleendian(
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"], 0.0));
-        ();
         assert!(result.is_err());
 
         let result = operation_type.call1((0, 1, 0.0, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1468,11 +1477,9 @@ fn test_new_bogoliubov(input_operation: Operation, arguments: (u32, u32, f64, f6
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"], 0.0));
-        ();
         assert!(result.is_err());
 
         let result = operation_type.call1((0, 1, 0.0, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1518,11 +1525,9 @@ fn test_new_complexpminteraction(
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"], 0.0));
-        ();
         assert!(result.is_err());
 
         let result = operation_type.call1((0, 1, 0.0, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1568,15 +1573,13 @@ fn test_new_qsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"], 0.0, 0.0));
-        ();
         assert!(result.is_err());
 
         let result = operation_type.call1((0, 1, 0.0, vec!["fails"], 0.0));
-        ();
         assert!(result.is_err());
 
-        let result = operation_type.call1((0, 1, 0.0, 0.0, vec!["fails"]));
-        ();
+        let result: Result<Bound<PyAny>, PyErr> =
+            operation_type.call1((0, 1, 0.0, 0.0, vec!["fails"]));
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1618,15 +1621,12 @@ fn test_new_fsim(input_operation: Operation, arguments: (u32, u32, f64, f64, f64
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"], 0.0, 0.0));
-        ();
         assert!(result.is_err());
 
         let result = operation_type.call1((0, 1, 0.0, vec!["fails"], 0.0));
-        ();
         assert!(result.is_err());
 
         let result = operation_type.call1((0, 1, 0.0, 0.0, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1673,15 +1673,12 @@ fn test_new_spininteraction(
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"], 0.0, 0.0));
-        ();
         assert!(result.is_err());
 
         let result = operation_type.call1((0, 1, 0.0, vec!["fails"], 0.0));
-        ();
         assert!(result.is_err());
 
         let result = operation_type.call1((0, 1, 0.0, 0.0, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1729,7 +1726,6 @@ fn test_new_phaseshiftedcontrolledz(
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1783,7 +1779,6 @@ fn test_new_phaseshiftedcontrolledphase(
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"], vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1835,7 +1830,6 @@ fn test_new_controlledrotatex(
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1881,7 +1875,6 @@ fn test_new_controlledrotatexy(
 
         // Error initialisation
         let result = operation_type.call1((0, 1, vec!["fails"], vec!["fails"]));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug
@@ -1923,7 +1916,6 @@ fn test_new_echocrossresonance(input_operation: Operation, arguments: (u32, u32)
 
         // Error initialisation
         let result = operation_type.call1((0, 1, 0.0));
-        ();
         assert!(result.is_err());
 
         // Testing PartialEq, Clone and Debug

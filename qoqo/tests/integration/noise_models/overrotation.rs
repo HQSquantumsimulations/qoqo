@@ -83,11 +83,7 @@ fn test_debug() {
 
         let mut wrapper = SingleQubitOverrotationOnGateWrapper::new();
         wrapper = wrapper
-            .set_single_qubit_overrotation(
-                "RotateZ",
-                0,
-                py_wrapper_description.as_any().clone().unbind(),
-            )
+            .set_single_qubit_overrotation("RotateZ", 0, py_wrapper_description)
             .unwrap();
 
         let compare = "SingleQubitOverrotationOnGateWrapper { internal: SingleQubitOverrotationOnGate { single_qubit_overrotation: {(\"RotateZ\", 0): SingleQubitOverrotationDescription { gate: \"RotateX\", theta_mean: 0.0, theta_std: 1.0 }}, two_qubit_overrotation: {} } }";

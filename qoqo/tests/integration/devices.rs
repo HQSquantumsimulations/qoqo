@@ -59,8 +59,6 @@ fn new_genericlattice() -> Py<PyAny> {
         );
         let device_type = py.get_type_bound::<SquareLatticeDeviceWrapper>();
         device_type.call1(arguments).unwrap().into()
-        // .downcast::<PyAny>()
-        // .unwrap()
     })
 }
 #[test]
@@ -339,8 +337,6 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
         let device = device
             .call_method1(py, "set_all_qubit_decoherence_rates", (pyarray,))
             .unwrap();
-        // .downcast::<SquareLatticeDeviceWrapper>(py)
-        // .unwrap();
 
         // proper matrix returned for the available qubit after setting decoherence rates
         let matrix_py2 = device
@@ -434,8 +430,6 @@ fn test_decoherence_rates(device: Py<PyAny>) {
         device
             .call_method1(py, "set_qubit_decoherence_rates", (0, pyarray))
             .unwrap();
-        // .downcast::<SquareLatticeDeviceWrapper>(py)
-        // .unwrap();
 
         // proper matrix returned for the available qubit after setting decoherence rates
         let matrix_py2 = device
@@ -492,8 +486,6 @@ fn test_gatetimes(device: Py<PyAny>) {
         device
             .call_method1(py, "set_single_qubit_gate_time", ("RotateZ", 0, gate_time))
             .unwrap();
-        // .downcast::<AllToAllDeviceWrapper>(py)
-        // .unwrap();
 
         // get the gate time for RotateZ on qubit 0
         let gate_time_rotatez = device
@@ -516,8 +508,6 @@ fn test_gatetimes(device: Py<PyAny>) {
         device
             .call_method1(py, "set_two_qubit_gate_time", ("CNOT", 0, 1, gate_time))
             .unwrap();
-        // .downcast::<AllToAllDeviceWrapper>(py)
-        // .unwrap();
 
         // get the gate time for RotateZ on qubit 0
         let gate_time_cnot = device
@@ -578,8 +568,6 @@ fn test_gatetimes(device: Py<PyAny>) {
                 ("MultiQubitMS", vec![0, 1, 2], gate_time),
             )
             .unwrap();
-        // .downcast::<AllToAllDeviceWrapper>(py)
-        // .unwrap();
 
         let gate_time_test = device
             .call_method1(py, "multi_qubit_gate_time", ("MultiQubitMS", vec![0, 1, 2]))
@@ -606,8 +594,6 @@ fn test_gatetimes_all(device: Py<PyAny>) {
                 ("RotateZ", gate_time),
             )
             .unwrap();
-        // .downcast::<AllToAllDeviceWrapper>(py)
-        // .unwrap();
 
         // get the gate time for RotateZ on qubit 0
         let gate_time_rotatez = device
@@ -630,8 +616,6 @@ fn test_gatetimes_all(device: Py<PyAny>) {
         let device = device
             .call_method1(py, "set_all_two_qubit_gate_times", ("CNOT", gate_time))
             .unwrap();
-        // .downcast::<AllToAllDeviceWrapper>(py)
-        // .unwrap();
 
         // get the gate time for RotateZ on qubit 0
         let gate_time_cnot = device
@@ -877,15 +861,12 @@ mod test_chain_with_environment {
 
     impl TestDeviceWrapper {
         /// Fallible conversion of generic python object..
-        fn from_pyany(input: Py<PyAny>) -> PyResult<TestDevice> {
-            Python::with_gil(|py| -> PyResult<TestDevice> {
-                let input = input.bind(py);
-                if let Ok(try_downcast) = input.extract::<TestDeviceWrapper>() {
-                    Ok(try_downcast.internal)
-                } else {
-                    panic!()
-                }
-            })
+        fn from_pyany(input: &Bound<PyAny>) -> PyResult<TestDevice> {
+            if let Ok(try_downcast) = input.extract::<TestDeviceWrapper>() {
+                Ok(try_downcast.internal)
+            } else {
+                panic!()
+            }
         }
     }
 
@@ -920,11 +901,11 @@ mod test_chain_with_environment {
     #[test]
     fn test_chain_with_environment_capsule() {
         pyo3::prepare_freethreaded_python();
-        let test_device = Python::with_gil(|py| -> Py<PyAny> {
+        let device_capsule = Python::with_gil(|py| -> ChainWithEnvironmentCapsule {
             let device_type = py.get_type_bound::<TestDeviceWrapper>();
-            device_type.call0().unwrap().into()
+            let test_device = device_type.call0().unwrap();
+            ChainWithEnvironmentCapsule::new(&test_device).unwrap()
         });
-        let device_capsule = ChainWithEnvironmentCapsule::new(test_device).unwrap();
         let chains_with_environment = device_capsule.environment_chains();
         let simple_test_device = TestDevice;
         let comparison = simple_test_device.environment_chains();

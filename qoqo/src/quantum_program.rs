@@ -56,38 +56,7 @@ impl QuantumProgramWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::QuantumProgram]
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<QuantumProgram> {
-        Python::with_gil(|py| -> PyResult<QuantumProgram> {
-            let input = input.bind(py);
-            if let Ok(try_downcast) = input.extract::<QuantumProgramWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
-                PyTypeError::new_err("Python object cannot be converted to qoqo QuantumProgram: Cast to binary representation failed".to_string())
-            })?;
-                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
-                PyTypeError::new_err("Python object cannot be converted to qoqo QuantumProgram: Cast to binary representation failed".to_string())
-            })?;
-                deserialize(&bytes[..]).map_err(|err| {
-                    PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo QuantumProgram: Deserialization failed: {}",
-                    err
-                ))
-                })
-            }
-        })
-    }
-
-    /// Extracts a QuantumProgram from a QuantumProgramWrapper python bound object.
-    ///
-    /// When working with qoqo and other rust based python packages compiled separately
-    /// a downcast will not detect that two QuantumProgramWrapper objects are compatible.
-    /// Provides a custom function to convert qoqo QuantumPrograms between different Python packages.
-    ///
-    /// # Arguments:
-    ///
-    /// `input` - The Python object that should be casted to a [roqoqo::QuantumProgram]
-    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<QuantumProgram> {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<QuantumProgram> {
         if let Ok(try_downcast) = input.extract::<QuantumProgramWrapper>() {
             Ok(try_downcast.internal)
         } else {
@@ -119,8 +88,7 @@ impl QuantumProgramWrapper {
     ///     self: The new .
     #[new]
     pub fn new(measurement: &Bound<PyAny>, input_parameter_names: Vec<String>) -> PyResult<Self> {
-        let measurement_object = measurement.as_gil_ref();
-        if let Ok(try_downcast) = PauliZProductWrapper::from_pyany(measurement_object.into()) {
+        if let Ok(try_downcast) = PauliZProductWrapper::from_pyany(measurement) {
             return Ok(Self {
                 internal: QuantumProgram::PauliZProduct {
                     measurement: try_downcast,
@@ -128,8 +96,7 @@ impl QuantumProgramWrapper {
                 },
             });
         }
-        if let Ok(try_downcast) = CheatedPauliZProductWrapper::from_pyany(measurement_object.into())
-        {
+        if let Ok(try_downcast) = CheatedPauliZProductWrapper::from_pyany(measurement) {
             return Ok(Self {
                 internal: QuantumProgram::CheatedPauliZProduct {
                     measurement: try_downcast,
@@ -137,7 +104,7 @@ impl QuantumProgramWrapper {
                 },
             });
         }
-        if let Ok(try_downcast) = CheatedWrapper::from_pyany(measurement_object.into()) {
+        if let Ok(try_downcast) = CheatedWrapper::from_pyany(measurement) {
             return Ok(Self {
                 internal: QuantumProgram::Cheated {
                     measurement: try_downcast,
@@ -145,7 +112,7 @@ impl QuantumProgramWrapper {
                 },
             });
         }
-        if let Ok(try_downcast) = ClassicalRegisterWrapper::from_pyany(measurement_object.into()) {
+        if let Ok(try_downcast) = ClassicalRegisterWrapper::from_pyany(measurement) {
             return Ok(Self {
                 internal: QuantumProgram::ClassicalRegister {
                     measurement: try_downcast,
@@ -256,7 +223,7 @@ impl QuantumProgramWrapper {
     /// Args:
     ///     backend (Backend): The backend the program is executed on.
     ///     parameters (Optional[List[float]]): List of float  parameters of the function call in order of `input_parameter_names`
-    pub fn run(&self, backend: Py<PyAny>, parameters: Option<Vec<f64>>) -> PyResult<Py<PyAny>> {
+    pub fn run(&self, backend: &Bound<PyAny>, parameters: Option<Vec<f64>>) -> PyResult<Py<PyAny>> {
         let parameters = parameters.unwrap_or_default();
         match &self.internal{
             QuantumProgram::PauliZProduct{measurement, input_parameter_names } => {
@@ -265,18 +232,15 @@ impl QuantumProgramWrapper {
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
                 ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
-                Python::with_gil(|py| -> PyResult<Py<PyAny>> {
-                    backend.call_method1(py, "run_measurement", (PauliZProductWrapper{internal: substituted_measurement}, ))
-                })            }
+                    backend.call_method1("run_measurement", (PauliZProductWrapper{internal: substituted_measurement}, )).map(|bound| bound.as_gil_ref().into())
+            }
             QuantumProgram::CheatedPauliZProduct{measurement, input_parameter_names } => {
                 if parameters.len() != input_parameter_names.len() { return Err(PyValueError::new_err( format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())))};
                 let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
                 ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
-                Python::with_gil(|py| -> PyResult<Py<PyAny>> {
-                    backend.call_method1(py, "run_measurement", (CheatedPauliZProductWrapper{internal: substituted_measurement}, ))
-                })
+                    backend.call_method1("run_measurement", (CheatedPauliZProductWrapper{internal: substituted_measurement}, )).map(|bound| bound.as_gil_ref().into())
             }
             QuantumProgram::Cheated{measurement, input_parameter_names } => {
                 if parameters.len() != input_parameter_names.len() { return Err(PyValueError::new_err( format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())))};
@@ -284,9 +248,8 @@ impl QuantumProgramWrapper {
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
                 ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
-                Python::with_gil(|py| -> PyResult<Py<PyAny>> {
-                    backend.call_method1(py, "run_measurement", (CheatedWrapper{internal: substituted_measurement}, ))
-                })            }
+                    backend.call_method1("run_measurement", (CheatedWrapper{internal: substituted_measurement}, )).map(|bound| bound.as_gil_ref().into())
+              }
             _ => Err(PyTypeError::new_err("A quantum programm returning classical registeres cannot be executed by `run` use `run_registers` instead".to_string()))
         }
     }
@@ -304,7 +267,7 @@ impl QuantumProgramWrapper {
     ///     parameters (Optional[List[float]]): List of float  parameters of the function call in order of `input_parameter_names`
     pub fn run_registers(
         &self,
-        backend: Py<PyAny>,
+        backend: &Bound<PyAny>,
         parameters: Option<Vec<f64>>,
     ) -> PyResult<Py<PyAny>> {
         let parameters = parameters.unwrap_or_default();
@@ -315,9 +278,8 @@ impl QuantumProgramWrapper {
                 let substituted_measurement = measurement.substitute_parameters(
                     substituted_parameters
                 ).map_err(|err| PyRuntimeError::new_err(format!("Applying parameters failed {:?}", err)))?;
-                Python::with_gil(|py| -> PyResult<Py<PyAny>> {
-                    backend.call_method1(py, "run_measurement_registers", (ClassicalRegisterWrapper{internal: substituted_measurement}, ))
-                })           },
+                    backend.call_method1("run_measurement_registers", (ClassicalRegisterWrapper{internal: substituted_measurement}, )).map(|bound| bound.as_gil_ref().into())
+             },
             _ => Err(PyTypeError::new_err("A quantum programm returning expectation values cannot be executed by `run_registers` use `run` instead".to_string()))
         }
     }
@@ -334,7 +296,7 @@ impl QuantumProgramWrapper {
     ///
     /// Returns:
     ///     QuantumProgram: A deep copy of self.
-    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> QuantumProgramWrapper {
+    pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> QuantumProgramWrapper {
         self.clone()
     }
 

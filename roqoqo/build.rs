@@ -19,7 +19,7 @@ use std::str::FromStr;
 use syn::parse::{Parse, ParseStream};
 use syn::punctuated::Punctuated;
 use syn::visit::{self, Visit};
-use syn::{AttrStyle, File, Ident, ItemImpl, ItemStruct, Path, Token, Type, TypePath};
+use syn::{AttrStyle, File, Ident, ItemImpl, ItemStruct, LitStr, Path, Token, Type, TypePath};
 
 const NUMBER_OF_MINOR_VERSIONS: usize = 12;
 
@@ -115,6 +115,18 @@ impl Visitor {
     }
 }
 
+#[derive(Debug, Eq, PartialEq)]
+struct CfgFeatureMacroArgument(String);
+
+impl Parse for CfgFeatureMacroArgument {
+    fn parse(input: ParseStream) -> syn::parse::Result<Self> {
+        input.parse::<Ident>()?;
+        input.parse::<Token![=]>()?;
+        let feature_name: LitStr = input.parse()?;
+        Ok(Self(feature_name.value()))
+    }
+}
+
 /// Struct for parsed derive macro arguments. Used to identify structs belonging to enums
 #[derive(Debug)]
 struct DeriveMacroArguments(HashSet<String>);
@@ -153,6 +165,18 @@ impl<'ast> Visit<'ast> for Visitor {
         // Check attributes
         for att in i.attrs.clone() {
             let path = att.path().get_ident().map(|id| id.to_string());
+            // TOFIX: REMOVE WHEN STABLED
+            if matches!(att.style, AttrStyle::Outer)
+                && path == Some("cfg".to_string())
+                && !cfg!(feature = "unstable_operation_definition")
+            {
+                // println!("cargo:warning={:?}", path);
+                let cfg_feature_name: CfgFeatureMacroArgument =
+                    att.parse_args().expect("parsing failed 1");
+                if cfg_feature_name.0.contains("unstable_operation_definition") {
+                    return;
+                }
+            }
             // only consider the derive attribute, if no derive attribute is present don't add anything
             // to the internal storage of the visitor
             if matches!(att.style, AttrStyle::Outer) && path == Some("derive".to_string()) {

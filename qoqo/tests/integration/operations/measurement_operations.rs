@@ -80,9 +80,12 @@ fn test_pyo3_readout(input_measurement: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let readout_op: &String =
-            &String::extract_bound(&operation.call_method0(py, "readout").unwrap().bind(py))
-                .unwrap();
+        let readout_op: &String = &operation
+            .call_method0(py, "readout")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         let readout_param: String = String::from("ro");
         assert_eq!(readout_op, &readout_param);
     })
@@ -95,9 +98,12 @@ fn test_pyo3_qubit_mapping(input_measurement: Operation, operation_name: &str) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let readout_op: &HashMap<usize, usize> =
-            &HashMap::extract_bound(&operation.call_method0(py, operation_name).unwrap().bind(py))
-                .unwrap();
+        let readout_op: &HashMap<usize, usize> = &operation
+            .call_method0(py, operation_name)
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(readout_op, &create_qubit_mapping());
     })
 }
@@ -136,18 +142,21 @@ fn test_pyo3_input_measurequbit_input() {
         )))
         .unwrap();
 
-        let qubit_op: &usize =
-            &usize::extract_bound(&operation.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
+        let qubit_op: &usize = &operation
+            .call_method0(py, "qubit")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         let qubit_param: &usize = &0;
         assert_eq!(qubit_op, qubit_param);
 
-        let ro_index_op: &usize = &usize::extract_bound(
-            &operation
-                .call_method0(py, "readout_index")
-                .unwrap()
-                .bind(py),
-        )
-        .unwrap();
+        let ro_index_op: &usize = &operation
+            .call_method0(py, "readout_index")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         let ro_index_param: &usize = &1;
         assert_eq!(ro_index_op, ro_index_param);
     })
@@ -163,13 +172,12 @@ fn test_pyo3_input_pragmarepeatedmeasurements_input() {
         ))
         .unwrap();
 
-        let nbr_meas_op: &usize = &usize::extract_bound(
-            &operation
-                .call_method0(py, "number_measurements")
-                .unwrap()
-                .bind(py),
-        )
-        .unwrap();
+        let nbr_meas_op: &usize = &operation
+            .call_method0(py, "number_measurements")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         let nbr_meas_param: &usize = &2;
         assert_eq!(nbr_meas_op, nbr_meas_param);
     })
@@ -185,7 +193,7 @@ fn test_pyo3_involved_qubits_all(input_definition: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let to_involved = operation.call_method0(py, "involved_qubits").unwrap();
-        let involved_op: HashSet<String> = HashSet::extract_bound(&to_involved.bind(py)).unwrap();
+        let involved_op: HashSet<String> = to_involved.bind(py).extract().unwrap();
         let mut involved_param: HashSet<String> = HashSet::new();
         involved_param.insert("All".to_owned());
         assert_eq!(involved_op, involved_param);
@@ -200,7 +208,7 @@ fn test_pyo3_involved_qubits_0(input_definition: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let to_involved = operation.call_method0(py, "involved_qubits").unwrap();
-        let involved_op: HashSet<usize> = HashSet::extract_bound(&to_involved.bind(py)).unwrap();
+        let involved_op: HashSet<usize> = to_involved.bind(py).extract().unwrap();
         let mut involved_param: HashSet<usize> = HashSet::new();
         involved_param.insert(0);
         assert_eq!(involved_op, involved_param);
@@ -219,9 +227,9 @@ fn test_pyo3_format_repr(input_measurement: Operation, format_repr: &str) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_measurement).unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: String = String::extract_bound(&to_format.bind(py)).unwrap();
+        let format_op: String = to_format.bind(py).extract().unwrap();
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: String = String::extract_bound(&to_repr.bind(py)).unwrap();
+        let repr_op: String = to_repr.bind(py).extract().unwrap();
         assert_eq!(format_op, format_repr);
         assert_eq!(repr_op, format_repr);
     })
@@ -272,7 +280,7 @@ fn test_pyo3_tags(input_measurement: Operation, tag_name: &str) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_measurement).unwrap();
         let to_tag = operation.call_method0(py, "tags").unwrap();
-        let tags_op: &Vec<String> = &Vec::extract_bound(&to_tag.bind(py)).unwrap();
+        let tags_op: &Vec<String> = &to_tag.bind(py).extract().unwrap();
         let tags_param: &[&str] = &["Operation", "Measurement", "PragmaOperation", tag_name];
         assert_eq!(tags_op, tags_param);
     })
@@ -290,7 +298,7 @@ fn test_pyo3_tags_measure_qubits() {
         )))
         .unwrap();
         let to_tag = operation.call_method0(py, "tags").unwrap();
-        let tags_op: &Vec<String> = &Vec::extract_bound(&to_tag.bind(py)).unwrap();
+        let tags_op: &Vec<String> = &to_tag.bind(py).extract().unwrap();
         let tags_param: &[&str] = &["Operation", "Measurement", "MeasureQubit"];
         assert_eq!(tags_op, tags_param);
     })
@@ -307,9 +315,12 @@ fn test_pyo3_hqslang(input_measurement: Operation, hqslang_param: String) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        let hqslang_op: String =
-            String::extract_bound(&operation.call_method0(py, "hqslang").unwrap().bind(py))
-                .unwrap();
+        let hqslang_op: String = operation
+            .call_method0(py, "hqslang")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(hqslang_op, hqslang_param);
     })
 }
@@ -325,13 +336,12 @@ fn test_pyo3_is_parametrized(input_measurement: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_measurement).unwrap();
-        assert!(!bool::extract_bound(
-            &operation
-                .call_method0(py, "is_parametrized")
-                .unwrap()
-                .bind(py)
-        )
-        .unwrap());
+        assert!(!&operation
+            .call_method0(py, "is_parametrized")
+            .unwrap()
+            .bind(py)
+            .extract::<bool>()
+            .unwrap());
     })
 }
 
@@ -417,13 +427,12 @@ fn test_pyo3_remap_qubits(first_op: Operation, second_op: Operation) {
             .unwrap();
         let comparison_op = convert_operation_to_pyobject(second_op).unwrap();
 
-        let comparison = bool::extract_bound(
-            &remapped_op
-                .call_method1(py, "__eq__", (comparison_op,))
-                .unwrap()
-                .bind(py),
-        )
-        .unwrap();
+        let comparison = remapped_op
+            .call_method1(py, "__eq__", (comparison_op,))
+            .unwrap()
+            .bind(py)
+            .extract::<bool>()
+            .unwrap();
         assert!(comparison);
 
         let mut qubit_mapping_error = HashMap::new();

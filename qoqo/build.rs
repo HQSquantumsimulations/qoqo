@@ -24,8 +24,8 @@ use syn::parse::{Parse, ParseStream};
 use syn::punctuated::Punctuated;
 use syn::visit::{self, Visit};
 use syn::{
-    AttrStyle, Fields, File, GenericArgument, Ident, ItemStruct, Macro, Path, PathArguments, Token,
-    Type, TypePath,
+    AttrStyle, Fields, File, GenericArgument, Ident, ItemStruct, LitStr, Macro, Path,
+    PathArguments, Token, Type, TypePath,
 };
 
 type StructFieldInfo = Vec<(Ident, Option<String>, Type)>;
@@ -48,6 +48,18 @@ impl Visitor {
             pyany_to_operation: Vec::new(),
             operation_to_pyobject: Vec::new(),
         }
+    }
+}
+
+#[derive(Debug, Eq, PartialEq)]
+struct CfgFeatureMacroArgument(String);
+
+impl Parse for CfgFeatureMacroArgument {
+    fn parse(input: ParseStream) -> syn::parse::Result<Self> {
+        input.parse::<Ident>()?;
+        input.parse::<Token![=]>()?;
+        let feature_name: LitStr = input.parse()?;
+        Ok(Self(feature_name.value()))
     }
 }
 
@@ -90,6 +102,18 @@ impl<'ast> Visit<'ast> for Visitor {
         // Check attributes
         for att in itemstruct.attrs.clone() {
             let path = att.path().get_ident().map(|id| id.to_string());
+            // TOFIX: REMOVE WHEN STABLED
+            if matches!(att.style, AttrStyle::Outer)
+                && path == Some("cfg".to_string())
+                && !cfg!(feature = "unstable_operation_definition")
+            {
+                // println!("cargo:warning={:?}", att);
+                let cfg_feature_name: CfgFeatureMacroArgument =
+                    att.parse_args().expect("parsing failed 1");
+                if cfg_feature_name.0.contains("unstable_operation_definition") {
+                    return;
+                }
+            }
             // only consider the wrap attribute, if no derive attribute is present don't add anything
             // to the internal storage of the visitor
             if matches!(att.style, AttrStyle::Outer) && path == Some("wrap".to_string()) {
@@ -107,6 +131,14 @@ impl<'ast> Visit<'ast> for Visitor {
             Some(id) => Some(id.clone()),
             _ => i.path.segments.last().map(|segment| segment.ident.clone()),
         };
+        // TOFIX: REMOVE WHEN STABLED
+        if i.tokens.clone().into_iter().any(|tok| {
+            tok.to_string().contains("CallDefinedGate")
+                || tok.to_string().contains("DefinitionGate")
+        }) && !cfg!(feature = "unstable_operation_definition")
+        {
+            return;
+        }
         if let Some(ident) = id {
             if ident.to_string().as_str() == "insert_pyany_to_operation" {
                 self.pyany_to_operation.push(i.tokens.clone())
@@ -362,7 +394,7 @@ fn main() {
                                     let #pyobject_name = &op
                                     .call_method0(#ident_string)
                                     .map_err(|_| QoqoError::ConversionError)?;
-                                    let temp_op: struqture::spins::SpinHamiltonianSystem = struqture_py::spins::SpinHamiltonianSystemWrapper::from_pyany((#pyobject_name.as_any().clone()).into()).map_err(|_| QoqoError::ConversionError)?;
+                                    let temp_op: struqture::spins::SpinHamiltonianSystem = struqture_py::spins::SpinHamiltonianSystemWrapper::from_pyany(#pyobject_name).map_err(|_| QoqoError::ConversionError)?;
                                     let #ident = temp_op.hamiltonian().clone();
                                 }},
                                 _ => {
@@ -489,7 +521,7 @@ fn extract_fields_with_types(input_fields: Fields) -> Vec<(Ident, Option<String>
             .ident
             .expect("Operate can only be derived on structs with named fields");
         let ty = f.ty;
-        let type_path =match &ty {
+        let type_path = match &ty {
             Type::Path(TypePath{path:p,..}) => p,
             _ => panic!("Trait only supports fields with normal types of form path (e.g. CalculatorFloat, qoqo_calculator::CalculatorFloat)")
         };

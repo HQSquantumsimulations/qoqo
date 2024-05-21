@@ -232,7 +232,7 @@ impl PauliZProductInputWrapper {
     }
 
     /// Return a deep copy of the Object.
-    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+    pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
         self.clone()
     }
 
@@ -451,7 +451,7 @@ impl CheatedPauliZProductInputWrapper {
     }
 
     /// Return a deep copy of the Object.
-    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+    pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
         self.clone()
     }
 
@@ -652,7 +652,7 @@ impl CheatedInputWrapper {
     }
 
     /// Return a deep copy of the Object.
-    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+    pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
         self.clone()
     }
     fn __richcmp__(
@@ -712,38 +712,7 @@ impl CheatedPauliZProductInputWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::CheatedPauliZProductInput]
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<CheatedPauliZProductInput> {
-        Python::with_gil(|py| -> PyResult<CheatedPauliZProductInput> {
-            let input = input.bind(py);
-            if let Ok(try_downcast) = input.extract::<CheatedPauliZProductInputWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
-                PyTypeError::new_err("Python object cannot be converted to qoqo CheatedPauliZInput: Cast to binary representation failed".to_string())
-            })?;
-                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
-                PyTypeError::new_err("Python object cannot be converted to qoqo CheatedPauliZInput: Cast to binary representation failed".to_string())
-            })?;
-                bincode::deserialize(&bytes[..]).map_err(|err| {
-                    PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo CheatedPauliZInput: Deserialization failed: {}",
-                    err
-                ))
-                })
-            }
-        })
-    }
-
-    /// Extracts a CheatedPauliZProductInput from a CheatedPauliZProductInputWrapper python bound object.
-    ///
-    /// When working with qoqo and other rust based python packages compiled separately
-    /// a downcast will not detect that two CheatedPauliZProductInputWrapper objects are compatible.
-    /// Provides a custom function to convert qoqo CheatedPauliZProductInputs between different Python packages.
-    ///
-    /// # Arguments:
-    ///
-    /// `input` - The Python object that should be casted to a [roqoqo::CheatedPauliZProductInput]
-    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<CheatedPauliZProductInput> {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<CheatedPauliZProductInput> {
         if let Ok(try_downcast) = input.extract::<CheatedPauliZProductInputWrapper>() {
             Ok(try_downcast.internal)
         } else {
@@ -773,38 +742,7 @@ impl PauliZProductInputWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::PauliZProductInput]
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<PauliZProductInput> {
-        Python::with_gil(|py| -> PyResult<PauliZProductInput> {
-            let input = input.bind(py);
-            if let Ok(try_downcast) = input.extract::<PauliZProductInputWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
-                PyTypeError::new_err("Python object cannot be converted to qoqo PauliZInput: Cast to binary representation failed".to_string())
-            })?;
-                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
-                PyTypeError::new_err("Python object cannot be converted to qoqo PauliZInput: Cast to binary representation failed".to_string())
-            })?;
-                bincode::deserialize(&bytes[..]).map_err(|err| {
-                    PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo PauliZInput: Deserialization failed: {}",
-                    err
-                ))
-                })
-            }
-        })
-    }
-
-    /// Extracts a PauliZProductInput from a PauliZProductInputWrapper python bound object.
-    ///
-    /// When working with qoqo and other rust based python packages compiled separately
-    /// a downcast will not detect that two PauliZProductInputWrapper objects are compatible.
-    /// Provides a custom function to convert qoqo PauliZProductInputs between different Python packages.
-    ///
-    /// # Arguments:
-    ///
-    /// `input` - The Python object that should be casted to a [roqoqo::PauliZProductInput]
-    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<PauliZProductInput> {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<PauliZProductInput> {
         if let Ok(try_downcast) = input.extract::<PauliZProductInputWrapper>() {
             Ok(try_downcast.internal)
         } else {
@@ -834,38 +772,7 @@ impl CheatedInputWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::CheatedInput]
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<CheatedInput> {
-        Python::with_gil(|py| -> PyResult<CheatedInput> {
-            let input = input.bind(py);
-            if let Ok(try_downcast) = input.extract::<CheatedInputWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
-                PyTypeError::new_err("Python object cannot be converted to qoqo CheatedInput: Cast to binary representation failed".to_string())
-            })?;
-                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
-                PyTypeError::new_err("Python object cannot be converted to qoqo CheatedInput: Cast to binary representation failed".to_string())
-            })?;
-                bincode::deserialize(&bytes[..]).map_err(|err| {
-                    PyTypeError::new_err(format!(
-                    "Python object cannot be converted to qoqo CheatedInput: Deserialization failed: {}",
-                    err
-                ))
-                })
-            }
-        })
-    }
-
-    /// Extracts a CheatedInput from a CheatedInputWrapper python BOUND object.
-    ///
-    /// When working with qoqo and other rust based python packages compiled separately
-    /// a downcast will not detect that two CheatedInputWrapper objects are compatible.
-    /// Provides a custom function to convert qoqo CheatedPInputs between different Python packages.
-    ///
-    /// # Arguments:
-    ///
-    /// `input` - The Python object that should be casted to a [roqoqo::CheatedInput]
-    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<CheatedInput> {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<CheatedInput> {
         if let Ok(try_downcast) = input.extract::<CheatedInputWrapper>() {
             Ok(try_downcast.internal)
         } else {

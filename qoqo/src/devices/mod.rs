@@ -48,29 +48,22 @@ impl ChainWithEnvironmentCapsule {
     /// # Arguments
     ///
     /// * `python_device` - The python object that should implement the
-    pub fn new(python_device: Py<PyAny>) -> Result<Self, RoqoqoError> {
-        let implements_protocol = Python::with_gil(|py| -> bool {
-            let __implements_environment_with_chains =
-                python_device.call_method0(py, "__implements_environment_chains");
-            if __implements_environment_with_chains.is_err() {
-                return false;
-            }
-            let __implements_environment_with_chains = __implements_environment_with_chains
-                .unwrap()
-                .extract::<bool>(py);
-            if __implements_environment_with_chains.is_err() {
-                return false;
-            }
-            __implements_environment_with_chains.unwrap()
-        });
-        if !implements_protocol {
-            return Err(RoqoqoError::GenericError {
+    pub fn new(python_device: &Bound<PyAny>) -> Result<Self, RoqoqoError> {
+        let __implements_environment_with_chains =
+            python_device.call_method0("__implements_environment_chains");
+        let implements_protocol =
+            __implements_environment_with_chains.map(|implement| implement.extract::<bool>());
+
+        match implements_protocol {
+            Ok(Ok(true)) => Python::with_gil(|py| -> Result<Self, RoqoqoError> {
+                Ok(Self {
+                    internal: python_device.into_py(py),
+                })
+            }),
+            _ => Err(RoqoqoError::GenericError {
                 msg: "Python device does not implement `environment_chains` method.".to_string(),
-            });
+            }),
         }
-        Ok(Self {
-            internal: python_device,
-        })
     }
 }
 

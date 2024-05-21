@@ -341,7 +341,7 @@ pub fn device_wrapper_def(
             /// Returns:
             ///     A deep copy of self.
             ///
-            pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+            pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
                 self.clone()
             }
 
@@ -439,7 +439,7 @@ pub fn device_wrapper_def(
             /// Raises:
             ///     NotImplementedError: Other comparison not implemented.
             ///
-            fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
+            fn __richcmp__(&self, other: &Bound<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
                 let other = #ident::from_pyany(other);
                 match op {
                     pyo3::class::basic::CompareOp::Eq => match other {

@@ -82,26 +82,8 @@ impl GenericDeviceWrapper {
 }
 
 impl GenericDeviceWrapper {
-    /// Fallible conversion of generic python object..
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<GenericDevice> {
-        Python::with_gil(|py| -> PyResult<GenericDevice> {
-            let input = input.bind(py);
-            if let Ok(try_downcast) = input.extract::<GenericDeviceWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                // This allows all devices to be imported as generic device
-                let generic_device_candidate = input.call_method0("generic_device")?;
-                let get_bytes = generic_device_candidate.call_method0("to_bincode")?;
-                let bytes = get_bytes.extract::<Vec<u8>>()?;
-                deserialize(&bytes[..]).map_err(|err| {
-                    PyValueError::new_err(format!("Cannot treat input as GenericDevice: {}", err))
-                })
-            }
-        })
-    }
-
-    /// Fallible conversion of generic python bound object..
-    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<GenericDevice> {
+    /// Fallible conversion of generic python object.
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<GenericDevice> {
         if let Ok(try_downcast) = input.extract::<GenericDeviceWrapper>() {
             Ok(try_downcast.internal)
         } else {

@@ -37,7 +37,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 "CalculatorFloat" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
                 "Circuit" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
                 "Option<Circuit>" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
-                "SpinHamiltonian" => quote! {#id: pyo3::Py<pyo3::PyAny>},
+                "SpinHamiltonian" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
                 _ => quote! {#id: #ty},
             },
             _ => quote! {#id: #ty},
@@ -303,7 +303,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         }
 
         /// Creates deep copy of Operation
-        fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+        fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
             self.clone()
         }
     }

@@ -19,7 +19,6 @@ use qoqo::operations::{
 };
 use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorFloat;
-use qoqo_calculator_pyo3::CalculatorFloatWrapper;
 use roqoqo::operations::Operation;
 use roqoqo::operations::*;
 #[cfg(feature = "json_schema")]
@@ -27,24 +26,7 @@ use roqoqo::ROQOQO_VERSION;
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
 
-// helper function to convert CalculatorFloat into a python object
-fn convert_cf_to_pyobject(py: Python, parameter: CalculatorFloat) -> Bound<CalculatorFloatWrapper> {
-    let parameter_type = py.get_type_bound::<CalculatorFloatWrapper>();
-    match parameter {
-        CalculatorFloat::Float(x) => parameter_type
-            .call1((x,))
-            .unwrap()
-            .downcast::<CalculatorFloatWrapper>()
-            .unwrap()
-            .to_owned(),
-        CalculatorFloat::Str(x) => parameter_type
-            .call1((x,))
-            .unwrap()
-            .downcast::<CalculatorFloatWrapper>()
-            .unwrap()
-            .to_owned(),
-    }
-}
+use super::convert_cf_to_pyobject;
 
 /// Test new() function for Squeezing
 #[test_case(Operation::from(Squeezing::new(1, 0.1.into(), 0.1.into())), (1, 0.1, 0.1,), "__eq__"; "Squeezing_eq")]
@@ -370,13 +352,12 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        assert!(bool::extract_bound(
-            &operation
-                .call_method0(py, "is_parametrized")
-                .unwrap()
-                .bind(py)
-        )
-        .unwrap());
+        assert!(operation
+            .call_method0(py, "is_parametrized")
+            .unwrap()
+            .bind(py)
+            .extract::<bool>()
+            .unwrap());
     })
 }
 
@@ -390,13 +371,12 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        assert!(!bool::extract_bound(
-            &operation
-                .call_method0(py, "is_parametrized")
-                .unwrap()
-                .bind(py)
-        )
-        .unwrap());
+        assert!(!operation
+            .call_method0(py, "is_parametrized")
+            .unwrap()
+            .bind(py)
+            .extract::<bool>()
+            .unwrap());
     })
 }
 
@@ -409,8 +389,12 @@ fn test_pyo3_mode(mode: usize, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let mode_op: usize =
-            usize::extract_bound(&operation.call_method0(py, "mode").unwrap().bind(py)).unwrap();
+        let mode_op: usize = operation
+            .call_method0(py, "mode")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(mode_op, mode);
     })
 }
@@ -421,11 +405,19 @@ fn test_pyo3_mode0_mode_1(mode_0: usize, mode_1: usize, input_operation: Operati
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let mode_op_0: usize =
-            usize::extract_bound(&operation.call_method0(py, "mode_0").unwrap().bind(py)).unwrap();
+        let mode_op_0: usize = operation
+            .call_method0(py, "mode_0")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(mode_op_0, mode_0);
-        let mode_op_1: usize =
-            usize::extract_bound(&operation.call_method0(py, "mode_1").unwrap().bind(py)).unwrap();
+        let mode_op_1: usize = operation
+            .call_method0(py, "mode_1")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(mode_op_1, mode_1);
     })
 }
@@ -440,9 +432,12 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let name_op: String =
-            String::extract_bound(&operation.call_method0(py, "hqslang").unwrap().bind(py))
-                .unwrap();
+        let name_op: String = operation
+            .call_method0(py, "hqslang")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(name_op, name.to_string());
     })
 }
@@ -496,9 +491,12 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let tags_op: Vec<String> =
-            Vec::<String>::extract_bound(&operation.call_method0(py, "tags").unwrap().bind(py))
-                .unwrap();
+        let tags_op: Vec<String> = operation
+            .call_method0(py, "tags")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(tags_op.len(), tags.len());
         for i in 0..tags.len() {
             assert_eq!(tags_op[i], tags[i]);
@@ -517,13 +515,12 @@ fn test_pyo3_involved_modes(input_operation: Operation, modes: HashSet<usize>) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial mode
-        let involved_modes: HashSet<usize> = HashSet::<usize>::extract_bound(
-            &operation
-                .call_method0(py, "involved_modes")
-                .unwrap()
-                .bind(py),
-        )
-        .unwrap();
+        let involved_modes: HashSet<usize> = operation
+            .call_method0(py, "involved_modes")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(involved_modes, modes);
     })
 }
@@ -539,23 +536,24 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial qubit
-        let involved_qubits: HashSet<usize> = HashSet::<usize>::extract_bound(
-            &operation
-                .call_method0(py, "involved_qubits")
-                .unwrap()
-                .bind(py),
-        )
-        .unwrap();
+        let involved_qubits: HashSet<usize> = operation
+            .call_method0(py, "involved_qubits")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(involved_qubits, HashSet::<usize>::new());
         // remap qubits
         let result = operation
             .call_method1(py, "remap_qubits", (HashMap::<usize, usize>::new(),))
             .unwrap();
         // test re-mapped qubit
-        let involved_qubits: HashSet<usize> = HashSet::<usize>::extract_bound(
-            &result.call_method0(py, "involved_qubits").unwrap().bind(py),
-        )
-        .unwrap();
+        let involved_qubits: HashSet<usize> = result
+            .call_method0(py, "involved_qubits")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(involved_qubits, HashSet::<usize>::new());
     })
 }
@@ -570,8 +568,12 @@ fn test_pyo3_remapmodes_single(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial mode
-        let mode: usize =
-            usize::extract_bound(&operation.call_method0(py, "mode").unwrap().bind(py)).unwrap();
+        let mode: usize = operation
+            .call_method0(py, "mode")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(mode.clone(), 0);
         // remap modes
         let mut mode_mapping: HashMap<usize, usize> = HashMap::new();
@@ -581,8 +583,12 @@ fn test_pyo3_remapmodes_single(input_operation: Operation) {
             .call_method1(py, "remap_modes", (mode_mapping,))
             .unwrap();
         // test re-mapped mode
-        let mode_new: usize =
-            usize::extract_bound(&result.call_method0(py, "mode").unwrap().bind(py)).unwrap();
+        let mode_new: usize = result
+            .call_method0(py, "mode")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(mode_new.clone(), 1);
         // test that initial and rempapped modes are different
         assert_ne!(mode, mode_new);
@@ -596,11 +602,19 @@ fn test_pyo3_remapmodes_two(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial mode
-        let mode_0: usize =
-            usize::extract_bound(&operation.call_method0(py, "mode_0").unwrap().bind(py)).unwrap();
+        let mode_0: usize = operation
+            .call_method0(py, "mode_0")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(mode_0.clone(), 0);
-        let mode_1: usize =
-            usize::extract_bound(&operation.call_method0(py, "mode_1").unwrap().bind(py)).unwrap();
+        let mode_1: usize = operation
+            .call_method0(py, "mode_1")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(mode_1.clone(), 1);
         // remap modes
         let mut mode_mapping: HashMap<usize, usize> = HashMap::new();
@@ -610,11 +624,19 @@ fn test_pyo3_remapmodes_two(input_operation: Operation) {
             .call_method1(py, "remap_modes", (mode_mapping,))
             .unwrap();
         // test re-mapped mode
-        let mode_new_0: usize =
-            usize::extract_bound(&result.call_method0(py, "mode_0").unwrap().bind(py)).unwrap();
+        let mode_new_0: usize = result
+            .call_method0(py, "mode_0")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(mode_new_0.clone(), 1);
-        let mode_new_1: usize =
-            usize::extract_bound(&result.call_method0(py, "mode_1").unwrap().bind(py)).unwrap();
+        let mode_new_1: usize = result
+            .call_method0(py, "mode_1")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(mode_new_1.clone(), 0);
         // test that initial and rempapped modes are different
         assert_ne!(mode_0, mode_new_0);
@@ -700,10 +722,10 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: String = String::extract_bound(&to_format.bind(py)).unwrap();
+        let format_op: String = to_format.bind(py).extract().unwrap();
         assert_eq!(format_op, format_repr);
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: String = String::extract_bound(&to_repr.bind(py)).unwrap();
+        let repr_op: String = to_repr.bind(py).extract().unwrap();
         assert_eq!(repr_op, format_repr);
     })
 }

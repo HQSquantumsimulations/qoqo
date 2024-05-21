@@ -208,23 +208,7 @@ impl AllToAllDeviceWrapper {
 
 impl AllToAllDeviceWrapper {
     /// Fallible conversion of generic python object.
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<AllToAllDevice> {
-        Python::with_gil(|py| -> PyResult<AllToAllDevice> {
-            let input = input.bind(py);
-            if let Ok(try_downcast) = input.extract::<AllToAllDeviceWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode")?;
-                let bytes = get_bytes.extract::<Vec<u8>>()?;
-                deserialize(&bytes[..]).map_err(|err| {
-                    PyValueError::new_err(format!("Cannot treat input as AllToAllDevice: {}", err))
-                })
-            }
-        })
-    }
-
-    /// Fallible conversion of generic python bound object.
-    pub fn from_bound_pyany(input: &Bound<PyAny>) -> PyResult<AllToAllDevice> {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<AllToAllDevice> {
         if let Ok(try_downcast) = input.extract::<AllToAllDeviceWrapper>() {
             Ok(try_downcast.internal)
         } else {
