@@ -307,6 +307,6 @@ fn test_json_schema() {
             String::extract(br.call_method0("min_supported_version").unwrap()).unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
-        assert_eq!(minimum_supported_version_string, "1.6.0");
+        assert_eq!(minimum_supported_version_string, "1.11.0");
     });
 }
