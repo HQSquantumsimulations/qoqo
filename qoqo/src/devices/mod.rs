@@ -60,12 +60,9 @@ impl ChainWithEnvironmentCapsule {
                     internal: python_device.into_py(py),
                 })
             }),
-            _ => {
-                return Err(RoqoqoError::GenericError {
-                    msg: "Python device does not implement `environment_chains` method."
-                        .to_string(),
-                })
-            }
+            _ => Err(RoqoqoError::GenericError {
+                msg: "Python device does not implement `environment_chains` method.".to_string(),
+            }),
         }
     }
 }
