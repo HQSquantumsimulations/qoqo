@@ -546,7 +546,8 @@ impl CircuitDag {
                     }
                 }
                 // Update last_operation_involving_classical with the temporary HashMap
-                self.last_operation_involving_classical.clone_from(&temp_map);
+                self.last_operation_involving_classical
+                    .clone_from(&temp_map);
             }
             InvolvedClassical::None => (),
         }
@@ -590,7 +591,8 @@ impl CircuitDag {
                     }
                 }
                 // Update first_operation_involving_classical with the temporary HashMap
-                self.first_operation_involving_classical.clone_from(&temp_map);
+                self.first_operation_involving_classical
+                    .clone_from(&temp_map);
             }
             InvolvedClassical::None => (),
         }
