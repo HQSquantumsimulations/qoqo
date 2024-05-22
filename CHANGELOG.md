@@ -2,6 +2,12 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.12.1
+
+### Added 1.12.1
+
+* Fixed dependencies issues caused by Pyo3 0.21 support release
+
 ## 1.12.0
 
 ### Added in 1.12.0
