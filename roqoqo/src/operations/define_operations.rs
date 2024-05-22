@@ -300,12 +300,12 @@ pub struct GateDefinition {
 }
 
 #[cfg(feature = "unstable_operation_definition")]
-impl super::ImplementedIn1point11 for GateDefinition {}
+impl super::ImplementedIn1point13 for GateDefinition {}
 
 #[cfg(feature = "unstable_operation_definition")]
 impl SupportedVersion for GateDefinition {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 11, 0)
+        (1, 13, 0)
     }
 }
 

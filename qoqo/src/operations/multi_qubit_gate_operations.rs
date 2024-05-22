@@ -65,22 +65,14 @@ pub struct MultiQubitZZ {
     theta: CalculatorFloat,
 }
 
-// /// Module containing the CallDefinedGate class.
-// #[cfg(feature = "unstable_operation_definition")]
-// #[pymodule]
-// fn call_defined_gate(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
-//     module.add_class::<CallDefinedGateWrapper>()?;
-//     Ok(())
-// }
-
 /// The gate to be replaced by a gate defined with GateDefinition gate.
 /// The gate applies a gate previously defined by GateDefinition with the name gate_name.
 ///
 /// Args:
 ///     gate_name (str) : The name of the called defined operations.
-///     qubits (Vec<usize>) : The qubits that for this call replace the qubits in the internal definition of the called gate
+///     qubits (List[int]) : The qubits that for this call replace the qubits in the internal definition of the called gate
 ///                           (get replaced in order of apppearance in gate defintion).
-///     free_parameters (Vec<CalculatorFloat>) : List of float values that replace the free parameters in the internal defintion of the called gate
+///     free_parameters (List[CalculatorFloat]) : List of float values that replace the free parameters in the internal definition of the called gate
 ///                                             (get replaced in order of apppearance in gate defintion).
 #[cfg(feature = "unstable_operation_definition")]
 #[pyclass(name = "CallDefinedGate", module = "qoqo")]
@@ -129,7 +121,7 @@ impl CallDefinedGateWrapper {
     /// Create a new CallDefinedGate.
     ///
     /// Args:
-    ///      gate_name (str) : The name of the called defined operations.
+    ///     gate_name (str) : The name of the called defined operations.
     ///     qubits (Vec<usize>) : The qubits that for this call replace the qubits in the internal definition of the called gate
     ///                           (get replaced in order of apppearance in gate defintion).
     ///     free_parameters (Vec<CalculatorFloat>) : List of float values that replace the free parameters in the internal defintion of the called gate

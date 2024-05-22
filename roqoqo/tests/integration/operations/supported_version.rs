@@ -15,8 +15,6 @@
 use ndarray::array;
 #[cfg(feature = "unstable_operation_definition")]
 use qoqo_calculator::CalculatorFloat;
-// #[cfg(feature = "unstable_analog_operations")]
-// use qoqo_calculator::CalculatorFloat;
 #[cfg(feature = "circuitdag")]
 use roqoqo::measurements::Cheated;
 #[cfg(feature = "circuitdag")]
@@ -132,10 +130,10 @@ fn test_version_1_0_0_multi_qubit_gate(operation: operations::MultiQubitGateOper
 
 #[cfg(feature = "unstable_operation_definition")]
 #[test_case(operations::MultiQubitOperation::from(operations::CallDefinedGate::new("test".into(), vec![0,1,2,3], vec![CalculatorFloat::Float(1.0)])); "CallDefinedGate")]
-fn test_version_1_10_1_multi_qubit_gate(operation: operations::MultiQubitOperation) {
-    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 11, 0));
+fn test_version_1_13_0_multi_qubit_gate(operation: operations::MultiQubitOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 13, 0));
     let op = operations::Operation::from(operation);
-    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 11, 0));
+    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 13, 0));
 }
 
 #[test_case(operations::SingleModeGateOperation::from(operations::Squeezing::new(0, 1.0.into(), 0.0.into())); "Squeezing")]
@@ -358,5 +356,5 @@ fn test_version_circuit(circuit: roqoqo::Circuit, version: (u32, u32, u32)) {
 #[cfg(feature = "unstable_operation_definition")]
 #[test_case(operations::Operation::from(operations::GateDefinition::new(roqoqo::Circuit::new(), "name".to_string(), vec![2], vec!["name".to_owned()])); "GateDefinition")]
 fn test_version_1_10_1_gate_definition(operation: operations::Operation) {
-    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 11, 0));
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 13, 0));
 }

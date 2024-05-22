@@ -125,7 +125,7 @@ use test_roqoqo_1_12;
 // Operations from 1.11 - ApplyConstantSpinHamiltonian and ApplyTimeDependentHamiltonian are unstable in 1.11
 // #[test_case(create_apply_constant_spin_hamiltonian(); "ApplyConstantSpinHamiltonian")]
 // #[test_case(create_apply_timedependent_spin_hamiltonian(); "ApplyTimeDependentHamiltonian")]
-// Operations from 1.12 - GateDefinition and CallDefined gate are unstable.
+// Operations from 1.13 - GateDefinition and CallDefined gate are unstable, uncomment when stable.
 // #[test_case(test_roqoqo_1_12::operations::GateDefinition::new(test_roqoqo_1_12::Circuit::new(), "name".into(), vec![0, 1], vec!["param".into()]).into(); "GateDefinition")]
 // #[test_case(test_roqoqo_1_12::operations::CallDefinedGate::new("name".into(), vec![0, 1], vec![0.0]).into(); "CallDefinedGate")]
 fn test_bincode_compatibility_1_12(operation: test_roqoqo_1_12::operations::Operation) {
