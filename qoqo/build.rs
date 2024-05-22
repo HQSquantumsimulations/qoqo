@@ -11,9 +11,13 @@
 // limitations under the License.
 
 use proc_macro2::TokenStream;
-use pyo3::types::{PyAnyMethods, PyDict, PyModule};
-use pyo3::{PyResult, Python};
+#[cfg(feature = "doc_generator")]
+use pyo3::{
+    types::{PyAnyMethods, PyDict, PyModule},
+    {PyResult, Python},
+};
 use quote::{format_ident, quote};
+#[cfg(feature = "doc_generator")]
 use regex::Regex;
 use std::collections::HashSet;
 use std::fs;
@@ -165,6 +169,7 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/analog_operations.rs",
 ];
 
+#[cfg(feature = "doc_generator")]
 fn str_to_type(res: &str) -> Option<String> {
     match res {
         s if s.contains("Pragma") => Some("Operation".to_owned()),
@@ -188,6 +193,7 @@ fn str_to_type(res: &str) -> Option<String> {
     }
 }
 
+#[cfg(feature = "doc_generator")]
 fn extract_type(string: &str) -> Option<String> {
     let pattern = r"\(([a-zA-Z_\[\] ,|]+?)\)";
     let re = Regex::new(pattern).unwrap();
@@ -198,6 +204,8 @@ fn extract_type(string: &str) -> Option<String> {
     }
     None
 }
+
+#[cfg(feature = "doc_generator")]
 fn collect_args_from_doc(doc: &str) -> Vec<String> {
     let args_vec: Vec<_> = doc
         .split('\n')
@@ -221,6 +229,7 @@ fn collect_args_from_doc(doc: &str) -> Vec<String> {
         .collect()
 }
 
+#[cfg(feature = "doc_generator")]
 fn collect_return_from_doc(doc: &str) -> String {
     let args_vec: Vec<_> = doc
         .split('\n')
@@ -240,6 +249,7 @@ fn collect_return_from_doc(doc: &str) -> String {
     }
 }
 
+#[cfg(feature = "doc_generator")]
 fn create_doc(module: &str) -> PyResult<String> {
     let mut module_doc = "# This is an auto generated file containing only the documentation.\n# You can find the full implementation on this page:\n# https://github.com/HQSquantumsimulations/qoqo\n\n".to_owned();
     if module == "qoqo" {
@@ -493,23 +503,26 @@ fn main() {
     // Try to format auto generated operations
     let _unused_output = Command::new("rustfmt").arg(&out_dir).output();
 
-    for &module in [
-        "qoqo",
-        "operations",
-        "measurements",
-        "noise_models",
-        "devices",
-    ]
-    .iter()
+    #[cfg(feature = "doc_generator")]
     {
-        let qoqo_doc = if module.eq("qoqo") {
-            create_doc(module)
-        } else {
-            create_doc(&format!("qoqo.{module}"))
+        for &module in [
+            "qoqo",
+            "operations",
+            "measurements",
+            "noise_models",
+            "devices",
+        ]
+        .iter()
+        {
+            let qoqo_doc = if module.eq("qoqo") {
+                create_doc(module)
+            } else {
+                create_doc(&format!("qoqo.{module}"))
+            }
+            .expect("Could not generate documentation.");
+            let out_dir = PathBuf::from(format!("qoqo/{}.pyi", module));
+            fs::write(&out_dir, qoqo_doc).expect("Could not write to file");
         }
-        .expect("Could not generate documentation.");
-        let out_dir = PathBuf::from(format!("qoqo/{}.pyi", module));
-        fs::write(&out_dir, qoqo_doc).expect("Could not write to file");
     }
 }
 

@@ -74,6 +74,7 @@ extension-module = ["pyo3/extension-module", "circuitdag"]
 default = ["extension-module", "json_schema"]
 circuitdag = ["roqoqo/circuitdag"]
 json_schema = ["roqoqo/json_schema"]
+doc_generator = []
 unstable_chain_with_environment = [
     "roqoqo/unstable_chain_with_environment",
     "qoqo-macros/unstable_chain_with_environment",
