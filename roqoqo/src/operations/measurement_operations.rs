@@ -396,7 +396,7 @@ impl Substitute for PragmaRepeatedMeasurement {
                     mutable_mapping.insert(*new_key, *val);
                 }
                 for (key, val) in mapping.iter() {
-                    if mutable_mapping.get(key).is_none() {
+                    if !mutable_mapping.contains_key(key) {
                         mutable_mapping.insert(*key, *val);
                     }
                 }
