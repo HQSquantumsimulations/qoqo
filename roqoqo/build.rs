@@ -103,7 +103,7 @@ impl Visitor {
     /// Helps filtering Operation id's for minor version
     pub fn filter_for_version(&self, id: &Ident, minor_version: usize) -> bool {
         if minor_version == 0 {
-            self.roqoqo_version_register.get(id).is_none()
+            !self.roqoqo_version_register.contains_key(id)
         } else if let Some(saved_version) = self.roqoqo_version_register.get(id) {
             saved_version == &minor_version
         } else {
