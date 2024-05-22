@@ -1,6 +1,6 @@
 [package]
 name = "qoqo-macros"
-version = "1.11.0"
+version = "1.11.1"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 readme = "../README.md"
@@ -19,7 +19,7 @@ doctest = false
 proc-macro2 = "1.0"
 syn = { version = "2.0", features = ["full", "visit"] }
 quote = "1.0"
-struqture = {version="1.5"}
+struqture = { version = "~1.6" }
 
 [features]
 unstable_chain_with_environment = []

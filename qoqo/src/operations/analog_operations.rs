@@ -21,8 +21,6 @@ use roqoqo::operations::*;
 use struqture::spins::SpinHamiltonian;
 use struqture_py::spins::SpinHamiltonianSystemWrapper;
 
-#[cfg(feature = "json_schema")]
-use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
 #[wrap(Operate, OperateSpinsAnalog)]
