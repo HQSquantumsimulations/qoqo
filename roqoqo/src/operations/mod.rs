@@ -810,33 +810,43 @@ pub trait OperateMultiQubitGate:
 }
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.1.0
+#[allow(dead_code)]
 pub(crate) trait ImplementedIn1point1: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.2.0
+#[allow(dead_code)]
 pub(crate) trait ImplementedIn1point2: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.3.0
+#[allow(dead_code)]
 pub(crate) trait ImplementedIn1point3: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.4.0
+#[allow(dead_code)]
 pub(crate) trait ImplementedIn1point4: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.5.0
+#[allow(dead_code)]
 pub(crate) trait ImplementedIn1point5: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.6.0
+#[allow(dead_code)]
 pub(crate) trait ImplementedIn1point6: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.7.0
+#[allow(dead_code)]
 pub(crate) trait ImplementedIn1point7: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.8.0
+#[allow(dead_code)]
 pub(crate) trait ImplementedIn1point8: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.9.0
+#[allow(dead_code)]
 pub(crate) trait ImplementedIn1point9: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.10.0
+#[allow(dead_code)]
 pub(crate) trait ImplementedIn1point10: Operate {}
 
 #[cfg(feature = "dynamic")]
