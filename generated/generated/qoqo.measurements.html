@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qoqo.measurements &mdash; qoqo 1.11.1 documentation</title>
+  <title>qoqo.measurements &mdash; qoqo 1.10.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -15,14 +15,14 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=98f05b68"></script>
+        <script src="../../_static/documentation_options.js?v=e43cf1e7"></script>
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="qoqo.measurements.PauliZProductInput" href="generated/qoqo.measurements.PauliZProductInput.html" />
+    <link rel="next" title="qoqo.QuantumProgram" href="qoqo.QuantumProgram.html" />
     <link rel="prev" title="qoqo.operations" href="qoqo.operations.html" /> 
 </head>
 
@@ -38,7 +38,7 @@
             qoqo
           </a>
               <div class="version">
-                1.11.1
+                1.10.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -55,13 +55,6 @@
 <li class="toctree-l3"><a class="reference internal" href="qoqo.Circuit.html">qoqo.Circuit</a></li>
 <li class="toctree-l3"><a class="reference internal" href="qoqo.operations.html">qoqo.operations</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">qoqo.measurements</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="generated/qoqo.measurements.PauliZProductInput.html">qoqo.measurements.PauliZProductInput</a></li>
-<li class="toctree-l4"><a class="reference internal" href="generated/qoqo.measurements.CheatedPauliZProductInput.html">qoqo.measurements.CheatedPauliZProductInput</a></li>
-<li class="toctree-l4"><a class="reference internal" href="generated/qoqo.measurements.CheatedInput.html">qoqo.measurements.CheatedInput</a></li>
-<li class="toctree-l4"><a class="reference internal" href="generated/qoqo.measurements.PauliZProduct.html">qoqo.measurements.PauliZProduct</a></li>
-<li class="toctree-l4"><a class="reference internal" href="generated/qoqo.measurements.CheatedPauliZProduct.html">qoqo.measurements.CheatedPauliZProduct</a></li>
-<li class="toctree-l4"><a class="reference internal" href="generated/qoqo.measurements.Cheated.html">qoqo.measurements.Cheated</a></li>
-<li class="toctree-l4"><a class="reference internal" href="generated/qoqo.measurements.ClassicalRegister.html">qoqo.measurements.ClassicalRegister</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.measurements.Cheated"><code class="docutils literal notranslate"><span class="pre">Cheated</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.measurements.CheatedInput"><code class="docutils literal notranslate"><span class="pre">CheatedInput</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.measurements.CheatedPauliZProduct"><code class="docutils literal notranslate"><span class="pre">CheatedPauliZProduct</span></code></a></li>
@@ -110,31 +103,6 @@
   <section id="module-qoqo.measurements">
 <span id="qoqo-measurements"></span><h1>qoqo.measurements<a class="headerlink" href="#module-qoqo.measurements" title="Link to this heading"></a></h1>
 <p>Measurements</p>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.measurements.PauliZProductInput" title="qoqo.measurements.PauliZProductInput"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PauliZProductInput</span></code></a>(number_qubits, ...)</p></td>
-<td><p>Provides Necessary Information to run a [roqoqo::measurements::PauliZProduct] measurement.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.measurements.CheatedPauliZProductInput" title="qoqo.measurements.CheatedPauliZProductInput"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CheatedPauliZProductInput</span></code></a>()</p></td>
-<td><p>Collected information for executing a cheated basis rotation measurement.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.measurements.CheatedInput" title="qoqo.measurements.CheatedInput"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CheatedInput</span></code></a>(number_qubits)</p></td>
-<td><p>Provides Necessary Information to run a cheated measurement.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.measurements.PauliZProduct" title="qoqo.measurements.PauliZProduct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PauliZProduct</span></code></a>(constant_circuit, circuits, input)</p></td>
-<td><p>Collected information for executing a measurement of PauliZ product.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.measurements.CheatedPauliZProduct" title="qoqo.measurements.CheatedPauliZProduct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CheatedPauliZProduct</span></code></a>(constant_circuit, ...)</p></td>
-<td><p>Collected information for executing a cheated measurement of PauliZ product.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.measurements.Cheated" title="qoqo.measurements.Cheated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cheated</span></code></a>(constant_circuit, circuits, input)</p></td>
-<td><p>Collected information for executing a cheated measurement.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.measurements.ClassicalRegister" title="qoqo.measurements.ClassicalRegister"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ClassicalRegister</span></code></a>(constant_circuit, circuits)</p></td>
-<td><p>Collected information for executing a classical register.</p></td>
-</tr>
-</tbody>
-</table>
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -1509,7 +1477,7 @@ in the string expression of CalculatorFloat.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="qoqo.operations.html" class="btn btn-neutral float-left" title="qoqo.operations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="generated/qoqo.measurements.PauliZProductInput.html" class="btn btn-neutral float-right" title="qoqo.measurements.PauliZProductInput" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="qoqo.QuantumProgram.html" class="btn btn-neutral float-right" title="qoqo.QuantumProgram" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

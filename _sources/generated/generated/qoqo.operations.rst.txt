@@ -20,7 +20,6 @@ qoqo.operations
       BeamSplitter
       Bogoliubov
       CNOT
-      CZQubitResonator
       ComplexPMInteraction
       ControlledControlledPauliZ
       ControlledControlledPhaseShift
@@ -47,8 +46,6 @@ qoqo.operations
       InputSymbolic
       InvSqrtISwap
       InvSqrtPauliX
-      JaynesCummings
-      LongitudinalCoupling
       MeasureQubit
       MolmerSorensenXX
       MultiQubitMS
@@ -92,7 +89,6 @@ qoqo.operations
       PragmaStopDecompositionBlock
       PragmaStopParallelBlock
       Qsim
-      QuantumRabi
       RotateAroundSphericalAxis
       RotateX
       RotateXY
@@ -100,8 +96,6 @@ qoqo.operations
       RotateZ
       SGate
       SWAP
-      SingleExcitationLoad
-      SingleExcitationStore
       SingleQubitGate
       SpinInteraction
       SqrtISwap
