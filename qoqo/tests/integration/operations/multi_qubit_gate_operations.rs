@@ -120,7 +120,7 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         assert!(bool::extract_bound(
-            &operation
+            operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
                 .bind(py)
@@ -137,7 +137,7 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         assert!(!bool::extract_bound(
-            &operation
+            operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
                 .bind(py)
@@ -156,7 +156,7 @@ fn test_pyo3_theta(theta: CalculatorFloat, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let theta_op: CalculatorFloatWrapper = CalculatorFloatWrapper::extract_bound(
-            &operation.call_method0(py, "theta").unwrap().bind(py),
+            operation.call_method0(py, "theta").unwrap().bind(py),
         )
         .unwrap();
         let theta_param: CalculatorFloatWrapper =
@@ -192,8 +192,7 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let name_op: String =
-            String::extract_bound(&operation.call_method0(py, "hqslang").unwrap().bind(py))
-                .unwrap();
+            String::extract_bound(operation.call_method0(py, "hqslang").unwrap().bind(py)).unwrap();
         assert_eq!(name_op, name.to_string());
     })
 }
@@ -224,7 +223,7 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let tags_op: Vec<String> =
-            Vec::<String>::extract_bound(&operation.call_method0(py, "tags").unwrap().bind(py))
+            Vec::<String>::extract_bound(operation.call_method0(py, "tags").unwrap().bind(py))
                 .unwrap();
         assert_eq!(tags_op.len(), tags.len());
         for i in 0..tags.len() {
@@ -416,10 +415,10 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: String = String::extract_bound(&to_format.bind(py)).unwrap();
+        let format_op: String = String::extract_bound(to_format.bind(py)).unwrap();
         assert_eq!(format_op, format_repr);
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: String = String::extract_bound(&to_repr.bind(py)).unwrap();
+        let repr_op: String = String::extract_bound(to_repr.bind(py)).unwrap();
         assert_eq!(repr_op, format_repr);
     })
 }
@@ -484,7 +483,7 @@ fn test_pyo3_rotate_powercf(first_op: Operation, second_op: Operation) {
 
         let remapped_op = operation.call_method1(py, "powercf", (power,)).unwrap();
         let comparison = bool::extract_bound(
-            &remapped_op
+            remapped_op
                 .call_method1(py, "__eq__", (comparison_op,))
                 .unwrap()
                 .bind(py),
