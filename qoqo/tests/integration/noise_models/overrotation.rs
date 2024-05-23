@@ -19,7 +19,7 @@ use roqoqo::ROQOQO_VERSION;
 
 /// Test copy
 #[test]
-fn test_pyo3_init() {
+fn test_pyo3_copy() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let br_type = py.get_type_bound::<SingleQubitOverrotationOnGateWrapper>();
@@ -36,11 +36,21 @@ fn test_pyo3_init() {
             .extract::<SingleQubitOverrotationOnGateWrapper>()
             .unwrap();
         assert_eq!(br_copied, br_wrapper);
+
+        let br_copied = br
+            .call_method0("__deepcopy__")
+            .unwrap()
+            .extract::<SingleQubitOverrotationOnGateWrapper>()
+            .unwrap();
+        let br_wrapper = br
+            .extract::<SingleQubitOverrotationOnGateWrapper>()
+            .unwrap();
+        assert_eq!(br_copied, br_wrapper);
     })
 }
 
 #[test]
-fn test_pyo3_init_description() {
+fn test_pyo3_copy_description() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let br_type = py.get_type_bound::<SingleQubitOverrotationDescriptionWrapper>();
@@ -50,6 +60,16 @@ fn test_pyo3_init_description() {
             .unwrap();
         let br_copied = br
             .call_method0("__copy__")
+            .unwrap()
+            .extract::<SingleQubitOverrotationDescriptionWrapper>()
+            .unwrap();
+        let br_wrapper = br
+            .extract::<SingleQubitOverrotationDescriptionWrapper>()
+            .unwrap();
+        assert_eq!(br_copied, br_wrapper);
+
+        let br_copied = br
+            .call_method0("__deepcopy__")
             .unwrap()
             .extract::<SingleQubitOverrotationDescriptionWrapper>()
             .unwrap();
@@ -287,7 +307,8 @@ fn test_two_qubit_noise_term() {
             .unwrap();
 
         let desc1 = SingleQubitOverrotationDescriptionWrapper::new("RotateX", 1.0, 1.0);
-        let desc2 = SingleQubitOverrotationDescriptionWrapper::new("RotateX", 1.0, 1.0);
+        let desc2: SingleQubitOverrotationDescriptionWrapper =
+            SingleQubitOverrotationDescriptionWrapper::new("RotateX", 1.0, 1.0);
 
         let br = br
             .call_method1(
@@ -365,4 +386,103 @@ fn test_json_schema_description() {
         assert_eq!(current_version_string, ROQOQO_VERSION);
         assert_eq!(minimum_supported_version_string, "1.11.0");
     });
+}
+
+#[test]
+fn test_pyo3_richcmp() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let br_type = py.get_type_bound::<SingleQubitOverrotationOnGateWrapper>();
+        let binding = br_type.call0().unwrap();
+        let br = binding
+            .downcast::<SingleQubitOverrotationOnGateWrapper>()
+            .unwrap();
+
+        let desc1 = SingleQubitOverrotationDescriptionWrapper::new("RotateX", 1.0, 1.0);
+        let desc2: SingleQubitOverrotationDescriptionWrapper =
+            SingleQubitOverrotationDescriptionWrapper::new("Rotatez", 1.0, 1.0);
+
+        let operation_one = br
+            .call_method1(
+                "set_two_qubit_overrotation",
+                ("CNOT", 0, 1, (desc1.clone(), desc1.clone())),
+            )
+            .unwrap();
+        let operation_two = br
+            .call_method1(
+                "set_two_qubit_overrotation",
+                ("CNOT", 0, 1, (desc1.clone(), desc2.clone())),
+            )
+            .unwrap();
+
+        let comparison = bool::extract_bound(
+            &operation_one
+                .call_method1("__eq__", (operation_two.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(!comparison);
+
+        let comparison = bool::extract_bound(
+            &operation_one
+                .call_method1("__ne__", (operation_two.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        let comparison = operation_one.call_method1("__ge__", (operation_two,));
+        assert!(comparison.is_err());
+    })
+}
+
+#[test]
+fn test_pyo3_richcmp_description() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let br_type = py.get_type_bound::<SingleQubitOverrotationDescriptionWrapper>();
+        let binding = br_type.call1(("RotateX", 0.0, 1.0)).unwrap();
+        let operation_one = binding
+            .downcast::<SingleQubitOverrotationDescriptionWrapper>()
+            .unwrap();
+        let binding = br_type.call1(("RotateZ", 0.0, 1.0)).unwrap();
+        let operation_two = binding
+            .downcast::<SingleQubitOverrotationDescriptionWrapper>()
+            .unwrap();
+
+        let comparison = bool::extract_bound(
+            &operation_one
+                .call_method1("__eq__", (operation_two.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(!comparison);
+
+        let comparison = bool::extract_bound(
+            &operation_one
+                .call_method1("__ne__", (operation_two.clone(),))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        let comparison = operation_one.call_method1("__ge__", (operation_two,));
+        assert!(comparison.is_err());
+    })
+}
+
+#[test]
+fn test_pyo3_repr_description() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let br_type = py.get_type_bound::<SingleQubitOverrotationDescriptionWrapper>();
+        let binding = br_type.call1(("RotateX", 0.0, 1.0)).unwrap();
+        let operation = binding
+            .downcast::<SingleQubitOverrotationDescriptionWrapper>()
+            .unwrap();
+        let to_repr = operation.call_method0("__repr__").unwrap();
+        let repr_op: String = String::extract_bound(&to_repr).unwrap();
+        let format_repr = "SingleQubitOverrotationDescription { gate: \"RotateX\", theta_mean: 0.0, theta_std: 1.0 }";
+        assert_eq!(repr_op, format_repr);
+    })
 }
