@@ -122,9 +122,9 @@ impl CallDefinedGateWrapper {
     ///
     /// Args:
     ///     gate_name (str) : The name of the called defined operations.
-    ///     qubits (Vec<usize>) : The qubits that for this call replace the qubits in the internal definition of the called gate
+    ///     qubits (List[int]) : The qubits that for this call replace the qubits in the internal definition of the called gate
     ///                           (get replaced in order of apppearance in gate defintion).
-    ///     free_parameters (Vec<CalculatorFloat>) : List of float values that replace the free parameters in the internal defintion of the called gate
+    ///     free_parameters (List[CalculatorFloat]) : List of float values that replace the free parameters in the internal defintion of the called gate
     ///                                             (get replaced in order of apppearance in gate defintion).
     #[new]
     fn new(
@@ -161,7 +161,7 @@ impl CallDefinedGateWrapper {
     /// Return the qubits on which the Gate operation is applied.
     ///
     /// Returns:
-    ///     Vec<int>: The qubits of the operation.
+    ///     List[int]: The qubits of the operation.
     fn qubits(&self) -> Vec<usize> {
         self.internal.qubits().clone()
     }
@@ -169,7 +169,7 @@ impl CallDefinedGateWrapper {
     /// Return the qubits on which the Gate operation is applied.
     ///
     /// Returns:
-    ///     Vec<CalculatorFloat>: The qubits of the operation.
+    ///     List[CalculatorFloat]: The qubits of the operation.
     fn free_parameters(&self) -> Vec<CalculatorFloatWrapper> {
         self.internal
             .free_parameters()
@@ -214,7 +214,7 @@ impl CallDefinedGateWrapper {
     /// Return true when the operation has symbolic parameters.
     ///
     /// Returns:
-    ///     is_parametrized (bool): True if the operation contains symbolic parameters, False if it does not.
+    ///     bool: True if the operation contains symbolic parameters, False if it does not.
     fn is_parametrized(&self) -> bool {
         self.internal.is_parametrized()
     }

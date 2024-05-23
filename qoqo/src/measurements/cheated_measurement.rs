@@ -103,8 +103,8 @@ impl CheatedWrapper {
     ///
     /// Args:
     ///     input_bit_registers (dict[str, Union[list[list[int]], list[list[bool]]]]): The classical bit registers with the register name as key.
-    ///     float_registers (Dict[str, List[List[float]]]): The classical float registers as a dictionary with the register name as key.
-    ///     complex_registers (Dict[str, List[List[complex]]]): The classical complex registers as a dictionary with the register name as key.
+    ///     float_registers (dict[str, List[List[float]]]): The classical float registers as a dictionary with the register name as key.
+    ///     complex_registers (dict[str, List[List[complex]]]): The classical complex registers as a dictionary with the register name as key.
     ///
     /// Returns:
     ///     Optional[dict[str, float]]: The evaluated expectation values.

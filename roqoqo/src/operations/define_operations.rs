@@ -274,7 +274,7 @@ impl InvolveQubits for InputBit {
     }
 }
 
-/// GateDefinition is the Definition of a new gate.
+/// GateDefinition is the Definition of a new custom gate defined by a circuit that can be reused with the CallDefinedGate.
 ///
 #[cfg(feature = "unstable_operation_definition")]
 #[derive(
