@@ -1,0 +1,35 @@
+qoqo.measurements.CheatedPauliZProduct
+======================================
+
+.. currentmodule:: qoqo.measurements
+
+.. autoclass:: CheatedPauliZProduct
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CheatedPauliZProduct.__init__
+      ~CheatedPauliZProduct.circuits
+      ~CheatedPauliZProduct.constant_circuit
+      ~CheatedPauliZProduct.current_version
+      ~CheatedPauliZProduct.evaluate
+      ~CheatedPauliZProduct.from_bincode
+      ~CheatedPauliZProduct.from_json
+      ~CheatedPauliZProduct.input
+      ~CheatedPauliZProduct.json_schema
+      ~CheatedPauliZProduct.measurement_type
+      ~CheatedPauliZProduct.min_supported_version
+      ~CheatedPauliZProduct.substitute_parameters
+      ~CheatedPauliZProduct.to_bincode
+      ~CheatedPauliZProduct.to_json
+   
+   
+
+   
+   
+   
