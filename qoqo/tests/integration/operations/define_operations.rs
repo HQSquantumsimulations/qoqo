@@ -217,7 +217,7 @@ fn test_pyo3_name(input_definition: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let name_op: String =
-            String::extract_bound(&operation.call_method0(py, "name").unwrap().bind(py)).unwrap();
+            String::extract_bound(operation.call_method0(py, "name").unwrap().bind(py)).unwrap();
         let name_param: String = String::from("ro");
         assert_eq!(name_op, name_param);
     })
@@ -233,7 +233,7 @@ fn test_pyo3_length(input_definition: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let length_op: &usize =
-            &usize::extract_bound(&operation.call_method0(py, "length").unwrap().bind(py)).unwrap();
+            &usize::extract_bound(operation.call_method0(py, "length").unwrap().bind(py)).unwrap();
         let length_param: &usize = &1_usize;
         assert_eq!(length_op, length_param);
     })
@@ -249,7 +249,7 @@ fn test_pyo3_is_output(input_definition: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         assert!(
-            !bool::extract_bound(&operation.call_method0(py, "is_output").unwrap().bind(py))
+            !bool::extract_bound(operation.call_method0(py, "is_output").unwrap().bind(py))
                 .unwrap()
         );
     })
@@ -266,7 +266,7 @@ fn test_pyo3_input_symbolic_input() {
         )))
         .unwrap();
         let input_op: &f64 =
-            &f64::extract_bound(&operation.call_method0(py, "input").unwrap().bind(py)).unwrap();
+            &f64::extract_bound(operation.call_method0(py, "input").unwrap().bind(py)).unwrap();
         let input_param: &f64 = &1.0;
         assert_eq!(input_op, input_param);
     })
@@ -284,7 +284,7 @@ fn test_pyo3_input_bit_index() {
         )))
         .unwrap();
         let input_op: &usize =
-            &usize::extract_bound(&operation.call_method0(py, "index").unwrap().bind(py)).unwrap();
+            &usize::extract_bound(operation.call_method0(py, "index").unwrap().bind(py)).unwrap();
         let input_param: &usize = &1;
         assert_eq!(input_op, input_param);
     })
@@ -302,7 +302,7 @@ fn test_pyo3_input_bit_value() {
         )))
         .unwrap();
         let input_op: &bool =
-            &bool::extract_bound(&operation.call_method0(py, "value").unwrap().bind(py)).unwrap();
+            &bool::extract_bound(operation.call_method0(py, "value").unwrap().bind(py)).unwrap();
         let input_param: &bool = &true;
         assert_eq!(input_op, input_param);
     })
@@ -320,7 +320,7 @@ fn test_pyo3_involved_qubits(input_definition: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let involved_op: HashSet<String> = HashSet::extract_bound(
-            &operation
+            operation
                 .call_method0(py, "involved_qubits")
                 .unwrap()
                 .bind(py),
@@ -340,9 +340,9 @@ fn test_pyo3_format_repr(input_definition: Operation, format_repr: &str) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: String = String::extract_bound(&to_format.bind(py)).unwrap();
+        let format_op: String = String::extract_bound(to_format.bind(py)).unwrap();
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: String = String::extract_bound(&to_repr.bind(py)).unwrap();
+        let repr_op: String = String::extract_bound(to_repr.bind(py)).unwrap();
         let mut format_repr_param: String = String::from(format_repr);
         format_repr_param.push_str(" { name: \"ro\", length: 1, is_output: false }");
         let comparison = format_repr_param.as_str();
@@ -362,9 +362,9 @@ fn test_pyo3_input_symbolic_format_repr() {
         )))
         .unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: String = String::extract_bound(&to_format.bind(py)).unwrap();
+        let format_op: String = String::extract_bound(to_format.bind(py)).unwrap();
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: String = String::extract_bound(&to_repr.bind(py)).unwrap();
+        let repr_op: String = String::extract_bound(to_repr.bind(py)).unwrap();
         let format_repr_param: String = String::from("InputSymbolic { name: \"ro\", input: 1.0 }");
         let comparison = format_repr_param.as_str();
         assert_eq!(format_op, comparison);
@@ -418,7 +418,7 @@ fn test_pyo3_tags(input_definition: Operation, tag_name: &str) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let to_tag = operation.call_method0(py, "tags").unwrap();
-        let tags_op: &Vec<String> = &Vec::extract_bound(&to_tag.bind(py)).unwrap();
+        let tags_op: &Vec<String> = &Vec::extract_bound(to_tag.bind(py)).unwrap();
         let tags_param: &[&str] = &["Operation", "Definition", tag_name];
         assert_eq!(tags_op, tags_param);
     })
@@ -436,8 +436,7 @@ fn test_pyo3_hqslang(input_definition: Operation, hqslang_param: String) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         let hqslang_op: String =
-            String::extract_bound(&operation.call_method0(py, "hqslang").unwrap().bind(py))
-                .unwrap();
+            String::extract_bound(operation.call_method0(py, "hqslang").unwrap().bind(py)).unwrap();
         assert_eq!(hqslang_op, hqslang_param);
     })
 }
@@ -454,7 +453,7 @@ fn test_pyo3_is_parametrized(input_definition: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_definition).unwrap();
         assert!(!bool::extract_bound(
-            &operation
+            operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
                 .bind(py)

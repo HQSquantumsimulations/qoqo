@@ -318,7 +318,7 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         assert!(bool::extract_bound(
-            &operation
+            operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
                 .bind(py)
@@ -339,7 +339,7 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         assert!(!bool::extract_bound(
-            &operation
+            operation
                 .call_method0(py, "is_parametrized")
                 .unwrap()
                 .bind(py)
@@ -360,7 +360,7 @@ fn test_pyo3_mode(mode: usize, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let mode_op: usize =
-            usize::extract_bound(&operation.call_method0(py, "mode").unwrap().bind(py)).unwrap();
+            usize::extract_bound(operation.call_method0(py, "mode").unwrap().bind(py)).unwrap();
         assert_eq!(mode_op, mode);
     })
 }
@@ -376,7 +376,7 @@ fn test_pyo3_qubit(qubit: usize, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let qubit_op: usize =
-            usize::extract_bound(&operation.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
+            usize::extract_bound(operation.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
         assert_eq!(qubit_op, qubit);
     })
 }
@@ -393,8 +393,7 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let name_op: String =
-            String::extract_bound(&operation.call_method0(py, "hqslang").unwrap().bind(py))
-                .unwrap();
+            String::extract_bound(operation.call_method0(py, "hqslang").unwrap().bind(py)).unwrap();
         assert_eq!(name_op, name.to_string());
     })
 }
@@ -471,7 +470,7 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let tags_op: Vec<String> =
-            Vec::<String>::extract_bound(&operation.call_method0(py, "tags").unwrap().bind(py))
+            Vec::<String>::extract_bound(operation.call_method0(py, "tags").unwrap().bind(py))
                 .unwrap();
         assert_eq!(tags_op.len(), tags.len());
         for i in 0..tags.len() {
@@ -493,7 +492,7 @@ fn test_pyo3_involved_modes(input_operation: Operation, modes: HashSet<usize>) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial mode
         let involved_modes: HashSet<usize> = HashSet::<usize>::extract_bound(
-            &operation
+            operation
                 .call_method0(py, "involved_modes")
                 .unwrap()
                 .bind(py),
@@ -516,7 +515,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial qubit
         let qubit: usize =
-            usize::extract_bound(&operation.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
+            usize::extract_bound(operation.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
         assert_eq!(qubit.clone(), 1);
         // remap qubits
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
@@ -527,7 +526,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
             .unwrap();
         // test re-mapped qubit
         let qubit_new: usize =
-            usize::extract_bound(&result.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
+            usize::extract_bound(result.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
         assert_eq!(qubit_new.clone(), 0);
         // test that initial and rempapped qubits are different
         assert_ne!(qubit, qubit_new);
@@ -547,7 +546,7 @@ fn test_pyo3_remapmodes_single(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial mode
         let mode: usize =
-            usize::extract_bound(&operation.call_method0(py, "mode").unwrap().bind(py)).unwrap();
+            usize::extract_bound(operation.call_method0(py, "mode").unwrap().bind(py)).unwrap();
         assert_eq!(mode.clone(), 0);
         // remap modes
         let mut mode_mapping: HashMap<usize, usize> = HashMap::new();
@@ -558,7 +557,7 @@ fn test_pyo3_remapmodes_single(input_operation: Operation) {
             .unwrap();
         // test re-mapped mode
         let mode_new: usize =
-            usize::extract_bound(&result.call_method0(py, "mode").unwrap().bind(py)).unwrap();
+            usize::extract_bound(result.call_method0(py, "mode").unwrap().bind(py)).unwrap();
         assert_eq!(mode_new.clone(), 1);
         // test that initial and rempapped modes are different
         assert_ne!(mode, mode_new);
@@ -669,10 +668,10 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: String = String::extract_bound(&to_format.bind(py)).unwrap();
+        let format_op: String = String::extract_bound(to_format.bind(py)).unwrap();
         assert_eq!(format_op, format_repr);
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: String = String::extract_bound(&to_repr.bind(py)).unwrap();
+        let repr_op: String = String::extract_bound(to_repr.bind(py)).unwrap();
         assert_eq!(repr_op, format_repr);
     })
 }
