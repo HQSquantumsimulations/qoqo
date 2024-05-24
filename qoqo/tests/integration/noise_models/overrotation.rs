@@ -69,7 +69,7 @@ fn test_pyo3_copy_description() {
         assert_eq!(br_copied, br_wrapper);
 
         let br_copied = br
-            .call_method0("__deepcopy__")
+            .call_method1("__deepcopy__", ("",))
             .unwrap()
             .extract::<SingleQubitOverrotationDescriptionWrapper>()
             .unwrap();
