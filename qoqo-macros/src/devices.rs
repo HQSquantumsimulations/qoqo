@@ -519,7 +519,7 @@ pub fn device_chain_env_wrapper_def(
             /// ```
             ///
             /// Returns:
-            ///     List[List[int], dict[int, List[int]]]: A list of the chains and environments.
+            ///     List[List[int], Dict[int, List[int]]]: A list of the chains and environments.
             ///
             pub fn __environment_chains(&self) -> Vec<(Vec<usize>, HashMap<usize, Vec<usize>>)>
             {

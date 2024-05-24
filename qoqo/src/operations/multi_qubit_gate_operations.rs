@@ -183,7 +183,7 @@ impl CallDefinedGateWrapper {
     /// List all involved qubits.
     ///
     /// Returns:
-    ///     set[int]: The involved qubits of the operation.
+    ///     Set[int]: The involved qubits of the operation.
     fn involved_qubits(&self) -> PyObject {
         let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
             PySet::new_bound(py, &[self.internal.qubits().clone()])
@@ -198,7 +198,7 @@ impl CallDefinedGateWrapper {
     /// Used for the type based dispatch in ffi interfaces.
     ///
     /// Returns:
-    ///     list[str]: The tags of the Operation.
+    ///     List[str]: The tags of the Operation.
     fn tags(&self) -> Vec<String> {
         self.internal.tags().iter().map(|s| s.to_string()).collect()
     }
@@ -222,7 +222,7 @@ impl CallDefinedGateWrapper {
     /// Substitute the symbolic parameters in a clone of the operation according to the input.
     ///
     /// Args:
-    ///     substitution_parameters (dict[str, float]): The dictionary containing the substitutions to use in the operation.
+    ///     substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the operation.
     ///
     /// Returns:
     ///     self: The operation with the parameters substituted.
@@ -253,7 +253,7 @@ impl CallDefinedGateWrapper {
     /// Remap qubits in a clone of the CallDefinedGate operation.
     ///
     /// Args:
-    ///     mapping (dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the operation.
+    ///     mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the operation.
     ///
     /// Returns:
     ///     self: The operation with the qubits remapped.

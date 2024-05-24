@@ -104,7 +104,7 @@ impl CircuitWrapper {
     /// Substitute the symbolic parameters in a clone of the Circuit according to the substitution_parameters input.
     ///
     /// Args:
-    ///     substitution_parameters (dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
+    ///     substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
     ///
     /// Returns:
     ///     self: The Circuit with the parameters substituted.
@@ -135,7 +135,7 @@ impl CircuitWrapper {
     /// Remap qubits in operations in clone of Circuit.
     ///
     /// Args:
-    ///     mapping (dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the Circuit.
+    ///     mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the Circuit.
     ///
     /// Returns:
     ///     self: The Circuit with the qubits remapped.
@@ -182,7 +182,7 @@ impl CircuitWrapper {
     /// Count the number of occurences of a set of operation tags in the circuit.
     ///
     /// Args:
-    ///     operations (list[str]): List of operation tags that should be counted.
+    ///     operations (List[str]): List of operation tags that should be counted.
     ///
     /// Returns:
     ///     int: The number of occurences of these operation tags.
@@ -199,7 +199,7 @@ impl CircuitWrapper {
     /// Return a list of the hqslang names of all operations occuring in the circuit.
     ///
     /// Returns:
-    ///     set[str]: The operation types in the Circuit.
+    ///     Set[str]: The operation types in the Circuit.
     pub fn get_operation_types(&self) -> HashSet<&str> {
         let mut operations: HashSet<&str> = HashSet::new();
         for op in self.internal.iter() {
@@ -227,7 +227,7 @@ impl CircuitWrapper {
     /// Return the roqoqo and qoqo versions from when the code was compiled.
     ///
     /// Returns:
-    ///     tuple[str, str]: The roqoqo and qoqo versions.
+    ///     Tuple[str, str]: The roqoqo and qoqo versions.
     fn _qoqo_versions(&self) -> (String, String) {
         let mut rsplit = ROQOQO_VERSION.split('.').take(2);
         let mut qsplit = QOQO_VERSION.split('.').take(2);
@@ -425,7 +425,7 @@ impl CircuitWrapper {
     /// Definitions need to be unique.
     ///
     /// Returns:
-    ///     list[Operation]: A vector of the definitions in the Circuit.
+    ///     List[Operation]: A vector of the definitions in the Circuit.
     pub fn definitions(&self) -> PyResult<Vec<PyObject>> {
         let mut defs: Vec<PyObject> = Vec::new();
         for op in self
@@ -443,7 +443,7 @@ impl CircuitWrapper {
     /// Return a list of all operations in the Circuit.
     ///
     /// Returns:
-    ///     list[Operation]: A vector of the operations in the Circuit.
+    ///     List[Operation]: A vector of the operations in the Circuit.
     pub fn operations(&self) -> PyResult<Vec<PyObject>> {
         let mut ops: Vec<PyObject> = Vec::new();
         for op in self
@@ -464,7 +464,7 @@ impl CircuitWrapper {
     ///     tag (str): tag by which to filter operations.
     ///
     /// Returns:
-    ///     list[Operation]: A vector of the operations with the specified tag in the Circuit.
+    ///     List[Operation]: A vector of the operations with the specified tag in the Circuit.
     pub fn filter_by_tag(&self, tag: &str) -> PyResult<Vec<PyObject>> {
         let mut tagged: Vec<PyObject> = Vec::new();
         for op in self

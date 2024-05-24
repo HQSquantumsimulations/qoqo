@@ -32,7 +32,7 @@ use std::collections::HashMap;
 ///
 /// Args:
 ///     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
-///     circuits (list[Circuit]): The collection of quantum circuits executed for the measurement.
+///     circuits (List[Circuit]): The collection of quantum circuits executed for the measurement.
 ///     input (CheatedInput): The additional input information required for measurement.
 ///
 /// Returns:
@@ -48,7 +48,7 @@ impl CheatedWrapper {
     ///
     /// Args:
     ///     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
-    ///     circuits (list[Circuit]): The collection of quantum circuits executed for the measurement.
+    ///     circuits (List[Circuit]): The collection of quantum circuits executed for the measurement.
     ///     input (CheatedInput): The additional input information required for measurement.
     ///
     /// Returns:
@@ -102,12 +102,12 @@ impl CheatedWrapper {
     /// Execute the cheated measurement.
     ///
     /// Args:
-    ///     input_bit_registers (dict[str, Union[list[list[int]], list[list[bool]]]]): The classical bit registers with the register name as key.
-    ///     float_registers (dict[str, List[List[float]]]): The classical float registers as a dictionary with the register name as key.
-    ///     complex_registers (dict[str, List[List[complex]]]): The classical complex registers as a dictionary with the register name as key.
+    ///     input_bit_registers (Dict[str, Union[List[List[int]], List[List[bool]]]]): The classical bit registers with the register name as key.
+    ///     float_registers (Dict[str, List[List[float]]]): The classical float registers as a dictionary with the register name as key.
+    ///     complex_registers (Dict[str, List[List[complex]]]): The classical complex registers as a dictionary with the register name as key.
     ///
     /// Returns:
-    ///     Optional[dict[str, float]]: The evaluated expectation values.
+    ///     Optional[Dict[str, float]]: The evaluated expectation values.
     ///
     /// Raises:
     ///     RuntimeError: Unexpected repetition of key in bit_register.
@@ -149,7 +149,7 @@ impl CheatedWrapper {
     /// Return the collection of quantum circuits for the separate cheated measurements.
     ///
     /// Returns:
-    ///     list[Circuit]: The quantum circuits.
+    ///     List[Circuit]: The quantum circuits.
     pub fn circuits(&self) -> Vec<CircuitWrapper> {
         self.internal
             .circuits()
@@ -190,7 +190,7 @@ impl CheatedWrapper {
     /// Return copy of Measurement with symbolic parameters replaced.
     ///
     /// Arguments:
-    ///     substituted_parameters (dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
+    ///     substituted_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
     ///
     /// Raises:
     ///     RuntimeError: Error substituting symbolic parameters.

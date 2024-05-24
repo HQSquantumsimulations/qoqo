@@ -260,7 +260,7 @@ impl DecoherenceOnGateModelWrapper {
     ///
     /// Args:
     ///     gate (str): The name of the gate.
-    ///     qubits (list[int]): The qubits the gate acts on.
+    ///     qubits (List[int]): The qubits the gate acts on.
     ///
     /// Returns
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.

@@ -85,7 +85,7 @@ struct PragmaGetOccupationProbability {
 /// sothat the actual quantum register remains unchanged.
 ///
 /// Args:
-///     qubit_paulis (dict[int, int]): The dictionary of the pauli matrix to apply to each qubit in the form
+///     qubit_paulis (Dict[int, int]): The dictionary of the pauli matrix to apply to each qubit in the form
 ///                                    {qubit: pauli}. Allowed values to be provided for 'pauli' are: 0 = identity, 1 = PauliX, 2 = PauliY, 3 = PauliZ.
 ///     readout (string): The name of the classical readout register.
 ///     circuit (Circuit): The measurement preparation Circuit, applied on a copy of the register before measurement.
@@ -102,7 +102,7 @@ struct PragmaGetPauliProduct {
 ///
 /// Args:
 ///     readout (string): The name of the classical readout register.
-///     qubit_mapping (dict[int, int]): The mapping of qubits to indices in readout register.
+///     qubit_mapping (Dict[int, int]): The mapping of qubits to indices in readout register.
 ///     number_measurements (int): The number of times to repeat the measurement.
 ///
 struct PragmaRepeatedMeasurement {
