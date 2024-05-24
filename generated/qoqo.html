@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qoqo &mdash; qoqo 1.12.1 documentation</title>
+  <title>qoqo &mdash; qoqo 1.13.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=1da5a4f9"></script>
+        <script src="../_static/documentation_options.js?v=fe2b9aec"></script>
         <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -40,7 +40,7 @@
             qoqo
           </a>
               <div class="version">
-                1.12.1
+                1.13.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -206,7 +206,7 @@
 <dd><p>Count the number of occurences of a set of operation tags in the circuit.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>operations</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- List of operation tags that should be counted.</p>
+<dd class="field-odd"><p><strong>operations</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) -- List of operation tags that should be counted.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The number of occurences of these operation tags.</p>
@@ -241,7 +241,7 @@
 <dd class="field-odd"><p>A vector of the definitions in the Circuit.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list[Operation]</p>
+<dd class="field-even"><p>List[Operation]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -258,7 +258,7 @@
 <dd class="field-even"><p>A vector of the operations with the specified tag in the Circuit.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[Operation]</p>
+<dd class="field-odd"><p>List[Operation]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -335,7 +335,7 @@
 <dd class="field-odd"><p>The operation types in the Circuit.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>set[str]</p>
+<dd class="field-even"><p>Set[str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -404,7 +404,7 @@
 <dd class="field-odd"><p>A vector of the operations in the Circuit.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list[Operation]</p>
+<dd class="field-even"><p>List[Operation]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -444,7 +444,7 @@
 <dd><p>Remap qubits in operations in clone of Circuit.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mapping</strong> (<em>dict</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) -- The dictionary containing the {qubit: qubit} mapping to use in the Circuit.</p>
+<dd class="field-odd"><p><strong>mapping</strong> (<em>Dict</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) -- The dictionary containing the {qubit: qubit} mapping to use in the Circuit.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The Circuit with the qubits remapped.</p>
@@ -464,7 +464,7 @@
 <dd><p>Substitute the symbolic parameters in a clone of the Circuit according to the substitution_parameters input.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>substitution_parameters</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) -- The dictionary containing the substitutions to use in the Circuit.</p>
+<dd class="field-odd"><p><strong>substitution_parameters</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) -- The dictionary containing the substitutions to use in the Circuit.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The Circuit with the parameters substituted.</p>
@@ -557,7 +557,7 @@ this method returning an empty vector does not imply that the <cite>to_be_execut
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>already_executed</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) -- List of NodeIndices of Nodes that have already been executed in the Circuit.</p></li>
+<li><p><strong>already_executed</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- List of NodeIndices of Nodes that have already been executed in the Circuit.</p></li>
 <li><p><strong>to_be_executed</strong> (<em>int</em>) -- NodeIndex of the Operation that should be executed next.</p></li>
 </ul>
 </dd>
@@ -565,7 +565,7 @@ this method returning an empty vector does not imply that the <cite>to_be_execut
 <dd class="field-even"><p>List containing the sorted blocking elements.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[int]</p>
+<dd class="field-odd"><p>List[int]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -579,7 +579,7 @@ this method returning an empty vector does not imply that the <cite>to_be_execut
 <dd class="field-odd"><p>The list of nodes of commuting operations.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list[int]</p>
+<dd class="field-even"><p>List[int]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -591,7 +591,7 @@ this method returning an empty vector does not imply that the <cite>to_be_execut
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>already_executed</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) -- List of NodeIndices of Nodes that have already been executed in the Circuit.</p></li>
+<li><p><strong>already_executed</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- List of NodeIndices of Nodes that have already been executed in the Circuit.</p></li>
 <li><p><strong>to_be_executed</strong> (<em>int</em>) -- NodeIndex of the operation that should be executed next.</p></li>
 </ul>
 </dd>
@@ -599,7 +599,7 @@ this method returning an empty vector does not imply that the <cite>to_be_execut
 <dd class="field-even"><p>List containing the sorted blocking elements.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[int]</p>
+<dd class="field-odd"><p>List[int]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -615,7 +615,7 @@ register.</p>
 <dd class="field-odd"><p>The dictionary of {(str, int), int} elements.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict[(str, int), int]</p>
+<dd class="field-even"><p>Dict[(str, int), int]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -630,7 +630,7 @@ the first node that involves that qubit.</p>
 <dd class="field-odd"><p>The dictionary of {qubit: node} elements.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict[int, int]</p>
+<dd class="field-even"><p>Dict[int, int]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -644,7 +644,7 @@ the first node that involves that qubit.</p>
 <dd class="field-odd"><p>The set of nodes in the first parallel block.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>set[int]</p>
+<dd class="field-even"><p>Set[int]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -721,7 +721,7 @@ register.</p>
 <dd class="field-odd"><p>The dictionary of {(str, int), int} elements.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict[(str, int), int]</p>
+<dd class="field-even"><p>Dict[(str, int), int]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -736,7 +736,7 @@ the last node that involves that qubit.</p>
 <dd class="field-odd"><p>The dictionary of {qubit: node} elements.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict[int, int]</p>
+<dd class="field-even"><p>Dict[int, int]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -750,7 +750,7 @@ the last node that involves that qubit.</p>
 <dd class="field-odd"><p>The set of nodes in the last parallel block.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>set[int]</p>
+<dd class="field-even"><p>Set[int]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -763,8 +763,8 @@ the last node that involves that qubit.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>already_executed</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) -- List of NodeIndices of Nodes that have already been executed in the Circuit.</p></li>
-<li><p><strong>current_front_layer</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) -- List of NodeIndices in the current front layer ready to be executed if physically possible.</p></li>
+<li><p><strong>already_executed</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- List of NodeIndices of Nodes that have already been executed in the Circuit.</p></li>
+<li><p><strong>current_front_layer</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- List of NodeIndices in the current front layer ready to be executed if physically possible.</p></li>
 <li><p><strong>to_be_executed</strong> (<em>int</em>) -- NodeIndex of the operation that should be executed next.</p></li>
 </ul>
 </dd>

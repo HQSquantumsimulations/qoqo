@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qoqo.Circuit &mdash; qoqo 1.12.1 documentation</title>
+  <title>qoqo.Circuit &mdash; qoqo 1.13.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=1da5a4f9"></script>
+        <script src="../../_static/documentation_options.js?v=fe2b9aec"></script>
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -38,7 +38,7 @@
             qoqo
           </a>
               <div class="version">
-                1.12.1
+                1.13.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -185,7 +185,7 @@
 <dd><p>Count the number of occurences of a set of operation tags in the circuit.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>operations</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- List of operation tags that should be counted.</p>
+<dd class="field-odd"><p><strong>operations</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) -- List of operation tags that should be counted.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The number of occurences of these operation tags.</p>
@@ -220,7 +220,7 @@
 <dd class="field-odd"><p>A vector of the definitions in the Circuit.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list[Operation]</p>
+<dd class="field-even"><p>List[Operation]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -237,7 +237,7 @@
 <dd class="field-even"><p>A vector of the operations with the specified tag in the Circuit.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[Operation]</p>
+<dd class="field-odd"><p>List[Operation]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -314,7 +314,7 @@
 <dd class="field-odd"><p>The operation types in the Circuit.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>set[str]</p>
+<dd class="field-even"><p>Set[str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -383,7 +383,7 @@
 <dd class="field-odd"><p>A vector of the operations in the Circuit.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list[Operation]</p>
+<dd class="field-even"><p>List[Operation]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -423,7 +423,7 @@
 <dd><p>Remap qubits in operations in clone of Circuit.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mapping</strong> (<em>dict</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) -- The dictionary containing the {qubit: qubit} mapping to use in the Circuit.</p>
+<dd class="field-odd"><p><strong>mapping</strong> (<em>Dict</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) -- The dictionary containing the {qubit: qubit} mapping to use in the Circuit.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The Circuit with the qubits remapped.</p>
@@ -443,7 +443,7 @@
 <dd><p>Substitute the symbolic parameters in a clone of the Circuit according to the substitution_parameters input.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>substitution_parameters</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) -- The dictionary containing the substitutions to use in the Circuit.</p>
+<dd class="field-odd"><p><strong>substitution_parameters</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) -- The dictionary containing the substitutions to use in the Circuit.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The Circuit with the parameters substituted.</p>
