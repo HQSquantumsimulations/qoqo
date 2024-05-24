@@ -28920,7 +28920,7 @@ Permission is granted to anyone to use this software for any purpose, including 
 
 
 ====================================================
-schemars 0.8.20
+schemars 0.8.21
 https://graham.cool/schemars/
 by Graham Esau <gesau@hotmail.co.uk>
 Generate JSON Schemas from Rust code
@@ -28952,7 +28952,7 @@ SOFTWARE.
 
 
 ====================================================
-schemars_derive 0.8.20
+schemars_derive 0.8.21
 https://graham.cool/schemars/
 by Graham Esau <gesau@hotmail.co.uk>
 Macros for #[derive(JsonSchema)], for use with schemars
@@ -31951,7 +31951,7 @@ limitations under the License.
 
 
 ====================================================
-syn 2.0.65
+syn 2.0.66
 https://github.com/dtolnay/syn
 by David Tolnay <dtolnay@gmail.com>
 Parser for Rust source code
