@@ -1,5 +1,5 @@
 [package]
-name = "compatibility_test_1_3"
+name = "compatibility_test_1_12"
 version = "1.13.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
@@ -19,13 +19,14 @@ publish = false
 [workspace]
 
 [dependencies]
-test_roqoqo_1_3 = { package = "roqoqo", version = "=1.3.2" }
-test_roqoqo_derive_1_3 = { package = "roqoqo-derive", version = "=1.3.2" }
+test_roqoqo_1_12 = { package = "roqoqo", version = "=1.12.0" }
+test_roqoqo_derive_1_12 = { package = "roqoqo-derive", version = "=1.12.0" }
 qoqo_calculator = { version = "1.2" }
 roqoqo = { version = "1.13.0", path = "../../roqoqo", features = [
     "serialize",
     "overrotate",
 ] }
+struqture = { version = "1.7" }
 bincode = { version = "1.3" }
 ndarray = "0.15"
 

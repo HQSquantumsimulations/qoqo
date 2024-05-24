@@ -401,8 +401,8 @@ impl SingleQubitOverrotationOnGateWrapper {
     ///
     /// Args:
     ///     gate (str): The name of the gate.
-    ///     control (int) - The control qubit the gate acts on.
-    ///     target (int) - The target qubit the gate acts on.
+    ///     control (int): The control qubit the gate acts on.
+    ///     target (int): The target qubit the gate acts on.
     ///
     /// Returns
     ///     Optional[(SingleQubitOverrotationDescription, SingleQubitOverrotationDescription)]: The overrotation applied when gate is applied.

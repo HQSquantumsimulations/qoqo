@@ -105,7 +105,7 @@ impl PragmaSetStateVectorWrapper {
     /// Create a PragmaSetStateVector.
     ///
     /// Args:
-    ///     statevector (list[complex]): The statevector representing the qubit register.
+    ///     statevector (List[complex]): The statevector representing the qubit register.
     ///
     /// Returns:
     ///     self: The new PragmaSetStateVector.
@@ -159,7 +159,7 @@ impl PragmaSetStateVectorWrapper {
     /// List all involved qubits (here, all).
     ///
     /// Returns:
-    ///     set[int]: The involved qubits of the PRAGMA operation.
+    ///     Set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits(&self) -> PyObject {
         let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
             PySet::new_bound(py, &["All"]).unwrap().to_object(py)
@@ -172,7 +172,7 @@ impl PragmaSetStateVectorWrapper {
     /// Used for the type based dispatch in ffi interfaces.
     ///
     /// Returns:
-    ///     list[str]: The tags of the operation.
+    ///     List[str]: The tags of the operation.
     fn tags(&self) -> Vec<String> {
         self.internal.tags().iter().map(|s| s.to_string()).collect()
     }
@@ -196,7 +196,7 @@ impl PragmaSetStateVectorWrapper {
     /// Substitute the symbolic parameters in a clone of the PRAGMA operation according to the substitution_parameters input.
     ///
     /// Args:
-    ///     substitution_parameters (dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+    ///     substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
     ///
     /// Returns:
     ///     self: The PRAGMA operation operation with the parameters substituted.
@@ -227,7 +227,7 @@ impl PragmaSetStateVectorWrapper {
     /// Remap qubits in a clone of the PRAGMA operation.
     ///
     /// Args:
-    ///     mapping (dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+    ///     mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
     ///
     /// Returns:
     ///     self: The PRAGMA operation with the qubits remapped.
@@ -415,7 +415,7 @@ impl PragmaSetDensityMatrixWrapper {
     /// List all involved qubits (here, all).
     ///
     /// Returns:
-    ///     set[int]: The involved qubits of the PRAGMA operation.
+    ///     Set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits(&self) -> PyObject {
         let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
             PySet::new_bound(py, &["All"]).unwrap().to_object(py)
@@ -428,7 +428,7 @@ impl PragmaSetDensityMatrixWrapper {
     /// Used for type based dispatch in ffi interfaces.
     ///
     /// Returns:
-    ///     list[str]: The tags of the Operation.
+    ///     List[str]: The tags of the Operation.
     fn tags(&self) -> Vec<String> {
         self.internal.tags().iter().map(|s| s.to_string()).collect()
     }
@@ -452,7 +452,7 @@ impl PragmaSetDensityMatrixWrapper {
     /// Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
     ///
     /// Args:
-    ///     substitution_parameters (dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+    ///     substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
     ///
     /// Returns:
     ///     self: The PRAGMA operation with the parameters substituted.
@@ -483,7 +483,7 @@ impl PragmaSetDensityMatrixWrapper {
     /// Remap qubits in a clone of the PRAGMA operation.
     ///
     /// Args:
-    ///     mapping (dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+    ///     mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
     ///
     /// Returns:
     ///     self: The PRAGMA operation with the qubits remapped.
@@ -622,7 +622,7 @@ struct PragmaRepeatGate {
 ///
 /// Args:
 ///     gate (str): The unique hqslang name of the gate to overrotate.
-///     qubits (list[int]): The qubits of the gate to overrotate.
+///     qubits (List[int]): The qubits of the gate to overrotate.
 ///     amplitude (float): The amplitude the random number is multiplied by.
 ///     variance (float): The standard deviation of the normal distribution the random number is drawn from.
 ///
@@ -647,7 +647,7 @@ struct PragmaBoostNoise {
 /// This PRAGMA operation signals the STOP of a parallel execution block.
 ///
 /// Args:
-///     qubits (list[int]): The qubits involved in parallel execution block.
+///     qubits (List[int]): The qubits involved in parallel execution block.
 ///     execution_time (CalculatorFloat): The time for the execution of the block in seconds.
 struct PragmaStopParallelBlock {
     qubits: Vec<usize>,
@@ -673,7 +673,7 @@ struct PragmaGlobalPhase {
 /// It can be used to boost the noise on the qubits since it gets worse with time.
 ///
 /// Args:
-///     qubits (list[int]): The qubits involved in the sleep block.
+///     qubits (List[int]): The qubits involved in the sleep block.
 ///     sleep_time (CalculatorFloat): The time for the execution of the block in seconds.
 pub struct PragmaSleep {
     qubits: Vec<usize>,
@@ -695,8 +695,8 @@ pub struct PragmaActiveReset {
 /// This PRAGMA operation signals the START of a decomposition block.
 ///
 /// Args:
-///     qubits (list[int]): The qubits involved in the decomposition block.
-///     reordering_dictionary (dict[int, int]): The reordering dictionary of the block.
+///     qubits (List[int]): The qubits involved in the decomposition block.
+///     reordering_dictionary (Dict[int, int]): The reordering dictionary of the block.
 pub struct PragmaStartDecompositionBlock {
     qubits: Vec<usize>,
     reordering_dictionary: HashMap<usize, usize>,
@@ -707,7 +707,7 @@ pub struct PragmaStartDecompositionBlock {
 /// This PRAGMA operation signals the STOP of a decomposition block.
 ///
 /// Args:
-///     qubits (list[int]): The qubits involved in the decomposition block.
+///     qubits (List[int]): The qubits involved in the decomposition block.
 pub struct PragmaStopDecompositionBlock {
     qubits: Vec<usize>,
 }
@@ -1106,7 +1106,7 @@ impl PragmaGeneralNoiseWrapper {
     /// List all involved qubits.
     ///
     /// Returns:
-    ///     set[int]: The involved qubits of the PRAGMA operation.
+    ///     Set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits(&self) -> PyObject {
         let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
             PySet::new_bound(py, &[*self.internal.qubit()])
@@ -1121,7 +1121,7 @@ impl PragmaGeneralNoiseWrapper {
     /// Used for the type based dispatch in ffi interfaces.
     ///
     /// Returns:
-    ///     list[str]: The tags of the Operation.
+    ///     List[str]: The tags of the Operation.
     fn tags(&self) -> Vec<String> {
         self.internal.tags().iter().map(|s| s.to_string()).collect()
     }
@@ -1145,7 +1145,7 @@ impl PragmaGeneralNoiseWrapper {
     /// Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
     ///
     /// Args:
-    ///     substitution_parameters (dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+    ///     substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
     ///
     /// Returns:
     ///     self: The PRAGMA operation with the parameters substituted.
@@ -1176,7 +1176,7 @@ impl PragmaGeneralNoiseWrapper {
     /// Remap qubits in a clone of the PRAGMA operation.
     ///
     /// Args:
-    ///     mapping (dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+    ///     mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
     ///
     /// Returns:
     ///     self: The PRAGMA operation with the qubits remapped.
@@ -1403,7 +1403,7 @@ impl PragmaChangeDeviceWrapper {
     /// List all involved qubits.
     ///
     /// Returns:
-    ///     set[int]: The involved qubits of the PRAGMA operation.
+    ///     Set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits(&self) -> PyObject {
         let pyobject: PyObject = Python::with_gil(|py| -> PyObject {
             PySet::new_bound(py, &["All"]).unwrap().to_object(py)
@@ -1416,7 +1416,7 @@ impl PragmaChangeDeviceWrapper {
     /// Used for the type based dispatch in ffi interfaces.
     ///
     /// Returns:
-    ///     list[str]: The tags of the Operation.
+    ///     List[str]: The tags of the Operation.
     fn tags(&self) -> Vec<String> {
         self.internal.tags().iter().map(|s| s.to_string()).collect()
     }
@@ -1440,7 +1440,7 @@ impl PragmaChangeDeviceWrapper {
     /// Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
     ///
     /// Args:
-    ///     substitution_parameters (dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+    ///     substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
     ///
     /// Returns:
     ///     self: The PRAGMA operation with the parameters substituted.
@@ -1471,7 +1471,7 @@ impl PragmaChangeDeviceWrapper {
     /// Remap qubits in a clone of the PRAGMA operation.
     ///
     /// Args:
-    ///     mapping (dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+    ///     mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
     ///
     /// Returns:
     ///     self: The PRAGMA operation with the qubits remapped.
@@ -1598,7 +1598,7 @@ fn pragma_annotated_op(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
 ///
 /// Args:
 ///     operation (Operation): - The Operation to be annotated.
-///     annotation (String): - The annotation.
+///     annotation (str): - The annotation.
 pub struct PragmaAnnotatedOpWrapper {
     /// PragmaAnnotatedOp to be wrapped and converted to Python.
     pub internal: PragmaAnnotatedOp,
@@ -1633,7 +1633,7 @@ impl PragmaAnnotatedOpWrapper {
     ///
     /// Args:
     ///     operation (Operation): - The Operation to be annotated.
-    ///     annotation (String): - The annotation.
+    ///     annotation (str): - The annotation.
     #[new]
     fn new(operation: &Bound<PyAny>, annotation: String) -> PyResult<Self> {
         let op = crate::operations::convert_pyany_to_operation(operation).map_err(|_| {
@@ -1658,7 +1658,7 @@ impl PragmaAnnotatedOpWrapper {
     /// Return the annotation.
     ///
     /// Returns:
-    ///     String: The annotation.
+    ///     str: The annotation.
     fn annotation(&self) -> String {
         self.internal.annotation.clone()
     }
@@ -1666,7 +1666,7 @@ impl PragmaAnnotatedOpWrapper {
     /// List all involved qubits.
     ///
     /// Returns:
-    ///     set[int]: The involved qubits of the PRAGMA operation.
+    ///     Set[int]: The involved qubits of the PRAGMA operation.
     fn involved_qubits(&self) -> PyObject {
         Python::with_gil(|py| -> PyObject {
             let involved = self.internal.involved_qubits();
@@ -1699,7 +1699,7 @@ impl PragmaAnnotatedOpWrapper {
     /// Used for the type based dispatch in ffi interfaces.
     ///
     /// Returns:
-    ///     list[str]: The tags of the Operation.
+    ///     List[str]: The tags of the Operation.
     fn tags(&self) -> Vec<String> {
         self.internal.tags().iter().map(|s| s.to_string()).collect()
     }
@@ -1723,7 +1723,7 @@ impl PragmaAnnotatedOpWrapper {
     /// Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
     ///
     /// Args:
-    ///     substitution_parameters (dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+    ///     substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
     ///
     /// Returns:
     ///     self: The PRAGMA operation with the parameters substituted.
@@ -1754,7 +1754,7 @@ impl PragmaAnnotatedOpWrapper {
     /// Remap qubits in a clone of the PRAGMA operation.
     ///
     /// Args:
-    ///     mapping (dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+    ///     mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
     ///
     /// Returns:
     ///     self: The PRAGMA operation with the qubits remapped.

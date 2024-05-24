@@ -170,6 +170,10 @@ pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     m.add_class::<SingleExcitationStoreWrapper>()?;
     m.add_class::<SingleExcitationLoadWrapper>()?;
     m.add_class::<CZQubitResonatorWrapper>()?;
+    #[cfg(feature = "unstable_operation_definition")]
+    m.add_class::<GateDefinitionWrapper>()?;
+    #[cfg(feature = "unstable_operation_definition")]
+    m.add_class::<CallDefinedGateWrapper>()?;
 
     Ok(())
 }

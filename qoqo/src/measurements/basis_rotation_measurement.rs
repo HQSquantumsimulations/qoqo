@@ -32,7 +32,7 @@ use std::collections::HashMap;
 ///
 /// Args:
 ///     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
-///     circuits (list[Circuit]): The collection of quantum circuits for the separate basis rotations.
+///     circuits (List[Circuit]): The collection of quantum circuits for the separate basis rotations.
 ///     input (PauliZProductInput): The additional input information required for measurement.
 ///
 /// Returns:
@@ -48,7 +48,7 @@ impl PauliZProductWrapper {
     ///
     /// Args:
     ///     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
-    ///     circuits (list[Circuit]): The collection of quantum circuits for the separate basis rotations.
+    ///     circuits (List[Circuit]): The collection of quantum circuits for the separate basis rotations.
     ///     input (PauliZProductInput): The additional input information required for measurement.
     ///
     /// Returns:
@@ -102,12 +102,12 @@ impl PauliZProductWrapper {
     /// Execute the PauliZ product measurement.
     ///
     /// Args:
-    ///     input_bit_registers (dict[str, Union[list[list[int]], list[list[bool]]]]): The classical bit registers with the register name as key
+    ///     input_bit_registers (Dict[str, Union[List[List[int]], List[List[bool]]]]): The classical bit registers with the register name as key
     ///     float_registers (Dict[str, List[List[float]]]): The classical float registers as a dictionary with the register name as key
     ///     complex_registers (Dict[str, List[List[complex]]]): The classical complex registers as a dictionary with the register name as key
     ///
     /// Returns:
-    ///     Optional[dict[str, float]]: The evaluated measurement.
+    ///     Optional[Dict[str, float]]: The evaluated measurement.
     ///
     /// Raises:
     ///     RuntimeError: Unexpected repetition of key in bit_register.
@@ -152,7 +152,7 @@ impl PauliZProductWrapper {
     /// Return the collection of quantum circuits for the separate basis rotations.
     ///
     /// Returns:
-    ///     list[Circuit]: The quantum circuits.
+    ///     List[Circuit]: The quantum circuits.
     pub fn circuits(&self) -> Vec<CircuitWrapper> {
         self.internal
             .circuits()
@@ -193,7 +193,7 @@ impl PauliZProductWrapper {
     /// Return clone of Measurement with symbolic parameters replaced.
     ///
     /// Args:
-    ///     substituted_parameters (dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
+    ///     substituted_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
     pub fn substitute_parameters(
         &self,
         substituted_parameters: HashMap<String, f64>,

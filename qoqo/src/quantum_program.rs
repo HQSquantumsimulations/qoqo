@@ -303,7 +303,7 @@ impl QuantumProgramWrapper {
     /// Return the roqoqo and qoqo versions from when the code was compiled.
     ///
     /// Returns:
-    ///     tuple[str, str]: The roqoqo and qoqo versions.
+    ///     Tuple[str, str]: The roqoqo and qoqo versions.
     fn _qoqo_versions(&self) -> (String, String) {
         let mut rsplit = ROQOQO_VERSION.split('.').take(2);
         let mut qsplit = QOQO_VERSION.split('.').take(2);
