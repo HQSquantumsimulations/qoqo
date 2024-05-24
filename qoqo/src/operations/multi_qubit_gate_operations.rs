@@ -153,7 +153,7 @@ impl CallDefinedGateWrapper {
     /// Return the name of the gate to apply.
     ///
     /// Returns:
-    ///     String: The name of the gate.
+    ///     str: The name of the gate.
     fn gate_name(&self) -> String {
         self.internal.gate_name().clone()
     }

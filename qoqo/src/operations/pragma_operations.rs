@@ -1598,7 +1598,7 @@ fn pragma_annotated_op(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
 ///
 /// Args:
 ///     operation (Operation): - The Operation to be annotated.
-///     annotation (String): - The annotation.
+///     annotation (str): - The annotation.
 pub struct PragmaAnnotatedOpWrapper {
     /// PragmaAnnotatedOp to be wrapped and converted to Python.
     pub internal: PragmaAnnotatedOp,
@@ -1633,7 +1633,7 @@ impl PragmaAnnotatedOpWrapper {
     ///
     /// Args:
     ///     operation (Operation): - The Operation to be annotated.
-    ///     annotation (String): - The annotation.
+    ///     annotation (str): - The annotation.
     #[new]
     fn new(operation: &Bound<PyAny>, annotation: String) -> PyResult<Self> {
         let op = crate::operations::convert_pyany_to_operation(operation).map_err(|_| {
@@ -1658,7 +1658,7 @@ impl PragmaAnnotatedOpWrapper {
     /// Return the annotation.
     ///
     /// Returns:
-    ///     String: The annotation.
+    ///     str: The annotation.
     fn annotation(&self) -> String {
         self.internal.annotation.clone()
     }
