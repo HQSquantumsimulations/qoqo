@@ -307,8 +307,7 @@ fn test_two_qubit_noise_term() {
             .unwrap();
 
         let desc1 = SingleQubitOverrotationDescriptionWrapper::new("RotateX", 1.0, 1.0);
-        let desc2 =
-            SingleQubitOverrotationDescriptionWrapper::new("RotateX", 1.0, 1.0);
+        let desc2 = SingleQubitOverrotationDescriptionWrapper::new("RotateX", 1.0, 1.0);
 
         let br = br
             .call_method1(
@@ -399,8 +398,7 @@ fn test_pyo3_richcmp() {
             .unwrap();
 
         let desc1 = SingleQubitOverrotationDescriptionWrapper::new("RotateX", 1.0, 1.0);
-        let desc2 =
-            SingleQubitOverrotationDescriptionWrapper::new("Rotatez", 1.0, 1.0);
+        let desc2 = SingleQubitOverrotationDescriptionWrapper::new("Rotatez", 1.0, 1.0);
 
         let operation_one = br
             .call_method1(
