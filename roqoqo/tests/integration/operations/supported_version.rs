@@ -15,8 +15,6 @@
 use ndarray::array;
 #[cfg(feature = "unstable_operation_definition")]
 use qoqo_calculator::CalculatorFloat;
-// #[cfg(feature = "unstable_analog_operations")]
-// use qoqo_calculator::CalculatorFloat;
 #[cfg(feature = "circuitdag")]
 use roqoqo::measurements::Cheated;
 #[cfg(feature = "circuitdag")]
