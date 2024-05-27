@@ -55,7 +55,6 @@ schemars = "0.8"
 [dev-dependencies]
 test-case = "3.0"
 nalgebra = "0.32"
-regex = "1.10"
 
 [build-dependencies]
 quote = "1.0"
