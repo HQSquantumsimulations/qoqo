@@ -80,7 +80,7 @@ it index.
 
 Args:
     readout (str): The name of the readout register the pauli_product is defined on.
-    pauli_product_mask (list[int]): List of the qubits involved in the Pauli produc measurement.
+    pauli_product_mask (List[int]): List of the qubits involved in the Pauli produc measurement.
 
 Returns:
     int: The index of the added Pauli product in the list of all Pauli products.
@@ -99,7 +99,7 @@ of expectation values of Pauli products.
 
 Args:
     name (str): The name of the expectation value.
-    linear (dict[int, float]): The linear combination of expectation values as a map between Pauli product index and coefficient.
+    linear (Dict[int, float]): The linear combination of expectation values as a map between Pauli product index and coefficient.
 
 Raises:
     RuntimeError: Failed to add linear expectation value.
@@ -205,61 +205,6 @@ Return a copy of the Object (copy here produces a deepcopy).
     def __deepcopy__(self): # type: ignore
         """
 Return a deep copy of the Object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
 """
 
     @classmethod
@@ -376,7 +321,7 @@ of expectation values of Pauli products.
 
 Args:
     name (str): The name of the expectation value.
-    linear (dict[int, float]): The linear combination of expectation values as a map between Pauli product index and coefficient.
+    linear (Dict[int, float]): The linear combination of expectation values as a map between Pauli product index and coefficient.
 
 Raises:
     RuntimeError: Failed to add linear expectation value.
@@ -486,61 +431,6 @@ Return a deep copy of the Object.
 """
 
     @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -641,7 +531,7 @@ Adds an expectation value that is defined by an operator on the Hilbert space.
 
 Args:
     name (str): The name of the expectation value.
-    operator (list[(int, int, complex)]): The measured operator on the Hilbert space,
+    operator (List[(int, int, complex)]): The measured operator on the Hilbert space,
                                           given as a list of sparse matrix entries of the form (row, col, value).
     readout (str): The mame of the readout register that contains the density matrix or satevector.
 
@@ -732,61 +622,6 @@ Return a deep copy of the Object.
 """
 
     @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -822,7 +657,7 @@ Collected information for executing a measurement of PauliZ product.
 
 Args:
     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
-    circuits (list[Circuit]): The collection of quantum circuits for the separate basis rotations.
+    circuits (List[Circuit]): The collection of quantum circuits for the separate basis rotations.
     input (PauliZProductInput): The additional input information required for measurement.
 
 Returns:
@@ -880,12 +715,12 @@ Return self>=value.
 Execute the PauliZ product measurement.
 
 Args:
-    input_bit_registers (dict[str, Union[list[list[int]], list[list[bool]]]]): The classical bit registers with the register name as key
+    input_bit_registers (Dict[str, Union[List[List[int]], List[List[bool]]]]): The classical bit registers with the register name as key
     float_registers (Dict[str, List[List[float]]]): The classical float registers as a dictionary with the register name as key
     complex_registers (Dict[str, List[List[complex]]]): The classical complex registers as a dictionary with the register name as key
 
 Returns:
-    Optional[dict[str, float]]: The evaluated measurement.
+    Optional[Dict[str, float]]: The evaluated measurement.
 
 Raises:
     RuntimeError: Unexpected repetition of key in bit_register.
@@ -898,7 +733,7 @@ Raises:
 Return the collection of quantum circuits for the separate basis rotations.
 
 Returns:
-    list[Circuit]: The quantum circuits.
+    List[Circuit]: The quantum circuits.
 """
 
     @classmethod
@@ -934,7 +769,7 @@ Returns:
 Return clone of Measurement with symbolic parameters replaced.
 
 Args:
-    substituted_parameters (dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
+    substituted_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
 """
 
     @classmethod
@@ -1032,61 +867,6 @@ Return a deep copy of the Object.
 """
 
     @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -1122,7 +902,7 @@ Collected information for executing a cheated measurement of PauliZ product.
 
 Args:
     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
-    circuits (list[Circuit]): The collection of quantum circuits for the separate basis rotations.
+    circuits (List[Circuit]): The collection of quantum circuits for the separate basis rotations.
     input (CheatedPauliZProductInput): The additional input information required for measurement.
 
 Returns:
@@ -1180,12 +960,12 @@ Return self>=value.
 Executes the cheated PauliZ product measurement.
 
 Args:
-    input_bit_registers (dict[str, Union[list[list[int]], list[list[bool]]]]): The classical bit registers with the register name as key
+    input_bit_registers (Dict[str, Union[List[List[int]], List[List[bool]]]]): The classical bit registers with the register name as key
     float_registers (Dict[str, List[List[float]]]): The classical float registers as a dictionary with the register name as key
     complex_registers (Dict[str, List[List[complex]]]): The classical complex registers as a dictionary with the register name as key
 
 Returns:
-    Optional[dict[str, float]]: The evaluated measurement.
+    Optional[Dict[str, float]]: The evaluated measurement.
 
 Raises:
     RuntimeError: Unexpected repetition of key in bit_register.
@@ -1198,7 +978,7 @@ Raises:
 Returns the collection of quantum circuits for the separate basis rotations.
 
 Returns:
-    list[Circuit]: The quantum circuits.
+    List[Circuit]: The quantum circuits.
 """
 
     @classmethod
@@ -1234,7 +1014,7 @@ Returns:
 Returns clone of Measurement with symbolic parameters replaced
 
 Args:
-    substituted_parameters (dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
+    substituted_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
 """
 
     @classmethod
@@ -1332,61 +1112,6 @@ Return a deep copy of the Object.
 """
 
     @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -1422,7 +1147,7 @@ Collected information for executing a cheated measurement.
 
 Args:
     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
-    circuits (list[Circuit]): The collection of quantum circuits executed for the measurement.
+    circuits (List[Circuit]): The collection of quantum circuits executed for the measurement.
     input (CheatedInput): The additional input information required for measurement.
 
 Returns:
@@ -1480,12 +1205,12 @@ Return self>=value.
 Execute the cheated measurement.
 
 Args:
-    input_bit_registers (dict[str, Union[list[list[int]], list[list[bool]]]]): The classical bit registers with the register name as key.
+    input_bit_registers (Dict[str, Union[List[List[int]], List[List[bool]]]]): The classical bit registers with the register name as key.
     float_registers (Dict[str, List[List[float]]]): The classical float registers as a dictionary with the register name as key.
     complex_registers (Dict[str, List[List[complex]]]): The classical complex registers as a dictionary with the register name as key.
 
 Returns:
-    Optional[dict[str, float]]: The evaluated expectation values.
+    Optional[Dict[str, float]]: The evaluated expectation values.
 
 Raises:
     RuntimeError: Unexpected repetition of key in bit_register.
@@ -1498,7 +1223,7 @@ Raises:
 Return the collection of quantum circuits for the separate cheated measurements.
 
 Returns:
-    list[Circuit]: The quantum circuits.
+    List[Circuit]: The quantum circuits.
 """
 
     @classmethod
@@ -1534,7 +1259,7 @@ Returns:
 Return copy of Measurement with symbolic parameters replaced.
 
 Arguments:
-    substituted_parameters (dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
+    substituted_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
 
 Raises:
     RuntimeError: Error substituting symbolic parameters.
@@ -1635,61 +1360,6 @@ Return a deep copy of the Object.
 """
 
     @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -1725,7 +1395,7 @@ Collected information for executing a classical register.
 
 Args:
     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
-    circuits (list[Circuit]): The collection of quantum circuits executed for the measurement.
+    circuits (List[Circuit]): The collection of quantum circuits executed for the measurement.
 
 Returns:
     ClassicalRegister: The new register.
@@ -1782,7 +1452,7 @@ Return self>=value.
 Return the collection of quantum circuits that make up the total measurement.
 
 Returns:
-    list[Circuit]: The quantum circuits.
+    List[Circuit]: The quantum circuits.
 """
 
     @classmethod
@@ -1809,7 +1479,7 @@ Returns:
 Return copy of Measurement with symbolic parameters replaced.
 
 Args:
-    substituted_parameters (dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
+    substituted_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
 
 Raises:
     RuntimeError: Error substituting symbolic parameters.
@@ -1907,61 +1577,6 @@ Return a copy of the Object (copy here produces a deepcopy).
     def __deepcopy__(self): # type: ignore
         """
 Return a deep copy of the Object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
 """
 
     @classmethod

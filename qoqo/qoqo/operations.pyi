@@ -86,7 +86,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -107,7 +107,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -122,7 +122,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -137,7 +137,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -283,61 +283,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -456,7 +401,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -477,7 +422,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -492,7 +437,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -507,7 +452,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -666,61 +611,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -839,7 +729,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -860,7 +750,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -875,7 +765,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -890,7 +780,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -1049,61 +939,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -1222,7 +1057,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -1243,7 +1078,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -1258,7 +1093,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -1273,7 +1108,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -1432,61 +1267,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -1608,7 +1388,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -1629,7 +1409,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -1644,7 +1424,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -1659,7 +1439,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -1818,61 +1598,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -2012,7 +1737,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -2033,7 +1758,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -2048,7 +1773,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -2063,7 +1788,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -2225,61 +1950,6 @@ Returns:
 """
 
     @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -2384,7 +2054,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -2405,7 +2075,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -2420,7 +2090,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -2435,7 +2105,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -2581,61 +2251,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -2743,7 +2358,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -2764,7 +2379,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -2779,7 +2394,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -2794,7 +2409,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -2940,61 +2555,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -3102,7 +2662,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -3123,7 +2683,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -3138,7 +2698,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -3153,7 +2713,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -3299,61 +2859,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -3461,7 +2966,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -3482,7 +2987,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -3497,7 +3002,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -3512,7 +3017,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -3658,61 +3163,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -3820,7 +3270,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -3841,7 +3291,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -3856,7 +3306,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -3871,7 +3321,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -4017,61 +3467,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -4179,7 +3574,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -4200,7 +3595,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -4215,7 +3610,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -4230,7 +3625,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -4376,61 +3771,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -4538,7 +3878,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -4559,7 +3899,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -4574,7 +3914,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -4589,7 +3929,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -4735,61 +4075,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -4897,7 +4182,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -4918,7 +4203,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -4933,7 +4218,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -4948,7 +4233,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -5094,61 +4379,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -5263,7 +4493,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -5284,7 +4514,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -5299,7 +4529,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -5314,7 +4544,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -5338,61 +4568,6 @@ Return name of definition operation.
 
 Returns:
     str
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -5507,7 +4682,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -5528,7 +4703,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -5543,7 +4718,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -5558,7 +4733,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -5582,61 +4757,6 @@ Return name of definition operation.
 
 Returns:
     str
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -5751,7 +4871,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -5772,7 +4892,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -5787,7 +4907,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -5802,7 +4922,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -5826,61 +4946,6 @@ Return name of definition operation.
 
 Returns:
     str
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -5995,7 +5060,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -6016,7 +5081,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -6031,7 +5096,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -6046,7 +5111,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -6070,61 +5135,6 @@ Return name of definition operation.
 
 Returns:
     str
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -6232,7 +5242,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -6253,7 +5263,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -6268,7 +5278,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -6283,7 +5293,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -6307,61 +5317,6 @@ Return name of definition operation.
 
 Returns:
     str
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -6480,7 +5435,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -6501,7 +5456,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -6516,7 +5471,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -6531,7 +5486,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -6555,61 +5510,6 @@ Return the qubit the operation acts on
 
 Returns:
     int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -6724,7 +5624,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -6745,7 +5645,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -6760,7 +5660,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -6775,7 +5675,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -6790,61 +5690,6 @@ For qoqo operations copy is always a deep copy
     def __deepcopy__(self): # type: ignore
         """
 Creates deep copy of Operation
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -6959,7 +5804,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -6980,7 +5825,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -6995,7 +5840,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -7010,7 +5855,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -7025,61 +5870,6 @@ For qoqo operations copy is always a deep copy
     def __deepcopy__(self): # type: ignore
         """
 Creates deep copy of Operation
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -7197,7 +5987,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -7218,7 +6008,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -7233,7 +6023,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -7248,7 +6038,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -7263,61 +6053,6 @@ For qoqo operations copy is always a deep copy
     def __deepcopy__(self): # type: ignore
         """
 Creates deep copy of Operation
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -7359,7 +6094,7 @@ a Rotate to another basis. It performs all of the operation on a clone of the qu
 sothat the actual quantum register remains unchanged.
 
 Args:
-    qubit_paulis (dict[int, int]): The dictionary of the pauli matrix to apply to each qubit in the form
+    qubit_paulis (Dict[int, int]): The dictionary of the pauli matrix to apply to each qubit in the form
                                    {qubit: pauli}. Allowed values to be provided for 'pauli' are: 0 = identity, 1 = PauliX, 2 = PauliY, 3 = PauliZ.
     readout (string): The name of the classical readout register.
     circuit (Circuit): The measurement preparation Circuit, applied on a copy of the register before measurement.
@@ -7444,7 +6179,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -7465,7 +6200,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -7480,7 +6215,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -7495,7 +6230,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -7510,61 +6245,6 @@ For qoqo operations copy is always a deep copy
     def __deepcopy__(self): # type: ignore
         """
 Creates deep copy of Operation
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -7603,7 +6283,7 @@ This PRAGMA measurement operation returns a measurement record for N repeated me
 
 Args:
     readout (string): The name of the classical readout register.
-    qubit_mapping (dict[int, int]): The mapping of qubits to indices in readout register.
+    qubit_mapping (Dict[int, int]): The mapping of qubits to indices in readout register.
     number_measurements (int): The number of times to repeat the measurement.
 
 """
@@ -7686,7 +6366,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -7707,7 +6387,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -7722,7 +6402,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -7737,7 +6417,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -7752,61 +6432,6 @@ For qoqo operations copy is always a deep copy
     def __deepcopy__(self): # type: ignore
         """
 Creates deep copy of Operation
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -7924,7 +6549,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -7945,7 +6570,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -7960,7 +6585,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -7975,7 +6600,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -7990,61 +6615,6 @@ For qoqo operations copy is always a deep copy
     def __deepcopy__(self): # type: ignore
         """
 Creates deep copy of Operation
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -8151,7 +6721,7 @@ Returns:
 List all involved qubits (here, all).
 
 Returns:
-    set[int]: The involved qubits of the PRAGMA operation.
+    Set[int]: The involved qubits of the PRAGMA operation.
 """
 
     @classmethod
@@ -8162,7 +6732,7 @@ Return tags classifying the type of the operation.
 Used for the type based dispatch in ffi interfaces.
 
 Returns:
-    list[str]: The tags of the operation.
+    List[str]: The tags of the operation.
 """
 
     @classmethod
@@ -8189,7 +6759,7 @@ Returns:
 Substitute the symbolic parameters in a clone of the PRAGMA operation according to the substitution_parameters input.
 
 Args:
-    substitution_parameters (dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
 
 Returns:
     self: The PRAGMA operation operation with the parameters substituted.
@@ -8204,7 +6774,7 @@ Raises:
 Remap qubits in a clone of the PRAGMA operation.
 
 Args:
-    mapping (dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
 
 Returns:
     self: The PRAGMA operation with the qubits remapped.
@@ -8238,61 +6808,6 @@ Return a string containing a formatted (string) representation of the PRAGMA ope
 
 Returns:
     str: The string representation of the operation.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
 """
 
     @classmethod
@@ -8397,7 +6912,7 @@ Returns:
 List all involved qubits (here, all).
 
 Returns:
-    set[int]: The involved qubits of the PRAGMA operation.
+    Set[int]: The involved qubits of the PRAGMA operation.
 """
 
     @classmethod
@@ -8408,7 +6923,7 @@ Return tags classifying the type of the operation.
 Used for type based dispatch in ffi interfaces.
 
 Returns:
-    list[str]: The tags of the Operation.
+    List[str]: The tags of the Operation.
 """
 
     @classmethod
@@ -8435,7 +6950,7 @@ Returns:
 Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
 Args:
-    substitution_parameters (dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
 
 Returns:
     self: The PRAGMA operation with the parameters substituted.
@@ -8450,7 +6965,7 @@ Raises:
 Remap qubits in a clone of the PRAGMA operation.
 
 Args:
-    mapping (dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
 
 Returns:
     self: The PRAGMA operation with the qubits remapped.
@@ -8484,61 +6999,6 @@ Return a string containing a formatted (string) representation of the PRAGMA ope
 
 Returns:
     str: The string representation of the operation.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
 """
 
     @classmethod
@@ -8648,7 +7108,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -8669,7 +7129,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -8684,7 +7144,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -8699,7 +7159,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -8714,61 +7174,6 @@ For qoqo operations copy is always a deep copy
     def __deepcopy__(self): # type: ignore
         """
 Creates deep copy of Operation
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -8814,7 +7219,7 @@ and standard deviation `variance` and is multiplied by the `amplitude`.
 
 Args:
     gate (str): The unique hqslang name of the gate to overrotate.
-    qubits (list[int]): The qubits of the gate to overrotate.
+    qubits (List[int]): The qubits of the gate to overrotate.
     amplitude (float): The amplitude the random number is multiplied by.
     variance (float): The standard deviation of the normal distribution the random number is drawn from.
 
@@ -8898,7 +7303,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -8919,7 +7324,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -8934,7 +7339,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -8949,7 +7354,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -8972,62 +7377,7 @@ Creates deep copy of Operation
 Return list of qubits of the multi qubit operation in order of descending significance
 
 Returns:
-    list[int]
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
+    List[int]
 """
 
     @classmethod
@@ -9134,7 +7484,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -9155,7 +7505,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -9170,7 +7520,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -9185,7 +7535,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -9200,61 +7550,6 @@ For qoqo operations copy is always a deep copy
     def __deepcopy__(self): # type: ignore
         """
 Creates deep copy of Operation
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -9292,7 +7587,7 @@ class PragmaStopParallelBlock(Operation):
 This PRAGMA operation signals the STOP of a parallel execution block.
 
 Args:
-    qubits (list[int]): The qubits involved in parallel execution block.
+    qubits (List[int]): The qubits involved in parallel execution block.
     execution_time (CalculatorFloat): The time for the execution of the block in seconds.
 """
 
@@ -9362,7 +7657,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -9383,7 +7678,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -9398,7 +7693,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -9413,7 +7708,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -9436,62 +7731,7 @@ Creates deep copy of Operation
 Return list of qubits of the multi qubit operation in order of descending significance
 
 Returns:
-    list[int]
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
+    List[int]
 """
 
     @classmethod
@@ -9601,7 +7841,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -9622,7 +7862,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -9637,7 +7877,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -9652,7 +7892,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -9667,61 +7907,6 @@ For qoqo operations copy is always a deep copy
     def __deepcopy__(self): # type: ignore
         """
 Creates deep copy of Operation
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -9762,7 +7947,7 @@ This PRAGMA operation is used for error mitigation reasons, for instance.
 It can be used to boost the noise on the qubits since it gets worse with time.
 
 Args:
-    qubits (list[int]): The qubits involved in the sleep block.
+    qubits (List[int]): The qubits involved in the sleep block.
     sleep_time (CalculatorFloat): The time for the execution of the block in seconds.
 """
 
@@ -9832,7 +8017,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -9853,7 +8038,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -9868,7 +8053,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -9883,7 +8068,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -9906,62 +8091,7 @@ Creates deep copy of Operation
 Return list of qubits of the multi qubit operation in order of descending significance
 
 Returns:
-    list[int]
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
+    List[int]
 """
 
     @classmethod
@@ -10062,7 +8192,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -10083,7 +8213,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -10098,7 +8228,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -10113,7 +8243,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -10137,61 +8267,6 @@ Return the qubit the operation acts on
 
 Returns:
     int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -10229,8 +8304,8 @@ class PragmaStartDecompositionBlock(Operation):
 This PRAGMA operation signals the START of a decomposition block.
 
 Args:
-    qubits (list[int]): The qubits involved in the decomposition block.
-    reordering_dictionary (dict[int, int]): The reordering dictionary of the block.
+    qubits (List[int]): The qubits involved in the decomposition block.
+    reordering_dictionary (Dict[int, int]): The reordering dictionary of the block.
 """
 
     def __init__(self, qubits: List[int], reordering_dictionary: Dict[int, int]):
@@ -10299,7 +8374,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -10320,7 +8395,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -10335,7 +8410,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -10350,7 +8425,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -10373,62 +8448,7 @@ Creates deep copy of Operation
 Return list of qubits of the multi qubit operation in order of descending significance
 
 Returns:
-    list[int]
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
+    List[int]
 """
 
     @classmethod
@@ -10466,7 +8486,7 @@ class PragmaStopDecompositionBlock(Operation):
 This PRAGMA operation signals the STOP of a decomposition block.
 
 Args:
-    qubits (list[int]): The qubits involved in the decomposition block.
+    qubits (List[int]): The qubits involved in the decomposition block.
 """
 
     def __init__(self, qubits: List[int]):
@@ -10529,7 +8549,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -10550,7 +8570,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -10565,7 +8585,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -10580,7 +8600,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -10603,62 +8623,7 @@ Creates deep copy of Operation
 Return list of qubits of the multi qubit operation in order of descending significance
 
 Returns:
-    list[int]
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
+    List[int]
 """
 
     @classmethod
@@ -10782,7 +8747,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -10803,7 +8768,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -10818,7 +8783,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -10833,7 +8798,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -10889,61 +8854,6 @@ Returns the probability associated with the noise operation
 
 Returns:
     CalculatorFloat
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -11060,7 +8970,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -11081,7 +8991,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -11096,7 +9006,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -11111,7 +9021,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -11167,61 +9077,6 @@ Returns the probability associated with the noise operation
 
 Returns:
     CalculatorFloat
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -11338,7 +9193,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -11359,7 +9214,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -11374,7 +9229,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -11389,7 +9244,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -11445,61 +9300,6 @@ Returns the probability associated with the noise operation
 
 Returns:
     CalculatorFloat
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -11623,7 +9423,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -11644,7 +9444,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -11659,7 +9459,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -11674,7 +9474,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -11730,61 +9530,6 @@ Returns the probability associated with the noise operation
 
 Returns:
     CalculatorFloat
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -11917,7 +9662,7 @@ Returns:
 List all involved qubits.
 
 Returns:
-    set[int]: The involved qubits of the PRAGMA operation.
+    Set[int]: The involved qubits of the PRAGMA operation.
 """
 
     @classmethod
@@ -11928,7 +9673,7 @@ Return tags classifying the type of the operation.
 Used for the type based dispatch in ffi interfaces.
 
 Returns:
-    list[str]: The tags of the Operation.
+    List[str]: The tags of the Operation.
 """
 
     @classmethod
@@ -11955,7 +9700,7 @@ Returns:
 Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
 Args:
-    substitution_parameters (dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
 
 Returns:
     self: The PRAGMA operation with the parameters substituted.
@@ -11970,7 +9715,7 @@ Raises:
 Remap qubits in a clone of the PRAGMA operation.
 
 Args:
-    mapping (dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
 
 Returns:
     self: The PRAGMA operation with the qubits remapped.
@@ -12004,61 +9749,6 @@ Return a string containing a formatted (string) representation of the PRAGMA ope
 
 Returns:
     str: The string representation of the operation.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
 """
 
     @classmethod
@@ -12181,7 +9871,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -12202,7 +9892,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -12217,7 +9907,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -12232,7 +9922,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -12247,61 +9937,6 @@ For qoqo operations copy is always a deep copy
     def __deepcopy__(self): # type: ignore
         """
 Creates deep copy of Operation
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -12420,7 +10055,7 @@ Returns:
 List all involved qubits.
 
 Returns:
-    set[int]: The involved qubits of the PRAGMA operation.
+    Set[int]: The involved qubits of the PRAGMA operation.
 """
 
     @classmethod
@@ -12431,7 +10066,7 @@ Return tags classifying the type of the operation.
 Used for the type based dispatch in ffi interfaces.
 
 Returns:
-    list[str]: The tags of the Operation.
+    List[str]: The tags of the Operation.
 """
 
     @classmethod
@@ -12458,7 +10093,7 @@ Returns:
 Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
 Args:
-    substitution_parameters (dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
 
 Returns:
     self: The PRAGMA operation with the parameters substituted.
@@ -12473,7 +10108,7 @@ Raises:
 Remap qubits in a clone of the PRAGMA operation.
 
 Args:
-    mapping (dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
 
 Returns:
     self: The PRAGMA operation with the qubits remapped.
@@ -12507,61 +10142,6 @@ Return a string containing a formatted (string) representation of the PRAGMA ope
 
 Returns:
     str: The string representation of the operation.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
 """
 
     @classmethod
@@ -12672,7 +10252,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -12693,7 +10273,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -12708,7 +10288,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -12723,7 +10303,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -12762,61 +10342,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -12927,7 +10452,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -12948,7 +10473,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -12963,7 +10488,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -12978,7 +10503,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -13017,61 +10542,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -13182,7 +10652,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -13203,7 +10673,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -13218,7 +10688,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -13233,7 +10703,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -13272,61 +10742,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -13437,7 +10852,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -13458,7 +10873,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -13473,7 +10888,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -13488,7 +10903,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -13527,61 +10942,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -13692,7 +11052,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -13713,7 +11073,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -13728,7 +11088,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -13743,7 +11103,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -13782,61 +11142,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -13947,7 +11252,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -13968,7 +11273,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -13983,7 +11288,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -13998,7 +11303,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -14037,61 +11342,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -14209,7 +11459,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -14230,7 +11480,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -14245,7 +11495,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -14260,7 +11510,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -14312,61 +11562,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -14484,7 +11679,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -14505,7 +11700,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -14520,7 +11715,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -14535,7 +11730,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -14587,61 +11782,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -14752,7 +11892,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -14773,7 +11913,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -14788,7 +11928,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -14803,7 +11943,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -14842,61 +11982,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -15007,7 +12092,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -15028,7 +12113,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -15043,7 +12128,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -15058,7 +12143,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -15097,61 +12182,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -15262,7 +12292,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -15283,7 +12313,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -15298,7 +12328,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -15313,7 +12343,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -15352,61 +12382,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -15524,7 +12499,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -15545,7 +12520,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -15560,7 +12535,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -15575,7 +12550,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -15627,61 +12602,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -15809,7 +12729,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -15830,7 +12750,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -15845,7 +12765,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -15860,7 +12780,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -15912,61 +12832,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -16094,7 +12959,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -16115,7 +12980,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -16130,7 +12995,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -16145,7 +13010,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -16197,61 +13062,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -16383,7 +13193,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -16404,7 +13214,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -16419,7 +13229,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -16434,7 +13244,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -16473,61 +13283,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -16663,7 +13418,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -16684,7 +13439,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -16699,7 +13454,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -16714,7 +13469,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -16753,61 +13508,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -16936,7 +13636,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -16957,7 +13657,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -16972,7 +13672,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -16987,7 +13687,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -17026,61 +13726,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -17212,7 +13857,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -17233,7 +13878,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -17248,7 +13893,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -17263,7 +13908,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -17302,61 +13947,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -17471,7 +14061,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -17492,7 +14082,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -17507,7 +14097,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -17522,7 +14112,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -17561,61 +14151,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -17737,7 +14272,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -17758,7 +14293,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -17773,7 +14308,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -17788,7 +14323,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -17827,61 +14362,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -18003,7 +14483,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -18024,7 +14504,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -18039,7 +14519,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -18054,7 +14534,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -18093,61 +14573,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -18264,7 +14689,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -18285,7 +14710,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -18300,7 +14725,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -18315,7 +14740,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -18474,61 +14899,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -18645,7 +15015,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -18666,7 +15036,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -18681,7 +15051,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -18696,7 +15066,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -18858,61 +15228,6 @@ Returns:
 """
 
     @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -19016,7 +15331,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -19037,7 +15352,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -19052,7 +15367,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -19067,7 +15382,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -19090,7 +15405,7 @@ Creates deep copy of Operation
 Return list of qubits of the multi qubit operation in order of descending significance
 
 Returns:
-    list[int]
+    List[int]
 """
 
     @classmethod
@@ -19125,61 +15440,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -19286,7 +15546,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -19307,7 +15567,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -19322,7 +15582,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -19337,7 +15597,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -19360,7 +15620,7 @@ Creates deep copy of Operation
 Return list of qubits of the multi qubit operation in order of descending significance
 
 Returns:
-    list[int]
+    List[int]
 """
 
     @classmethod
@@ -19395,61 +15655,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -19564,7 +15769,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -19585,7 +15790,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -19600,7 +15805,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -19615,7 +15820,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -19639,61 +15844,6 @@ Return name of definition operation.
 
 Returns:
     str
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -19808,7 +15958,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -19829,7 +15979,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -19844,7 +15994,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -19859,7 +16009,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -19874,61 +16024,6 @@ For qoqo operations copy is always a deep copy
     def __deepcopy__(self): # type: ignore
         """
 Creates deep copy of Operation
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -20055,7 +16150,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -20076,7 +16171,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -20091,7 +16186,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -20106,7 +16201,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -20158,61 +16253,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -20331,7 +16371,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -20352,7 +16392,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -20367,7 +16407,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -20382,7 +16422,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -20434,61 +16474,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -20614,7 +16599,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -20635,7 +16620,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -20650,7 +16635,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -20665,7 +16650,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -20717,61 +16702,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -20886,7 +16816,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -20907,7 +16837,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -20922,7 +16852,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -20937,7 +16867,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -20991,61 +16921,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -21167,7 +17042,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -21188,7 +17063,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -21203,7 +17078,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -21218,7 +17093,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -21285,61 +17160,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -21454,7 +17274,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -21475,7 +17295,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -21490,7 +17310,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -21505,7 +17325,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -21559,61 +17379,6 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -21728,7 +17493,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -21749,7 +17514,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -21764,7 +17529,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -21779,7 +17544,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -21938,61 +17703,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -22107,7 +17817,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -22128,7 +17838,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -22143,7 +17853,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -22158,7 +17868,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -22317,61 +18027,6 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -22490,7 +18145,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -22511,7 +18166,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -22526,7 +18181,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -22541,7 +18196,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -22556,61 +18211,6 @@ For qoqo operations copy is always a deep copy
     def __deepcopy__(self): # type: ignore
         """
 Creates deep copy of Operation
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -22729,7 +18329,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -22750,7 +18350,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -22765,7 +18365,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -22780,7 +18380,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -22803,7 +18403,7 @@ Creates deep copy of Operation
 List of modes the operation acts on.
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -22812,7 +18412,7 @@ Returns:
 Remap the bosonic modes in copy of the operation.
 
 Args:
-    mapping (dict[int, int]): Mapping for bosonic modes in operation.
+    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
 Returns:
     self
@@ -22828,61 +18428,6 @@ Return `mode` the bosonic Operation acts on.
 
 Returns:
     int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -22992,7 +18537,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -23013,7 +18558,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -23028,7 +18573,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -23043,7 +18588,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -23066,7 +18611,7 @@ Creates deep copy of Operation
 List of modes the operation acts on.
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -23075,7 +18620,7 @@ Returns:
 Remap the bosonic modes in copy of the operation.
 
 Args:
-    mapping (dict[int, int]): Mapping for bosonic modes in operation.
+    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
 Returns:
     self
@@ -23091,61 +18636,6 @@ Return `mode` the bosonic Operation acts on.
 
 Returns:
     int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -23261,7 +18751,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -23282,7 +18772,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -23297,7 +18787,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -23312,7 +18802,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -23335,7 +18825,7 @@ Creates deep copy of Operation
 List of modes the operation acts on.
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -23344,7 +18834,7 @@ Returns:
 Remap the bosonic modes in copy of the operation.
 
 Args:
-    mapping (dict[int, int]): Mapping for bosonic modes in operation.
+    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
 Returns:
     self
@@ -23369,61 +18859,6 @@ Return `mode_1` bosonic mode of two bosonic mode Operation.
 
 Returns:
     int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -23541,7 +18976,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -23562,7 +18997,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -23577,7 +19012,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -23592,7 +19027,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -23615,7 +19050,7 @@ Creates deep copy of Operation
 List of modes the operation acts on.
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -23624,7 +19059,7 @@ Returns:
 Remap the bosonic modes in copy of the operation.
 
 Args:
-    mapping (dict[int, int]): Mapping for bosonic modes in operation.
+    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
 Returns:
     self
@@ -23640,61 +19075,6 @@ Return `mode` the bosonic Operation acts on.
 
 Returns:
     int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -23801,7 +19181,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -23822,7 +19202,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -23837,7 +19217,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -23852,7 +19232,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -24001,61 +19381,6 @@ Raises:
 """
 
     @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -24167,7 +19492,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -24188,7 +19513,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -24203,7 +19528,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -24218,7 +19543,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -24241,7 +19566,7 @@ Creates deep copy of Operation
 List of modes the operation acts on.
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -24250,7 +19575,7 @@ Returns:
 Remap the bosonic modes in copy of the operation.
 
 Args:
-    mapping (dict[int, int]): Mapping for bosonic modes in operation.
+    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
 Returns:
     self
@@ -24266,61 +19591,6 @@ Return `mode` the bosonic Operation acts on.
 
 Returns:
     int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -24434,7 +19704,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -24455,7 +19725,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -24470,7 +19740,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -24485,7 +19755,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -24527,61 +19797,6 @@ Raises:
 """
 
     @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -24617,7 +19832,7 @@ An annotated Operation.
 
 Args:
     operation (Operation): - The Operation to be annotated.
-    annotation (String): - The annotation.
+    annotation (str): - The annotation.
 """
 
     def __init__(self, operation: Operation, annotation: str):
@@ -24680,7 +19895,7 @@ Returns:
 Return the annotation.
 
 Returns:
-    String: The annotation.
+    str: The annotation.
 """
 
     @classmethod
@@ -24689,7 +19904,7 @@ Returns:
 List all involved qubits.
 
 Returns:
-    set[int]: The involved qubits of the PRAGMA operation.
+    Set[int]: The involved qubits of the PRAGMA operation.
 """
 
     @classmethod
@@ -24700,7 +19915,7 @@ Return tags classifying the type of the operation.
 Used for the type based dispatch in ffi interfaces.
 
 Returns:
-    list[str]: The tags of the Operation.
+    List[str]: The tags of the Operation.
 """
 
     @classmethod
@@ -24727,7 +19942,7 @@ Returns:
 Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
 Args:
-    substitution_parameters (dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
 
 Returns:
     self: The PRAGMA operation with the parameters substituted.
@@ -24742,7 +19957,7 @@ Raises:
 Remap qubits in a clone of the PRAGMA operation.
 
 Args:
-    mapping (dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
 
 Returns:
     self: The PRAGMA operation with the qubits remapped.
@@ -24776,61 +19991,6 @@ Return a string containing a formatted (string) representation of the PRAGMA ope
 
 Returns:
     str: The string representation of the operation.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
 """
 
     @classmethod
@@ -24939,7 +20099,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -24960,7 +20120,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -24975,7 +20135,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -24990,7 +20150,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -25022,7 +20182,7 @@ Returns:
 List of modes the operation acts on.
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -25031,7 +20191,7 @@ Returns:
 Remap the bosonic modes in copy of the operation.
 
 Args:
-    mapping (dict[int, int]): Mapping for bosonic modes in operation.
+    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
 Returns:
     self
@@ -25047,61 +20207,6 @@ Return `mode` the bosonic Operation acts on.
 
 Returns:
     int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -25210,7 +20315,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -25231,7 +20336,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -25246,7 +20351,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -25261,7 +20366,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -25293,7 +20398,7 @@ Returns:
 List of modes the operation acts on.
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -25302,7 +20407,7 @@ Returns:
 Remap the bosonic modes in copy of the operation.
 
 Args:
-    mapping (dict[int, int]): Mapping for bosonic modes in operation.
+    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
 Returns:
     self
@@ -25318,61 +20423,6 @@ Return `mode` the bosonic Operation acts on.
 
 Returns:
     int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -25481,7 +20531,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -25502,7 +20552,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -25517,7 +20567,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -25532,7 +20582,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -25564,7 +20614,7 @@ Returns:
 List of modes the operation acts on.
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -25573,7 +20623,7 @@ Returns:
 Remap the bosonic modes in copy of the operation.
 
 Args:
-    mapping (dict[int, int]): Mapping for bosonic modes in operation.
+    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
 Returns:
     self
@@ -25589,61 +20639,6 @@ Return `mode` the bosonic Operation acts on.
 
 Returns:
     int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -25748,7 +20743,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -25769,7 +20764,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -25784,7 +20779,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -25799,7 +20794,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -25831,7 +20826,7 @@ Returns:
 List of modes the operation acts on.
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -25840,7 +20835,7 @@ Returns:
 Remap the bosonic modes in copy of the operation.
 
 Args:
-    mapping (dict[int, int]): Mapping for bosonic modes in operation.
+    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
 Returns:
     self
@@ -25856,61 +20851,6 @@ Return `mode` the bosonic Operation acts on.
 
 Returns:
     int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -26015,7 +20955,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -26036,7 +20976,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -26051,7 +20991,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -26066,7 +21006,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -26098,7 +21038,7 @@ Returns:
 List of modes the operation acts on.
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -26107,7 +21047,7 @@ Returns:
 Remap the bosonic modes in copy of the operation.
 
 Args:
-    mapping (dict[int, int]): Mapping for bosonic modes in operation.
+    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
 Returns:
     self
@@ -26123,61 +21063,6 @@ Return `mode` the bosonic Operation acts on.
 
 Returns:
     int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -26281,7 +21166,7 @@ Returns:
 Returns tags identifying the Operation
 
 Returns:
-    list[str]: The tags identifying the operation
+    List[str]: The tags identifying the operation
 """
 
     @classmethod
@@ -26302,7 +21187,7 @@ Only available when all symbolic expressions can be evaluated to float with the
 provided parameters.
 
 Args:
-    substitution_parameters (dict[str, float]): The substituted free parameters
+    substitution_parameters (Dict[str, float]): The substituted free parameters
 
 Returns:
     Operation: The operation with the parameters substituted
@@ -26317,7 +21202,7 @@ Raises:
 Remap qubits
 
 Args:
-    mapping (dict[int, int]): The mapping
+    mapping (Dict[int, int]): The mapping
 
 Returns:
     Operation: The operation with the remapped qubits
@@ -26332,7 +21217,7 @@ Raises:
 List all involved Qubits
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -26364,7 +21249,7 @@ Returns:
 List of modes the operation acts on.
 
 Returns:
-    Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
 """
 
     @classmethod
@@ -26373,7 +21258,7 @@ Returns:
 Remap the bosonic modes in copy of the operation.
 
 Args:
-    mapping (dict[int, int]): Mapping for bosonic modes in operation.
+    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
 Returns:
     self
@@ -26392,58 +21277,412 @@ Returns:
 """
 
     @classmethod
-    def current_version(self): # type: ignore
+    def __doc__(self): # type: ignore
         """
-staticmethod(function) -> method
+str(object='') -> str
+str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
+Create a new string object from the given object. If encoding or
+errors is specified, then the object must expose a data buffer
+that will be decoded using the given encoding and error handler.
+Otherwise, returns the result of object.__str__() (if defined)
+or repr(object).
+encoding defaults to sys.getdefaultencoding().
+errors defaults to 'strict'.
 """
 
     @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def __module__(self): # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+str(object='') -> str
+str(bytes_or_buffer[, encoding[, errors]]) -> str
+
+Create a new string object from the given object. If encoding or
+errors is specified, then the object must expose a data buffer
+that will be decoded using the given encoding and error handler.
+Otherwise, returns the result of object.__str__() (if defined)
+or repr(object).
+encoding defaults to sys.getdefaultencoding().
+errors defaults to 'strict'.
+"""
+
+class GateDefinition(Operation):
+    """
+GateDefinition is the Definition of a new custom gate.
+
+Args:
+    circuit (Circuit): The circuit where the definition is stored.
+    name (str): The name of the gate that is defined.
+    qubits (List[int]): The indices of the qubits used in the internal definition.
+    free_parameter (List[str]): Names of the free CalculatorFloat variables in the internal definition.
+"""
+
+    def __init__(self, circuit: Circuit, name: str, qubits: List[int], free_parameter: List[str]):
+       return
+
+    @classmethod
+    def __repr__(self): # type: ignore
+        """
+Return repr(self).
+"""
+
+    @classmethod
+    def __lt__(self): # type: ignore
+        """
+Return self<value.
+"""
+
+    @classmethod
+    def __le__(self): # type: ignore
+        """
+Return self<=value.
+"""
+
+    @classmethod
+    def __eq__(self): # type: ignore
+        """
+Return self==value.
+"""
+
+    @classmethod
+    def __ne__(self): # type: ignore
+        """
+Return self!=value.
+"""
+
+    @classmethod
+    def __gt__(self): # type: ignore
+        """
+Return self>value.
+"""
+
+    @classmethod
+    def __ge__(self): # type: ignore
+        """
+Return self>=value.
+"""
+
+    @classmethod
+    def circuit(self): # type: ignore
+        """
+Get value of struct field circuit
+"""
+
+    @classmethod
+    def free_parameters(self): # type: ignore
+        """
+Get value of struct field free_parameters
+"""
+
+    @classmethod
+    def is_parametrized(self): # type: ignore
+        """
+Returns true if operation contains symbolic parameters
 
 Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
+    bool
 """
 
     @classmethod
-    def json_schema(self): # type: ignore
+    def tags(self) -> List[str]: # type: ignore
         """
-staticmethod(function) -> method
+Returns tags identifying the Operation
 
-Convert a function to be a static method.
+Returns:
+    List[str]: The tags identifying the operation
+"""
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
+    @classmethod
+    def hqslang(self) -> str: # type: ignore
+        """
+Returns hqslang name of Operation
 
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
+Returns:
+    str: The name
+"""
 
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
+    @classmethod
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        """
+Substitutes internal symbolic parameters with float values
 
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
+Only available when all symbolic expressions can be evaluated to float with the
+provided parameters.
+
+Args:
+    substitution_parameters (Dict[str, float]): The substituted free parameters
+
+Returns:
+    Operation: The operation with the parameters substituted
+
+Raises:
+    RuntimeError: Parameter Substitution failed
+"""
+
+    @classmethod
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        """
+Remap qubits
+
+Args:
+    mapping (Dict[int, int]): The mapping
+
+Returns:
+    Operation: The operation with the remapped qubits
+
+Raises:
+    RuntimeError: Qubit remapping failed
+"""
+
+    @classmethod
+    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        """
+List all involved Qubits
+
+Returns:
+    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+"""
+
+    @classmethod
+    def __copy__(self): # type: ignore
+        """
+Copies Operation
+
+For qoqo operations copy is always a deep copy
+"""
+
+    @classmethod
+    def __deepcopy__(self): # type: ignore
+        """
+Creates deep copy of Operation
+"""
+
+    @classmethod
+    def qubits(self): # type: ignore
+        """
+Return list of qubits of the multi qubit operation in order of descending significance
+
+Returns:
+    List[int]
+"""
+
+    @classmethod
+    def name(self): # type: ignore
+        """
+Return name of definition operation.
+
+Returns:
+    str
+"""
+
+    @classmethod
+    def __doc__(self): # type: ignore
+        """
+str(object='') -> str
+str(bytes_or_buffer[, encoding[, errors]]) -> str
+
+Create a new string object from the given object. If encoding or
+errors is specified, then the object must expose a data buffer
+that will be decoded using the given encoding and error handler.
+Otherwise, returns the result of object.__str__() (if defined)
+or repr(object).
+encoding defaults to sys.getdefaultencoding().
+errors defaults to 'strict'.
+"""
+
+    @classmethod
+    def __module__(self): # type: ignore
+        """
+str(object='') -> str
+str(bytes_or_buffer[, encoding[, errors]]) -> str
+
+Create a new string object from the given object. If encoding or
+errors is specified, then the object must expose a data buffer
+that will be decoded using the given encoding and error handler.
+Otherwise, returns the result of object.__str__() (if defined)
+or repr(object).
+encoding defaults to sys.getdefaultencoding().
+errors defaults to 'strict'.
+"""
+
+class CallDefinedGate(Operation):
+    """
+The gate to be replaced by a gate defined with GateDefinition gate.
+The gate applies a gate previously defined by GateDefinition with the name gate_name.
+
+Args:
+    gate_name (str) : The name of the called defined operations.
+    qubits (List[int]) : The qubits that for this call replace the qubits in the internal definition of the called gate
+                          (get replaced in order of apppearance in gate defintion).
+    free_parameters (List[CalculatorFloat]) : List of float values that replace the free parameters in the internal definition of the called gate
+                                            (get replaced in order of apppearance in gate defintion).
+"""
+
+    def __init__(self, gate_name: str, qubits: List[int], free_parameters: List[CalculatorFloat]):
+       return
+
+    @classmethod
+    def __repr__(self): # type: ignore
+        """
+Return repr(self).
+"""
+
+    @classmethod
+    def __lt__(self): # type: ignore
+        """
+Return self<value.
+"""
+
+    @classmethod
+    def __le__(self): # type: ignore
+        """
+Return self<=value.
+"""
+
+    @classmethod
+    def __eq__(self): # type: ignore
+        """
+Return self==value.
+"""
+
+    @classmethod
+    def __ne__(self): # type: ignore
+        """
+Return self!=value.
+"""
+
+    @classmethod
+    def __gt__(self): # type: ignore
+        """
+Return self>value.
+"""
+
+    @classmethod
+    def __ge__(self): # type: ignore
+        """
+Return self>=value.
+"""
+
+    @classmethod
+    def gate_name(self) -> str: # type: ignore
+        """
+Return the name of the gate to apply.
+
+Returns:
+    str: The name of the gate.
+"""
+
+    @classmethod
+    def qubits(self) -> List[int]: # type: ignore
+        """
+Return the qubits on which the Gate operation is applied.
+
+Returns:
+    List[int]: The qubits of the operation.
+"""
+
+    @classmethod
+    def free_parameters(self) -> List[CalculatorFloat]: # type: ignore
+        """
+Return the qubits on which the Gate operation is applied.
+
+Returns:
+    List[CalculatorFloat]: The qubits of the operation.
+"""
+
+    @classmethod
+    def involved_qubits(self) -> Set[int]: # type: ignore
+        """
+List all involved qubits.
+
+Returns:
+    Set[int]: The involved qubits of the operation.
+"""
+
+    @classmethod
+    def tags(self) -> List[str]: # type: ignore
+        """
+Return tags classifying the type of the operation.
+
+Used for the type based dispatch in ffi interfaces.
+
+Returns:
+    List[str]: The tags of the Operation.
+"""
+
+    @classmethod
+    def hqslang(self) -> str: # type: ignore
+        """
+Return hqslang name of the operation.
+
+Returns:
+    str: The hqslang name of the operation.
+"""
+
+    @classmethod
+    def is_parametrized(self) -> bool: # type: ignore
+        """
+Return true when the operation has symbolic parameters.
+
+Returns:
+    bool: True if the operation contains symbolic parameters, False if it does not.
+"""
+
+    @classmethod
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Circuit: # type: ignore
+        """
+Substitute the symbolic parameters in a clone of the operation according to the input.
+
+Args:
+    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the operation.
+
+Returns:
+    self: The operation with the parameters substituted.
+
+Raises:
+    RuntimeError: The parameter substitution failed.
+"""
+
+    @classmethod
+    def remap_qubits(self, mapping: Dict[int, int]) -> Circuit: # type: ignore
+        """
+Remap qubits in a clone of the CallDefinedGate operation.
+
+Args:
+    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the operation.
+
+Returns:
+    self: The operation with the qubits remapped.
+
+Raises:
+    RuntimeError: The qubit remapping failed.
+"""
+
+    @classmethod
+    def __copy__(self) -> CallDefinedGate: # type: ignore
+        """
+Return a copy of the operation (copy here produces a deepcopy).
+
+Returns:
+    CallDefinedGate: A deep copy of self.
+"""
+
+    @classmethod
+    def __deepcopy__(self) -> CallDefinedGate: # type: ignore
+        """
+Return a deep copy of the operation.
+
+Returns:
+    CallDefinedGate: A deep copy of self.
+"""
+
+    @classmethod
+    def __format__(self) -> str: # type: ignore
+        """
+Return a string containing a formatted (string) representation of the operation.
+
+Returns:
+    str: The string representation of the operation.
 """
 
     @classmethod

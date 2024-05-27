@@ -151,7 +151,7 @@ Delete self[key].
 Substitute the symbolic parameters in a clone of the Circuit according to the substitution_parameters input.
 
 Args:
-    substitution_parameters (dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
+    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
 
 Returns:
     self: The Circuit with the parameters substituted.
@@ -166,7 +166,7 @@ Raises:
 Remap qubits in operations in clone of Circuit.
 
 Args:
-    mapping (dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the Circuit.
+    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the Circuit.
 
 Returns:
     self: The Circuit with the qubits remapped.
@@ -205,7 +205,7 @@ print(circuit_overrotated)
 Count the number of occurences of a set of operation tags in the circuit.
 
 Args:
-    operations (list[str]): List of operation tags that should be counted.
+    operations (List[str]): List of operation tags that should be counted.
 
 Returns:
     int: The number of occurences of these operation tags.
@@ -217,7 +217,7 @@ Returns:
 Return a list of the hqslang names of all operations occuring in the circuit.
 
 Returns:
-    set[str]: The operation types in the Circuit.
+    Set[str]: The operation types in the Circuit.
 """
 
     @classmethod
@@ -244,7 +244,7 @@ Returns:
 Return the roqoqo and qoqo versions from when the code was compiled.
 
 Returns:
-    tuple[str, str]: The roqoqo and qoqo versions.
+    Tuple[str, str]: The roqoqo and qoqo versions.
 """
 
     @classmethod
@@ -292,61 +292,6 @@ Returns:
 
 Raises:
     ValueError: Cannot serialize Circuit to json.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
 """
 
     @classmethod
@@ -413,7 +358,7 @@ Return a list of definitions in the Circuit.
 Definitions need to be unique.
 
 Returns:
-    list[Operation]: A vector of the definitions in the Circuit.
+    List[Operation]: A vector of the definitions in the Circuit.
 """
 
     @classmethod
@@ -422,7 +367,7 @@ Returns:
 Return a list of all operations in the Circuit.
 
 Returns:
-    list[Operation]: A vector of the operations in the Circuit.
+    List[Operation]: A vector of the operations in the Circuit.
 """
 
     @classmethod
@@ -434,7 +379,7 @@ Args:
     tag (str): tag by which to filter operations.
 
 Returns:
-    list[Operation]: A vector of the operations with the specified tag in the Circuit.
+    List[Operation]: A vector of the operations with the specified tag in the Circuit.
 """
 
     @classmethod
@@ -613,7 +558,7 @@ Returns:
 Return the roqoqo and qoqo versions from when the code was compiled.
 
 Returns:
-    tuple[str, str]: The roqoqo and qoqo versions.
+    Tuple[str, str]: The roqoqo and qoqo versions.
 """
 
     @classmethod
@@ -684,377 +629,6 @@ neither is passed implicitly as the first argument to the method.
 
 Static methods in Python are similar to those found in Java or C++.
 For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
-        """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
-        """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
-        """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-class CircuitDag:
-    """
-Represents the Direct Acyclic Graph (DAG) of a Circuit.
-
-"""
-
-    def __init__(self):
-       return
-
-    @classmethod
-    def __lt__(self): # type: ignore
-        """
-Return self<value.
-"""
-
-    @classmethod
-    def __le__(self): # type: ignore
-        """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
-        """
-Return self==value.
-"""
-
-    @classmethod
-    def __ne__(self): # type: ignore
-        """
-Return self!=value.
-"""
-
-    @classmethod
-    def __gt__(self): # type: ignore
-        """
-Return self>value.
-"""
-
-    @classmethod
-    def __ge__(self): # type: ignore
-        """
-Return self>=value.
-"""
-
-    @classmethod
-    def from_circuit(self, circuit: Circuit) -> Circuit: # type: ignore
-        """
-Create a CircuitDag from a given Circuit;
-
-Args:
-    circuit (Circuit): The Circuit to build the new CircuitDag from.
-
-Returns:
-    self: The new CircuitDag.
-"""
-
-    @classmethod
-    def to_circuit(self): # type: ignore
-        """
-Transforms the CircuitDag into a Circuit.
-
-"""
-
-    @classmethod
-    def add_to_back(self, op: Operation): # type: ignore
-        """
-Add an Operation to the back of the CircuitDag, if necessary.
-
-Args:
-    op (Operation): The Operation to add to the back of the CircuitDag.
-
-Raises:
-    TypeError: The Python Object cannot be converted to Operation.
-"""
-
-    @classmethod
-    def add_to_front(self, op: Operation): # type: ignore
-        """
-Add an Operation to the front of the CircuitDag, if necessary.
-
-Args:
-    op (Operation): The Operation to add to the front of the CircuitDag.
-
-Raises:
-    TypeError: The Python Object cannot be converted to Operation.
-"""
-
-    @classmethod
-    def execution_blocked(self, already_executed: List[int], to_be_executed: int) -> List[int]: # type: ignore
-        """
-Checks if executing an operation is blocked by any not-yet executed operation.
-
-Args:
-    already_executed (list[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
-    to_be_executed (int): NodeIndex of the operation that should be executed next.
-
-Returns:
-    list[int]: List containing the sorted blocking elements.
-"""
-
-    @classmethod
-    def blocking_predecessors(self, already_executed: List[int], to_be_executed: int) -> List[int]: # type: ignore
-        """
-Checks which of the direct predecessors of an Operation in the CircuitDag blocks the execution.
-
-Warning:
-This method can only be used to determine if an operation can be executed when `already_executed` is consistent.
-When the list  `already_executed` is inconsistent (a n operation is reported as executed that could not have been executed yet)
-this method returning an empty vector does not imply that the `to_be_executed` operation can be executed.
-
-Args:
-    already_executed (list[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
-    to_be_executed (int): NodeIndex of the Operation that should be executed next.
-
-Returns:
-    list[int]: List containing the sorted blocking elements.
-"""
-
-    @classmethod
-    def new_front_layer(self, already_executed: List[int], current_front_layer: List[int], to_be_executed: int): # type: ignore
-        """
-Returns a new front-layer after executing an operation from the current front layer.
-
-Returns an error if operation to be executed is not in the current front layer.
-
-Args:
-    already_executed (list[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
-    current_front_layer (list[int]): List of NodeIndices in the current front layer ready to be executed if physically possible.
-    to_be_executed (int): NodeIndex of the operation that should be executed next.
-"""
-
-    @classmethod
-    def parallel_blocks(self): # type: ignore
-        """
-Returns an iterator over the possible parallel blocks in circuit that can be executed simultaneously
-
-Returns an Iterator over Vectors of references to the NodeIndices in the parallel block as well
-as references to the Operation in the blocks
-"""
-
-    @classmethod
-    def get(self, index: int) -> Operation: # type: ignore
-        """
-Given a NodeIndex, returns the Operation contained in the node of
-the CircuitDag.
-
-Args:
-    index (int): The index of the node to get from the CircuitDag.
-
-Returns:
-    Operation: The Operation at the given index (if it exists).
-
-Raises:
-    IndexError: Index out of range.
-"""
-
-    @classmethod
-    def __copy__(self) -> CircuitDag: # type: ignore
-        """
-Returns a copy of the CircuitDag (produces a deepcopy).
-
-Returns:
-    CircuitDag: A copy of self.
-"""
-
-    @classmethod
-    def _qoqo_versions(self) -> Tuple[str, str]: # type: ignore
-        """
-Return the roqoqo and qoqo versions from when the code was compiled.
-
-Returns:
-    tuple[str, str]: The roqoqo and qoqo versions.
-"""
-
-    @classmethod
-    def to_bincode(self) -> bytearray: # type: ignore
-        """
-Return the bincode representation of the CircuitDag using the [bincode] crate.
-
-Returns:
-    ByteArray: The serialized CircuitDag (in [bincode] form).
-
-Raises:
-    ValueError: Cannot serialize CircuitDag to bytes.
-"""
-
-    @classmethod
-    def from_bincode(self): # type: ignore
-        """
-staticmethod(function) -> method
-
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def successors(self): # type: ignore
-        """
-Returns the list of the successors of a given node in the CircuitDag.
-
-"""
-
-    @classmethod
-    def commuting_operations(self) -> List[int]: # type: ignore
-        """
-Returns the list of nodes of commuting operations in CircuitDag.
-
-Returns:
-    list[int]: The list of nodes of commuting operations.
-"""
-
-    @classmethod
-    def first_parallel_block(self) -> Set[int]: # type: ignore
-        """
-Returns a set containing the nodes in the first parallel block.
-
-Returns:
-    set[int]: The set of nodes in the first parallel block.
-"""
-
-    @classmethod
-    def last_parallel_block(self) -> Set[int]: # type: ignore
-        """
-Returns a set containing the nodes in the last parallel block.
-
-Returns:
-    set[int]: The set of nodes in the last parallel block.
-"""
-
-    @classmethod
-    def first_operation_involving_qubit(self) -> Dict[int, int]: # type: ignore
-        """
-Returns a dictionary where a key represents a qubit and its value represents
-the first node that involves that qubit.
-
-Returns:
-    dict[int, int]: The dictionary of {qubit: node} elements.
-"""
-
-    @classmethod
-    def last_operation_involving_qubit(self) -> Dict[int, int]: # type: ignore
-        """
-Returns a dictionary where a key represents a qubit and its value represents
-the last node that involves that qubit.
-
-Returns:
-    dict[int, int]: The dictionary of {qubit: node} elements.
-"""
-
-    @classmethod
-    def first_operation_involving_classical(self) -> Dict[(str, int), int]: # type: ignore
-        """
-Returns a dictionary where a key is composed by the name and the size
-of the classical register and its value represents the first node that involves that
-register.
-
-Returns:
-    dict[(str, int), int]: The dictionary of {(str, int), int} elements.
-"""
-
-    @classmethod
-    def last_operation_involving_classical(self) -> Dict[(str, int), int]: # type: ignore
-        """
-Returns a dictionary where a key is composed by the name and the size
-of the classical register and its value represents the last node that involves that
-register.
-
-Returns:
-    dict[(str, int), int]: The dictionary of {(str, int), int} elements.
 """
 
     @classmethod
