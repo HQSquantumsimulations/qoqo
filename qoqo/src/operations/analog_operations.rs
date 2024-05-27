@@ -41,8 +41,8 @@ pub struct ApplyConstantSpinHamiltonian {
 ///
 /// Args:
 ///     hamiltonian (SpinHamiltonian): The hamiltonian that is to be simulated.
-///     time (Vec<f64>): Range of time stored as a vector. The total duration of the simulations is given by the last value in the range.
-///     values (HashMap<String, Vec<f64>>): /// Values of time-dependent parameters, appearing in `hamiltonian`, at instances given by the vector `time`.
+///     time (List[float]): Range of time stored as a vector. The total duration of the simulations is given by the last value in the range.
+///     values (Mapping[str, List[float]]): /// Values of time-dependent parameters, appearing in `hamiltonian`, at instances given by the vector `time`.
 pub struct ApplyTimeDependentSpinHamiltonian {
     hamiltonian: SpinHamiltonian,
     time: Vec<f64>,

@@ -30,7 +30,7 @@ use std::collections::HashMap;
 ///
 /// Args:
 ///     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
-///     circuits (list[Circuit]): The collection of quantum circuits executed for the measurement.
+///     circuits (List[Circuit]): The collection of quantum circuits executed for the measurement.
 ///
 /// Returns:
 ///     ClassicalRegister: The new register.
@@ -45,7 +45,7 @@ impl ClassicalRegisterWrapper {
     ///
     /// Args:
     ///     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
-    ///     circuits (list[Circuit]): The collection of quantum circuits executed for the measurement.
+    ///     circuits (List[Circuit]): The collection of quantum circuits executed for the measurement.
     ///
     /// Returns:
     ///     ClassicalRegister: The new register.
@@ -90,7 +90,7 @@ impl ClassicalRegisterWrapper {
     /// Return the collection of quantum circuits that make up the total measurement.
     ///
     /// Returns:
-    ///     list[Circuit]: The quantum circuits.
+    ///     List[Circuit]: The quantum circuits.
     pub fn circuits(&self) -> Vec<CircuitWrapper> {
         self.internal
             .circuits()
@@ -122,7 +122,7 @@ impl ClassicalRegisterWrapper {
     /// Return copy of Measurement with symbolic parameters replaced.
     ///
     /// Args:
-    ///     substituted_parameters (dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
+    ///     substituted_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
     ///
     /// Raises:
     ///     RuntimeError: Error substituting symbolic parameters.

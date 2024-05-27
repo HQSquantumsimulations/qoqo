@@ -106,13 +106,13 @@ pub struct InputBit {
 
 #[cfg(feature = "unstable_operation_definition")]
 #[wrap(Operate, Define, OperateMultiQubit, JsonSchema)]
-/// GateDefinition is the Definition for a Bit type register.
+/// GateDefinition is the Definition of a new custom gate.
 ///
 /// Args:
 ///     circuit (Circuit): The circuit where the definition is stored.
-///     name (String): The name of the gate that is defined.
-///     qubits (Vec<usize>): The indices of the qubits used in the internal definition.
-///     free_parameter (Vec<String>): Names of the free CalculatorFloat variables in the internal definition.
+///     name (str): The name of the gate that is defined.
+///     qubits (List[int]): The indices of the qubits used in the internal definition.
+///     free_parameter (List[str]): Names of the free CalculatorFloat variables in the internal definition.
 pub struct GateDefinition {
     circuit: Circuit,
     name: String,

@@ -274,7 +274,7 @@ impl InvolveQubits for InputBit {
     }
 }
 
-/// GateDefinition is the Definition of a new gate.
+/// GateDefinition is the Definition of a new custom gate defined by a circuit that can be used with the CallDefinedGate Operation.
 ///
 #[cfg(feature = "unstable_operation_definition")]
 #[derive(
@@ -300,12 +300,12 @@ pub struct GateDefinition {
 }
 
 #[cfg(feature = "unstable_operation_definition")]
-impl super::ImplementedIn1point11 for GateDefinition {}
+impl super::ImplementedIn1point13 for GateDefinition {}
 
 #[cfg(feature = "unstable_operation_definition")]
 impl SupportedVersion for GateDefinition {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 11, 0)
+        (1, 13, 0)
     }
 }
 

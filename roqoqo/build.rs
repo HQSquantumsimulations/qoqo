@@ -165,12 +165,11 @@ impl<'ast> Visit<'ast> for Visitor {
         // Check attributes
         for att in i.attrs.clone() {
             let path = att.path().get_ident().map(|id| id.to_string());
-            // TOFIX: REMOVE WHEN STABLED
+            // TOFIX: REMOVE WHEN STABILISED
             if matches!(att.style, AttrStyle::Outer)
                 && path == Some("cfg".to_string())
                 && !cfg!(feature = "unstable_operation_definition")
             {
-                // println!("cargo:warning={:?}", path);
                 let cfg_feature_name: CfgFeatureMacroArgument =
                     att.parse_args().expect("parsing failed 1");
                 if cfg_feature_name.0.contains("unstable_operation_definition") {

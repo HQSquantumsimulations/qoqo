@@ -1,6 +1,6 @@
 [package]
 
-version = "1.13.0"
+version = "1.13.1"
 name = "qoqo"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
@@ -40,8 +40,8 @@ num-complex = "0.4"
 thiserror = "1.0"
 qoqo_calculator = { version = "1.2" }
 qoqo_calculator_pyo3 = { version = "1.2", default-features = false }
-qoqo-macros = { version = "1.13.0", path = "../qoqo-macros" }
-roqoqo = { version = "1.13.0", path = "../roqoqo", features = [
+qoqo-macros = { version = "1.13.1", path = "../qoqo-macros" }
+roqoqo = { version = "1.13.1", path = "../roqoqo", features = [
     "serialize",
     "overrotate",
 ] }

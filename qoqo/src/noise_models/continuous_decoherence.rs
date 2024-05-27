@@ -150,7 +150,7 @@ impl ContinuousDecoherenceModelWrapper {
     /// Convenience function to add damping to several qubits
     ///
     /// Args:
-    ///     qubits (list[int]): The qubits to add damping to.
+    ///     qubits (List[int]): The qubits to add damping to.
     ///     rate (float): The damping rate.
     ///
     /// Returns:
@@ -164,7 +164,7 @@ impl ContinuousDecoherenceModelWrapper {
     /// Convenience function to add dephasing to several qubits
     ///
     /// Args:
-    ///     qubits (list[int]): The qubits to add dephasing to.
+    ///     qubits (List[int]): The qubits to add dephasing to.
     ///     rate (float): The dephasing rate.
     ///
     /// Returns:
@@ -178,7 +178,7 @@ impl ContinuousDecoherenceModelWrapper {
     /// Convenience function to add depolarising to several qubits
     ///
     /// Args:
-    ///     qubits (list[int]): The qubits to add depolarising to.
+    ///     qubits (List[int]): The qubits to add depolarising to.
     ///     rate (float): The depolarising rate.
     ///
     /// Returns:
@@ -192,7 +192,7 @@ impl ContinuousDecoherenceModelWrapper {
     /// Convenience function to add excitation to several qubits
     ///
     /// Args:
-    ///     qubits (list[int]): The qubits to add excitation to.
+    ///     qubits (List[int]): The qubits to add excitation to.
     ///     rate (float): The excitation rate.
     ///
     /// Returns:

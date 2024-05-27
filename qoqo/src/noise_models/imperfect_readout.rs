@@ -176,7 +176,7 @@ impl ImperfectReadoutModelWrapper {
     /// Return probability to detect 0 as 1 for a qubit
     ///
     /// Args:
-    ///     qubit (int) The qubit for which the probability is returned.
+    ///     qubit (int): The qubit for which the probability is returned.
     ///
     /// Returns:
     ///     float: The probability to detect 0 as 1 for the qubit
@@ -187,7 +187,7 @@ impl ImperfectReadoutModelWrapper {
     /// Return probability to detect 1 as 0 for a qubit
     ///
     /// Args:
-    ///     qubit (int) The qubit for which the probability is returned.
+    ///     qubit (int): The qubit for which the probability is returned.
     ///
     /// Returns:
     ///     float: The probability to detect 1 as 0 for the qubit
