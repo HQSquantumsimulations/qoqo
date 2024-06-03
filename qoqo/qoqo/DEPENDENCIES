@@ -1,5 +1,5 @@
 ====================================================
-addr2line 0.21.0
+addr2line 0.22.0
 https://github.com/gimli-rs/addr2line
 by 
 A cross-platform symbolication library written in Rust, using `gimli`
@@ -2656,7 +2656,7 @@ limitations under the License.
 
 
 ====================================================
-backtrace 0.3.71
+backtrace 0.3.72
 https://github.com/rust-lang/backtrace-rs
 by The Rust Project Developers
 A library to acquire a stack trace (backtrace) at runtime in a Rust program.
@@ -10805,7 +10805,7 @@ limitations under the License.
 
 
 ====================================================
-gimli 0.28.1
+gimli 0.29.0
 https://github.com/gimli-rs/gimli
 by 
 A library for reading and writing the DWARF debugging format.
@@ -19872,7 +19872,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 ====================================================
-object 0.32.2
+object 0.35.0
 https://github.com/gimli-rs/object
 by 
 A unified interface for reading and writing object file formats.
@@ -22684,7 +22684,7 @@ limitations under the License.
 
 
 ====================================================
-proc-macro2 1.0.84
+proc-macro2 1.0.85
 https://github.com/dtolnay/proc-macro2
 by David Tolnay <dtolnay@gmail.com>, Alex Crichton <alex@alexcrichton.com>
 A substitute implementation of the compiler's `proc_macro` API to decouple token-based libraries from the procedural macro use case.
@@ -34331,7 +34331,7 @@ freely, subject to the following restrictions:
 
 
 ====================================================
-tokio 1.37.0
+tokio 1.38.0
 https://tokio.rs
 by Tokio Contributors <team@tokio.rs>
 An event-driven, non-blocking I/O platform for writing asynchronous I/O
@@ -34341,31 +34341,27 @@ License: MIT
 ----------------------------------------------------
 LICENSE:
 
-Copyright (c) 2023 Tokio Contributors
+MIT License
 
-Permission is hereby granted, free of charge, to any
-person obtaining a copy of this software and associated
-documentation files (the "Software"), to deal in the
-Software without restriction, including without
-limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software
-is furnished to do so, subject to the following
-conditions:
+Copyright (c) Tokio Contributors
 
-The above copyright notice and this permission notice
-shall be included in all copies or substantial portions
-of the Software.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
-ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
-TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
-SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
-IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-DEALINGS IN THE SOFTWARE.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 
 ====================================================
