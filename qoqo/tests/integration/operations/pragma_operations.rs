@@ -15,6 +15,7 @@ use num_complex::Complex64;
 use numpy::PyArray2;
 use numpy::PyReadonlyArray1;
 use pyo3::prelude::*;
+use pyo3::types::PyList;
 use pyo3::Python;
 use qoqo::operations::*;
 use qoqo::CircuitWrapper;
@@ -1818,6 +1819,11 @@ fn test_pyo3_new_set_statevector() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = py.get_type_bound::<PragmaSetStateVectorWrapper>();
+
+        let pylist = PyList::new_bound(py, vec![1.0, 0.0]);
+        let binding_from_pylist = operation.call1((pylist,));
+        assert!(binding_from_pylist.is_ok());
+
         let to_get_statevec_0 = Operation::from(PragmaSetStateVector::new(statevector()));
         let convert_to_get_statevec_0 = convert_operation_to_pyobject(to_get_statevec_0).unwrap();
         let statevector_op_0 = convert_to_get_statevec_0
@@ -1864,6 +1870,11 @@ fn test_pyo3_new_set_densitymatrix() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = py.get_type_bound::<PragmaSetDensityMatrixWrapper>();
+
+        let pylist = PyList::new_bound(py, vec![vec![1.0, 0.0], vec![0.0, 0.0]]);
+        let binding_from_pylist = operation.call1((pylist,));
+        assert!(binding_from_pylist.is_ok());
+
         let to_get_densmat_0 = Operation::from(PragmaSetDensityMatrix::new(densitymatrix()));
         let convert_to_get_densmat_0 = convert_operation_to_pyobject(to_get_densmat_0).unwrap();
         let densmat_op_0 = convert_to_get_densmat_0
@@ -2432,6 +2443,18 @@ fn test_pyo3_new_general_noise() {
     Python::with_gil(|py| {
         // Basic initialisation, no errors
         let operation = py.get_type_bound::<PragmaGeneralNoiseWrapper>();
+
+        let pylist = PyList::new_bound(
+            py,
+            vec![
+                vec![1.0, 0.0, 0.0],
+                vec![0.0, 1.0, 0.0],
+                vec![0.0, 0.0, 1.0],
+            ],
+        );
+        let binding_from_pylist = operation.call1((0, 1.0, pylist));
+        assert!(binding_from_pylist.is_ok());
+
         let to_get_operators = Operation::from(PragmaGeneralNoise::new(
             0,
             CalculatorFloat::from(0.005),
