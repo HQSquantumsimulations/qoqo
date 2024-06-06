@@ -371,6 +371,7 @@ impl SquareLatticeDevice {
     /// Adds damping to allnoise rates.
     ///
     /// # Arguments
+    ///
     /// * `damping` - The damping rates.
     pub fn add_damping_all(mut self, damping: f64) -> Self {
         let number_qubits = <Self as Device>::number_qubits(&self);
@@ -385,6 +386,7 @@ impl SquareLatticeDevice {
     /// Adds dephasing to all noise rates.
     ///
     /// # Arguments
+    ///
     /// * `dephasing` - The dephasing rates.
     ///
     pub fn add_dephasing_all(mut self, dephasing: f64) -> Self {
