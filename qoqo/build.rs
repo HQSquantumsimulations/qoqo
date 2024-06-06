@@ -293,7 +293,7 @@ fn create_doc(module: &str) -> PyResult<String> {
                 for (class_fn_name, meth) in class_r_dict.iter() {
                     let meth_name = class_fn_name.str()?.extract::<String>()?;
                     let class_doc = match meth_name.as_str() {
-                        "__add__" => r#"Implement the `+` (__add__) magic method to add two Circuits.
+                        "__add__" if name.eq(&"Circuit") => r#"Implement the `+` (__add__) magic method to add two Circuits.
 
 Args:
     rhs (Operation | Circuit): The second Circuit object in this operation.
@@ -304,7 +304,7 @@ Returns:
     Raises:
     TypeError: Left hand side can not be converted to Circuit.
     TypeError: Right hand side cannot be converted to Operation or Circuit."#.to_owned(),
-                        "__iadd__" => r#"Implement the `+=` (__iadd__) magic method to add a Operation to a Circuit.
+                        "__iadd__" if name.eq(&"Circuit") => r#"Implement the `+=` (__iadd__) magic method to add a Operation to a Circuit.
 
 Args:
     other (Operation | Circuit): The Operation object to be added to self.
