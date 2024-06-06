@@ -1,6 +1,4 @@
 [package]
-
-version = "1.13.0"
 name = "qoqo"
 version = "1.13.1"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
