@@ -17,16 +17,16 @@ The general single qubit unitary gate.
         \end{pmatrix}
 
 Args:
-    qubit: The qubit that the unitary gate is applied to.
-    alpha_r: The real part of the on-diagonal elements of the single-qubit unitary.
-    alpha_i: The imaginary part of the on-diagonal elements of the single-qubit unitary.
-    beta_r: The real part of the off-diagonal elements of the single-qubit unitary.
-    beta_i: The imaginary part of the off-diagonal elements of the single-qubit unitary.
-    global_phase: The global phase of the single-qubit unitary.
+    qubit (int): The qubit that the unitary gate is applied to.
+    alpha_r (CalculatorFloat): The real part of the on-diagonal elements of the single-qubit unitary.
+    alpha_i (CalculatorFloat): The imaginary part of the on-diagonal elements of the single-qubit unitary.
+    beta_r (CalculatorFloat): The real part of the off-diagonal elements of the single-qubit unitary.
+    beta_i (CalculatorFloat): The imaginary part of the off-diagonal elements of the single-qubit unitary.
+    global_phase (CalculatorFloat): The global phase of the single-qubit unitary.
 
 """
 
-    def __init__(self, qubit, alpha_r, alpha_i, beta_r, beta_i, global_phase):
+    def __init__(self, qubit: int, alpha_r: Union[float, str], alpha_i: Union[float, str], beta_r: Union[float, str], beta_i: Union[float, str], global_phase: Union[float, str]):
        return
 
     @classmethod
@@ -283,6 +283,61 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -335,7 +390,7 @@ Args:
 
 """
 
-    def __init__(self, qubit: int, theta: Tuple[float, str]):
+    def __init__(self, qubit: int, theta: Union[float, str]):
        return
 
     @classmethod
@@ -611,6 +666,61 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -663,7 +773,7 @@ Args:
 
 """
 
-    def __init__(self, qubit: int, theta: Tuple[float, str]):
+    def __init__(self, qubit: int, theta: Union[float, str]):
        return
 
     @classmethod
@@ -939,6 +1049,61 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -991,7 +1156,7 @@ Args:
 
 """
 
-    def __init__(self, qubit: int, theta: Tuple[float, str]):
+    def __init__(self, qubit: int, theta: Union[float, str]):
        return
 
     @classmethod
@@ -1270,6 +1435,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -1316,7 +1536,7 @@ Args:
 
 """
 
-    def __init__(self, qubit: int, theta: Tuple[float, str], phi: Tuple[float, str]):
+    def __init__(self, qubit: int, theta: Union[float, str], phi: Union[float, str]):
        return
 
     @classmethod
@@ -1601,6 +1821,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -1659,7 +1934,7 @@ Args:
 
 """
 
-    def __init__(self, qubit: int, theta: Tuple[float, str], spherical_theta: Tuple[float, str], spherical_phi: Tuple[float, str]):
+    def __init__(self, qubit: int, theta: Union[float, str], spherical_theta: Union[float, str], spherical_phi: Union[float, str]):
        return
 
     @classmethod
@@ -1947,6 +2222,61 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -2254,6 +2584,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -2555,6 +2940,61 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -2862,6 +3302,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -3163,6 +3658,61 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -3470,6 +4020,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -3771,6 +4376,61 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -4078,6 +4738,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -4382,6 +5097,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -4568,6 +5338,61 @@ Return name of definition operation.
 
 Returns:
     str
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -4760,6 +5585,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -4946,6 +5826,61 @@ Return name of definition operation.
 
 Returns:
     str
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -5138,6 +6073,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -5317,6 +6307,61 @@ Return name of definition operation.
 
 Returns:
     str
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -5513,6 +6558,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -5690,6 +6790,61 @@ For qoqo operations copy is always a deep copy
     def __deepcopy__(self): # type: ignore
         """
 Creates deep copy of Operation
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -5873,6 +7028,61 @@ Creates deep copy of Operation
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -6053,6 +7263,61 @@ For qoqo operations copy is always a deep copy
     def __deepcopy__(self): # type: ignore
         """
 Creates deep copy of Operation
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -6248,6 +7513,61 @@ Creates deep copy of Operation
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -6435,6 +7755,61 @@ Creates deep copy of Operation
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -6618,6 +7993,61 @@ Creates deep copy of Operation
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -6754,7 +8184,7 @@ Returns:
 """
 
     @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Circuit: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaSetStateVector: # type: ignore
         """
 Substitute the symbolic parameters in a clone of the PRAGMA operation according to the substitution_parameters input.
 
@@ -6769,7 +8199,7 @@ Raises:
 """
 
     @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Circuit: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaSetStateVector: # type: ignore
         """
 Remap qubits in a clone of the PRAGMA operation.
 
@@ -6808,6 +8238,61 @@ Return a string containing a formatted (string) representation of the PRAGMA ope
 
 Returns:
     str: The string representation of the operation.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
 """
 
     @classmethod
@@ -6945,7 +8430,7 @@ Returns:
 """
 
     @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Circuit: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaSetDensityMatrix: # type: ignore
         """
 Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
@@ -6960,7 +8445,7 @@ Raises:
 """
 
     @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Circuit: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaSetDensityMatrix: # type: ignore
         """
 Remap qubits in a clone of the PRAGMA operation.
 
@@ -6999,6 +8484,61 @@ Return a string containing a formatted (string) representation of the PRAGMA ope
 
 Returns:
     str: The string representation of the operation.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
 """
 
     @classmethod
@@ -7174,6 +8714,61 @@ For qoqo operations copy is always a deep copy
     def __deepcopy__(self): # type: ignore
         """
 Creates deep copy of Operation
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -7381,6 +8976,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -7418,7 +9068,7 @@ Args:
     noise_coefficient (CalculatorFloat): The coefficient by which the noise is boosted.
 """
 
-    def __init__(self, noise_coefficient: Tuple[float, str]):
+    def __init__(self, noise_coefficient: Union[float, str]):
        return
 
     @classmethod
@@ -7553,6 +9203,61 @@ Creates deep copy of Operation
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -7591,7 +9296,7 @@ Args:
     execution_time (CalculatorFloat): The time for the execution of the block in seconds.
 """
 
-    def __init__(self, qubits: List[int], execution_time: Tuple[float, str]):
+    def __init__(self, qubits: List[int], execution_time: Union[float, str]):
        return
 
     @classmethod
@@ -7735,6 +9440,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -7775,7 +9535,7 @@ Args:
     phase (CalculatorFloat): The picked up global phase.
 """
 
-    def __init__(self, phase: Tuple[float, str]):
+    def __init__(self, phase: Union[float, str]):
        return
 
     @classmethod
@@ -7910,6 +9670,61 @@ Creates deep copy of Operation
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -7951,7 +9766,7 @@ Args:
     sleep_time (CalculatorFloat): The time for the execution of the block in seconds.
 """
 
-    def __init__(self, qubits: List[int], sleep_time: Tuple[float, str]):
+    def __init__(self, qubits: List[int], sleep_time: Union[float, str]):
        return
 
     @classmethod
@@ -8092,6 +9907,61 @@ Return list of qubits of the multi qubit operation in order of descending signif
 
 Returns:
     List[int]
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -8267,6 +10137,61 @@ Return the qubit the operation acts on
 
 Returns:
     int
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -8452,6 +10377,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -8627,6 +10607,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -8675,7 +10710,7 @@ Args:
     rate (CalculatorFloat): The error rate of the damping (in 1/second).
 """
 
-    def __init__(self, qubit: int, gate_time: Tuple[float, str], rate: Tuple[float, str]):
+    def __init__(self, qubit: int, gate_time: Union[float, str], rate: Union[float, str]):
        return
 
     @classmethod
@@ -8854,6 +10889,61 @@ Returns the probability associated with the noise operation
 
 Returns:
     CalculatorFloat
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -8898,7 +10988,7 @@ Args:
     rate (CalculatorFloat): The error rate of the depolarisation (in 1/second).
 """
 
-    def __init__(self, qubit: int, gate_time: Tuple[float, str], rate: Tuple[float, str]):
+    def __init__(self, qubit: int, gate_time: Union[float, str], rate: Union[float, str]):
        return
 
     @classmethod
@@ -9077,6 +11167,61 @@ Returns the probability associated with the noise operation
 
 Returns:
     CalculatorFloat
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -9121,7 +11266,7 @@ Args:
     rate (CalculatorFloat): The error rate of the dephasing (in 1/second).
 """
 
-    def __init__(self, qubit: int, gate_time: Tuple[float, str], rate: Tuple[float, str]):
+    def __init__(self, qubit: int, gate_time: Union[float, str], rate: Union[float, str]):
        return
 
     @classmethod
@@ -9300,6 +11445,61 @@ Returns the probability associated with the noise operation
 
 Returns:
     CalculatorFloat
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -9345,7 +11545,7 @@ Args:
     dephasing_rate (CalculatorFloat): The error rate of the dephasing (in 1/second).
 """
 
-    def __init__(self, qubit: int, gate_time: Tuple[float, str], depolarising_rate: Tuple[float, str], dephasing_rate: Tuple[float, str]):
+    def __init__(self, qubit: int, gate_time: Union[float, str], depolarising_rate: Union[float, str], dephasing_rate: Union[float, str]):
        return
 
     @classmethod
@@ -9533,6 +11733,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -9575,7 +11830,7 @@ Args:
 
 """
 
-    def __init__(self, qubit: int, gate_time: Tuple[float, str], Rates):
+    def __init__(self, qubit: int, gate_time: Union[float, str], Rates):
        return
 
     @classmethod
@@ -9630,7 +11885,7 @@ Returns:
 """
 
     @classmethod
-    def gate_time(self) -> Tuple[float, str]: # type: ignore
+    def gate_time(self) -> Union[float, str]: # type: ignore
         """
 Return the `gate_time` of the PRAGMA operation.
 
@@ -9695,7 +11950,7 @@ Returns:
 """
 
     @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Circuit: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaGeneralNoise: # type: ignore
         """
 Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
@@ -9710,7 +11965,7 @@ Raises:
 """
 
     @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Circuit: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaGeneralNoise: # type: ignore
         """
 Remap qubits in a clone of the PRAGMA operation.
 
@@ -9749,6 +12004,61 @@ Return a string containing a formatted (string) representation of the PRAGMA ope
 
 Returns:
     str: The string representation of the operation.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
 """
 
     @classmethod
@@ -9940,6 +12250,61 @@ Creates deep copy of Operation
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -10088,7 +12453,7 @@ Returns:
 """
 
     @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Circuit: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaChangeDevice: # type: ignore
         """
 Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
@@ -10103,7 +12468,7 @@ Raises:
 """
 
     @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Circuit: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaChangeDevice: # type: ignore
         """
 Remap qubits in a clone of the PRAGMA operation.
 
@@ -10142,6 +12507,61 @@ Return a string containing a formatted (string) representation of the PRAGMA ope
 
 Returns:
     str: The string representation of the operation.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
 """
 
     @classmethod
@@ -10345,6 +12765,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -10542,6 +13017,61 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -10745,6 +13275,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -10942,6 +13527,61 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -11145,6 +13785,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -11345,6 +14040,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -11393,7 +14143,7 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, theta: Tuple[float, str]):
+    def __init__(self, control: int, target: int, theta: Union[float, str]):
        return
 
     @classmethod
@@ -11562,6 +14312,61 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -11613,7 +14418,7 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, theta: Tuple[float, str]):
+    def __init__(self, control: int, target: int, theta: Union[float, str]):
        return
 
     @classmethod
@@ -11782,6 +14587,61 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -11985,6 +14845,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -12182,6 +15097,61 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -12385,6 +15355,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -12433,7 +15458,7 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, theta: Tuple[float, str]):
+    def __init__(self, control: int, target: int, theta: Union[float, str]):
        return
 
     @classmethod
@@ -12602,6 +15627,61 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -12657,7 +15737,7 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, theta: Tuple[float, str], phase: Tuple[float, str]):
+    def __init__(self, control: int, target: int, theta: Union[float, str], phase: Union[float, str]):
        return
 
     @classmethod
@@ -12832,6 +15912,61 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -12887,7 +16022,7 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, theta: Tuple[float, str], phase: Tuple[float, str]):
+    def __init__(self, control: int, target: int, theta: Union[float, str], phase: Union[float, str]):
        return
 
     @classmethod
@@ -13065,6 +16200,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -13115,7 +16305,7 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, x: Tuple[float, str], y: Tuple[float, str], z: Tuple[float, str]):
+    def __init__(self, control: int, target: int, x: Union[float, str], y: Union[float, str], z: Union[float, str]):
        return
 
     @classmethod
@@ -13286,6 +16476,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -13340,7 +16585,7 @@ in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transfo
 
 """
 
-    def __init__(self, control: int, target: int, t: Tuple[float, str], u: Tuple[float, str], delta: Tuple[float, str]):
+    def __init__(self, control: int, target: int, t: Union[float, str], u: Union[float, str], delta: Union[float, str]):
        return
 
     @classmethod
@@ -13511,6 +16756,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -13558,7 +16858,7 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, x: Tuple[float, str], y: Tuple[float, str], z: Tuple[float, str]):
+    def __init__(self, control: int, target: int, x: Union[float, str], y: Union[float, str], z: Union[float, str]):
        return
 
     @classmethod
@@ -13729,6 +17029,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -13785,7 +17140,7 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, delta_real: Tuple[float, str], delta_imag: Tuple[float, str]):
+    def __init__(self, control: int, target: int, delta_real: Union[float, str], delta_imag: Union[float, str]):
        return
 
     @classmethod
@@ -13950,6 +17305,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -13995,7 +17405,7 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, t: Tuple[float, str]):
+    def __init__(self, control: int, target: int, t: Union[float, str]):
        return
 
     @classmethod
@@ -14154,6 +17564,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -14200,7 +17665,7 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, t_real: Tuple[float, str], t_imag: Tuple[float, str]):
+    def __init__(self, control: int, target: int, t_real: Union[float, str], t_imag: Union[float, str]):
        return
 
     @classmethod
@@ -14365,6 +17830,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -14417,7 +17937,7 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, phi: Tuple[float, str]):
+    def __init__(self, control: int, target: int, phi: Union[float, str]):
        return
 
     @classmethod
@@ -14576,6 +18096,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -14623,7 +18198,7 @@ Args:
 
 """
 
-    def __init__(self, qubit: int, theta: Tuple[float, str]):
+    def __init__(self, qubit: int, theta: Union[float, str]):
        return
 
     @classmethod
@@ -14899,6 +18474,61 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -14949,7 +18579,7 @@ Args:
 
 """
 
-    def __init__(self, qubit: int, theta: Tuple[float, str]):
+    def __init__(self, qubit: int, theta: Union[float, str]):
        return
 
     @classmethod
@@ -15225,6 +18855,61 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -15443,6 +19128,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -15658,6 +19398,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -15847,6 +19642,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -15886,7 +19736,7 @@ Args:
 
 """
 
-    def __init__(self, repetitions: Tuple[float, str], circuit: Circuit):
+    def __init__(self, repetitions: Union[float, str], circuit: Circuit):
        return
 
     @classmethod
@@ -16027,6 +19877,61 @@ Creates deep copy of Operation
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -16078,7 +19983,7 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, theta: Tuple[float, str], phi: Tuple[float, str]):
+    def __init__(self, control: int, target: int, theta: Union[float, str], phi: Union[float, str]):
        return
 
     @classmethod
@@ -16256,6 +20161,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -16305,7 +20265,7 @@ Args:
     theta (CalculatorFloat): The angle $\theta$ of the rotation.
 """
 
-    def __init__(self, control: int, target: int, theta: Tuple[float, str]):
+    def __init__(self, control: int, target: int, theta: Union[float, str]):
        return
 
     @classmethod
@@ -16474,6 +20434,61 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -16527,7 +20542,7 @@ Args:
     phi (CalculatorFloat): The rotation axis, in spherical coordinates :math:`\phi_{sph}`  gives the angle in the x-y plane.
 """
 
-    def __init__(self, control: int, target: int, theta: Tuple[float, str], phi: Tuple[float, str]):
+    def __init__(self, control: int, target: int, theta: Union[float, str], phi: Union[float, str]):
        return
 
     @classmethod
@@ -16702,6 +20717,61 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -16921,6 +20991,61 @@ Returns:
 
 Raises:
     ValueError: Error symbolic operation cannot return float unitary matrix
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -17163,6 +21288,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -17382,6 +21562,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -17427,7 +21662,7 @@ Args:
 
 """
 
-    def __init__(self, qubit: int, theta: Tuple[float, str]):
+    def __init__(self, qubit: int, theta: Union[float, str]):
        return
 
     @classmethod
@@ -17703,6 +21938,61 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -17751,7 +22041,7 @@ Args:
 
 """
 
-    def __init__(self, qubit: int, theta: Tuple[float, str]):
+    def __init__(self, qubit: int, theta: Union[float, str]):
        return
 
     @classmethod
@@ -18027,6 +22317,61 @@ Args:
 Returns:
     Self: gate raised to the power of `power`
 
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -18214,6 +22559,61 @@ Creates deep copy of Operation
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -18257,7 +22657,7 @@ Args:
     phase (CalculatorFloat): The squeezing phase angle of the squeezing operation.
 """
 
-    def __init__(self, mode: int, squeezing: Tuple[float, str], phase: Tuple[float, str]):
+    def __init__(self, mode: int, squeezing: Union[float, str], phase: Union[float, str]):
        return
 
     @classmethod
@@ -18431,6 +22831,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -18471,7 +22926,7 @@ Args:
     phase (CalculatorFloat): The phase by which to shift the mode.
 """
 
-    def __init__(self, mode: int, phase: Tuple[float, str]):
+    def __init__(self, mode: int, phase: Union[float, str]):
        return
 
     @classmethod
@@ -18639,6 +23094,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -18679,7 +23189,7 @@ Args:
     phi (CalculatorFloat): The phase angle of the beam-splitter.
 """
 
-    def __init__(self, mode_0: int, mode_1: int, theta: Tuple[float, str], phi: Tuple[float, str]):
+    def __init__(self, mode_0: int, mode_1: int, theta: Union[float, str], phi: Union[float, str]):
        return
 
     @classmethod
@@ -18859,6 +23369,61 @@ Return `mode_1` bosonic mode of two bosonic mode Operation.
 
 Returns:
     int
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -19075,6 +23640,61 @@ Return `mode` the bosonic Operation acts on.
 
 Returns:
     int
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -19381,6 +24001,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -19420,7 +24095,7 @@ Args:
     phase (CalculatorFloat): The angle by which to displace the mode.
 """
 
-    def __init__(self, mode: int, displacement: Tuple[float, str], phase: Tuple[float, str]):
+    def __init__(self, mode: int, displacement: Union[float, str], phase: Union[float, str]):
        return
 
     @classmethod
@@ -19594,6 +24269,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -19644,7 +24374,7 @@ Args:
     phi (CalculatorFloat): The rotation axis, in spherical coordinates :math:`\phi_{sph}`  gives the angle in the x-y plane.
 """
 
-    def __init__(self, control: int, target: int, theta: Tuple[float, str], phi: Tuple[float, str]):
+    def __init__(self, control: int, target: int, theta: Union[float, str], phi: Union[float, str]):
        return
 
     @classmethod
@@ -19797,6 +24527,61 @@ Raises:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -19937,7 +24722,7 @@ Returns:
 """
 
     @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Circuit: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaAnnotatedOp: # type: ignore
         """
 Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
@@ -19952,7 +24737,7 @@ Raises:
 """
 
     @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Circuit: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaAnnotatedOp: # type: ignore
         """
 Remap qubits in a clone of the PRAGMA operation.
 
@@ -19991,6 +24776,61 @@ Return a string containing a formatted (string) representation of the PRAGMA ope
 
 Returns:
     str: The string representation of the operation.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
 """
 
     @classmethod
@@ -20033,7 +24873,7 @@ Args:
     theta (CalculatorFloat): The strength of the interaction.
 """
 
-    def __init__(self, qubit: int, mode: int, theta: Tuple[float, str]):
+    def __init__(self, qubit: int, mode: int, theta: Union[float, str]):
        return
 
     @classmethod
@@ -20207,6 +25047,61 @@ Return `mode` the bosonic Operation acts on.
 
 Returns:
     int
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -20249,7 +25144,7 @@ Args:
     theta (CalculatorFloat): The strength of the interaction.
 """
 
-    def __init__(self, qubit: int, mode: int, theta: Tuple[float, str]):
+    def __init__(self, qubit: int, mode: int, theta: Union[float, str]):
        return
 
     @classmethod
@@ -20423,6 +25318,61 @@ Return `mode` the bosonic Operation acts on.
 
 Returns:
     int
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -20465,7 +25415,7 @@ Args:
     theta (CalculatorFloat): The strength of the interaction.
 """
 
-    def __init__(self, qubit: int, mode: int, theta: Tuple[float, str]):
+    def __init__(self, qubit: int, mode: int, theta: Union[float, str]):
        return
 
     @classmethod
@@ -20639,6 +25589,61 @@ Return `mode` the bosonic Operation acts on.
 
 Returns:
     int
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -20854,6 +25859,61 @@ Returns:
 """
 
     @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
     def __doc__(self): # type: ignore
         """
 str(object='') -> str
@@ -21063,6 +26123,61 @@ Return `mode` the bosonic Operation acts on.
 
 Returns:
     int
+"""
+
+    @classmethod
+    def current_version(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
+"""
+
+    @classmethod
+    def min_supported_version(self) -> str: # type: ignore
+        """
+Return the minimum version of qoqo that supports this object.
+
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
+
+    @classmethod
+    def json_schema(self): # type: ignore
+        """
+staticmethod(function) -> method
+
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
@@ -21277,412 +26392,58 @@ Returns:
 """
 
     @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self): # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+staticmethod(function) -> method
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
+Convert a function to be a static method.
+
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
+
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
+
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
+
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str: # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-class GateDefinition(Operation):
-    """
-GateDefinition is the Definition of a new custom gate.
-
-Args:
-    circuit (Circuit): The circuit where the definition is stored.
-    name (str): The name of the gate that is defined.
-    qubits (List[int]): The indices of the qubits used in the internal definition.
-    free_parameter (List[str]): Names of the free CalculatorFloat variables in the internal definition.
-"""
-
-    def __init__(self, circuit: Circuit, name: str, qubits: List[int], free_parameter: List[str]):
-       return
-
-    @classmethod
-    def __repr__(self): # type: ignore
-        """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
-        """
-Return self<value.
-"""
-
-    @classmethod
-    def __le__(self): # type: ignore
-        """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
-        """
-Return self==value.
-"""
-
-    @classmethod
-    def __ne__(self): # type: ignore
-        """
-Return self!=value.
-"""
-
-    @classmethod
-    def __gt__(self): # type: ignore
-        """
-Return self>value.
-"""
-
-    @classmethod
-    def __ge__(self): # type: ignore
-        """
-Return self>=value.
-"""
-
-    @classmethod
-    def circuit(self): # type: ignore
-        """
-Get value of struct field circuit
-"""
-
-    @classmethod
-    def free_parameters(self): # type: ignore
-        """
-Get value of struct field free_parameters
-"""
-
-    @classmethod
-    def is_parametrized(self): # type: ignore
-        """
-Returns true if operation contains symbolic parameters
+Return the minimum version of qoqo that supports this object.
 
 Returns:
-    bool
+    str: The minimum version of the qoqo library to deserialize this object.
 """
 
     @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def json_schema(self): # type: ignore
         """
-Returns tags identifying the Operation
+staticmethod(function) -> method
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+Convert a function to be a static method.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
-        """
-Returns hqslang name of Operation
+A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:
 
-Returns:
-    str: The name
-"""
+     class C:
+         @staticmethod
+         def f(arg1, arg2, argN):
+             ...
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
-        """
-Substitutes internal symbolic parameters with float values
+It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()). Both the class and the instance are ignored, and
+neither is passed implicitly as the first argument to the method.
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
-        """
-Remap qubits
-
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
-        """
-List all involved Qubits
-
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
-        """
-Copies Operation
-
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
-        """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def qubits(self): # type: ignore
-        """
-Return list of qubits of the multi qubit operation in order of descending significance
-
-Returns:
-    List[int]
-"""
-
-    @classmethod
-    def name(self): # type: ignore
-        """
-Return name of definition operation.
-
-Returns:
-    str
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
-        """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
-        """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-class CallDefinedGate(Operation):
-    """
-The gate to be replaced by a gate defined with GateDefinition gate.
-The gate applies a gate previously defined by GateDefinition with the name gate_name.
-
-Args:
-    gate_name (str) : The name of the called defined operations.
-    qubits (List[int]) : The qubits that for this call replace the qubits in the internal definition of the called gate
-                          (get replaced in order of apppearance in gate defintion).
-    free_parameters (List[CalculatorFloat]) : List of float values that replace the free parameters in the internal definition of the called gate
-                                            (get replaced in order of apppearance in gate defintion).
-"""
-
-    def __init__(self, gate_name: str, qubits: List[int], free_parameters: List[CalculatorFloat]):
-       return
-
-    @classmethod
-    def __repr__(self): # type: ignore
-        """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
-        """
-Return self<value.
-"""
-
-    @classmethod
-    def __le__(self): # type: ignore
-        """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
-        """
-Return self==value.
-"""
-
-    @classmethod
-    def __ne__(self): # type: ignore
-        """
-Return self!=value.
-"""
-
-    @classmethod
-    def __gt__(self): # type: ignore
-        """
-Return self>value.
-"""
-
-    @classmethod
-    def __ge__(self): # type: ignore
-        """
-Return self>=value.
-"""
-
-    @classmethod
-    def gate_name(self) -> str: # type: ignore
-        """
-Return the name of the gate to apply.
-
-Returns:
-    str: The name of the gate.
-"""
-
-    @classmethod
-    def qubits(self) -> List[int]: # type: ignore
-        """
-Return the qubits on which the Gate operation is applied.
-
-Returns:
-    List[int]: The qubits of the operation.
-"""
-
-    @classmethod
-    def free_parameters(self) -> List[CalculatorFloat]: # type: ignore
-        """
-Return the qubits on which the Gate operation is applied.
-
-Returns:
-    List[CalculatorFloat]: The qubits of the operation.
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Set[int]: # type: ignore
-        """
-List all involved qubits.
-
-Returns:
-    Set[int]: The involved qubits of the operation.
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
-        """
-Return tags classifying the type of the operation.
-
-Used for the type based dispatch in ffi interfaces.
-
-Returns:
-    List[str]: The tags of the Operation.
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
-        """
-Return hqslang name of the operation.
-
-Returns:
-    str: The hqslang name of the operation.
-"""
-
-    @classmethod
-    def is_parametrized(self) -> bool: # type: ignore
-        """
-Return true when the operation has symbolic parameters.
-
-Returns:
-    bool: True if the operation contains symbolic parameters, False if it does not.
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Circuit: # type: ignore
-        """
-Substitute the symbolic parameters in a clone of the operation according to the input.
-
-Args:
-    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the operation.
-
-Returns:
-    self: The operation with the parameters substituted.
-
-Raises:
-    RuntimeError: The parameter substitution failed.
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Circuit: # type: ignore
-        """
-Remap qubits in a clone of the CallDefinedGate operation.
-
-Args:
-    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the operation.
-
-Returns:
-    self: The operation with the qubits remapped.
-
-Raises:
-    RuntimeError: The qubit remapping failed.
-"""
-
-    @classmethod
-    def __copy__(self) -> CallDefinedGate: # type: ignore
-        """
-Return a copy of the operation (copy here produces a deepcopy).
-
-Returns:
-    CallDefinedGate: A deep copy of self.
-"""
-
-    @classmethod
-    def __deepcopy__(self) -> CallDefinedGate: # type: ignore
-        """
-Return a deep copy of the operation.
-
-Returns:
-    CallDefinedGate: A deep copy of self.
-"""
-
-    @classmethod
-    def __format__(self) -> str: # type: ignore
-        """
-Return a string containing a formatted (string) representation of the operation.
-
-Returns:
-    str: The string representation of the operation.
+Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.
 """
 
     @classmethod

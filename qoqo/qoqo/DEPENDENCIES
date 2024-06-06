@@ -1516,7 +1516,7 @@ LICENSE-APACHE:
 
 
 ====================================================
-anstyle-query 1.0.3
+anstyle-query 1.1.0
 https://github.com/rust-cli/anstyle
 by 
 Look up colored console capabilities
@@ -12555,7 +12555,7 @@ limitations under the License.
 
 
 ====================================================
-hyper 0.14.28
+hyper 0.14.29
 https://hyper.rs
 by Sean McArthur <sean@seanmonstar.com>
 A fast and correct HTTP library.
@@ -38874,7 +38874,7 @@ limitations under the License.
 
 
 ====================================================
-wide 0.7.21
+wide 0.7.23
 https://github.com/Lokathor/wide
 by Lokathor <zefria@gmail.com>
 A crate to help you go wide.

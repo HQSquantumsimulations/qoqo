@@ -95,7 +95,7 @@ impl SquareLatticeDeviceWrapper {
     ///
     /// Args:
     ///     gate (str): The hqslang name of the two-qubit-gate.
-    ///     gate_time (f64): Gate time for the given gate, valid for all qubits in the device.
+    ///     gate_time (float): Gate time for the given gate, valid for all qubits in the device.
     ///
     /// Returns:
     ///     A qoqo Device with updated gate times.
@@ -114,7 +114,7 @@ impl SquareLatticeDeviceWrapper {
     ///
     /// Args:
     ///     gate (str): The hqslang name of the single-qubit-gate.
-    ///     gate_time (f64): New gate time.
+    ///     gate_time (float): New gate time.
     ///
     /// Returns:
     ///     A qoqo Device with updated gate times.

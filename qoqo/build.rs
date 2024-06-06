@@ -169,14 +169,14 @@ const SOURCE_FILES: &[&str] = &[
 ];
 
 #[cfg(feature = "doc_generator")]
-fn str_to_type(res: &str) -> Option<String> {
+fn str_to_type(res: &str, class_name: &str) -> Option<String> {
     match res {
         s if s.contains("Pragma") => Some("Operation".to_owned()),
-        "CalculatorFloat" => Some("Tuple[float, str]".to_owned()),
+        "CalculatorFloat" => Some("Union[float, str]".to_owned()),
         "String" | "string" => Some("str".to_owned()),
         "" => None,
         "uint" => Some("int".to_owned()),
-        "self" => Some("Circuit".to_owned()),
+        "self" => Some(class_name.to_owned()),
         "ByteArray" => Some("bytearray".to_owned()),
         _ => Some(
             res.replace("list", "List")
@@ -193,19 +193,19 @@ fn str_to_type(res: &str) -> Option<String> {
 }
 
 #[cfg(feature = "doc_generator")]
-fn extract_type(string: &str) -> Option<String> {
+fn extract_type(string: &str, class_name: &str) -> Option<String> {
     let pattern = r"\(([a-zA-Z_\[\] ,|]+?)\)";
     let re = Regex::new(pattern).unwrap();
     if let Some(captures) = re.captures(string) {
         if let Some(res) = captures.get(1).map(|s| s.as_str()) {
-            return str_to_type(res);
+            return str_to_type(res, class_name);
         }
     }
     None
 }
 
 #[cfg(feature = "doc_generator")]
-fn collect_args_from_doc(doc: &str) -> Vec<String> {
+fn collect_args_from_doc(doc: &str, class_name: &str) -> Vec<String> {
     let args_vec: Vec<_> = doc
         .split('\n')
         .skip_while(|&line| line != "Args:")
@@ -220,7 +220,7 @@ fn collect_args_from_doc(doc: &str) -> Vec<String> {
             format!(
                 "{}{}",
                 line.trim().split_once([' ', ':']).unwrap_or(("", "")).0,
-                extract_type(line)
+                extract_type(line, class_name)
                     .map(|arg_type| format!(": {}", arg_type))
                     .unwrap_or_default()
             )
@@ -229,7 +229,7 @@ fn collect_args_from_doc(doc: &str) -> Vec<String> {
 }
 
 #[cfg(feature = "doc_generator")]
-fn collect_return_from_doc(doc: &str) -> String {
+fn collect_return_from_doc(doc: &str, class_name: &str) -> String {
     let args_vec: Vec<_> = doc
         .split('\n')
         .skip_while(|&line| line != "Returns:")
@@ -239,9 +239,10 @@ fn collect_return_from_doc(doc: &str) -> String {
         .collect();
     if args_vec.is_empty() {
         "".to_owned()
-    } else if let Some(ret) =
-        str_to_type(args_vec[0].trim().split_once([':']).unwrap_or(("", "")).0)
-    {
+    } else if let Some(ret) = str_to_type(
+        args_vec[0].trim().split_once([':']).unwrap_or(("", "")).0,
+        class_name,
+    ) {
         format!(" -> {}", ret)
     } else {
         "".to_owned()
@@ -252,7 +253,8 @@ fn collect_return_from_doc(doc: &str) -> String {
 fn create_doc(module: &str) -> PyResult<String> {
     let mut module_doc = "# This is an auto generated file containing only the documentation.\n# You can find the full implementation on this page:\n# https://github.com/HQSquantumsimulations/qoqo\n\n".to_owned();
     if module == "qoqo" {
-        module_doc.push_str("from typing import Optional, List, Tuple, Dict, Set  # noqa: F401\nfrom qoqo_quest import Backend\n\n");
+        module_doc
+            .push_str("from typing import Optional, List, Tuple, Dict, Set  # noqa: F401\n\n");
     } else {
         module_doc.push_str("from .qoqo import Circuit, Operation  # noqa: F401\nimport numpy as np  # noqa: F401\nfrom typing import Tuple, List, Optional, Set, Dict, Union, Self, Sequence  # noqa: F401\n\n");
     };
@@ -265,29 +267,18 @@ fn create_doc(module: &str) -> PyResult<String> {
             let name = fn_name.str()?.extract::<String>()?;
             if name.starts_with("__")
                 || (module == "qoqo"
-                    && ![
-                        "qoqo",
-                        "Circuit",
-                        "QuantumProgram",
-                        "CircuitDag",
-                        "operations",
-                    ]
-                    .contains(&name.as_str()))
+                    && !["Circuit", "QuantumProgram", "CircuitDag", "operations"]
+                        .contains(&name.as_str()))
             {
                 continue;
             }
             let doc = func.getattr("__doc__")?.extract::<String>()?;
-            if name == "qoqo" {
-                module_doc.push_str(&format!(
-                    "def {name}({}):\n    \"\"\"\n{doc}\n\"\"\"\n\n",
-                    collect_args_from_doc(doc.as_str()).join(", "),
-                ));
-            } else if name == "operations" {
+            if name == "operations" {
                 module_doc.push_str(&format!(
                     "class Operation:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self):\n       return\n\n",
                 ));
             } else {
-                let args = collect_args_from_doc(doc.as_str()).join(", ");
+                let args = collect_args_from_doc(doc.as_str(), name.as_str()).join(", ");
                 module_doc.push_str(&format!(
                     "class {name}{}:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self{}):\n       return\n\n",
                     module.eq("qoqo.operations").then(|| "(Operation)").unwrap_or_default(),
@@ -333,11 +324,12 @@ Raises:
                     if class_doc.eq("") {
                         continue;
                     }
-                    let meth_args = collect_args_from_doc(class_doc.as_str()).join(", ");
+                    let meth_args =
+                        collect_args_from_doc(class_doc.as_str(), name.as_str()).join(", ");
                     module_doc.push_str(&format!(
                         "    @classmethod\n    def {meth_name}(self{}){}: # type: ignore\n        \"\"\"\n{class_doc}\n\"\"\"\n\n",
                         if meth_args.is_empty() { "".to_owned() } else { format!(", {}", meth_args) },
-                        collect_return_from_doc(class_doc.as_str())
+                        collect_return_from_doc(class_doc.as_str(), name.as_str())
                     ));
                 }
             }
