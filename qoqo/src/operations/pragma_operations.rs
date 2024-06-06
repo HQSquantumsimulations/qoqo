@@ -12,7 +12,7 @@
 
 use crate::operations::convert_operation_to_pyobject;
 use crate::{convert_into_circuit, CircuitWrapper};
-use ndarray::Array1;
+use ndarray::{Array1, Array2};
 use num_complex::Complex64;
 use numpy::{PyArray1, PyArray2, PyReadonlyArray1, PyReadonlyArray2, ToPyArray};
 use pyo3::exceptions::{PyRuntimeError, PyTypeError};
@@ -111,27 +111,30 @@ impl PragmaSetStateVectorWrapper {
     ///     self: The new PragmaSetStateVector.
     #[new]
     fn new(statevector: &Bound<PyAny>) -> PyResult<Self> {
-        let extracted: PyReadonlyArray1<Complex64> = statevector.extract()?;
-        let statevec: Array1<Complex64> = extracted.as_array().to_owned();
-        let try_cast: PyResult<Array1<Complex64>> = Ok(statevec);
-        let try_cast: PyResult<Array1<Complex64>> = try_cast.or_else(|_| {
-            let extracted: PyReadonlyArray1<f64> = statevector.extract()?;
-            let statevec: Array1<f64> = extracted.as_array().to_owned();
-            let statevec: Array1<Complex64> = statevec
-                .into_iter()
-                .map(|f| Complex64::new(f, 0.0))
-                .collect();
-            Ok(statevec)
-        });
-        let try_cast: PyResult<Array1<Complex64>> = try_cast.or_else(|_| {
-            let extracted: PyReadonlyArray1<isize> = statevector.extract()?;
-            let statevec: Array1<isize> = extracted.as_array().to_owned();
-            let statevec: Array1<Complex64> = statevec
-                .into_iter()
-                .map(|f| Complex64::new(f as f64, 0.0))
-                .collect();
-            Ok(statevec)
-        });
+        let try_cast: PyResult<Array1<Complex64>> =
+            if let Ok(extracted) = statevector.extract::<PyReadonlyArray1<Complex64>>() {
+                let statevec: Array1<Complex64> = extracted.as_array().to_owned();
+                Ok(statevec)
+            } else if let Ok(extracted) = statevector.extract::<PyReadonlyArray1<f64>>() {
+                let statevec: Array1<f64> = extracted.as_array().to_owned();
+                let statevec: Array1<Complex64> = statevec
+                    .into_iter()
+                    .map(|f| Complex64::new(f, 0.0))
+                    .collect();
+                Ok(statevec)
+            } else if let Ok(extracted) = statevector.extract::<PyReadonlyArray1<isize>>() {
+                let statevec: Array1<isize> = extracted.as_array().to_owned();
+                let statevec: Array1<Complex64> = statevec
+                    .into_iter()
+                    .map(|f| Complex64::new(f as f64, 0.0))
+                    .collect();
+                Ok(statevec)
+            } else {
+                Err(PyTypeError::new_err(
+                    "Internal error: no successful PyReadonlyArray1 extraction.",
+                ))
+            };
+
         match try_cast {
             Ok(array) => Ok(Self {
                 internal: PragmaSetStateVector::new(array),
@@ -394,11 +397,44 @@ impl PragmaSetDensityMatrixWrapper {
     /// Returns:
     ///     self: The new PragmaSetDensityMatrix.
     #[new]
-    fn new(density_matrix: PyReadonlyArray2<Complex64>) -> PyResult<Self> {
-        let density_matrix_for_initialisation = density_matrix.as_array().to_owned();
-        Ok(Self {
-            internal: PragmaSetDensityMatrix::new(density_matrix_for_initialisation),
-        })
+    fn new(density_matrix: &Bound<PyAny>) -> PyResult<Self> {
+        let try_cast: PyResult<Array2<Complex64>> =
+            if let Ok(extracted) = density_matrix.extract::<PyReadonlyArray2<Complex64>>() {
+                let matrix: Array2<Complex64> = extracted.as_array().to_owned();
+                Ok(matrix)
+            } else if let Ok(extracted) = density_matrix.extract::<PyReadonlyArray2<f64>>() {
+                let matrix: Array2<f64> = extracted.as_array().to_owned();
+                let matrix: Array2<Complex64> = matrix.map(|f| Complex64::new(*f, 0.0));
+                Ok(matrix)
+            } else if let Ok(extracted) = density_matrix.extract::<PyReadonlyArray2<isize>>() {
+                let matrix: Array2<isize> = extracted.as_array().to_owned();
+                let matrix: Array2<Complex64> = matrix.map(|f| Complex64::new((*f) as f64, 0.0));
+                Ok(matrix)
+            } else {
+                Err(PyTypeError::new_err(
+                    "Internal error: no successful PyReadonlyArray2 extraction.",
+                ))
+            };
+        match try_cast {
+            Ok(density_matrix) => Ok(Self {
+                internal: PragmaSetDensityMatrix::new(density_matrix),
+            }),
+            Err(_) => {
+                let density_matrix_casted: Vec<Vec<Complex64>> =
+                    Vec::extract_bound(density_matrix)?;
+                let ncol = density_matrix_casted.first().map_or(0, |row| row.len());
+                let mut density_matrix_array2: Array2<Complex64> = Array2::zeros((0, ncol));
+                for subvec in density_matrix_casted {
+                    let int_array1: Array1<Complex64> = Array1::from(subvec);
+                    density_matrix_array2
+                        .push_row((&int_array1).into())
+                        .unwrap();
+                }
+                Ok(Self {
+                    internal: PragmaSetDensityMatrix::new(density_matrix_array2),
+                })
+            }
+        }
     }
 
     /// Return the set density matrix.
@@ -1049,8 +1085,20 @@ impl PragmaGeneralNoiseWrapper {
     /// Returns:
     ///     self: The new PragmaGeneralNoise.
     #[new]
-    fn new(qubit: usize, gate_time: &Bound<PyAny>, rates: PyReadonlyArray2<f64>) -> PyResult<Self> {
-        let rates_array = rates.as_array().to_owned();
+    fn new(qubit: usize, gate_time: &Bound<PyAny>, rates: &Bound<PyAny>) -> PyResult<Self> {
+        let rates_array: Array2<f64> =
+            if let Ok(rates_pyarray) = rates.extract::<PyReadonlyArray2<f64>>() {
+                rates_pyarray.as_array().to_owned()
+            } else {
+                let rates_casted: Vec<Vec<f64>> = Vec::extract_bound(rates)?;
+                let ncol = rates_casted.first().map_or(0, |row| row.len());
+                let mut rates_array2: Array2<f64> = Array2::zeros((0, ncol));
+                for subvec in rates_casted {
+                    let int_array1: Array1<f64> = Array1::from(subvec);
+                    rates_array2.push_row((&int_array1).into()).unwrap();
+                }
+                rates_array2
+            };
         let gate_time_cf = convert_into_calculator_float(gate_time).map_err(|_| {
             pyo3::exceptions::PyTypeError::new_err(
                 "Argument gate time cannot be converted to CalculatorFloat",
