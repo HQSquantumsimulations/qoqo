@@ -4,14 +4,9 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ## 1.13.1 -- Unreleased!
 
-### Added 1.13.1
+### Fixed in 1.13.1
 
-* Fixed dependencies issues caused by Pyo3 0.21 support release
-
-## Unreleased
-
-### Fixed in Unreleased
-
+* Dependencies issues caused by Pyo3 0.21 support release
 * `PragmaSetStateVector`, `PragmaSetDensityMatrix` and `PragmaGeneralNoise` interface casting errors when handling arrays/matrices
 
 ## 1.13.0
