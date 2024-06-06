@@ -1,12 +1,12 @@
 [project]
 name = "qoqo"
-version = "1.12.1"
+version = "1.13.1"
 dependencies = ['numpy', 'qoqo_calculator_pyo3>=1.2']
 license = { text = "Apache-2.0 AND Apache-2.0 with LLVM-exception AND MIT AND Unicode-DFS-2016 AND BSD-2-Clause AND BSD-3-CLause" }
 maintainers = [
   { name = "HQS Quantum Simulations GmbH", email = "info@quantumsimulations.de" },
 ]
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 readme = "README.md"
 
 [build-system]

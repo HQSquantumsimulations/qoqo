@@ -1,6 +1,6 @@
 [package]
 name = "roqoqo"
-version = "1.12.1"
+version = "1.13.1"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
@@ -41,7 +41,7 @@ bincode = { version = "1.3", optional = true }
 struqture = { version = "~1.7" }
 qoqo_calculator = { version = "~1.2" }
 
-roqoqo-derive = { version = "~1.12", path = "../roqoqo-derive" }
+roqoqo-derive = { version = "~1.13", path = "../roqoqo-derive" }
 
 [dev-dependencies]
 serde_test = "1.0"

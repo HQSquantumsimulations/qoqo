@@ -1,5 +1,5 @@
 ====================================================
-addr2line 0.21.0
+addr2line 0.22.0
 https://github.com/gimli-rs/addr2line
 by 
 A cross-platform symbolication library written in Rust, using `gimli`
@@ -1516,7 +1516,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-anstyle-query 1.0.3
+anstyle-query 1.1.0
 https://github.com/rust-cli/anstyle
 by 
 Look up colored console capabilities
@@ -2656,7 +2656,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-backtrace 0.3.71
+backtrace 0.3.72
 https://github.com/rust-lang/backtrace-rs
 by The Rust Project Developers
 A library to acquire a stack trace (backtrace) at runtime in a Rust program.
@@ -10805,7 +10805,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-gimli 0.28.1
+gimli 0.29.0
 https://github.com/gimli-rs/gimli
 by 
 A library for reading and writing the DWARF debugging format.
@@ -12555,7 +12555,7 @@ THE SOFTWARE.
 
 
 ====================================================
-hyper 0.14.28
+hyper 0.14.29
 https://hyper.rs
 by Sean McArthur <sean@seanmonstar.com>
 A fast and correct HTTP library.
@@ -19872,7 +19872,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 ====================================================
-object 0.32.2
+object 0.35.0
 https://github.com/gimli-rs/object
 by 
 A unified interface for reading and writing object file formats.
@@ -20352,7 +20352,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-parking_lot 0.12.2
+parking_lot 0.12.3
 https://github.com/Amanieu/parking_lot
 by Amanieu d'Antras <amanieu@gmail.com>
 More compact and efficient implementations of the standard synchronization primitives.
@@ -22684,7 +22684,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-proc-macro2 1.0.83
+proc-macro2 1.0.85
 https://github.com/dtolnay/proc-macro2
 by David Tolnay <dtolnay@gmail.com>, Alex Crichton <alex@alexcrichton.com>
 A substitute implementation of the compiler's `proc_macro` API to decouple token-based libraries from the procedural macro use case.
@@ -24272,7 +24272,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-qoqo 1.12.1
+qoqo 1.13.1
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoqo
@@ -24484,7 +24484,7 @@ LICENSE:
 
 
 ====================================================
-qoqo-macros 1.12.1
+qoqo-macros 1.13.1
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -27490,7 +27490,7 @@ THE SOFTWARE.
 
 
 ====================================================
-roqoqo 1.12.1
+roqoqo 1.13.1
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
@@ -27702,7 +27702,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-derive 1.12.1
+roqoqo-derive 1.13.1
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the roqoqo crate
 License: Apache-2.0
@@ -27913,7 +27913,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-test 1.12.1
+roqoqo-test 1.13.1
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
@@ -28920,7 +28920,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 ====================================================
-schemars 0.8.20
+schemars 0.8.21
 https://graham.cool/schemars/
 by Graham Esau <gesau@hotmail.co.uk>
 Generate JSON Schemas from Rust code
@@ -28952,7 +28952,7 @@ SOFTWARE.
 
 
 ====================================================
-schemars_derive 0.8.20
+schemars_derive 0.8.21
 https://graham.cool/schemars/
 by Graham Esau <gesau@hotmail.co.uk>
 Macros for #[derive(JsonSchema)], for use with schemars
@@ -29230,7 +29230,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-serde 1.0.202
+serde 1.0.203
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A generic serialization/deserialization framework
@@ -29444,7 +29444,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-serde_derive 1.0.202
+serde_derive 1.0.203
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Macros 1.1 implementation of #[derive(Serialize, Deserialize)]
@@ -31951,7 +31951,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-syn 2.0.65
+syn 2.0.66
 https://github.com/dtolnay/syn
 by David Tolnay <dtolnay@gmail.com>
 Parser for Rust source code
@@ -34331,7 +34331,7 @@ SOFTWARE.
 
 
 ====================================================
-tokio 1.37.0
+tokio 1.38.0
 https://tokio.rs
 by Tokio Contributors <team@tokio.rs>
 An event-driven, non-blocking I/O platform for writing asynchronous I/O
@@ -34341,31 +34341,27 @@ License: MIT
 ----------------------------------------------------
 LICENSE:
 
-Copyright (c) 2023 Tokio Contributors
+MIT License
 
-Permission is hereby granted, free of charge, to any
-person obtaining a copy of this software and associated
-documentation files (the "Software"), to deal in the
-Software without restriction, including without
-limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software
-is furnished to do so, subject to the following
-conditions:
+Copyright (c) Tokio Contributors
 
-The above copyright notice and this permission notice
-shall be included in all copies or substantial portions
-of the Software.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
-ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
-TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
-SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
-IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-DEALINGS IN THE SOFTWARE.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 
 ====================================================
@@ -38878,7 +38874,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-wide 0.7.20
+wide 0.7.23
 https://github.com/Lokathor/wide
 by Lokathor <zefria@gmail.com>
 A crate to help you go wide.
