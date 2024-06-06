@@ -8,6 +8,18 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 * Fixed dependencies issues caused by Pyo3 0.21 support release
 
+## 1.13.0
+
+### Added in 1.13.0
+
+* Unstable feature `unstable_operation_definition` adding new operations: GateDefinition and CallDefinedGate.
+
+## 1.12.1
+
+### Added in 1.12.1
+
+* Added the `__repr__` method to the SingleQubitOverrotationDescription noise model.
+
 ## 1.12.0
 
 ### Added in 1.12.0

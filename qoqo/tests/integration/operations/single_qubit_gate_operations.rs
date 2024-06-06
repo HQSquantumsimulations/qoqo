@@ -880,13 +880,12 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        assert!(bool::extract_bound(
-            &operation
-                .call_method0(py, "is_parametrized")
-                .unwrap()
-                .bind(py)
-        )
-        .unwrap());
+        assert!(operation
+            .call_method0(py, "is_parametrized")
+            .unwrap()
+            .bind(py)
+            .extract::<bool>()
+            .unwrap());
     })
 }
 
@@ -939,13 +938,12 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        assert!(!bool::extract_bound(
-            &operation
-                .call_method0(py, "is_parametrized")
-                .unwrap()
-                .bind(py)
-        )
-        .unwrap());
+        assert!(!operation
+            .call_method0(py, "is_parametrized")
+            .unwrap()
+            .bind(py)
+            .extract::<bool>()
+            .unwrap());
     })
 }
 
@@ -971,10 +969,12 @@ fn test_pyo3_theta(theta: CalculatorFloat, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let theta_op: CalculatorFloatWrapper = CalculatorFloatWrapper::extract_bound(
-            &operation.call_method0(py, "theta").unwrap().bind(py),
-        )
-        .unwrap();
+        let theta_op: CalculatorFloatWrapper = operation
+            .call_method0(py, "theta")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         let theta_param: CalculatorFloatWrapper =
             CalculatorFloatWrapper::extract_bound(&convert_cf_to_pyobject(py, theta)).unwrap();
         assert_eq!(theta_op.internal, theta_param.internal);
@@ -1019,8 +1019,12 @@ fn test_pyo3_qubit(qubit: usize, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let qubit_op: usize =
-            usize::extract_bound(&operation.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
+        let qubit_op: usize = operation
+            .call_method0(py, "qubit")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(qubit_op, qubit);
     })
 }
@@ -1073,9 +1077,12 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let name_op: String =
-            String::extract_bound(&operation.call_method0(py, "hqslang").unwrap().bind(py))
-                .unwrap();
+        let name_op: String = operation
+            .call_method0(py, "hqslang")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(name_op, name.to_string());
     })
 }
@@ -1269,9 +1276,12 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
-        let tags_op: Vec<String> =
-            Vec::<String>::extract_bound(&operation.call_method0(py, "tags").unwrap().bind(py))
-                .unwrap();
+        let tags_op: Vec<String> = operation
+            .call_method0(py, "tags")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(tags_op.len(), tags.len());
         for i in 0..tags.len() {
             assert_eq!(tags_op[i], tags[i]);
@@ -1329,8 +1339,12 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         // test initial qubit
-        let qubit: usize =
-            usize::extract_bound(&operation.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
+        let qubit: usize = operation
+            .call_method0(py, "qubit")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(qubit.clone(), 0);
         // remap qubits
         let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
@@ -1340,8 +1354,12 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
             .call_method1(py, "remap_qubits", (qubit_mapping,))
             .unwrap();
         // test re-mapped qubit
-        let qubit_new: usize =
-            usize::extract_bound(&result.call_method0(py, "qubit").unwrap().bind(py)).unwrap();
+        let qubit_new: usize = result
+            .call_method0(py, "qubit")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
         assert_eq!(qubit_new.clone(), 1);
         // test that initial and rempapped qubits are different
         assert_ne!(qubit, qubit_new);
@@ -2035,10 +2053,10 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         let to_format = operation.call_method1(py, "__format__", ("",)).unwrap();
-        let format_op: String = String::extract_bound(&to_format.bind(py)).unwrap();
+        let format_op: String = to_format.bind(py).extract().unwrap();
         assert_eq!(format_op, format_repr);
         let to_repr = operation.call_method0(py, "__repr__").unwrap();
-        let repr_op: String = String::extract_bound(&to_repr.bind(py)).unwrap();
+        let repr_op: String = to_repr.bind(py).extract().unwrap();
         assert_eq!(repr_op, format_repr);
     })
 }
@@ -2253,13 +2271,12 @@ fn test_pyo3_rotate_powercf(first_op: Operation, second_op: Operation) {
         let comparison_op = convert_operation_to_pyobject(second_op).unwrap();
 
         let remapped_op = operation.call_method1(py, "powercf", (power,)).unwrap();
-        let comparison = bool::extract_bound(
-            &remapped_op
-                .call_method1(py, "__eq__", (comparison_op,))
-                .unwrap()
-                .bind(py),
-        )
-        .unwrap();
+        let comparison = remapped_op
+            .call_method1(py, "__eq__", (comparison_op,))
+            .unwrap()
+            .bind(py)
+            .extract::<bool>()
+            .unwrap();
         assert!(comparison);
     })
 }

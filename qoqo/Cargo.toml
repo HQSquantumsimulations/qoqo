@@ -1,4 +1,6 @@
 [package]
+
+version = "1.13.0"
 name = "qoqo"
 version = "1.13.1"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
@@ -76,3 +78,4 @@ unstable_chain_with_environment = [
     "qoqo-macros/unstable_chain_with_environment",
 ]
 unstable_analog_operations = ["roqoqo/unstable_analog_operations"]
+unstable_operation_definition = ["roqoqo/unstable_operation_definition"]

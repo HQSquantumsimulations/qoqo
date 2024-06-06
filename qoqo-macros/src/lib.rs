@@ -394,7 +394,7 @@ pub fn wrap(
             /// Return list of qubits of the multi qubit operation in order of descending significance
             ///
             /// Returns:
-            ///     list[int]
+            ///     List[int]
             pub fn qubits(&self) -> Vec<usize>{
                 self.internal.qubits().clone()
             }
@@ -447,7 +447,7 @@ pub fn wrap(
         /// List of modes the operation acts on.
         ///
         /// Returns:
-        ///     Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        ///     Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         pub fn involved_modes(&self) -> PyObject {
             Python::with_gil(|py| -> PyObject {
                 let involved = self.internal.involved_modes();
@@ -484,7 +484,7 @@ pub fn wrap(
         /// Remap the bosonic modes in copy of the operation.
         ///
         /// Args:
-        ///     mapping (dict[int, int]): Mapping for bosonic modes in operation.
+        ///     mapping (Dict[int, int]): Mapping for bosonic modes in operation.
         ///
         /// Returns:
         ///     self

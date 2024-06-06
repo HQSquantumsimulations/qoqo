@@ -155,11 +155,11 @@ impl CircuitDagWrapper {
     /// Checks if executing an operation is blocked by any not-yet executed operation.
     ///
     /// Args:
-    ///     already_executed (list[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
+    ///     already_executed (List[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
     ///     to_be_executed (int): NodeIndex of the operation that should be executed next.
     ///
     /// Returns:
-    ///     list[int]: List containing the sorted blocking elements.
+    ///     List[int]: List containing the sorted blocking elements.
     #[pyo3(text_signature = "($self, already_executed, to_be_executed)")]
     pub fn execution_blocked(
         &self,
@@ -178,11 +178,11 @@ impl CircuitDagWrapper {
     /// this method returning an empty vector does not imply that the `to_be_executed` operation can be executed.
     ///
     /// Args:
-    ///     already_executed (list[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
+    ///     already_executed (List[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
     ///     to_be_executed (int): NodeIndex of the Operation that should be executed next.
     ///
     /// Returns:
-    ///     list[int]: List containing the sorted blocking elements.
+    ///     List[int]: List containing the sorted blocking elements.
     #[pyo3(text_signature = "($self, already_executed, to_be_executed)")]
     pub fn blocking_predecessors(
         &self,
@@ -198,8 +198,8 @@ impl CircuitDagWrapper {
     /// Returns an error if operation to be executed is not in the current front layer.
     ///
     /// Args:
-    ///     already_executed (list[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
-    ///     current_front_layer (list[int]): List of NodeIndices in the current front layer ready to be executed if physically possible.
+    ///     already_executed (List[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
+    ///     current_front_layer (List[int]): List of NodeIndices in the current front layer ready to be executed if physically possible.
     ///     to_be_executed (int): NodeIndex of the operation that should be executed next.
     #[pyo3(text_signature = "($self, already_executed, current_front_layer, to_be_executed)")]
     pub fn new_front_layer(
@@ -302,7 +302,7 @@ impl CircuitDagWrapper {
     /// Return the roqoqo and qoqo versions from when the code was compiled.
     ///
     /// Returns:
-    ///     tuple[str, str]: The roqoqo and qoqo versions.
+    ///     Tuple[str, str]: The roqoqo and qoqo versions.
     #[pyo3(text_signature = "($self)")]
     fn _qoqo_versions(&self) -> (String, String) {
         let mut rsplit = ROQOQO_VERSION.split('.').take(2);
@@ -371,7 +371,7 @@ impl CircuitDagWrapper {
     /// Returns the list of nodes of commuting operations in CircuitDag.
     ///
     /// Returns:
-    ///     list[int]: The list of nodes of commuting operations.
+    ///     List[int]: The list of nodes of commuting operations.
     #[pyo3(text_signature = "($self)")]
     pub fn commuting_operations(&self) -> Vec<usize> {
         self.internal.commuting_operations().to_vec()
@@ -380,7 +380,7 @@ impl CircuitDagWrapper {
     /// Returns a set containing the nodes in the first parallel block.
     ///
     /// Returns:
-    ///     set[int]: The set of nodes in the first parallel block.
+    ///     Set[int]: The set of nodes in the first parallel block.
     #[pyo3(text_signature = "($self)")]
     pub fn first_parallel_block(&self) -> HashSet<usize> {
         self.internal.first_parallel_block().clone()
@@ -389,7 +389,7 @@ impl CircuitDagWrapper {
     /// Returns a set containing the nodes in the last parallel block.
     ///
     /// Returns:
-    ///     set[int]: The set of nodes in the last parallel block.
+    ///     Set[int]: The set of nodes in the last parallel block.
     #[pyo3(text_signature = "($self)")]
     pub fn last_parallel_block(&self) -> HashSet<usize> {
         self.internal.last_parallel_block().clone()
@@ -399,7 +399,7 @@ impl CircuitDagWrapper {
     /// the first node that involves that qubit.
     ///
     /// Returns:
-    ///     dict[int, int]: The dictionary of {qubit: node} elements.
+    ///     Dict[int, int]: The dictionary of {qubit: node} elements.
     #[pyo3(text_signature = "($self)")]
     pub fn first_operation_involving_qubit(&self) -> PyObject {
         Python::with_gil(|py| -> PyObject {
@@ -413,7 +413,7 @@ impl CircuitDagWrapper {
     /// the last node that involves that qubit.
     ///
     /// Returns:
-    ///     dict[int, int]: The dictionary of {qubit: node} elements.
+    ///     Dict[int, int]: The dictionary of {qubit: node} elements.
     #[pyo3(text_signature = "($self)")]
     pub fn last_operation_involving_qubit(&self) -> PyObject {
         Python::with_gil(|py| -> PyObject {
@@ -426,7 +426,7 @@ impl CircuitDagWrapper {
     /// register.
     ///
     /// Returns:
-    ///     dict[(str, int), int]: The dictionary of {(str, int), int} elements.
+    ///     Dict[(str, int), int]: The dictionary of {(str, int), int} elements.
     #[pyo3(text_signature = "($self)")]
     pub fn first_operation_involving_classical(&self) -> PyObject {
         Python::with_gil(|py| -> PyObject {
@@ -441,7 +441,7 @@ impl CircuitDagWrapper {
     /// register.
     ///
     /// Returns:
-    ///     dict[(str, int), int]: The dictionary of {(str, int), int} elements.
+    ///     Dict[(str, int), int]: The dictionary of {(str, int), int} elements.
     #[pyo3(text_signature = "($self)")]
     pub fn last_operation_involving_classical(&self) -> PyObject {
         Python::with_gil(|py| -> PyObject {

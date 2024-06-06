@@ -211,7 +211,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         /// Returns tags identifying the Operation
         ///
         /// Returns:
-        ///     list[str]: The tags identifying the operation
+        ///     List[str]: The tags identifying the operation
         fn tags(&self) -> Vec<String>{
             self.internal.tags().iter().map(|s| s.to_string()).collect()
         }
@@ -230,7 +230,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         /// provided parameters.
         ///
         /// Args:
-        ///     substitution_parameters (dict[str, float]): The substituted free parameters
+        ///     substitution_parameters (Dict[str, float]): The substituted free parameters
         ///
         /// Returns:
         ///     Operation: The operation with the parameters substituted
@@ -250,7 +250,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         /// Remap qubits
         ///
         /// Args:
-        ///     mapping (dict[int, int]): The mapping
+        ///     mapping (Dict[int, int]): The mapping
         ///
         /// Returns:
         ///     Operation: The operation with the remapped qubits
@@ -267,7 +267,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         /// List all involved Qubits
         ///
         /// Returns:
-        ///     Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        ///     Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         fn involved_qubits(&self) -> PyObject {
             Python::with_gil(|py| -> PyObject {
                 let involved = self.internal.involved_qubits();

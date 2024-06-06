@@ -77,7 +77,7 @@ impl PauliZProductInputWrapper {
     ///
     /// Args:
     ///     readout (str): The name of the readout register the pauli_product is defined on.
-    ///     pauli_product_mask (list[int]): List of the qubits involved in the Pauli produc measurement.
+    ///     pauli_product_mask (List[int]): List of the qubits involved in the Pauli produc measurement.
     ///
     /// Returns:
     ///     int: The index of the added Pauli product in the list of all Pauli products.
@@ -101,7 +101,7 @@ impl PauliZProductInputWrapper {
     ///
     /// Args:
     ///     name (str): The name of the expectation value.
-    ///     linear (dict[int, float]): The linear combination of expectation values as a map between Pauli product index and coefficient.
+    ///     linear (Dict[int, float]): The linear combination of expectation values as a map between Pauli product index and coefficient.
     ///
     /// Raises:
     ///     RuntimeError: Failed to add linear expectation value.
@@ -332,7 +332,7 @@ impl CheatedPauliZProductInputWrapper {
     ///
     /// Args:
     ///     name (str): The name of the expectation value.
-    ///     linear (dict[int, float]): The linear combination of expectation values as a map between Pauli product index and coefficient.
+    ///     linear (Dict[int, float]): The linear combination of expectation values as a map between Pauli product index and coefficient.
     ///
     /// Raises:
     ///     RuntimeError: Failed to add linear expectation value.
@@ -550,7 +550,7 @@ impl CheatedInputWrapper {
     ///
     /// Args:
     ///     name (str): The name of the expectation value.
-    ///     operator (list[(int, int, complex)]): The measured operator on the Hilbert space,
+    ///     operator (List[(int, int, complex)]): The measured operator on the Hilbert space,
     ///                                           given as a list of sparse matrix entries of the form (row, col, value).
     ///     readout (str): The mame of the readout register that contains the density matrix or satevector.
     ///

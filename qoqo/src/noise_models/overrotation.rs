@@ -249,6 +249,14 @@ impl SingleQubitOverrotationDescriptionWrapper {
         let schema = schemars::schema_for!(SingleQubitOverrotationDescription);
         serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
     }
+
+    /// Return a string containing a printable representation of the object.
+    ///
+    /// Returns:
+    ///     str: The SingleQubitOverrotationDescription, represented as a string.
+    fn __repr__(&self) -> String {
+        format!("{:?}", self.internal)
+    }
 }
 
 impl SingleQubitOverrotationDescriptionWrapper {
@@ -393,8 +401,8 @@ impl SingleQubitOverrotationOnGateWrapper {
     ///
     /// Args:
     ///     gate (str): The name of the gate.
-    ///     control (int) - The control qubit the gate acts on.
-    ///     target (int) - The target qubit the gate acts on.
+    ///     control (int): The control qubit the gate acts on.
+    ///     target (int): The target qubit the gate acts on.
     ///
     /// Returns
     ///     Optional[(SingleQubitOverrotationDescription, SingleQubitOverrotationDescription)]: The overrotation applied when gate is applied.
