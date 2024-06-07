@@ -285,7 +285,7 @@ pub fn wrap(
             ///     `other` - An Operation implementing [OperateSingleQubitGate].
             ///
             /// Returns:
-            ///     PyResult: Result of the multiplication, i.e. the multiplied single qubit gate.
+            ///     Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
             ///
             /// Example:
             /// ```

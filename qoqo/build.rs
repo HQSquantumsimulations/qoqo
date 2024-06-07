@@ -11,7 +11,14 @@
 // limitations under the License.
 
 use proc_macro2::TokenStream;
+#[cfg(feature = "doc_generator")]
+use pyo3::{
+    types::{PyAnyMethods, PyDict, PyModule},
+    {PyResult, Python},
+};
 use quote::{format_ident, quote};
+#[cfg(feature = "doc_generator")]
+use regex::Regex;
 use std::collections::HashSet;
 use std::fs;
 use std::path::PathBuf;
@@ -160,6 +167,176 @@ const SOURCE_FILES: &[&str] = &[
     #[cfg(feature = "unstable_analog_operations")]
     "src/operations/analog_operations.rs",
 ];
+
+#[cfg(feature = "doc_generator")]
+fn str_to_type(res: &str, class_name: &str) -> Option<String> {
+    match res {
+        s if s.contains("Pragma") => Some("Operation".to_owned()),
+        "CalculatorFloat" => Some("Union[float, str]".to_owned()),
+        "String" | "string" => Some("str".to_owned()),
+        "" => None,
+        "uint" => Some("int".to_owned()),
+        "self" => Some(class_name.to_owned()),
+        "ByteArray" => Some("bytearray".to_owned()),
+        _ => Some(
+            res.replace("list", "List")
+                .replace("dict", "Dict")
+                .replace("tuple", "Tuple")
+                .replace("set", "Set")
+                .replace("circuit", "Circuit")
+                .replace("Option[", "Optional[")
+                .replace("optional", "Optional")
+                .replace("operation", "Operation")
+                .to_owned(),
+        ),
+    }
+}
+
+#[cfg(feature = "doc_generator")]
+fn extract_type(string: &str, class_name: &str) -> Option<String> {
+    let pattern = r"\(([a-zA-Z_\[\] ,|]+?)\)";
+    let re = Regex::new(pattern).unwrap();
+    if let Some(captures) = re.captures(string) {
+        if let Some(res) = captures.get(1).map(|s| s.as_str()) {
+            return str_to_type(res, class_name);
+        }
+    }
+    None
+}
+
+#[cfg(feature = "doc_generator")]
+fn collect_args_from_doc(doc: &str, class_name: &str) -> Vec<String> {
+    let args_vec: Vec<_> = doc
+        .split('\n')
+        .skip_while(|&line| line != "Args:")
+        .skip(1)
+        .skip_while(|line| line.is_empty())
+        .take_while(|line| !line.is_empty())
+        .collect();
+    args_vec
+        .iter()
+        .filter(|&line| line.contains(':') && line.trim().starts_with(char::is_alphabetic))
+        .map(|&line| {
+            format!(
+                "{}{}",
+                line.trim().split_once([' ', ':']).unwrap_or(("", "")).0,
+                extract_type(line, class_name)
+                    .map(|arg_type| format!(": {}", arg_type))
+                    .unwrap_or_default()
+            )
+        })
+        .collect()
+}
+
+#[cfg(feature = "doc_generator")]
+fn collect_return_from_doc(doc: &str, class_name: &str) -> String {
+    let args_vec: Vec<_> = doc
+        .split('\n')
+        .skip_while(|&line| line != "Returns:")
+        .skip(1)
+        .take(1)
+        .filter(|&line| line.contains(':') && line.trim().starts_with(char::is_alphabetic))
+        .collect();
+    if args_vec.is_empty() {
+        "".to_owned()
+    } else if let Some(ret) = str_to_type(
+        args_vec[0].trim().split_once([':']).unwrap_or(("", "")).0,
+        class_name,
+    ) {
+        format!(" -> {}", ret)
+    } else {
+        "".to_owned()
+    }
+}
+
+#[cfg(feature = "doc_generator")]
+fn create_doc(module: &str) -> PyResult<String> {
+    let mut module_doc = "# This is an auto generated file containing only the documentation.\n# You can find the full implementation on this page:\n# https://github.com/HQSquantumsimulations/qoqo\n\n".to_owned();
+    if module == "qoqo" {
+        module_doc
+            .push_str("from typing import Optional, List, Tuple, Dict, Set  # noqa: F401\n\n");
+    } else {
+        module_doc.push_str("from .qoqo import Circuit, Operation  # noqa: F401\nimport numpy as np  # noqa: F401\nfrom typing import Tuple, List, Optional, Set, Dict, Union, Self, Sequence  # noqa: F401\n\n");
+    };
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| -> PyResult<String> {
+        let python_module = PyModule::import_bound(py, module)?;
+        let dict = python_module.as_gil_ref().getattr("__dict__")?;
+        let r_dict = dict.downcast::<PyDict>()?;
+        for (fn_name, func) in r_dict.iter() {
+            let name = fn_name.str()?.extract::<String>()?;
+            if name.starts_with("__")
+                || (module == "qoqo"
+                    && !["Circuit", "QuantumProgram", "CircuitDag", "operations"]
+                        .contains(&name.as_str()))
+            {
+                continue;
+            }
+            let doc = func.getattr("__doc__")?.extract::<String>()?;
+            if name == "operations" {
+                module_doc.push_str(&format!(
+                    "class Operation:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self):\n       return\n\n",
+                ));
+            } else {
+                let args = collect_args_from_doc(doc.as_str(), name.as_str()).join(", ");
+                module_doc.push_str(&format!(
+                    "class {name}{}:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self{}):\n       return\n\n",
+                    module.eq("qoqo.operations").then(|| "(Operation)").unwrap_or_default(),
+                    if args.is_empty() { "".to_owned() } else { format!(", {}", args) },
+                ));
+                let class_dict = func.getattr("__dict__")?;
+                let items = class_dict.call_method0("items")?;
+                let dict_obj = py
+                    .import_bound("builtins")?
+                    .call_method1("dict", (items,))?;
+                let class_r_dict = dict_obj.as_gil_ref().downcast::<PyDict>()?;
+                for (class_fn_name, meth) in class_r_dict.iter() {
+                    let meth_name = class_fn_name.str()?.extract::<String>()?;
+                    let class_doc = match meth_name.as_str() {
+                        "__add__" if name.eq(&"Circuit") => r#"Implement the `+` (__add__) magic method to add two Circuits.
+
+Args:
+    rhs (Operation | Circuit): The second Circuit object in this operation.
+
+Returns:
+    Circuit: self + rhs the two Circuits added together.
+
+    Raises:
+    TypeError: Left hand side can not be converted to Circuit.
+    TypeError: Right hand side cannot be converted to Operation or Circuit."#.to_owned(),
+                        "__iadd__" if name.eq(&"Circuit") => r#"Implement the `+=` (__iadd__) magic method to add a Operation to a Circuit.
+
+Args:
+    other (Operation | Circuit): The Operation object to be added to self.
+
+Returns:
+    Circuit: self + other the two Circuits added together as the first one.
+
+Raises:
+    TypeError: Right hand side cannot be converted to Operation or Circuit."#.to_owned(),
+                        "__new__" => "".to_owned(),
+                        _ => meth
+                            .getattr("__doc__")
+                            ?
+                            .extract::<String>()
+                            .unwrap_or_default(),
+                    };
+                    if class_doc.eq("") {
+                        continue;
+                    }
+                    let meth_args =
+                        collect_args_from_doc(class_doc.as_str(), name.as_str()).join(", ");
+                    module_doc.push_str(&format!(
+                        "    @classmethod\n    def {meth_name}(self{}){}: # type: ignore\n        \"\"\"\n{class_doc}\n\"\"\"\n\n",
+                        if meth_args.is_empty() { "".to_owned() } else { format!(", {}", meth_args) },
+                        collect_return_from_doc(class_doc.as_str(), name.as_str())
+                    ));
+                }
+            }
+        }
+        Ok(module_doc)
+    })
+}
 
 fn main() {
     pyo3_build_config::add_extension_module_link_args();
@@ -316,6 +493,28 @@ fn main() {
     fs::write(&out_dir, final_str).expect("Could not write to file");
     // Try to format auto generated operations
     let _unused_output = Command::new("rustfmt").arg(&out_dir).output();
+
+    #[cfg(feature = "doc_generator")]
+    {
+        for &module in [
+            "qoqo",
+            "operations",
+            "measurements",
+            "noise_models",
+            "devices",
+        ]
+        .iter()
+        {
+            let qoqo_doc = if module.eq("qoqo") {
+                create_doc(module)
+            } else {
+                create_doc(&format!("qoqo.{module}"))
+            }
+            .expect("Could not generate documentation.");
+            let out_dir = PathBuf::from(format!("qoqo/{}.pyi", module));
+            fs::write(&out_dir, qoqo_doc).expect("Could not write to file");
+        }
+    }
 }
 
 fn extract_fields_with_types(input_fields: Fields) -> Vec<(Ident, Option<String>, Type)> {
