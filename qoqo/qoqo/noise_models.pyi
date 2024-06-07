@@ -3,6 +3,7 @@
 # https://github.com/HQSquantumsimulations/qoqo
 
 from .qoqo import Circuit, Operation  # noqa: F401
+from struqture_py.spins import PlusMinusLindbladNoiseOperator  # type: ignore
 import numpy as np  # noqa: F401
 from typing import (
     Tuple,
@@ -48,43 +49,6 @@ class ContinuousDecoherenceModel:
     def __init__(self, noise_operator):
         return
 
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
     def get_noise_operator(self) -> PlusMinusLindbladNoiseOperator:  # type: ignore
         """
         Return the internal Lindblad noise operator of the continuous noise model.
@@ -93,76 +57,43 @@ class ContinuousDecoherenceModel:
             PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the continuous noise
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray):  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the Noise-Model to a device using the bincode crate.
 
-        Convert a function to be a static method.
+        Args:
+            input (ByteArray): The serialized Noise-Model (in bincode form).
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            The deserialized Noise-Model.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to selected Noise-Model.
         """
 
-    @classmethod
-    def from_json(self):  # type: ignore
+    def from_json(self, input: str):  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the json representation of a device to a Noise-Model.
 
-        Convert a function to be a static method.
+        Args:
+            input (str): The serialized device in json form.
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            The deserialized device.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            ValueError: Input cannot be deserialized to selected Noise-Model.
         """
 
-    @classmethod
-    def json_schema(self):  # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Return the JsonSchema for the json serialisation of the class.
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The json schema serialized to json
         """
 
-    @classmethod
     def add_damping_rate(self, qubits: List[int], rate: float) -> ContinuousDecoherenceModel:  # type: ignore
         """
         Convenience function to add damping to several qubits
@@ -175,7 +106,6 @@ class ContinuousDecoherenceModel:
             ContinuousDecoherenceModel: The model with the damping added.
         """
 
-    @classmethod
     def add_dephasing_rate(self, qubits: List[int], rate: float) -> ContinuousDecoherenceModel:  # type: ignore
         """
         Convenience function to add dephasing to several qubits
@@ -188,7 +118,6 @@ class ContinuousDecoherenceModel:
             ContinuousDecoherenceModel: The model with the dephasing added.
         """
 
-    @classmethod
     def add_depolarising_rate(self, qubits: List[int], rate: float) -> ContinuousDecoherenceModel:  # type: ignore
         """
         Convenience function to add depolarising to several qubits
@@ -201,7 +130,6 @@ class ContinuousDecoherenceModel:
             ContinuousDecoherenceModel: The model with the depolarising added.
         """
 
-    @classmethod
     def add_excitation_rate(self, qubits: List[int], rate: float) -> ContinuousDecoherenceModel:  # type: ignore
         """
         Convenience function to add excitation to several qubits
@@ -214,27 +142,6 @@ class ContinuousDecoherenceModel:
             ContinuousDecoherenceModel: The model with the excitation added.
         """
 
-    @classmethod
-    def __copy__(self):  # type: ignore
-        """
-        Returns a copy of the device (copy here produces a deepcopy).
-
-        Returns:
-            A deep copy of self.
-
-        """
-
-    @classmethod
-    def __deepcopy__(self):  # type: ignore
-        """
-        Creates deep copy of Noise-Model.
-
-        Returns:
-            A deep copy of self.
-
-        """
-
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the Noise-Model using the bincode crate.
@@ -247,7 +154,6 @@ class ContinuousDecoherenceModel:
 
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Return the json representation of the Noise-Model.
@@ -260,66 +166,20 @@ class ContinuousDecoherenceModel:
 
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
             str: The minimum version of the qoqo library to deserialize this object.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
         """
 
 class ImperfectReadoutModel:
@@ -349,135 +209,59 @@ class ImperfectReadoutModel:
     def __init__(self):
         return
 
-    @classmethod
-    def __lt__(self):  # type: ignore
+    def new_with_uniform_error(self, number_qubits: int, prob_detect_0_as_1: float, prob_detect_1_as_0: float) -> ImperfectReadoutModel:  # type: ignore
         """
-        Return self<value.
-        """
+        Convenience function to create uniform error probabilities
 
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
+        Args:
+            number_qubits (int): The number of qubits the uniform error probabilites should be initialized for.
+            prob_detect_0_as_1 (float): The error probability to detect a 1 instead of a 0 when measuring 0
+            prob_detect_1_as_0 (float): The error probability to detect a 0 instead of a 1 when measuring 1
 
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
+        Returns:
+            ImperfectReadoutModel: The new error model
+
+        Raises:
+            ValueError: Raised if the error probabilities are not valid (< 0 or > 1)
         """
 
-    @classmethod
-    def __ne__(self):  # type: ignore
+    def from_bincode(self, input: bytearray):  # type: ignore
         """
-        Return self!=value.
-        """
+        Convert the bincode representation of the Noise-Model to a device using the bincode crate.
 
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
+        Args:
+            input (ByteArray): The serialized Noise-Model (in bincode form).
 
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
+        Returns:
+            The deserialized Noise-Model.
+
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to selected Noise-Model.
         """
 
-    @classmethod
-    def new_with_uniform_error(self):  # type: ignore
+    def from_json(self, input: str):  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the json representation of a device to a Noise-Model.
 
-        Convert a function to be a static method.
+        Args:
+            input (str): The serialized device in json form.
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            The deserialized device.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            ValueError: Input cannot be deserialized to selected Noise-Model.
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Return the JsonSchema for the json serialisation of the class.
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The json schema serialized to json
         """
 
-    @classmethod
-    def from_json(self):  # type: ignore
-        """
-        staticmethod(function) -> method
-
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
-    def json_schema(self):  # type: ignore
-        """
-        staticmethod(function) -> method
-
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
     def set_error_probabilites(self, qubit: int, prob_detect_0_as_1: float, prob_detect_1_as_0: float) -> Self:  # type: ignore
         """
         Set and overwrite the measurement error probabilities
@@ -494,7 +278,6 @@ class ImperfectReadoutModel:
             ValueError: Raised if the error probabilities are not valid (< 0 or > 1).
         """
 
-    @classmethod
     def prob_detect_0_as_1(self, qubit: int) -> float:  # type: ignore
         """
         Return probability to detect 0 as 1 for a qubit
@@ -506,7 +289,6 @@ class ImperfectReadoutModel:
             float: The probability to detect 0 as 1 for the qubit
         """
 
-    @classmethod
     def prob_detect_1_as_0(self, qubit: int) -> float:  # type: ignore
         """
         Return probability to detect 1 as 0 for a qubit
@@ -518,27 +300,6 @@ class ImperfectReadoutModel:
             float: The probability to detect 1 as 0 for the qubit
         """
 
-    @classmethod
-    def __copy__(self):  # type: ignore
-        """
-        Returns a copy of the device (copy here produces a deepcopy).
-
-        Returns:
-            A deep copy of self.
-
-        """
-
-    @classmethod
-    def __deepcopy__(self):  # type: ignore
-        """
-        Creates deep copy of Noise-Model.
-
-        Returns:
-            A deep copy of self.
-
-        """
-
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the Noise-Model using the bincode crate.
@@ -551,7 +312,6 @@ class ImperfectReadoutModel:
 
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Return the json representation of the Noise-Model.
@@ -564,66 +324,20 @@ class ImperfectReadoutModel:
 
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
             str: The minimum version of the qoqo library to deserialize this object.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
         """
 
 class DecoherenceOnGateModel:
@@ -659,43 +373,6 @@ class DecoherenceOnGateModel:
     def __init__(self):
         return
 
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
     def set_single_qubit_gate_error(self, gate: str, qubit: int, noise_operator) -> Self:  # type: ignore
         """
         Set extra noise for a single qubit gate.
@@ -712,7 +389,6 @@ class DecoherenceOnGateModel:
             PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
         """
 
-    @classmethod
     def get_single_qubit_gate_error(self, gate: str, qubit: int):  # type: ignore
         """
         Return the extra noise for a single qubit gate, if it exists.
@@ -725,7 +401,6 @@ class DecoherenceOnGateModel:
             Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
         """
 
-    @classmethod
     def set_two_qubit_gate_error(self, gate: str, control: int, target: int, noise_operator) -> Self:  # type: ignore
         """
         Set extra noise for a two qubit gate.
@@ -743,7 +418,6 @@ class DecoherenceOnGateModel:
             PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
         """
 
-    @classmethod
     def get_two_qubit_gate_error(self, gate: str, control: int, target: int):  # type: ignore
         """
         Return the extra noise for a single qubit gate, if it exists.
@@ -757,7 +431,6 @@ class DecoherenceOnGateModel:
             Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
         """
 
-    @classmethod
     def set_three_qubit_gate_error(self, gate: str, control0: int, control1: int, target: int, noise_operator) -> Self:  # type: ignore
         """
         Set extra noise for a single qubit gate.
@@ -776,7 +449,6 @@ class DecoherenceOnGateModel:
             PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
         """
 
-    @classmethod
     def get_three_qubit_gate_error(self, gate: str, control0: int, control1: int, target: int):  # type: ignore
         """
         Return the extra noise for a three qubit gate, if it exists.
@@ -791,7 +463,6 @@ class DecoherenceOnGateModel:
             Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
         """
 
-    @classmethod
     def set_multi_qubit_gate_error(self, gate: str, qubits: List, noise_operator) -> Self:  # type: ignore
         """
         Set extra noise for a multi qubit gate.
@@ -808,7 +479,6 @@ class DecoherenceOnGateModel:
             PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
         """
 
-    @classmethod
     def get_multi_qubit_gate_error(self, gate: str, qubits: List[int]):  # type: ignore
         """
         Return the extra noise for a multi qubit gate, if it exists.
@@ -821,96 +491,43 @@ class DecoherenceOnGateModel:
             Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray):  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the Noise-Model to a device using the bincode crate.
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
-    def from_json(self):  # type: ignore
-        """
-        staticmethod(function) -> method
-
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
-    def json_schema(self):  # type: ignore
-        """
-        staticmethod(function) -> method
-
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
-    def __copy__(self):  # type: ignore
-        """
-        Returns a copy of the device (copy here produces a deepcopy).
+        Args:
+            input (ByteArray): The serialized Noise-Model (in bincode form).
 
         Returns:
-            A deep copy of self.
+            The deserialized Noise-Model.
 
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to selected Noise-Model.
         """
 
-    @classmethod
-    def __deepcopy__(self):  # type: ignore
+    def from_json(self, input: str):  # type: ignore
         """
-        Creates deep copy of Noise-Model.
+        Convert the json representation of a device to a Noise-Model.
+
+        Args:
+            input (str): The serialized device in json form.
 
         Returns:
-            A deep copy of self.
+            The deserialized device.
 
+        Raises:
+            ValueError: Input cannot be deserialized to selected Noise-Model.
         """
 
-    @classmethod
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
+
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the Noise-Model using the bincode crate.
@@ -923,7 +540,6 @@ class DecoherenceOnGateModel:
 
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Return the json representation of the Noise-Model.
@@ -936,66 +552,20 @@ class DecoherenceOnGateModel:
 
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
             str: The minimum version of the qoqo library to deserialize this object.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
         """
 
 class SingleQubitOverrotationDescription:
@@ -1019,67 +589,6 @@ class SingleQubitOverrotationDescription:
     def __init__(self):
         return
 
-    @classmethod
-    def __repr__(self):  # type: ignore
-        """
-        Return repr(self).
-        """
-
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
-    def __copy__(self):  # type: ignore
-        """
-        Return a copy of the device (copy here produces a deepcopy).
-
-        Returns:
-            A deep copy of self.
-        """
-
-    @classmethod
-    def __deepcopy__(self):  # type: ignore
-        """
-        Create deep copy of Noise-Model.
-
-        Returns:
-            A deep copy of self.
-        """
-
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of SingleQubitOverrotationDescription using the bincode crate.
@@ -1091,7 +600,6 @@ class SingleQubitOverrotationDescription:
             ValueError: Cannot serialize SingleQubitOverrotationDescription to bytes.
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Return the json representation of the SingleQubitOverrotationDescription.
@@ -1103,53 +611,35 @@ class SingleQubitOverrotationDescription:
             ValueError: Cannot serialize SingleQubitOverrotationDescription.
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray):  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the overotation description to a device using the bincode crate.
 
-        Convert a function to be a static method.
+        Args:
+            input (ByteArray): The serialized Noise-Model (in bincode form).
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            The deserialized Noise-Model.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to selected Noise-Model.
         """
 
-    @classmethod
-    def from_json(self):  # type: ignore
+    def from_json(self, input: str):  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the json representation of a device to a overotation description.
 
-        Convert a function to be a static method.
+        Args:
+            input (str): The serialized device in json form.
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            The deserialized device.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            ValueError: Input cannot be deserialized to selected Noise-Model.
         """
 
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
@@ -1158,80 +648,20 @@ class SingleQubitOverrotationDescription:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Return the current version of the qoqo library.
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
-    def json_schema(self):  # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Return the JsonSchema for the json serialisation of the class.
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
+        Returns:
+            str: The json schema serialized to json
         """
 
 class SingleQubitOverrotationOnGate:
@@ -1259,43 +689,6 @@ class SingleQubitOverrotationOnGate:
     def __init__(self):
         return
 
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
     def set_single_qubit_overrotation(self, gate: str, qubit: int) -> Self:  # type: ignore
         """
         Set overrotation for a single qubit gate.
@@ -1312,7 +705,6 @@ class SingleQubitOverrotationOnGate:
             PyTypeError: Noise description is not a SingleQubitOverrotationDescription.
         """
 
-    @classmethod
     def get_single_qubit_overrotation(self, gate: str, qubit: int):  # type: ignore
         """
         Return the overrotation description for a single qubit gate, if it exists.
@@ -1325,7 +717,6 @@ class SingleQubitOverrotationOnGate:
             Optional[SingleQubitOverrotationDescription]: The overrotation applied when gate is applied.
         """
 
-    @classmethod
     def set_two_qubit_overrotation(self, gate: str, control: int, target: int) -> Self:  # type: ignore
         """
         Set extra noise for a two qubit gate.
@@ -1343,7 +734,6 @@ class SingleQubitOverrotationOnGate:
             PyTypeError: Noise description is not a (SingleQubitOverrotationDescription, SingleQubitOverrotationDescription).
         """
 
-    @classmethod
     def get_two_qubit_overrotation(self, gate: str, control: int, target: int):  # type: ignore
         """
         Return the extra noise for a single qubit gate, if it exists.
@@ -1357,96 +747,43 @@ class SingleQubitOverrotationOnGate:
             Optional[(SingleQubitOverrotationDescription, SingleQubitOverrotationDescription)]: The overrotation applied when gate is applied.
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray):  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the Noise-Model to a device using the bincode crate.
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
-    def from_json(self):  # type: ignore
-        """
-        staticmethod(function) -> method
-
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
-    def json_schema(self):  # type: ignore
-        """
-        staticmethod(function) -> method
-
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
-    def __copy__(self):  # type: ignore
-        """
-        Returns a copy of the device (copy here produces a deepcopy).
+        Args:
+            input (ByteArray): The serialized Noise-Model (in bincode form).
 
         Returns:
-            A deep copy of self.
+            The deserialized Noise-Model.
 
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to selected Noise-Model.
         """
 
-    @classmethod
-    def __deepcopy__(self):  # type: ignore
+    def from_json(self, input: str):  # type: ignore
         """
-        Creates deep copy of Noise-Model.
+        Convert the json representation of a device to a Noise-Model.
+
+        Args:
+            input (str): The serialized device in json form.
 
         Returns:
-            A deep copy of self.
+            The deserialized device.
 
+        Raises:
+            ValueError: Input cannot be deserialized to selected Noise-Model.
         """
 
-    @classmethod
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
+
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the Noise-Model using the bincode crate.
@@ -1459,7 +796,6 @@ class SingleQubitOverrotationOnGate:
 
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Return the json representation of the Noise-Model.
@@ -1472,66 +808,20 @@ class SingleQubitOverrotationOnGate:
 
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
             str: The minimum version of the qoqo library to deserialize this object.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
         """
 
 class DecoherenceOnIdleModel:
@@ -1566,44 +856,7 @@ class DecoherenceOnIdleModel:
     def __init__(self, noise_operator):
         return
 
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
-    def get_noise_operator(self) -> PlusMinusLindbladNoiseOperator:  # type: ignore
+    def get_noise_operator(self) -> PlusMinusLindbladNoiseOperator:
         """
         Return the internal Lindblad noise operator of the continuous noise model.
 
@@ -1611,76 +864,43 @@ class DecoherenceOnIdleModel:
             PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the continuous noise
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray):  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the Noise-Model to a device using the bincode crate.
 
-        Convert a function to be a static method.
+        Args:
+            input (ByteArray): The serialized Noise-Model (in bincode form).
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            The deserialized Noise-Model.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to selected Noise-Model.
         """
 
-    @classmethod
-    def from_json(self):  # type: ignore
+    def from_json(self, input: str):  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the json representation of a device to a Noise-Model.
 
-        Convert a function to be a static method.
+        Args:
+            input (str): The serialized device in json form.
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            The deserialized device.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            ValueError: Input cannot be deserialized to selected Noise-Model.
         """
 
-    @classmethod
-    def json_schema(self):  # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Return the JsonSchema for the json serialisation of the class.
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The json schema serialized to json
         """
 
-    @classmethod
     def add_damping_rate(self, qubits: List[int], rate: float) -> DecoherenceOnIdleModel:  # type: ignore
         """
         Convenience function to add damping to several qubits
@@ -1693,7 +913,6 @@ class DecoherenceOnIdleModel:
             DecoherenceOnIdleModel: The model with the damping added.
         """
 
-    @classmethod
     def add_dephasing_rate(self, qubits: List[int], rate: float) -> DecoherenceOnIdleModel:  # type: ignore
         """
         Convenience function to add dephasing to several qubits
@@ -1706,7 +925,6 @@ class DecoherenceOnIdleModel:
             DecoherenceOnIdleModel: The model with the dephasing added.
         """
 
-    @classmethod
     def add_depolarising_rate(self, qubits: List[int], rate: float) -> DecoherenceOnIdleModel:  # type: ignore
         """
         Convenience function to add depolarising to several qubits
@@ -1719,7 +937,6 @@ class DecoherenceOnIdleModel:
             DecoherenceOnIdleModel: The model with the depolarising added.
         """
 
-    @classmethod
     def add_excitation_rate(self, qubits: List[int], rate: float) -> DecoherenceOnIdleModel:  # type: ignore
         """
         Convenience function to add excitation to several qubits
@@ -1732,27 +949,6 @@ class DecoherenceOnIdleModel:
             DecoherenceOnIdleModel: The model with the excitation added.
         """
 
-    @classmethod
-    def __copy__(self):  # type: ignore
-        """
-        Returns a copy of the device (copy here produces a deepcopy).
-
-        Returns:
-            A deep copy of self.
-
-        """
-
-    @classmethod
-    def __deepcopy__(self):  # type: ignore
-        """
-        Creates deep copy of Noise-Model.
-
-        Returns:
-            A deep copy of self.
-
-        """
-
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the Noise-Model using the bincode crate.
@@ -1765,7 +961,6 @@ class DecoherenceOnIdleModel:
 
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Return the json representation of the Noise-Model.
@@ -1778,64 +973,18 @@ class DecoherenceOnIdleModel:
 
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
             str: The minimum version of the qoqo library to deserialize this object.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
         """

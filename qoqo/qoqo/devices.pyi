@@ -35,49 +35,6 @@ class AllToAllDevice:
     ):
         return
 
-    @classmethod
-    def __repr__(self):  # type: ignore
-        """
-        Return repr(self).
-        """
-
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
     def set_all_two_qubit_gate_times(self, gate: str, gate_time: float):  # type: ignore
         """
         Set gate time of all single-qubit gates of specific type
@@ -91,7 +48,6 @@ class AllToAllDevice:
 
         """
 
-    @classmethod
     def set_all_single_qubit_gate_times(self, gate: str, gate_time: float):  # type: ignore
         """
         Set gate time of all single-qubit gates of specific type
@@ -105,7 +61,6 @@ class AllToAllDevice:
 
         """
 
-    @classmethod
     def set_all_qubit_decoherence_rates(self, rates):  # type: ignore
         """
         Function to set the decoherence rates for all qubits in the AllToAllDevice device.
@@ -120,7 +75,6 @@ class AllToAllDevice:
             PyValueError: The input parameter `rates` needs to be a (3x3)-matrix.
         """
 
-    @classmethod
     def add_damping_all(self, damping: float):  # type: ignore
         """
         Adds qubit damping to noise rates.
@@ -132,7 +86,6 @@ class AllToAllDevice:
             AllToAllDevice
         """
 
-    @classmethod
     def add_dephasing_all(self, dephasing: float):  # type: ignore
         """
         Adds qubit dephasing to noise rates.
@@ -144,7 +97,6 @@ class AllToAllDevice:
             AllToAllDevice
         """
 
-    @classmethod
     def add_depolarising_all(self, depolarising: float):  # type: ignore
         """
         Adds qubit depolarising to noise rates.
@@ -156,53 +108,22 @@ class AllToAllDevice:
             AllToAllDevice
         """
 
-    @classmethod
-    def json_schema(self):  # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Return the JsonSchema for the json serialisation of the class.
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The json schema serialized to json
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
@@ -211,7 +132,6 @@ class AllToAllDevice:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    @classmethod
     def number_qubits(self) -> int:  # type: ignore
         """
         Return number of qubits in device.
@@ -220,7 +140,6 @@ class AllToAllDevice:
             int: The number of qubits.
         """
 
-    @classmethod
     def two_qubit_edges(self) -> Sequence[(int, int)]:  # type: ignore
         """
         Return the list of pairs of qubits linked by a native two-qubit-gate in the device.
@@ -241,7 +160,6 @@ class AllToAllDevice:
 
         """
 
-    @classmethod
     def single_qubit_gate_time(self, hqslang: str, qubit: int) -> Optional[float]:  # type: ignore
         """
         Returns the gate time of a single qubit operation if the single qubit operation is available on device.
@@ -257,7 +175,6 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def two_qubit_gate_time(self, hqslang: str, control: int, target: int) -> Optional[float]:  # type: ignore
         """
         Returns the gate time of a two qubit operation if the two qubit operation is available on device.
@@ -275,7 +192,6 @@ class AllToAllDevice:
 
         """
 
-    @classmethod
     def three_qubit_gate_time(self, hqslang: str, control_0: int, control_1: int, target: int) -> Optional[float]:  # type: ignore
         """
         three_qubit_gate_time(gate, control_0, control_1, target
@@ -297,7 +213,6 @@ class AllToAllDevice:
 
         """
 
-    @classmethod
     def multi_qubit_gate_time(self, hqslang: str, qubits: List[int]) -> Optional[float]:  # type: ignore
         """
         Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
@@ -313,7 +228,6 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def set_single_qubit_gate_time(self, gate: str, qubit: int, gate_time: float):  # type: ignore
         """
         Set the gate time of a single qubit gate.
@@ -327,7 +241,6 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def set_two_qubit_gate_time(self, gate: str, control: int, target: int, gate_time: float):  # type: ignore
         """
         Set the gate time of a two qubit gate.
@@ -342,7 +255,6 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def set_three_qubit_gate_time(self, gate: str, control_0: int, control_1: int, target: int, gate_time: float):  # type: ignore
         """
         Set the gate time of a three qubit gate.
@@ -358,7 +270,6 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def set_qubit_decoherence_rates(self, gate: str, qubits: int, gate_time: float):  # type: ignore
         """
         Set the gate time of a single qubit gate.
@@ -372,7 +283,6 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def set_multi_qubit_gate_time(self, gate: str, qubits: List[int], gate_time: float):  # type: ignore
         """
         Set the gate time of a single qubit gate.
@@ -386,7 +296,6 @@ class AllToAllDevice:
             PyValueError: Qubits not in device
         """
 
-    @classmethod
     def qubit_decoherence_rates(self, qubit: int) -> np.array:  # type: ignore
         """
         Return the matrix of the decoherence rates of the Lindblad equation.
@@ -399,7 +308,6 @@ class AllToAllDevice:
 
         """
 
-    @classmethod
     def add_damping(self, qubit: int, damping: float):  # type: ignore
         """
         Adds single qubit damping to noise rates.
@@ -412,7 +320,6 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def add_dephasing(self, qubit: int, dephasing: float):  # type: ignore
         """
         Adds single qubit dephasing to noise rates.
@@ -425,7 +332,6 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def add_depolarising(self, qubit: int, depolarising: float):  # type: ignore
         """
         Adds single qubit depolarising to noise rates.
@@ -438,7 +344,6 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def generic_device(self) -> GenericDevice:  # type: ignore
         """
         Turns Device into GenericDevice
@@ -454,7 +359,6 @@ class AllToAllDevice:
             The memory usage will be inefficient for devices with large qubit numbers.
         """
 
-    @classmethod
     def to_generic_device(self) -> GenericDevice:  # type: ignore
         """
         Turns Device into GenericDevice
@@ -470,7 +374,6 @@ class AllToAllDevice:
             The memory usage will be inefficient for devices with large qubit numbers.
         """
 
-    @classmethod
     def single_qubit_gate_names(self) -> List[str]:  # type: ignore
         """
         Returns the names of a single qubit operations available on the device.
@@ -479,7 +382,6 @@ class AllToAllDevice:
             List[str]: The list of gate names.
         """
 
-    @classmethod
     def two_qubit_gate_names(self) -> List[str]:  # type: ignore
         """
         Returns the names of a two qubit operations available on the device.
@@ -488,7 +390,6 @@ class AllToAllDevice:
             List[str]: The list of gate names.
         """
 
-    @classmethod
     def multi_qubit_gate_names(self) -> List[str]:  # type: ignore
         """
         Returns the names of a mutli qubit operations available on the device.
@@ -500,27 +401,6 @@ class AllToAllDevice:
 
         """
 
-    @classmethod
-    def __copy__(self):  # type: ignore
-        """
-        Returns a copy of the device (copy here produces a deepcopy).
-
-        Returns:
-            A deep copy of self.
-
-        """
-
-    @classmethod
-    def __deepcopy__(self):  # type: ignore
-        """
-        Creates deep copy of Device.
-
-        Returns:
-            A deep copy of self.
-
-        """
-
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the Device using the bincode crate.
@@ -533,7 +413,6 @@ class AllToAllDevice:
 
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Return the json representation of the Device.
@@ -546,80 +425,33 @@ class AllToAllDevice:
 
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray):  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the qoqo device to a device using the bincode crate.
 
-        Convert a function to be a static method.
+        Args:
+            input (ByteArray): The serialized Device (in bincode form).
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            The deserialized Device.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to selected Device.
         """
 
-    @classmethod
-    def from_json(self):  # type: ignore
+    def from_json(self, input: str):  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the json representation of a device to a qoqo device.
 
-        Convert a function to be a static method.
+        Args:
+            input (str): The serialized device in json form.
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            The deserialized device.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
+        Raises:
+            ValueError: Input cannot be deserialized to selected Device.
         """
 
 class GenericDevice:
@@ -637,95 +469,22 @@ class GenericDevice:
     def __init__(self, number_qubits: int):
         return
 
-    @classmethod
-    def __repr__(self):  # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-        Return repr(self).
-        """
+        Return the JsonSchema for the json serialisation of the class.
 
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
+        Returns:
+            str: The json schema serialized to json
         """
 
-    @classmethod
-    def __le__(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        Return self<=value.
-        """
+        Returns the current version of the qoqo library .
 
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
-    def json_schema(self):  # type: ignore
-        """
-        staticmethod(function) -> method
-
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
-    def current_version(self):  # type: ignore
-        """
-        staticmethod(function) -> method
-
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
@@ -734,7 +493,6 @@ class GenericDevice:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    @classmethod
     def number_qubits(self) -> int:  # type: ignore
         """
         Return number of qubits in device.
@@ -743,7 +501,6 @@ class GenericDevice:
             int: The number of qubits.
         """
 
-    @classmethod
     def two_qubit_edges(self) -> Sequence[(int, int)]:  # type: ignore
         """
         Return the list of pairs of qubits linked by a native two-qubit-gate in the device.
@@ -764,7 +521,6 @@ class GenericDevice:
 
         """
 
-    @classmethod
     def single_qubit_gate_time(self, hqslang: str, qubit: int) -> Optional[float]:  # type: ignore
         """
         Returns the gate time of a single qubit operation if the single qubit operation is available on device.
@@ -780,7 +536,6 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def two_qubit_gate_time(self, hqslang: str, control: int, target: int) -> Optional[float]:  # type: ignore
         """
         Returns the gate time of a two qubit operation if the two qubit operation is available on device.
@@ -798,7 +553,6 @@ class GenericDevice:
 
         """
 
-    @classmethod
     def three_qubit_gate_time(self, hqslang: str, control_0: int, control_1: int, target: int) -> Optional[float]:  # type: ignore
         """
         three_qubit_gate_time(gate, control_0, control_1, target
@@ -820,7 +574,6 @@ class GenericDevice:
 
         """
 
-    @classmethod
     def multi_qubit_gate_time(self, hqslang: str, qubits: List[int]) -> Optional[float]:  # type: ignore
         """
         Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
@@ -836,7 +589,6 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def set_single_qubit_gate_time(self, gate: str, qubit: int, gate_time: float):  # type: ignore
         """
         Set the gate time of a single qubit gate.
@@ -850,7 +602,6 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def set_two_qubit_gate_time(self, gate: str, control: int, target: int, gate_time: float):  # type: ignore
         """
         Set the gate time of a two qubit gate.
@@ -865,7 +616,6 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def set_three_qubit_gate_time(self, gate: str, control_0: int, control_1: int, target: int, gate_time: float):  # type: ignore
         """
         Set the gate time of a three qubit gate.
@@ -881,7 +631,6 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def set_qubit_decoherence_rates(self, gate: str, qubits: int, gate_time: float):  # type: ignore
         """
         Set the gate time of a single qubit gate.
@@ -895,7 +644,6 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def set_multi_qubit_gate_time(self, gate: str, qubits: List[int], gate_time: float):  # type: ignore
         """
         Set the gate time of a single qubit gate.
@@ -909,7 +657,6 @@ class GenericDevice:
             PyValueError: Qubits not in device
         """
 
-    @classmethod
     def qubit_decoherence_rates(self, qubit: int) -> np.array:  # type: ignore
         """
         Return the matrix of the decoherence rates of the Lindblad equation.
@@ -922,7 +669,6 @@ class GenericDevice:
 
         """
 
-    @classmethod
     def add_damping(self, qubit: int, damping: float):  # type: ignore
         """
         Adds single qubit damping to noise rates.
@@ -935,7 +681,6 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def add_dephasing(self, qubit: int, dephasing: float):  # type: ignore
         """
         Adds single qubit dephasing to noise rates.
@@ -948,7 +693,6 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def add_depolarising(self, qubit: int, depolarising: float):  # type: ignore
         """
         Adds single qubit depolarising to noise rates.
@@ -961,7 +705,6 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def generic_device(self) -> GenericDevice:  # type: ignore
         """
         Turns Device into GenericDevice
@@ -977,7 +720,6 @@ class GenericDevice:
             The memory usage will be inefficient for devices with large qubit numbers.
         """
 
-    @classmethod
     def to_generic_device(self) -> GenericDevice:  # type: ignore
         """
         Turns Device into GenericDevice
@@ -993,7 +735,6 @@ class GenericDevice:
             The memory usage will be inefficient for devices with large qubit numbers.
         """
 
-    @classmethod
     def single_qubit_gate_names(self) -> List[str]:  # type: ignore
         """
         Returns the names of a single qubit operations available on the device.
@@ -1002,7 +743,6 @@ class GenericDevice:
             List[str]: The list of gate names.
         """
 
-    @classmethod
     def two_qubit_gate_names(self) -> List[str]:  # type: ignore
         """
         Returns the names of a two qubit operations available on the device.
@@ -1011,7 +751,6 @@ class GenericDevice:
             List[str]: The list of gate names.
         """
 
-    @classmethod
     def multi_qubit_gate_names(self) -> List[str]:  # type: ignore
         """
         Returns the names of a mutli qubit operations available on the device.
@@ -1023,27 +762,6 @@ class GenericDevice:
 
         """
 
-    @classmethod
-    def __copy__(self):  # type: ignore
-        """
-        Returns a copy of the device (copy here produces a deepcopy).
-
-        Returns:
-            A deep copy of self.
-
-        """
-
-    @classmethod
-    def __deepcopy__(self):  # type: ignore
-        """
-        Creates deep copy of Device.
-
-        Returns:
-            A deep copy of self.
-
-        """
-
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the Device using the bincode crate.
@@ -1056,7 +774,6 @@ class GenericDevice:
 
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Return the json representation of the Device.
@@ -1069,80 +786,33 @@ class GenericDevice:
 
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray):  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the qoqo device to a device using the bincode crate.
 
-        Convert a function to be a static method.
+        Args:
+            input (ByteArray): The serialized Device (in bincode form).
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            The deserialized Device.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to selected Device.
         """
 
-    @classmethod
-    def from_json(self):  # type: ignore
+    def from_json(self, input: str):  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the json representation of a device to a qoqo device.
 
-        Convert a function to be a static method.
+        Args:
+            input (str): The serialized device in json form.
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            The deserialized device.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
+        Raises:
+            ValueError: Input cannot be deserialized to selected Device.
         """
 
 class SquareLatticeDevice:
@@ -1167,49 +837,6 @@ class SquareLatticeDevice:
     ):
         return
 
-    @classmethod
-    def __repr__(self):  # type: ignore
-        """
-        Return repr(self).
-        """
-
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
     def number_rows(self) -> int:  # type: ignore
         """
         Return the number of rows of optical tweezers in the two-dimensional grid of potential qubit positions.
@@ -1219,7 +846,6 @@ class SquareLatticeDevice:
 
         """
 
-    @classmethod
     def number_columns(self) -> int:  # type: ignore
         """
         Return number of columns in device.
@@ -1229,7 +855,6 @@ class SquareLatticeDevice:
 
         """
 
-    @classmethod
     def set_all_two_qubit_gate_times(self, gate: str, gate_time: float):  # type: ignore
         """
         Set gate time of all two-qubit gates of specific type
@@ -1243,7 +868,6 @@ class SquareLatticeDevice:
 
         """
 
-    @classmethod
     def set_all_single_qubit_gate_times(self, gate: str, gate_time: float):  # type: ignore
         """
         Set gate time of all single-qubit gates of specific type
@@ -1257,7 +881,6 @@ class SquareLatticeDevice:
 
         """
 
-    @classmethod
     def set_all_qubit_decoherence_rates(self, rates):  # type: ignore
         """
         Set the decoherence rates for all qubits in the SquareLatticeDevice device.
@@ -1272,7 +895,6 @@ class SquareLatticeDevice:
             PyValueError: The input parameter `rates` needs to be a (3x3)-matrix.
         """
 
-    @classmethod
     def add_damping_all(self, damping: float):  # type: ignore
         """
         Adds qubit damping to noise rates.
@@ -1284,7 +906,6 @@ class SquareLatticeDevice:
             SquareLatticeDevice
         """
 
-    @classmethod
     def add_dephasing_all(self, dephasing: float):  # type: ignore
         """
         Adds qubit dephasing to noise rates.
@@ -1296,7 +917,6 @@ class SquareLatticeDevice:
             SquareLatticeDevice
         """
 
-    @classmethod
     def add_depolarising_all(self, depolarising: float):  # type: ignore
         """
         Adds qubit depolarising to noise rates.
@@ -1308,53 +928,22 @@ class SquareLatticeDevice:
             SquareLatticeDevice
         """
 
-    @classmethod
-    def json_schema(self):  # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Return the JsonSchema for the json serialisation of the class.
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The json schema serialized to json
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
@@ -1363,7 +952,6 @@ class SquareLatticeDevice:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    @classmethod
     def number_qubits(self) -> int:  # type: ignore
         """
         Return number of qubits in device.
@@ -1372,7 +960,6 @@ class SquareLatticeDevice:
             int: The number of qubits.
         """
 
-    @classmethod
     def two_qubit_edges(self) -> Sequence[(int, int)]:  # type: ignore
         """
         Return the list of pairs of qubits linked by a native two-qubit-gate in the device.
@@ -1393,7 +980,6 @@ class SquareLatticeDevice:
 
         """
 
-    @classmethod
     def single_qubit_gate_time(self, hqslang: str, qubit: int) -> Optional[float]:  # type: ignore
         """
         Returns the gate time of a single qubit operation if the single qubit operation is available on device.
@@ -1409,7 +995,6 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def two_qubit_gate_time(self, hqslang: str, control: int, target: int) -> Optional[float]:  # type: ignore
         """
         Returns the gate time of a two qubit operation if the two qubit operation is available on device.
@@ -1427,7 +1012,6 @@ class SquareLatticeDevice:
 
         """
 
-    @classmethod
     def three_qubit_gate_time(self, hqslang: str, control_0: int, control_1: int, target: int) -> Optional[float]:  # type: ignore
         """
         three_qubit_gate_time(gate, control_0, control_1, target
@@ -1449,7 +1033,6 @@ class SquareLatticeDevice:
 
         """
 
-    @classmethod
     def multi_qubit_gate_time(self, hqslang: str, qubits: List[int]) -> Optional[float]:  # type: ignore
         """
         Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
@@ -1465,7 +1048,6 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def set_single_qubit_gate_time(self, gate: str, qubit: int, gate_time: float):  # type: ignore
         """
         Set the gate time of a single qubit gate.
@@ -1479,7 +1061,6 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def set_two_qubit_gate_time(self, gate: str, control: int, target: int, gate_time: float):  # type: ignore
         """
         Set the gate time of a two qubit gate.
@@ -1494,7 +1075,6 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def set_three_qubit_gate_time(self, gate: str, control_0: int, control_1: int, target: int, gate_time: float):  # type: ignore
         """
         Set the gate time of a three qubit gate.
@@ -1510,7 +1090,6 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def set_qubit_decoherence_rates(self, gate: str, qubits: int, gate_time: float):  # type: ignore
         """
         Set the gate time of a single qubit gate.
@@ -1524,7 +1103,6 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def set_multi_qubit_gate_time(self, gate: str, qubits: List[int], gate_time: float):  # type: ignore
         """
         Set the gate time of a single qubit gate.
@@ -1538,7 +1116,6 @@ class SquareLatticeDevice:
             PyValueError: Qubits not in device
         """
 
-    @classmethod
     def qubit_decoherence_rates(self, qubit: int) -> np.array:  # type: ignore
         """
         Return the matrix of the decoherence rates of the Lindblad equation.
@@ -1551,7 +1128,6 @@ class SquareLatticeDevice:
 
         """
 
-    @classmethod
     def add_damping(self, qubit: int, damping: float):  # type: ignore
         """
         Adds single qubit damping to noise rates.
@@ -1564,7 +1140,6 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def add_dephasing(self, qubit: int, dephasing: float):  # type: ignore
         """
         Adds single qubit dephasing to noise rates.
@@ -1577,7 +1152,6 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def add_depolarising(self, qubit: int, depolarising: float):  # type: ignore
         """
         Adds single qubit depolarising to noise rates.
@@ -1590,7 +1164,6 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    @classmethod
     def generic_device(self) -> GenericDevice:  # type: ignore
         """
         Turns Device into GenericDevice
@@ -1606,7 +1179,6 @@ class SquareLatticeDevice:
             The memory usage will be inefficient for devices with large qubit numbers.
         """
 
-    @classmethod
     def to_generic_device(self) -> GenericDevice:  # type: ignore
         """
         Turns Device into GenericDevice
@@ -1622,7 +1194,6 @@ class SquareLatticeDevice:
             The memory usage will be inefficient for devices with large qubit numbers.
         """
 
-    @classmethod
     def single_qubit_gate_names(self) -> List[str]:  # type: ignore
         """
         Returns the names of a single qubit operations available on the device.
@@ -1631,7 +1202,6 @@ class SquareLatticeDevice:
             List[str]: The list of gate names.
         """
 
-    @classmethod
     def two_qubit_gate_names(self) -> List[str]:  # type: ignore
         """
         Returns the names of a two qubit operations available on the device.
@@ -1640,7 +1210,6 @@ class SquareLatticeDevice:
             List[str]: The list of gate names.
         """
 
-    @classmethod
     def multi_qubit_gate_names(self) -> List[str]:  # type: ignore
         """
         Returns the names of a mutli qubit operations available on the device.
@@ -1652,27 +1221,6 @@ class SquareLatticeDevice:
 
         """
 
-    @classmethod
-    def __copy__(self):  # type: ignore
-        """
-        Returns a copy of the device (copy here produces a deepcopy).
-
-        Returns:
-            A deep copy of self.
-
-        """
-
-    @classmethod
-    def __deepcopy__(self):  # type: ignore
-        """
-        Creates deep copy of Device.
-
-        Returns:
-            A deep copy of self.
-
-        """
-
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the Device using the bincode crate.
@@ -1685,7 +1233,6 @@ class SquareLatticeDevice:
 
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Return the json representation of the Device.
@@ -1698,78 +1245,31 @@ class SquareLatticeDevice:
 
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray):  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the qoqo device to a device using the bincode crate.
 
-        Convert a function to be a static method.
+        Args:
+            input (ByteArray): The serialized Device (in bincode form).
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            The deserialized Device.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to selected Device.
         """
 
-    @classmethod
-    def from_json(self):  # type: ignore
+    def from_json(self, input: str):  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the json representation of a device to a qoqo device.
 
-        Convert a function to be a static method.
+        Args:
+            input (str): The serialized device in json form.
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            The deserialized device.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
+        Raises:
+            ValueError: Input cannot be deserialized to selected Device.
         """

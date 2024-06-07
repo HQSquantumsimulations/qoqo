@@ -37,49 +37,6 @@ class PauliZProductInput:
     def __init__(self, number_qubits: int, use_flipped_measurement: bool):
         return
 
-    @classmethod
-    def __repr__(self):  # type: ignore
-        """
-        Return repr(self).
-        """
-
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
     def add_pauliz_product(self, readout: str, pauli_product_mask: List[int]) -> int:  # type: ignore
         """
         Add measured Pauli product to PauliZProductInput and returns index of Pauli product.
@@ -98,7 +55,6 @@ class PauliZProductInput:
             RuntimeError: Failed to add pauli product.
         """
 
-    @classmethod
     def add_linear_exp_val(self, name: str, linear: Dict[int, float]):  # type: ignore
         """
         Add linear definition of expectation value to measurement input.
@@ -114,7 +70,6 @@ class PauliZProductInput:
             RuntimeError: Failed to add linear expectation value.
         """
 
-    @classmethod
     def add_symbolic_exp_val(self, name: str, symbolic: str, given):  # type: ignore
         """
         Add symbolic definition of expectation value to measurement input.
@@ -134,7 +89,6 @@ class PauliZProductInput:
         in the string expression of CalculatorFloat.
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Serialize the PauliZProductInput to json form.
@@ -146,30 +100,17 @@ class PauliZProductInput:
             PyRuntimeError: Unexpected error serializing PauliZProductInput.
         """
 
-    @classmethod
-    def from_json(self):  # type: ignore
+    def from_json(self) -> PauliZProductInput:  # type: ignore
         """
-        staticmethod(function) -> method
+        Deserialize the PauliZProductInput from json form.
 
-        Convert a function to be a static method.
+        Returns:
+            PauliZProductInput: The deserialized PauliZProductInput.
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            PyRuntimeError: Cannot deserialize string to PauliZProductInput.
         """
 
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the PauliZProductInput using the [bincode] crate.
@@ -181,124 +122,43 @@ class PauliZProductInput:
             ValueError: Cannot serialize PauliZProductInput to bytes.
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray) -> PauliZProductInput:  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the PauliZProductInput to a PauliZProductInput using the [bincode] crate.
 
-        Convert a function to be a static method.
+        Args:
+            input (ByteArray): The serialized PauliZProductInput (in [bincode] form).
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            PauliZProductInput: The deserialized PauliZProductInput.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to PauliZProductInput.
         """
 
-    @classmethod
-    def __copy__(self):  # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-        Return a copy of the Object (copy here produces a deepcopy).
-        """
+        Return the JsonSchema for the json serialisation of the class.
 
-    @classmethod
-    def __deepcopy__(self):  # type: ignore
-        """
-        Return a deep copy of the Object.
+        Returns:
+            str: The json schema serialized to json
         """
 
-    @classmethod
-    def json_schema(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
-        """
-        staticmethod(function) -> method
-
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
             str: The minimum version of the qoqo library to deserialize this object.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
         """
 
 class CheatedPauliZProductInput:
@@ -318,49 +178,6 @@ class CheatedPauliZProductInput:
     def __init__(self):
         return
 
-    @classmethod
-    def __repr__(self):  # type: ignore
-        """
-        Return repr(self).
-        """
-
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
     def add_pauliz_product(self, readout: str) -> int:  # type: ignore
         """
         Add measured Pauli product to CheatedPauliZProductInput and returns index of Pauli product.
@@ -375,7 +192,6 @@ class CheatedPauliZProductInput:
             int: The index of the added Pauli product in the list of all Pauli products.
         """
 
-    @classmethod
     def add_linear_exp_val(self, name: str, linear: Dict[int, float]):  # type: ignore
         """
         Add linear definition of expectation value to measurement input.
@@ -391,7 +207,6 @@ class CheatedPauliZProductInput:
             RuntimeError: Failed to add linear expectation value.
         """
 
-    @classmethod
     def add_symbolic_exp_val(self, name: str, symbolic: str, given):  # type: ignore
         """
         Add symbolic definition of expectation value to measurement input.
@@ -412,7 +227,6 @@ class CheatedPauliZProductInput:
 
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Serialize the CheatedPauliZProductInput to json form.
@@ -424,30 +238,17 @@ class CheatedPauliZProductInput:
             PyRuntimeError: Unexpected error serializing CheatedPauliZProductInput.
         """
 
-    @classmethod
-    def from_json(self):  # type: ignore
+    def from_json(self) -> CheatedPauliZProductInput:  # type: ignore
         """
-        staticmethod(function) -> method
+        Deserialize the CheatedPauliZProductInput from json form.
 
-        Convert a function to be a static method.
+        Returns:
+            CheatedPauliZProductInput: The deserialized CheatedPauliZProductInput.
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            PyRuntimeError: Cannot deserialize string to CheatedPauliZProductInput.
         """
 
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the CheatedPauliZProductInput using the [bincode] crate.
@@ -459,124 +260,43 @@ class CheatedPauliZProductInput:
             ValueError: Cannot serialize CheatedPauliZProductInput to bytes.
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray) -> CheatedPauliZProductInput:  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the CheatedPauliZProductInput to a CheatedPauliZProductInput using the [bincode] crate.
 
-        Convert a function to be a static method.
+        Args:
+            input (ByteArray): The serialized CheatedPauliZProductInput (in [bincode] form).
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            CheatedPauliZProductInput: The deserialized CheatedPauliZProductInput.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to CheatedPauliZProductInput.
         """
 
-    @classmethod
-    def __copy__(self):  # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-        Return a copy of the Object (copy here produces a deepcopy).
-        """
+        Return the JsonSchema for the json serialisation of the class.
 
-    @classmethod
-    def __deepcopy__(self):  # type: ignore
-        """
-        Return a deep copy of the Object.
+        Returns:
+            str: The json schema serialized to json
         """
 
-    @classmethod
-    def json_schema(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
-        """
-        staticmethod(function) -> method
-
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
             str: The minimum version of the qoqo library to deserialize this object.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
         """
 
 class CheatedInput:
@@ -599,49 +319,6 @@ class CheatedInput:
     def __init__(self, number_qubits: int):
         return
 
-    @classmethod
-    def __repr__(self):  # type: ignore
-        """
-        Return repr(self).
-        """
-
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
     def add_operator_exp_val(self, name: str, operator: int, int, complex, readout: str):  # type: ignore
         """
         Add operator based expectation value to measurement input.
@@ -658,7 +335,6 @@ class CheatedInput:
             RuntimeError: Failed to add operator based expectation value.
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Serialize the CheatedInput to json form.
@@ -670,30 +346,17 @@ class CheatedInput:
             PyRuntimeError: Unexpected error serializing CheatedInput.
         """
 
-    @classmethod
-    def from_json(self):  # type: ignore
+    def from_json(self) -> CheatedInput:  # type: ignore
         """
-        staticmethod(function) -> method
+        Deserialize the CheatedInput from json form.
 
-        Convert a function to be a static method.
+        Returns:
+            CheatedInput: The deserialized CheatedInput.
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            PyRuntimeError: Cannot deserialize string to CheatedInput.
         """
 
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the CheatedInput using the [bincode] crate.
@@ -705,124 +368,43 @@ class CheatedInput:
             ValueError: Cannot serialize CheatedInput to bytes.
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray) -> CheatedInput:  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the CheatedInput to a CheatedInput using the [bincode] crate.
 
-        Convert a function to be a static method.
+        Args:
+            input (ByteArray): The serialized CheatedInput (in [bincode] form).
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            CheatedInput: The deserialized CheatedInput.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to CheatedInput.
         """
 
-    @classmethod
-    def __copy__(self):  # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-        Return a copy of the Object (copy here produces a deepcopy).
-        """
+        Return the JsonSchema for the json serialisation of the class.
 
-    @classmethod
-    def __deepcopy__(self):  # type: ignore
-        """
-        Return a deep copy of the Object.
+        Returns:
+            str: The json schema serialized to json
         """
 
-    @classmethod
-    def json_schema(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
-        """
-        staticmethod(function) -> method
-
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
             str: The minimum version of the qoqo library to deserialize this object.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
         """
 
 class PauliZProduct:
@@ -846,49 +428,6 @@ class PauliZProduct:
     ):
         return
 
-    @classmethod
-    def __repr__(self):  # type: ignore
-        """
-        Return repr(self).
-        """
-
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
     def evaluate(self, input_bit_registers: Dict[str, Union[List[List[int]], List[List[bool]]]], float_registers: Dict[str, List[List[float]]], complex_registers: Dict[str, List[List[complex]]]) -> Optional[Dict[str, float]]:  # type: ignore
         """
         Execute the PauliZ product measurement.
@@ -906,7 +445,6 @@ class PauliZProduct:
             RuntimeError: Error evaluating PauliZ product measurement.
         """
 
-    @classmethod
     def circuits(self) -> List[Circuit]:  # type: ignore
         """
         Return the collection of quantum circuits for the separate basis rotations.
@@ -915,7 +453,6 @@ class PauliZProduct:
             List[Circuit]: The quantum circuits.
         """
 
-    @classmethod
     def constant_circuit(self) -> Optional[Circuit]:  # type: ignore
         """
         Return constant circuit that is executed before any Circuit in circuits.
@@ -924,7 +461,6 @@ class PauliZProduct:
             Optional[Circuit]: The constant Circuit (None if not defined).
         """
 
-    @classmethod
     def input(self) -> PauliZProductInput:  # type: ignore
         """
         Returns the measurement input data defining how to construct expectation values from measurements.
@@ -933,7 +469,6 @@ class PauliZProduct:
             PauliZProductInput: The measurment input of PauliZProduct.
         """
 
-    @classmethod
     def measurement_type(self) -> str:  # type: ignore
         """
         Returns the type of the measurement in string form.
@@ -942,7 +477,6 @@ class PauliZProduct:
            str: The type of the measurement.
         """
 
-    @classmethod
     def substitute_parameters(self, substituted_parameters: Dict[str, float]):  # type: ignore
         """
         Return clone of Measurement with symbolic parameters replaced.
@@ -951,7 +485,6 @@ class PauliZProduct:
             substituted_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
         """
 
-    @classmethod
     def _internal_to_bincode(self):  # type: ignore
         """
         Return the name of the measurement and the bincode representation of the Measurement using the [bincode] crate.
@@ -963,7 +496,6 @@ class PauliZProduct:
             ValueError: Cannot serialize Measurement to bytes.
         """
 
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the PauliZProduct using the [bincode] crate.
@@ -975,30 +507,21 @@ class PauliZProduct:
             ValueError: Cannot serialize PauliZProduct to bytes.
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray) -> PauliZProduct:  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the PauliZProduct to a PauliZProduct using the [bincode] crate.
 
-        Convert a function to be a static method.
+        Args:
+            input (ByteArray): The serialized PauliZProduct (in [bincode] form).
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            PauliZProduct: The deserialized PauliZProduct.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to PauliZProduct.
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Serialize the PauliZProduct to json form using the [serde_json] crate.
@@ -1010,124 +533,39 @@ class PauliZProduct:
             RuntimeError: Unexpected error serializing PauliZProduct.
         """
 
-    @classmethod
-    def from_json(self):  # type: ignore
+    def from_json(self) -> PauliZProduct:  # type: ignore
         """
-        staticmethod(function) -> method
+        Deserialize the PauliZProduct from json form using the [serde_json] crate.
 
-        Convert a function to be a static method.
+        Returns:
+            PauliZProduct: The deserialized PauliZProduct.
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            RuntimeError: Cannot deserialize string to PauliZProduct.
         """
 
-    @classmethod
-    def __copy__(self):  # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-        Return a copy of the Object (copy here produces a deepcopy).
-        """
+        Return the JsonSchema for the json serialisation of the class.
 
-    @classmethod
-    def __deepcopy__(self):  # type: ignore
-        """
-        Return a deep copy of the Object.
+        Returns:
+            str: The json schema serialized to json
         """
 
-    @classmethod
-    def json_schema(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
-        """
-        staticmethod(function) -> method
-
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
             str: The minimum version of the qoqo library to deserialize this object.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
         """
 
 class CheatedPauliZProduct:
@@ -1151,49 +589,6 @@ class CheatedPauliZProduct:
     ):
         return
 
-    @classmethod
-    def __repr__(self):  # type: ignore
-        """
-        Return repr(self).
-        """
-
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
     def evaluate(self, input_bit_registers: Dict[str, Union[List[List[int]], List[List[bool]]]], float_registers: Dict[str, List[List[float]]], complex_registers: Dict[str, List[List[complex]]]) -> Optional[Dict[str, float]]:  # type: ignore
         """
         Executes the cheated PauliZ product measurement.
@@ -1211,7 +606,6 @@ class CheatedPauliZProduct:
             RuntimeError: Error evaluating cheated PauliZ product measurement.
         """
 
-    @classmethod
     def circuits(self) -> List[Circuit]:  # type: ignore
         """
         Returns the collection of quantum circuits for the separate basis rotations.
@@ -1220,7 +614,6 @@ class CheatedPauliZProduct:
             List[Circuit]: The quantum circuits.
         """
 
-    @classmethod
     def constant_circuit(self) -> Optional[Circuit]:  # type: ignore
         """
         Returns constant circuit that is executed before any Circuit in circuits.
@@ -1229,7 +622,6 @@ class CheatedPauliZProduct:
             Optional[Circuit]: The constant Circuit (None if not defined).
         """
 
-    @classmethod
     def input(self) -> CheatedPauliZProductInput:  # type: ignore
         """
         Returns the measurement input data defining how to construct expectation values from measurements.
@@ -1238,7 +630,6 @@ class CheatedPauliZProduct:
             CheatedPauliZProductInput: The measurment input of CheatedPauliZProduct.
         """
 
-    @classmethod
     def measurement_type(self) -> str:  # type: ignore
         """
         Returns the type of the measurement in string form.
@@ -1247,7 +638,6 @@ class CheatedPauliZProduct:
            str: The type of the measurement.
         """
 
-    @classmethod
     def substitute_parameters(self, substituted_parameters: Dict[str, float]):  # type: ignore
         """
         Returns clone of Measurement with symbolic parameters replaced
@@ -1256,7 +646,6 @@ class CheatedPauliZProduct:
             substituted_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
         """
 
-    @classmethod
     def _internal_to_bincode(self):  # type: ignore
         """
         Return the name of the measurement and the bincode representation of the Measurement using the [bincode] crate.
@@ -1268,7 +657,6 @@ class CheatedPauliZProduct:
             ValueError: Cannot serialize Measurement to bytes.
         """
 
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the CheatedPauliZProduct using the [bincode] crate.
@@ -1280,30 +668,21 @@ class CheatedPauliZProduct:
             ValueError: Cannot serialize CheatedPauliZProduct to bytes.
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray) -> CheatedPauliZProduct:  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the CheatedPauliZProduct to a CheatedPauliZProduct using the [bincode] crate.
 
-        Convert a function to be a static method.
+        Args:
+            input (ByteArray): The serialized CheatedPauliZProduct (in [bincode] form).
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            CheatedPauliZProduct: The deserialized CheatedPauliZProduct.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to CheatedPauliZProduct.
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Serializes the CheatedPauliZProduct to json form using the [serde_json] crate.
@@ -1315,124 +694,39 @@ class CheatedPauliZProduct:
             RuntimeError: Unexpected error serializing CheatedPauliZProduct.
         """
 
-    @classmethod
-    def from_json(self):  # type: ignore
+    def from_json(self) -> CheatedPauliZProduct:  # type: ignore
         """
-        staticmethod(function) -> method
+        Deserialize the CheatedPauliZProduct from json form using the [serde_json] crate.
 
-        Convert a function to be a static method.
+        Returns:
+            CheatedPauliZProduct: the deserialized CheatedPauliZProduct.
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            RuntimeError: Cannot deserialize string to CheatedPauliZProduct.
         """
 
-    @classmethod
-    def __copy__(self):  # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-        Return a copy of the Object (copy here produces a deepcopy).
-        """
+        Return the JsonSchema for the json serialisation of the class.
 
-    @classmethod
-    def __deepcopy__(self):  # type: ignore
-        """
-        Return a deep copy of the Object.
+        Returns:
+            str: The json schema serialized to json
         """
 
-    @classmethod
-    def json_schema(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
-        """
-        staticmethod(function) -> method
-
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
             str: The minimum version of the qoqo library to deserialize this object.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
         """
 
 class Cheated:
@@ -1456,49 +750,6 @@ class Cheated:
     ):
         return
 
-    @classmethod
-    def __repr__(self):  # type: ignore
-        """
-        Return repr(self).
-        """
-
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
     def evaluate(self, input_bit_registers: Dict[str, Union[List[List[int]], List[List[bool]]]], float_registers: Dict[str, List[List[float]]], complex_registers: Dict[str, List[List[complex]]]) -> Optional[Dict[str, float]]:  # type: ignore
         """
         Execute the cheated measurement.
@@ -1516,7 +767,6 @@ class Cheated:
             RuntimeError: Error evaluating cheated measurement.
         """
 
-    @classmethod
     def circuits(self) -> List[Circuit]:  # type: ignore
         """
         Return the collection of quantum circuits for the separate cheated measurements.
@@ -1525,7 +775,6 @@ class Cheated:
             List[Circuit]: The quantum circuits.
         """
 
-    @classmethod
     def constant_circuit(self) -> Optional[Circuit]:  # type: ignore
         """
         Returns constant circuit that is executed before any Circuit in circuits.
@@ -1534,7 +783,6 @@ class Cheated:
             Optional[Circuit]: The constant Circuit (None if not defined).
         """
 
-    @classmethod
     def input(self) -> CheatedInput:  # type: ignore
         """
         Returns the measurement input data defining how to construct expectation values from measurements.
@@ -1543,7 +791,6 @@ class Cheated:
             CheatedInput: The input of Cheated measurement
         """
 
-    @classmethod
     def measurement_type(self) -> str:  # type: ignore
         """
         Returns the type of the measurement in string form.
@@ -1552,7 +799,6 @@ class Cheated:
            str: The type of the measurement.
         """
 
-    @classmethod
     def substitute_parameters(self):  # type: ignore
         """
         Return copy of Measurement with symbolic parameters replaced.
@@ -1564,7 +810,6 @@ class Cheated:
             RuntimeError: Error substituting symbolic parameters.
         """
 
-    @classmethod
     def _internal_to_bincode(self):  # type: ignore
         """
         Return the name of the measurement and the bincode representation of the Measurement using the [bincode] crate.
@@ -1576,7 +821,6 @@ class Cheated:
             ValueError: Cannot serialize Measurement to bytes.
         """
 
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the Cheated using the [bincode] crate.
@@ -1588,30 +832,21 @@ class Cheated:
             ValueError: Cannot serialize Cheated to bytes.
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray) -> Cheated:  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the Cheated to a Cheated using the [bincode] crate.
 
-        Convert a function to be a static method.
+        Args:
+            input (ByteArray): The serialized Cheated (in [bincode] form).
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            Cheated: The deserialized Cheated.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to Cheated.
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Serialize the Cheated measurement to json form.
@@ -1623,124 +858,39 @@ class Cheated:
             RuntimeError: Unexpected error serializing Cheated.
         """
 
-    @classmethod
-    def from_json(self):  # type: ignore
+    def from_json(self) -> Cheated:  # type: ignore
         """
-        staticmethod(function) -> method
+        Deserialize the Cheated measurement from json form.
 
-        Convert a function to be a static method.
+        Returns:
+            Cheated: The deserialized Cheated Measurement.
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            RuntimeError: Cannot deserialize string to Cheated.
         """
 
-    @classmethod
-    def __copy__(self):  # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-        Return a copy of the Object (copy here produces a deepcopy).
-        """
+        Return the JsonSchema for the json serialisation of the class.
 
-    @classmethod
-    def __deepcopy__(self):  # type: ignore
-        """
-        Return a deep copy of the Object.
+        Returns:
+            str: The json schema serialized to json
         """
 
-    @classmethod
-    def json_schema(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
-        """
-        staticmethod(function) -> method
-
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
             str: The minimum version of the qoqo library to deserialize this object.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
         """
 
 class ClassicalRegister:
@@ -1760,49 +910,6 @@ class ClassicalRegister:
     ):
         return
 
-    @classmethod
-    def __repr__(self):  # type: ignore
-        """
-        Return repr(self).
-        """
-
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
     def circuits(self) -> List[Circuit]:  # type: ignore
         """
         Return the collection of quantum circuits that make up the total measurement.
@@ -1811,7 +918,6 @@ class ClassicalRegister:
             List[Circuit]: The quantum circuits.
         """
 
-    @classmethod
     def constant_circuit(self) -> Optional[Circuit]:  # type: ignore
         """
         Returns constant circuit that is executed before any Circuit in circuits.
@@ -1820,7 +926,6 @@ class ClassicalRegister:
             Optional[Circuit]: The constant Circuit (None if not defined).
         """
 
-    @classmethod
     def measurement_type(self) -> str:  # type: ignore
         """
         Returns the type of the measurement in string form.
@@ -1829,7 +934,6 @@ class ClassicalRegister:
            str: The type of the measurement.
         """
 
-    @classmethod
     def substitute_parameters(self, substituted_parameters: Dict[str, float]):  # type: ignore
         """
         Return copy of Measurement with symbolic parameters replaced.
@@ -1841,7 +945,6 @@ class ClassicalRegister:
             RuntimeError: Error substituting symbolic parameters.
         """
 
-    @classmethod
     def _internal_to_bincode(self):  # type: ignore
         """
         Return the name of the measurement and the bincode representation of the Measurement using the [bincode] crate.
@@ -1853,7 +956,6 @@ class ClassicalRegister:
             ValueError: Cannot serialize Measurement to bytes.
         """
 
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the ClassicalRegister using the [bincode] crate.
@@ -1865,30 +967,21 @@ class ClassicalRegister:
             ValueError: Cannot serialize ClassicalRegister to bytes.
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray) -> ClassicalRegister:  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the ClassicalRegister to a ClassicalRegister using the [bincode] crate.
 
-        Convert a function to be a static method.
+        Args:
+            input (ByteArray): The serialized ClassicalRegister (in [bincode] form).
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            ClassicalRegister: The deserialized ClassicalRegister.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to ClassicalRegister.
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Serialize the ClassicalRegister measurement to json form.
@@ -1900,122 +993,37 @@ class ClassicalRegister:
             PyRuntimeError: Unexpected error serializing ClassicalRegister.
         """
 
-    @classmethod
-    def from_json(self):  # type: ignore
+    def from_json(self) -> ClassicalRegister:  # type: ignore
         """
-        staticmethod(function) -> method
+        Deserialize the ClassicalRegister measurement from json form.
 
-        Convert a function to be a static method.
+        Returns:
+            ClassicalRegister: The deserialized ClassicalRegister Measurement.
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            PyRuntimeError: Cannot deserialize string to ClassicalRegister.
         """
 
-    @classmethod
-    def __copy__(self):  # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-        Return a copy of the Object (copy here produces a deepcopy).
-        """
+        Return the JsonSchema for the json serialisation of the class.
 
-    @classmethod
-    def __deepcopy__(self):  # type: ignore
-        """
-        Return a deep copy of the Object.
+        Returns:
+            str: The json schema serialized to json
         """
 
-    @classmethod
-    def json_schema(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
-        """
-        staticmethod(function) -> method
-
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
-        """
-
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
             str: The minimum version of the qoqo library to deserialize this object.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
         """

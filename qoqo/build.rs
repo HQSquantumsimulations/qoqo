@@ -292,7 +292,7 @@ fn create_doc(module: &str) -> PyResult<String> {
                 let class_r_dict = dict_obj.as_gil_ref().downcast::<PyDict>()?;
                 for (class_fn_name, meth) in class_r_dict.iter() {
                     let meth_name = class_fn_name.str()?.extract::<String>()?;
-                    let class_doc = match meth_name.as_str() {
+                    let meth_doc = match meth_name.as_str() {
                         "__add__" if name.eq(&"Circuit") => r#"Implement the `+` (__add__) magic method to add two Circuits.
 
 Args:
@@ -314,22 +314,31 @@ Returns:
 
 Raises:
     TypeError: Right hand side cannot be converted to Operation or Circuit."#.to_owned(),
-                        "__new__" => "".to_owned(),
-                        _ => meth
+                        method if method.starts_with("__") => "".to_owned(),
+                        _ => {
+                            let tmp_doc = meth
                             .getattr("__doc__")
                             ?
                             .extract::<String>()
-                            .unwrap_or_default(),
+                            .unwrap_or_default();
+                        if tmp_doc.starts_with("staticmethod(function) -> method") {
+                            meth
+                            .getattr("__func__")
+                            ?.getattr("__doc__")?.extract::<String>().unwrap_or_default()
+                        } else {
+                            tmp_doc
+                        }
+                        }
                     };
-                    if class_doc.eq("") {
+                    if meth_doc.eq("") {
                         continue;
                     }
                     let meth_args =
-                        collect_args_from_doc(class_doc.as_str(), name.as_str()).join(", ");
+                        collect_args_from_doc(meth_doc.as_str(), name.as_str()).join(", ");
                     module_doc.push_str(&format!(
-                        "    @classmethod\n    def {meth_name}(self{}){}: # type: ignore\n        \"\"\"\n{class_doc}\n\"\"\"\n\n",
+                        "    def {meth_name}(self{}){}: # type: ignore\n        \"\"\"\n{meth_doc}\n\"\"\"\n\n",
                         if meth_args.is_empty() { "".to_owned() } else { format!(", {}", meth_args) },
-                        collect_return_from_doc(class_doc.as_str(), name.as_str())
+                        collect_return_from_doc(meth_doc.as_str(), name.as_str())
                     ));
                 }
             }
