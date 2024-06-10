@@ -27,6 +27,13 @@ use std::collections::HashMap;
 #[pyclass(name = "ClassicalRegister", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Collected information for executing a classical register.
+///
+/// Args:
+///     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
+///     circuits (List[Circuit]): The collection of quantum circuits executed for the measurement.
+///
+/// Returns:
+///     ClassicalRegister: The new register.
 pub struct ClassicalRegisterWrapper {
     /// Internal storage of [roqoqo::ClassicalRegister].
     pub internal: ClassicalRegister,
@@ -38,47 +45,52 @@ impl ClassicalRegisterWrapper {
     ///
     /// Args:
     ///     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
-    ///     circuits (list[Circuit]): The collection of quantum circuits executed for the measurement.
+    ///     circuits (List[Circuit]): The collection of quantum circuits executed for the measurement.
     ///
     /// Returns:
     ///     ClassicalRegister: The new register.
     #[new]
     #[pyo3(signature=(constant_circuit, circuits))]
-    pub fn new(constant_circuit: Option<Py<PyAny>>, circuits: Vec<Py<PyAny>>) -> PyResult<Self> {
-        let mut new_circuits: Vec<Circuit> = Vec::new();
-        for c in circuits.into_iter() {
-            let tmp_c = CircuitWrapper::from_pyany(c).map_err(|err| {
-                PyTypeError::new_err(format!(
-                    "`circuits` argument is not a list of qoqo Circuits: {}",
-                    err
-                ))
-            })?;
-            new_circuits.push(tmp_c)
-        }
-        let new_constant: Option<Circuit> = match constant_circuit {
-            None => None,
-            Some(c) => {
-                let tmp_c = CircuitWrapper::from_pyany(c).map_err(|err| {
+    pub fn new(
+        constant_circuit: Option<&Bound<PyAny>>,
+        circuits: Vec<Py<PyAny>>,
+    ) -> PyResult<Self> {
+        Python::with_gil(|py| -> PyResult<Self> {
+            let mut new_circuits: Vec<Circuit> = Vec::new();
+            for c in circuits.into_iter() {
+                let tmp_c = CircuitWrapper::from_pyany(c.bind(py)).map_err(|err| {
                     PyTypeError::new_err(format!(
-                        "`constant_circuit` argument is not None or a qoqo Circuit: {}",
+                        "`circuits` argument is not a list of qoqo Circuits: {}",
                         err
                     ))
                 })?;
-                Some(tmp_c)
+                new_circuits.push(tmp_c)
             }
-        };
-        Ok(Self {
-            internal: ClassicalRegister {
-                constant_circuit: new_constant,
-                circuits: new_circuits,
-            },
+            let new_constant: Option<Circuit> = match constant_circuit {
+                None => None,
+                Some(c) => {
+                    let tmp_c = CircuitWrapper::from_pyany(c).map_err(|err| {
+                        PyTypeError::new_err(format!(
+                            "`constant_circuit` argument is not None or a qoqo Circuit: {}",
+                            err
+                        ))
+                    })?;
+                    Some(tmp_c)
+                }
+            };
+            Ok(Self {
+                internal: ClassicalRegister {
+                    constant_circuit: new_constant,
+                    circuits: new_circuits,
+                },
+            })
         })
     }
 
     /// Return the collection of quantum circuits that make up the total measurement.
     ///
     /// Returns:
-    ///     list[Circuit]: The quantum circuits.
+    ///     List[Circuit]: The quantum circuits.
     pub fn circuits(&self) -> Vec<CircuitWrapper> {
         self.internal
             .circuits()
@@ -110,7 +122,7 @@ impl ClassicalRegisterWrapper {
     /// Return copy of Measurement with symbolic parameters replaced.
     ///
     /// Args:
-    ///     substituted_parameters (dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
+    ///     substituted_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
     ///
     /// Raises:
     ///     RuntimeError: Error substituting symbolic parameters.
@@ -142,7 +154,7 @@ impl ClassicalRegisterWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize ClassicalRegister to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(("ClassicalRegister", b))
     }
@@ -158,7 +170,7 @@ impl ClassicalRegisterWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize ClassicalRegister to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -175,8 +187,9 @@ impl ClassicalRegisterWrapper {
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to ClassicalRegister.
     #[staticmethod]
-    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
+            .as_gil_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -226,7 +239,7 @@ impl ClassicalRegisterWrapper {
     }
 
     /// Return a deep copy of the Object.
-    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+    pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
         self.clone()
     }
     /// Return the __richcmp__ magic method to perform rich comparison operations on QuantumProgram.
@@ -297,25 +310,22 @@ impl ClassicalRegisterWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::ClassicalRegister]
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<ClassicalRegister> {
-        Python::with_gil(|py| -> PyResult<ClassicalRegister> {
-            let input = input.as_ref(py);
-            if let Ok(try_downcast) = input.extract::<ClassicalRegisterWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<ClassicalRegister> {
+        if let Ok(try_downcast) = input.extract::<ClassicalRegisterWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode").map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo ClassicalRegister: Cast to binary representation failed".to_string())
             })?;
-                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+            let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo ClassicalRegister: Cast to binary representation failed".to_string())
             })?;
-                deserialize(&bytes[..]).map_err(|err| {
+            deserialize(&bytes[..]).map_err(|err| {
                     PyTypeError::new_err(format!(
                     "Python object cannot be converted to qoqo ClassicalRegister: Deserialization failed: {}",
                     err
                 ))
                 })
-            }
-        })
+        }
     }
 }

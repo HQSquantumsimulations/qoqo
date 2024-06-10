@@ -11,7 +11,7 @@
 // limitations under the License.
 
 use ndarray::{array, Array2};
-use numpy::{pyarray, PyArray2};
+use numpy::{pyarray_bound, PyArray2};
 use pyo3::prelude::*;
 use qoqo::devices::{AllToAllDeviceWrapper, GenericDeviceWrapper, SquareLatticeDeviceWrapper};
 use roqoqo::devices::{AllToAllDevice, GenericDevice, SquareLatticeDevice};
@@ -27,7 +27,7 @@ fn new_alltoalldevice() -> Py<PyAny> {
         let two_qubit_gates = ["CNOT".to_string()];
         let arguments: (usize, [String; 2], [String; 1], f64) =
             (number_qubits, single_qubit_gates, two_qubit_gates, 1.0);
-        let device_type = py.get_type::<AllToAllDeviceWrapper>();
+        let device_type = py.get_type_bound::<AllToAllDeviceWrapper>();
         device_type.call1(arguments).unwrap().into()
     })
 }
@@ -37,7 +37,7 @@ fn new_genericdevice() -> Py<PyAny> {
     Python::with_gil(|py| -> Py<PyAny> {
         let number_qubits: u32 = 4;
         let arguments = (number_qubits,);
-        let device_type = py.get_type::<GenericDeviceWrapper>();
+        let device_type = py.get_type_bound::<GenericDeviceWrapper>();
         device_type.call1(arguments).unwrap().into()
     })
 }
@@ -57,10 +57,8 @@ fn new_genericlattice() -> Py<PyAny> {
             two_qubit_gates,
             1.0,
         );
-        let device_type = py.get_type::<SquareLatticeDeviceWrapper>();
+        let device_type = py.get_type_bound::<SquareLatticeDeviceWrapper>();
         device_type.call1(arguments).unwrap().into()
-        // .downcast::<PyCell<PyAny>>()
-        // .unwrap()
     })
 }
 #[test]
@@ -201,8 +199,8 @@ fn test_json_schema_all_to_all() {
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
         let device = new_alltoalldevice();
-        let schema: String = String::extract(
-            device
+        let schema: String = String::extract_bound(
+            &device
                 .call_method0(py, "json_schema")
                 .unwrap()
                 .extract(py)
@@ -213,16 +211,16 @@ fn test_json_schema_all_to_all() {
             serde_json::to_string_pretty(&schemars::schema_for!(AllToAllDevice)).unwrap();
         assert_eq!(schema, rust_schema);
 
-        let current_version_string = String::extract(
-            device
+        let current_version_string = String::extract_bound(
+            &device
                 .call_method0(py, "current_version")
                 .unwrap()
                 .extract(py)
                 .unwrap(),
         )
         .unwrap();
-        let minimum_supported_version_string = String::extract(
-            device
+        let minimum_supported_version_string = String::extract_bound(
+            &device
                 .call_method0(py, "min_supported_version")
                 .unwrap()
                 .extract(py)
@@ -242,8 +240,8 @@ fn test_json_schema_squared() {
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
         let device = new_genericlattice();
-        let schema: String = String::extract(
-            device
+        let schema: String = String::extract_bound(
+            &device
                 .call_method0(py, "json_schema")
                 .unwrap()
                 .extract(py)
@@ -254,16 +252,16 @@ fn test_json_schema_squared() {
             serde_json::to_string_pretty(&schemars::schema_for!(SquareLatticeDevice)).unwrap();
         assert_eq!(schema, rust_schema);
 
-        let current_version_string = String::extract(
-            device
+        let current_version_string = String::extract_bound(
+            &device
                 .call_method0(py, "current_version")
                 .unwrap()
                 .extract(py)
                 .unwrap(),
         )
         .unwrap();
-        let minimum_supported_version_string = String::extract(
-            device
+        let minimum_supported_version_string = String::extract_bound(
+            &device
                 .call_method0(py, "min_supported_version")
                 .unwrap()
                 .extract(py)
@@ -283,8 +281,8 @@ fn test_json_schema_generic() {
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
         let device = new_genericdevice();
-        let schema: String = String::extract(
-            device
+        let schema: String = String::extract_bound(
+            &device
                 .call_method0(py, "json_schema")
                 .unwrap()
                 .extract(py)
@@ -295,16 +293,16 @@ fn test_json_schema_generic() {
             serde_json::to_string_pretty(&schemars::schema_for!(GenericDevice)).unwrap();
         assert_eq!(schema, rust_schema);
 
-        let current_version_string = String::extract(
-            device
+        let current_version_string = String::extract_bound(
+            &device
                 .call_method0(py, "current_version")
                 .unwrap()
                 .extract(py)
                 .unwrap(),
         )
         .unwrap();
-        let minimum_supported_version_string = String::extract(
-            device
+        let minimum_supported_version_string = String::extract_bound(
+            &device
                 .call_method0(py, "min_supported_version")
                 .unwrap()
                 .extract(py)
@@ -326,30 +324,31 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
         // reference matrix for an initialized deviced or a non-existing qubit
 
         // test that invalid matrix format is not accepted
-        let pyarray_invalid: &PyArray2<f64> = pyarray![py, [1.0], [2.0], [3.0]];
+        let pyarray_invalid: &Bound<PyArray2<f64>> = &pyarray_bound![py, [1.0], [2.0], [3.0]];
         // let readonly_invalid = pyarray_invalid.readonly();
         let error = device.call_method1(py, "set_all_qubit_decoherence_rates", (pyarray_invalid,));
         assert!(error.is_err());
 
         let pyarray_testmatrix: Array2<f64> =
             array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
-        let pyarray: &PyArray2<f64> =
-            pyarray![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
+        let pyarray: &Bound<PyArray2<f64>> =
+            &pyarray_bound![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
         // let readonly = pyarray.readonly();
         let device = device
             .call_method1(py, "set_all_qubit_decoherence_rates", (pyarray,))
             .unwrap();
-        // .downcast::<PyCell<SquareLatticeDeviceWrapper>>(py)
-        // .unwrap();
 
         // proper matrix returned for the available qubit after setting decoherence rates
         let matrix_py2 = device
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
         let matrix_test2 = matrix_py2
-            .downcast::<PyArray2<f64>>(py)
+            .downcast_bound::<PyArray2<f64>>(py)
             .unwrap()
-            .to_owned_array();
+            .as_gil_ref()
+            .readonly()
+            .as_array()
+            .to_owned();
         assert_eq!(matrix_test2, pyarray_testmatrix);
 
         let pyarray_testmatrix: Array2<f64> = array![
@@ -369,9 +368,12 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
         let matrix_test2 = matrix_py2
-            .downcast::<PyArray2<f64>>(py)
+            .downcast_bound::<PyArray2<f64>>(py)
             .unwrap()
-            .to_owned_array();
+            .as_gil_ref()
+            .readonly()
+            .as_array()
+            .to_owned();
         assert_eq!(matrix_test2, pyarray_testmatrix);
     })
 }
@@ -388,22 +390,28 @@ fn test_decoherence_rates(device: Py<PyAny>) {
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
         let matrix_test = matrix_py
-            .downcast::<PyArray2<f64>>(py)
+            .downcast_bound::<PyArray2<f64>>(py)
             .unwrap()
-            .to_owned_array();
+            .as_gil_ref()
+            .readonly()
+            .as_array()
+            .to_owned();
         assert_eq!(matrix_test, matrix_zeros_py);
 
         let matrix2_py = device
             .call_method1(py, "qubit_decoherence_rates", (100_i64,))
             .unwrap();
         let matrix2_test = matrix2_py
-            .downcast::<PyArray2<f64>>(py)
+            .downcast_bound::<PyArray2<f64>>(py)
             .unwrap()
-            .to_owned_array();
+            .as_gil_ref()
+            .readonly()
+            .as_array()
+            .to_owned();
         assert_eq!(matrix2_test, matrix_zeros_py);
 
         // test that invalid matrix format is not accepted
-        let pyarray_invalid: &PyArray2<f64> = pyarray![py, [1.0], [2.0], [3.0]];
+        let pyarray_invalid: &Bound<PyArray2<f64>> = &pyarray_bound![py, [1.0], [2.0], [3.0]];
         // let readonly_invalid = pyarray_invalid.readonly();
         let error = device.call_method1(py, "set_qubit_decoherence_rates", (0, pyarray_invalid));
         assert!(error.is_err());
@@ -416,23 +424,24 @@ fn test_decoherence_rates(device: Py<PyAny>) {
 
         let pyarray_testmatrix: Array2<f64> =
             array![[1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
-        let pyarray: &PyArray2<f64> =
-            pyarray![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
+        let pyarray: &Bound<PyArray2<f64>> =
+            &pyarray_bound![py, [1.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 3.0]];
         // let readonly = pyarray.readonly();
         device
             .call_method1(py, "set_qubit_decoherence_rates", (0, pyarray))
             .unwrap();
-        // .downcast::<PyCell<SquareLatticeDeviceWrapper>>(py)
-        // .unwrap();
 
         // proper matrix returned for the available qubit after setting decoherence rates
         let matrix_py2 = device
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
         let matrix_test2 = matrix_py2
-            .downcast::<PyArray2<f64>>(py)
+            .downcast_bound::<PyArray2<f64>>(py)
             .unwrap()
-            .to_owned_array();
+            .as_gil_ref()
+            .readonly()
+            .as_array()
+            .to_owned();
         assert_eq!(matrix_test2, pyarray_testmatrix);
 
         // testing add_damping, add_dephasing, add_depolarising
@@ -454,9 +463,12 @@ fn test_decoherence_rates(device: Py<PyAny>) {
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
         let matrix_test2 = matrix_py2
-            .downcast::<PyArray2<f64>>(py)
+            .downcast_bound::<PyArray2<f64>>(py)
             .unwrap()
-            .to_owned_array();
+            .as_gil_ref()
+            .readonly()
+            .as_array()
+            .to_owned();
         assert_eq!(matrix_test2, pyarray_testmatrix);
     })
 }
@@ -474,8 +486,6 @@ fn test_gatetimes(device: Py<PyAny>) {
         device
             .call_method1(py, "set_single_qubit_gate_time", ("RotateZ", 0, gate_time))
             .unwrap();
-        // .downcast::<PyCell<AllToAllDeviceWrapper>>(py)
-        // .unwrap();
 
         // get the gate time for RotateZ on qubit 0
         let gate_time_rotatez = device
@@ -498,8 +508,6 @@ fn test_gatetimes(device: Py<PyAny>) {
         device
             .call_method1(py, "set_two_qubit_gate_time", ("CNOT", 0, 1, gate_time))
             .unwrap();
-        // .downcast::<PyCell<AllToAllDeviceWrapper>>(py)
-        // .unwrap();
 
         // get the gate time for RotateZ on qubit 0
         let gate_time_cnot = device
@@ -560,8 +568,6 @@ fn test_gatetimes(device: Py<PyAny>) {
                 ("MultiQubitMS", vec![0, 1, 2], gate_time),
             )
             .unwrap();
-        // .downcast::<PyCell<AllToAllDeviceWrapper>>(py)
-        // .unwrap();
 
         let gate_time_test = device
             .call_method1(py, "multi_qubit_gate_time", ("MultiQubitMS", vec![0, 1, 2]))
@@ -588,8 +594,6 @@ fn test_gatetimes_all(device: Py<PyAny>) {
                 ("RotateZ", gate_time),
             )
             .unwrap();
-        // .downcast::<PyCell<AllToAllDeviceWrapper>>(py)
-        // .unwrap();
 
         // get the gate time for RotateZ on qubit 0
         let gate_time_rotatez = device
@@ -612,8 +616,6 @@ fn test_gatetimes_all(device: Py<PyAny>) {
         let device = device
             .call_method1(py, "set_all_two_qubit_gate_times", ("CNOT", gate_time))
             .unwrap();
-        // .downcast::<PyCell<AllToAllDeviceWrapper>>(py)
-        // .unwrap();
 
         // get the gate time for RotateZ on qubit 0
         let gate_time_cnot = device
@@ -859,15 +861,12 @@ mod test_chain_with_environment {
 
     impl TestDeviceWrapper {
         /// Fallible conversion of generic python object..
-        fn from_pyany(input: Py<PyAny>) -> PyResult<TestDevice> {
-            Python::with_gil(|py| -> PyResult<TestDevice> {
-                let input = input.as_ref(py);
-                if let Ok(try_downcast) = input.extract::<TestDeviceWrapper>() {
-                    Ok(try_downcast.internal)
-                } else {
-                    panic!()
-                }
-            })
+        fn from_pyany(input: &Bound<PyAny>) -> PyResult<TestDevice> {
+            if let Ok(try_downcast) = input.extract::<TestDeviceWrapper>() {
+                Ok(try_downcast.internal)
+            } else {
+                panic!()
+            }
         }
     }
 
@@ -875,7 +874,7 @@ mod test_chain_with_environment {
     fn test_chain_with_environment() {
         pyo3::prepare_freethreaded_python();
         let test_device = Python::with_gil(|py| -> Py<PyAny> {
-            let device_type = py.get_type::<TestDeviceWrapper>();
+            let device_type = py.get_type_bound::<TestDeviceWrapper>();
             device_type.call0().unwrap().into()
         });
         Python::with_gil(|py| {
@@ -902,11 +901,11 @@ mod test_chain_with_environment {
     #[test]
     fn test_chain_with_environment_capsule() {
         pyo3::prepare_freethreaded_python();
-        let test_device = Python::with_gil(|py| -> Py<PyAny> {
-            let device_type = py.get_type::<TestDeviceWrapper>();
-            device_type.call0().unwrap().into()
+        let device_capsule = Python::with_gil(|py| -> ChainWithEnvironmentCapsule {
+            let device_type = py.get_type_bound::<TestDeviceWrapper>();
+            let test_device = device_type.call0().unwrap();
+            ChainWithEnvironmentCapsule::new(&test_device).unwrap()
         });
-        let device_capsule = ChainWithEnvironmentCapsule::new(test_device).unwrap();
         let chains_with_environment = device_capsule.environment_chains();
         let simple_test_device = TestDevice;
         let comparison = simple_test_device.environment_chains();

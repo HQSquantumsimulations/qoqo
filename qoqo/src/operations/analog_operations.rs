@@ -18,14 +18,14 @@ use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::{convert_into_calculator_float, CalculatorFloatWrapper};
 use qoqo_macros::*;
 use roqoqo::operations::*;
+#[cfg(feature = "json_schema")]
+use roqoqo::ROQOQO_VERSION;
 use struqture::spins::SpinHamiltonian;
 use struqture_py::spins::SpinHamiltonianSystemWrapper;
 
-#[cfg(feature = "json_schema")]
-use roqoqo::ROQOQO_VERSION;
 use std::collections::HashMap;
 
-#[wrap(Operate, OperateSpinsAnalog)]
+#[wrap(Operate, OperateSpinsAnalog, JsonSchema)]
 ///  Constant Hamiltonian operation on analog quantum device (PASQAL)
 ///
 /// Args:
@@ -36,13 +36,13 @@ pub struct ApplyConstantSpinHamiltonian {
     time: CalculatorFloat,
 }
 
-#[wrap(Operate, OperateSpinsAnalog)]
+#[wrap(Operate, OperateSpinsAnalog, JsonSchema)]
 ///  Constant Hamiltonian operation on analog quantum device (PASCAL)
 ///
 /// Args:
 ///     hamiltonian (SpinHamiltonian): The hamiltonian that is to be simulated.
-///     time (Vec<f64>): Range of time stored as a vector. The total duration of the simulations is given by the last value in the range.
-///     values (HashMap<String, Vec<f64>>): /// Values of time-dependent parameters, appearing in `hamiltonian`, at instances given by the vector `time`.
+///     time (List[float]): Range of time stored as a vector. The total duration of the simulations is given by the last value in the range.
+///     values (Mapping[str, List[float]]): /// Values of time-dependent parameters, appearing in `hamiltonian`, at instances given by the vector `time`.
 pub struct ApplyTimeDependentSpinHamiltonian {
     hamiltonian: SpinHamiltonian,
     time: Vec<f64>,

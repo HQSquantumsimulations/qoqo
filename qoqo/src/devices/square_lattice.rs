@@ -94,8 +94,8 @@ impl SquareLatticeDeviceWrapper {
     /// Set gate time of all two-qubit gates of specific type
     ///
     /// Args:
-    ///     gate[str]: The hqslang name of the two-qubit-gate.
-    ///     gate_time[f64]: Gate time for the given gate, valid for all qubits in the device.
+    ///     gate (str): The hqslang name of the two-qubit-gate.
+    ///     gate_time (float): Gate time for the given gate, valid for all qubits in the device.
     ///
     /// Returns:
     ///     A qoqo Device with updated gate times.
@@ -113,8 +113,8 @@ impl SquareLatticeDeviceWrapper {
     /// Set gate time of all single-qubit gates of specific type
     ///
     /// Args:
-    ///     gate[str]: The hqslang name of the single-qubit-gate.
-    ///     gate_time[f64]: New gate time.
+    ///     gate (str): The hqslang name of the single-qubit-gate.
+    ///     gate_time (float): New gate time.
     ///
     /// Returns:
     ///     A qoqo Device with updated gate times.
@@ -132,7 +132,7 @@ impl SquareLatticeDeviceWrapper {
     /// Set the decoherence rates for all qubits in the SquareLatticeDevice device.
     ///
     /// Args:
-    ///     rates[2d array]: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
+    ///     rates (2darray):: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
     ///
     /// Returns:
     ///     SquareLatticeDevice
@@ -156,7 +156,7 @@ impl SquareLatticeDeviceWrapper {
     /// Adds qubit damping to noise rates.
     ///
     /// Args:
-    ///     daming (float): The damping rates.
+    ///     damping (float): The damping rates.
     ///
     /// Returns:
     ///     SquareLatticeDevice
@@ -229,22 +229,19 @@ impl SquareLatticeDeviceWrapper {
 }
 
 impl SquareLatticeDeviceWrapper {
-    /// Fallible conversion of generic python object..
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<SquareLatticeDevice> {
-        Python::with_gil(|py| -> PyResult<SquareLatticeDevice> {
-            let input = input.as_ref(py);
-            if let Ok(try_downcast) = input.extract::<SquareLatticeDeviceWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode")?;
-                let bytes = get_bytes.extract::<Vec<u8>>()?;
-                deserialize(&bytes[..]).map_err(|err| {
-                    PyValueError::new_err(format!(
-                        "Cannot treat input as SquareLatticeDevice: {}",
-                        err
-                    ))
-                })
-            }
-        })
+    /// Fallible conversion of generic python object.
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<SquareLatticeDevice> {
+        if let Ok(try_downcast) = input.extract::<SquareLatticeDeviceWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode")?;
+            let bytes = get_bytes.extract::<Vec<u8>>()?;
+            deserialize(&bytes[..]).map_err(|err| {
+                PyValueError::new_err(format!(
+                    "Cannot treat input as SquareLatticeDevice: {}",
+                    err
+                ))
+            })
+        }
     }
 }

@@ -27,7 +27,7 @@ fn test_with_single_options() {
         10,
     );
     assert_eq!(measurement.circuits.len(), 1);
-    assert!(expectation_values.get("exp_val_0").is_some());
+    assert!(expectation_values.contains_key("exp_val_0"));
 }
 
 #[test]

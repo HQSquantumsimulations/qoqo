@@ -27,6 +27,20 @@ use std::collections::HashMap;
 #[pyclass(name = "PauliZProductInput", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Provides Necessary Information to run a [roqoqo::measurements::PauliZProduct] measurement.
+///
+/// The PauliZProductInput starts with just the number of qubtis and flipped measurements set.
+/// The pauli_poduct_qubit_masks and measured_exp_vals start empty
+/// and can be extended with [PauliZProductInput::add_pauliz_product]
+/// [PauliZProductInput::add_linear_exp_val] and [PauliZProductInput::add_symbolic_exp_val]
+///
+/// Args:
+///     number_qubits (int): The number of qubits in the PauliZProduct measurement.
+///     use_flipped_measurement (bool): Whether or not to use flipped measurements.
+///
+/// Returns:
+///     self: The new instance of PauliZProductInput with pauli_product_qubit_masks = an empty dictionary, the
+///           specified number of qubits in input, number_pauli_products = 0, measured_exp_vals = an empty
+///           dictionary, and whether to use flipped measurements as specified in input.
 pub struct PauliZProductInputWrapper {
     /// Internal storage of [roqoqo::PauliZProductInput].
     pub internal: PauliZProductInput,
@@ -63,7 +77,7 @@ impl PauliZProductInputWrapper {
     ///
     /// Args:
     ///     readout (str): The name of the readout register the pauli_product is defined on.
-    ///     pauli_product_mask (list[int]): List of the qubits involved in the Pauli produc measurement.
+    ///     pauli_product_mask (List[int]): List of the qubits involved in the Pauli produc measurement.
     ///
     /// Returns:
     ///     int: The index of the added Pauli product in the list of all Pauli products.
@@ -87,7 +101,7 @@ impl PauliZProductInputWrapper {
     ///
     /// Args:
     ///     name (str): The name of the expectation value.
-    ///     linear (dict[int, float]): The linear combination of expectation values as a map between Pauli product index and coefficient.
+    ///     linear (Dict[int, float]): The linear combination of expectation values as a map between Pauli product index and coefficient.
     ///
     /// Raises:
     ///     RuntimeError: Failed to add linear expectation value.
@@ -163,7 +177,7 @@ impl PauliZProductInputWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize PauliZProductInput to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -180,8 +194,9 @@ impl PauliZProductInputWrapper {
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to PauliZProductInput.
     #[staticmethod]
-    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
+            .as_gil_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -217,7 +232,7 @@ impl PauliZProductInputWrapper {
     }
 
     /// Return a deep copy of the Object.
-    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+    pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
         self.clone()
     }
 
@@ -257,6 +272,15 @@ impl PauliZProductInputWrapper {
 #[pyclass(name = "CheatedPauliZProductInput", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Collected information for executing a cheated basis rotation measurement.
+///
+/// The CheatedPauliZProductInput starts with just the number of qubtis and flipped measurements set.
+/// The pauli_poduct_qubit_masks and measured_exp_vals start empty
+/// and can be extended with [CheatedPauliZProductInput::add_linear_exp_val] and
+/// [CheatedPauliZProductInput::add_symbolic_exp_val].
+///
+/// Returns:
+///     self: The new instance of CheatedPauliZProductInput with measured_exp_vals = an empty
+///            HashMap and pauli_product_keys = an empty HashMap.
 pub struct CheatedPauliZProductInputWrapper {
     /// Internal storage of [roqoqo::CheatedPauliZProductInput].
     pub internal: CheatedPauliZProductInput,
@@ -278,9 +302,8 @@ impl CheatedPauliZProductInputWrapper {
     /// [CheatedPauliZProductInput::add_symbolic_exp_val].
     ///
     /// Returns:
-    ///     self: The new instance of PauliZProductInput with pauli_product_qubit_masks = an empty dictionary, the
-    ///           specified number of qubits in input, number_pauli_products = 0, measured_exp_vals = an empty
-    ///           dictionary, and whether to use flipped measurements as specified in input.
+    ///     self: The new instance of CheatedPauliZProductInput with measured_exp_vals = an empty
+    ///            HashMap and pauli_product_keys = an empty HashMap.
     #[new]
     pub fn new() -> Self {
         Self {
@@ -309,7 +332,7 @@ impl CheatedPauliZProductInputWrapper {
     ///
     /// Args:
     ///     name (str): The name of the expectation value.
-    ///     linear (dict[int, float]): The linear combination of expectation values as a map between Pauli product index and coefficient.
+    ///     linear (Dict[int, float]): The linear combination of expectation values as a map between Pauli product index and coefficient.
     ///
     /// Raises:
     ///     RuntimeError: Failed to add linear expectation value.
@@ -387,7 +410,7 @@ impl CheatedPauliZProductInputWrapper {
             PyValueError::new_err("Cannot serialize CheatedPauliZProductInput to bytes")
         })?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -404,8 +427,9 @@ impl CheatedPauliZProductInputWrapper {
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to CheatedPauliZProductInput.
     #[staticmethod]
-    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
+            .as_gil_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -427,7 +451,7 @@ impl CheatedPauliZProductInputWrapper {
     }
 
     /// Return a deep copy of the Object.
-    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+    pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
         self.clone()
     }
 
@@ -481,6 +505,18 @@ impl CheatedPauliZProductInputWrapper {
 #[pyclass(name = "CheatedInput", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Provides Necessary Information to run a cheated measurement.
+///
+/// The CheatedInput stores the number of qubits that are measured
+/// and a dictionary mapping expectation value names to operators on the Hilbert space
+/// of the qubits. The operators are represented by sparse lists of non-zero entry triples
+/// of an operator matrix.
+///
+/// Args:
+///     number_qubits (int): The number of qubits in the PauliZProduct measurement.
+///
+/// Returns:
+///     CheatedInput: The new instance of CheatedInput with the specified number of qubits in input,
+///                   and an empty dictionay of expectation values.
 pub struct CheatedInputWrapper {
     /// Internal storage of [roqoqo::CheatedInput].
     pub internal: CheatedInput,
@@ -514,7 +550,7 @@ impl CheatedInputWrapper {
     ///
     /// Args:
     ///     name (str): The name of the expectation value.
-    ///     operator (list[(int, int, complex)]): The measured operator on the Hilbert space,
+    ///     operator (List[(int, int, complex)]): The measured operator on the Hilbert space,
     ///                                           given as a list of sparse matrix entries of the form (row, col, value).
     ///     readout (str): The mame of the readout register that contains the density matrix or satevector.
     ///
@@ -575,7 +611,7 @@ impl CheatedInputWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize CheatedInput to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -592,8 +628,9 @@ impl CheatedInputWrapper {
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to CheatedInput.
     #[staticmethod]
-    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
+            .as_gil_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -615,7 +652,7 @@ impl CheatedInputWrapper {
     }
 
     /// Return a deep copy of the Object.
-    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+    pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
         self.clone()
     }
     fn __richcmp__(
@@ -675,26 +712,23 @@ impl CheatedPauliZProductInputWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::CheatedPauliZProductInput]
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<CheatedPauliZProductInput> {
-        Python::with_gil(|py| -> PyResult<CheatedPauliZProductInput> {
-            let input = input.as_ref(py);
-            if let Ok(try_downcast) = input.extract::<CheatedPauliZProductInputWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<CheatedPauliZProductInput> {
+        if let Ok(try_downcast) = input.extract::<CheatedPauliZProductInputWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode").map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo CheatedPauliZInput: Cast to binary representation failed".to_string())
             })?;
-                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+            let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo CheatedPauliZInput: Cast to binary representation failed".to_string())
             })?;
-                bincode::deserialize(&bytes[..]).map_err(|err| {
+            bincode::deserialize(&bytes[..]).map_err(|err| {
                     PyTypeError::new_err(format!(
                     "Python object cannot be converted to qoqo CheatedPauliZInput: Deserialization failed: {}",
                     err
                 ))
                 })
-            }
-        })
+        }
     }
 }
 
@@ -708,26 +742,23 @@ impl PauliZProductInputWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::PauliZProductInput]
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<PauliZProductInput> {
-        Python::with_gil(|py| -> PyResult<PauliZProductInput> {
-            let input = input.as_ref(py);
-            if let Ok(try_downcast) = input.extract::<PauliZProductInputWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<PauliZProductInput> {
+        if let Ok(try_downcast) = input.extract::<PauliZProductInputWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode").map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo PauliZInput: Cast to binary representation failed".to_string())
             })?;
-                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+            let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo PauliZInput: Cast to binary representation failed".to_string())
             })?;
-                bincode::deserialize(&bytes[..]).map_err(|err| {
+            bincode::deserialize(&bytes[..]).map_err(|err| {
                     PyTypeError::new_err(format!(
                     "Python object cannot be converted to qoqo PauliZInput: Deserialization failed: {}",
                     err
                 ))
                 })
-            }
-        })
+        }
     }
 }
 
@@ -741,25 +772,22 @@ impl CheatedInputWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::CheatedInput]
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<CheatedInput> {
-        Python::with_gil(|py| -> PyResult<CheatedInput> {
-            let input = input.as_ref(py);
-            if let Ok(try_downcast) = input.extract::<CheatedInputWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<CheatedInput> {
+        if let Ok(try_downcast) = input.extract::<CheatedInputWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode").map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo CheatedInput: Cast to binary representation failed".to_string())
             })?;
-                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+            let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo CheatedInput: Cast to binary representation failed".to_string())
             })?;
-                bincode::deserialize(&bytes[..]).map_err(|err| {
+            bincode::deserialize(&bytes[..]).map_err(|err| {
                     PyTypeError::new_err(format!(
                     "Python object cannot be converted to qoqo CheatedInput: Deserialization failed: {}",
                     err
                 ))
                 })
-            }
-        })
+        }
     }
 }

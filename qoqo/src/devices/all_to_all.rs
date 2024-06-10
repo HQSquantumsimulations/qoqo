@@ -110,7 +110,7 @@ impl AllToAllDeviceWrapper {
     /// Function to set the decoherence rates for all qubits in the AllToAllDevice device.
     ///
     /// Args:
-    ///     rates[2d array]: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
+    ///     rates (2darray):: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
     ///
     /// Returns:
     ///     AllToAllDevice
@@ -134,7 +134,7 @@ impl AllToAllDeviceWrapper {
     /// Adds qubit damping to noise rates.
     ///
     /// Args:
-    ///     daming[f64]: The damping rates.
+    ///     damping (float): The damping rates.
     ///
     /// Returns:
     ///     AllToAllDevice
@@ -148,7 +148,7 @@ impl AllToAllDeviceWrapper {
     /// Adds qubit dephasing to noise rates.
     ///
     /// Args:
-    ///     dephasing[f64]: The dephasing rates.
+    ///     dephasing (float): The dephasing rates.
     ///
     /// Returns:
     ///     AllToAllDevice
@@ -208,18 +208,15 @@ impl AllToAllDeviceWrapper {
 
 impl AllToAllDeviceWrapper {
     /// Fallible conversion of generic python object.
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<AllToAllDevice> {
-        Python::with_gil(|py| -> PyResult<AllToAllDevice> {
-            let input = input.as_ref(py);
-            if let Ok(try_downcast) = input.extract::<AllToAllDeviceWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode")?;
-                let bytes = get_bytes.extract::<Vec<u8>>()?;
-                deserialize(&bytes[..]).map_err(|err| {
-                    PyValueError::new_err(format!("Cannot treat input as AllToAllDevice: {}", err))
-                })
-            }
-        })
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<AllToAllDevice> {
+        if let Ok(try_downcast) = input.extract::<AllToAllDeviceWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode")?;
+            let bytes = get_bytes.extract::<Vec<u8>>()?;
+            deserialize(&bytes[..]).map_err(|err| {
+                PyValueError::new_err(format!("Cannot treat input as AllToAllDevice: {}", err))
+            })
+        }
     }
 }

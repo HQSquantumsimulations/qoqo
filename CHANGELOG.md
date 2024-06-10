@@ -2,15 +2,39 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.13.1
+
+### Added in 1.13.1
+
+* Added the doc_generator feature to qoqo that will create .pyi used for python IDE hints during cargo build.
+* Change version mismatch error message to be clearer.
+* `PragmaSetStateVector`, `PragmaSetDensityMatrix` and `PragmaGeneralNoise` interface casting errors when handling arrays/matrices
+
+## 1.13.0
+
+### Added in 1.13.0
+
+* Unstable feature `unstable_operation_definition` adding new operations: GateDefinition and CallDefinedGate.
+
+## 1.12.1
+
+### Added in 1.12.1
+
+* Added the `__repr__` method to the SingleQubitOverrotationDescription noise model.
+
+## 1.12.0
+
+### Added in 1.12.0
+
+* Updated to pyo3 0.21.
+* Fix typo in name of RoqoqoBackendError::AuthenticationError
+
 ## 1.11.0
 
-### Added in 1.11.0-alpha.1
+### Added in 1.11.0
 
-* Made operations in `unstable_spin_boson_operations` stable
-
-### Added in 1.11.0-alpha.0
-
-* Unstable feature `unstable_analog_operations` adding new analog operations: `ApplyConstantSpinHamiltonian`, `ApplyTimeDependentSpinHamiltonian`
+* Added the DecoherenceOnIdle noise model
+* Feature `unstable_analog_operations` adding new analog operations: `ApplyConstantSpinHamiltonian`, `ApplyTimeDependentSpinHamiltonian`
 * Added `SingleQubitOverrotationDescription`
 * Added `SingleQubitOverrotationOnGate` noise model
 * Updated cargo (including updating mio from v0.8.10 to v0.8.11)

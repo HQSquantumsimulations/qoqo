@@ -29,7 +29,7 @@ use crate::CircuitWrapper;
 /// of a quantum circuit in qoqo.
 ///
 #[pymodule]
-fn circuitdag(_py: Python, module: &PyModule) -> PyResult<()> {
+fn circuitdag(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     module.add_class::<CircuitDagWrapper>()?;
     Ok(())
 }
@@ -60,26 +60,23 @@ impl CircuitDagWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::Circuit]
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<CircuitDag> {
-        Python::with_gil(|py| -> PyResult<CircuitDag> {
-            let input = input.as_ref(py);
-            if let Ok(try_downcast) = input.extract::<CircuitDagWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<CircuitDag> {
+        if let Ok(try_downcast) = input.extract::<CircuitDagWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode").map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo CircuitDag: Cast to binary representation failed".to_string())
             })?;
-                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+            let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo CircuitDag: Cast to binary representation failed".to_string())
             })?;
-                deserialize(&bytes[..]).map_err(|err| {
+            deserialize(&bytes[..]).map_err(|err| {
                 PyTypeError::new_err(format!(
                     "Python object cannot be converted to qoqo CircuitDag: Deserialization failed: {}",
                     err
                 ))}
             )
-            }
-        })
+        }
     }
 }
 
@@ -109,13 +106,8 @@ impl CircuitDagWrapper {
     /// Returns:
     ///     self: The new CircuitDag.
     #[pyo3(text_signature = "(circuit)")]
-    pub fn from_circuit(&self, circuit: Py<PyAny>) -> PyResult<Self> {
-        let circuit = Python::with_gil(|py| -> Result<Circuit, QoqoError> {
-            let circ_ref = circuit.as_ref(py);
-            crate::convert_into_circuit(circ_ref)
-        })
-        .unwrap();
-
+    pub fn from_circuit(&self, circuit: &Bound<PyAny>) -> PyResult<Self> {
+        let circuit = crate::convert_into_circuit(circuit).unwrap();
         Ok(Self {
             internal: CircuitDag::from(circuit),
         })
@@ -138,7 +130,7 @@ impl CircuitDagWrapper {
     /// Raises:
     ///     TypeError: The Python Object cannot be converted to Operation.
     #[pyo3(text_signature = "($self, op)")]
-    pub fn add_to_back(&mut self, op: &PyAny) -> PyResult<Option<usize>> {
+    pub fn add_to_back(&mut self, op: &Bound<PyAny>) -> PyResult<Option<usize>> {
         let operation = convert_pyany_to_operation(op).map_err(|x| {
             PyTypeError::new_err(format!("Cannot convert python object to Operation {:?}", x))
         })?;
@@ -153,7 +145,7 @@ impl CircuitDagWrapper {
     /// Raises:
     ///     TypeError: The Python Object cannot be converted to Operation.
     #[pyo3(text_signature = "($self, op)")]
-    pub fn add_to_front(&mut self, op: &PyAny) -> PyResult<Option<usize>> {
+    pub fn add_to_front(&mut self, op: &Bound<PyAny>) -> PyResult<Option<usize>> {
         let operation = convert_pyany_to_operation(op).map_err(|x| {
             PyTypeError::new_err(format!("Cannot convert python object to Operation {:?}", x))
         })?;
@@ -163,11 +155,11 @@ impl CircuitDagWrapper {
     /// Checks if executing an operation is blocked by any not-yet executed operation.
     ///
     /// Args:
-    ///     already_executed (list[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
+    ///     already_executed (List[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
     ///     to_be_executed (int): NodeIndex of the operation that should be executed next.
     ///
     /// Returns:
-    ///     list[int]: List containing the sorted blocking elements.
+    ///     List[int]: List containing the sorted blocking elements.
     #[pyo3(text_signature = "($self, already_executed, to_be_executed)")]
     pub fn execution_blocked(
         &self,
@@ -186,11 +178,11 @@ impl CircuitDagWrapper {
     /// this method returning an empty vector does not imply that the `to_be_executed` operation can be executed.
     ///
     /// Args:
-    ///     already_executed (list[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
-    ///     to_be_executed(int): NodeIndex of the Operation that should be executed next.
+    ///     already_executed (List[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
+    ///     to_be_executed (int): NodeIndex of the Operation that should be executed next.
     ///
     /// Returns:
-    ///     list[int]: List containing the sorted blocking elements.
+    ///     List[int]: List containing the sorted blocking elements.
     #[pyo3(text_signature = "($self, already_executed, to_be_executed)")]
     pub fn blocking_predecessors(
         &self,
@@ -206,8 +198,8 @@ impl CircuitDagWrapper {
     /// Returns an error if operation to be executed is not in the current front layer.
     ///
     /// Args:
-    ///     already_executed (list[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
-    ///     current_front_layer (list[int]): List of NodeIndices in the current front layer ready to be executed if physically possible.
+    ///     already_executed (List[int]): List of NodeIndices of Nodes that have already been executed in the Circuit.
+    ///     current_front_layer (List[int]): List of NodeIndices in the current front layer ready to be executed if physically possible.
     ///     to_be_executed (int): NodeIndex of the operation that should be executed next.
     #[pyo3(text_signature = "($self, already_executed, current_front_layer, to_be_executed)")]
     pub fn new_front_layer(
@@ -286,11 +278,12 @@ impl CircuitDagWrapper {
     ///
     /// Raises:
     ///     NotImplementedError: Other comparison not implemented.
-    fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
-        let other = Python::with_gil(|py| -> Result<CircuitDag, QoqoError> {
-            let other_ref = other.as_ref(py);
-            crate::convert_into_circuitdag(other_ref)
-        });
+    fn __richcmp__(
+        &self,
+        other: &Bound<PyAny>,
+        op: pyo3::class::basic::CompareOp,
+    ) -> PyResult<bool> {
+        let other = crate::convert_into_circuitdag(other);
         match op {
             pyo3::class::basic::CompareOp::Eq => match other {
                 Ok(dag) => Ok(self.internal == dag),
@@ -309,7 +302,7 @@ impl CircuitDagWrapper {
     /// Return the roqoqo and qoqo versions from when the code was compiled.
     ///
     /// Returns:
-    ///     tuple[str, str]: The roqoqo and qoqo versions.
+    ///     Tuple[str, str]: The roqoqo and qoqo versions.
     #[pyo3(text_signature = "($self)")]
     fn _qoqo_versions(&self) -> (String, String) {
         let mut rsplit = ROQOQO_VERSION.split('.').take(2);
@@ -339,7 +332,7 @@ impl CircuitDagWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize CircuitDag to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -357,8 +350,9 @@ impl CircuitDagWrapper {
     ///     ValueError: Input cannot be deserialized to CircuitDag.
     #[staticmethod]
     #[pyo3(text_signature = "(input)")]
-    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
+            .as_gil_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -377,7 +371,7 @@ impl CircuitDagWrapper {
     /// Returns the list of nodes of commuting operations in CircuitDag.
     ///
     /// Returns:
-    ///     list[int]: The list of nodes of commuting operations.
+    ///     List[int]: The list of nodes of commuting operations.
     #[pyo3(text_signature = "($self)")]
     pub fn commuting_operations(&self) -> Vec<usize> {
         self.internal.commuting_operations().to_vec()
@@ -386,7 +380,7 @@ impl CircuitDagWrapper {
     /// Returns a set containing the nodes in the first parallel block.
     ///
     /// Returns:
-    ///     set[int]: The set of nodes in the first parallel block.
+    ///     Set[int]: The set of nodes in the first parallel block.
     #[pyo3(text_signature = "($self)")]
     pub fn first_parallel_block(&self) -> HashSet<usize> {
         self.internal.first_parallel_block().clone()
@@ -395,7 +389,7 @@ impl CircuitDagWrapper {
     /// Returns a set containing the nodes in the last parallel block.
     ///
     /// Returns:
-    ///     set[int]: The set of nodes in the last parallel block.
+    ///     Set[int]: The set of nodes in the last parallel block.
     #[pyo3(text_signature = "($self)")]
     pub fn last_parallel_block(&self) -> HashSet<usize> {
         self.internal.last_parallel_block().clone()
@@ -405,7 +399,7 @@ impl CircuitDagWrapper {
     /// the first node that involves that qubit.
     ///
     /// Returns:
-    ///     dict[int, int]: The dictionary of {qubit: node} elements.
+    ///     Dict[int, int]: The dictionary of {qubit: node} elements.
     #[pyo3(text_signature = "($self)")]
     pub fn first_operation_involving_qubit(&self) -> PyObject {
         Python::with_gil(|py| -> PyObject {
@@ -419,7 +413,7 @@ impl CircuitDagWrapper {
     /// the last node that involves that qubit.
     ///
     /// Returns:
-    ///     dict[int, int]: The dictionary of {qubit: node} elements.
+    ///     Dict[int, int]: The dictionary of {qubit: node} elements.
     #[pyo3(text_signature = "($self)")]
     pub fn last_operation_involving_qubit(&self) -> PyObject {
         Python::with_gil(|py| -> PyObject {
@@ -432,7 +426,7 @@ impl CircuitDagWrapper {
     /// register.
     ///
     /// Returns:
-    ///     dict[(str, int), int]: The dictionary of {(str, int), int} elements.
+    ///     Dict[(str, int), int]: The dictionary of {(str, int), int} elements.
     #[pyo3(text_signature = "($self)")]
     pub fn first_operation_involving_classical(&self) -> PyObject {
         Python::with_gil(|py| -> PyObject {
@@ -447,7 +441,7 @@ impl CircuitDagWrapper {
     /// register.
     ///
     /// Returns:
-    ///     dict[(str, int), int]: The dictionary of {(str, int), int} elements.
+    ///     Dict[(str, int), int]: The dictionary of {(str, int), int} elements.
     #[pyo3(text_signature = "($self)")]
     pub fn last_operation_involving_classical(&self) -> PyObject {
         Python::with_gil(|py| -> PyObject {
@@ -461,8 +455,8 @@ impl CircuitDagWrapper {
 /// Convert generic python object to [roqoqo::CircuitDag].
 ///
 /// Fallible conversion of generic python object to [roqoqo::CircuitDag].
-pub fn convert_into_circuitdag(input: &PyAny) -> Result<CircuitDag, QoqoError> {
-    if let Ok(try_downcast) = input.extract::<CircuitDagWrapper>() {
+pub fn convert_into_circuitdag(input: &Bound<PyAny>) -> Result<CircuitDag, QoqoError> {
+    if let Ok(try_downcast) = input.as_gil_ref().extract::<CircuitDagWrapper>() {
         return Ok(try_downcast.internal);
     }
     // Everything that follows tries to extract the circuitdag when two separately

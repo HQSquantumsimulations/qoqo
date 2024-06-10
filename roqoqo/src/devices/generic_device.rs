@@ -397,7 +397,7 @@ impl GenericDevice {
     /// # Arguments
     ///
     /// * `qubit` - The qubit for which the dampins is added
-    /// * `daming` - The damping rates.
+    /// * `damping` - The damping rates.
     pub fn add_damping(&mut self, qubit: usize, damping: f64) -> Result<(), RoqoqoError> {
         if qubit > self.number_qubits {
             return Err(RoqoqoError::GenericError {
@@ -484,7 +484,7 @@ impl Device for GenericDevice {
     }
 
     fn two_qubit_gate_time(&self, hqslang: &str, control: &usize, target: &usize) -> Option<f64> {
-        match self.two_qubit_gates.get(&hqslang.to_string()) {
+        match self.two_qubit_gates.get(hqslang) {
             Some(x) => x.get(&(*control, *target)).copied(),
             None => None,
         }
@@ -497,7 +497,7 @@ impl Device for GenericDevice {
         control_1: &usize,
         target: &usize,
     ) -> Option<f64> {
-        match self.multi_qubit_gates.get(&hqslang.to_string()) {
+        match self.multi_qubit_gates.get(hqslang) {
             Some(x) => {
                 let qubits: Vec<usize> = vec![*control_0, *control_1, *target];
                 x.get(&qubits).copied()
@@ -509,7 +509,7 @@ impl Device for GenericDevice {
     fn multi_qubit_gate_time(&self, hqslang: &str, qubits: &[usize]) -> Option<f64> {
         // variable unused in AllToAllDevice, is kept here for consistency purposes.
 
-        match self.multi_qubit_gates.get(&hqslang.to_string()) {
+        match self.multi_qubit_gates.get(hqslang) {
             Some(x) => {
                 let qubits: Vec<usize> = qubits.to_vec();
                 x.get(&qubits).copied()

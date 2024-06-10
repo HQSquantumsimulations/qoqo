@@ -29,6 +29,14 @@ use std::collections::HashMap;
 #[pyclass(name = "Cheated", module = "qoqo.measurements")]
 #[derive(Clone, Debug)]
 /// Collected information for executing a cheated measurement.
+///
+/// Args:
+///     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
+///     circuits (List[Circuit]): The collection of quantum circuits executed for the measurement.
+///     input (CheatedInput): The additional input information required for measurement.
+///
+/// Returns:
+///     Cheated: The new measurement.
 pub struct CheatedWrapper {
     /// Internal storage of [roqoqo::Cheated]
     pub internal: Cheated,
@@ -40,7 +48,7 @@ impl CheatedWrapper {
     ///
     /// Args:
     ///     constant_circuit (Optional[Circuit]): The constant Circuit that is executed before each Circuit in circuits.
-    ///     circuits (list[Circuit]): The collection of quantum circuits executed for the measurement.
+    ///     circuits (List[Circuit]): The collection of quantum circuits executed for the measurement.
     ///     input (CheatedInput): The additional input information required for measurement.
     ///
     /// Returns:
@@ -52,78 +60,72 @@ impl CheatedWrapper {
         circuits: Vec<Py<PyAny>>,
         input: Py<PyAny>,
     ) -> PyResult<Self> {
-        let mut new_circuits: Vec<Circuit> = Vec::new();
-        for c in circuits.into_iter() {
-            let tmp_c = CircuitWrapper::from_pyany(c).map_err(|err| {
-                PyTypeError::new_err(format!(
-                    "`circuits` argument is not a list of qoqo Circuits: {}",
-                    err
-                ))
-            })?;
-            new_circuits.push(tmp_c)
-        }
-        let new_constant: Option<Circuit> = match constant_circuit {
-            None => None,
-            Some(c) => {
-                let tmp_c = CircuitWrapper::from_pyany(c).map_err(|err| {
+        Python::with_gil(|py| -> PyResult<Self> {
+            let mut new_circuits: Vec<Circuit> = Vec::new();
+            for c in circuits.into_iter() {
+                let tmp_c = CircuitWrapper::from_pyany(c.bind(py)).map_err(|err| {
                     PyTypeError::new_err(format!(
-                        "`constant_circuit` argument is not None or a qoqo Circuit: {}",
+                        "`circuits` argument is not a list of qoqo Circuits: {}",
                         err
                     ))
                 })?;
-                Some(tmp_c)
+                new_circuits.push(tmp_c)
             }
-        };
-        let input = CheatedInputWrapper::from_pyany(input).map_err(|err| {
-            PyTypeError::new_err(format!(
-                "`input` argument is not a qoqo CheatedInput: {}",
-                err
-            ))
-        })?;
-        Ok(Self {
-            internal: Cheated {
-                input,
-                constant_circuit: new_constant,
-                circuits: new_circuits,
-            },
+            let new_constant: Option<Circuit> = match constant_circuit {
+                None => None,
+                Some(c) => {
+                    let tmp_c = CircuitWrapper::from_pyany(c.bind(py)).map_err(|err| {
+                        PyTypeError::new_err(format!(
+                            "`constant_circuit` argument is not None or a qoqo Circuit: {}",
+                            err
+                        ))
+                    })?;
+                    Some(tmp_c)
+                }
+            };
+            let input = CheatedInputWrapper::from_pyany(input.bind(py)).map_err(|err| {
+                PyTypeError::new_err(format!(
+                    "`input` argument is not a qoqo CheatedInput: {}",
+                    err
+                ))
+            })?;
+            Ok(Self {
+                internal: Cheated {
+                    input,
+                    constant_circuit: new_constant,
+                    circuits: new_circuits,
+                },
+            })
         })
     }
 
     /// Execute the cheated measurement.
     ///
     /// Args:
-    ///     input_bit_registers (dict[str, Union[list[list[int]], list[list[bool]]]]): The classical bit registers with the register name as key.
-    ///     float_registers (dict[str, list[list[float]]): The classical float registers as a dictionary with the register name as key.
-    ///     complex_registers (dict[str, list[list[complex]]): The classical complex registers as a dictionary with the register name as key.
+    ///     input_bit_registers (Dict[str, Union[List[List[int]], List[List[bool]]]]): The classical bit registers with the register name as key.
+    ///     float_registers (Dict[str, List[List[float]]]): The classical float registers as a dictionary with the register name as key.
+    ///     complex_registers (Dict[str, List[List[complex]]]): The classical complex registers as a dictionary with the register name as key.
     ///
     /// Returns:
-    ///     Optional[dict[str, float]: The evaluated expectation values.
+    ///     Optional[Dict[str, float]]: The evaluated expectation values.
     ///
     /// Raises:
     ///     RuntimeError: Unexpected repetition of key in bit_register.
     ///     RuntimeError: Error evaluating cheated measurement.
     pub fn evaluate(
         &mut self,
-        input_bit_registers: Py<PyAny>,
+        input_bit_registers: &Bound<PyAny>,
         float_registers: HashMap<String, FloatOutputRegister>,
         complex_registers: HashMap<String, ComplexOutputRegister>,
     ) -> PyResult<Option<HashMap<String, f64>>> {
         let mut bit_registers: HashMap<String, BitOutputRegister> = HashMap::new();
         let bit_registers_bool: PyResult<HashMap<String, Vec<Vec<bool>>>> =
-            Python::with_gil(|py| -> PyResult<HashMap<String, Vec<Vec<bool>>>> {
-                input_bit_registers
-                    .as_ref(py)
-                    .extract::<HashMap<String, BitOutputRegister>>()
-            });
+            input_bit_registers.extract::<HashMap<String, BitOutputRegister>>();
         if let Ok(try_downcast) = bit_registers_bool {
             bit_registers = try_downcast
         } else {
             let tmp_bit_registers =
-                Python::with_gil(|py| -> PyResult<HashMap<String, Vec<Vec<usize>>>> {
-                    input_bit_registers
-                        .as_ref(py)
-                        .extract::<HashMap<String, Vec<Vec<usize>>>>()
-                })?;
+                input_bit_registers.extract::<HashMap<String, Vec<Vec<usize>>>>()?;
             for (name, output_reg) in tmp_bit_registers {
                 let mut tmp_output_reg: Vec<Vec<bool>> = Vec::with_capacity(output_reg.len());
                 for reg in output_reg {
@@ -147,7 +149,7 @@ impl CheatedWrapper {
     /// Return the collection of quantum circuits for the separate cheated measurements.
     ///
     /// Returns:
-    ///     list[Circuit]: The quantum circuits.
+    ///     List[Circuit]: The quantum circuits.
     pub fn circuits(&self) -> Vec<CircuitWrapper> {
         self.internal
             .circuits()
@@ -188,7 +190,7 @@ impl CheatedWrapper {
     /// Return copy of Measurement with symbolic parameters replaced.
     ///
     /// Arguments:
-    ///     substituted_parameters (dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
+    ///     substituted_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the Circuit.
     ///
     /// Raises:
     ///     RuntimeError: Error substituting symbolic parameters.
@@ -220,7 +222,7 @@ impl CheatedWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize CheatedMeasurement to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(("Cheated", b))
     }
@@ -236,7 +238,7 @@ impl CheatedWrapper {
         let serialized = serialize(&self.internal)
             .map_err(|_| PyValueError::new_err("Cannot serialize Cheated to bytes"))?;
         let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-            PyByteArray::new(py, &serialized[..]).into()
+            PyByteArray::new_bound(py, &serialized[..]).into()
         });
         Ok(b)
     }
@@ -253,8 +255,9 @@ impl CheatedWrapper {
     ///     TypeError: Input cannot be converted to byte array.
     ///     ValueError: Input cannot be deserialized to Cheated.
     #[staticmethod]
-    pub fn from_bincode(input: &PyAny) -> PyResult<Self> {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<Self> {
         let bytes = input
+            .as_gil_ref()
             .extract::<Vec<u8>>()
             .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -302,7 +305,7 @@ impl CheatedWrapper {
     }
 
     /// Return a deep copy of the Object.
-    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+    pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
         self.clone()
     }
 
@@ -374,25 +377,22 @@ impl CheatedWrapper {
     /// # Arguments:
     ///
     /// `input` - The Python object that should be casted to a [roqoqo::Cheated]
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<Cheated> {
-        Python::with_gil(|py| -> PyResult<Cheated> {
-            let input = input.as_ref(py);
-            if let Ok(try_downcast) = input.extract::<CheatedWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode").map_err(|_| {
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<Cheated> {
+        if let Ok(try_downcast) = input.extract::<CheatedWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode").map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo Cheated: Cast to binary representation failed".to_string())
             })?;
-                let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
+            let bytes = get_bytes.extract::<Vec<u8>>().map_err(|_| {
                 PyTypeError::new_err("Python object cannot be converted to qoqo Cheated: Cast to binary representation failed".to_string())
             })?;
-                deserialize(&bytes[..]).map_err(|err| {
-                    PyTypeError::new_err(format!(
+            deserialize(&bytes[..]).map_err(|err| {
+                PyTypeError::new_err(format!(
                     "Python object cannot be converted to qoqo Cheated: Deserialization failed: {}",
                     err
                 ))
-                })
-            }
-        })
+            })
+        }
     }
 }

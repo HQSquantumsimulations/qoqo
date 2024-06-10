@@ -53,7 +53,7 @@ pub struct DecoherenceOnIdleModelWrapper {
 impl DecoherenceOnIdleModelWrapper {
     /// Create a new DecoherenceOnIdleModel
     #[new]
-    pub fn new(noise_operator: Option<Py<PyAny>>) -> PyResult<Self> {
+    pub fn new(noise_operator: Option<&Bound<PyAny>>) -> PyResult<Self> {
         if let Some(lindblad_operator) = noise_operator {
             let noise_operator =
                 struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany(
@@ -92,8 +92,8 @@ impl DecoherenceOnIdleModelWrapper {
     ///     ValueError: Input cannot be deserialized to selected Noise-Model.
     #[staticmethod]
     #[pyo3(text_signature = "(input)")]
-    pub fn from_bincode(input: &PyAny) -> PyResult<DecoherenceOnIdleModelWrapper> {
-        let bytes = input.extract::<Vec<u8>>().map_err(|_| {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<DecoherenceOnIdleModelWrapper> {
+        let bytes = input.as_gil_ref().extract::<Vec<u8>>().map_err(|_| {
             pyo3::exceptions::PyTypeError::new_err("Input cannot be converted to byte array")
         })?;
         let noise_model: NoiseModel = bincode::deserialize(&bytes[..]).map_err(|_| {
@@ -149,7 +149,7 @@ impl DecoherenceOnIdleModelWrapper {
     /// Convenience function to add damping to several qubits
     ///
     /// Args:
-    ///     qubits (list[int]): The qubits to add damping to.
+    ///     qubits (List[int]): The qubits to add damping to.
     ///     rate (float): The damping rate.
     ///
     /// Returns:
@@ -163,7 +163,7 @@ impl DecoherenceOnIdleModelWrapper {
     /// Convenience function to add dephasing to several qubits
     ///
     /// Args:
-    ///     qubits (list[int]): The qubits to add dephasing to.
+    ///     qubits (List[int]): The qubits to add dephasing to.
     ///     rate (float): The dephasing rate.
     ///
     /// Returns:
@@ -177,7 +177,7 @@ impl DecoherenceOnIdleModelWrapper {
     /// Convenience function to add depolarising to several qubits
     ///
     /// Args:
-    ///     qubits (list[int]): The qubits to add depolarising to.
+    ///     qubits (List[int]): The qubits to add depolarising to.
     ///     rate (float): The depolarising rate.
     ///
     /// Returns:
@@ -191,7 +191,7 @@ impl DecoherenceOnIdleModelWrapper {
     /// Convenience function to add excitation to several qubits
     ///
     /// Args:
-    ///     qubits (list[int]): The qubits to add excitation to.
+    ///     qubits (List[int]): The qubits to add excitation to.
     ///     rate (float): The excitation rate.
     ///
     /// Returns:

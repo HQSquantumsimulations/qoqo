@@ -39,12 +39,12 @@ use std::collections::HashMap;
 ///         \end{pmatrix}
 ///
 /// Args:
-///     qubit: The qubit that the unitary gate is applied to.
-///     alpha_r: The real part of the on-diagonal elements of the single-qubit unitary.
-///     alpha_i: The imaginary part of the on-diagonal elements of the single-qubit unitary.
-///     beta_r: The real part of the off-diagonal elements of the single-qubit unitary.
-///     beta_i: The imaginary part of the off-diagonal elements of the single-qubit unitary.
-///     global_phase: The global phase of the single-qubit unitary.
+///     qubit (int): The qubit that the unitary gate is applied to.
+///     alpha_r (CalculatorFloat): The real part of the on-diagonal elements of the single-qubit unitary.
+///     alpha_i (CalculatorFloat): The imaginary part of the on-diagonal elements of the single-qubit unitary.
+///     beta_r (CalculatorFloat): The real part of the off-diagonal elements of the single-qubit unitary.
+///     beta_i (CalculatorFloat): The imaginary part of the off-diagonal elements of the single-qubit unitary.
+///     global_phase (CalculatorFloat): The global phase of the single-qubit unitary.
 ///
 struct SingleQubitGate {
     qubit: usize,
