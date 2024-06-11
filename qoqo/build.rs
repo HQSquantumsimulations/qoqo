@@ -437,7 +437,7 @@ Raises:
             format!("# This is an auto generated file containing only the documentation.\n# You can find the full implementation on this page:\n# https://github.com/HQSquantumsimulations/qoqo\n\n{}{}{}\n{}",
         if typing_imports.is_empty() { "".to_owned() } else {format!("from typing import {}\n", typing_imports.join(", "))},
         if struqture_imports.is_empty() { "".to_owned() } else {format!("from struqture_py.spins import {} # type: ignore\n", struqture_imports.join(", "))},
-        if qoqo_imports.is_empty() { "".to_owned() } else {format!("from .qoqo import {}\n", qoqo_imports.join(", "))},
+        if module.eq("qoqo") || qoqo_imports.is_empty() { "".to_owned() } else {format!("from .qoqo import {}\n", qoqo_imports.join(", "))},
         module_doc
     ))
     })
