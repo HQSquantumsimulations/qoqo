@@ -2,7 +2,7 @@
 # You can find the full implementation on this page:
 # https://github.com/HQSquantumsimulations/qoqo
 
-from typing import Optional, List, Tuple, Dict, Set  # noqa: F401
+from typing import Dict, List, Optional, Set, Tuple
 
 class Circuit:
     """
@@ -14,55 +14,6 @@ class Circuit:
     def __init__(self):
         return
 
-    @classmethod
-    def __repr__(self):  # type: ignore
-        """
-        Return repr(self).
-        """
-
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
-    def __iter__(self):  # type: ignore
-        """
-        Implement iter(self).
-        """
-
-    @classmethod
     def __add__(self, rhs: Operation | Circuit) -> Circuit:  # type: ignore
         """
         Implement the `+` (__add__) magic method to add two Circuits.
@@ -78,13 +29,6 @@ class Circuit:
             TypeError: Right hand side cannot be converted to Operation or Circuit.
         """
 
-    @classmethod
-    def __radd__(self):  # type: ignore
-        """
-        Return value+self.
-        """
-
-    @classmethod
     def __iadd__(self, other: Operation | Circuit) -> Circuit:  # type: ignore
         """
         Implement the `+=` (__iadd__) magic method to add a Operation to a Circuit.
@@ -99,31 +43,6 @@ class Circuit:
             TypeError: Right hand side cannot be converted to Operation or Circuit.
         """
 
-    @classmethod
-    def __len__(self):  # type: ignore
-        """
-        Return len(self).
-        """
-
-    @classmethod
-    def __getitem__(self):  # type: ignore
-        """
-        Return self[key].
-        """
-
-    @classmethod
-    def __setitem__(self):  # type: ignore
-        """
-        Set self[key] to value.
-        """
-
-    @classmethod
-    def __delitem__(self):  # type: ignore
-        """
-        Delete self[key].
-        """
-
-    @classmethod
     def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Circuit:  # type: ignore
         """
         Substitute the symbolic parameters in a clone of the Circuit according to the substitution_parameters input.
@@ -138,7 +57,6 @@ class Circuit:
             RuntimeError: The parameter substitution failed.
         """
 
-    @classmethod
     def remap_qubits(self, mapping: Dict[int, int]) -> Circuit:  # type: ignore
         """
         Remap qubits in operations in clone of Circuit.
@@ -153,7 +71,6 @@ class Circuit:
             RuntimeError: The qubit remapping failed.
         """
 
-    @classmethod
     def overrotate(self) -> Circuit:  # type: ignore
         """
         Return clone of the circuit with all overrotation Pragmas applied.
@@ -177,7 +94,6 @@ class Circuit:
 
         """
 
-    @classmethod
     def count_occurences(self, operations: List[str]) -> int:  # type: ignore
         """
         Count the number of occurences of a set of operation tags in the circuit.
@@ -189,7 +105,6 @@ class Circuit:
             int: The number of occurences of these operation tags.
         """
 
-    @classmethod
     def get_operation_types(self) -> Set[str]:  # type: ignore
         """
         Return a list of the hqslang names of all operations occuring in the circuit.
@@ -198,25 +113,6 @@ class Circuit:
             Set[str]: The operation types in the Circuit.
         """
 
-    @classmethod
-    def __copy__(self) -> Circuit:  # type: ignore
-        """
-        Return a copy of the Circuit (copy here produces a deepcopy).
-
-        Returns:
-            Circuit: A deep copy of self.
-        """
-
-    @classmethod
-    def __deepcopy__(self) -> Circuit:  # type: ignore
-        """
-        Return a deep copy of the Circuit.
-
-        Returns:
-            Circuit: A deep copy of self.
-        """
-
-    @classmethod
     def _qoqo_versions(self) -> Tuple[str, str]:  # type: ignore
         """
         Return the roqoqo and qoqo versions from when the code was compiled.
@@ -225,7 +121,6 @@ class Circuit:
             Tuple[str, str]: The roqoqo and qoqo versions.
         """
 
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the Circuit using the [bincode] crate.
@@ -237,30 +132,21 @@ class Circuit:
             ValueError: Cannot serialize Circuit to bytes.
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray) -> Circuit:  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the Circuit to a Circuit using the [bincode] crate.
 
-        Convert a function to be a static method.
+        Args:
+            input (ByteArray): The serialized Circuit (in [bincode] form).
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            Circuit: The deserialized Circuit.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to Circuit.
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Return the json representation of the Circuit.
@@ -272,53 +158,22 @@ class Circuit:
             ValueError: Cannot serialize Circuit to json.
         """
 
-    @classmethod
-    def json_schema(self):  # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Return the JsonSchema for the json serialisation of the class.
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The json schema serialized to json
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
@@ -327,30 +182,20 @@ class Circuit:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    @classmethod
-    def from_json(self):  # type: ignore
+    def from_json(self, input: str) -> Circuit:  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the json representation of a Circuit to a Circuit.
 
-        Convert a function to be a static method.
+        Args:
+            input (str): The serialized Circuit in json form.
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            Circuit: The deserialized Circuit.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            ValueError: Input cannot be deserialized to Circuit.
         """
 
-    @classmethod
     def get(self, index: int) -> Operation:  # type: ignore
         """
         Return a copy of the Operation at a certain index of the Circuit.
@@ -365,7 +210,6 @@ class Circuit:
             IndexError: Index out of range.
         """
 
-    @classmethod
     def get_slice(self, start: Optional[int], stop: Optional[int]) -> Circuit:  # type: ignore
         """
         Return the copy of a slice of the Circuit.
@@ -383,7 +227,6 @@ class Circuit:
             IndexError: Start index out of range.
         """
 
-    @classmethod
     def definitions(self) -> List[Operation]:  # type: ignore
         """
         Return a list of definitions in the Circuit.
@@ -394,7 +237,6 @@ class Circuit:
             List[Operation]: A vector of the definitions in the Circuit.
         """
 
-    @classmethod
     def operations(self) -> List[Operation]:  # type: ignore
         """
         Return a list of all operations in the Circuit.
@@ -403,7 +245,6 @@ class Circuit:
             List[Operation]: A vector of the operations in the Circuit.
         """
 
-    @classmethod
     def filter_by_tag(self, tag: str) -> List[Operation]:  # type: ignore
         """
         Return a list of operations with given tag.
@@ -415,52 +256,12 @@ class Circuit:
             List[Operation]: A vector of the operations with the specified tag in the Circuit.
         """
 
-    @classmethod
     def add(self, op: Operation):  # type: ignore
         """
         Add an Operation to Circuit.
 
         Args:
             op (Operation): The Operation to add to the Circuit.
-        """
-
-    @classmethod
-    def __format__(self) -> str:  # type: ignore
-        """
-        Return a string containing a formatted (string) representation of the Circuit.
-
-        Returns:
-            str: The string representation of the Circuit.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
         """
 
 class QuantumProgram:
@@ -483,43 +284,6 @@ class QuantumProgram:
     def __init__(self):
         return
 
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
     def measurement(self):  # type: ignore
         """
         Returns the measurement attribute of the QuantumProgram as Python object.
@@ -529,7 +293,6 @@ class QuantumProgram:
             i.e. PauliZProduct, CheatedPauliZProduct, Cheated or ClassicalRegister.
         """
 
-    @classmethod
     def input_parameter_names(self):  # type: ignore
         """
         Returns the input_parameter_names attribute of the qoqo QuantumProgram.
@@ -538,7 +301,6 @@ class QuantumProgram:
             List of input parameter names.
         """
 
-    @classmethod
     def run(self, backend: Backend, parameters: Optional[List[float]]):  # type: ignore
         """
         Runs the QuantumProgram and returns expectation values.
@@ -551,7 +313,6 @@ class QuantumProgram:
             parameters (Optional[List[float]]): List of float  parameters of the function call in order of `input_parameter_names`
         """
 
-    @classmethod
     def run_registers(self, backend: Backend, parameters: Optional[List[float]]):  # type: ignore
         """
         Runs the QuantumProgram and returns the classical registers of the quantum program.
@@ -567,25 +328,6 @@ class QuantumProgram:
             parameters (Optional[List[float]]): List of float  parameters of the function call in order of `input_parameter_names`
         """
 
-    @classmethod
-    def __copy__(self) -> QuantumProgram:  # type: ignore
-        """
-        Return a copy of the QuantumProgram (copy here produces a deepcopy).
-
-        Returns:
-            QuantumProgram: A deep copy of self.
-        """
-
-    @classmethod
-    def __deepcopy__(self) -> QuantumProgram:  # type: ignore
-        """
-        Return a deep copy of the QuantumProgram.
-
-        Returns:
-            QuantumProgram: A deep copy of self.
-        """
-
-    @classmethod
     def _qoqo_versions(self) -> Tuple[str, str]:  # type: ignore
         """
         Return the roqoqo and qoqo versions from when the code was compiled.
@@ -594,7 +336,6 @@ class QuantumProgram:
             Tuple[str, str]: The roqoqo and qoqo versions.
         """
 
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the QuantumProgram using the [bincode] crate.
@@ -606,30 +347,21 @@ class QuantumProgram:
             ValueError: Cannot serialize QuantumProgram to bytes.
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray) -> QuantumProgram:  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the QuantumProgram to a QuantumProgram using the [bincode] crate.
 
-        Convert a function to be a static method.
+        Args:
+            input (ByteArray): The serialized QuantumProgram (in [bincode] form).
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            QuantumProgram: The deserialized QuantumProgram.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to QuantumProgram.
         """
 
-    @classmethod
     def to_json(self) -> str:  # type: ignore
         """
         Return the json representation of the QuantumProgram.
@@ -641,112 +373,42 @@ class QuantumProgram:
             ValueError: Cannot serialize QuantumProgram to json.
         """
 
-    @classmethod
-    def from_json(self):  # type: ignore
+    def from_json(self, input: str) -> QuantumProgram:  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the json representation of a QuantumProgram to a QuantumProgram.
 
-        Convert a function to be a static method.
+        Args:
+            input (str): The serialized QuantumProgram in json form.
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            QuantumProgram: The deserialized QuantumProgram.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            ValueError: Input cannot be deserialized to QuantumProgram.
         """
 
-    @classmethod
-    def json_schema(self):  # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Return the JsonSchema for the json serialisation of the class.
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The json schema serialized to json
         """
 
-    @classmethod
-    def current_version(self):  # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-        staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-        Convert a function to be a static method.
-
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
-
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Returns:
+            str: The current version of the library.
         """
 
-    @classmethod
     def min_supported_version(self) -> str:  # type: ignore
         """
         Return the minimum version of qoqo that supports this object.
 
         Returns:
             str: The minimum version of the qoqo library to deserialize this object.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
         """
 
 class CircuitDag:
@@ -758,43 +420,6 @@ class CircuitDag:
     def __init__(self):
         return
 
-    @classmethod
-    def __lt__(self):  # type: ignore
-        """
-        Return self<value.
-        """
-
-    @classmethod
-    def __le__(self):  # type: ignore
-        """
-        Return self<=value.
-        """
-
-    @classmethod
-    def __eq__(self):  # type: ignore
-        """
-        Return self==value.
-        """
-
-    @classmethod
-    def __ne__(self):  # type: ignore
-        """
-        Return self!=value.
-        """
-
-    @classmethod
-    def __gt__(self):  # type: ignore
-        """
-        Return self>value.
-        """
-
-    @classmethod
-    def __ge__(self):  # type: ignore
-        """
-        Return self>=value.
-        """
-
-    @classmethod
     def from_circuit(self, circuit: Circuit) -> CircuitDag:  # type: ignore
         """
         Create a CircuitDag from a given Circuit;
@@ -806,14 +431,12 @@ class CircuitDag:
             self: The new CircuitDag.
         """
 
-    @classmethod
     def to_circuit(self):  # type: ignore
         """
         Transforms the CircuitDag into a Circuit.
 
         """
 
-    @classmethod
     def add_to_back(self, op: Operation):  # type: ignore
         """
         Add an Operation to the back of the CircuitDag, if necessary.
@@ -825,7 +448,6 @@ class CircuitDag:
             TypeError: The Python Object cannot be converted to Operation.
         """
 
-    @classmethod
     def add_to_front(self, op: Operation):  # type: ignore
         """
         Add an Operation to the front of the CircuitDag, if necessary.
@@ -837,7 +459,6 @@ class CircuitDag:
             TypeError: The Python Object cannot be converted to Operation.
         """
 
-    @classmethod
     def execution_blocked(self, already_executed: List[int], to_be_executed: int) -> List[int]:  # type: ignore
         """
         Checks if executing an operation is blocked by any not-yet executed operation.
@@ -850,7 +471,6 @@ class CircuitDag:
             List[int]: List containing the sorted blocking elements.
         """
 
-    @classmethod
     def blocking_predecessors(self, already_executed: List[int], to_be_executed: int) -> List[int]:  # type: ignore
         """
         Checks which of the direct predecessors of an Operation in the CircuitDag blocks the execution.
@@ -868,7 +488,6 @@ class CircuitDag:
             List[int]: List containing the sorted blocking elements.
         """
 
-    @classmethod
     def new_front_layer(self, already_executed: List[int], current_front_layer: List[int], to_be_executed: int):  # type: ignore
         """
         Returns a new front-layer after executing an operation from the current front layer.
@@ -881,7 +500,6 @@ class CircuitDag:
             to_be_executed (int): NodeIndex of the operation that should be executed next.
         """
 
-    @classmethod
     def parallel_blocks(self):  # type: ignore
         """
         Returns an iterator over the possible parallel blocks in circuit that can be executed simultaneously
@@ -890,7 +508,6 @@ class CircuitDag:
         as references to the Operation in the blocks
         """
 
-    @classmethod
     def get(self, index: int) -> Operation:  # type: ignore
         """
         Given a NodeIndex, returns the Operation contained in the node of
@@ -906,16 +523,6 @@ class CircuitDag:
             IndexError: Index out of range.
         """
 
-    @classmethod
-    def __copy__(self) -> CircuitDag:  # type: ignore
-        """
-        Returns a copy of the CircuitDag (produces a deepcopy).
-
-        Returns:
-            CircuitDag: A copy of self.
-        """
-
-    @classmethod
     def _qoqo_versions(self) -> Tuple[str, str]:  # type: ignore
         """
         Return the roqoqo and qoqo versions from when the code was compiled.
@@ -924,7 +531,6 @@ class CircuitDag:
             Tuple[str, str]: The roqoqo and qoqo versions.
         """
 
-    @classmethod
     def to_bincode(self) -> bytearray:  # type: ignore
         """
         Return the bincode representation of the CircuitDag using the [bincode] crate.
@@ -936,37 +542,27 @@ class CircuitDag:
             ValueError: Cannot serialize CircuitDag to bytes.
         """
 
-    @classmethod
-    def from_bincode(self):  # type: ignore
+    def from_bincode(self, input: bytearray) -> CircuitDag:  # type: ignore
         """
-        staticmethod(function) -> method
+        Convert the bincode representation of the CircuitDag to a CircuitDag using the [bincode] crate.
 
-        Convert a function to be a static method.
+        Args:
+            input (ByteArray): The serialized CircuitDag (in [bincode] form).
 
-        A static method does not receive an implicit first argument.
-        To declare a static method, use this idiom:
+        Returns:
+            CircuitDag: The deserialized CircuitDag.
 
-             class C:
-                 @staticmethod
-                 def f(arg1, arg2, argN):
-                     ...
-
-        It can be called either on the class (e.g. C.f()) or on an instance
-        (e.g. C().f()). Both the class and the instance are ignored, and
-        neither is passed implicitly as the first argument to the method.
-
-        Static methods in Python are similar to those found in Java or C++.
-        For a more advanced concept, see the classmethod builtin.
+        Raises:
+            TypeError: Input cannot be converted to byte array.
+            ValueError: Input cannot be deserialized to CircuitDag.
         """
 
-    @classmethod
     def successors(self):  # type: ignore
         """
         Returns the list of the successors of a given node in the CircuitDag.
 
         """
 
-    @classmethod
     def commuting_operations(self) -> List[int]:  # type: ignore
         """
         Returns the list of nodes of commuting operations in CircuitDag.
@@ -975,7 +571,6 @@ class CircuitDag:
             List[int]: The list of nodes of commuting operations.
         """
 
-    @classmethod
     def first_parallel_block(self) -> Set[int]:  # type: ignore
         """
         Returns a set containing the nodes in the first parallel block.
@@ -984,7 +579,6 @@ class CircuitDag:
             Set[int]: The set of nodes in the first parallel block.
         """
 
-    @classmethod
     def last_parallel_block(self) -> Set[int]:  # type: ignore
         """
         Returns a set containing the nodes in the last parallel block.
@@ -993,7 +587,6 @@ class CircuitDag:
             Set[int]: The set of nodes in the last parallel block.
         """
 
-    @classmethod
     def first_operation_involving_qubit(self) -> Dict[int, int]:  # type: ignore
         """
         Returns a dictionary where a key represents a qubit and its value represents
@@ -1003,7 +596,6 @@ class CircuitDag:
             Dict[int, int]: The dictionary of {qubit: node} elements.
         """
 
-    @classmethod
     def last_operation_involving_qubit(self) -> Dict[int, int]:  # type: ignore
         """
         Returns a dictionary where a key represents a qubit and its value represents
@@ -1013,7 +605,6 @@ class CircuitDag:
             Dict[int, int]: The dictionary of {qubit: node} elements.
         """
 
-    @classmethod
     def first_operation_involving_classical(self) -> Dict[(str, int), int]:  # type: ignore
         """
         Returns a dictionary where a key is composed by the name and the size
@@ -1024,7 +615,6 @@ class CircuitDag:
             Dict[(str, int), int]: The dictionary of {(str, int), int} elements.
         """
 
-    @classmethod
     def last_operation_involving_classical(self) -> Dict[(str, int), int]:  # type: ignore
         """
         Returns a dictionary where a key is composed by the name and the size
@@ -1033,36 +623,6 @@ class CircuitDag:
 
         Returns:
             Dict[(str, int), int]: The dictionary of {(str, int), int} elements.
-        """
-
-    @classmethod
-    def __doc__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
-        """
-
-    @classmethod
-    def __module__(self):  # type: ignore
-        """
-        str(object='') -> str
-        str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-        Create a new string object from the given object. If encoding or
-        errors is specified, then the object must expose a data buffer
-        that will be decoded using the given encoding and error handler.
-        Otherwise, returns the result of object.__str__() (if defined)
-        or repr(object).
-        encoding defaults to sys.getdefaultencoding().
-        errors defaults to 'strict'.
         """
 
 class Operation:

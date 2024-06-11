@@ -2,9 +2,8 @@
 # You can find the full implementation on this page:
 # https://github.com/HQSquantumsimulations/qoqo
 
-from .qoqo import Circuit, Operation  # noqa: F401
-import numpy as np  # noqa: F401
-from typing import Tuple, List, Optional, Set, Dict, Union, Self, Sequence  # noqa: F401
+from typing import Dict, List, Optional, Set, Union
+from .qoqo import Circuit, Operation
 
 class SingleQubitGate(Operation):
     """
@@ -26,145 +25,89 @@ Args:
 
 """
 
-    def __init__(self, qubit: int, alpha_r: Union[float, str], alpha_i: Union[float, str], beta_r: Union[float, str], beta_i: Union[float, str], global_phase: Union[float, str]):
-       return
+    def __init__(
+        self,
+        qubit: int,
+        alpha_r: Union[float, str],
+        alpha_i: Union[float, str],
+        beta_r: Union[float, str],
+        beta_i: Union[float, str],
+        global_phase: Union[float, str],
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def qubit(self):  # type: ignore
         """
-List all involved Qubits
+        Return the qubit the operation acts on
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            int
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
-        """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -180,8 +123,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -197,8 +139,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -212,8 +153,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -229,8 +169,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -247,128 +186,65 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return unitary matrix of gate.
 
-Convert a function to be a static method.
+        Returns:
+            np.ndarray
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class RotateZ(Operation):
     """
@@ -391,150 +267,85 @@ Args:
 """
 
     def __init__(self, qubit: int, theta: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Copies Operation
+        Return the qubit the operation acts on
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            int
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -550,8 +361,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -567,8 +377,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -582,8 +391,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -599,8 +407,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -617,141 +424,77 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns Rotated gate raised to power
+        Return unitary matrix of gate.
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Returns:
+            np.ndarray
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns Rotated gate raised to power
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            Self: gate raised to the power of `power`
+
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class RotateY(Operation):
     """
@@ -774,150 +517,85 @@ Args:
 """
 
     def __init__(self, qubit: int, theta: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Copies Operation
+        Return the qubit the operation acts on
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            int
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -933,8 +611,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -950,8 +627,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -965,8 +641,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -982,8 +657,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -1000,141 +674,77 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns Rotated gate raised to power
+        Return unitary matrix of gate.
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Returns:
+            np.ndarray
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns Rotated gate raised to power
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            Self: gate raised to the power of `power`
+
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class RotateX(Operation):
     """
@@ -1157,150 +767,85 @@ Args:
 """
 
     def __init__(self, qubit: int, theta: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Copies Operation
+        Return the qubit the operation acts on
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            int
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -1316,8 +861,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -1333,8 +877,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -1348,8 +891,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -1365,8 +907,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -1383,141 +924,77 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns Rotated gate raised to power
+        Return unitary matrix of gate.
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Returns:
+            np.ndarray
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns Rotated gate raised to power
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            Self: gate raised to the power of `power`
+
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class RotateXY(Operation):
     """
@@ -1536,157 +1013,93 @@ Args:
 
 """
 
-    def __init__(self, qubit: int, theta: Union[float, str], phi: Union[float, str]):
-       return
+    def __init__(
+        self, qubit: int, theta: Union[float, str], phi: Union[float, str]
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def phi(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute phi
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def phi(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns value of attribute phi
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Return the qubit the operation acts on
 
-    @classmethod
-    def qubit(self): # type: ignore
+        Returns:
+            int
         """
-Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -1702,8 +1115,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -1719,8 +1131,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -1734,8 +1145,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -1751,8 +1161,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -1769,141 +1178,77 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns Rotated gate raised to power
+        Return unitary matrix of gate.
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Returns:
+            np.ndarray
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns Rotated gate raised to power
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            Self: gate raised to the power of `power`
+
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class RotateAroundSphericalAxis(Operation):
     """
@@ -1934,163 +1279,102 @@ Args:
 
 """
 
-    def __init__(self, qubit: int, theta: Union[float, str], spherical_theta: Union[float, str], spherical_phi: Union[float, str]):
-       return
+    def __init__(
+        self,
+        qubit: int,
+        theta: Union[float, str],
+        spherical_theta: Union[float, str],
+        spherical_phi: Union[float, str],
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def spherical_theta(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute spherical_theta
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def spherical_phi(self):  # type: ignore
         """
-Return self!=value.
-"""
-
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns value of attribute spherical_phi
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self>=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            bool
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def spherical_theta(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Returns value of attribute spherical_theta
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def spherical_phi(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute spherical_phi
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Returns hqslang name of Operation
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Returns:
+            str: The name
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    str: The name
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Copies Operation
+        List all involved Qubits
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubit(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
+        Returns:
+            int
+        """
 
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -2106,8 +1390,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -2123,8 +1406,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -2138,8 +1420,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -2155,8 +1436,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -2173,141 +1453,77 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns Rotated gate raised to power
+        Return unitary matrix of gate.
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Returns:
+            np.ndarray
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns Rotated gate raised to power
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            Self: gate raised to the power of `power`
+
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PauliZ(Operation):
     """
@@ -2325,144 +1541,80 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def qubit(self):  # type: ignore
         """
-List all involved Qubits
+        Return the qubit the operation acts on
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            int
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
-        """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -2478,8 +1630,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -2495,8 +1646,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -2510,8 +1660,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -2527,8 +1676,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -2545,128 +1693,65 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return unitary matrix of gate.
 
-Convert a function to be a static method.
+        Returns:
+            np.ndarray
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PauliY(Operation):
     """
@@ -2684,144 +1769,80 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def qubit(self):  # type: ignore
         """
-List all involved Qubits
+        Return the qubit the operation acts on
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            int
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
-        """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -2837,8 +1858,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -2854,8 +1874,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -2869,8 +1888,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -2886,8 +1904,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -2904,128 +1921,65 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return unitary matrix of gate.
 
-Convert a function to be a static method.
+        Returns:
+            np.ndarray
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PauliX(Operation):
     """
@@ -3043,144 +1997,80 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def qubit(self):  # type: ignore
         """
-List all involved Qubits
+        Return the qubit the operation acts on
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            int
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
-        """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -3196,8 +2086,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -3213,8 +2102,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -3228,8 +2116,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -3245,8 +2132,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -3263,128 +2149,65 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return unitary matrix of gate.
 
-Convert a function to be a static method.
+        Returns:
+            np.ndarray
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class SqrtPauliX(Operation):
     """
@@ -3402,144 +2225,80 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def qubit(self):  # type: ignore
         """
-List all involved Qubits
+        Return the qubit the operation acts on
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            int
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
-        """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -3555,8 +2314,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -3572,8 +2330,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -3587,8 +2344,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -3604,8 +2360,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -3622,128 +2377,65 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return unitary matrix of gate.
 
-Convert a function to be a static method.
+        Returns:
+            np.ndarray
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class InvSqrtPauliX(Operation):
     """
@@ -3761,144 +2453,80 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def qubit(self):  # type: ignore
         """
-List all involved Qubits
+        Return the qubit the operation acts on
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            int
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
-        """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -3914,8 +2542,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -3931,8 +2558,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -3946,8 +2572,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -3963,8 +2588,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -3981,128 +2605,65 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return unitary matrix of gate.
 
-Convert a function to be a static method.
+        Returns:
+            np.ndarray
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class Hadamard(Operation):
     """
@@ -4120,144 +2681,80 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def qubit(self):  # type: ignore
         """
-List all involved Qubits
+        Return the qubit the operation acts on
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            int
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
-        """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -4273,8 +2770,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -4290,8 +2786,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -4305,8 +2800,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -4322,8 +2816,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -4340,128 +2833,65 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return unitary matrix of gate.
 
-Convert a function to be a static method.
+        Returns:
+            np.ndarray
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class TGate(Operation):
     """
@@ -4479,144 +2909,80 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def qubit(self):  # type: ignore
         """
-List all involved Qubits
+        Return the qubit the operation acts on
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            int
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
-        """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -4632,8 +2998,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -4649,8 +3014,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -4664,8 +3028,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -4681,8 +3044,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -4699,128 +3061,65 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return unitary matrix of gate.
 
-Convert a function to be a static method.
+        Returns:
+            np.ndarray
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class SGate(Operation):
     """
@@ -4838,144 +3137,80 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def qubit(self):  # type: ignore
         """
-List all involved Qubits
+        Return the qubit the operation acts on
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            int
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
-        """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -4991,8 +3226,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -5008,8 +3242,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -5023,8 +3256,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -5040,8 +3272,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -5058,7541 +3289,3678 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return unitary matrix of gate.
 
-Convert a function to be a static method.
+        Returns:
+            np.ndarray
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class DefinitionUsize(Operation):
     """
-DefinitionUsize is the Definition for an Integer type register.
+    DefinitionUsize is the Definition for an Integer type register.
 
-Args:
-    name (string): The name of the register that is defined.
-    length (int): The length of the register that is defined, usually the number of qubits to be measured.
-    is_output (bool): True/False if the variable is an output to the program.
-"""
+    Args:
+        name (string): The name of the register that is defined.
+        length (int): The length of the register that is defined, usually the number of qubits to be measured.
+        is_output (bool): True/False if the variable is an output to the program.
+    """
 
     def __init__(self, name: str, length: int, is_output: bool):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def length(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field length
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_output(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field is_output
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def length(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Get value of struct field length
-"""
 
-    @classmethod
-    def is_output(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Get value of struct field is_output
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def name(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Return name of definition operation.
 
-    @classmethod
-    def name(self): # type: ignore
+        Returns:
+            str
         """
-Return name of definition operation.
 
-Returns:
-    str
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class DefinitionBit(Operation):
     """
-DefinitionBit is the Definition for a Bit type register.
+    DefinitionBit is the Definition for a Bit type register.
 
-Args:
-    name (string): The name of the register that is defined.
-    length (int): The length of the register that is defined, usually the number of qubits to be measured.
-    is_output (bool): True/False if the variable is an output to the program.
-"""
+    Args:
+        name (string): The name of the register that is defined.
+        length (int): The length of the register that is defined, usually the number of qubits to be measured.
+        is_output (bool): True/False if the variable is an output to the program.
+    """
 
     def __init__(self, name: str, length: int, is_output: bool):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def length(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field length
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_output(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field is_output
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def length(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Get value of struct field length
-"""
 
-    @classmethod
-    def is_output(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Get value of struct field is_output
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def name(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Return name of definition operation.
 
-    @classmethod
-    def name(self): # type: ignore
+        Returns:
+            str
         """
-Return name of definition operation.
 
-Returns:
-    str
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class DefinitionFloat(Operation):
     """
-DefinitionFloat is the Definition for a Float type register.
+    DefinitionFloat is the Definition for a Float type register.
 
-Args:
-    name (string): The name of the register that is defined.
-    length (int): The length of the register that is defined, usually the number of qubits to be measured.
-    is_output (bool): True/False if the variable is an output to the program.
-"""
+    Args:
+        name (string): The name of the register that is defined.
+        length (int): The length of the register that is defined, usually the number of qubits to be measured.
+        is_output (bool): True/False if the variable is an output to the program.
+    """
 
     def __init__(self, name: str, length: int, is_output: bool):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def length(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field length
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_output(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field is_output
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def length(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Get value of struct field length
-"""
 
-    @classmethod
-    def is_output(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Get value of struct field is_output
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def name(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Return name of definition operation.
 
-    @classmethod
-    def name(self): # type: ignore
+        Returns:
+            str
         """
-Return name of definition operation.
 
-Returns:
-    str
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class DefinitionComplex(Operation):
     """
-DefinitionComplex is the Definition for a Complex type register.
+    DefinitionComplex is the Definition for a Complex type register.
 
-Args:
-    name (string): The name of the register that is defined.
-    length (int): The length of the register that is defined, usually the number of qubits to be measured.
-    is_output (bool): True/False if the variable is an output to the program.
-"""
+    Args:
+        name (string): The name of the register that is defined.
+        length (int): The length of the register that is defined, usually the number of qubits to be measured.
+        is_output (bool): True/False if the variable is an output to the program.
+    """
 
     def __init__(self, name: str, length: int, is_output: bool):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def length(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field length
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_output(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field is_output
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def length(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Get value of struct field length
-"""
 
-    @classmethod
-    def is_output(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Get value of struct field is_output
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def name(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Return name of definition operation.
 
-    @classmethod
-    def name(self): # type: ignore
+        Returns:
+            str
         """
-Return name of definition operation.
 
-Returns:
-    str
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class InputSymbolic(Operation):
     """
-InputSymbolic is the Definition for a Float which will replace a certain symbolic parameter.
+    InputSymbolic is the Definition for a Float which will replace a certain symbolic parameter.
 
-Args:
-    name (string): The name of the register that is defined.
-    input (float): The float by which to replace the quantities marked as "name".
-"""
+    Args:
+        name (string): The name of the register that is defined.
+        input (float): The float by which to replace the quantities marked as "name".
+    """
 
     def __init__(self, name: str, input: float):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def input(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field input
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def input(self): # type: ignore
+        Returns:
+            str: The name
         """
-Get value of struct field input
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def name(self):  # type: ignore
         """
-Copies Operation
+        Return name of definition operation.
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            str
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def name(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Return name of definition operation.
+        Returns the current version of the qoqo library .
 
-Returns:
-    str
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class MeasureQubit(Operation):
     """
-Measurement gate operation.
+    Measurement gate operation.
 
-This Operation acts on one qubit writing the result of the measurement into a readout.
-The classical register for the readout needs to be defined in advance by using a Definition operation.
+    This Operation acts on one qubit writing the result of the measurement into a readout.
+    The classical register for the readout needs to be defined in advance by using a Definition operation.
 
-Args:
-    qubit (int): The measured qubit.
-    readout (string): The classical register for the readout.
-    readout_index (int): The index in the readout the result is saved to.
+    Args:
+        qubit (int): The measured qubit.
+        readout (string): The classical register for the readout.
+        readout_index (int): The index in the readout the result is saved to.
 
-"""
+    """
 
     def __init__(self, qubit: int, readout: str, readout_index: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def readout(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field readout
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def readout_index(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field readout_index
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def readout(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Get value of struct field readout
-"""
 
-    @classmethod
-    def readout_index(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Get value of struct field readout_index
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Return the qubit the operation acts on
 
-    @classmethod
-    def qubit(self): # type: ignore
+        Returns:
+            int
         """
-Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PragmaGetStateVector(Operation):
     """
-This PRAGMA measurement operation returns the statevector of a quantum register.
+    This PRAGMA measurement operation returns the statevector of a quantum register.
 
-Args:
-    readout (string): The name of the classical readout register.
-    circuit (Optional[Circuit]): The measurement preparation Circuit, applied on a copy of the register before measurement.
+    Args:
+        readout (string): The name of the classical readout register.
+        circuit (Optional[Circuit]): The measurement preparation Circuit, applied on a copy of the register before measurement.
 
-"""
+    """
 
     def __init__(self, readout: str, circuit: Optional[Circuit]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def readout(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field readout
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def circuit(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field circuit
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def readout(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Get value of struct field readout
-"""
 
-    @classmethod
-    def circuit(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Get value of struct field circuit
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Returns the current version of the qoqo library .
 
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class PragmaGetDensityMatrix(Operation):
     """
-This PRAGMA measurement operation returns the density matrix of a quantum register.
+    This PRAGMA measurement operation returns the density matrix of a quantum register.
 
-Args:
-    readout (string): The name of the classical readout register.
-    circuit (Optional[Circuit]): The measurement preparation Circuit, applied on a copy of the register before measurement.
+    Args:
+        readout (string): The name of the classical readout register.
+        circuit (Optional[Circuit]): The measurement preparation Circuit, applied on a copy of the register before measurement.
 
-"""
+    """
 
     def __init__(self, readout: str, circuit: Optional[Circuit]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def readout(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field readout
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def circuit(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field circuit
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def readout(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Get value of struct field readout
-"""
 
-    @classmethod
-    def circuit(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Get value of struct field circuit
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Returns the current version of the qoqo library .
 
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class PragmaGetOccupationProbability(Operation):
     """
-This PRAGMA measurement operation returns the vector of the occupation probabilities.
+    This PRAGMA measurement operation returns the vector of the occupation probabilities.
 
-Occupation probabilities in the context of this PRAGMA operation are probabilities of finding the quantum
-register in each :math:`\sigma_z` basis state. The quantum register remains unchanged by this PRAGMA measurement operation.
+    Occupation probabilities in the context of this PRAGMA operation are probabilities of finding the quantum
+    register in each :math:`\sigma_z` basis state. The quantum register remains unchanged by this PRAGMA measurement operation.
 
-Args:
-    readout (string): The name of the classical readout register.
-    circuit (Optional[Circuit]): The Circuit used to rotate the qureg.
+    Args:
+        readout (string): The name of the classical readout register.
+        circuit (Optional[Circuit]): The Circuit used to rotate the qureg.
 
-"""
+    """
 
     def __init__(self, readout: str, circuit: Optional[Circuit]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def readout(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field readout
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def circuit(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field circuit
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def readout(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Get value of struct field readout
-"""
 
-    @classmethod
-    def circuit(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Get value of struct field circuit
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Returns the current version of the qoqo library .
 
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class PragmaGetPauliProduct(Operation):
     """
-This PRAGMA measurement operation returns a Pauli product expectation value.
+    This PRAGMA measurement operation returns a Pauli product expectation value.
 
-This PRAGMA operation returns a Pauli product expectation value after applying
-a Rotate to another basis. It performs all of the operation on a clone of the quantum register,
-sothat the actual quantum register remains unchanged.
+    This PRAGMA operation returns a Pauli product expectation value after applying
+    a Rotate to another basis. It performs all of the operation on a clone of the quantum register,
+    sothat the actual quantum register remains unchanged.
 
-Args:
-    qubit_paulis (Dict[int, int]): The dictionary of the pauli matrix to apply to each qubit in the form
-                                   {qubit: pauli}. Allowed values to be provided for 'pauli' are: 0 = identity, 1 = PauliX, 2 = PauliY, 3 = PauliZ.
-    readout (string): The name of the classical readout register.
-    circuit (Circuit): The measurement preparation Circuit, applied on a copy of the register before measurement.
+    Args:
+        qubit_paulis (Dict[int, int]): The dictionary of the pauli matrix to apply to each qubit in the form
+                                       {qubit: pauli}. Allowed values to be provided for 'pauli' are: 0 = identity, 1 = PauliX, 2 = PauliY, 3 = PauliZ.
+        readout (string): The name of the classical readout register.
+        circuit (Circuit): The measurement preparation Circuit, applied on a copy of the register before measurement.
 
-"""
+    """
 
-    def __init__(self, qubit_paulis: Dict[int, int], readout: str, circuit: Circuit):
-       return
+    def __init__(
+        self, qubit_paulis: Dict[int, int], readout: str, circuit: Circuit
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def qubit_paulis(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field qubit_paulis
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def readout(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field readout
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def circuit(self):  # type: ignore
         """
-Return self!=value.
-"""
-
-    @classmethod
-    def __gt__(self): # type: ignore
+        Get value of struct field circuit
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self>=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def qubit_paulis(self): # type: ignore
+        Returns:
+            bool
         """
-Get value of struct field qubit_paulis
-"""
 
-    @classmethod
-    def readout(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Get value of struct field readout
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def circuit(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Get value of struct field circuit
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Returns hqslang name of Operation
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Returns:
+            str: The name
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    str: The name
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Copies Operation
+        List all involved Qubits
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PragmaRepeatedMeasurement(Operation):
     """
-This PRAGMA measurement operation returns a measurement record for N repeated measurements.
+    This PRAGMA measurement operation returns a measurement record for N repeated measurements.
 
-Args:
-    readout (string): The name of the classical readout register.
-    qubit_mapping (Dict[int, int]): The mapping of qubits to indices in readout register.
-    number_measurements (int): The number of times to repeat the measurement.
+    Args:
+        readout (string): The name of the classical readout register.
+        qubit_mapping (Dict[int, int]): The mapping of qubits to indices in readout register.
+        number_measurements (int): The number of times to repeat the measurement.
 
-"""
+    """
 
-    def __init__(self, readout: str, qubit_mapping: Dict[int, int], number_measurements: int):
-       return
+    def __init__(
+        self,
+        readout: str,
+        qubit_mapping: Dict[int, int],
+        number_measurements: int,
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def readout(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field readout
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def number_measurements(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field number_measurements
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def qubit_mapping(self):  # type: ignore
         """
-Return self!=value.
-"""
-
-    @classmethod
-    def __gt__(self): # type: ignore
+        Get value of struct field qubit_mapping
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self>=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def readout(self): # type: ignore
+        Returns:
+            bool
         """
-Get value of struct field readout
-"""
 
-    @classmethod
-    def number_measurements(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Get value of struct field number_measurements
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def qubit_mapping(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Get value of struct field qubit_mapping
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Returns hqslang name of Operation
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Returns:
+            str: The name
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    str: The name
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Copies Operation
+        List all involved Qubits
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PragmaSetNumberOfMeasurements(Operation):
     """
-Wrap function automatically generates functions in these traits.
-This PRAGMA operation sets the number of measurements of the circuit.
+    Wrap function automatically generates functions in these traits.
+    This PRAGMA operation sets the number of measurements of the circuit.
 
-This is used for backends that allow setting the number of tries. However, setting the number of
-measurements does not allow access to the underlying wavefunction or density matrix.
+    This is used for backends that allow setting the number of tries. However, setting the number of
+    measurements does not allow access to the underlying wavefunction or density matrix.
 
-Args:
-    number_measurements (uint): The number of measurements.
-    readout (string): The register for the readout.
-"""
+    Args:
+        number_measurements (uint): The number of measurements.
+        readout (string): The register for the readout.
+    """
 
     def __init__(self, number_measurements: int, readout: str):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def number_measurements(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field number_measurements
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def readout(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field readout
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def number_measurements(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Get value of struct field number_measurements
-"""
 
-    @classmethod
-    def readout(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Get value of struct field readout
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Returns the current version of the qoqo library .
 
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class PragmaSetStateVector(Operation):
     """
-This PRAGMA operation sets the statevector of a quantum register.
+    This PRAGMA operation sets the statevector of a quantum register.
 
-The Circuit() module automatically initializes the qubits in the |0> state, so this PRAGMA
-operation allows you to set the state of the qubits to a state of your choosing.
-For instance, to initialize the psi-minus Bell state, we pass the following vector to
-the PRAGMA:
-    vector = np.array([0, 1 / np.sqrt(2), -1 / np.sqrt(2), 0])
+    The Circuit() module automatically initializes the qubits in the |0> state, so this PRAGMA
+    operation allows you to set the state of the qubits to a state of your choosing.
+    For instance, to initialize the psi-minus Bell state, we pass the following vector to
+    the PRAGMA:
+        vector = np.array([0, 1 / np.sqrt(2), -1 / np.sqrt(2), 0])
 
-Args:
-    internal (PragmaSetStateVector): The statevector that is initialized.
-"""
+    Args:
+        internal (PragmaSetStateVector): The statevector that is initialized.
+    """
 
     def __init__(self, internal: Operation):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def statevector(self) -> numpy.ndarray:  # type: ignore
         """
-Return repr(self).
-"""
+        Return the statevector.
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            np.ndarray: The statevector representing the qubit register.
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def involved_qubits(self) -> Set[int]:  # type: ignore
         """
-Return self<=value.
-"""
+        List all involved qubits (here, all).
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            Set[int]: The involved qubits of the PRAGMA operation.
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Return tags classifying the type of the operation.
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Used for the type based dispatch in ffi interfaces.
+
+        Returns:
+            List[str]: The tags of the operation.
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Return hqslang name of the operation.
 
-    @classmethod
-    def statevector(self) -> np.ndarray: # type: ignore
+        Returns:
+            str: The hqslang name of the operation.
         """
-Return the statevector.
 
-Returns:
-    np.ndarray: The statevector representing the qubit register.
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Set[int]: # type: ignore
+    def is_parametrized(self) -> bool:  # type: ignore
         """
-List all involved qubits (here, all).
+        Return true when the operation has symbolic parameters.
 
-Returns:
-    Set[int]: The involved qubits of the PRAGMA operation.
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Returns:
+            bool: True if the operation contains symbolic parameters, False if it does not.
         """
-Return tags classifying the type of the operation.
 
-Used for the type based dispatch in ffi interfaces.
-
-Returns:
-    List[str]: The tags of the operation.
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaSetStateVector:  # type: ignore
         """
-Return hqslang name of the operation.
+        Substitute the symbolic parameters in a clone of the PRAGMA operation according to the substitution_parameters input.
 
-Returns:
-    str: The hqslang name of the operation.
-"""
+        Args:
+            substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
 
-    @classmethod
-    def is_parametrized(self) -> bool: # type: ignore
+        Returns:
+            self: The PRAGMA operation operation with the parameters substituted.
+
+        Raises:
+            RuntimeError: The parameter substitution failed.
         """
-Return true when the operation has symbolic parameters.
 
-Returns:
-    bool: True if the operation contains symbolic parameters, False if it does not.
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaSetStateVector: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaSetStateVector:  # type: ignore
         """
-Substitute the symbolic parameters in a clone of the PRAGMA operation according to the substitution_parameters input.
+        Remap qubits in a clone of the PRAGMA operation.
 
-Args:
-    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+        Args:
+            mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
 
-Returns:
-    self: The PRAGMA operation operation with the parameters substituted.
+        Returns:
+            self: The PRAGMA operation with the qubits remapped.
 
-Raises:
-    RuntimeError: The parameter substitution failed.
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaSetStateVector: # type: ignore
+        Raises:
+            RuntimeError: The qubit remapping failed.
         """
-Remap qubits in a clone of the PRAGMA operation.
 
-Args:
-    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
-
-Returns:
-    self: The PRAGMA operation with the qubits remapped.
-
-Raises:
-    RuntimeError: The qubit remapping failed.
-"""
-
-    @classmethod
-    def __copy__(self) -> Operation: # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-Return a copy of the PRAGMA operation (copy here produces a deepcopy).
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    PragmaSetStateVector: A deep copy of self.
-"""
-
-    @classmethod
-    def __deepcopy__(self) -> Operation: # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-Return a deep copy of the PRAGMA operation.
 
-Returns:
-    PragmaSetStateVector: A deep copy of self.
-"""
-
-    @classmethod
-    def __format__(self) -> str: # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Return a string containing a formatted (string) representation of the PRAGMA operation.
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The string representation of the operation.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
-        """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
-        """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class PragmaSetDensityMatrix(Operation):
     """
-This PRAGMA operation sets the density matrix of a quantum register.
+    This PRAGMA operation sets the density matrix of a quantum register.
 
-The Circuit() module automatically initializes the qubits in the |0> state, so this PRAGMA
-operation allows you to set the state of the qubits by setting a density matrix of your choosing.
+    The Circuit() module automatically initializes the qubits in the |0> state, so this PRAGMA
+    operation allows you to set the state of the qubits by setting a density matrix of your choosing.
 
-Args:
-    density_matrix (a 2d array of complex numbers): The density matrix that is initialized.
+    Args:
+        density_matrix (a 2d array of complex numbers): The density matrix that is initialized.
 
-"""
+    """
 
     def __init__(self, density_matrix):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def density_matrix(self) -> numpy.ndarray:  # type: ignore
         """
-Return repr(self).
-"""
+        Return the set density matrix.
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            np.ndarray: The density matrix (2d array) representing the qubit register.
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def involved_qubits(self) -> Set[int]:  # type: ignore
         """
-Return self<=value.
-"""
+        List all involved qubits (here, all).
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            Set[int]: The involved qubits of the PRAGMA operation.
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Return tags classifying the type of the operation.
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Used for type based dispatch in ffi interfaces.
+
+        Returns:
+            List[str]: The tags of the Operation.
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Return hqslang name of the operation.
 
-    @classmethod
-    def density_matrix(self) -> np.ndarray: # type: ignore
+        Returns:
+            str: The hqslang name of the operation.
         """
-Return the set density matrix.
 
-Returns:
-    np.ndarray: The density matrix (2d array) representing the qubit register.
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Set[int]: # type: ignore
+    def is_parametrized(self) -> bool:  # type: ignore
         """
-List all involved qubits (here, all).
+        Return true when the operation has symbolic parameters.
 
-Returns:
-    Set[int]: The involved qubits of the PRAGMA operation.
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Returns:
+            bool: True if the operation contains symbolic parameters, False if it does not.
         """
-Return tags classifying the type of the operation.
 
-Used for type based dispatch in ffi interfaces.
-
-Returns:
-    List[str]: The tags of the Operation.
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaSetDensityMatrix:  # type: ignore
         """
-Return hqslang name of the operation.
+        Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
-Returns:
-    str: The hqslang name of the operation.
-"""
+        Args:
+            substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
 
-    @classmethod
-    def is_parametrized(self) -> bool: # type: ignore
+        Returns:
+            self: The PRAGMA operation with the parameters substituted.
+
+        Raises:
+            RuntimeError: The parameter substitution failed.
         """
-Return true when the operation has symbolic parameters.
 
-Returns:
-    bool: True if the operation contains symbolic parameters, False if it does not.
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaSetDensityMatrix: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaSetDensityMatrix:  # type: ignore
         """
-Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
+        Remap qubits in a clone of the PRAGMA operation.
 
-Args:
-    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+        Args:
+            mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
 
-Returns:
-    self: The PRAGMA operation with the parameters substituted.
+        Returns:
+            self: The PRAGMA operation with the qubits remapped.
 
-Raises:
-    RuntimeError: The parameter substitution failed.
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaSetDensityMatrix: # type: ignore
+        Raises:
+            RuntimeError: The qubit remapping failed.
         """
-Remap qubits in a clone of the PRAGMA operation.
 
-Args:
-    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
-
-Returns:
-    self: The PRAGMA operation with the qubits remapped.
-
-Raises:
-    RuntimeError: The qubit remapping failed.
-"""
-
-    @classmethod
-    def __copy__(self) -> Operation: # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-Return a copy of the PRAGMA operation (copy here produces a deepcopy).
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    PragmaSetDensityMatrix: A deep copy of self.
-"""
-
-    @classmethod
-    def __deepcopy__(self) -> Operation: # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-Return a deep copy of the PRAGMA operation.
 
-Returns:
-    PragmaSetDensityMatrix: A deep copy of self.
-"""
-
-    @classmethod
-    def __format__(self) -> str: # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Return a string containing a formatted (string) representation of the PRAGMA operation.
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The string representation of the operation.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-Return the minimum version of qoqo that supports this object.
-
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
-        """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
-        """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class PragmaRepeatGate(Operation):
     """
-The repeated gate PRAGMA operation.
+    The repeated gate PRAGMA operation.
 
-This PRAGMA operation repeats the next gate in the circuit the given number of times
-to increase the rate for error mitigation.
+    This PRAGMA operation repeats the next gate in the circuit the given number of times
+    to increase the rate for error mitigation.
 
-Args:
-    repetition_coefficient (int): The number of times the following gate is repeated.
-"""
+    Args:
+        repetition_coefficient (int): The number of times the following gate is repeated.
+    """
 
     def __init__(self, repetition_coefficient: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def repetition_coefficient(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field repetition_coefficient
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def repetition_coefficient(self): # type: ignore
+        Returns:
+            str: The name
         """
-Get value of struct field repetition_coefficient
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Copies Operation
+        Returns the current version of the qoqo library .
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def current_version(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the JsonSchema for the json serialisation of the class.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
-        """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class PragmaOverrotation(Operation):
     """
-The statistical overrotation PRAGMA operation.
+    The statistical overrotation PRAGMA operation.
 
-This PRAGMA applies a statistical overrotation to the next rotation gate in the circuit, which
-matches the hqslang name in the `gate` parameter of PragmaOverrotation and the involved qubits in `qubits`.
+    This PRAGMA applies a statistical overrotation to the next rotation gate in the circuit, which
+    matches the hqslang name in the `gate` parameter of PragmaOverrotation and the involved qubits in `qubits`.
 
-The applied overrotation corresponds to adding a random number to the rotation angle.
-The random number is drawn from a normal distribution with mean `0`
-and standard deviation `variance` and is multiplied by the `amplitude`.
+    The applied overrotation corresponds to adding a random number to the rotation angle.
+    The random number is drawn from a normal distribution with mean `0`
+    and standard deviation `variance` and is multiplied by the `amplitude`.
 
-Args:
-    gate (str): The unique hqslang name of the gate to overrotate.
-    qubits (List[int]): The qubits of the gate to overrotate.
-    amplitude (float): The amplitude the random number is multiplied by.
-    variance (float): The standard deviation of the normal distribution the random number is drawn from.
+    Args:
+        gate (str): The unique hqslang name of the gate to overrotate.
+        qubits (List[int]): The qubits of the gate to overrotate.
+        amplitude (float): The amplitude the random number is multiplied by.
+        variance (float): The standard deviation of the normal distribution the random number is drawn from.
 
-"""
+    """
 
-    def __init__(self, gate: str, qubits: List[int], amplitude: float, variance: float):
-       return
+    def __init__(
+        self, gate: str, qubits: List[int], amplitude: float, variance: float
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def gate_hqslang(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field gate_hqslang
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def amplitude(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field amplitude
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def variance(self):  # type: ignore
         """
-Return self!=value.
-"""
-
-    @classmethod
-    def __gt__(self): # type: ignore
+        Get value of struct field variance
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self>=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def gate_hqslang(self): # type: ignore
+        Returns:
+            bool
         """
-Get value of struct field gate_hqslang
-"""
 
-    @classmethod
-    def amplitude(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Get value of struct field amplitude
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def variance(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Get value of struct field variance
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Returns hqslang name of Operation
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Returns:
+            str: The name
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    str: The name
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Copies Operation
+        List all involved Qubits
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubits(self): # type: ignore
+    def qubits(self):  # type: ignore
         """
-Return list of qubits of the multi qubit operation in order of descending significance
+        Return list of qubits of the multi qubit operation in order of descending significance
 
-Returns:
-    List[int]
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            List[int]
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PragmaBoostNoise(Operation):
     """
-This PRAGMA operation boosts noise and overrotations in the circuit.
+    This PRAGMA operation boosts noise and overrotations in the circuit.
 
-Args:
-    noise_coefficient (CalculatorFloat): The coefficient by which the noise is boosted.
-"""
+    Args:
+        noise_coefficient (CalculatorFloat): The coefficient by which the noise is boosted.
+    """
 
     def __init__(self, noise_coefficient: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def noise_coefficient(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute noise_coefficient
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def noise_coefficient(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute noise_coefficient
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Copies Operation
+        Returns the current version of the qoqo library .
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def current_version(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the JsonSchema for the json serialisation of the class.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
-        """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class PragmaStopParallelBlock(Operation):
     """
-This PRAGMA operation signals the STOP of a parallel execution block.
+    This PRAGMA operation signals the STOP of a parallel execution block.
 
-Args:
-    qubits (List[int]): The qubits involved in parallel execution block.
-    execution_time (CalculatorFloat): The time for the execution of the block in seconds.
-"""
+    Args:
+        qubits (List[int]): The qubits involved in parallel execution block.
+        execution_time (CalculatorFloat): The time for the execution of the block in seconds.
+    """
 
     def __init__(self, qubits: List[int], execution_time: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def execution_time(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute execution_time
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def execution_time(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute execution_time
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def qubits(self):  # type: ignore
         """
-Copies Operation
+        Return list of qubits of the multi qubit operation in order of descending significance
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            List[int]
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubits(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Return list of qubits of the multi qubit operation in order of descending significance
+        Returns the current version of the qoqo library .
 
-Returns:
-    List[int]
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class PragmaGlobalPhase(Operation):
     """
-The global phase PRAGMA operation.
+    The global phase PRAGMA operation.
 
-This PRAGMA operation signals that the quantum register picks up a global phase,
-i.e. it provides information that there is a global phase to be considered.
+    This PRAGMA operation signals that the quantum register picks up a global phase,
+    i.e. it provides information that there is a global phase to be considered.
 
-Args:
-    phase (CalculatorFloat): The picked up global phase.
-"""
+    Args:
+        phase (CalculatorFloat): The picked up global phase.
+    """
 
     def __init__(self, phase: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def phase(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute phase
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def phase(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute phase
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Copies Operation
+        Returns the current version of the qoqo library .
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def current_version(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the JsonSchema for the json serialisation of the class.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
-        """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class PragmaSleep(Operation):
     """
-This PRAGMA operation makes the quantum hardware wait a given amount of time.
+    This PRAGMA operation makes the quantum hardware wait a given amount of time.
 
-This PRAGMA operation is used for error mitigation reasons, for instance.
-It can be used to boost the noise on the qubits since it gets worse with time.
+    This PRAGMA operation is used for error mitigation reasons, for instance.
+    It can be used to boost the noise on the qubits since it gets worse with time.
 
-Args:
-    qubits (List[int]): The qubits involved in the sleep block.
-    sleep_time (CalculatorFloat): The time for the execution of the block in seconds.
-"""
+    Args:
+        qubits (List[int]): The qubits involved in the sleep block.
+        sleep_time (CalculatorFloat): The time for the execution of the block in seconds.
+    """
 
     def __init__(self, qubits: List[int], sleep_time: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def sleep_time(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute sleep_time
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def sleep_time(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute sleep_time
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def qubits(self):  # type: ignore
         """
-Copies Operation
+        Return list of qubits of the multi qubit operation in order of descending significance
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            List[int]
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubits(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Return list of qubits of the multi qubit operation in order of descending significance
+        Returns the current version of the qoqo library .
 
-Returns:
-    List[int]
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class PragmaActiveReset(Operation):
     """
-This PRAGMA operation resets the chosen qubit to the zero state.
+    This PRAGMA operation resets the chosen qubit to the zero state.
 
-Args:
-    qubit (int): The qubit to be reset.
-"""
+    Args:
+        qubit (int): The qubit to be reset.
+    """
 
     def __init__(self, qubit: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def qubit(self):  # type: ignore
         """
-List all involved Qubits
+        Return the qubit the operation acts on
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            int
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Returns the current version of the qoqo library .
 
-    @classmethod
-    def qubit(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the JsonSchema for the json serialisation of the class.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
-        """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class PragmaStartDecompositionBlock(Operation):
     """
-This PRAGMA operation signals the START of a decomposition block.
+    This PRAGMA operation signals the START of a decomposition block.
 
-Args:
-    qubits (List[int]): The qubits involved in the decomposition block.
-    reordering_dictionary (Dict[int, int]): The reordering dictionary of the block.
-"""
+    Args:
+        qubits (List[int]): The qubits involved in the decomposition block.
+        reordering_dictionary (Dict[int, int]): The reordering dictionary of the block.
+    """
 
-    def __init__(self, qubits: List[int], reordering_dictionary: Dict[int, int]):
-       return
+    def __init__(
+        self, qubits: List[int], reordering_dictionary: Dict[int, int]
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def reordering_dictionary(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field reordering_dictionary
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def reordering_dictionary(self): # type: ignore
+        Returns:
+            str: The name
         """
-Get value of struct field reordering_dictionary
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def qubits(self):  # type: ignore
         """
-Copies Operation
+        Return list of qubits of the multi qubit operation in order of descending significance
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            List[int]
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubits(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Return list of qubits of the multi qubit operation in order of descending significance
+        Returns the current version of the qoqo library .
 
-Returns:
-    List[int]
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class PragmaStopDecompositionBlock(Operation):
     """
-This PRAGMA operation signals the STOP of a decomposition block.
+    This PRAGMA operation signals the STOP of a decomposition block.
 
-Args:
-    qubits (List[int]): The qubits involved in the decomposition block.
-"""
+    Args:
+        qubits (List[int]): The qubits involved in the decomposition block.
+    """
 
     def __init__(self, qubits: List[int]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def qubits(self):  # type: ignore
         """
-List all involved Qubits
+        Return list of qubits of the multi qubit operation in order of descending significance
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            List[int]
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Returns the current version of the qoqo library .
 
-    @classmethod
-    def qubits(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return list of qubits of the multi qubit operation in order of descending significance
 
-Returns:
-    List[int]
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the JsonSchema for the json serialisation of the class.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
-        """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class PragmaDamping(Operation):
     """
-The damping PRAGMA noise operation.
+    The damping PRAGMA noise operation.
 
-This PRAGMA operation applies a pure damping error corresponding to zero temperature environments.
+    This PRAGMA operation applies a pure damping error corresponding to zero temperature environments.
 
-Note
+    Note
 
-Damping means going from state `|1>` to `|0>` and corresponds to zero-temperature in a physical
-device where `|0>` is the ground state.
-With respect to the definition of the Pauli operator `Z`, `|0>` is the excited state and damping leads to
-an increase in energy.
+    Damping means going from state `|1>` to `|0>` and corresponds to zero-temperature in a physical
+    device where `|0>` is the ground state.
+    With respect to the definition of the Pauli operator `Z`, `|0>` is the excited state and damping leads to
+    an increase in energy.
 
-Args:
-    qubit (int): The qubit on which to apply the damping.
-    gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
-    rate (CalculatorFloat): The error rate of the damping (in 1/second).
-"""
+    Args:
+        qubit (int): The qubit on which to apply the damping.
+        gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+        rate (CalculatorFloat): The error rate of the damping (in 1/second).
+    """
 
-    def __init__(self, qubit: int, gate_time: Union[float, str], rate: Union[float, str]):
-       return
+    def __init__(
+        self, qubit: int, gate_time: Union[float, str], rate: Union[float, str]
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def gate_time(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute gate_time
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def rate(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute rate
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def gate_time(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute gate_time
-"""
 
-    @classmethod
-    def rate(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns value of attribute rate
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Return the qubit the operation acts on
 
-    @classmethod
-    def qubit(self): # type: ignore
+        Returns:
+            int
         """
-Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def superoperator(self): # type: ignore
+    def superoperator(self):  # type: ignore
         """
-Return the superoperator defining the evolution of the density matrix under the noise gate
+        Return the superoperator defining the evolution of the density matrix under the noise gate
 
-Returns:
-    np.ndarray
+        Returns:
+            np.ndarray
 
-"""
-
-    @classmethod
-    def powercf(self): # type: ignore
         """
-Return the power of the noise gate
 
-Args:
-    `power` (CalculatorFloat): exponent in the power operation of the noise gate
-
-Returns:
-    Self
-
-"""
-
-    @classmethod
-    def probability(self): # type: ignore
+    def powercf(self):  # type: ignore
         """
-Returns the probability associated with the noise operation
+        Return the power of the noise gate
 
-Returns:
-    CalculatorFloat
-"""
+        Args:
+            `power` (CalculatorFloat): exponent in the power operation of the noise gate
 
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            Self
+
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def probability(self):  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns the probability associated with the noise operation
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            CalculatorFloat
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PragmaDepolarising(Operation):
     """
-The depolarising PRAGMA noise operation.
+    The depolarising PRAGMA noise operation.
 
-This PRAGMA operation applies a depolarising error corresponding to infinite temperature environments.
+    This PRAGMA operation applies a depolarising error corresponding to infinite temperature environments.
 
-Args:
-    qubit (int): The qubit on which to apply the depolarising.
-    gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
-    rate (CalculatorFloat): The error rate of the depolarisation (in 1/second).
-"""
+    Args:
+        qubit (int): The qubit on which to apply the depolarising.
+        gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+        rate (CalculatorFloat): The error rate of the depolarisation (in 1/second).
+    """
 
-    def __init__(self, qubit: int, gate_time: Union[float, str], rate: Union[float, str]):
-       return
+    def __init__(
+        self, qubit: int, gate_time: Union[float, str], rate: Union[float, str]
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def gate_time(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute gate_time
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def rate(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute rate
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def gate_time(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute gate_time
-"""
 
-    @classmethod
-    def rate(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns value of attribute rate
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Return the qubit the operation acts on
 
-    @classmethod
-    def qubit(self): # type: ignore
+        Returns:
+            int
         """
-Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def superoperator(self): # type: ignore
+    def superoperator(self):  # type: ignore
         """
-Return the superoperator defining the evolution of the density matrix under the noise gate
+        Return the superoperator defining the evolution of the density matrix under the noise gate
 
-Returns:
-    np.ndarray
+        Returns:
+            np.ndarray
 
-"""
-
-    @classmethod
-    def powercf(self): # type: ignore
         """
-Return the power of the noise gate
 
-Args:
-    `power` (CalculatorFloat): exponent in the power operation of the noise gate
-
-Returns:
-    Self
-
-"""
-
-    @classmethod
-    def probability(self): # type: ignore
+    def powercf(self):  # type: ignore
         """
-Returns the probability associated with the noise operation
+        Return the power of the noise gate
 
-Returns:
-    CalculatorFloat
-"""
+        Args:
+            `power` (CalculatorFloat): exponent in the power operation of the noise gate
 
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            Self
+
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def probability(self):  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns the probability associated with the noise operation
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            CalculatorFloat
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PragmaDephasing(Operation):
     """
-The dephasing PRAGMA noise operation.
+    The dephasing PRAGMA noise operation.
 
-This PRAGMA operation applies a pure dephasing error.
+    This PRAGMA operation applies a pure dephasing error.
 
-Args:
-    qubit (int): The qubit on which to apply the dephasing.
-    gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
-    rate (CalculatorFloat): The error rate of the dephasing (in 1/second).
-"""
+    Args:
+        qubit (int): The qubit on which to apply the dephasing.
+        gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+        rate (CalculatorFloat): The error rate of the dephasing (in 1/second).
+    """
 
-    def __init__(self, qubit: int, gate_time: Union[float, str], rate: Union[float, str]):
-       return
+    def __init__(
+        self, qubit: int, gate_time: Union[float, str], rate: Union[float, str]
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def gate_time(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute gate_time
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def rate(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute rate
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def gate_time(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute gate_time
-"""
 
-    @classmethod
-    def rate(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns value of attribute rate
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Return the qubit the operation acts on
 
-    @classmethod
-    def qubit(self): # type: ignore
+        Returns:
+            int
         """
-Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def superoperator(self): # type: ignore
+    def superoperator(self):  # type: ignore
         """
-Return the superoperator defining the evolution of the density matrix under the noise gate
+        Return the superoperator defining the evolution of the density matrix under the noise gate
 
-Returns:
-    np.ndarray
+        Returns:
+            np.ndarray
 
-"""
-
-    @classmethod
-    def powercf(self): # type: ignore
         """
-Return the power of the noise gate
 
-Args:
-    `power` (CalculatorFloat): exponent in the power operation of the noise gate
-
-Returns:
-    Self
-
-"""
-
-    @classmethod
-    def probability(self): # type: ignore
+    def powercf(self):  # type: ignore
         """
-Returns the probability associated with the noise operation
+        Return the power of the noise gate
 
-Returns:
-    CalculatorFloat
-"""
+        Args:
+            `power` (CalculatorFloat): exponent in the power operation of the noise gate
 
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            Self
+
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def probability(self):  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns the probability associated with the noise operation
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            CalculatorFloat
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PragmaRandomNoise(Operation):
     """
-The random noise PRAGMA operation.
+    The random noise PRAGMA operation.
 
-This PRAGMA operation applies a pure damping error corresponding to zero temperature environments.
+    This PRAGMA operation applies a pure damping error corresponding to zero temperature environments.
 
-Args:
-    qubit (int): The qubit on which to apply the damping.
-    gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
-    depolarising_rate (CalculatorFloat): The error rate of the depolarisation (in 1/second).
-    dephasing_rate (CalculatorFloat): The error rate of the dephasing (in 1/second).
-"""
+    Args:
+        qubit (int): The qubit on which to apply the damping.
+        gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+        depolarising_rate (CalculatorFloat): The error rate of the depolarisation (in 1/second).
+        dephasing_rate (CalculatorFloat): The error rate of the dephasing (in 1/second).
+    """
 
-    def __init__(self, qubit: int, gate_time: Union[float, str], depolarising_rate: Union[float, str], dephasing_rate: Union[float, str]):
-       return
+    def __init__(
+        self,
+        qubit: int,
+        gate_time: Union[float, str],
+        depolarising_rate: Union[float, str],
+        dephasing_rate: Union[float, str],
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def gate_time(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute gate_time
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def depolarising_rate(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute depolarising_rate
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def dephasing_rate(self):  # type: ignore
         """
-Return self!=value.
-"""
-
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns value of attribute dephasing_rate
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self>=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def gate_time(self): # type: ignore
+        Returns:
+            bool
         """
-Returns value of attribute gate_time
-"""
 
-    @classmethod
-    def depolarising_rate(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Returns value of attribute depolarising_rate
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def dephasing_rate(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute dephasing_rate
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Returns hqslang name of Operation
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Returns:
+            str: The name
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    str: The name
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Copies Operation
+        List all involved Qubits
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubit(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Return the qubit the operation acts on
+        Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def superoperator(self): # type: ignore
+        Returns:
+            int
         """
-Return the superoperator defining the evolution of the density matrix under the noise gate
 
-Returns:
-    np.ndarray
-
-"""
-
-    @classmethod
-    def powercf(self): # type: ignore
+    def superoperator(self):  # type: ignore
         """
-Return the power of the noise gate
+        Return the superoperator defining the evolution of the density matrix under the noise gate
 
-Args:
-    `power` (CalculatorFloat): exponent in the power operation of the noise gate
+        Returns:
+            np.ndarray
 
-Returns:
-    Self
-
-"""
-
-    @classmethod
-    def probability(self): # type: ignore
         """
-Returns the probability associated with the noise operation
 
-Returns:
-    CalculatorFloat
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def powercf(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return the power of the noise gate
 
-Convert a function to be a static method.
+        Args:
+            `power` (CalculatorFloat): exponent in the power operation of the noise gate
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
+        Returns:
+            Self
 
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def probability(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the probability associated with the noise operation
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            CalculatorFloat
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The current version of the library.
+        """
+
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PragmaGeneralNoise(Operation):
     """
-The general noise PRAGMA operation.
+    The general noise PRAGMA operation.
 
-This PRAGMA operation applies a noise term according to the given operators.
+    This PRAGMA operation applies a noise term according to the given operators.
 
-Args:
-    qubit (int): The qubit the PRAGMA operation is applied to.
-    gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
-    Rates: The rates representing the general noise matrix M (a 3x3 matrix as 2d array).
+    Args:
+        qubit (int): The qubit the PRAGMA operation is applied to.
+        gate_time (CalculatorFloat): The time (in seconds) the gate takes to be applied to the qubit on the (simulated) hardware
+        Rates: The rates representing the general noise matrix M (a 3x3 matrix as 2d array).
 
-"""
+    """
 
     def __init__(self, qubit: int, gate_time: Union[float, str], Rates):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def qubit(self) -> int:  # type: ignore
         """
-Return repr(self).
-"""
+        Return the qubit on which the PRAGMA operation is applied.
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            int: The qubit of the PRAGMA operation.
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def gate_time(self) -> Union[float, str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Return the `gate_time` of the PRAGMA operation.
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            CalculatorFloat: The gate time of the PRAGMA operation.
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def rates(self) -> numpy.ndarray:  # type: ignore
         """
-Return self!=value.
-"""
+        Return the rates of the PRAGMA operation.
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            np.ndarray: The rates of the PRAGMA operation.
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def superoperator(self) -> numpy.ndarray:  # type: ignore
         """
-Return self>=value.
-"""
+        Return the superoperator of the PRAGMA operation.
 
-    @classmethod
-    def qubit(self) -> int: # type: ignore
+        Returns:
+            np.ndarray: The matrix form of the superoperator of the PRAGMA operation.
         """
-Return the qubit on which the PRAGMA operation is applied.
 
-Returns:
-    int: The qubit of the PRAGMA operation.
-"""
-
-    @classmethod
-    def gate_time(self) -> Union[float, str]: # type: ignore
+    def involved_qubits(self) -> Set[int]:  # type: ignore
         """
-Return the `gate_time` of the PRAGMA operation.
+        List all involved qubits.
 
-Returns:
-    CalculatorFloat: The gate time of the PRAGMA operation.
-"""
-
-    @classmethod
-    def rates(self) -> np.ndarray: # type: ignore
+        Returns:
+            Set[int]: The involved qubits of the PRAGMA operation.
         """
-Return the rates of the PRAGMA operation.
 
-Returns:
-    np.ndarray: The rates of the PRAGMA operation.
-"""
-
-    @classmethod
-    def superoperator(self) -> np.ndarray: # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return the superoperator of the PRAGMA operation.
+        Return tags classifying the type of the operation.
 
-Returns:
-    np.ndarray: The matrix form of the superoperator of the PRAGMA operation.
-"""
+        Used for the type based dispatch in ffi interfaces.
 
-    @classmethod
-    def involved_qubits(self) -> Set[int]: # type: ignore
+        Returns:
+            List[str]: The tags of the Operation.
         """
-List all involved qubits.
 
-Returns:
-    Set[int]: The involved qubits of the PRAGMA operation.
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return tags classifying the type of the operation.
+        Return hqslang name of the operation.
 
-Used for the type based dispatch in ffi interfaces.
-
-Returns:
-    List[str]: The tags of the Operation.
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            str: The hqslang name of the operation.
         """
-Return hqslang name of the operation.
 
-Returns:
-    str: The hqslang name of the operation.
-"""
-
-    @classmethod
-    def is_parametrized(self) -> is_parametrized (bool): # type: ignore
+    def is_parametrized(self) -> is_parametrized(bool):  # type: ignore
         """
-Return true when the operation has symbolic parameters.
+        Return true when the operation has symbolic parameters.
 
-Returns:
-    is_parametrized (bool): True if the operation contains symbolic parameters, False if it does not.
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaGeneralNoise: # type: ignore
+        Returns:
+            is_parametrized (bool): True if the operation contains symbolic parameters, False if it does not.
         """
-Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
-Args:
-    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
-
-Returns:
-    self: The PRAGMA operation with the parameters substituted.
-
-Raises:
-    RuntimeError: The parameter substitution failed.
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaGeneralNoise: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaGeneralNoise:  # type: ignore
         """
-Remap qubits in a clone of the PRAGMA operation.
+        Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
-Args:
-    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+        Args:
+            substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
 
-Returns:
-    self: The PRAGMA operation with the qubits remapped.
+        Returns:
+            self: The PRAGMA operation with the parameters substituted.
 
-Raises:
-    RuntimeError: The qubit remapping failed.
-"""
-
-    @classmethod
-    def __copy__(self) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: The parameter substitution failed.
         """
-Return a copy of the PRAGMA operation (copy here produces a deepcopy).
 
-Returns:
-    PragmaGeneralNoise: A deep copy of self.
-"""
-
-    @classmethod
-    def __deepcopy__(self) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaGeneralNoise:  # type: ignore
         """
-Return a deep copy of the PRAGMA operation.
+        Remap qubits in a clone of the PRAGMA operation.
 
-Returns:
-    PragmaGeneralNoise: A deep copy of self.
-"""
+        Args:
+            mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
 
-    @classmethod
-    def __format__(self) -> str: # type: ignore
+        Returns:
+            self: The PRAGMA operation with the qubits remapped.
+
+        Raises:
+            RuntimeError: The qubit remapping failed.
         """
-Return a string containing a formatted (string) representation of the PRAGMA operation.
 
-Returns:
-    str: The string representation of the operation.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the JsonSchema for the json serialisation of the class.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
 
 class PragmaConditional(Operation):
     """
-The conditional PRAGMA operation.
+    The conditional PRAGMA operation.
 
-This PRAGMA executes a circuit when the condition bit/bool stored in a classical bit register is true.
+    This PRAGMA executes a circuit when the condition bit/bool stored in a classical bit register is true.
 
-Args:
-    condition_register (str): The name of the bit register containting the condition bool value.
-    condition_index (int): - The index in the bit register containting the condition bool value.
-    circuit (Circuit): - The circuit executed if the condition is met.
-"""
+    Args:
+        condition_register (str): The name of the bit register containting the condition bool value.
+        condition_index (int): - The index in the bit register containting the condition bool value.
+        circuit (Circuit): - The circuit executed if the condition is met.
+    """
 
-    def __init__(self, condition_register: str, condition_index: int, circuit: Circuit):
-       return
+    def __init__(
+        self, condition_register: str, condition_index: int, circuit: Circuit
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def condition_register(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field condition_register
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def condition_index(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field condition_index
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def circuit(self):  # type: ignore
         """
-Return self!=value.
-"""
-
-    @classmethod
-    def __gt__(self): # type: ignore
+        Get value of struct field circuit
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self>=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def condition_register(self): # type: ignore
+        Returns:
+            bool
         """
-Get value of struct field condition_register
-"""
 
-    @classmethod
-    def condition_index(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Get value of struct field condition_index
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def circuit(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Get value of struct field circuit
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Returns hqslang name of Operation
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Returns:
+            str: The name
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    str: The name
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Copies Operation
+        List all involved Qubits
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PragmaChangeDevice(Operation):
     """
-A wrapper around backend specific PRAGMA operations capable of changing a device.
+    A wrapper around backend specific PRAGMA operations capable of changing a device.
 
-This PRAGMA is a thin wrapper around device specific operations that can change
-device properties.
-"""
+    This PRAGMA is a thin wrapper around device specific operations that can change
+    device properties.
+    """
 
     def __init__(self):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def wrapped_tags(self) -> List[str]:  # type: ignore
         """
-Return repr(self).
-"""
+        Return the tags of the wrapped operations.
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            List[str]: The list of tags.
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def wrapped_hqslang(self) -> str:  # type: ignore
         """
-Return self<=value.
-"""
+        Return the hqslang name of the wrapped operations.
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            str: The name of the wrapped operation.
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def wrapped_operation(self) -> bytearray:  # type: ignore
         """
-Return self!=value.
-"""
+        Return the binary representation of the wrapped operations.
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            ByteArray: The the binary representation of the wrapped operation.
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def involved_qubits(self) -> Set[int]:  # type: ignore
         """
-Return self>=value.
-"""
+        List all involved qubits.
 
-    @classmethod
-    def wrapped_tags(self) -> List[str]: # type: ignore
+        Returns:
+            Set[int]: The involved qubits of the PRAGMA operation.
         """
-Return the tags of the wrapped operations.
 
-Returns:
-    List[str]: The list of tags.
-"""
-
-    @classmethod
-    def wrapped_hqslang(self) -> str: # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return the hqslang name of the wrapped operations.
+        Return tags classifying the type of the operation.
 
-Returns:
-    str: The name of the wrapped operation.
-"""
+        Used for the type based dispatch in ffi interfaces.
 
-    @classmethod
-    def wrapped_operation(self) -> bytearray: # type: ignore
+        Returns:
+            List[str]: The tags of the Operation.
         """
-Return the binary representation of the wrapped operations.
 
-Returns:
-    ByteArray: The the binary representation of the wrapped operation.
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Set[int]: # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-List all involved qubits.
+        Return hqslang name of the operation.
 
-Returns:
-    Set[int]: The involved qubits of the PRAGMA operation.
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Returns:
+            str: The hqslang name of the operation.
         """
-Return tags classifying the type of the operation.
 
-Used for the type based dispatch in ffi interfaces.
-
-Returns:
-    List[str]: The tags of the Operation.
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def is_parametrized(self) -> is_parametrized(bool):  # type: ignore
         """
-Return hqslang name of the operation.
+        Return true when the operation has symbolic parameters.
 
-Returns:
-    str: The hqslang name of the operation.
-"""
-
-    @classmethod
-    def is_parametrized(self) -> is_parametrized (bool): # type: ignore
+        Returns:
+            is_parametrized (bool): True if the operation contains symbolic parameters, False if it does not.
         """
-Return true when the operation has symbolic parameters.
 
-Returns:
-    is_parametrized (bool): True if the operation contains symbolic parameters, False if it does not.
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaChangeDevice: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaChangeDevice:  # type: ignore
         """
-Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
+        Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
-Args:
-    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
+        Args:
+            substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
 
-Returns:
-    self: The PRAGMA operation with the parameters substituted.
+        Returns:
+            self: The PRAGMA operation with the parameters substituted.
 
-Raises:
-    RuntimeError: The parameter substitution failed.
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaChangeDevice: # type: ignore
+        Raises:
+            RuntimeError: The parameter substitution failed.
         """
-Remap qubits in a clone of the PRAGMA operation.
 
-Args:
-    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
-
-Returns:
-    self: The PRAGMA operation with the qubits remapped.
-
-Raises:
-    RuntimeError: The qubit remapping failed.
-"""
-
-    @classmethod
-    def __copy__(self) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaChangeDevice:  # type: ignore
         """
-Return a copy of the PRAGMA operation (copy here produces a deepcopy).
+        Remap qubits in a clone of the PRAGMA operation.
 
-Returns:
-    PragmaChangeDevice: A deep copy of self.
-"""
+        Args:
+            mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
 
-    @classmethod
-    def __deepcopy__(self) -> Operation: # type: ignore
+        Returns:
+            self: The PRAGMA operation with the qubits remapped.
+
+        Raises:
+            RuntimeError: The qubit remapping failed.
         """
-Return a deep copy of the PRAGMA operation.
 
-Returns:
-    PragmaChangeDevice: A deep copy of self.
-"""
-
-    @classmethod
-    def __format__(self) -> str: # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-Return a string containing a formatted (string) representation of the PRAGMA operation.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    str: The string representation of the operation.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class CNOT(Operation):
     """
@@ -12613,241 +6981,115 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def control(self):  # type: ignore
         """
-List all involved Qubits
-
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Returns control qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns target qubit of the two-qubit operation
-"""
+        Return unitary matrix of gate.
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns:
+            np.ndarray
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class SWAP(Operation):
     """
@@ -12868,241 +7110,115 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def control(self):  # type: ignore
         """
-List all involved Qubits
-
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Returns control qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns target qubit of the two-qubit operation
-"""
+        Return unitary matrix of gate.
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns:
+            np.ndarray
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class FSwap(Operation):
     """
@@ -13123,241 +7239,115 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def control(self):  # type: ignore
         """
-List all involved Qubits
-
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Returns control qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns target qubit of the two-qubit operation
-"""
+        Return unitary matrix of gate.
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns:
+            np.ndarray
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class ISwap(Operation):
     """
@@ -13378,241 +7368,115 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def control(self):  # type: ignore
         """
-List all involved Qubits
-
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Returns control qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns target qubit of the two-qubit operation
-"""
+        Return unitary matrix of gate.
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns:
+            np.ndarray
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class SqrtISwap(Operation):
     """
@@ -13633,241 +7497,115 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def control(self):  # type: ignore
         """
-List all involved Qubits
-
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Returns control qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns target qubit of the two-qubit operation
-"""
+        Return unitary matrix of gate.
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns:
+            np.ndarray
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class InvSqrtISwap(Operation):
     """
@@ -13888,241 +7626,115 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def control(self):  # type: ignore
         """
-List all involved Qubits
-
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Returns control qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns target qubit of the two-qubit operation
-"""
+        Return unitary matrix of gate.
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns:
+            np.ndarray
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class XY(Operation):
     """
@@ -14144,260 +7756,132 @@ Args:
 """
 
     def __init__(self, control: int, target: int, theta: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def control(self):  # type: ignore
         """
-Copies Operation
-
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def control(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Returns control qubit of the two-qubit operation
-"""
-
-    @classmethod
-    def target(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Returns target qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
+        Returns:
+            np.ndarray
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
-
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns Rotated gate raised to power
 
-Convert a function to be a static method.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
+        Returns:
+            Self: gate raised to the power of `power`
 
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class ControlledPhaseShift(Operation):
     """
@@ -14419,260 +7903,132 @@ Args:
 """
 
     def __init__(self, control: int, target: int, theta: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def control(self):  # type: ignore
         """
-Copies Operation
-
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def control(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Returns control qubit of the two-qubit operation
-"""
-
-    @classmethod
-    def target(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Returns target qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
+        Returns:
+            np.ndarray
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
-
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns Rotated gate raised to power
 
-Convert a function to be a static method.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
+        Returns:
+            Self: gate raised to the power of `power`
 
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class ControlledPauliY(Operation):
     """
@@ -14693,241 +8049,115 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def control(self):  # type: ignore
         """
-List all involved Qubits
-
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Returns control qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns target qubit of the two-qubit operation
-"""
+        Return unitary matrix of gate.
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns:
+            np.ndarray
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class ControlledPauliZ(Operation):
     """
@@ -14948,241 +8178,115 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def control(self):  # type: ignore
         """
-List all involved Qubits
-
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Returns control qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns target qubit of the two-qubit operation
-"""
+        Return unitary matrix of gate.
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns:
+            np.ndarray
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class MolmerSorensenXX(Operation):
     """
@@ -15203,241 +8307,115 @@ Args:
 """
 
     def __init__(self, control: int, target: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def control(self):  # type: ignore
         """
-List all involved Qubits
-
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Returns control qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns target qubit of the two-qubit operation
-"""
+        Return unitary matrix of gate.
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns:
+            np.ndarray
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class VariableMSXX(Operation):
     """
@@ -15459,260 +8437,132 @@ Args:
 """
 
     def __init__(self, control: int, target: int, theta: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def control(self):  # type: ignore
         """
-Copies Operation
-
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def control(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Returns control qubit of the two-qubit operation
-"""
-
-    @classmethod
-    def target(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Returns target qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
+        Returns:
+            np.ndarray
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
-
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns Rotated gate raised to power
 
-Convert a function to be a static method.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
+        Returns:
+            Self: gate raised to the power of `power`
 
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class GivensRotation(Operation):
     """
@@ -15737,267 +8587,144 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, theta: Union[float, str], phase: Union[float, str]):
-       return
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        theta: Union[float, str],
+        phase: Union[float, str],
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def phi(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute phi
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def phi(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns value of attribute phi
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def control(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Returns control qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Returns target qubit of the two-qubit operation
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns Rotated gate raised to power
+        Return unitary matrix of gate.
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Returns:
+            np.ndarray
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns Rotated gate raised to power
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            Self: gate raised to the power of `power`
+
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class GivensRotationLittleEndian(Operation):
     """
@@ -16022,267 +8749,144 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, theta: Union[float, str], phase: Union[float, str]):
-       return
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        theta: Union[float, str],
+        phase: Union[float, str],
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def phi(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute phi
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def phi(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns value of attribute phi
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def control(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Returns control qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Returns target qubit of the two-qubit operation
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns Rotated gate raised to power
+        Return unitary matrix of gate.
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Returns:
+            np.ndarray
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns Rotated gate raised to power
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            Self: gate raised to the power of `power`
+
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class Qsim(Operation):
     """
@@ -16305,260 +8909,138 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, x: Union[float, str], y: Union[float, str], z: Union[float, str]):
-       return
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        x: Union[float, str],
+        y: Union[float, str],
+        z: Union[float, str],
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def x(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute x
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def y(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute y
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def z(self):  # type: ignore
         """
-Return self!=value.
-"""
-
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns value of attribute z
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self>=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def x(self): # type: ignore
+        Returns:
+            bool
         """
-Returns value of attribute x
-"""
 
-    @classmethod
-    def y(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Returns value of attribute y
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def z(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute z
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Returns hqslang name of Operation
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Returns:
+            str: The name
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    str: The name
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Copies Operation
+        List all involved Qubits
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def control(self): # type: ignore
+    def control(self):  # type: ignore
         """
-Returns control qubit of the two-qubit operation
-"""
-
-    @classmethod
-    def target(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Returns target qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Return unitary matrix of gate.
-
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Return unitary matrix of gate.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Returns:
+            np.ndarray
 
-    @classmethod
-    def json_schema(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class Fsim(Operation):
     """
@@ -16585,533 +9067,289 @@ in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transfo
 
 """
 
-    def __init__(self, control: int, target: int, t: Union[float, str], u: Union[float, str], delta: Union[float, str]):
-       return
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        t: Union[float, str],
+        u: Union[float, str],
+        delta: Union[float, str],
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def t(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute t
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def u(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute u
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def delta(self):  # type: ignore
         """
-Return self!=value.
-"""
-
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns value of attribute delta
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self>=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def t(self): # type: ignore
+        Returns:
+            bool
         """
-Returns value of attribute t
-"""
 
-    @classmethod
-    def u(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Returns value of attribute u
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def delta(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute delta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Returns hqslang name of Operation
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Returns:
+            str: The name
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    str: The name
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Copies Operation
+        List all involved Qubits
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def control(self): # type: ignore
+    def control(self):  # type: ignore
         """
-Returns control qubit of the two-qubit operation
-"""
-
-    @classmethod
-    def target(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Returns target qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Return unitary matrix of gate.
-
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Return unitary matrix of gate.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Returns:
+            np.ndarray
 
-    @classmethod
-    def json_schema(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class SpinInteraction(Operation):
     """
-The generalized, anisotropic XYZ Heisenberg interaction between spins.
+    The generalized, anisotropic XYZ Heisenberg interaction between spins.
 
-:math:`e^{-\mathrm{i} (x \cdot X_c X_t + y \cdot Y_c Y_t + z \cdot Z_c Z_t)}`
+    :math:`e^{-\mathrm{i} (x \cdot X_c X_t + y \cdot Y_c Y_t + z \cdot Z_c Z_t)}`
 
-Where x, y, z are prefactors of the :math:`X_c X_t`, :math:`Y_c Y_t`, :math:`Z_c Z_t` Pauliproducts acting on control and target qubit,
-with :math:`XX \equiv \sigma_x \sigma_x`, :math:`YY \equiv \sigma_y \sigma_y` and :math:`ZZ \equiv \sigma_z \sigma_z`.
+    Where x, y, z are prefactors of the :math:`X_c X_t`, :math:`Y_c Y_t`, :math:`Z_c Z_t` Pauliproducts acting on control and target qubit,
+    with :math:`XX \equiv \sigma_x \sigma_x`, :math:`YY \equiv \sigma_y \sigma_y` and :math:`ZZ \equiv \sigma_z \sigma_z`.
 
-Args:
-    control (int): The index of the most significant qubit in the unitary representation.
-    target (int):: The index of the least significant qubit in the unitary representation.
-    x (CalculatorFloat): The prefactor of the XX interaction.
-    y (CalculatorFloat): The prefactor of the YY interaction.
-    z (CalculatorFloat): The prefactor of the ZZ interaction.
+    Args:
+        control (int): The index of the most significant qubit in the unitary representation.
+        target (int):: The index of the least significant qubit in the unitary representation.
+        x (CalculatorFloat): The prefactor of the XX interaction.
+        y (CalculatorFloat): The prefactor of the YY interaction.
+        z (CalculatorFloat): The prefactor of the ZZ interaction.
 
-"""
+    """
 
-    def __init__(self, control: int, target: int, x: Union[float, str], y: Union[float, str], z: Union[float, str]):
-       return
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        x: Union[float, str],
+        y: Union[float, str],
+        z: Union[float, str],
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def x(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute x
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def y(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute y
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def z(self):  # type: ignore
         """
-Return self!=value.
-"""
-
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns value of attribute z
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self>=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def x(self): # type: ignore
+        Returns:
+            bool
         """
-Returns value of attribute x
-"""
 
-    @classmethod
-    def y(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Returns value of attribute y
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def z(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute z
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Returns hqslang name of Operation
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Returns:
+            str: The name
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    str: The name
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Remap qubits
+        Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Returns:
-    Operation: The operation with the remapped qubits
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Copies Operation
+        List all involved Qubits
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def control(self): # type: ignore
+    def control(self):  # type: ignore
         """
-Returns control qubit of the two-qubit operation
-"""
-
-    @classmethod
-    def target(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Returns target qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Return unitary matrix of gate.
-
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Return unitary matrix of gate.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Returns:
+            np.ndarray
 
-    @classmethod
-    def json_schema(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class Bogoliubov(Operation):
     """
@@ -17140,779 +9378,408 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, delta_real: Union[float, str], delta_imag: Union[float, str]):
-       return
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        delta_real: Union[float, str],
+        delta_imag: Union[float, str],
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def delta_real(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute delta_real
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def delta_imag(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute delta_imag
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def delta_real(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute delta_real
-"""
 
-    @classmethod
-    def delta_imag(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns value of attribute delta_imag
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def control(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Returns control qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Returns target qubit of the two-qubit operation
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return unitary matrix of gate.
 
-Convert a function to be a static method.
+        Returns:
+            np.ndarray
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PMInteraction(Operation):
     """
-The transversal interaction gate.
+    The transversal interaction gate.
 
-:math:`e^{-\mathrm{i} \theta (X_c X_t + Y_c Y_t)} = e^{-\mathrm{i} \theta (\sigma^+_c \sigma^-_t + \sigma^-_c \sigma^+_t)}`
+    :math:`e^{-\mathrm{i} \theta (X_c X_t + Y_c Y_t)} = e^{-\mathrm{i} \theta (\sigma^+_c \sigma^-_t + \sigma^-_c \sigma^+_t)}`
 
-Where :math:`X_c` is the Pauli matrix :math:`\sigma^x` acting on the control qubit
-and :math:`Y_t` is the Pauli matrix :math:`\sigma^y` acting on the target qubit.
+    Where :math:`X_c` is the Pauli matrix :math:`\sigma^x` acting on the control qubit
+    and :math:`Y_t` is the Pauli matrix :math:`\sigma^y` acting on the target qubit.
 
-Args:
-    control (int): The index of the most significant qubit in the unitary representation.
-    target (int):: The index of the least significant qubit in the unitary representation.
-    t (CalculatorFloat): The strength of the rotation :math:`\theta`.
+    Args:
+        control (int): The index of the most significant qubit in the unitary representation.
+        target (int):: The index of the least significant qubit in the unitary representation.
+        t (CalculatorFloat): The strength of the rotation :math:`\theta`.
 
-"""
+    """
 
     def __init__(self, control: int, target: int, t: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def t(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute t
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def t(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute t
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def control(self):  # type: ignore
         """
-Copies Operation
-
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def control(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Returns control qubit of the two-qubit operation
-"""
-
-    @classmethod
-    def target(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Returns target qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
+        Returns:
+            np.ndarray
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class ComplexPMInteraction(Operation):
     """
-The complex hopping gate.
+    The complex hopping gate.
 
-:math:`e^{-\mathrm{i} \left[ Re(\theta) \cdot (X_c X_t + Y_c Y_t) - Im(\theta) \cdot (X_c Y_t - Y_c X_t) \right] }`
+    :math:`e^{-\mathrm{i} \left[ Re(\theta) \cdot (X_c X_t + Y_c Y_t) - Im(\theta) \cdot (X_c Y_t - Y_c X_t) \right] }`
 
-Where :math:`X_c` is the Pauli matrix :math:`\sigma^x` acting on the control qubit
-and :math:`Y_t` is the Pauli matrix :math:`\sigma^y` acting on the target qubit.
+    Where :math:`X_c` is the Pauli matrix :math:`\sigma^x` acting on the control qubit
+    and :math:`Y_t` is the Pauli matrix :math:`\sigma^y` acting on the target qubit.
 
-Args:
-    control (int): The index of the most significant qubit in the unitary representation.
-    target (int):: The index of the least significant qubit in the unitary representation.
-    t_real (CalculatorFloat): The real part of the strength of the rotation :math:`Re(\theta)`.
-    t_imag (CalculatorFloat): The imaginary part of the strength of the rotation :math:`Im(\theta)`.
+    Args:
+        control (int): The index of the most significant qubit in the unitary representation.
+        target (int):: The index of the least significant qubit in the unitary representation.
+        t_real (CalculatorFloat): The real part of the strength of the rotation :math:`Re(\theta)`.
+        t_imag (CalculatorFloat): The imaginary part of the strength of the rotation :math:`Im(\theta)`.
 
-"""
+    """
 
-    def __init__(self, control: int, target: int, t_real: Union[float, str], t_imag: Union[float, str]):
-       return
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        t_real: Union[float, str],
+        t_imag: Union[float, str],
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def t_real(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute t_real
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def t_imag(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute t_imag
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def t_real(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute t_real
-"""
 
-    @classmethod
-    def t_imag(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns value of attribute t_imag
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def control(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Returns control qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Returns target qubit of the two-qubit operation
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return unitary matrix of gate.
 
-Convert a function to be a static method.
+        Returns:
+            np.ndarray
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PhaseShiftedControlledZ(Operation):
     """
@@ -17938,247 +9805,120 @@ Args:
 """
 
     def __init__(self, control: int, target: int, phi: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def phi(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute phi
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def phi(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute phi
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def control(self):  # type: ignore
         """
-Copies Operation
-
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def control(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Returns control qubit of the two-qubit operation
-"""
-
-    @classmethod
-    def target(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Returns target qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
+        Returns:
+            np.ndarray
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PhaseShiftState0(Operation):
     """
@@ -18199,150 +9939,85 @@ Args:
 """
 
     def __init__(self, qubit: int, theta: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Copies Operation
+        Return the qubit the operation acts on
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            int
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -18358,8 +10033,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -18375,8 +10049,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -18390,8 +10063,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -18407,8 +10079,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -18425,141 +10096,77 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns Rotated gate raised to power
+        Return unitary matrix of gate.
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Returns:
+            np.ndarray
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns Rotated gate raised to power
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            Self: gate raised to the power of `power`
+
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PhaseShiftState1(Operation):
     """
@@ -18580,150 +10187,85 @@ Args:
 """
 
     def __init__(self, qubit: int, theta: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Copies Operation
+        Return the qubit the operation acts on
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            int
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -18739,8 +10281,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -18756,8 +10297,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -18771,8 +10311,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -18788,8 +10327,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -18806,1160 +10344,589 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns Rotated gate raised to power
+        Return unitary matrix of gate.
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Returns:
+            np.ndarray
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns Rotated gate raised to power
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            Self: gate raised to the power of `power`
+
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class MultiQubitMS(Operation):
     """
-The Molmer-Sorensen gate between multiple qubits.
+    The Molmer-Sorensen gate between multiple qubits.
 
-The gate applies the rotation under the product of Pauli X operators on multiple qubits.
-In mathematical terms the gate applies exp(-i * theta/2 * X_i0 * X_i1 * ... * X_in).
-"""
+    The gate applies the rotation under the product of Pauli X operators on multiple qubits.
+    In mathematical terms the gate applies exp(-i * theta/2 * X_i0 * X_i1 * ... * X_in).
+    """
 
     def __init__(self):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def qubits(self):  # type: ignore
         """
-Copies Operation
+        Return list of qubits of the multi qubit operation in order of descending significance
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            List[int]
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubits(self): # type: ignore
+    def circuit(self):  # type: ignore
         """
-Return list of qubits of the multi qubit operation in order of descending significance
+        Return circuit implementing MultiQubitGateOperation
 
-Returns:
-    List[int]
-"""
-
-    @classmethod
-    def circuit(self): # type: ignore
+        Returns:
+            Circuit
         """
-Return circuit implementing MultiQubitGateOperation
 
-Returns:
-    Circuit
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
+        Returns:
+            np.ndarray
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
-
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns Rotated gate raised to power
 
-Convert a function to be a static method.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
+        Returns:
+            Self: gate raised to the power of `power`
 
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class MultiQubitZZ(Operation):
     """
-The multi qubit Pauli-Z-Product gate.
+    The multi qubit Pauli-Z-Product gate.
 
-The gate applies the rotation under the product of Pauli Z operators on multiple qubits.
-In mathematical terms the gate applies exp(-i * theta/2 * Z_i0 * Z_i1 * ... * Z_in).
-"""
+    The gate applies the rotation under the product of Pauli Z operators on multiple qubits.
+    In mathematical terms the gate applies exp(-i * theta/2 * Z_i0 * Z_i1 * ... * Z_in).
+    """
 
     def __init__(self):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def qubits(self):  # type: ignore
         """
-Copies Operation
+        Return list of qubits of the multi qubit operation in order of descending significance
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            List[int]
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubits(self): # type: ignore
+    def circuit(self):  # type: ignore
         """
-Return list of qubits of the multi qubit operation in order of descending significance
+        Return circuit implementing MultiQubitGateOperation
 
-Returns:
-    List[int]
-"""
-
-    @classmethod
-    def circuit(self): # type: ignore
+        Returns:
+            Circuit
         """
-Return circuit implementing MultiQubitGateOperation
 
-Returns:
-    Circuit
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
+        Returns:
+            np.ndarray
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
-
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns Rotated gate raised to power
 
-Convert a function to be a static method.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
+        Returns:
+            Self: gate raised to the power of `power`
 
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class InputBit(Operation):
     """
-InputBit sets a certain bit in an existing BitRegister of the circuit.
+    InputBit sets a certain bit in an existing BitRegister of the circuit.
 
-Args:
-    name (string): The name of the register that is defined.
-    index (int): The index in the register that is set.
-    value (int): The value the bit is set to.
-"""
+    Args:
+        name (string): The name of the register that is defined.
+        index (int): The index in the register that is set.
+        value (int): The value the bit is set to.
+    """
 
     def __init__(self, name: str, index: int, value: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def index(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field index
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def value(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field value
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def index(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Get value of struct field index
-"""
 
-    @classmethod
-    def value(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Get value of struct field value
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def name(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Return name of definition operation.
 
-    @classmethod
-    def name(self): # type: ignore
+        Returns:
+            str
         """
-Return name of definition operation.
 
-Returns:
-    str
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PragmaLoop(Operation):
     """
-This PRAGMA measurement operation returns the statevector of a quantum register.
+    This PRAGMA measurement operation returns the statevector of a quantum register.
 
-Args:
-    repetitions (CalculatorFloat): The number of repetitions as a symbolic float. At evaluation the floor of any float value is taken
-    circuit (Circuit): The Circuit that is looped.
+    Args:
+        repetitions (CalculatorFloat): The number of repetitions as a symbolic float. At evaluation the floor of any float value is taken
+        circuit (Circuit): The Circuit that is looped.
 
-"""
+    """
 
     def __init__(self, repetitions: Union[float, str], circuit: Circuit):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def repetitions(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute repetitions
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def circuit(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field circuit
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def repetitions(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute repetitions
-"""
 
-    @classmethod
-    def circuit(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Get value of struct field circuit
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Returns the current version of the qoqo library .
 
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class PhaseShiftedControlledPhase(Operation):
     """
@@ -19983,267 +10950,144 @@ Args:
 
 """
 
-    def __init__(self, control: int, target: int, theta: Union[float, str], phi: Union[float, str]):
-       return
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        theta: Union[float, str],
+        phi: Union[float, str],
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def phi(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute phi
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def phi(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns value of attribute phi
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def control(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Returns control qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Returns target qubit of the two-qubit operation
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns Rotated gate raised to power
+        Return unitary matrix of gate.
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Returns:
+            np.ndarray
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns Rotated gate raised to power
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            Self: gate raised to the power of `power`
+
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class ControlledRotateX(Operation):
     """
@@ -20266,260 +11110,132 @@ Args:
 """
 
     def __init__(self, control: int, target: int, theta: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def control(self):  # type: ignore
         """
-Copies Operation
-
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def control(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Returns control qubit of the two-qubit operation
-"""
-
-    @classmethod
-    def target(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Returns target qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Return unitary matrix of gate.
+        Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
+        Returns:
+            np.ndarray
 
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
-
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns Rotated gate raised to power
 
-Convert a function to be a static method.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
+        Returns:
+            Self: gate raised to the power of `power`
 
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class ControlledRotateXY(Operation):
     """
@@ -20542,267 +11258,144 @@ Args:
     phi (CalculatorFloat): The rotation axis, in spherical coordinates :math:`\phi_{sph}`  gives the angle in the x-y plane.
 """
 
-    def __init__(self, control: int, target: int, theta: Union[float, str], phi: Union[float, str]):
-       return
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        theta: Union[float, str],
+        phi: Union[float, str],
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def phi(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute phi
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def phi(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns value of attribute phi
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def control(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Returns control qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Returns target qubit of the two-qubit operation
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns Rotated gate raised to power
+        Return unitary matrix of gate.
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Returns:
+            np.ndarray
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns Rotated gate raised to power
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            Self: gate raised to the power of `power`
+
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class ControlledControlledPauliZ(Operation):
     """
@@ -20827,256 +11420,128 @@ Args:
 """
 
     def __init__(self, control_0: int, control_1: int, target: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def control_0(self):  # type: ignore
         """
-List all involved Qubits
-
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns control_0 qubit of the three-qubit operation
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def control_1(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control_0(self): # type: ignore
+        Returns control_1 qubit of the three-qubit operation
         """
-Returns control_0 qubit of the three-qubit operation
-"""
 
-    @classmethod
-    def control_1(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Returns control_1 qubit of the three-qubit operation
-"""
-
-    @classmethod
-    def target(self): # type: ignore
+        Returns target qubit of the three-qubit operation
         """
-Returns target qubit of the three-qubit operation
-"""
 
-    @classmethod
-    def circuit(self): # type: ignore
+    def circuit(self):  # type: ignore
         """
-Returns circuit implementing the ThreeQubitGateOperation
+        Returns circuit implementing the ThreeQubitGateOperation
 
-Returns:
-    Circuit
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns:
+            Circuit
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return unitary matrix of gate.
 
-Convert a function to be a static method.
+        Returns:
+            np.ndarray
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class ControlledControlledPhaseShift(Operation):
     """
@@ -21101,276 +11566,148 @@ Args:
     theta (float): The rotation angle θ.
 """
 
-    def __init__(self, control_0: int, control_1: int, target: int, theta: float):
-       return
+    def __init__(
+        self, control_0: int, control_1: int, target: int, theta: float
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def control_0(self):  # type: ignore
         """
-Copies Operation
-
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns control_0 qubit of the three-qubit operation
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def control_0(self): # type: ignore
+    def control_1(self):  # type: ignore
         """
-Returns control_0 qubit of the three-qubit operation
-"""
-
-    @classmethod
-    def control_1(self): # type: ignore
+        Returns control_1 qubit of the three-qubit operation
         """
-Returns control_1 qubit of the three-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Returns target qubit of the three-qubit operation
-"""
-
-    @classmethod
-    def circuit(self): # type: ignore
+        Returns target qubit of the three-qubit operation
         """
-Returns circuit implementing the ThreeQubitGateOperation
 
-Returns:
-    Circuit
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+    def circuit(self):  # type: ignore
         """
-Return unitary matrix of gate.
+        Returns circuit implementing the ThreeQubitGateOperation
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+        Returns:
+            Circuit
         """
-Returns Rotated gate raised to power
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
-
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return unitary matrix of gate.
 
-Convert a function to be a static method.
+        Returns:
+            np.ndarray
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns Rotated gate raised to power
 
-Convert a function to be a static method.
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
+        Returns:
+            Self: gate raised to the power of `power`
 
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The current version of the library.
+        """
+
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class Toffoli(Operation):
     """
@@ -21395,256 +11732,128 @@ Args:
 """
 
     def __init__(self, control_0: int, control_1: int, target: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def control_0(self):  # type: ignore
         """
-List all involved Qubits
-
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns control_0 qubit of the three-qubit operation
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def control_1(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control_0(self): # type: ignore
+        Returns control_1 qubit of the three-qubit operation
         """
-Returns control_0 qubit of the three-qubit operation
-"""
 
-    @classmethod
-    def control_1(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Returns control_1 qubit of the three-qubit operation
-"""
-
-    @classmethod
-    def target(self): # type: ignore
+        Returns target qubit of the three-qubit operation
         """
-Returns target qubit of the three-qubit operation
-"""
 
-    @classmethod
-    def circuit(self): # type: ignore
+    def circuit(self):  # type: ignore
         """
-Returns circuit implementing the ThreeQubitGateOperation
+        Returns circuit implementing the ThreeQubitGateOperation
 
-Returns:
-    Circuit
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns:
+            Circuit
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return unitary matrix of gate.
 
-Convert a function to be a static method.
+        Returns:
+            np.ndarray
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class GPi(Operation):
     """
@@ -21663,150 +11872,85 @@ Args:
 """
 
     def __init__(self, qubit: int, theta: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Copies Operation
+        Return the qubit the operation acts on
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            int
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -21822,8 +11966,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -21839,8 +11982,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -21854,8 +11996,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -21871,8 +12012,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -21889,141 +12029,77 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns Rotated gate raised to power
+        Return unitary matrix of gate.
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Returns:
+            np.ndarray
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns Rotated gate raised to power
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            Self: gate raised to the power of `power`
+
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class GPi2(Operation):
     """
@@ -22042,150 +12118,85 @@ Args:
 """
 
     def __init__(self, qubit: int, theta: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Copies Operation
+        Return the qubit the operation acts on
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            int
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -22201,8 +12212,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -22218,8 +12228,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -22233,8 +12242,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -22250,8 +12258,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -22268,1464 +12275,771 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def powercf(self) -> Self: # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns Rotated gate raised to power
+        Return unitary matrix of gate.
 
-Args:
-    `power`(CalculatorFloat): exponent of the power operation.
+        Returns:
+            np.ndarray
 
-Returns:
-    Self: gate raised to the power of `power`
-
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def powercf(self) -> Self:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns Rotated gate raised to power
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
 
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            Self: gate raised to the power of `power`
+
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PragmaControlledCircuit(Operation):
     """
-A circuit controlled by a qubit.
+    A circuit controlled by a qubit.
 
-The circuit is applied when the qubit is in state 1.
-Note that this is a unitary operation (for example a CNOT(0,1)
-is equvalent to a PragmaControlledCircuit(0, [PauliX(1)]) but it cannot be represented
-by a unitary operation in qoqo for arbitraty circuits.
+    The circuit is applied when the qubit is in state 1.
+    Note that this is a unitary operation (for example a CNOT(0,1)
+    is equvalent to a PragmaControlledCircuit(0, [PauliX(1)]) but it cannot be represented
+    by a unitary operation in qoqo for arbitraty circuits.
 
-Args:
-    controlling_qubit (int): - The qubit controlling circuit application.
-    circuit (Circuit): - The circuit executed if the condition is met.
-"""
+    Args:
+        controlling_qubit (int): - The qubit controlling circuit application.
+        circuit (Circuit): - The circuit executed if the condition is met.
+    """
 
     def __init__(self, controlling_qubit: int, circuit: Circuit):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def controlling_qubit(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field controlling_qubit
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def circuit(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field circuit
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def controlling_qubit(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Get value of struct field controlling_qubit
-"""
 
-    @classmethod
-    def circuit(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Get value of struct field circuit
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        Returns the current version of the qoqo library .
 
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class Squeezing(Operation):
     """
-The single-mode squeezing gate with tunable squeezing.
+    The single-mode squeezing gate with tunable squeezing.
 
-The squeezing gate is a quantum operation that allows for precise manipulation of quantum states,
-by reducing the uncertainty in one variable and therefore increasing the uncertainty of another.
-https://arxiv.org/pdf/quant-ph/0106157.pdf
+    The squeezing gate is a quantum operation that allows for precise manipulation of quantum states,
+    by reducing the uncertainty in one variable and therefore increasing the uncertainty of another.
+    https://arxiv.org/pdf/quant-ph/0106157.pdf
 
-Args:
-    mode (int): The mode the squeezing gate is applied to.
-    squeezing (CalculatorFloat): The coefficient of the squeezing operation.
-    phase (CalculatorFloat): The squeezing phase angle of the squeezing operation.
-"""
+    Args:
+        mode (int): The mode the squeezing gate is applied to.
+        squeezing (CalculatorFloat): The coefficient of the squeezing operation.
+        phase (CalculatorFloat): The squeezing phase angle of the squeezing operation.
+    """
 
-    def __init__(self, mode: int, squeezing: Union[float, str], phase: Union[float, str]):
-       return
+    def __init__(
+        self, mode: int, squeezing: Union[float, str], phase: Union[float, str]
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def squeezing(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute squeezing
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def phase(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute phase
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def squeezing(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute squeezing
-"""
 
-    @classmethod
-    def phase(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns value of attribute phase
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        List of modes the operation acts on.
 
-    @classmethod
-    def involved_modes(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def remap_modes(self, mapping: Dict[int, int]): # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
-    @classmethod
-    def mode(self): # type: ignore
+        Raises:
+            PyValueError: Remapping could not be performed
         """
-Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def mode(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return `mode` the bosonic Operation acts on.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            int
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PhaseShift(Operation):
     """
-The single-mode phase-shift gate with variable phase, given by R(θ) = eexp(i * θ * 𝑁̂).
+    The single-mode phase-shift gate with variable phase, given by R(θ) = eexp(i * θ * 𝑁̂).
 
-https://arxiv.org/pdf/2104.03241.pdf
+    https://arxiv.org/pdf/2104.03241.pdf
 
-Args:
-    mode (int): The mode the phase-shift gate is applied to.
-    phase (CalculatorFloat): The phase by which to shift the mode.
-"""
+    Args:
+        mode (int): The mode the phase-shift gate is applied to.
+        phase (CalculatorFloat): The phase by which to shift the mode.
+    """
 
     def __init__(self, mode: int, phase: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def phase(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute phase
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def phase(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute phase
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
         """
-Copies Operation
+        List of modes the operation acts on.
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def involved_modes(self) -> Union[Set[int], str]: # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
         """
-List of modes the operation acts on.
+        Remap the bosonic modes in copy of the operation.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-    @classmethod
-    def remap_modes(self, mapping: Dict[int, int]): # type: ignore
+        Returns:
+            self
+
+        Raises:
+            PyValueError: Remapping could not be performed
         """
-Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
-
-Returns:
-    self
-
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
-    @classmethod
-    def mode(self): # type: ignore
+    def mode(self):  # type: ignore
         """
-Return `mode` the bosonic Operation acts on.
+        Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            int
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class BeamSplitter(Operation):
     """
-The 2-mode beam splitter which splits a beam with a transmission amplitude cos(θ) and a reflection amplitude exp(i * φ) * sin(θ).
+    The 2-mode beam splitter which splits a beam with a transmission amplitude cos(θ) and a reflection amplitude exp(i * φ) * sin(θ).
 
-Args:
-    mode_0 (int): The first mode the beam-splitter is applied to.
-    mode_1 (int): The second mode the beam-splitter is applied to.
-    theta (CalculatorFloat): The transmittivity angle of the beam-splitter.
-    phi (CalculatorFloat): The phase angle of the beam-splitter.
-"""
+    Args:
+        mode_0 (int): The first mode the beam-splitter is applied to.
+        mode_1 (int): The second mode the beam-splitter is applied to.
+        theta (CalculatorFloat): The transmittivity angle of the beam-splitter.
+        phi (CalculatorFloat): The phase angle of the beam-splitter.
+    """
 
-    def __init__(self, mode_0: int, mode_1: int, theta: Union[float, str], phi: Union[float, str]):
-       return
+    def __init__(
+        self,
+        mode_0: int,
+        mode_1: int,
+        theta: Union[float, str],
+        phi: Union[float, str],
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def phi(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute phi
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def phi(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns value of attribute phi
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        List of modes the operation acts on.
 
-    @classmethod
-    def involved_modes(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def remap_modes(self, mapping: Dict[int, int]): # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
-    @classmethod
-    def mode_0(self): # type: ignore
+        Raises:
+            PyValueError: Remapping could not be performed
         """
-Return `mode_0` bosonic mode of two bosonic mode Operation.
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def mode_1(self): # type: ignore
+    def mode_0(self):  # type: ignore
         """
-Return `mode_1` bosonic mode of two bosonic mode Operation.
+        Return `mode_0` bosonic mode of two bosonic mode Operation.
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            int
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def mode_1(self):  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Return `mode_1` bosonic mode of two bosonic mode Operation.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            int
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Returns the current version of the qoqo library .
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def min_supported_version(self) -> str:  # type: ignore
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PhotonDetection(Operation):
     """
-The photon number-resolving detector measurement for bosons.
+    The photon number-resolving detector measurement for bosons.
 
-This can be used as a single-shot measurement of the photon number.
-https://arxiv.org/pdf/0902.4824.pdf
+    This can be used as a single-shot measurement of the photon number.
+    https://arxiv.org/pdf/0902.4824.pdf
 
-Args:
-    mode (int): The mode the detector (measurement) is applied to.
-    readout (str): The register for the readout.
-    readout_index (int): The index in the readout the result is saved to.
-"""
+    Args:
+        mode (int): The mode the detector (measurement) is applied to.
+        readout (str): The register for the readout.
+        readout_index (int): The index in the readout the result is saved to.
+    """
 
     def __init__(self, mode: int, readout: str, readout_index: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def readout(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Get value of struct field readout
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def readout_index(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Get value of struct field readout_index
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def readout(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Get value of struct field readout
-"""
 
-    @classmethod
-    def readout_index(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Get value of struct field readout_index
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        List of modes the operation acts on.
 
-    @classmethod
-    def involved_modes(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def remap_modes(self, mapping: Dict[int, int]): # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
-    @classmethod
-    def mode(self): # type: ignore
+        Raises:
+            PyValueError: Remapping could not be performed
         """
-Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def mode(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return `mode` the bosonic Operation acts on.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            int
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class Identity(Operation):
     """
@@ -23742,144 +13056,80 @@ Args:
 """
 
     def __init__(self, qubit: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def qubit(self):  # type: ignore
         """
-List all involved Qubits
+        Return the qubit the operation acts on
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            int
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
-        """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def qubit(self): # type: ignore
-        """
-Return the qubit the operation acts on
-
-Returns:
-    int
-"""
-
-    @classmethod
-    def global_phase(self): # type: ignore
+    def global_phase(self):  # type: ignore
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -23895,8 +13145,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_r(self): # type: ignore
+    def alpha_r(self):  # type: ignore
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -23912,8 +13161,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def alpha_i(self): # type: ignore
+    def alpha_i(self):  # type: ignore
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -23927,8 +13175,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_r(self): # type: ignore
+    def beta_r(self):  # type: ignore
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -23944,8 +13191,7 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def beta_i(self): # type: ignore
+    def beta_i(self):  # type: ignore
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -23962,396 +13208,210 @@ Returns:
     CalculatorFloat
 """
 
-    @classmethod
-    def mul(self) -> Operation: # type: ignore
+    def mul(self) -> Operation:  # type: ignore
         """
-Multiplies two compatible operations implementing OperateSingleQubitGate.
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
 
-Does not consume the two operations being multiplied.
-Only Operations
+        Does not consume the two operations being multiplied.
+        Only Operations
 
-Args:
-    `other` - An Operation implementing [OperateSingleQubitGate].
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
 
-Returns:
-    Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
 
-Example:
-```
-from qoqo.operations import RotateZ, RotateX
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
 
-gate1 =  RotateZ(qubit=0, theta=1)
-gate2 = RotateX(qubit=0, theta=1)
-multiplied = gate1.mul(gate2)
-print("Multiplied gate: ", multiplied)
-```
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
 
-"""
-
-    @classmethod
-    def unitary_matrix(self): # type: ignore
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return unitary matrix of gate.
 
-Convert a function to be a static method.
+        Returns:
+            np.ndarray
 
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PhaseDisplacement(Operation):
     """
-The single-mode phase-displacement gate with variable magnitude and phase.
+    The single-mode phase-displacement gate with variable magnitude and phase.
 
-Args:
-    mode (int): The mode the phase-shift gate is applied to.
-    displacement (CalculatorFloat): The magnitude by which to displace the mode.
-    phase (CalculatorFloat): The angle by which to displace the mode.
-"""
+    Args:
+        mode (int): The mode the phase-shift gate is applied to.
+        displacement (CalculatorFloat): The magnitude by which to displace the mode.
+        phase (CalculatorFloat): The angle by which to displace the mode.
+    """
 
-    def __init__(self, mode: int, displacement: Union[float, str], phase: Union[float, str]):
-       return
+    def __init__(
+        self,
+        mode: int,
+        displacement: Union[float, str],
+        phase: Union[float, str],
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def displacement(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute displacement
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def phase(self):  # type: ignore
         """
-Return self<=value.
-"""
-
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns value of attribute phase
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self!=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def displacement(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Returns value of attribute displacement
-"""
 
-    @classmethod
-    def phase(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Returns value of attribute phase
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        Remap qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
+        Returns:
+            Operation: The operation with the remapped qubits
 
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-List all involved Qubits
+        List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        List of modes the operation acts on.
 
-    @classmethod
-    def involved_modes(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def remap_modes(self, mapping: Dict[int, int]): # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
-    @classmethod
-    def mode(self): # type: ignore
+        Raises:
+            PyValueError: Remapping could not be performed
         """
-Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def mode(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return `mode` the bosonic Operation acts on.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            int
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class EchoCrossResonance(Operation):
     """
@@ -24374,2105 +13434,1081 @@ Args:
     phi (CalculatorFloat): The rotation axis, in spherical coordinates :math:`\phi_{sph}`  gives the angle in the x-y plane.
 """
 
-    def __init__(self, control: int, target: int, theta: Union[float, str], phi: Union[float, str]):
-       return
+    def __init__(
+        self,
+        control: int,
+        target: int,
+        theta: Union[float, str],
+        phi: Union[float, str],
+    ):
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def control(self):  # type: ignore
         """
-List all involved Qubits
-
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns control qubit of the two-qubit operation
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def target(self):  # type: ignore
         """
-Creates deep copy of Operation
-"""
-
-    @classmethod
-    def control(self): # type: ignore
+        Returns target qubit of the two-qubit operation
         """
-Returns control qubit of the two-qubit operation
-"""
 
-    @classmethod
-    def target(self): # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
-Returns target qubit of the two-qubit operation
-"""
+        Return unitary matrix of gate.
 
-    @classmethod
-    def unitary_matrix(self): # type: ignore
+        Returns:
+            np.ndarray
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
         """
-Return unitary matrix of gate.
 
-Returns:
-    np.ndarray
-
-Raises:
-    ValueError: Error symbolic operation cannot return float unitary matrix
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Return the minimum version of qoqo that supports this object.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the JsonSchema for the json serialisation of the class.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class PragmaAnnotatedOp(Operation):
     """
-An annotated Operation.
+    An annotated Operation.
 
-Args:
-    operation (Operation): - The Operation to be annotated.
-    annotation (str): - The annotation.
-"""
+    Args:
+        operation (Operation): - The Operation to be annotated.
+        annotation (str): - The annotation.
+    """
 
     def __init__(self, operation: Operation, annotation: str):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def operation(self) -> Operation:  # type: ignore
         """
-Return repr(self).
-"""
+        Return the internal Operation.
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            Operation: The annotated Operation.
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def annotation(self) -> str:  # type: ignore
         """
-Return self<=value.
-"""
+        Return the annotation.
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            str: The annotation.
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def involved_qubits(self) -> Set[int]:  # type: ignore
         """
-Return self!=value.
-"""
+        List all involved qubits.
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            Set[int]: The involved qubits of the PRAGMA operation.
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self>=value.
-"""
+        Return tags classifying the type of the operation.
 
-    @classmethod
-    def operation(self) -> Operation: # type: ignore
+        Used for the type based dispatch in ffi interfaces.
+
+        Returns:
+            List[str]: The tags of the Operation.
         """
-Return the internal Operation.
 
-Returns:
-    Operation: The annotated Operation.
-"""
-
-    @classmethod
-    def annotation(self) -> str: # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return the annotation.
+        Return hqslang name of the operation.
 
-Returns:
-    str: The annotation.
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Set[int]: # type: ignore
+        Returns:
+            str: The hqslang name of the operation.
         """
-List all involved qubits.
 
-Returns:
-    Set[int]: The involved qubits of the PRAGMA operation.
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def is_parametrized(self) -> is_parametrized(bool):  # type: ignore
         """
-Return tags classifying the type of the operation.
+        Return true when the operation has symbolic parameters.
 
-Used for the type based dispatch in ffi interfaces.
-
-Returns:
-    List[str]: The tags of the Operation.
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            is_parametrized (bool): True if the operation contains symbolic parameters, False if it does not.
         """
-Return hqslang name of the operation.
 
-Returns:
-    str: The hqslang name of the operation.
-"""
-
-    @classmethod
-    def is_parametrized(self) -> is_parametrized (bool): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaAnnotatedOp:  # type: ignore
         """
-Return true when the operation has symbolic parameters.
+        Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
-Returns:
-    is_parametrized (bool): True if the operation contains symbolic parameters, False if it does not.
-"""
+        Args:
+            substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaAnnotatedOp: # type: ignore
+        Returns:
+            self: The PRAGMA operation with the parameters substituted.
+
+        Raises:
+            RuntimeError: The parameter substitution failed.
         """
-Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
-Args:
-    substitution_parameters (Dict[str, float]): The dictionary containing the substitutions to use in the PRAGMA operation.
-
-Returns:
-    self: The PRAGMA operation with the parameters substituted.
-
-Raises:
-    RuntimeError: The parameter substitution failed.
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaAnnotatedOp: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaAnnotatedOp:  # type: ignore
         """
-Remap qubits in a clone of the PRAGMA operation.
+        Remap qubits in a clone of the PRAGMA operation.
 
-Args:
-    mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
+        Args:
+            mapping (Dict[int, int]): The dictionary containing the {qubit: qubit} mapping to use in the PRAGMA operation.
 
-Returns:
-    self: The PRAGMA operation with the qubits remapped.
+        Returns:
+            self: The PRAGMA operation with the qubits remapped.
 
-Raises:
-    RuntimeError: The qubit remapping failed.
-"""
-
-    @classmethod
-    def __copy__(self) -> Operation: # type: ignore
+        Raises:
+            RuntimeError: The qubit remapping failed.
         """
-Return a copy of the PRAGMA operation (copy here produces a deepcopy).
 
-Returns:
-    PragmaAnnotatedOp: A deep copy of self.
-"""
-
-    @classmethod
-    def __deepcopy__(self) -> Operation: # type: ignore
+    def json_schema(self) -> str:  # type: ignore
         """
-Return a deep copy of the PRAGMA operation.
+        Return the JsonSchema for the json serialisation of the class.
 
-Returns:
-    PragmaAnnotatedOp: A deep copy of self.
-"""
-
-    @classmethod
-    def __format__(self) -> str: # type: ignore
+        Returns:
+            str: The json schema serialized to json
         """
-Return a string containing a formatted (string) representation of the PRAGMA operation.
 
-Returns:
-    str: The string representation of the operation.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
-        """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
-
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
 
 class QuantumRabi(Operation):
     """
-The quantum Rabi interaction exp(-i * θ * X * (b^† + b))
+    The quantum Rabi interaction exp(-i * θ * X * (b^† + b))
 
-Args:
-    qubit (int): The qubit the gate is applied to.
-    mode (int): The mode the gate is applied to.
-    theta (CalculatorFloat): The strength of the interaction.
-"""
+    Args:
+        qubit (int): The qubit the gate is applied to.
+        mode (int): The mode the gate is applied to.
+        theta (CalculatorFloat): The strength of the interaction.
+    """
 
     def __init__(self, qubit: int, mode: int, theta: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Copies Operation
+        Return the qubit the operation acts on
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            int
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubit(self): # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
         """
-Return the qubit the operation acts on
+        List of modes the operation acts on.
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def involved_modes(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def remap_modes(self, mapping: Dict[int, int]): # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
-    @classmethod
-    def mode(self): # type: ignore
+        Raises:
+            PyValueError: Remapping could not be performed
         """
-Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def mode(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return `mode` the bosonic Operation acts on.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            int
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class LongitudinalCoupling(Operation):
     """
-Longitudinal coupling gate exp(-i * θ * Z * (b^† + b))
+    Longitudinal coupling gate exp(-i * θ * Z * (b^† + b))
 
-Args:
-    qubit (int): The qubit the gate is applied to.
-    mode (int): The mode the gate is applied to.
-    theta (CalculatorFloat): The strength of the interaction.
-"""
+    Args:
+        qubit (int): The qubit the gate is applied to.
+        mode (int): The mode the gate is applied to.
+        theta (CalculatorFloat): The strength of the interaction.
+    """
 
     def __init__(self, qubit: int, mode: int, theta: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Copies Operation
+        Return the qubit the operation acts on
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            int
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubit(self): # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
         """
-Return the qubit the operation acts on
+        List of modes the operation acts on.
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def involved_modes(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def remap_modes(self, mapping: Dict[int, int]): # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
-    @classmethod
-    def mode(self): # type: ignore
+        Raises:
+            PyValueError: Remapping could not be performed
         """
-Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def mode(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return `mode` the bosonic Operation acts on.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            int
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class JaynesCummings(Operation):
     """
-The Jaynes-Cummings gate exp(-i * θ * (σ^- * b^† + σ^+ * b))
+    The Jaynes-Cummings gate exp(-i * θ * (σ^- * b^† + σ^+ * b))
 
-Args:
-    qubit (int): The qubit the gate is applied to.
-    mode (int): The mode the gate is applied to.
-    theta (CalculatorFloat): The strength of the interaction.
-"""
+    Args:
+        qubit (int): The qubit the gate is applied to.
+        mode (int): The mode the gate is applied to.
+        theta (CalculatorFloat): The strength of the interaction.
+    """
 
     def __init__(self, qubit: int, mode: int, theta: Union[float, str]):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def theta(self):  # type: ignore
         """
-Return repr(self).
-"""
-
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns value of attribute theta
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return self<=value.
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self>=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def theta(self): # type: ignore
+        Returns:
+            str: The name
         """
-Returns value of attribute theta
-"""
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Returns true if operation contains symbolic parameters
+        Substitutes internal symbolic parameters with float values
 
-Returns:
-    bool
-"""
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
 
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns tags identifying the Operation
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
-
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns hqslang name of Operation
+        Remap qubits
 
-Returns:
-    str: The name
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Substitutes internal symbolic parameters with float values
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Remap qubits
+        List all involved Qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List all involved Qubits
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+    def qubit(self):  # type: ignore
         """
-Copies Operation
+        Return the qubit the operation acts on
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+        Returns:
+            int
         """
-Creates deep copy of Operation
-"""
 
-    @classmethod
-    def qubit(self): # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
         """
-Return the qubit the operation acts on
+        List of modes the operation acts on.
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def involved_modes(self) -> Union[Set[int], str]: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-List of modes the operation acts on.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def remap_modes(self, mapping: Dict[int, int]): # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
         """
-Remap the bosonic modes in copy of the operation.
+        Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-Returns:
-    self
+        Returns:
+            self
 
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
-    @classmethod
-    def mode(self): # type: ignore
+        Raises:
+            PyValueError: Remapping could not be performed
         """
-Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+    def mode(self):  # type: ignore
         """
-staticmethod(function) -> method
+        Return `mode` the bosonic Operation acts on.
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+        Returns:
+            int
         """
-Return the minimum version of qoqo that supports this object.
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-staticmethod(function) -> method
+        Returns the current version of the qoqo library .
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class SingleExcitationStore(Operation):
     """
-Stores a single excitation from the involved qubit into the involved bosonic mode as follows
-|0⟩_B ⨂ (a |0⟩_Q + b |1⟩_Q) -> (a|0⟩_B + b |1⟩_B ) ⨂ |0⟩_Q
+    Stores a single excitation from the involved qubit into the involved bosonic mode as follows
+    |0⟩_B ⨂ (a |0⟩_Q + b |1⟩_Q) -> (a|0⟩_B + b |1⟩_B ) ⨂ |0⟩_Q
 
-Note: not defined if the bosonic mode is in a state |n⟩ with n != 0
+    Note: not defined if the bosonic mode is in a state |n⟩ with n != 0
 
-Args:
-    qubit (int): The qubit the gate is applied to.
-    mode (int): The mode the gate is applied to.
-"""
+    Args:
+        qubit (int): The qubit the gate is applied to.
+        mode (int): The mode the gate is applied to.
+    """
 
     def __init__(self, qubit: int, mode: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def qubit(self):  # type: ignore
         """
-List all involved Qubits
+        Return the qubit the operation acts on
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            int
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        List of modes the operation acts on.
 
-    @classmethod
-    def qubit(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def involved_modes(self) -> Union[Set[int], str]: # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
         """
-List of modes the operation acts on.
+        Remap the bosonic modes in copy of the operation.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-    @classmethod
-    def remap_modes(self, mapping: Dict[int, int]): # type: ignore
+        Returns:
+            self
+
+        Raises:
+            PyValueError: Remapping could not be performed
         """
-Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
-
-Returns:
-    self
-
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
-    @classmethod
-    def mode(self): # type: ignore
+    def mode(self):  # type: ignore
         """
-Return `mode` the bosonic Operation acts on.
+        Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            int
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class SingleExcitationLoad(Operation):
     """
-Loads a single excitation from a bosonic mode into a qubit as follows
-(c1 |0⟩_B + c2 |1⟩_B) ⨂ |0⟩_Q -> |0⟩_B ⨂ (c1 |0⟩_Q + c2 |1⟩_Q)
+    Loads a single excitation from a bosonic mode into a qubit as follows
+    (c1 |0⟩_B + c2 |1⟩_B) ⨂ |0⟩_Q -> |0⟩_B ⨂ (c1 |0⟩_Q + c2 |1⟩_Q)
 
-Note: if the initial qubit state is |1⟩_Q the operation is only defined if c2 = 0
+    Note: if the initial qubit state is |1⟩_Q the operation is only defined if c2 = 0
 
-Args:
-    qubit (int): The qubit the gate is applied to.
-    mode (int): The mode the gate is applied to.
-"""
+    Args:
+        qubit (int): The qubit the gate is applied to.
+        mode (int): The mode the gate is applied to.
+    """
 
     def __init__(self, qubit: int, mode: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def qubit(self):  # type: ignore
         """
-List all involved Qubits
+        Return the qubit the operation acts on
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            int
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        List of modes the operation acts on.
 
-    @classmethod
-    def qubit(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def involved_modes(self) -> Union[Set[int], str]: # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
         """
-List of modes the operation acts on.
+        Remap the bosonic modes in copy of the operation.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-    @classmethod
-    def remap_modes(self, mapping: Dict[int, int]): # type: ignore
+        Returns:
+            self
+
+        Raises:
+            PyValueError: Remapping could not be performed
         """
-Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
-
-Returns:
-    self
-
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
-    @classmethod
-    def mode(self): # type: ignore
+    def mode(self):  # type: ignore
         """
-Return `mode` the bosonic Operation acts on.
+        Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            int
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
 
 class CZQubitResonator(Operation):
     """
-Controlled-Z operation between a qubit and a bosonic mode, where the two-dimensional subspace of
-the bosonic mode spanned by the occupation number states |0⟩_B and |1⟩_B is considered
-as the second qubit involved in the CZ operation.
+    Controlled-Z operation between a qubit and a bosonic mode, where the two-dimensional subspace of
+    the bosonic mode spanned by the occupation number states |0⟩_B and |1⟩_B is considered
+    as the second qubit involved in the CZ operation.
 
-Args:
-    qubit (int): The qubit the gate is applied to.
-    mode (int): The mode the gate is applied to.
-"""
+    Args:
+        qubit (int): The qubit the gate is applied to.
+        mode (int): The mode the gate is applied to.
+    """
 
     def __init__(self, qubit: int, mode: int):
-       return
+        return
 
-    @classmethod
-    def __repr__(self): # type: ignore
+    def is_parametrized(self):  # type: ignore
         """
-Return repr(self).
-"""
+        Returns true if operation contains symbolic parameters
 
-    @classmethod
-    def __lt__(self): # type: ignore
+        Returns:
+            bool
         """
-Return self<value.
-"""
 
-    @classmethod
-    def __le__(self): # type: ignore
+    def tags(self) -> List[str]:  # type: ignore
         """
-Return self<=value.
-"""
+        Returns tags identifying the Operation
 
-    @classmethod
-    def __eq__(self): # type: ignore
+        Returns:
+            List[str]: The tags identifying the operation
         """
-Return self==value.
-"""
 
-    @classmethod
-    def __ne__(self): # type: ignore
+    def hqslang(self) -> str:  # type: ignore
         """
-Return self!=value.
-"""
+        Returns hqslang name of Operation
 
-    @classmethod
-    def __gt__(self): # type: ignore
+        Returns:
+            str: The name
         """
-Return self>value.
-"""
 
-    @classmethod
-    def __ge__(self): # type: ignore
+    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
         """
-Return self>=value.
-"""
+        Substitutes internal symbolic parameters with float values
 
-    @classmethod
-    def is_parametrized(self): # type: ignore
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
         """
-Returns true if operation contains symbolic parameters
 
-Returns:
-    bool
-"""
-
-    @classmethod
-    def tags(self) -> List[str]: # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
         """
-Returns tags identifying the Operation
+        Remap qubits
 
-Returns:
-    List[str]: The tags identifying the operation
-"""
+        Args:
+            mapping (Dict[int, int]): The mapping
 
-    @classmethod
-    def hqslang(self) -> str: # type: ignore
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
         """
-Returns hqslang name of Operation
 
-Returns:
-    str: The name
-"""
-
-    @classmethod
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation: # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
         """
-Substitutes internal symbolic parameters with float values
+        List all involved Qubits
 
-Only available when all symbolic expressions can be evaluated to float with the
-provided parameters.
-
-Args:
-    substitution_parameters (Dict[str, float]): The substituted free parameters
-
-Returns:
-    Operation: The operation with the parameters substituted
-
-Raises:
-    RuntimeError: Parameter Substitution failed
-"""
-
-    @classmethod
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation: # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Remap qubits
 
-Args:
-    mapping (Dict[int, int]): The mapping
-
-Returns:
-    Operation: The operation with the remapped qubits
-
-Raises:
-    RuntimeError: Qubit remapping failed
-"""
-
-    @classmethod
-    def involved_qubits(self) -> Union[Set[int], str]: # type: ignore
+    def qubit(self):  # type: ignore
         """
-List all involved Qubits
+        Return the qubit the operation acts on
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
-
-    @classmethod
-    def __copy__(self): # type: ignore
+        Returns:
+            int
         """
-Copies Operation
 
-For qoqo operations copy is always a deep copy
-"""
-
-    @classmethod
-    def __deepcopy__(self): # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
         """
-Creates deep copy of Operation
-"""
+        List of modes the operation acts on.
 
-    @classmethod
-    def qubit(self): # type: ignore
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
-Return the qubit the operation acts on
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def involved_modes(self) -> Union[Set[int], str]: # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
         """
-List of modes the operation acts on.
+        Remap the bosonic modes in copy of the operation.
 
-Returns:
-    Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
-"""
+        Args:
+            mapping (Dict[int, int]): Mapping for bosonic modes in operation.
 
-    @classmethod
-    def remap_modes(self, mapping: Dict[int, int]): # type: ignore
+        Returns:
+            self
+
+        Raises:
+            PyValueError: Remapping could not be performed
         """
-Remap the bosonic modes in copy of the operation.
 
-Args:
-    mapping (Dict[int, int]): Mapping for bosonic modes in operation.
-
-Returns:
-    self
-
-Raises:
-    PyValueError: Remapping could not be performed
-"""
-
-    @classmethod
-    def mode(self): # type: ignore
+    def mode(self):  # type: ignore
         """
-Return `mode` the bosonic Operation acts on.
+        Return `mode` the bosonic Operation acts on.
 
-Returns:
-    int
-"""
-
-    @classmethod
-    def current_version(self): # type: ignore
+        Returns:
+            int
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def min_supported_version(self) -> str: # type: ignore
+    def current_version(self) -> str:  # type: ignore
         """
-Return the minimum version of qoqo that supports this object.
+        Returns the current version of the qoqo library .
 
-Returns:
-    str: The minimum version of the qoqo library to deserialize this object.
-"""
-
-    @classmethod
-    def json_schema(self): # type: ignore
+        Returns:
+            str: The current version of the library.
         """
-staticmethod(function) -> method
 
-Convert a function to be a static method.
-
-A static method does not receive an implicit first argument.
-To declare a static method, use this idiom:
-
-     class C:
-         @staticmethod
-         def f(arg1, arg2, argN):
-             ...
-
-It can be called either on the class (e.g. C.f()) or on an instance
-(e.g. C().f()). Both the class and the instance are ignored, and
-neither is passed implicitly as the first argument to the method.
-
-Static methods in Python are similar to those found in Java or C++.
-For a more advanced concept, see the classmethod builtin.
-"""
-
-    @classmethod
-    def __doc__(self): # type: ignore
+    def min_supported_version(self) -> str:  # type: ignore
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
+        Return the minimum version of qoqo that supports this object.
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
-
-    @classmethod
-    def __module__(self): # type: ignore
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
         """
-str(object='') -> str
-str(bytes_or_buffer[, encoding[, errors]]) -> str
 
-Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.__str__() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.
-"""
+    def json_schema(self) -> str:  # type: ignore
+        """
+        Return the JsonSchema for the json serialisation of the class.
 
+        Returns:
+            str: The json schema serialized to json
+        """
