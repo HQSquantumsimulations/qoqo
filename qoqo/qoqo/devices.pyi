@@ -2,18 +2,7 @@
 # You can find the full implementation on this page:
 # https://github.com/HQSquantumsimulations/qoqo
 
-from .qoqo import Circuit, Operation  # noqa: F401
-import numpy as np  # noqa: F401
-from typing import (
-    Tuple,
-    List,
-    Optional,
-    Set,
-    Dict,
-    Union,
-    Self,
-    Sequence,
-)  # noqa: F401
+from typing import List, Optional
 
 class AllToAllDevice:
     """
@@ -296,7 +285,7 @@ class AllToAllDevice:
             PyValueError: Qubits not in device
         """
 
-    def qubit_decoherence_rates(self, qubit: int) -> np.array:  # type: ignore
+    def qubit_decoherence_rates(self, qubit: int) -> numpy.array:  # type: ignore
         """
         Return the matrix of the decoherence rates of the Lindblad equation.
 
@@ -657,7 +646,7 @@ class GenericDevice:
             PyValueError: Qubits not in device
         """
 
-    def qubit_decoherence_rates(self, qubit: int) -> np.array:  # type: ignore
+    def qubit_decoherence_rates(self, qubit: int) -> numpy.array:  # type: ignore
         """
         Return the matrix of the decoherence rates of the Lindblad equation.
 
@@ -1116,7 +1105,7 @@ class SquareLatticeDevice:
             PyValueError: Qubits not in device
         """
 
-    def qubit_decoherence_rates(self, qubit: int) -> np.array:  # type: ignore
+    def qubit_decoherence_rates(self, qubit: int) -> numpy.array:  # type: ignore
         """
         Return the matrix of the decoherence rates of the Lindblad equation.
 

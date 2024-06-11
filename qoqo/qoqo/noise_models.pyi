@@ -2,19 +2,8 @@
 # You can find the full implementation on this page:
 # https://github.com/HQSquantumsimulations/qoqo
 
-from .qoqo import Circuit, Operation  # noqa: F401
+from typing import List
 from struqture_py.spins import PlusMinusLindbladNoiseOperator  # type: ignore
-import numpy as np  # noqa: F401
-from typing import (
-    Tuple,
-    List,
-    Optional,
-    Set,
-    Dict,
-    Union,
-    Self,
-    Sequence,
-)  # noqa: F401
 
 class ContinuousDecoherenceModel:
     """
@@ -856,7 +845,7 @@ class DecoherenceOnIdleModel:
     def __init__(self, noise_operator):
         return
 
-    def get_noise_operator(self) -> PlusMinusLindbladNoiseOperator:
+    def get_noise_operator(self) -> PlusMinusLindbladNoiseOperator:  # type: ignore
         """
         Return the internal Lindblad noise operator of the continuous noise model.
 

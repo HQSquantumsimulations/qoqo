@@ -2,7 +2,8 @@
 # You can find the full implementation on this page:
 # https://github.com/HQSquantumsimulations/qoqo
 
-from typing import Optional, List, Tuple, Dict, Set  # noqa: F401
+from typing import Dict, List, Optional, Set, Tuple
+from .qoqo import Circuit, Operation
 
 class Circuit:
     """

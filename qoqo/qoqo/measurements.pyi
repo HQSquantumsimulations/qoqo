@@ -2,18 +2,8 @@
 # You can find the full implementation on this page:
 # https://github.com/HQSquantumsimulations/qoqo
 
-from .qoqo import Circuit, Operation  # noqa: F401
-import numpy as np  # noqa: F401
-from typing import (
-    Tuple,
-    List,
-    Optional,
-    Set,
-    Dict,
-    Union,
-    Self,
-    Sequence,
-)  # noqa: F401
+from typing import Dict, List, Optional, Union
+from .qoqo import Circuit
 
 class PauliZProductInput:
     """
