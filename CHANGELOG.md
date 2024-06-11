@@ -2,9 +2,9 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
-## 1.13.1
+## 1.14.0
 
-### Added in 1.13.1
+### Added in 1.14.0
 
 * Added the doc_generator feature to qoqo that will create .pyi used for python IDE hints during cargo build.
 * Change version mismatch error message to be clearer.
