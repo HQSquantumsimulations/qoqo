@@ -12324,7 +12324,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-httparse 1.9.2
+httparse 1.9.3
 https://github.com/seanmonstar/httparse
 by Sean McArthur <sean@seanmonstar.com>
 A tiny, safe, speedy, zero-copy HTTP/1.x parser.
@@ -25139,7 +25139,7 @@ LICENSE-APACHE:
 
 
 ====================================================
-qoqo 1.13.1
+qoqo 1.14.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoqo
@@ -25351,7 +25351,7 @@ LICENSE:
 
 
 ====================================================
-qoqo-macros 1.13.1
+qoqo-macros 1.14.0
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -28357,7 +28357,7 @@ limitations under the License.
 
 
 ====================================================
-roqoqo 1.13.1
+roqoqo 1.14.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
@@ -28569,7 +28569,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-derive 1.13.1
+roqoqo-derive 1.14.0
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the roqoqo crate
 License: Apache-2.0
@@ -28780,7 +28780,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-test 1.13.1
+roqoqo-test 1.14.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit

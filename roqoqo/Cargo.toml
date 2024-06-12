@@ -1,6 +1,6 @@
 [package]
 name = "roqoqo"
-version = "1.13.1"
+version = "1.14.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
@@ -28,13 +28,13 @@ num-complex = { version = "0.4" }
 thiserror = "1.0"
 dyn-clone = { version = "1.0", optional = true }
 qoqo_calculator = { version = "~1.2" }
-roqoqo-derive = { version = "~1.13.1", path = "../roqoqo-derive" }
+roqoqo-derive = { version = "~1.14", path = "../roqoqo-derive" }
 typetag = { version = "0.2", optional = true }
 nalgebra = "0.32"
 schemars = { version = "0.8", optional = true }
 jsonschema = { version = "0.17", optional = true }
 rand_distr = { version = "0.4", optional = true }
-rand = { version = "0.8.4" }
+rand = { version = "~0.8" }
 async-trait = { version = "0.1", optional = true }
 futures = { version = "0.3", optional = true }
 petgraph = { version = "0.6.2", optional = true }
@@ -50,7 +50,7 @@ serde_json = "1.0"
 quote = "1.0"
 syn = { version = "2.0", features = ["full", "visit"] }
 proc-macro2 = "1.0"
-rand = { version = "0.8" }
+rand = { version = "~0.8" }
 
 [package.metadata.docs.rs]
 rustdoc-args = ["--document-private-items"]
