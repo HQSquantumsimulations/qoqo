@@ -22,7 +22,7 @@ publish = false
 test_roqoqo_1_2 = { package = "roqoqo", features = [
     "serialize",
 ], version = "=1.2.5" }
-qoqo_calculator = { version = "1.2" }
+qoqo_calculator = { version = "~1.2" }
 roqoqo = { path = "../../roqoqo", features = ["serialize", "overrotate"] }
 num-complex = { version = "0.4" }
 ndarray = "0.15"
