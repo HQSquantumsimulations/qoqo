@@ -24,6 +24,8 @@ mod overrotation;
 pub use overrotation::{
     SingleQubitOverrotationDescriptionWrapper, SingleQubitOverrotationOnGateWrapper,
 };
+mod decoherence_on_idle;
+pub use decoherence_on_idle::DecoherenceOnIdleModelWrapper;
 use pyo3::prelude::*;
 
 /// A collection of noise models that represent different types of noise that can be present in Quantum Computing hardware.
@@ -34,6 +36,9 @@ use pyo3::prelude::*;
 ///     ContinuousDecoherenceModel
 ///     ImperfectReadoutModel
 ///     DecoherenceOnGateModel
+///     SingleQubitOverrotationDescription
+///     SingleQubitOverrotationOnGate
+///     DecoherenceOnIdleModel
 #[pymodule]
 pub fn noise_models(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<ContinuousDecoherenceModelWrapper>()?;
@@ -41,5 +46,6 @@ pub fn noise_models(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<DecoherenceOnGateModelWrapper>()?;
     module.add_class::<SingleQubitOverrotationDescriptionWrapper>()?;
     module.add_class::<SingleQubitOverrotationOnGateWrapper>()?;
+    module.add_class::<DecoherenceOnIdleModelWrapper>()?;
     Ok(())
 }

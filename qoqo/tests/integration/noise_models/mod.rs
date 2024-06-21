@@ -12,5 +12,6 @@
 
 mod continuous_decoherence;
 mod decoherence_on_gate;
+mod decoherence_on_idle;
 mod imperfect_readout;
 mod overrotation;

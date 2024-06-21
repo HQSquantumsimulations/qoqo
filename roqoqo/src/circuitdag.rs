@@ -546,7 +546,8 @@ impl CircuitDag {
                     }
                 }
                 // Update last_operation_involving_classical with the temporary HashMap
-                self.last_operation_involving_classical = temp_map.clone();
+                self.last_operation_involving_classical
+                    .clone_from(&temp_map);
             }
             InvolvedClassical::None => (),
         }
@@ -590,7 +591,8 @@ impl CircuitDag {
                     }
                 }
                 // Update first_operation_involving_classical with the temporary HashMap
-                self.first_operation_involving_classical = temp_map.clone();
+                self.first_operation_involving_classical
+                    .clone_from(&temp_map);
             }
             InvolvedClassical::None => (),
         }
@@ -884,7 +886,7 @@ impl<'a> Iterator for ParallelBlocks<'a> {
         }
 
         // Update parallel_block and return it
-        self.parallel_block = new_parallel_block.clone();
+        self.parallel_block.clone_from(&new_parallel_block);
         if new_parallel_block.is_empty() {
             return None;
         }
