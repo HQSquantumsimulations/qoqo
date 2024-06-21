@@ -1083,7 +1083,7 @@ dependencies = [
 
 [[package]]
 name = "qoqo"
-version = "1.11.0-alpha.1"
+version = "1.11.1"
 dependencies = [
  "bincode",
  "nalgebra",
@@ -1101,7 +1101,7 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "struqture 1.6.2",
+ "struqture 1.7.0-alpha.0",
  "struqture-py",
  "syn 2.0.52",
  "test-case",
@@ -1110,11 +1110,11 @@ dependencies = [
 
 [[package]]
 name = "qoqo-macros"
-version = "1.11.0-alpha.1"
+version = "1.11.1"
 dependencies = [
  "proc-macro2",
  "quote",
- "struqture 1.6.2",
+ "struqture 1.7.0-alpha.0",
  "syn 2.0.52",
 ]
 
@@ -1275,7 +1275,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo"
-version = "1.11.0-alpha.1"
+version = "1.11.1"
 dependencies = [
  "async-trait",
  "bincode",
@@ -1296,7 +1296,7 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_test",
- "struqture 1.6.2",
+ "struqture 1.7.0-alpha.0",
  "syn 2.0.52",
  "test-case",
  "thiserror",
@@ -1305,7 +1305,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-derive"
-version = "1.11.0-alpha.1"
+version = "1.11.1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1314,7 +1314,7 @@ dependencies = [
 
 [[package]]
 name = "roqoqo-test"
-version = "1.11.0-alpha.1"
+version = "1.11.1"
 dependencies = [
  "nalgebra",
  "ndarray",
@@ -1492,9 +1492,7 @@ checksum = "5ee073c9e4cd00e28217186dbe12796d692868f432bf2e97ee73bed0c56dfa01"
 
 [[package]]
 name = "struqture"
-version = "1.6.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b5e6a6fae203fb8098042ab51364cf5ff79020312e68b63038371d627029ab08"
+version = "1.7.0-alpha.0"
 dependencies = [
  "itertools",
  "ndarray",
@@ -1509,22 +1507,7 @@ dependencies = [
 
 [[package]]
 name = "struqture"
-version = "1.6.2"
-dependencies = [
- "itertools",
- "ndarray",
- "num-complex",
- "qoqo_calculator",
- "schemars",
- "serde",
- "test-case",
- "thiserror",
- "tinyvec",
-]
-
-[[package]]
-name = "struqture"
-version = "2.0.0"
+version = "2.0.0-alpha.0"
 dependencies = [
  "indexmap",
  "itertools",
@@ -1532,7 +1515,7 @@ dependencies = [
  "num-complex",
  "qoqo_calculator",
  "serde",
- "struqture 1.6.1",
+ "struqture 1.7.0-alpha.0",
  "test-case",
  "thiserror",
  "tinyvec",
@@ -1540,7 +1523,7 @@ dependencies = [
 
 [[package]]
 name = "struqture-py"
-version = "1.6.2"
+version = "1.7.0-alpha.0"
 dependencies = [
  "bincode",
  "num-complex",
@@ -1554,8 +1537,8 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "struqture 1.6.2",
- "struqture 2.0.0",
+ "struqture 1.7.0-alpha.0",
+ "struqture 2.0.0-alpha.0",
  "struqture-py-macros",
  "syn 2.0.52",
  "thiserror",
@@ -1563,7 +1546,7 @@ dependencies = [
 
 [[package]]
 name = "struqture-py-macros"
-version = "1.6.2"
+version = "1.7.0-alpha.0"
 dependencies = [
  "num-complex",
  "proc-macro2",
