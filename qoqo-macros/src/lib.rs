@@ -149,7 +149,7 @@ pub fn wrap(
             /// Return the superoperator defining the evolution of the density matrix under the noise gate
             ///
             /// Returns:
-            ///     np.ndarray
+            ///     np.ndarray: superoperator of gate.
             ///
             pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>>{
                 Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
@@ -373,7 +373,7 @@ pub fn wrap(
             /// Return unitary matrix of gate.
             ///
             /// Returns:
-            ///     np.ndarray
+            ///     np.ndarray: matrix of gate.
             ///
             /// Raises:
             ///     ValueError: Error symbolic operation cannot return float unitary matrix

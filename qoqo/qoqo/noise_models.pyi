@@ -2,978 +2,993 @@
 # You can find the full implementation on this page:
 # https://github.com/HQSquantumsimulations/qoqo
 
-from typing import List
-from struqture_py.spins import PlusMinusLindbladNoiseOperator  # type: ignore
+"""
+A collection of noise models that represent different types of noise that can be present in Quantum Computing hardware.
+
+.. autosummary::
+    :toctree: generated/
+
+    ContinuousDecoherenceModel
+    ImperfectReadoutModel
+    DecoherenceOnGateModel
+    SingleQubitOverrotationDescription
+    SingleQubitOverrotationOnGate
+    DecoherenceOnIdleModel
+"""
+
+from typing import Optional, List
+from struqture_py.spins import PlusMinusProduct, PlusMinusLindbladNoiseOperator # type: ignore
 
 class ContinuousDecoherenceModel:
     """
-    Noise model representing a continuous decoherence process on qubits.
+Noise model representing a continuous decoherence process on qubits.
 
-    This noise model assumes that all qubits are constantly experiencing
-    decoherence over time (e.g. due to coupling to the environment).
-    The noise for each qubit can be different but only single qubit noise is
-    included in the model.
+This noise model assumes that all qubits are constantly experiencing
+decoherence over time (e.g. due to coupling to the environment).
+The noise for each qubit can be different but only single qubit noise is
+included in the model.
 
-    Noise is given by the rates of the Lindblad equation.
-    The Lindblad equation is a so-called master equation for the time evolution of a density matrix.
-    For the example of a single qubit the non-coherent part of the Lindblad equation can take the following form:
+Noise is given by the rates of the Lindblad equation.
+The Lindblad equation is a so-called master equation for the time evolution of a density matrix.
+For the example of a single qubit the non-coherent part of the Lindblad equation can take the following form:
 
-    d/dt * ρ = Σ Mij * Li * ρ * Lj† - 1/2 * ( Lj† * Li * ρ + ρ * Lj† * Li),
+d/dt * ρ = Σ Mij * Li * ρ * Lj† - 1/2 * ( Lj† * Li * ρ + ρ * Lj† * Li),
 
-    where the indices i and j run from 0 to 2
+where the indices i and j run from 0 to 2
 
-    with L0 = σ+, L1 = σ- and L3 = σz.
+with L0 = σ+, L1 = σ- and L3 = σz.
 
-    Here the genreal incoherent part of the Lindblad equation is internally represented by a [struqture::spins::PlusMinusLindbladNoiseOperator].
+Here the genreal incoherent part of the Lindblad equation is internally represented by a [struqture::spins::PlusMinusLindbladNoiseOperator].
 
-    To create a complex decoherence model first create the Lindblad noise and then turn it into a ContinuousDecoherenceModel.
-    For a simple decoherence model, use new to create an empty model and use the add_damping, add_excitation and add_dephasing methods.
-    For more fine control access the internal lindblad_noise directly and modify it.
+To create a complex decoherence model first create the Lindblad noise and then turn it into a ContinuousDecoherenceModel.
+For a simple decoherence model, use new to create an empty model and use the add_damping, add_excitation and add_dephasing methods.
+For more fine control access the internal lindblad_noise directly and modify it.
 
-    Args:
+Args:
 
-        noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): Optional initialisation of Noise Model with given Lindblad operator.
-    """
+    noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): Optional initialisation of Noise Model with given Lindblad operator.
+"""
 
     def __init__(self, noise_operator):
-        return
+       return
 
-    def get_noise_operator(self) -> PlusMinusLindbladNoiseOperator:  # type: ignore
+    def get_noise_operator(self) -> PlusMinusLindbladNoiseOperator: # type: ignore
         """
-        Return the internal Lindblad noise operator of the continuous noise model.
+Return the internal Lindblad noise operator of the continuous noise model.
 
-        Returns:
-            PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the continuous noise
+Returns:
+    PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the continuous noise
+"""
+
+    def from_bincode(self, input: bytearray): # type: ignore
         """
+Convert the bincode representation of the Noise-Model to a device using the bincode crate.
 
-    def from_bincode(self, input: bytearray):  # type: ignore
+Args:
+    input (ByteArray): The serialized Noise-Model (in bincode form).
+
+Returns:
+    The deserialized Noise-Model.
+
+Raises:
+    TypeError: Input cannot be converted to byte array.
+    ValueError: Input cannot be deserialized to selected Noise-Model.
+"""
+
+    def from_json(self, input: str): # type: ignore
         """
-        Convert the bincode representation of the Noise-Model to a device using the bincode crate.
+Convert the json representation of a device to a Noise-Model.
 
-        Args:
-            input (ByteArray): The serialized Noise-Model (in bincode form).
+Args:
+    input (str): The serialized device in json form.
 
-        Returns:
-            The deserialized Noise-Model.
+Returns:
+    The deserialized device.
 
-        Raises:
-            TypeError: Input cannot be converted to byte array.
-            ValueError: Input cannot be deserialized to selected Noise-Model.
+Raises:
+    ValueError: Input cannot be deserialized to selected Noise-Model.
+"""
+
+    def json_schema(self) -> str: # type: ignore
         """
+Return the JsonSchema for the json serialisation of the class.
 
-    def from_json(self, input: str):  # type: ignore
+Returns:
+    str: The json schema serialized to json
+"""
+
+    def add_damping_rate(self, qubits: List[int], rate: float) -> ContinuousDecoherenceModel: # type: ignore
         """
-        Convert the json representation of a device to a Noise-Model.
+Convenience function to add damping to several qubits
 
-        Args:
-            input (str): The serialized device in json form.
+Args:
+    qubits (List[int]): The qubits to add damping to.
+    rate (float): The damping rate.
 
-        Returns:
-            The deserialized device.
+Returns:
+    ContinuousDecoherenceModel: The model with the damping added.
+"""
 
-        Raises:
-            ValueError: Input cannot be deserialized to selected Noise-Model.
+    def add_dephasing_rate(self, qubits: List[int], rate: float) -> ContinuousDecoherenceModel: # type: ignore
         """
+Convenience function to add dephasing to several qubits
 
-    def json_schema(self) -> str:  # type: ignore
+Args:
+    qubits (List[int]): The qubits to add dephasing to.
+    rate (float): The dephasing rate.
+
+Returns:
+    ContinuousDecoherenceModel: The model with the dephasing added.
+"""
+
+    def add_depolarising_rate(self, qubits: List[int], rate: float) -> ContinuousDecoherenceModel: # type: ignore
         """
-        Return the JsonSchema for the json serialisation of the class.
+Convenience function to add depolarising to several qubits
 
-        Returns:
-            str: The json schema serialized to json
+Args:
+    qubits (List[int]): The qubits to add depolarising to.
+    rate (float): The depolarising rate.
+
+Returns:
+    ContinuousDecoherenceModel: The model with the depolarising added.
+"""
+
+    def add_excitation_rate(self, qubits: List[int], rate: float) -> ContinuousDecoherenceModel: # type: ignore
         """
+Convenience function to add excitation to several qubits
 
-    def add_damping_rate(self, qubits: List[int], rate: float) -> ContinuousDecoherenceModel:  # type: ignore
+Args:
+    qubits (List[int]): The qubits to add excitation to.
+    rate (float): The excitation rate.
+
+Returns:
+    ContinuousDecoherenceModel: The model with the excitation added.
+"""
+
+    def to_bincode(self) -> bytearray: # type: ignore
         """
-        Convenience function to add damping to several qubits
+Return the bincode representation of the Noise-Model using the bincode crate.
 
-        Args:
-            qubits (List[int]): The qubits to add damping to.
-            rate (float): The damping rate.
+Returns:
+    ByteArray: The serialized Noise-Model (in bincode form).
 
-        Returns:
-            ContinuousDecoherenceModel: The model with the damping added.
+Raises:
+    ValueError: Cannot serialize Noise-Model to bytes.
+
+"""
+
+    def to_json(self) -> str: # type: ignore
         """
+Return the json representation of the Noise-Model.
 
-    def add_dephasing_rate(self, qubits: List[int], rate: float) -> ContinuousDecoherenceModel:  # type: ignore
+Returns:
+    str: The serialized form of Noise-Model.
+
+Raises:
+    ValueError: Cannot serialize Noise-Model to json.
+
+"""
+
+    def current_version(self) -> str: # type: ignore
         """
-        Convenience function to add dephasing to several qubits
+Returns the current version of the qoqo library .
 
-        Args:
-            qubits (List[int]): The qubits to add dephasing to.
-            rate (float): The dephasing rate.
+Returns:
+    str: The current version of the library.
+"""
 
-        Returns:
-            ContinuousDecoherenceModel: The model with the dephasing added.
+    def min_supported_version(self) -> str: # type: ignore
         """
+Return the minimum version of qoqo that supports this object.
 
-    def add_depolarising_rate(self, qubits: List[int], rate: float) -> ContinuousDecoherenceModel:  # type: ignore
-        """
-        Convenience function to add depolarising to several qubits
-
-        Args:
-            qubits (List[int]): The qubits to add depolarising to.
-            rate (float): The depolarising rate.
-
-        Returns:
-            ContinuousDecoherenceModel: The model with the depolarising added.
-        """
-
-    def add_excitation_rate(self, qubits: List[int], rate: float) -> ContinuousDecoherenceModel:  # type: ignore
-        """
-        Convenience function to add excitation to several qubits
-
-        Args:
-            qubits (List[int]): The qubits to add excitation to.
-            rate (float): The excitation rate.
-
-        Returns:
-            ContinuousDecoherenceModel: The model with the excitation added.
-        """
-
-    def to_bincode(self) -> bytearray:  # type: ignore
-        """
-        Return the bincode representation of the Noise-Model using the bincode crate.
-
-        Returns:
-            ByteArray: The serialized Noise-Model (in bincode form).
-
-        Raises:
-            ValueError: Cannot serialize Noise-Model to bytes.
-
-        """
-
-    def to_json(self) -> str:  # type: ignore
-        """
-        Return the json representation of the Noise-Model.
-
-        Returns:
-            str: The serialized form of Noise-Model.
-
-        Raises:
-            ValueError: Cannot serialize Noise-Model to json.
-
-        """
-
-    def current_version(self) -> str:  # type: ignore
-        """
-        Returns the current version of the qoqo library .
-
-        Returns:
-            str: The current version of the library.
-        """
-
-    def min_supported_version(self) -> str:  # type: ignore
-        """
-        Return the minimum version of qoqo that supports this object.
-
-        Returns:
-            str: The minimum version of the qoqo library to deserialize this object.
-        """
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
 
 class ImperfectReadoutModel:
     """
-    Noise model representing readout errors.
+Noise model representing readout errors.
 
-    Readout errors are modeled by two probabilities in this simple model.
-    One probability to detect a 1 instead of a 0 when the quantum measurement gives 0 and
-    one probability to detect a 0 instead of a 1 when the quantum measurement gives 1.
+Readout errors are modeled by two probabilities in this simple model.
+One probability to detect a 1 instead of a 0 when the quantum measurement gives 0 and
+one probability to detect a 0 instead of a 1 when the quantum measurement gives 1.
 
-    # Example
+# Example
 
-    ```Python
-    form qoqo.noise_models import ImperfectReadoutModel
+```Python
+form qoqo.noise_models import ImperfectReadoutModel
 
-    model = ImperfectReadoutModel.new_with_uniform_error(3, 0.5, 0.5);
-    model = model.set_error_probabilites(2, 0.3, 0.7)
-    uniform_prob = model.prob_detect_0_as_1(0)
-    assert uniform_prob == 0.5
-    lower_prob = model.prob_detect_0_as_1(2)
-    assert lower_prob == 0.3
-    higher_prob = model.prob_detect_1_as_0(2)
-    assert higher_prob == 0.7
-    ```
-    """
+model = ImperfectReadoutModel.new_with_uniform_error(3, 0.5, 0.5);
+model = model.set_error_probabilites(2, 0.3, 0.7)
+uniform_prob = model.prob_detect_0_as_1(0)
+assert uniform_prob == 0.5
+lower_prob = model.prob_detect_0_as_1(2)
+assert lower_prob == 0.3
+higher_prob = model.prob_detect_1_as_0(2)
+assert higher_prob == 0.7
+```
+"""
 
     def __init__(self):
-        return
+       return
 
-    def new_with_uniform_error(self, number_qubits: int, prob_detect_0_as_1: float, prob_detect_1_as_0: float) -> ImperfectReadoutModel:  # type: ignore
+    def new_with_uniform_error(self, number_qubits: int, prob_detect_0_as_1: float, prob_detect_1_as_0: float) -> ImperfectReadoutModel: # type: ignore
         """
-        Convenience function to create uniform error probabilities
+Convenience function to create uniform error probabilities
 
-        Args:
-            number_qubits (int): The number of qubits the uniform error probabilites should be initialized for.
-            prob_detect_0_as_1 (float): The error probability to detect a 1 instead of a 0 when measuring 0
-            prob_detect_1_as_0 (float): The error probability to detect a 0 instead of a 1 when measuring 1
+Args:
+    number_qubits (int): The number of qubits the uniform error probabilites should be initialized for.
+    prob_detect_0_as_1 (float): The error probability to detect a 1 instead of a 0 when measuring 0
+    prob_detect_1_as_0 (float): The error probability to detect a 0 instead of a 1 when measuring 1
 
-        Returns:
-            ImperfectReadoutModel: The new error model
+Returns:
+    ImperfectReadoutModel: The new error model
 
-        Raises:
-            ValueError: Raised if the error probabilities are not valid (< 0 or > 1)
+Raises:
+    ValueError: Raised if the error probabilities are not valid (< 0 or > 1)
+"""
+
+    def from_bincode(self, input: bytearray): # type: ignore
         """
+Convert the bincode representation of the Noise-Model to a device using the bincode crate.
 
-    def from_bincode(self, input: bytearray):  # type: ignore
+Args:
+    input (ByteArray): The serialized Noise-Model (in bincode form).
+
+Returns:
+    The deserialized Noise-Model.
+
+Raises:
+    TypeError: Input cannot be converted to byte array.
+    ValueError: Input cannot be deserialized to selected Noise-Model.
+"""
+
+    def from_json(self, input: str): # type: ignore
         """
-        Convert the bincode representation of the Noise-Model to a device using the bincode crate.
+Convert the json representation of a device to a Noise-Model.
 
-        Args:
-            input (ByteArray): The serialized Noise-Model (in bincode form).
+Args:
+    input (str): The serialized device in json form.
 
-        Returns:
-            The deserialized Noise-Model.
+Returns:
+    The deserialized device.
 
-        Raises:
-            TypeError: Input cannot be converted to byte array.
-            ValueError: Input cannot be deserialized to selected Noise-Model.
+Raises:
+    ValueError: Input cannot be deserialized to selected Noise-Model.
+"""
+
+    def json_schema(self) -> str: # type: ignore
         """
+Return the JsonSchema for the json serialisation of the class.
 
-    def from_json(self, input: str):  # type: ignore
+Returns:
+    str: The json schema serialized to json
+"""
+
+    def set_error_probabilites(self, qubit: int, prob_detect_0_as_1: float, prob_detect_1_as_0: float) -> Self: # type: ignore
         """
-        Convert the json representation of a device to a Noise-Model.
+Set and overwrite the measurement error probabilities
 
-        Args:
-            input (str): The serialized device in json form.
+Args:
+    qubit (int): The qubitsfor which error rates is set.
+    prob_detect_0_as_1 (float): The error probability to detect a 1 instead of a 0 when measuring 0
+    prob_detect_1_as_0 (float): The error probability to detect a 0 instead of a 1 when measuring 1
 
-        Returns:
-            The deserialized device.
+Returns:
+    Self: The updated error model
 
-        Raises:
-            ValueError: Input cannot be deserialized to selected Noise-Model.
+Raises:
+    ValueError: Raised if the error probabilities are not valid (< 0 or > 1).
+"""
+
+    def prob_detect_0_as_1(self, qubit: int) -> float: # type: ignore
         """
+Return probability to detect 0 as 1 for a qubit
 
-    def json_schema(self) -> str:  # type: ignore
+Args:
+    qubit (int): The qubit for which the probability is returned.
+
+Returns:
+    float: The probability to detect 0 as 1 for the qubit
+"""
+
+    def prob_detect_1_as_0(self, qubit: int) -> float: # type: ignore
         """
-        Return the JsonSchema for the json serialisation of the class.
+Return probability to detect 1 as 0 for a qubit
 
-        Returns:
-            str: The json schema serialized to json
+Args:
+    qubit (int): The qubit for which the probability is returned.
+
+Returns:
+    float: The probability to detect 1 as 0 for the qubit
+"""
+
+    def to_bincode(self) -> bytearray: # type: ignore
         """
+Return the bincode representation of the Noise-Model using the bincode crate.
 
-    def set_error_probabilites(self, qubit: int, prob_detect_0_as_1: float, prob_detect_1_as_0: float) -> Self:  # type: ignore
+Returns:
+    ByteArray: The serialized Noise-Model (in bincode form).
+
+Raises:
+    ValueError: Cannot serialize Noise-Model to bytes.
+
+"""
+
+    def to_json(self) -> str: # type: ignore
         """
-        Set and overwrite the measurement error probabilities
+Return the json representation of the Noise-Model.
 
-        Args:
-            qubit (int): The qubitsfor which error rates is set.
-            prob_detect_0_as_1 (float): The error probability to detect a 1 instead of a 0 when measuring 0
-            prob_detect_1_as_0 (float): The error probability to detect a 0 instead of a 1 when measuring 1
+Returns:
+    str: The serialized form of Noise-Model.
 
-        Returns:
-            Self: The updated error model
+Raises:
+    ValueError: Cannot serialize Noise-Model to json.
 
-        Raises:
-            ValueError: Raised if the error probabilities are not valid (< 0 or > 1).
+"""
+
+    def current_version(self) -> str: # type: ignore
         """
+Returns the current version of the qoqo library .
 
-    def prob_detect_0_as_1(self, qubit: int) -> float:  # type: ignore
+Returns:
+    str: The current version of the library.
+"""
+
+    def min_supported_version(self) -> str: # type: ignore
         """
-        Return probability to detect 0 as 1 for a qubit
+Return the minimum version of qoqo that supports this object.
 
-        Args:
-            qubit (int): The qubit for which the probability is returned.
-
-        Returns:
-            float: The probability to detect 0 as 1 for the qubit
-        """
-
-    def prob_detect_1_as_0(self, qubit: int) -> float:  # type: ignore
-        """
-        Return probability to detect 1 as 0 for a qubit
-
-        Args:
-            qubit (int): The qubit for which the probability is returned.
-
-        Returns:
-            float: The probability to detect 1 as 0 for the qubit
-        """
-
-    def to_bincode(self) -> bytearray:  # type: ignore
-        """
-        Return the bincode representation of the Noise-Model using the bincode crate.
-
-        Returns:
-            ByteArray: The serialized Noise-Model (in bincode form).
-
-        Raises:
-            ValueError: Cannot serialize Noise-Model to bytes.
-
-        """
-
-    def to_json(self) -> str:  # type: ignore
-        """
-        Return the json representation of the Noise-Model.
-
-        Returns:
-            str: The serialized form of Noise-Model.
-
-        Raises:
-            ValueError: Cannot serialize Noise-Model to json.
-
-        """
-
-    def current_version(self) -> str:  # type: ignore
-        """
-        Returns the current version of the qoqo library .
-
-        Returns:
-            str: The current version of the library.
-        """
-
-    def min_supported_version(self) -> str:  # type: ignore
-        """
-        Return the minimum version of qoqo that supports this object.
-
-        Returns:
-            str: The minimum version of the qoqo library to deserialize this object.
-        """
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
 
 class DecoherenceOnGateModel:
     """
-    Error model for noise that is only present on gate executions.
+Error model for noise that is only present on gate executions.
 
-    Adds additional noise when specific gates (identified by hqslang name and qubits acted on) are executed.
-    The noise is given in the form of a struqture.spins.PlusMinusLindbladNoiseOperator the same way it
-    is for the ContinuousDecoherence model.
+Adds additional noise when specific gates (identified by hqslang name and qubits acted on) are executed.
+The noise is given in the form of a struqture.spins.PlusMinusLindbladNoiseOperator the same way it
+is for the ContinuousDecoherence model.
 
-    Example:
+Example:
 
-    ```
-    from qoqo.noise_models import DecoherenceOnGateModel
-    from struqture_py.spins import (PlusMinusLindbladNoiseOperator, PlusMinusProduct)
+```
+from qoqo.noise_models import DecoherenceOnGateModel
+from struqture_py.spins import (PlusMinusLindbladNoiseOperator, PlusMinusProduct)
 
-    noise_model = DecoherenceOnGateModel()
-    lindblad_noise = PlusMinusLindbladNoiseOperator()
-    lindblad_noise.add_operator_product(
-       (PlusMinusProduct().z(0), PlusMinusProduct().z(0)),
-       0.9)
-    lindblad_noise.add_operator_product(
-       (PlusMinusProduct().z(1), PlusMinusProduct().z(1)),
-       0.9)
+noise_model = DecoherenceOnGateModel()
+lindblad_noise = PlusMinusLindbladNoiseOperator()
+lindblad_noise.add_operator_product(
+   (PlusMinusProduct().z(0), PlusMinusProduct().z(0)),
+   0.9)
+lindblad_noise.add_operator_product(
+   (PlusMinusProduct().z(1), PlusMinusProduct().z(1)),
+   0.9)
 
-    noise_model = noise_model.set_two_qubit_term(
-    "CNOT", 0,1,
-    lindblad_noise
-    )
-    ```
-    """
+noise_model = noise_model.set_two_qubit_term(
+"CNOT", 0,1,
+lindblad_noise
+)
+```
+"""
 
     def __init__(self):
-        return
+       return
 
-    def set_single_qubit_gate_error(self, gate: str, qubit: int, noise_operator) -> Self:  # type: ignore
+    def set_single_qubit_gate_error(self, gate: str, qubit: int, noise_operator) -> Self: # type: ignore
         """
-        Set extra noise for a single qubit gate.
+Set extra noise for a single qubit gate.
 
-        Args:
-            gate (str): The name of the gate.
-            qubit (int): The qubit the gate acts on.
-            noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): The noise affecting system when gate is applied.
+Args:
+    gate (str): The name of the gate.
+    qubit (int): The qubit the gate acts on.
+    noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): The noise affecting system when gate is applied.
 
-        Returns:
-            Self: The error model with the new noise on gate set.
+Returns:
+    Self: The error model with the new noise on gate set.
 
-        Raises:
-            PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
+Raises:
+    PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
+"""
+
+    def get_single_qubit_gate_error(self, gate: str, qubit: int): # type: ignore
         """
+Return the extra noise for a single qubit gate, if it exists.
 
-    def get_single_qubit_gate_error(self, gate: str, qubit: int):  # type: ignore
+Args:
+    gate (str): The name of the gate.
+    qubit (int): The qubit the gate acts on.
+
+Returns
+    Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
+"""
+
+    def set_two_qubit_gate_error(self, gate: str, control: int, target: int, noise_operator) -> Self: # type: ignore
         """
-        Return the extra noise for a single qubit gate, if it exists.
+Set extra noise for a two qubit gate.
 
-        Args:
-            gate (str): The name of the gate.
-            qubit (int): The qubit the gate acts on.
+Args:
+    gate (str): The name of the gate.
+    control (int): The control qubit the gate acts on.
+    target (int): The target qubit the gate acts on.
+    noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): The noise affecting system when gate is applied.
 
-        Returns
-            Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
+Returns:
+    Self: The error model with the new noise on gate set.
+
+Raises:
+    PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
+"""
+
+    def get_two_qubit_gate_error(self, gate: str, control: int, target: int): # type: ignore
         """
+Return the extra noise for a single qubit gate, if it exists.
 
-    def set_two_qubit_gate_error(self, gate: str, control: int, target: int, noise_operator) -> Self:  # type: ignore
+Args:
+    gate (str): The name of the gate.
+    control (int): The control qubit the gate acts on.
+    target (int): The target qubit the gate acts on.
+
+Returns
+    Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
+"""
+
+    def set_three_qubit_gate_error(self, gate: str, control0: int, control1: int, target: int, noise_operator) -> Self: # type: ignore
         """
-        Set extra noise for a two qubit gate.
+Set extra noise for a single qubit gate.
 
-        Args:
-            gate (str): The name of the gate.
-            control (int): The control qubit the gate acts on.
-            target (int): The target qubit the gate acts on.
-            noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): The noise affecting system when gate is applied.
+Args:
+    gate (str): The name of the gate.
+    control0 (int): The first control qubit the gate acts on.
+    control1 (int): The second control qubit the gate acts on.
+    target (int): The target qubit the gate acts on.
+    noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): The noise affecting system when gate is applied.
 
-        Returns:
-            Self: The error model with the new noise on gate set.
+Returns:
+    Self: The error model with the new noise on gate set.
 
-        Raises:
-            PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
+Raises:
+    PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
+"""
+
+    def get_three_qubit_gate_error(self, gate: str, control0: int, control1: int, target: int): # type: ignore
         """
+Return the extra noise for a three qubit gate, if it exists.
 
-    def get_two_qubit_gate_error(self, gate: str, control: int, target: int):  # type: ignore
+Args:
+    gate (str): The name of the gate.
+    control0 (int): The first control qubit the gate acts on.
+    control1 (int): The second control qubit the gate acts on.
+    target (int): The target qubit the gate acts on.
+
+Returns
+    Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
+"""
+
+    def set_multi_qubit_gate_error(self, gate: str, qubits: List, noise_operator) -> Self: # type: ignore
         """
-        Return the extra noise for a single qubit gate, if it exists.
+Set extra noise for a multi qubit gate.
 
-        Args:
-            gate (str): The name of the gate.
-            control (int): The control qubit the gate acts on.
-            target (int): The target qubit the gate acts on.
+Args:
+    gate (str): The name of the gate.
+    qubits (list): The qubits the gate acts on.
+    noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): The noise affecting system when gate is applied.
 
-        Returns
-            Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
+Returns:
+    Self: The error model with the new noise on gate set.
+
+Raises:
+    PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
+"""
+
+    def get_multi_qubit_gate_error(self, gate: str, qubits: List[int]): # type: ignore
         """
+Return the extra noise for a multi qubit gate, if it exists.
 
-    def set_three_qubit_gate_error(self, gate: str, control0: int, control1: int, target: int, noise_operator) -> Self:  # type: ignore
+Args:
+    gate (str): The name of the gate.
+    qubits (List[int]): The qubits the gate acts on.
+
+Returns
+    Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
+"""
+
+    def from_bincode(self, input: bytearray): # type: ignore
         """
-        Set extra noise for a single qubit gate.
+Convert the bincode representation of the Noise-Model to a device using the bincode crate.
 
-        Args:
-            gate (str): The name of the gate.
-            control0 (int): The first control qubit the gate acts on.
-            control1 (int): The second control qubit the gate acts on.
-            target (int): The target qubit the gate acts on.
-            noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): The noise affecting system when gate is applied.
+Args:
+    input (ByteArray): The serialized Noise-Model (in bincode form).
 
-        Returns:
-            Self: The error model with the new noise on gate set.
+Returns:
+    The deserialized Noise-Model.
 
-        Raises:
-            PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
+Raises:
+    TypeError: Input cannot be converted to byte array.
+    ValueError: Input cannot be deserialized to selected Noise-Model.
+"""
+
+    def from_json(self, input: str): # type: ignore
         """
+Convert the json representation of a device to a Noise-Model.
 
-    def get_three_qubit_gate_error(self, gate: str, control0: int, control1: int, target: int):  # type: ignore
+Args:
+    input (str): The serialized device in json form.
+
+Returns:
+    The deserialized device.
+
+Raises:
+    ValueError: Input cannot be deserialized to selected Noise-Model.
+"""
+
+    def json_schema(self) -> str: # type: ignore
         """
-        Return the extra noise for a three qubit gate, if it exists.
+Return the JsonSchema for the json serialisation of the class.
 
-        Args:
-            gate (str): The name of the gate.
-            control0 (int): The first control qubit the gate acts on.
-            control1 (int): The second control qubit the gate acts on.
-            target (int): The target qubit the gate acts on.
+Returns:
+    str: The json schema serialized to json
+"""
 
-        Returns
-            Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
+    def to_bincode(self) -> bytearray: # type: ignore
         """
+Return the bincode representation of the Noise-Model using the bincode crate.
 
-    def set_multi_qubit_gate_error(self, gate: str, qubits: List, noise_operator) -> Self:  # type: ignore
+Returns:
+    ByteArray: The serialized Noise-Model (in bincode form).
+
+Raises:
+    ValueError: Cannot serialize Noise-Model to bytes.
+
+"""
+
+    def to_json(self) -> str: # type: ignore
         """
-        Set extra noise for a multi qubit gate.
+Return the json representation of the Noise-Model.
 
-        Args:
-            gate (str): The name of the gate.
-            qubits (list): The qubits the gate acts on.
-            noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): The noise affecting system when gate is applied.
+Returns:
+    str: The serialized form of Noise-Model.
 
-        Returns:
-            Self: The error model with the new noise on gate set.
+Raises:
+    ValueError: Cannot serialize Noise-Model to json.
 
-        Raises:
-            PyTypeError: Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.
+"""
+
+    def current_version(self) -> str: # type: ignore
         """
+Returns the current version of the qoqo library .
 
-    def get_multi_qubit_gate_error(self, gate: str, qubits: List[int]):  # type: ignore
+Returns:
+    str: The current version of the library.
+"""
+
+    def min_supported_version(self) -> str: # type: ignore
         """
-        Return the extra noise for a multi qubit gate, if it exists.
+Return the minimum version of qoqo that supports this object.
 
-        Args:
-            gate (str): The name of the gate.
-            qubits (List[int]): The qubits the gate acts on.
-
-        Returns
-            Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
-        """
-
-    def from_bincode(self, input: bytearray):  # type: ignore
-        """
-        Convert the bincode representation of the Noise-Model to a device using the bincode crate.
-
-        Args:
-            input (ByteArray): The serialized Noise-Model (in bincode form).
-
-        Returns:
-            The deserialized Noise-Model.
-
-        Raises:
-            TypeError: Input cannot be converted to byte array.
-            ValueError: Input cannot be deserialized to selected Noise-Model.
-        """
-
-    def from_json(self, input: str):  # type: ignore
-        """
-        Convert the json representation of a device to a Noise-Model.
-
-        Args:
-            input (str): The serialized device in json form.
-
-        Returns:
-            The deserialized device.
-
-        Raises:
-            ValueError: Input cannot be deserialized to selected Noise-Model.
-        """
-
-    def json_schema(self) -> str:  # type: ignore
-        """
-        Return the JsonSchema for the json serialisation of the class.
-
-        Returns:
-            str: The json schema serialized to json
-        """
-
-    def to_bincode(self) -> bytearray:  # type: ignore
-        """
-        Return the bincode representation of the Noise-Model using the bincode crate.
-
-        Returns:
-            ByteArray: The serialized Noise-Model (in bincode form).
-
-        Raises:
-            ValueError: Cannot serialize Noise-Model to bytes.
-
-        """
-
-    def to_json(self) -> str:  # type: ignore
-        """
-        Return the json representation of the Noise-Model.
-
-        Returns:
-            str: The serialized form of Noise-Model.
-
-        Raises:
-            ValueError: Cannot serialize Noise-Model to json.
-
-        """
-
-    def current_version(self) -> str:  # type: ignore
-        """
-        Returns the current version of the qoqo library .
-
-        Returns:
-            str: The current version of the library.
-        """
-
-    def min_supported_version(self) -> str:  # type: ignore
-        """
-        Return the minimum version of qoqo that supports this object.
-
-        Returns:
-            str: The minimum version of the qoqo library to deserialize this object.
-        """
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
 
 class SingleQubitOverrotationDescription:
     """
-    Description of single qubit overrotation noise model, [roqoqo::noise_models::SingleQubitOverrotationOnGate].
+Description of single qubit overrotation noise model, [roqoqo::noise_models::SingleQubitOverrotationOnGate].
 
-    Consists of the raw data needed to construct a rotation gate that adds
-    overrotation: gate name and statistics (mean and standard deviation) of a Gaussian distribution
-    from which the overrotation angle is sampled.
-    Example:
+Consists of the raw data needed to construct a rotation gate that adds
+overrotation: gate name and statistics (mean and standard deviation) of a Gaussian distribution
+from which the overrotation angle is sampled.
+Example:
 
-    ```
-    from qoqo.noise_models import SingleQubitOverrotationDescription;
-    gate = "RotateX";
-    theta_mean = 0.0;
-    theta_std = 1.0;
-    noise_desc = SingleQubitOverrotationDescription(gate, theta_mean, theta_std);
-    ```
-    """
+```
+from qoqo.noise_models import SingleQubitOverrotationDescription;
+gate = "RotateX";
+theta_mean = 0.0;
+theta_std = 1.0;
+noise_desc = SingleQubitOverrotationDescription(gate, theta_mean, theta_std);
+```
+"""
 
     def __init__(self):
-        return
+       return
 
-    def to_bincode(self) -> bytearray:  # type: ignore
+    def to_bincode(self) -> bytearray: # type: ignore
         """
-        Return the bincode representation of SingleQubitOverrotationDescription using the bincode crate.
+Return the bincode representation of SingleQubitOverrotationDescription using the bincode crate.
 
-        Returns:
-            ByteArray: The serialized SingleQubitOverrotationDescription (in bincode form).
+Returns:
+    ByteArray: The serialized SingleQubitOverrotationDescription (in bincode form).
 
-        Raises:
-            ValueError: Cannot serialize SingleQubitOverrotationDescription to bytes.
+Raises:
+    ValueError: Cannot serialize SingleQubitOverrotationDescription to bytes.
+"""
+
+    def to_json(self) -> str: # type: ignore
         """
+Return the json representation of the SingleQubitOverrotationDescription.
 
-    def to_json(self) -> str:  # type: ignore
+Returns:
+    str: The serialized form of SingleQubitOverrotationDescription.
+
+Raises:
+    ValueError: Cannot serialize SingleQubitOverrotationDescription.
+"""
+
+    def from_bincode(self, input: bytearray): # type: ignore
         """
-        Return the json representation of the SingleQubitOverrotationDescription.
+Convert the bincode representation of the overotation description to a device using the bincode crate.
 
-        Returns:
-            str: The serialized form of SingleQubitOverrotationDescription.
+Args:
+    input (ByteArray): The serialized Noise-Model (in bincode form).
 
-        Raises:
-            ValueError: Cannot serialize SingleQubitOverrotationDescription.
+Returns:
+    The deserialized Noise-Model.
+
+Raises:
+    TypeError: Input cannot be converted to byte array.
+    ValueError: Input cannot be deserialized to selected Noise-Model.
+"""
+
+    def from_json(self, input: str): # type: ignore
         """
+Convert the json representation of a device to a overotation description.
 
-    def from_bincode(self, input: bytearray):  # type: ignore
+Args:
+    input (str): The serialized device in json form.
+
+Returns:
+    The deserialized device.
+
+Raises:
+    ValueError: Input cannot be deserialized to selected Noise-Model.
+"""
+
+    def min_supported_version(self) -> str: # type: ignore
         """
-        Convert the bincode representation of the overotation description to a device using the bincode crate.
+Return the minimum version of qoqo that supports this object.
 
-        Args:
-            input (ByteArray): The serialized Noise-Model (in bincode form).
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
 
-        Returns:
-            The deserialized Noise-Model.
-
-        Raises:
-            TypeError: Input cannot be converted to byte array.
-            ValueError: Input cannot be deserialized to selected Noise-Model.
+    def current_version(self) -> str: # type: ignore
         """
+Return the current version of the qoqo library.
 
-    def from_json(self, input: str):  # type: ignore
+Returns:
+    str: The current version of the library.
+"""
+
+    def json_schema(self) -> str: # type: ignore
         """
-        Convert the json representation of a device to a overotation description.
+Return the JsonSchema for the json serialisation of the class.
 
-        Args:
-            input (str): The serialized device in json form.
-
-        Returns:
-            The deserialized device.
-
-        Raises:
-            ValueError: Input cannot be deserialized to selected Noise-Model.
-        """
-
-    def min_supported_version(self) -> str:  # type: ignore
-        """
-        Return the minimum version of qoqo that supports this object.
-
-        Returns:
-            str: The minimum version of the qoqo library to deserialize this object.
-        """
-
-    def current_version(self) -> str:  # type: ignore
-        """
-        Return the current version of the qoqo library.
-
-        Returns:
-            str: The current version of the library.
-        """
-
-    def json_schema(self) -> str:  # type: ignore
-        """
-        Return the JsonSchema for the json serialisation of the class.
-
-        Returns:
-            str: The json schema serialized to json
-        """
+Returns:
+    str: The json schema serialized to json
+"""
 
 class SingleQubitOverrotationOnGate:
     """
-    Single qubit overrotation noise model on gate.
+Single qubit overrotation noise model on gate.
 
-    Adds a rotation gate with a randomly distributed rotation angle after specified gates in a quantum circuit.
-    Example:
+Adds a rotation gate with a randomly distributed rotation angle after specified gates in a quantum circuit.
+Example:
 
-    ```
-    from qoqo.noise_models import SingleQubitOverrotationDescription
-    from qoqo.noise_models import SingleQubitOverrotationOnGate
-    gate = "RotateX"
-    theta_mean = 0.0
-    theta_std = 1.0
-    noise_desc = SingleQubitOverrotationDescription(gate, theta_mean, theta_std)
+```
+from qoqo.noise_models import SingleQubitOverrotationDescription
+from qoqo.noise_models import SingleQubitOverrotationOnGate
+gate = "RotateX"
+theta_mean = 0.0
+theta_std = 1.0
+noise_desc = SingleQubitOverrotationDescription(gate, theta_mean, theta_std)
 
-    noise = SingleQubitOverrotationOnGate();
-    circuit_gate_with_noise = "RotateZ";
-    qubit = 0;
-    noise.set_single_qubit_overrotation(circuit_gate_with_noise, qubit, noise_desc);
-    ```
-    """
+noise = SingleQubitOverrotationOnGate();
+circuit_gate_with_noise = "RotateZ";
+qubit = 0;
+noise.set_single_qubit_overrotation(circuit_gate_with_noise, qubit, noise_desc);
+```
+"""
 
     def __init__(self):
-        return
+       return
 
-    def set_single_qubit_overrotation(self, gate: str, qubit: int) -> Self:  # type: ignore
+    def set_single_qubit_overrotation(self, gate: str, qubit: int) -> Self: # type: ignore
         """
-        Set overrotation for a single qubit gate.
+Set overrotation for a single qubit gate.
 
-        Args:
-            gate (str): The name of the gate.
-            qubit (int): The qubit the gate acts on.
-            noise_description (SingleQubitOverrotationDescription) - overrotation description for gate.
+Args:
+    gate (str): The name of the gate.
+    qubit (int): The qubit the gate acts on.
+    noise_description (SingleQubitOverrotationDescription) - overrotation description for gate.
 
-        Returns:
-            Self: The overotation model with the new overrotation on gate set.
+Returns:
+    Self: The overotation model with the new overrotation on gate set.
 
-        Raises:
-            PyTypeError: Noise description is not a SingleQubitOverrotationDescription.
+Raises:
+    PyTypeError: Noise description is not a SingleQubitOverrotationDescription.
+"""
+
+    def get_single_qubit_overrotation(self, gate: str, qubit: int): # type: ignore
         """
+Return the overrotation description for a single qubit gate, if it exists.
 
-    def get_single_qubit_overrotation(self, gate: str, qubit: int):  # type: ignore
+Args:
+    gate (str): The name of the gate.
+    qubit (int): The qubit the gate acts on.
+
+Returns
+    Optional[SingleQubitOverrotationDescription]: The overrotation applied when gate is applied.
+"""
+
+    def set_two_qubit_overrotation(self, gate: str, control: int, target: int) -> Self: # type: ignore
         """
-        Return the overrotation description for a single qubit gate, if it exists.
+Set extra noise for a two qubit gate.
 
-        Args:
-            gate (str): The name of the gate.
-            qubit (int): The qubit the gate acts on.
+Args:
+    gate (str): The name of the gate.
+    control (int): The control qubit the gate acts on.
+    target (int): The target qubit the gate acts on.
+    noise_description ((SingleQubitOverrotationDescription, SingleQubitOverrotationDescription)) - overrotation description for gate.
 
-        Returns
-            Optional[SingleQubitOverrotationDescription]: The overrotation applied when gate is applied.
+Returns:
+    Self: The overrotation model with the new overrotation on gate set.
+
+Raises:
+    PyTypeError: Noise description is not a (SingleQubitOverrotationDescription, SingleQubitOverrotationDescription).
+"""
+
+    def get_two_qubit_overrotation(self, gate: str, control: int, target: int): # type: ignore
         """
+Return the extra noise for a single qubit gate, if it exists.
 
-    def set_two_qubit_overrotation(self, gate: str, control: int, target: int) -> Self:  # type: ignore
+Args:
+    gate (str): The name of the gate.
+    control (int): The control qubit the gate acts on.
+    target (int): The target qubit the gate acts on.
+
+Returns
+    Optional[(SingleQubitOverrotationDescription, SingleQubitOverrotationDescription)]: The overrotation applied when gate is applied.
+"""
+
+    def from_bincode(self, input: bytearray): # type: ignore
         """
-        Set extra noise for a two qubit gate.
+Convert the bincode representation of the Noise-Model to a device using the bincode crate.
 
-        Args:
-            gate (str): The name of the gate.
-            control (int): The control qubit the gate acts on.
-            target (int): The target qubit the gate acts on.
-            noise_description ((SingleQubitOverrotationDescription, SingleQubitOverrotationDescription)) - overrotation description for gate.
+Args:
+    input (ByteArray): The serialized Noise-Model (in bincode form).
 
-        Returns:
-            Self: The overrotation model with the new overrotation on gate set.
+Returns:
+    The deserialized Noise-Model.
 
-        Raises:
-            PyTypeError: Noise description is not a (SingleQubitOverrotationDescription, SingleQubitOverrotationDescription).
+Raises:
+    TypeError: Input cannot be converted to byte array.
+    ValueError: Input cannot be deserialized to selected Noise-Model.
+"""
+
+    def from_json(self, input: str): # type: ignore
         """
+Convert the json representation of a device to a Noise-Model.
 
-    def get_two_qubit_overrotation(self, gate: str, control: int, target: int):  # type: ignore
+Args:
+    input (str): The serialized device in json form.
+
+Returns:
+    The deserialized device.
+
+Raises:
+    ValueError: Input cannot be deserialized to selected Noise-Model.
+"""
+
+    def json_schema(self) -> str: # type: ignore
         """
-        Return the extra noise for a single qubit gate, if it exists.
+Return the JsonSchema for the json serialisation of the class.
 
-        Args:
-            gate (str): The name of the gate.
-            control (int): The control qubit the gate acts on.
-            target (int): The target qubit the gate acts on.
+Returns:
+    str: The json schema serialized to json
+"""
 
-        Returns
-            Optional[(SingleQubitOverrotationDescription, SingleQubitOverrotationDescription)]: The overrotation applied when gate is applied.
+    def to_bincode(self) -> bytearray: # type: ignore
         """
+Return the bincode representation of the Noise-Model using the bincode crate.
 
-    def from_bincode(self, input: bytearray):  # type: ignore
+Returns:
+    ByteArray: The serialized Noise-Model (in bincode form).
+
+Raises:
+    ValueError: Cannot serialize Noise-Model to bytes.
+
+"""
+
+    def to_json(self) -> str: # type: ignore
         """
-        Convert the bincode representation of the Noise-Model to a device using the bincode crate.
+Return the json representation of the Noise-Model.
 
-        Args:
-            input (ByteArray): The serialized Noise-Model (in bincode form).
+Returns:
+    str: The serialized form of Noise-Model.
 
-        Returns:
-            The deserialized Noise-Model.
+Raises:
+    ValueError: Cannot serialize Noise-Model to json.
 
-        Raises:
-            TypeError: Input cannot be converted to byte array.
-            ValueError: Input cannot be deserialized to selected Noise-Model.
+"""
+
+    def current_version(self) -> str: # type: ignore
         """
+Returns the current version of the qoqo library .
 
-    def from_json(self, input: str):  # type: ignore
+Returns:
+    str: The current version of the library.
+"""
+
+    def min_supported_version(self) -> str: # type: ignore
         """
-        Convert the json representation of a device to a Noise-Model.
+Return the minimum version of qoqo that supports this object.
 
-        Args:
-            input (str): The serialized device in json form.
-
-        Returns:
-            The deserialized device.
-
-        Raises:
-            ValueError: Input cannot be deserialized to selected Noise-Model.
-        """
-
-    def json_schema(self) -> str:  # type: ignore
-        """
-        Return the JsonSchema for the json serialisation of the class.
-
-        Returns:
-            str: The json schema serialized to json
-        """
-
-    def to_bincode(self) -> bytearray:  # type: ignore
-        """
-        Return the bincode representation of the Noise-Model using the bincode crate.
-
-        Returns:
-            ByteArray: The serialized Noise-Model (in bincode form).
-
-        Raises:
-            ValueError: Cannot serialize Noise-Model to bytes.
-
-        """
-
-    def to_json(self) -> str:  # type: ignore
-        """
-        Return the json representation of the Noise-Model.
-
-        Returns:
-            str: The serialized form of Noise-Model.
-
-        Raises:
-            ValueError: Cannot serialize Noise-Model to json.
-
-        """
-
-    def current_version(self) -> str:  # type: ignore
-        """
-        Returns the current version of the qoqo library .
-
-        Returns:
-            str: The current version of the library.
-        """
-
-    def min_supported_version(self) -> str:  # type: ignore
-        """
-        Return the minimum version of qoqo that supports this object.
-
-        Returns:
-            str: The minimum version of the qoqo library to deserialize this object.
-        """
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
 
 class DecoherenceOnIdleModel:
     """
-    Noise model representing a continuous decoherence process on idle qubits.
+Noise model representing a continuous decoherence process on idle qubits.
 
-    The purpose of this noise model is to enable defining background noise models that exclude the qubits involved
-    in a gate, as these might be decoupled from the background noise.The noise for each qubit can be different but
-    only single qubit noise is included in the model.
+The purpose of this noise model is to enable defining background noise models that exclude the qubits involved
+in a gate, as these might be decoupled from the background noise.The noise for each qubit can be different but
+only single qubit noise is included in the model.
 
-    Noise is given by the rates of the Lindblad equation.
-    The Lindblad equation is a so-called master equation for the time evolution of a density matrix.
-    For the example of a single qubit the non-coherent part of the Lindblad equation can take the following form:
+Noise is given by the rates of the Lindblad equation.
+The Lindblad equation is a so-called master equation for the time evolution of a density matrix.
+For the example of a single qubit the non-coherent part of the Lindblad equation can take the following form:
 
-    d/dt * ρ = Σ Mij * Li * ρ * Lj† - 1/2 * ( Lj† * Li * ρ + ρ * Lj† * Li),
+d/dt * ρ = Σ Mij * Li * ρ * Lj† - 1/2 * ( Lj† * Li * ρ + ρ * Lj† * Li),
 
-    where the indices i and j run from 0 to 2
+where the indices i and j run from 0 to 2
 
-    with L0 = σ+, L1 = σ- and L3 = σz.
+with L0 = σ+, L1 = σ- and L3 = σz.
 
-    Here the genreal incoherent part of the Lindblad equation is internally represented by a [struqture::spins::PlusMinusLindbladNoiseOperator].
+Here the genreal incoherent part of the Lindblad equation is internally represented by a [struqture::spins::PlusMinusLindbladNoiseOperator].
 
-    To create a complex decoherence model first create the Lindblad noise and then turn it into a DecoherenceOnIdleModel.
-    For a simple decoherence model, use new to create an empty model and use the add_damping, add_excitation and add_dephasing methods.
-    For more fine control access the internal lindblad_noise directly and modify it.
+To create a complex decoherence model first create the Lindblad noise and then turn it into a DecoherenceOnIdleModel.
+For a simple decoherence model, use new to create an empty model and use the add_damping, add_excitation and add_dephasing methods.
+For more fine control access the internal lindblad_noise directly and modify it.
 
-    Args:
+Args:
 
-        noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): Optional initialisation of Noise Model with given Lindblad operator.
-    """
+    noise_operator (struqture_py.spins.PlusMinusLindbladNoiseOperator): Optional initialisation of Noise Model with given Lindblad operator.
+"""
 
     def __init__(self, noise_operator):
-        return
+       return
 
-    def get_noise_operator(self) -> PlusMinusLindbladNoiseOperator:  # type: ignore
+    def get_noise_operator(self) -> PlusMinusLindbladNoiseOperator: # type: ignore
         """
-        Return the internal Lindblad noise operator of the continuous noise model.
+Return the internal Lindblad noise operator of the continuous noise model.
 
-        Returns:
-            PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the continuous noise
+Returns:
+    PlusMinusLindbladNoiseOperator: The internal Lindblad noise operator of the continuous noise
+"""
+
+    def from_bincode(self, input: bytearray): # type: ignore
         """
+Convert the bincode representation of the Noise-Model to a device using the bincode crate.
 
-    def from_bincode(self, input: bytearray):  # type: ignore
+Args:
+    input (ByteArray): The serialized Noise-Model (in bincode form).
+
+Returns:
+    The deserialized Noise-Model.
+
+Raises:
+    TypeError: Input cannot be converted to byte array.
+    ValueError: Input cannot be deserialized to selected Noise-Model.
+"""
+
+    def from_json(self, input: str): # type: ignore
         """
-        Convert the bincode representation of the Noise-Model to a device using the bincode crate.
+Convert the json representation of a device to a Noise-Model.
 
-        Args:
-            input (ByteArray): The serialized Noise-Model (in bincode form).
+Args:
+    input (str): The serialized device in json form.
 
-        Returns:
-            The deserialized Noise-Model.
+Returns:
+    The deserialized device.
 
-        Raises:
-            TypeError: Input cannot be converted to byte array.
-            ValueError: Input cannot be deserialized to selected Noise-Model.
+Raises:
+    ValueError: Input cannot be deserialized to selected Noise-Model.
+"""
+
+    def json_schema(self) -> str: # type: ignore
         """
+Return the JsonSchema for the json serialisation of the class.
 
-    def from_json(self, input: str):  # type: ignore
+Returns:
+    str: The json schema serialized to json
+"""
+
+    def add_damping_rate(self, qubits: List[int], rate: float) -> DecoherenceOnIdleModel: # type: ignore
         """
-        Convert the json representation of a device to a Noise-Model.
+Convenience function to add damping to several qubits
 
-        Args:
-            input (str): The serialized device in json form.
+Args:
+    qubits (List[int]): The qubits to add damping to.
+    rate (float): The damping rate.
 
-        Returns:
-            The deserialized device.
+Returns:
+    DecoherenceOnIdleModel: The model with the damping added.
+"""
 
-        Raises:
-            ValueError: Input cannot be deserialized to selected Noise-Model.
+    def add_dephasing_rate(self, qubits: List[int], rate: float) -> DecoherenceOnIdleModel: # type: ignore
         """
+Convenience function to add dephasing to several qubits
 
-    def json_schema(self) -> str:  # type: ignore
+Args:
+    qubits (List[int]): The qubits to add dephasing to.
+    rate (float): The dephasing rate.
+
+Returns:
+    DecoherenceOnIdleModel: The model with the dephasing added.
+"""
+
+    def add_depolarising_rate(self, qubits: List[int], rate: float) -> DecoherenceOnIdleModel: # type: ignore
         """
-        Return the JsonSchema for the json serialisation of the class.
+Convenience function to add depolarising to several qubits
 
-        Returns:
-            str: The json schema serialized to json
+Args:
+    qubits (List[int]): The qubits to add depolarising to.
+    rate (float): The depolarising rate.
+
+Returns:
+    DecoherenceOnIdleModel: The model with the depolarising added.
+"""
+
+    def add_excitation_rate(self, qubits: List[int], rate: float) -> DecoherenceOnIdleModel: # type: ignore
         """
+Convenience function to add excitation to several qubits
 
-    def add_damping_rate(self, qubits: List[int], rate: float) -> DecoherenceOnIdleModel:  # type: ignore
+Args:
+    qubits (List[int]): The qubits to add excitation to.
+    rate (float): The excitation rate.
+
+Returns:
+    DecoherenceOnIdleModel: The model with the excitation added.
+"""
+
+    def to_bincode(self) -> bytearray: # type: ignore
         """
-        Convenience function to add damping to several qubits
+Return the bincode representation of the Noise-Model using the bincode crate.
 
-        Args:
-            qubits (List[int]): The qubits to add damping to.
-            rate (float): The damping rate.
+Returns:
+    ByteArray: The serialized Noise-Model (in bincode form).
 
-        Returns:
-            DecoherenceOnIdleModel: The model with the damping added.
+Raises:
+    ValueError: Cannot serialize Noise-Model to bytes.
+
+"""
+
+    def to_json(self) -> str: # type: ignore
         """
+Return the json representation of the Noise-Model.
 
-    def add_dephasing_rate(self, qubits: List[int], rate: float) -> DecoherenceOnIdleModel:  # type: ignore
+Returns:
+    str: The serialized form of Noise-Model.
+
+Raises:
+    ValueError: Cannot serialize Noise-Model to json.
+
+"""
+
+    def current_version(self) -> str: # type: ignore
         """
-        Convenience function to add dephasing to several qubits
+Returns the current version of the qoqo library .
 
-        Args:
-            qubits (List[int]): The qubits to add dephasing to.
-            rate (float): The dephasing rate.
+Returns:
+    str: The current version of the library.
+"""
 
-        Returns:
-            DecoherenceOnIdleModel: The model with the dephasing added.
+    def min_supported_version(self) -> str: # type: ignore
         """
+Return the minimum version of qoqo that supports this object.
 
-    def add_depolarising_rate(self, qubits: List[int], rate: float) -> DecoherenceOnIdleModel:  # type: ignore
-        """
-        Convenience function to add depolarising to several qubits
+Returns:
+    str: The minimum version of the qoqo library to deserialize this object.
+"""
 
-        Args:
-            qubits (List[int]): The qubits to add depolarising to.
-            rate (float): The depolarising rate.
-
-        Returns:
-            DecoherenceOnIdleModel: The model with the depolarising added.
-        """
-
-    def add_excitation_rate(self, qubits: List[int], rate: float) -> DecoherenceOnIdleModel:  # type: ignore
-        """
-        Convenience function to add excitation to several qubits
-
-        Args:
-            qubits (List[int]): The qubits to add excitation to.
-            rate (float): The excitation rate.
-
-        Returns:
-            DecoherenceOnIdleModel: The model with the excitation added.
-        """
-
-    def to_bincode(self) -> bytearray:  # type: ignore
-        """
-        Return the bincode representation of the Noise-Model using the bincode crate.
-
-        Returns:
-            ByteArray: The serialized Noise-Model (in bincode form).
-
-        Raises:
-            ValueError: Cannot serialize Noise-Model to bytes.
-
-        """
-
-    def to_json(self) -> str:  # type: ignore
-        """
-        Return the json representation of the Noise-Model.
-
-        Returns:
-            str: The serialized form of Noise-Model.
-
-        Raises:
-            ValueError: Cannot serialize Noise-Model to json.
-
-        """
-
-    def current_version(self) -> str:  # type: ignore
-        """
-        Returns the current version of the qoqo library .
-
-        Returns:
-            str: The current version of the library.
-        """
-
-    def min_supported_version(self) -> str:  # type: ignore
-        """
-        Return the minimum version of qoqo that supports this object.
-
-        Returns:
-            str: The minimum version of the qoqo library to deserialize this object.
-        """
