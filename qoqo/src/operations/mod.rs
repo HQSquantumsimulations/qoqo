@@ -175,5 +175,7 @@ pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     #[cfg(feature = "unstable_operation_definition")]
     m.add_class::<CallDefinedGateWrapper>()?;
 
+    m.add_class::<SqrtPauliYWrapper>()?;
+    m.add_class::<InvSqrtPauliYWrapper>()?;
     Ok(())
 }

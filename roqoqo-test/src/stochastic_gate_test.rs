@@ -350,6 +350,8 @@ pub fn add_random_operation(circuit: &mut Circuit, number_qubits: usize, seed: u
             let qubit = two_qubits_dist.sample(&mut rng);
             XY::new(qubit, qubit + 1, theta.into()).into()
         }
+        35 => SqrtPauliY::new(qubits_dist.sample(&mut rng)).into(),
+        36 => InvSqrtPauliY::new(qubits_dist.sample(&mut rng)).into(),
         _ => {
             let theta: f64 = rng.sample(Standard);
             RotateZ::new(qubits_dist.sample(&mut rng), theta.into()).into()

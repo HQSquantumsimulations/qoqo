@@ -358,3 +358,9 @@ fn test_version_circuit(circuit: roqoqo::Circuit, version: (u32, u32, u32)) {
 fn test_version_1_13_0_gate_definition(operation: operations::Operation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 13, 0));
 }
+
+#[test_case(operations::SingleQubitGateOperation::from(operations::SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(operations::SingleQubitGateOperation::from(operations::InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
+fn test_version_1_15_0_single_qubit_gate(operation: operations::SingleQubitGateOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 15, 0));
+}

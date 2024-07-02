@@ -125,6 +125,8 @@ fn test_to_single_qubit_gate_symbolic(operation: SingleQubitGateOperation) {
         CalculatorFloat::from(0.01),
     )); "PragmaRandomNoise")]
 #[test_case(Operation::from( PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), array![[1.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0],])); "PragmaGeneralNoise")]
+#[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 fn none_involved_classical(operation: Operation) {
     assert_eq!(operation.involved_classical(), InvolvedClassical::None);
 }

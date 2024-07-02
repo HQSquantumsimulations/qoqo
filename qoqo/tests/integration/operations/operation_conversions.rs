@@ -137,6 +137,8 @@ use test_case::test_case;
 #[test_case(Operation::from(SingleExcitationStore::new(0, 1)); "SingleExcitationStore")]
 #[test_case(Operation::from(SingleExcitationLoad::new(0, 1)); "SingleExcitationLoad")]
 #[test_case(Operation::from(CZQubitResonator::new(0, 1)); "CZQubitResonator")]
+#[test_case(Operation::from(SqrtPauliY::new(100)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(100)); "InvSqrtPauliY")]
 fn test_conversion(input: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
