@@ -2,24 +2,7 @@
 # You can find the full implementation on this page:
 # https://github.com/HQSquantumsimulations/qoqo
 
-"""
-Measurements
-    
-.. autosummary::
-    :toctree: generated/
-
-    PauliZProductInput
-    CheatedPauliZProductInput
-    CheatedInput
-    PauliZProduct
-    CheatedPauliZProduct
-    DecoherenceOnIdleModel
-    Cheated
-    ClassicalRegister
-"""
-
-from typing import Optional, List, Dict, Union
-from struqture_py.spins import PauliProduct  # type: ignore
+from typing import Dict, List, Optional, Union
 from .qoqo import Circuit
 
 class PauliZProductInput:

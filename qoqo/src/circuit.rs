@@ -380,7 +380,10 @@ impl CircuitWrapper {
     ///     IndexError: Stop index out of range.
     ///     IndexError: Start index out of range.
     pub fn get_slice(&self, start: Option<usize>, stop: Option<usize>) -> PyResult<CircuitWrapper> {
-        let start = start.unwrap_or_default();
+        let start = match start {
+            Some(x) => x,
+            _ => 0,
+        };
         let stop = match stop {
             Some(x) => x,
             _ => self.internal.len(),

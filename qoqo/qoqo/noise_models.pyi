@@ -2,22 +2,8 @@
 # You can find the full implementation on this page:
 # https://github.com/HQSquantumsimulations/qoqo
 
-"""
-A collection of noise models that represent different types of noise that can be present in Quantum Computing hardware.
-
-.. autosummary::
-    :toctree: generated/
-
-    ContinuousDecoherenceModel
-    ImperfectReadoutModel
-    DecoherenceOnGateModel
-    SingleQubitOverrotationDescription
-    SingleQubitOverrotationOnGate
-    DecoherenceOnIdleModel
-"""
-
-from typing import Optional, List
-from struqture_py.spins import PlusMinusProduct, PlusMinusLindbladNoiseOperator  # type: ignore
+from typing import List
+from struqture_py.spins import PlusMinusLindbladNoiseOperator  # type: ignore
 
 class ContinuousDecoherenceModel:
     """

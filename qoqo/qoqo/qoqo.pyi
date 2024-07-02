@@ -2,26 +2,7 @@
 # You can find the full implementation on this page:
 # https://github.com/HQSquantumsimulations/qoqo
 
-"""
-Qoqo
-
-| Quantum Operation Quantum Operation
-| Yes we use `reduplication <https://en.wikipedia.org/wiki/Reduplication>`_.
-
-qoqo is the HQS python package to represent quantum circuits.
-
-.. autosummary::
-    :toctree: generated/
-
-    Circuit
-    operations
-    registers
-    measurements
-    QuantumProgram
-
-"""
-
-from typing import Optional, List, Tuple, Dict, Set
+from typing import Dict, List, Optional, Set, Tuple
 
 class Circuit:
     """

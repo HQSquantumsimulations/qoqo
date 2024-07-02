@@ -2,43 +2,7 @@
 # You can find the full implementation on this page:
 # https://github.com/HQSquantumsimulations/qoqo
 
-"""
-Devices in qoqo have two use cases:
-
-* Abstract devices: Contain abstract information for the model of a quantum computer and its parameters.
-    They can be used to determine which Operations are available on a specific device model.
-    A typical example are abstract linear chains of square lattices in which two-qubit operations are only
-    available between neighbouring qubits.  
-
-    The abstract devices can also encode a noise model. Q/// Qoqo devicesoqo noise models are in general based on a (pseudo) time
-    needed to execute a quantum operation and Lindblad rates for the qubits in the device.
-    Specifically in the noise model each qubit undergoes a continuous Lindblad-type decoherence time evolution:
-
-    math::
-    \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
-        L_0 = \sigma^{+} \\\\
-        L_1 = \sigma^{-} \\\\
-        L_3 = \sigma^{z}
-    $$
-    Note that as long as gate times and decoherence rates are scaled inversely any kind of units can be used,
-    but we recommend using nanoseconds and inverse nanosecconds as units for gate times and decoherence rates.
-
-
-* Actual hardware devices: These devices are provided by roqoqo backends and contain the necessary information for
-    accessing the quantum computing hardware. The devices also encode a connectivity model.
-
-The devices were introduced after qoqo 1.0.0, but their design may be refactored later for backwards compatibility
-
-.. autosummary::
-    :toctree: generated/
-    
-    AllToAllDevice
-    GenericDevice
-    SquareLatticeDevice
-"""
-
-import numpy
-from typing import Optional, List
+from typing import List, Optional
 
 class AllToAllDevice:
     """

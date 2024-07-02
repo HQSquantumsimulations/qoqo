@@ -20,10 +20,13 @@ use crate::RoqoqoVersion;
 #[cfg(feature = "serialize")]
 use crate::RoqoqoVersionSerializable;
 use qoqo_calculator::Calculator;
-use std::collections::{HashMap, HashSet};
 #[cfg(feature = "overrotate")]
 use std::convert::TryFrom;
 use std::ops;
+use std::{
+    collections::{HashMap, HashSet},
+    usize,
+};
 use std::{
     fmt::{Display, Formatter, Write},
     iter::{FromIterator, IntoIterator},

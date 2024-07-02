@@ -2,24 +2,7 @@
 # You can find the full implementation on this page:
 # https://github.com/HQSquantumsimulations/qoqo
 
-"""
-Operations are the atomic instructions in any quantum program that can be represented by qoqo.
-
-Operations can be of various kinds: Definitions, GateOperations, PRAGMAs or measurement Operations.
-
-Operations:
-    Definition operations define the classical registers and variables in the Circuit.
-    GateOperations are single-, two- or multi-qubit gate operations that act on a set of qubits
-    and can be executed on a quantum computing device.
-    PRAGMAs are operations that can be used when running a simulation of a quantum computing program.
-    Measurement Operations are operations that perform a measurement either on a quantum computing device (MeasuareQubit)
-    or on a simulation of a quantum computing program (PRAGMA measurement operations).
-
-"""
-
-import numpy
-from typing import Optional, List, Dict, Set, Union
-from struqture_py.spins import PauliProduct  # type: ignore
+from typing import Dict, List, Optional, Set, Union
 from .qoqo import Circuit, Operation
 
 class SingleQubitGate(Operation):
