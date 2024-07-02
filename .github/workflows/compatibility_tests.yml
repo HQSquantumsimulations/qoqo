@@ -157,7 +157,52 @@ jobs:
       - run: |
           cd ./.compatibility_tests/compatibility_test_1_10/
           cargo test
-          
+
+  unittests_check_compatibility_1_11:
+    name: unittests_check-compatibility-1-11
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          default: true
+      - uses: Swatinem/rust-cache@v2
+      - run: |
+          cd ./.compatibility_tests/compatibility_test_1_11/
+          cargo test
+
+  unittests_check_compatibility_1_12:
+    name: unittests_check-compatibility-1-12
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          default: true
+      - uses: Swatinem/rust-cache@v2
+      - run: |
+          cd ./.compatibility_tests/compatibility_test_1_12/
+          cargo test
+
+  unittests_check_compatibility_1_13:
+    name: unittests_check-compatibility-1-13
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          default: true
+      - uses: Swatinem/rust-cache@v2
+      - run: |
+          cd ./.compatibility_tests/compatibility_test_1_13/
+          cargo test
+
   unittests_check_circuit_decompositions:
     name: unittests_check_circuit_decompositions
     runs-on: "ubuntu-latest"
