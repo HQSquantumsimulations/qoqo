@@ -86,9 +86,8 @@ use test_roqoqo_1_0;
 #[test_case(test_roqoqo_1_0::operations::MultiQubitZZ::new(vec![0,2,3], 1.0.into()).into(); "MultiQubitZZ")]
 
 fn test_bincode_compatibility_1_0(operation: test_roqoqo_1_0::operations::Operation) {
-    println!("{:?}", operation);
     let mut test_circuit = test_roqoqo_1_0::Circuit::new();
-    test_circuit += operation.clone();
+    test_circuit += operation;
 
     let test_measurement_input = test_roqoqo_1_0::measurements::PauliZProductInput::new(3, false);
     let test_measurement = test_roqoqo_1_0::measurements::PauliZProduct {
@@ -102,37 +101,6 @@ fn test_bincode_compatibility_1_0(operation: test_roqoqo_1_0::operations::Operat
     };
     let test_serialisation: Vec<u8> = bincode::serialize(&test_program).unwrap();
 
-    println!("{:?}, {:?}", test_serialisation, test_program);
-
-    let mut test_circuit = roqoqo::Circuit::new();
-    test_circuit += roqoqo::operations::SWAP::new(0, 1);
-
-    let test_measurement_input = roqoqo::measurements::PauliZProductInput::new(3, false);
-    let test_measurement = roqoqo::measurements::PauliZProduct {
-        constant_circuit: Some(test_circuit.clone()),
-        circuits: vec![test_circuit],
-        input: test_measurement_input,
-    };
-    let test_program = roqoqo::QuantumProgram::PauliZProduct {
-        measurement: test_measurement,
-        input_parameter_names: vec!["test".to_string()],
-    };
-    let test_serialisation: Vec<u8> = bincode::serialize(&test_program).unwrap();
-    println!("{:?}, {:?}", test_serialisation, test_program);
-
-    let test_op: roqoqo::operations::Operation = roqoqo::operations::SWAP::new(0, 1).into();
-    println!(
-        "{:?}\n{:?}",
-        bincode::serialize(&operation),
-        bincode::serialize(&test_op)
-    );
-
     let _test_deserialisation: roqoqo::QuantumProgram =
         bincode::deserialize(&test_serialisation).unwrap();
-    match operation {
-        test_roqoqo_1_0::operations::Operation::SWAP(_) => {
-            panic!("Test failed: deserialised operation is not CNOT");
-        }
-        _ => (),
-    }
 }
