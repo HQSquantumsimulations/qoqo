@@ -211,12 +211,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -449,12 +449,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -699,12 +699,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -949,12 +949,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -1201,12 +1201,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -1476,12 +1476,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -1716,12 +1716,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -1944,12 +1944,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -2172,12 +2172,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -2400,12 +2400,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -2628,12 +2628,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -2856,12 +2856,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -3084,12 +3084,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -3312,12 +3312,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -6061,12 +6061,12 @@ class PragmaDamping(Operation):
             int
         """
 
-    def superoperator(self) -> numpy.ndarray:  # type: ignore
+    def superoperator(self):  # type: ignore
         """
         Return the superoperator defining the evolution of the density matrix under the noise gate
 
         Returns:
-            np.ndarray: superoperator of gate.
+            np.ndarray
 
         """
 
@@ -6212,12 +6212,12 @@ class PragmaDepolarising(Operation):
             int
         """
 
-    def superoperator(self) -> numpy.ndarray:  # type: ignore
+    def superoperator(self):  # type: ignore
         """
         Return the superoperator defining the evolution of the density matrix under the noise gate
 
         Returns:
-            np.ndarray: superoperator of gate.
+            np.ndarray
 
         """
 
@@ -6363,12 +6363,12 @@ class PragmaDephasing(Operation):
             int
         """
 
-    def superoperator(self) -> numpy.ndarray:  # type: ignore
+    def superoperator(self):  # type: ignore
         """
         Return the superoperator defining the evolution of the density matrix under the noise gate
 
         Returns:
-            np.ndarray: superoperator of gate.
+            np.ndarray
 
         """
 
@@ -6524,12 +6524,12 @@ class PragmaRandomNoise(Operation):
             int
         """
 
-    def superoperator(self) -> numpy.ndarray:  # type: ignore
+    def superoperator(self):  # type: ignore
         """
         Return the superoperator defining the evolution of the density matrix under the noise gate
 
         Returns:
-            np.ndarray: superoperator of gate.
+            np.ndarray
 
         """
 
@@ -7043,12 +7043,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -7172,12 +7172,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -7301,12 +7301,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -7430,12 +7430,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -7559,12 +7559,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -7688,12 +7688,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -7823,12 +7823,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -7970,12 +7970,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -8111,12 +8111,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -8240,12 +8240,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -8369,12 +8369,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -8504,12 +8504,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -8666,12 +8666,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -8828,12 +8828,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -8994,12 +8994,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -9152,12 +9152,12 @@ in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transfo
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -9303,12 +9303,12 @@ class SpinInteraction(Operation):
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -9457,12 +9457,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -9589,12 +9589,12 @@ class PMInteraction(Operation):
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -9733,12 +9733,12 @@ class ComplexPMInteraction(Operation):
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -9872,12 +9872,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -10108,12 +10108,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -10356,12 +10356,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -10498,12 +10498,12 @@ class MultiQubitMS(Operation):
             Circuit
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -10640,12 +10640,12 @@ class MultiQubitZZ(Operation):
             Circuit
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -11029,12 +11029,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -11177,12 +11177,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -11337,12 +11337,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -11495,12 +11495,12 @@ Args:
             Circuit
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -11647,12 +11647,12 @@ Args:
             Circuit
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -11805,12 +11805,12 @@ Args:
             Circuit
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -12039,12 +12039,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -12285,12 +12285,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -13214,12 +13214,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -13494,12 +13494,12 @@ Args:
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -14684,12 +14684,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
@@ -14912,12 +14912,12 @@ Returns:
 
         """
 
-    def unitary_matrix(self) -> numpy.ndarray:  # type: ignore
+    def unitary_matrix(self):  # type: ignore
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray: matrix of gate.
+            np.ndarray
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
