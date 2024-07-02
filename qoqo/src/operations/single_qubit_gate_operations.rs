@@ -516,3 +516,49 @@ struct GPi2 {
 struct Identity {
     qubit: usize,
 }
+
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
+#[derive(Eq)]
+/// The square root of the YPower gate :math:`e^{-i \frac{\pi}{4} \sigma^y}`.
+///
+/// .. math::
+///     U = \frac{1}{\sqrt(2)} \begin{pmatrix}
+///         1 & -1 \\\\
+///         1 & 1
+///         \end{pmatrix}
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+///
+struct SqrtPauliY {
+    qubit: usize,
+}
+
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
+#[derive(Eq)]
+/// The inverse square root XPower gate :math:`e^{i \frac{\pi}{2} \sigma^y}`.
+///
+/// .. math::
+///     U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+///         1 & 1 \\\\
+///         -1 & 1
+///         \end{pmatrix}
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+///
+struct InvSqrtPauliY {
+    qubit: usize,
+}
