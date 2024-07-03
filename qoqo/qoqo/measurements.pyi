@@ -912,9 +912,7 @@ class ClassicalRegister:
         ClassicalRegister: The new register.
     """
 
-    def __init__(
-        self, constant_circuit: Optional[Circuit], circuits: List[Circuit]
-    ):
+    def __init__(self, constant_circuit: Optional[Circuit], circuits: List[Circuit]):
         return
 
     def circuits(self) -> List[Circuit]:  # type: ignore
