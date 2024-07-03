@@ -159,6 +159,8 @@ pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     // unstable version of QuantumRabiWrapper, LongitudinalCouplingWrapper,
     // JaynesCummingsWrapper, SingleExcitationStoreWrapper, SingleExcitationLoadWrapper
     // and CZQubitResonatorWrapper now released as stable in 1.11
+    // unstable version of ApplyConstantSpinHamiltonianWrapper and ApplyTimeDependentSpinHamiltonianWrapper
+    // will be released later
     // 1.11
     #[cfg(feature = "unstable_analog_operations")]
     m.add_class::<ApplyConstantSpinHamiltonianWrapper>()?;
@@ -170,10 +172,17 @@ pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     m.add_class::<SingleExcitationStoreWrapper>()?;
     m.add_class::<SingleExcitationLoadWrapper>()?;
     m.add_class::<CZQubitResonatorWrapper>()?;
+
+    // unstable version of GateDefinitionWrapper and CallDefinedGateWrapper
+    // will be released later
+    // 1.13
     #[cfg(feature = "unstable_operation_definition")]
     m.add_class::<GateDefinitionWrapper>()?;
     #[cfg(feature = "unstable_operation_definition")]
     m.add_class::<CallDefinedGateWrapper>()?;
 
+    // 1.15
+    m.add_class::<SqrtPauliYWrapper>()?;
+    m.add_class::<InvSqrtPauliYWrapper>()?;
     Ok(())
 }
