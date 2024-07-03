@@ -19,7 +19,6 @@ Operations:
 
 import numpy
 from typing import Optional, List, Dict, Set, Union
-from struqture_py.spins import PauliProduct  # type: ignore
 from .qoqo import Circuit, Operation
 
 class SingleQubitGate(Operation):
@@ -53,7 +52,7 @@ Args:
     ):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -61,7 +60,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -69,7 +68,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -77,7 +76,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -94,7 +95,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -108,7 +109,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -116,7 +117,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -124,7 +125,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -140,7 +141,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -156,7 +157,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -170,7 +171,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -186,7 +187,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -203,7 +204,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -228,18 +229,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -247,7 +248,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -255,7 +256,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -286,12 +287,12 @@ Args:
     def __init__(self, qubit: int, theta: Union[float, str]):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -299,7 +300,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -307,7 +308,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -315,7 +316,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -332,7 +335,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -346,7 +349,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -354,7 +357,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -362,7 +365,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -378,7 +381,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -394,7 +397,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -408,7 +411,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -424,7 +427,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -441,7 +444,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -466,18 +469,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> RotateZ:
         """
         Returns Rotated gate raised to power
 
@@ -489,7 +492,7 @@ Returns:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -497,7 +500,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -505,7 +508,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -536,12 +539,12 @@ Args:
     def __init__(self, qubit: int, theta: Union[float, str]):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -549,7 +552,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -557,7 +560,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -565,7 +568,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -582,7 +587,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -596,7 +601,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -604,7 +609,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -612,7 +617,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -628,7 +633,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -644,7 +649,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -658,7 +663,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -674,7 +679,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -691,7 +696,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -716,18 +721,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> RotateY:
         """
         Returns Rotated gate raised to power
 
@@ -739,7 +744,7 @@ Returns:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -747,7 +752,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -755,7 +760,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -786,12 +791,12 @@ Args:
     def __init__(self, qubit: int, theta: Union[float, str]):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -799,7 +804,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -807,7 +812,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -815,7 +820,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -832,7 +839,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -846,7 +853,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -854,7 +861,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -862,7 +869,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -878,7 +885,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -894,7 +901,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -908,7 +915,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -924,7 +931,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -941,7 +948,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -966,18 +973,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> RotateX:
         """
         Returns Rotated gate raised to power
 
@@ -989,7 +996,7 @@ Returns:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -997,7 +1004,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -1005,7 +1012,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -1033,17 +1040,17 @@ Args:
     def __init__(self, qubit: int, theta: Union[float, str], phi: Union[float, str]):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def phi(self):  # type: ignore
+    def phi(self):
         """
         Returns value of attribute phi
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -1051,7 +1058,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -1059,7 +1066,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -1067,7 +1074,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -1084,7 +1093,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -1098,7 +1107,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -1106,7 +1115,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -1114,7 +1123,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -1130,7 +1139,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -1146,7 +1155,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -1160,7 +1169,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -1176,7 +1185,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -1193,7 +1202,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -1218,18 +1227,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> RotateXY:
         """
         Returns Rotated gate raised to power
 
@@ -1241,7 +1250,7 @@ Returns:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -1249,7 +1258,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -1257,7 +1266,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -1303,22 +1312,22 @@ Args:
     ):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def spherical_theta(self):  # type: ignore
+    def spherical_theta(self):
         """
         Returns value of attribute spherical_theta
         """
 
-    def spherical_phi(self):  # type: ignore
+    def spherical_phi(self):
         """
         Returns value of attribute spherical_phi
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -1326,7 +1335,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -1334,7 +1343,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -1342,7 +1351,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -1359,7 +1370,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -1373,7 +1384,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -1381,7 +1392,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -1389,7 +1400,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -1405,7 +1416,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -1421,7 +1432,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -1435,7 +1446,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -1451,7 +1462,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -1468,7 +1479,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -1493,18 +1504,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> RotateAroundSphericalAxis:
         """
         Returns Rotated gate raised to power
 
@@ -1516,7 +1527,7 @@ Returns:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -1524,7 +1535,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -1532,7 +1543,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -1558,7 +1569,7 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -1566,7 +1577,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -1574,7 +1585,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -1582,7 +1593,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -1599,7 +1612,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -1613,7 +1626,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -1621,7 +1634,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -1629,7 +1642,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -1645,7 +1658,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -1661,7 +1674,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -1675,7 +1688,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -1691,7 +1704,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -1708,7 +1721,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -1733,18 +1746,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -1752,7 +1765,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -1760,7 +1773,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -1786,7 +1799,7 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -1794,7 +1807,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -1802,7 +1815,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -1810,7 +1823,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -1827,7 +1842,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -1841,7 +1856,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -1849,7 +1864,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -1857,7 +1872,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -1873,7 +1888,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -1889,7 +1904,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -1903,7 +1918,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -1919,7 +1934,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -1936,7 +1951,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -1961,18 +1976,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -1980,7 +1995,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -1988,7 +2003,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -2014,7 +2029,7 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -2022,7 +2037,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -2030,7 +2045,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -2038,7 +2053,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -2055,7 +2072,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -2069,7 +2086,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -2077,7 +2094,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -2085,7 +2102,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -2101,7 +2118,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -2117,7 +2134,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -2131,7 +2148,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -2147,7 +2164,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -2164,7 +2181,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -2189,18 +2206,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -2208,7 +2225,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -2216,7 +2233,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -2242,7 +2259,7 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -2250,7 +2267,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -2258,7 +2275,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -2266,7 +2283,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -2283,7 +2302,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -2297,7 +2316,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -2305,7 +2324,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -2313,7 +2332,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -2329,7 +2348,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -2345,7 +2364,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -2359,7 +2378,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -2375,7 +2394,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -2392,7 +2411,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -2417,18 +2436,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -2436,7 +2455,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -2444,7 +2463,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -2454,7 +2473,7 @@ Returns:
 
 class InvSqrtPauliX(Operation):
     """
-The inverse square root XPower gate :math:`e^{i \frac{\pi}{2} \sigma^x}`.
+The inverse square root XPower gate :math:`e^{i \frac{\pi}{4} \sigma^x}`.
 
 .. math::
     U = \frac{1}{\sqrt{2}} \begin{pmatrix}
@@ -2470,7 +2489,7 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -2478,7 +2497,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -2486,7 +2505,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -2494,7 +2513,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -2511,7 +2532,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -2525,7 +2546,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -2533,7 +2554,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -2541,7 +2562,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -2557,7 +2578,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -2573,7 +2594,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -2587,7 +2608,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -2603,7 +2624,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -2620,7 +2641,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -2645,18 +2666,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -2664,7 +2685,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -2672,7 +2693,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -2698,7 +2719,7 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -2706,7 +2727,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -2714,7 +2735,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -2722,7 +2743,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -2739,7 +2762,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -2753,7 +2776,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -2761,7 +2784,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -2769,7 +2792,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -2785,7 +2808,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -2801,7 +2824,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -2815,7 +2838,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -2831,7 +2854,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -2848,7 +2871,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -2873,18 +2896,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -2892,7 +2915,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -2900,7 +2923,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -2926,7 +2949,7 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -2934,7 +2957,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -2942,7 +2965,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -2950,7 +2973,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -2967,7 +2992,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -2981,7 +3006,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -2989,7 +3014,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -2997,7 +3022,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -3013,7 +3038,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -3029,7 +3054,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -3043,7 +3068,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -3059,7 +3084,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -3076,7 +3101,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -3101,18 +3126,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -3120,7 +3145,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -3128,7 +3153,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -3154,7 +3179,7 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -3162,7 +3187,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -3170,7 +3195,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -3178,7 +3203,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -3195,7 +3222,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -3209,7 +3236,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -3217,7 +3244,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -3225,7 +3252,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -3241,7 +3268,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -3257,7 +3284,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -3271,7 +3298,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -3287,7 +3314,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -3304,7 +3331,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -3329,18 +3356,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -3348,7 +3375,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -3356,7 +3383,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -3377,17 +3404,17 @@ class DefinitionUsize(Operation):
     def __init__(self, name: str, length: int, is_output: bool):
         return
 
-    def length(self):  # type: ignore
+    def length(self):
         """
         Get value of struct field length
         """
 
-    def is_output(self):  # type: ignore
+    def is_output(self):
         """
         Get value of struct field is_output
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -3395,7 +3422,7 @@ class DefinitionUsize(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -3403,7 +3430,7 @@ class DefinitionUsize(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -3411,7 +3438,9 @@ class DefinitionUsize(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -3428,7 +3457,7 @@ class DefinitionUsize(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -3442,7 +3471,7 @@ class DefinitionUsize(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -3450,7 +3479,7 @@ class DefinitionUsize(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def name(self):  # type: ignore
+    def name(self):
         """
         Return name of definition operation.
 
@@ -3458,7 +3487,7 @@ class DefinitionUsize(Operation):
             str
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -3466,7 +3495,7 @@ class DefinitionUsize(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -3474,7 +3503,7 @@ class DefinitionUsize(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -3495,17 +3524,17 @@ class DefinitionBit(Operation):
     def __init__(self, name: str, length: int, is_output: bool):
         return
 
-    def length(self):  # type: ignore
+    def length(self):
         """
         Get value of struct field length
         """
 
-    def is_output(self):  # type: ignore
+    def is_output(self):
         """
         Get value of struct field is_output
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -3513,7 +3542,7 @@ class DefinitionBit(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -3521,7 +3550,7 @@ class DefinitionBit(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -3529,7 +3558,9 @@ class DefinitionBit(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -3546,7 +3577,7 @@ class DefinitionBit(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -3560,7 +3591,7 @@ class DefinitionBit(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -3568,7 +3599,7 @@ class DefinitionBit(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def name(self):  # type: ignore
+    def name(self):
         """
         Return name of definition operation.
 
@@ -3576,7 +3607,7 @@ class DefinitionBit(Operation):
             str
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -3584,7 +3615,7 @@ class DefinitionBit(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -3592,7 +3623,7 @@ class DefinitionBit(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -3613,17 +3644,17 @@ class DefinitionFloat(Operation):
     def __init__(self, name: str, length: int, is_output: bool):
         return
 
-    def length(self):  # type: ignore
+    def length(self):
         """
         Get value of struct field length
         """
 
-    def is_output(self):  # type: ignore
+    def is_output(self):
         """
         Get value of struct field is_output
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -3631,7 +3662,7 @@ class DefinitionFloat(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -3639,7 +3670,7 @@ class DefinitionFloat(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -3647,7 +3678,9 @@ class DefinitionFloat(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -3664,7 +3697,7 @@ class DefinitionFloat(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -3678,7 +3711,7 @@ class DefinitionFloat(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -3686,7 +3719,7 @@ class DefinitionFloat(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def name(self):  # type: ignore
+    def name(self):
         """
         Return name of definition operation.
 
@@ -3694,7 +3727,7 @@ class DefinitionFloat(Operation):
             str
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -3702,7 +3735,7 @@ class DefinitionFloat(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -3710,7 +3743,7 @@ class DefinitionFloat(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -3731,17 +3764,17 @@ class DefinitionComplex(Operation):
     def __init__(self, name: str, length: int, is_output: bool):
         return
 
-    def length(self):  # type: ignore
+    def length(self):
         """
         Get value of struct field length
         """
 
-    def is_output(self):  # type: ignore
+    def is_output(self):
         """
         Get value of struct field is_output
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -3749,7 +3782,7 @@ class DefinitionComplex(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -3757,7 +3790,7 @@ class DefinitionComplex(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -3765,7 +3798,9 @@ class DefinitionComplex(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -3782,7 +3817,7 @@ class DefinitionComplex(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -3796,7 +3831,7 @@ class DefinitionComplex(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -3804,7 +3839,7 @@ class DefinitionComplex(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def name(self):  # type: ignore
+    def name(self):
         """
         Return name of definition operation.
 
@@ -3812,7 +3847,7 @@ class DefinitionComplex(Operation):
             str
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -3820,7 +3855,7 @@ class DefinitionComplex(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -3828,7 +3863,7 @@ class DefinitionComplex(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -3848,12 +3883,12 @@ class InputSymbolic(Operation):
     def __init__(self, name: str, input: float):
         return
 
-    def input(self):  # type: ignore
+    def input(self):
         """
         Get value of struct field input
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -3861,7 +3896,7 @@ class InputSymbolic(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -3869,7 +3904,7 @@ class InputSymbolic(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -3877,7 +3912,9 @@ class InputSymbolic(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -3894,7 +3931,7 @@ class InputSymbolic(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -3908,7 +3945,7 @@ class InputSymbolic(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -3916,7 +3953,7 @@ class InputSymbolic(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def name(self):  # type: ignore
+    def name(self):
         """
         Return name of definition operation.
 
@@ -3924,7 +3961,7 @@ class InputSymbolic(Operation):
             str
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -3932,7 +3969,7 @@ class InputSymbolic(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -3940,7 +3977,7 @@ class InputSymbolic(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -3965,17 +4002,17 @@ class MeasureQubit(Operation):
     def __init__(self, qubit: int, readout: str, readout_index: int):
         return
 
-    def readout(self):  # type: ignore
+    def readout(self):
         """
         Get value of struct field readout
         """
 
-    def readout_index(self):  # type: ignore
+    def readout_index(self):
         """
         Get value of struct field readout_index
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -3983,7 +4020,7 @@ class MeasureQubit(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -3991,7 +4028,7 @@ class MeasureQubit(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -3999,7 +4036,9 @@ class MeasureQubit(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -4016,7 +4055,7 @@ class MeasureQubit(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -4030,7 +4069,7 @@ class MeasureQubit(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -4038,7 +4077,7 @@ class MeasureQubit(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -4046,7 +4085,7 @@ class MeasureQubit(Operation):
             int
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -4054,7 +4093,7 @@ class MeasureQubit(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -4062,7 +4101,7 @@ class MeasureQubit(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -4083,17 +4122,17 @@ class PragmaGetStateVector(Operation):
     def __init__(self, readout: str, circuit: Optional[Circuit]):
         return
 
-    def readout(self):  # type: ignore
+    def readout(self):
         """
         Get value of struct field readout
         """
 
-    def circuit(self):  # type: ignore
+    def circuit(self):
         """
         Get value of struct field circuit
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -4101,7 +4140,7 @@ class PragmaGetStateVector(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -4109,7 +4148,7 @@ class PragmaGetStateVector(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -4117,7 +4156,9 @@ class PragmaGetStateVector(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -4134,7 +4175,7 @@ class PragmaGetStateVector(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -4148,7 +4189,7 @@ class PragmaGetStateVector(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -4156,7 +4197,7 @@ class PragmaGetStateVector(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -4164,7 +4205,7 @@ class PragmaGetStateVector(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -4172,7 +4213,7 @@ class PragmaGetStateVector(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -4193,17 +4234,17 @@ class PragmaGetDensityMatrix(Operation):
     def __init__(self, readout: str, circuit: Optional[Circuit]):
         return
 
-    def readout(self):  # type: ignore
+    def readout(self):
         """
         Get value of struct field readout
         """
 
-    def circuit(self):  # type: ignore
+    def circuit(self):
         """
         Get value of struct field circuit
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -4211,7 +4252,7 @@ class PragmaGetDensityMatrix(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -4219,7 +4260,7 @@ class PragmaGetDensityMatrix(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -4227,7 +4268,9 @@ class PragmaGetDensityMatrix(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -4244,7 +4287,7 @@ class PragmaGetDensityMatrix(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -4258,7 +4301,7 @@ class PragmaGetDensityMatrix(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -4266,7 +4309,7 @@ class PragmaGetDensityMatrix(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -4274,7 +4317,7 @@ class PragmaGetDensityMatrix(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -4282,7 +4325,7 @@ class PragmaGetDensityMatrix(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -4306,17 +4349,17 @@ class PragmaGetOccupationProbability(Operation):
     def __init__(self, readout: str, circuit: Optional[Circuit]):
         return
 
-    def readout(self):  # type: ignore
+    def readout(self):
         """
         Get value of struct field readout
         """
 
-    def circuit(self):  # type: ignore
+    def circuit(self):
         """
         Get value of struct field circuit
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -4324,7 +4367,7 @@ class PragmaGetOccupationProbability(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -4332,7 +4375,7 @@ class PragmaGetOccupationProbability(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -4340,7 +4383,9 @@ class PragmaGetOccupationProbability(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -4357,7 +4402,7 @@ class PragmaGetOccupationProbability(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -4371,7 +4416,7 @@ class PragmaGetOccupationProbability(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -4379,7 +4424,7 @@ class PragmaGetOccupationProbability(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -4387,7 +4432,7 @@ class PragmaGetOccupationProbability(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -4395,7 +4440,7 @@ class PragmaGetOccupationProbability(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -4422,22 +4467,22 @@ class PragmaGetPauliProduct(Operation):
     def __init__(self, qubit_paulis: Dict[int, int], readout: str, circuit: Circuit):
         return
 
-    def qubit_paulis(self):  # type: ignore
+    def qubit_paulis(self):
         """
         Get value of struct field qubit_paulis
         """
 
-    def readout(self):  # type: ignore
+    def readout(self):
         """
         Get value of struct field readout
         """
 
-    def circuit(self):  # type: ignore
+    def circuit(self):
         """
         Get value of struct field circuit
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -4445,7 +4490,7 @@ class PragmaGetPauliProduct(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -4453,7 +4498,7 @@ class PragmaGetPauliProduct(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -4461,7 +4506,9 @@ class PragmaGetPauliProduct(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -4478,7 +4525,7 @@ class PragmaGetPauliProduct(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -4492,7 +4539,7 @@ class PragmaGetPauliProduct(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -4500,7 +4547,7 @@ class PragmaGetPauliProduct(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -4508,7 +4555,7 @@ class PragmaGetPauliProduct(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -4516,7 +4563,7 @@ class PragmaGetPauliProduct(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -4540,22 +4587,22 @@ class PragmaRepeatedMeasurement(Operation):
     ):
         return
 
-    def readout(self):  # type: ignore
+    def readout(self):
         """
         Get value of struct field readout
         """
 
-    def number_measurements(self):  # type: ignore
+    def number_measurements(self):
         """
         Get value of struct field number_measurements
         """
 
-    def qubit_mapping(self):  # type: ignore
+    def qubit_mapping(self):
         """
         Get value of struct field qubit_mapping
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -4563,7 +4610,7 @@ class PragmaRepeatedMeasurement(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -4571,7 +4618,7 @@ class PragmaRepeatedMeasurement(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -4579,7 +4626,9 @@ class PragmaRepeatedMeasurement(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -4596,7 +4645,7 @@ class PragmaRepeatedMeasurement(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -4610,7 +4659,7 @@ class PragmaRepeatedMeasurement(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -4618,7 +4667,7 @@ class PragmaRepeatedMeasurement(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -4626,7 +4675,7 @@ class PragmaRepeatedMeasurement(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -4634,7 +4683,7 @@ class PragmaRepeatedMeasurement(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -4658,17 +4707,17 @@ class PragmaSetNumberOfMeasurements(Operation):
     def __init__(self, number_measurements: int, readout: str):
         return
 
-    def number_measurements(self):  # type: ignore
+    def number_measurements(self):
         """
         Get value of struct field number_measurements
         """
 
-    def readout(self):  # type: ignore
+    def readout(self):
         """
         Get value of struct field readout
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -4676,7 +4725,7 @@ class PragmaSetNumberOfMeasurements(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -4684,7 +4733,7 @@ class PragmaSetNumberOfMeasurements(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -4692,7 +4741,9 @@ class PragmaSetNumberOfMeasurements(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -4709,7 +4760,7 @@ class PragmaSetNumberOfMeasurements(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -4723,7 +4774,7 @@ class PragmaSetNumberOfMeasurements(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -4731,7 +4782,7 @@ class PragmaSetNumberOfMeasurements(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -4739,7 +4790,7 @@ class PragmaSetNumberOfMeasurements(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -4747,7 +4798,7 @@ class PragmaSetNumberOfMeasurements(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -4772,7 +4823,7 @@ class PragmaSetStateVector(Operation):
     def __init__(self, internal: Operation):
         return
 
-    def statevector(self) -> numpy.ndarray:  # type: ignore
+    def statevector(self) -> numpy.ndarray:
         """
         Return the statevector.
 
@@ -4780,7 +4831,7 @@ class PragmaSetStateVector(Operation):
             np.ndarray: The statevector representing the qubit register.
         """
 
-    def involved_qubits(self) -> Set[int]:  # type: ignore
+    def involved_qubits(self) -> Set[int]:
         """
         List all involved qubits (here, all).
 
@@ -4788,7 +4839,7 @@ class PragmaSetStateVector(Operation):
             Set[int]: The involved qubits of the PRAGMA operation.
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Return tags classifying the type of the operation.
 
@@ -4798,7 +4849,7 @@ class PragmaSetStateVector(Operation):
             List[str]: The tags of the operation.
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Return hqslang name of the operation.
 
@@ -4806,7 +4857,7 @@ class PragmaSetStateVector(Operation):
             str: The hqslang name of the operation.
         """
 
-    def is_parametrized(self) -> bool:  # type: ignore
+    def is_parametrized(self) -> bool:
         """
         Return true when the operation has symbolic parameters.
 
@@ -4814,7 +4865,9 @@ class PragmaSetStateVector(Operation):
             bool: True if the operation contains symbolic parameters, False if it does not.
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaSetStateVector:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> PragmaSetStateVector:
         """
         Substitute the symbolic parameters in a clone of the PRAGMA operation according to the substitution_parameters input.
 
@@ -4828,7 +4881,7 @@ class PragmaSetStateVector(Operation):
             RuntimeError: The parameter substitution failed.
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaSetStateVector:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaSetStateVector:
         """
         Remap qubits in a clone of the PRAGMA operation.
 
@@ -4842,7 +4895,7 @@ class PragmaSetStateVector(Operation):
             RuntimeError: The qubit remapping failed.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -4850,7 +4903,7 @@ class PragmaSetStateVector(Operation):
             str: The json schema serialized to json
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -4858,7 +4911,7 @@ class PragmaSetStateVector(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -4881,7 +4934,7 @@ class PragmaSetDensityMatrix(Operation):
     def __init__(self, density_matrix):
         return
 
-    def density_matrix(self) -> numpy.ndarray:  # type: ignore
+    def density_matrix(self) -> numpy.ndarray:
         """
         Return the set density matrix.
 
@@ -4889,7 +4942,7 @@ class PragmaSetDensityMatrix(Operation):
             np.ndarray: The density matrix (2d array) representing the qubit register.
         """
 
-    def involved_qubits(self) -> Set[int]:  # type: ignore
+    def involved_qubits(self) -> Set[int]:
         """
         List all involved qubits (here, all).
 
@@ -4897,7 +4950,7 @@ class PragmaSetDensityMatrix(Operation):
             Set[int]: The involved qubits of the PRAGMA operation.
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Return tags classifying the type of the operation.
 
@@ -4907,7 +4960,7 @@ class PragmaSetDensityMatrix(Operation):
             List[str]: The tags of the Operation.
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Return hqslang name of the operation.
 
@@ -4915,7 +4968,7 @@ class PragmaSetDensityMatrix(Operation):
             str: The hqslang name of the operation.
         """
 
-    def is_parametrized(self) -> bool:  # type: ignore
+    def is_parametrized(self) -> bool:
         """
         Return true when the operation has symbolic parameters.
 
@@ -4923,7 +4976,9 @@ class PragmaSetDensityMatrix(Operation):
             bool: True if the operation contains symbolic parameters, False if it does not.
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaSetDensityMatrix:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> PragmaSetDensityMatrix:
         """
         Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
@@ -4937,7 +4992,7 @@ class PragmaSetDensityMatrix(Operation):
             RuntimeError: The parameter substitution failed.
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaSetDensityMatrix:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaSetDensityMatrix:
         """
         Remap qubits in a clone of the PRAGMA operation.
 
@@ -4951,7 +5006,7 @@ class PragmaSetDensityMatrix(Operation):
             RuntimeError: The qubit remapping failed.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -4959,7 +5014,7 @@ class PragmaSetDensityMatrix(Operation):
             str: The json schema serialized to json
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -4967,7 +5022,7 @@ class PragmaSetDensityMatrix(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -4989,12 +5044,12 @@ class PragmaRepeatGate(Operation):
     def __init__(self, repetition_coefficient: int):
         return
 
-    def repetition_coefficient(self):  # type: ignore
+    def repetition_coefficient(self):
         """
         Get value of struct field repetition_coefficient
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -5002,7 +5057,7 @@ class PragmaRepeatGate(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -5010,7 +5065,7 @@ class PragmaRepeatGate(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -5018,7 +5073,9 @@ class PragmaRepeatGate(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -5035,7 +5092,7 @@ class PragmaRepeatGate(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -5049,7 +5106,7 @@ class PragmaRepeatGate(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -5057,7 +5114,7 @@ class PragmaRepeatGate(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -5065,7 +5122,7 @@ class PragmaRepeatGate(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -5073,7 +5130,7 @@ class PragmaRepeatGate(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -5103,22 +5160,22 @@ class PragmaOverrotation(Operation):
     def __init__(self, gate: str, qubits: List[int], amplitude: float, variance: float):
         return
 
-    def gate_hqslang(self):  # type: ignore
+    def gate_hqslang(self):
         """
         Get value of struct field gate_hqslang
         """
 
-    def amplitude(self):  # type: ignore
+    def amplitude(self):
         """
         Get value of struct field amplitude
         """
 
-    def variance(self):  # type: ignore
+    def variance(self):
         """
         Get value of struct field variance
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -5126,7 +5183,7 @@ class PragmaOverrotation(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -5134,7 +5191,7 @@ class PragmaOverrotation(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -5142,7 +5199,9 @@ class PragmaOverrotation(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -5159,7 +5218,7 @@ class PragmaOverrotation(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -5173,7 +5232,7 @@ class PragmaOverrotation(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -5181,7 +5240,7 @@ class PragmaOverrotation(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubits(self):  # type: ignore
+    def qubits(self):
         """
         Return list of qubits of the multi qubit operation in order of descending significance
 
@@ -5189,7 +5248,7 @@ class PragmaOverrotation(Operation):
             List[int]
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -5197,7 +5256,7 @@ class PragmaOverrotation(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -5205,7 +5264,7 @@ class PragmaOverrotation(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -5224,12 +5283,12 @@ class PragmaBoostNoise(Operation):
     def __init__(self, noise_coefficient: Union[float, str]):
         return
 
-    def noise_coefficient(self):  # type: ignore
+    def noise_coefficient(self):
         """
         Returns value of attribute noise_coefficient
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -5237,7 +5296,7 @@ class PragmaBoostNoise(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -5245,7 +5304,7 @@ class PragmaBoostNoise(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -5253,7 +5312,9 @@ class PragmaBoostNoise(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -5270,7 +5331,7 @@ class PragmaBoostNoise(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -5284,7 +5345,7 @@ class PragmaBoostNoise(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -5292,7 +5353,7 @@ class PragmaBoostNoise(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -5300,7 +5361,7 @@ class PragmaBoostNoise(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -5308,7 +5369,7 @@ class PragmaBoostNoise(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -5328,12 +5389,12 @@ class PragmaStopParallelBlock(Operation):
     def __init__(self, qubits: List[int], execution_time: Union[float, str]):
         return
 
-    def execution_time(self):  # type: ignore
+    def execution_time(self):
         """
         Returns value of attribute execution_time
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -5341,7 +5402,7 @@ class PragmaStopParallelBlock(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -5349,7 +5410,7 @@ class PragmaStopParallelBlock(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -5357,7 +5418,9 @@ class PragmaStopParallelBlock(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -5374,7 +5437,7 @@ class PragmaStopParallelBlock(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -5388,7 +5451,7 @@ class PragmaStopParallelBlock(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -5396,7 +5459,7 @@ class PragmaStopParallelBlock(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubits(self):  # type: ignore
+    def qubits(self):
         """
         Return list of qubits of the multi qubit operation in order of descending significance
 
@@ -5404,7 +5467,7 @@ class PragmaStopParallelBlock(Operation):
             List[int]
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -5412,7 +5475,7 @@ class PragmaStopParallelBlock(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -5420,7 +5483,7 @@ class PragmaStopParallelBlock(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -5442,12 +5505,12 @@ class PragmaGlobalPhase(Operation):
     def __init__(self, phase: Union[float, str]):
         return
 
-    def phase(self):  # type: ignore
+    def phase(self):
         """
         Returns value of attribute phase
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -5455,7 +5518,7 @@ class PragmaGlobalPhase(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -5463,7 +5526,7 @@ class PragmaGlobalPhase(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -5471,7 +5534,9 @@ class PragmaGlobalPhase(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -5488,7 +5553,7 @@ class PragmaGlobalPhase(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -5502,7 +5567,7 @@ class PragmaGlobalPhase(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -5510,7 +5575,7 @@ class PragmaGlobalPhase(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -5518,7 +5583,7 @@ class PragmaGlobalPhase(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -5526,7 +5591,7 @@ class PragmaGlobalPhase(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -5549,12 +5614,12 @@ class PragmaSleep(Operation):
     def __init__(self, qubits: List[int], sleep_time: Union[float, str]):
         return
 
-    def sleep_time(self):  # type: ignore
+    def sleep_time(self):
         """
         Returns value of attribute sleep_time
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -5562,7 +5627,7 @@ class PragmaSleep(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -5570,7 +5635,7 @@ class PragmaSleep(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -5578,7 +5643,9 @@ class PragmaSleep(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -5595,7 +5662,7 @@ class PragmaSleep(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -5609,7 +5676,7 @@ class PragmaSleep(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -5617,7 +5684,7 @@ class PragmaSleep(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubits(self):  # type: ignore
+    def qubits(self):
         """
         Return list of qubits of the multi qubit operation in order of descending significance
 
@@ -5625,7 +5692,7 @@ class PragmaSleep(Operation):
             List[int]
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -5633,7 +5700,7 @@ class PragmaSleep(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -5641,7 +5708,7 @@ class PragmaSleep(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -5660,7 +5727,7 @@ class PragmaActiveReset(Operation):
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -5668,7 +5735,7 @@ class PragmaActiveReset(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -5676,7 +5743,7 @@ class PragmaActiveReset(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -5684,7 +5751,9 @@ class PragmaActiveReset(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -5701,7 +5770,7 @@ class PragmaActiveReset(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -5715,7 +5784,7 @@ class PragmaActiveReset(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -5723,7 +5792,7 @@ class PragmaActiveReset(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -5731,7 +5800,7 @@ class PragmaActiveReset(Operation):
             int
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -5739,7 +5808,7 @@ class PragmaActiveReset(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -5747,7 +5816,7 @@ class PragmaActiveReset(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -5767,12 +5836,12 @@ class PragmaStartDecompositionBlock(Operation):
     def __init__(self, qubits: List[int], reordering_dictionary: Dict[int, int]):
         return
 
-    def reordering_dictionary(self):  # type: ignore
+    def reordering_dictionary(self):
         """
         Get value of struct field reordering_dictionary
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -5780,7 +5849,7 @@ class PragmaStartDecompositionBlock(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -5788,7 +5857,7 @@ class PragmaStartDecompositionBlock(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -5796,7 +5865,9 @@ class PragmaStartDecompositionBlock(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -5813,7 +5884,7 @@ class PragmaStartDecompositionBlock(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -5827,7 +5898,7 @@ class PragmaStartDecompositionBlock(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -5835,7 +5906,7 @@ class PragmaStartDecompositionBlock(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubits(self):  # type: ignore
+    def qubits(self):
         """
         Return list of qubits of the multi qubit operation in order of descending significance
 
@@ -5843,7 +5914,7 @@ class PragmaStartDecompositionBlock(Operation):
             List[int]
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -5851,7 +5922,7 @@ class PragmaStartDecompositionBlock(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -5859,7 +5930,7 @@ class PragmaStartDecompositionBlock(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -5878,7 +5949,7 @@ class PragmaStopDecompositionBlock(Operation):
     def __init__(self, qubits: List[int]):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -5886,7 +5957,7 @@ class PragmaStopDecompositionBlock(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -5894,7 +5965,7 @@ class PragmaStopDecompositionBlock(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -5902,7 +5973,9 @@ class PragmaStopDecompositionBlock(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -5919,7 +5992,7 @@ class PragmaStopDecompositionBlock(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -5933,7 +6006,7 @@ class PragmaStopDecompositionBlock(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -5941,7 +6014,7 @@ class PragmaStopDecompositionBlock(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubits(self):  # type: ignore
+    def qubits(self):
         """
         Return list of qubits of the multi qubit operation in order of descending significance
 
@@ -5949,7 +6022,7 @@ class PragmaStopDecompositionBlock(Operation):
             List[int]
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -5957,7 +6030,7 @@ class PragmaStopDecompositionBlock(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -5965,7 +6038,7 @@ class PragmaStopDecompositionBlock(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -5997,17 +6070,17 @@ class PragmaDamping(Operation):
     ):
         return
 
-    def gate_time(self):  # type: ignore
+    def gate_time(self):
         """
         Returns value of attribute gate_time
         """
 
-    def rate(self):  # type: ignore
+    def rate(self):
         """
         Returns value of attribute rate
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -6015,7 +6088,7 @@ class PragmaDamping(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -6023,7 +6096,7 @@ class PragmaDamping(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -6031,7 +6104,9 @@ class PragmaDamping(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -6048,7 +6123,7 @@ class PragmaDamping(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -6062,7 +6137,7 @@ class PragmaDamping(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -6070,7 +6145,7 @@ class PragmaDamping(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -6078,16 +6153,16 @@ class PragmaDamping(Operation):
             int
         """
 
-    def superoperator(self):  # type: ignore
+    def superoperator(self) -> numpy.ndarray:
         """
         Return the superoperator defining the evolution of the density matrix under the noise gate
 
         Returns:
-            np.ndarray
+            np.ndarray: superoperator of gate.
 
         """
 
-    def powercf(self):  # type: ignore
+    def powercf(self):
         """
         Return the power of the noise gate
 
@@ -6099,7 +6174,7 @@ class PragmaDamping(Operation):
 
         """
 
-    def probability(self):  # type: ignore
+    def probability(self):
         """
         Returns the probability associated with the noise operation
 
@@ -6107,7 +6182,7 @@ class PragmaDamping(Operation):
             CalculatorFloat
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -6115,7 +6190,7 @@ class PragmaDamping(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -6123,7 +6198,7 @@ class PragmaDamping(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -6148,17 +6223,17 @@ class PragmaDepolarising(Operation):
     ):
         return
 
-    def gate_time(self):  # type: ignore
+    def gate_time(self):
         """
         Returns value of attribute gate_time
         """
 
-    def rate(self):  # type: ignore
+    def rate(self):
         """
         Returns value of attribute rate
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -6166,7 +6241,7 @@ class PragmaDepolarising(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -6174,7 +6249,7 @@ class PragmaDepolarising(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -6182,7 +6257,9 @@ class PragmaDepolarising(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -6199,7 +6276,7 @@ class PragmaDepolarising(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -6213,7 +6290,7 @@ class PragmaDepolarising(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -6221,7 +6298,7 @@ class PragmaDepolarising(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -6229,16 +6306,16 @@ class PragmaDepolarising(Operation):
             int
         """
 
-    def superoperator(self):  # type: ignore
+    def superoperator(self) -> numpy.ndarray:
         """
         Return the superoperator defining the evolution of the density matrix under the noise gate
 
         Returns:
-            np.ndarray
+            np.ndarray: superoperator of gate.
 
         """
 
-    def powercf(self):  # type: ignore
+    def powercf(self):
         """
         Return the power of the noise gate
 
@@ -6250,7 +6327,7 @@ class PragmaDepolarising(Operation):
 
         """
 
-    def probability(self):  # type: ignore
+    def probability(self):
         """
         Returns the probability associated with the noise operation
 
@@ -6258,7 +6335,7 @@ class PragmaDepolarising(Operation):
             CalculatorFloat
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -6266,7 +6343,7 @@ class PragmaDepolarising(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -6274,7 +6351,7 @@ class PragmaDepolarising(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -6299,17 +6376,17 @@ class PragmaDephasing(Operation):
     ):
         return
 
-    def gate_time(self):  # type: ignore
+    def gate_time(self):
         """
         Returns value of attribute gate_time
         """
 
-    def rate(self):  # type: ignore
+    def rate(self):
         """
         Returns value of attribute rate
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -6317,7 +6394,7 @@ class PragmaDephasing(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -6325,7 +6402,7 @@ class PragmaDephasing(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -6333,7 +6410,9 @@ class PragmaDephasing(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -6350,7 +6429,7 @@ class PragmaDephasing(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -6364,7 +6443,7 @@ class PragmaDephasing(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -6372,7 +6451,7 @@ class PragmaDephasing(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -6380,16 +6459,16 @@ class PragmaDephasing(Operation):
             int
         """
 
-    def superoperator(self):  # type: ignore
+    def superoperator(self) -> numpy.ndarray:
         """
         Return the superoperator defining the evolution of the density matrix under the noise gate
 
         Returns:
-            np.ndarray
+            np.ndarray: superoperator of gate.
 
         """
 
-    def powercf(self):  # type: ignore
+    def powercf(self):
         """
         Return the power of the noise gate
 
@@ -6401,7 +6480,7 @@ class PragmaDephasing(Operation):
 
         """
 
-    def probability(self):  # type: ignore
+    def probability(self):
         """
         Returns the probability associated with the noise operation
 
@@ -6409,7 +6488,7 @@ class PragmaDephasing(Operation):
             CalculatorFloat
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -6417,7 +6496,7 @@ class PragmaDephasing(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -6425,7 +6504,7 @@ class PragmaDephasing(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -6455,22 +6534,22 @@ class PragmaRandomNoise(Operation):
     ):
         return
 
-    def gate_time(self):  # type: ignore
+    def gate_time(self):
         """
         Returns value of attribute gate_time
         """
 
-    def depolarising_rate(self):  # type: ignore
+    def depolarising_rate(self):
         """
         Returns value of attribute depolarising_rate
         """
 
-    def dephasing_rate(self):  # type: ignore
+    def dephasing_rate(self):
         """
         Returns value of attribute dephasing_rate
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -6478,7 +6557,7 @@ class PragmaRandomNoise(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -6486,7 +6565,7 @@ class PragmaRandomNoise(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -6494,7 +6573,9 @@ class PragmaRandomNoise(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -6511,7 +6592,7 @@ class PragmaRandomNoise(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -6525,7 +6606,7 @@ class PragmaRandomNoise(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -6533,7 +6614,7 @@ class PragmaRandomNoise(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -6541,16 +6622,16 @@ class PragmaRandomNoise(Operation):
             int
         """
 
-    def superoperator(self):  # type: ignore
+    def superoperator(self) -> numpy.ndarray:
         """
         Return the superoperator defining the evolution of the density matrix under the noise gate
 
         Returns:
-            np.ndarray
+            np.ndarray: superoperator of gate.
 
         """
 
-    def powercf(self):  # type: ignore
+    def powercf(self):
         """
         Return the power of the noise gate
 
@@ -6562,7 +6643,7 @@ class PragmaRandomNoise(Operation):
 
         """
 
-    def probability(self):  # type: ignore
+    def probability(self):
         """
         Returns the probability associated with the noise operation
 
@@ -6570,7 +6651,7 @@ class PragmaRandomNoise(Operation):
             CalculatorFloat
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -6578,7 +6659,7 @@ class PragmaRandomNoise(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -6586,7 +6667,7 @@ class PragmaRandomNoise(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -6610,7 +6691,7 @@ class PragmaGeneralNoise(Operation):
     def __init__(self, qubit: int, gate_time: Union[float, str], Rates):
         return
 
-    def qubit(self) -> int:  # type: ignore
+    def qubit(self) -> int:
         """
         Return the qubit on which the PRAGMA operation is applied.
 
@@ -6618,7 +6699,7 @@ class PragmaGeneralNoise(Operation):
             int: The qubit of the PRAGMA operation.
         """
 
-    def gate_time(self) -> Union[float, str]:  # type: ignore
+    def gate_time(self) -> Union[float, str]:
         """
         Return the `gate_time` of the PRAGMA operation.
 
@@ -6626,7 +6707,7 @@ class PragmaGeneralNoise(Operation):
             CalculatorFloat: The gate time of the PRAGMA operation.
         """
 
-    def rates(self) -> numpy.ndarray:  # type: ignore
+    def rates(self) -> numpy.ndarray:
         """
         Return the rates of the PRAGMA operation.
 
@@ -6634,7 +6715,7 @@ class PragmaGeneralNoise(Operation):
             np.ndarray: The rates of the PRAGMA operation.
         """
 
-    def superoperator(self) -> numpy.ndarray:  # type: ignore
+    def superoperator(self) -> numpy.ndarray:
         """
         Return the superoperator of the PRAGMA operation.
 
@@ -6642,7 +6723,7 @@ class PragmaGeneralNoise(Operation):
             np.ndarray: The matrix form of the superoperator of the PRAGMA operation.
         """
 
-    def involved_qubits(self) -> Set[int]:  # type: ignore
+    def involved_qubits(self) -> Set[int]:
         """
         List all involved qubits.
 
@@ -6650,7 +6731,7 @@ class PragmaGeneralNoise(Operation):
             Set[int]: The involved qubits of the PRAGMA operation.
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Return tags classifying the type of the operation.
 
@@ -6660,7 +6741,7 @@ class PragmaGeneralNoise(Operation):
             List[str]: The tags of the Operation.
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Return hqslang name of the operation.
 
@@ -6668,15 +6749,17 @@ class PragmaGeneralNoise(Operation):
             str: The hqslang name of the operation.
         """
 
-    def is_parametrized(self) -> is_parametrized(bool):  # type: ignore
+    def is_parametrized(self) -> bool:
         """
         Return true when the operation has symbolic parameters.
 
         Returns:
-            is_parametrized (bool): True if the operation contains symbolic parameters, False if it does not.
+            bool: True if the operation contains symbolic parameters, False if it does not.
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaGeneralNoise:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> PragmaGeneralNoise:
         """
         Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
@@ -6690,7 +6773,7 @@ class PragmaGeneralNoise(Operation):
             RuntimeError: The parameter substitution failed.
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaGeneralNoise:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaGeneralNoise:
         """
         Remap qubits in a clone of the PRAGMA operation.
 
@@ -6704,7 +6787,7 @@ class PragmaGeneralNoise(Operation):
             RuntimeError: The qubit remapping failed.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -6712,7 +6795,7 @@ class PragmaGeneralNoise(Operation):
             str: The json schema serialized to json
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -6720,7 +6803,7 @@ class PragmaGeneralNoise(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -6743,22 +6826,22 @@ class PragmaConditional(Operation):
     def __init__(self, condition_register: str, condition_index: int, circuit: Circuit):
         return
 
-    def condition_register(self):  # type: ignore
+    def condition_register(self):
         """
         Get value of struct field condition_register
         """
 
-    def condition_index(self):  # type: ignore
+    def condition_index(self):
         """
         Get value of struct field condition_index
         """
 
-    def circuit(self):  # type: ignore
+    def circuit(self):
         """
         Get value of struct field circuit
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -6766,7 +6849,7 @@ class PragmaConditional(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -6774,7 +6857,7 @@ class PragmaConditional(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -6782,7 +6865,9 @@ class PragmaConditional(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -6799,7 +6884,7 @@ class PragmaConditional(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -6813,7 +6898,7 @@ class PragmaConditional(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -6821,7 +6906,7 @@ class PragmaConditional(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -6829,7 +6914,7 @@ class PragmaConditional(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -6837,7 +6922,7 @@ class PragmaConditional(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -6856,7 +6941,7 @@ class PragmaChangeDevice(Operation):
     def __init__(self):
         return
 
-    def wrapped_tags(self) -> List[str]:  # type: ignore
+    def wrapped_tags(self) -> List[str]:
         """
         Return the tags of the wrapped operations.
 
@@ -6864,7 +6949,7 @@ class PragmaChangeDevice(Operation):
             List[str]: The list of tags.
         """
 
-    def wrapped_hqslang(self) -> str:  # type: ignore
+    def wrapped_hqslang(self) -> str:
         """
         Return the hqslang name of the wrapped operations.
 
@@ -6872,7 +6957,7 @@ class PragmaChangeDevice(Operation):
             str: The name of the wrapped operation.
         """
 
-    def wrapped_operation(self) -> bytearray:  # type: ignore
+    def wrapped_operation(self) -> bytearray:
         """
         Return the binary representation of the wrapped operations.
 
@@ -6880,7 +6965,7 @@ class PragmaChangeDevice(Operation):
             ByteArray: The the binary representation of the wrapped operation.
         """
 
-    def involved_qubits(self) -> Set[int]:  # type: ignore
+    def involved_qubits(self) -> Set[int]:
         """
         List all involved qubits.
 
@@ -6888,7 +6973,7 @@ class PragmaChangeDevice(Operation):
             Set[int]: The involved qubits of the PRAGMA operation.
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Return tags classifying the type of the operation.
 
@@ -6898,7 +6983,7 @@ class PragmaChangeDevice(Operation):
             List[str]: The tags of the Operation.
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Return hqslang name of the operation.
 
@@ -6906,15 +6991,17 @@ class PragmaChangeDevice(Operation):
             str: The hqslang name of the operation.
         """
 
-    def is_parametrized(self) -> is_parametrized(bool):  # type: ignore
+    def is_parametrized(self) -> bool:
         """
         Return true when the operation has symbolic parameters.
 
         Returns:
-            is_parametrized (bool): True if the operation contains symbolic parameters, False if it does not.
+            bool: True if the operation contains symbolic parameters, False if it does not.
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaChangeDevice:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> PragmaChangeDevice:
         """
         Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
@@ -6928,7 +7015,7 @@ class PragmaChangeDevice(Operation):
             RuntimeError: The parameter substitution failed.
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaChangeDevice:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaChangeDevice:
         """
         Remap qubits in a clone of the PRAGMA operation.
 
@@ -6942,7 +7029,7 @@ class PragmaChangeDevice(Operation):
             RuntimeError: The qubit remapping failed.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -6950,7 +7037,7 @@ class PragmaChangeDevice(Operation):
             str: The json schema serialized to json
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -6958,7 +7045,7 @@ class PragmaChangeDevice(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -6987,7 +7074,7 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -6995,7 +7082,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -7003,7 +7090,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -7011,7 +7098,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -7028,7 +7117,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -7042,7 +7131,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -7050,28 +7139,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -7079,7 +7168,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -7087,7 +7176,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -7116,7 +7205,7 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -7124,7 +7213,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -7132,7 +7221,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -7140,7 +7229,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -7157,7 +7248,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -7171,7 +7262,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -7179,28 +7270,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -7208,7 +7299,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -7216,7 +7307,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -7245,7 +7336,7 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -7253,7 +7344,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -7261,7 +7352,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -7269,7 +7360,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -7286,7 +7379,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -7300,7 +7393,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -7308,28 +7401,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -7337,7 +7430,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -7345,7 +7438,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -7374,7 +7467,7 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -7382,7 +7475,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -7390,7 +7483,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -7398,7 +7491,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -7415,7 +7510,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -7429,7 +7524,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -7437,28 +7532,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -7466,7 +7561,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -7474,7 +7569,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -7503,7 +7598,7 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -7511,7 +7606,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -7519,7 +7614,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -7527,7 +7622,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -7544,7 +7641,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -7558,7 +7655,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -7566,28 +7663,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -7595,7 +7692,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -7603,7 +7700,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -7632,7 +7729,7 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -7640,7 +7737,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -7648,7 +7745,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -7656,7 +7753,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -7673,7 +7772,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -7687,7 +7786,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -7695,28 +7794,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -7724,7 +7823,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -7732,7 +7831,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -7762,12 +7861,12 @@ Args:
     def __init__(self, control: int, target: int, theta: Union[float, str]):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -7775,7 +7874,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -7783,7 +7882,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -7791,7 +7890,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -7808,7 +7909,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -7822,7 +7923,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -7830,28 +7931,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> XY:
         """
         Returns Rotated gate raised to power
 
@@ -7863,7 +7964,7 @@ Args:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -7871,7 +7972,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -7879,7 +7980,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -7909,12 +8010,12 @@ Args:
     def __init__(self, control: int, target: int, theta: Union[float, str]):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -7922,7 +8023,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -7930,7 +8031,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -7938,7 +8039,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -7955,7 +8058,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -7969,7 +8072,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -7977,28 +8080,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> ControlledPhaseShift:
         """
         Returns Rotated gate raised to power
 
@@ -8010,7 +8113,7 @@ Args:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -8018,7 +8121,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -8026,7 +8129,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -8055,7 +8158,7 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -8063,7 +8166,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -8071,7 +8174,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -8079,7 +8182,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -8096,7 +8201,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -8110,7 +8215,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -8118,28 +8223,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -8147,7 +8252,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -8155,7 +8260,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -8184,7 +8289,7 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -8192,7 +8297,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -8200,7 +8305,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -8208,7 +8313,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -8225,7 +8332,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -8239,7 +8346,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -8247,28 +8354,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -8276,7 +8383,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -8284,7 +8391,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -8313,7 +8420,7 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -8321,7 +8428,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -8329,7 +8436,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -8337,7 +8444,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -8354,7 +8463,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -8368,7 +8477,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -8376,28 +8485,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -8405,7 +8514,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -8413,7 +8522,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -8443,12 +8552,12 @@ Args:
     def __init__(self, control: int, target: int, theta: Union[float, str]):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -8456,7 +8565,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -8464,7 +8573,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -8472,7 +8581,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -8489,7 +8600,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -8503,7 +8614,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -8511,28 +8622,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> VariableMSXX:
         """
         Returns Rotated gate raised to power
 
@@ -8544,7 +8655,7 @@ Args:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -8552,7 +8663,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -8560,7 +8671,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -8600,17 +8711,17 @@ Args:
     ):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def phi(self):  # type: ignore
+    def phi(self):
         """
         Returns value of attribute phi
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -8618,7 +8729,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -8626,7 +8737,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -8634,7 +8745,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -8651,7 +8764,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -8665,7 +8778,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -8673,28 +8786,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> GivensRotation:
         """
         Returns Rotated gate raised to power
 
@@ -8706,7 +8819,7 @@ Args:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -8714,7 +8827,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -8722,7 +8835,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -8762,17 +8875,17 @@ Args:
     ):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def phi(self):  # type: ignore
+    def phi(self):
         """
         Returns value of attribute phi
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -8780,7 +8893,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -8788,7 +8901,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -8796,7 +8909,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -8813,7 +8928,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -8827,7 +8942,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -8835,28 +8950,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> GivensRotationLittleEndian:
         """
         Returns Rotated gate raised to power
 
@@ -8868,7 +8983,7 @@ Args:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -8876,7 +8991,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -8884,7 +8999,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -8923,22 +9038,22 @@ Args:
     ):
         return
 
-    def x(self):  # type: ignore
+    def x(self):
         """
         Returns value of attribute x
         """
 
-    def y(self):  # type: ignore
+    def y(self):
         """
         Returns value of attribute y
         """
 
-    def z(self):  # type: ignore
+    def z(self):
         """
         Returns value of attribute z
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -8946,7 +9061,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -8954,7 +9069,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -8962,7 +9077,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -8979,7 +9096,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -8993,7 +9110,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -9001,28 +9118,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -9030,7 +9147,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -9038,7 +9155,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -9081,22 +9198,22 @@ in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transfo
     ):
         return
 
-    def t(self):  # type: ignore
+    def t(self):
         """
         Returns value of attribute t
         """
 
-    def u(self):  # type: ignore
+    def u(self):
         """
         Returns value of attribute u
         """
 
-    def delta(self):  # type: ignore
+    def delta(self):
         """
         Returns value of attribute delta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -9104,7 +9221,7 @@ in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transfo
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -9112,7 +9229,7 @@ in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transfo
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -9120,7 +9237,9 @@ in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transfo
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -9137,7 +9256,7 @@ in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transfo
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -9151,7 +9270,7 @@ in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transfo
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -9159,28 +9278,28 @@ in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transfo
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -9188,7 +9307,7 @@ in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transfo
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -9196,7 +9315,7 @@ in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transfo
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -9232,22 +9351,22 @@ class SpinInteraction(Operation):
     ):
         return
 
-    def x(self):  # type: ignore
+    def x(self):
         """
         Returns value of attribute x
         """
 
-    def y(self):  # type: ignore
+    def y(self):
         """
         Returns value of attribute y
         """
 
-    def z(self):  # type: ignore
+    def z(self):
         """
         Returns value of attribute z
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -9255,7 +9374,7 @@ class SpinInteraction(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -9263,7 +9382,7 @@ class SpinInteraction(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -9271,7 +9390,9 @@ class SpinInteraction(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -9288,7 +9409,7 @@ class SpinInteraction(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -9302,7 +9423,7 @@ class SpinInteraction(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -9310,28 +9431,28 @@ class SpinInteraction(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -9339,7 +9460,7 @@ class SpinInteraction(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -9347,7 +9468,7 @@ class SpinInteraction(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -9391,17 +9512,17 @@ Args:
     ):
         return
 
-    def delta_real(self):  # type: ignore
+    def delta_real(self):
         """
         Returns value of attribute delta_real
         """
 
-    def delta_imag(self):  # type: ignore
+    def delta_imag(self):
         """
         Returns value of attribute delta_imag
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -9409,7 +9530,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -9417,7 +9538,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -9425,7 +9546,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -9442,7 +9565,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -9456,7 +9579,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -9464,28 +9587,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -9493,7 +9616,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -9501,7 +9624,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -9528,12 +9651,12 @@ class PMInteraction(Operation):
     def __init__(self, control: int, target: int, t: Union[float, str]):
         return
 
-    def t(self):  # type: ignore
+    def t(self):
         """
         Returns value of attribute t
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -9541,7 +9664,7 @@ class PMInteraction(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -9549,7 +9672,7 @@ class PMInteraction(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -9557,7 +9680,9 @@ class PMInteraction(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -9574,7 +9699,7 @@ class PMInteraction(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -9588,7 +9713,7 @@ class PMInteraction(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -9596,28 +9721,28 @@ class PMInteraction(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -9625,7 +9750,7 @@ class PMInteraction(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -9633,7 +9758,7 @@ class PMInteraction(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -9667,17 +9792,17 @@ class ComplexPMInteraction(Operation):
     ):
         return
 
-    def t_real(self):  # type: ignore
+    def t_real(self):
         """
         Returns value of attribute t_real
         """
 
-    def t_imag(self):  # type: ignore
+    def t_imag(self):
         """
         Returns value of attribute t_imag
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -9685,7 +9810,7 @@ class ComplexPMInteraction(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -9693,7 +9818,7 @@ class ComplexPMInteraction(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -9701,7 +9826,9 @@ class ComplexPMInteraction(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -9718,7 +9845,7 @@ class ComplexPMInteraction(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -9732,7 +9859,7 @@ class ComplexPMInteraction(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -9740,28 +9867,28 @@ class ComplexPMInteraction(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -9769,7 +9896,7 @@ class ComplexPMInteraction(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -9777,7 +9904,7 @@ class ComplexPMInteraction(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -9811,12 +9938,12 @@ Args:
     def __init__(self, control: int, target: int, phi: Union[float, str]):
         return
 
-    def phi(self):  # type: ignore
+    def phi(self):
         """
         Returns value of attribute phi
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -9824,7 +9951,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -9832,7 +9959,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -9840,7 +9967,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -9857,7 +9986,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -9871,7 +10000,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -9879,28 +10008,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -9908,7 +10037,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -9916,7 +10045,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -9945,12 +10074,12 @@ Args:
     def __init__(self, qubit: int, theta: Union[float, str]):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -9958,7 +10087,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -9966,7 +10095,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -9974,7 +10103,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -9991,7 +10122,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -10005,7 +10136,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -10013,7 +10144,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -10021,7 +10152,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -10037,7 +10168,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -10053,7 +10184,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -10067,7 +10198,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -10083,7 +10214,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -10100,7 +10231,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -10125,18 +10256,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> PhaseShiftState0:
         """
         Returns Rotated gate raised to power
 
@@ -10148,7 +10279,7 @@ Returns:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -10156,7 +10287,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -10164,7 +10295,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -10193,12 +10324,12 @@ Args:
     def __init__(self, qubit: int, theta: Union[float, str]):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -10206,7 +10337,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -10214,7 +10345,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -10222,7 +10353,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -10239,7 +10372,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -10253,7 +10386,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -10261,7 +10394,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -10269,7 +10402,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -10285,7 +10418,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -10301,7 +10434,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -10315,7 +10448,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -10331,7 +10464,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -10348,7 +10481,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -10373,18 +10506,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> PhaseShiftState1:
         """
         Returns Rotated gate raised to power
 
@@ -10396,7 +10529,7 @@ Returns:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -10404,7 +10537,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -10412,7 +10545,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -10431,12 +10564,12 @@ class MultiQubitMS(Operation):
     def __init__(self):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -10444,7 +10577,7 @@ class MultiQubitMS(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -10452,7 +10585,7 @@ class MultiQubitMS(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -10460,7 +10593,9 @@ class MultiQubitMS(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -10477,7 +10612,7 @@ class MultiQubitMS(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -10491,7 +10626,7 @@ class MultiQubitMS(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -10499,7 +10634,7 @@ class MultiQubitMS(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubits(self):  # type: ignore
+    def qubits(self):
         """
         Return list of qubits of the multi qubit operation in order of descending significance
 
@@ -10507,7 +10642,7 @@ class MultiQubitMS(Operation):
             List[int]
         """
 
-    def circuit(self):  # type: ignore
+    def circuit(self):
         """
         Return circuit implementing MultiQubitGateOperation
 
@@ -10515,18 +10650,18 @@ class MultiQubitMS(Operation):
             Circuit
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> MultiQubitMS:
         """
         Returns Rotated gate raised to power
 
@@ -10538,7 +10673,7 @@ class MultiQubitMS(Operation):
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -10546,7 +10681,7 @@ class MultiQubitMS(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -10554,7 +10689,7 @@ class MultiQubitMS(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -10573,12 +10708,12 @@ class MultiQubitZZ(Operation):
     def __init__(self):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -10586,7 +10721,7 @@ class MultiQubitZZ(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -10594,7 +10729,7 @@ class MultiQubitZZ(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -10602,7 +10737,9 @@ class MultiQubitZZ(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -10619,7 +10756,7 @@ class MultiQubitZZ(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -10633,7 +10770,7 @@ class MultiQubitZZ(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -10641,7 +10778,7 @@ class MultiQubitZZ(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubits(self):  # type: ignore
+    def qubits(self):
         """
         Return list of qubits of the multi qubit operation in order of descending significance
 
@@ -10649,7 +10786,7 @@ class MultiQubitZZ(Operation):
             List[int]
         """
 
-    def circuit(self):  # type: ignore
+    def circuit(self):
         """
         Return circuit implementing MultiQubitGateOperation
 
@@ -10657,18 +10794,18 @@ class MultiQubitZZ(Operation):
             Circuit
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> MultiQubitZZ:
         """
         Returns Rotated gate raised to power
 
@@ -10680,7 +10817,7 @@ class MultiQubitZZ(Operation):
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -10688,7 +10825,7 @@ class MultiQubitZZ(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -10696,7 +10833,7 @@ class MultiQubitZZ(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -10717,17 +10854,17 @@ class InputBit(Operation):
     def __init__(self, name: str, index: int, value: int):
         return
 
-    def index(self):  # type: ignore
+    def index(self):
         """
         Get value of struct field index
         """
 
-    def value(self):  # type: ignore
+    def value(self):
         """
         Get value of struct field value
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -10735,7 +10872,7 @@ class InputBit(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -10743,7 +10880,7 @@ class InputBit(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -10751,7 +10888,9 @@ class InputBit(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -10768,7 +10907,7 @@ class InputBit(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -10782,7 +10921,7 @@ class InputBit(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -10790,7 +10929,7 @@ class InputBit(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def name(self):  # type: ignore
+    def name(self):
         """
         Return name of definition operation.
 
@@ -10798,7 +10937,7 @@ class InputBit(Operation):
             str
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -10806,7 +10945,7 @@ class InputBit(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -10814,7 +10953,7 @@ class InputBit(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -10835,17 +10974,17 @@ class PragmaLoop(Operation):
     def __init__(self, repetitions: Union[float, str], circuit: Circuit):
         return
 
-    def repetitions(self):  # type: ignore
+    def repetitions(self):
         """
         Returns value of attribute repetitions
         """
 
-    def circuit(self):  # type: ignore
+    def circuit(self):
         """
         Get value of struct field circuit
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -10853,7 +10992,7 @@ class PragmaLoop(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -10861,7 +11000,7 @@ class PragmaLoop(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -10869,7 +11008,9 @@ class PragmaLoop(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -10886,7 +11027,7 @@ class PragmaLoop(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -10900,7 +11041,7 @@ class PragmaLoop(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -10908,7 +11049,7 @@ class PragmaLoop(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -10916,7 +11057,7 @@ class PragmaLoop(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -10924,7 +11065,7 @@ class PragmaLoop(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -10963,17 +11104,17 @@ Args:
     ):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def phi(self):  # type: ignore
+    def phi(self):
         """
         Returns value of attribute phi
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -10981,7 +11122,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -10989,7 +11130,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -10997,7 +11138,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -11014,7 +11157,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -11028,7 +11171,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -11036,28 +11179,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> PhaseShiftedControlledPhase:
         """
         Returns Rotated gate raised to power
 
@@ -11069,7 +11212,7 @@ Args:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -11077,7 +11220,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -11085,7 +11228,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -11116,12 +11259,12 @@ Args:
     def __init__(self, control: int, target: int, theta: Union[float, str]):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -11129,7 +11272,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -11137,7 +11280,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -11145,7 +11288,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -11162,7 +11307,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -11176,7 +11321,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -11184,28 +11329,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> ControlledRotateX:
         """
         Returns Rotated gate raised to power
 
@@ -11217,7 +11362,7 @@ Args:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -11225,7 +11370,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -11233,7 +11378,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -11271,17 +11416,17 @@ Args:
     ):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def phi(self):  # type: ignore
+    def phi(self):
         """
         Returns value of attribute phi
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -11289,7 +11434,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -11297,7 +11442,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -11305,7 +11450,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -11322,7 +11469,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -11336,7 +11483,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -11344,28 +11491,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> ControlledRotateXY:
         """
         Returns Rotated gate raised to power
 
@@ -11377,7 +11524,7 @@ Args:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -11385,7 +11532,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -11393,7 +11540,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -11426,7 +11573,7 @@ Args:
     def __init__(self, control_0: int, control_1: int, target: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -11434,7 +11581,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -11442,7 +11589,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -11450,7 +11597,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -11467,7 +11616,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -11481,7 +11630,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -11489,22 +11638,22 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control_0(self):  # type: ignore
+    def control_0(self):
         """
         Returns control_0 qubit of the three-qubit operation
         """
 
-    def control_1(self):  # type: ignore
+    def control_1(self):
         """
         Returns control_1 qubit of the three-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the three-qubit operation
         """
 
-    def circuit(self):  # type: ignore
+    def circuit(self):
         """
         Returns circuit implementing the ThreeQubitGateOperation
 
@@ -11512,18 +11661,18 @@ Args:
             Circuit
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -11531,7 +11680,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -11539,7 +11688,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -11573,12 +11722,12 @@ Args:
     def __init__(self, control_0: int, control_1: int, target: int, theta: float):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -11586,7 +11735,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -11594,7 +11743,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -11602,7 +11751,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -11619,7 +11770,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -11633,7 +11784,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -11641,22 +11792,22 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control_0(self):  # type: ignore
+    def control_0(self):
         """
         Returns control_0 qubit of the three-qubit operation
         """
 
-    def control_1(self):  # type: ignore
+    def control_1(self):
         """
         Returns control_1 qubit of the three-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the three-qubit operation
         """
 
-    def circuit(self):  # type: ignore
+    def circuit(self):
         """
         Returns circuit implementing the ThreeQubitGateOperation
 
@@ -11664,18 +11815,18 @@ Args:
             Circuit
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> ControlledControlledPhaseShift:
         """
         Returns Rotated gate raised to power
 
@@ -11687,7 +11838,7 @@ Args:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -11695,7 +11846,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -11703,7 +11854,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -11736,7 +11887,7 @@ Args:
     def __init__(self, control_0: int, control_1: int, target: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -11744,7 +11895,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -11752,7 +11903,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -11760,7 +11911,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -11777,7 +11930,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -11791,7 +11944,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -11799,22 +11952,22 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control_0(self):  # type: ignore
+    def control_0(self):
         """
         Returns control_0 qubit of the three-qubit operation
         """
 
-    def control_1(self):  # type: ignore
+    def control_1(self):
         """
         Returns control_1 qubit of the three-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the three-qubit operation
         """
 
-    def circuit(self):  # type: ignore
+    def circuit(self):
         """
         Returns circuit implementing the ThreeQubitGateOperation
 
@@ -11822,18 +11975,18 @@ Args:
             Circuit
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -11841,7 +11994,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -11849,7 +12002,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -11876,12 +12029,12 @@ Args:
     def __init__(self, qubit: int, theta: Union[float, str]):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -11889,7 +12042,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -11897,7 +12050,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -11905,7 +12058,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -11922,7 +12077,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -11936,7 +12091,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -11944,7 +12099,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -11952,7 +12107,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -11968,7 +12123,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -11984,7 +12139,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -11998,7 +12153,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -12014,7 +12169,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -12031,7 +12186,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -12056,18 +12211,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> GPi:
         """
         Returns Rotated gate raised to power
 
@@ -12079,7 +12234,7 @@ Returns:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -12087,7 +12242,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -12095,7 +12250,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -12122,12 +12277,12 @@ Args:
     def __init__(self, qubit: int, theta: Union[float, str]):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -12135,7 +12290,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -12143,7 +12298,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -12151,7 +12306,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -12168,7 +12325,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -12182,7 +12339,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -12190,7 +12347,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -12198,7 +12355,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -12214,7 +12371,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -12230,7 +12387,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -12244,7 +12401,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -12260,7 +12417,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -12277,7 +12434,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -12302,18 +12459,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def powercf(self) -> Self:  # type: ignore
+    def powercf(self) -> GPi2:
         """
         Returns Rotated gate raised to power
 
@@ -12325,7 +12482,7 @@ Returns:
 
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -12333,7 +12490,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -12341,7 +12498,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -12366,17 +12523,17 @@ class PragmaControlledCircuit(Operation):
     def __init__(self, controlling_qubit: int, circuit: Circuit):
         return
 
-    def controlling_qubit(self):  # type: ignore
+    def controlling_qubit(self):
         """
         Get value of struct field controlling_qubit
         """
 
-    def circuit(self):  # type: ignore
+    def circuit(self):
         """
         Get value of struct field circuit
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -12384,7 +12541,7 @@ class PragmaControlledCircuit(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -12392,7 +12549,7 @@ class PragmaControlledCircuit(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -12400,7 +12557,9 @@ class PragmaControlledCircuit(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -12417,7 +12576,7 @@ class PragmaControlledCircuit(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -12431,7 +12590,7 @@ class PragmaControlledCircuit(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -12439,7 +12598,7 @@ class PragmaControlledCircuit(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -12447,7 +12606,7 @@ class PragmaControlledCircuit(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -12455,7 +12614,7 @@ class PragmaControlledCircuit(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -12482,17 +12641,17 @@ class Squeezing(Operation):
     ):
         return
 
-    def squeezing(self):  # type: ignore
+    def squeezing(self):
         """
         Returns value of attribute squeezing
         """
 
-    def phase(self):  # type: ignore
+    def phase(self):
         """
         Returns value of attribute phase
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -12500,7 +12659,7 @@ class Squeezing(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -12508,7 +12667,7 @@ class Squeezing(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -12516,7 +12675,9 @@ class Squeezing(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -12533,7 +12694,7 @@ class Squeezing(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -12547,7 +12708,7 @@ class Squeezing(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -12555,7 +12716,7 @@ class Squeezing(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:
         """
         List of modes the operation acts on.
 
@@ -12563,7 +12724,7 @@ class Squeezing(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):
         """
         Remap the bosonic modes in copy of the operation.
 
@@ -12577,7 +12738,7 @@ class Squeezing(Operation):
             PyValueError: Remapping could not be performed
         """
 
-    def mode(self):  # type: ignore
+    def mode(self):
         """
         Return `mode` the bosonic Operation acts on.
 
@@ -12585,7 +12746,7 @@ class Squeezing(Operation):
             int
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -12593,7 +12754,7 @@ class Squeezing(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -12601,7 +12762,7 @@ class Squeezing(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -12623,12 +12784,12 @@ class PhaseShift(Operation):
     def __init__(self, mode: int, phase: Union[float, str]):
         return
 
-    def phase(self):  # type: ignore
+    def phase(self):
         """
         Returns value of attribute phase
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -12636,7 +12797,7 @@ class PhaseShift(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -12644,7 +12805,7 @@ class PhaseShift(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -12652,7 +12813,9 @@ class PhaseShift(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -12669,7 +12832,7 @@ class PhaseShift(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -12683,7 +12846,7 @@ class PhaseShift(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -12691,7 +12854,7 @@ class PhaseShift(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:
         """
         List of modes the operation acts on.
 
@@ -12699,7 +12862,7 @@ class PhaseShift(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):
         """
         Remap the bosonic modes in copy of the operation.
 
@@ -12713,7 +12876,7 @@ class PhaseShift(Operation):
             PyValueError: Remapping could not be performed
         """
 
-    def mode(self):  # type: ignore
+    def mode(self):
         """
         Return `mode` the bosonic Operation acts on.
 
@@ -12721,7 +12884,7 @@ class PhaseShift(Operation):
             int
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -12729,7 +12892,7 @@ class PhaseShift(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -12737,7 +12900,7 @@ class PhaseShift(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -12761,17 +12924,17 @@ class BeamSplitter(Operation):
     ):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def phi(self):  # type: ignore
+    def phi(self):
         """
         Returns value of attribute phi
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -12779,7 +12942,7 @@ class BeamSplitter(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -12787,7 +12950,7 @@ class BeamSplitter(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -12795,7 +12958,9 @@ class BeamSplitter(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -12812,7 +12977,7 @@ class BeamSplitter(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -12826,7 +12991,7 @@ class BeamSplitter(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -12834,7 +12999,7 @@ class BeamSplitter(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:
         """
         List of modes the operation acts on.
 
@@ -12842,7 +13007,7 @@ class BeamSplitter(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):
         """
         Remap the bosonic modes in copy of the operation.
 
@@ -12856,7 +13021,7 @@ class BeamSplitter(Operation):
             PyValueError: Remapping could not be performed
         """
 
-    def mode_0(self):  # type: ignore
+    def mode_0(self):
         """
         Return `mode_0` bosonic mode of two bosonic mode Operation.
 
@@ -12864,7 +13029,7 @@ class BeamSplitter(Operation):
             int
         """
 
-    def mode_1(self):  # type: ignore
+    def mode_1(self):
         """
         Return `mode_1` bosonic mode of two bosonic mode Operation.
 
@@ -12872,7 +13037,7 @@ class BeamSplitter(Operation):
             int
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -12880,7 +13045,7 @@ class BeamSplitter(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -12888,7 +13053,7 @@ class BeamSplitter(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -12912,17 +13077,17 @@ class PhotonDetection(Operation):
     def __init__(self, mode: int, readout: str, readout_index: int):
         return
 
-    def readout(self):  # type: ignore
+    def readout(self):
         """
         Get value of struct field readout
         """
 
-    def readout_index(self):  # type: ignore
+    def readout_index(self):
         """
         Get value of struct field readout_index
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -12930,7 +13095,7 @@ class PhotonDetection(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -12938,7 +13103,7 @@ class PhotonDetection(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -12946,7 +13111,9 @@ class PhotonDetection(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -12963,7 +13130,7 @@ class PhotonDetection(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -12977,7 +13144,7 @@ class PhotonDetection(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -12985,7 +13152,7 @@ class PhotonDetection(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:
         """
         List of modes the operation acts on.
 
@@ -12993,7 +13160,7 @@ class PhotonDetection(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):
         """
         Remap the bosonic modes in copy of the operation.
 
@@ -13007,7 +13174,7 @@ class PhotonDetection(Operation):
             PyValueError: Remapping could not be performed
         """
 
-    def mode(self):  # type: ignore
+    def mode(self):
         """
         Return `mode` the bosonic Operation acts on.
 
@@ -13015,7 +13182,7 @@ class PhotonDetection(Operation):
             int
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -13023,7 +13190,7 @@ class PhotonDetection(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -13031,7 +13198,7 @@ class PhotonDetection(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -13056,7 +13223,7 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -13064,7 +13231,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -13072,7 +13239,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -13080,7 +13247,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -13097,7 +13266,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -13111,7 +13280,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -13119,7 +13288,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -13127,7 +13296,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -13143,7 +13312,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -13159,7 +13328,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -13173,7 +13342,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -13189,7 +13358,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -13206,7 +13375,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -13231,18 +13400,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -13250,7 +13419,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -13258,7 +13427,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -13281,17 +13450,17 @@ class PhaseDisplacement(Operation):
     ):
         return
 
-    def displacement(self):  # type: ignore
+    def displacement(self):
         """
         Returns value of attribute displacement
         """
 
-    def phase(self):  # type: ignore
+    def phase(self):
         """
         Returns value of attribute phase
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -13299,7 +13468,7 @@ class PhaseDisplacement(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -13307,7 +13476,7 @@ class PhaseDisplacement(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -13315,7 +13484,9 @@ class PhaseDisplacement(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -13332,7 +13503,7 @@ class PhaseDisplacement(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -13346,7 +13517,7 @@ class PhaseDisplacement(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -13354,7 +13525,7 @@ class PhaseDisplacement(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:
         """
         List of modes the operation acts on.
 
@@ -13362,7 +13533,7 @@ class PhaseDisplacement(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):
         """
         Remap the bosonic modes in copy of the operation.
 
@@ -13376,7 +13547,7 @@ class PhaseDisplacement(Operation):
             PyValueError: Remapping could not be performed
         """
 
-    def mode(self):  # type: ignore
+    def mode(self):
         """
         Return `mode` the bosonic Operation acts on.
 
@@ -13384,7 +13555,7 @@ class PhaseDisplacement(Operation):
             int
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -13392,7 +13563,7 @@ class PhaseDisplacement(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -13400,7 +13571,7 @@ class PhaseDisplacement(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -13438,7 +13609,7 @@ Args:
     ):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -13446,7 +13617,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -13454,7 +13625,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -13462,7 +13633,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -13479,7 +13652,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -13493,7 +13666,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -13501,28 +13674,28 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def control(self):  # type: ignore
+    def control(self):
         """
         Returns control qubit of the two-qubit operation
         """
 
-    def target(self):  # type: ignore
+    def target(self):
         """
         Returns target qubit of the two-qubit operation
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -13530,7 +13703,7 @@ Args:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -13538,7 +13711,7 @@ Args:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -13558,7 +13731,7 @@ class PragmaAnnotatedOp(Operation):
     def __init__(self, operation: Operation, annotation: str):
         return
 
-    def operation(self) -> Operation:  # type: ignore
+    def operation(self) -> Operation:
         """
         Return the internal Operation.
 
@@ -13566,7 +13739,7 @@ class PragmaAnnotatedOp(Operation):
             Operation: The annotated Operation.
         """
 
-    def annotation(self) -> str:  # type: ignore
+    def annotation(self) -> str:
         """
         Return the annotation.
 
@@ -13574,7 +13747,7 @@ class PragmaAnnotatedOp(Operation):
             str: The annotation.
         """
 
-    def involved_qubits(self) -> Set[int]:  # type: ignore
+    def involved_qubits(self) -> Set[int]:
         """
         List all involved qubits.
 
@@ -13582,7 +13755,7 @@ class PragmaAnnotatedOp(Operation):
             Set[int]: The involved qubits of the PRAGMA operation.
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Return tags classifying the type of the operation.
 
@@ -13592,7 +13765,7 @@ class PragmaAnnotatedOp(Operation):
             List[str]: The tags of the Operation.
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Return hqslang name of the operation.
 
@@ -13600,15 +13773,17 @@ class PragmaAnnotatedOp(Operation):
             str: The hqslang name of the operation.
         """
 
-    def is_parametrized(self) -> is_parametrized(bool):  # type: ignore
+    def is_parametrized(self) -> bool:
         """
         Return true when the operation has symbolic parameters.
 
         Returns:
-            is_parametrized (bool): True if the operation contains symbolic parameters, False if it does not.
+            bool: True if the operation contains symbolic parameters, False if it does not.
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> PragmaAnnotatedOp:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> PragmaAnnotatedOp:
         """
         Substitute the symbolic parameters in a clone of the PRAGMA operation according to the input.
 
@@ -13622,7 +13797,7 @@ class PragmaAnnotatedOp(Operation):
             RuntimeError: The parameter substitution failed.
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaAnnotatedOp:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> PragmaAnnotatedOp:
         """
         Remap qubits in a clone of the PRAGMA operation.
 
@@ -13636,7 +13811,7 @@ class PragmaAnnotatedOp(Operation):
             RuntimeError: The qubit remapping failed.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -13644,7 +13819,7 @@ class PragmaAnnotatedOp(Operation):
             str: The json schema serialized to json
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -13652,7 +13827,7 @@ class PragmaAnnotatedOp(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -13673,12 +13848,12 @@ class QuantumRabi(Operation):
     def __init__(self, qubit: int, mode: int, theta: Union[float, str]):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -13686,7 +13861,7 @@ class QuantumRabi(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -13694,7 +13869,7 @@ class QuantumRabi(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -13702,7 +13877,9 @@ class QuantumRabi(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -13719,7 +13896,7 @@ class QuantumRabi(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -13733,7 +13910,7 @@ class QuantumRabi(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -13741,7 +13918,7 @@ class QuantumRabi(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -13749,7 +13926,7 @@ class QuantumRabi(Operation):
             int
         """
 
-    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:
         """
         List of modes the operation acts on.
 
@@ -13757,7 +13934,7 @@ class QuantumRabi(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):
         """
         Remap the bosonic modes in copy of the operation.
 
@@ -13771,7 +13948,7 @@ class QuantumRabi(Operation):
             PyValueError: Remapping could not be performed
         """
 
-    def mode(self):  # type: ignore
+    def mode(self):
         """
         Return `mode` the bosonic Operation acts on.
 
@@ -13779,7 +13956,7 @@ class QuantumRabi(Operation):
             int
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -13787,7 +13964,7 @@ class QuantumRabi(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -13795,7 +13972,7 @@ class QuantumRabi(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -13816,12 +13993,12 @@ class LongitudinalCoupling(Operation):
     def __init__(self, qubit: int, mode: int, theta: Union[float, str]):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -13829,7 +14006,7 @@ class LongitudinalCoupling(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -13837,7 +14014,7 @@ class LongitudinalCoupling(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -13845,7 +14022,9 @@ class LongitudinalCoupling(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -13862,7 +14041,7 @@ class LongitudinalCoupling(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -13876,7 +14055,7 @@ class LongitudinalCoupling(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -13884,7 +14063,7 @@ class LongitudinalCoupling(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -13892,7 +14071,7 @@ class LongitudinalCoupling(Operation):
             int
         """
 
-    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:
         """
         List of modes the operation acts on.
 
@@ -13900,7 +14079,7 @@ class LongitudinalCoupling(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):
         """
         Remap the bosonic modes in copy of the operation.
 
@@ -13914,7 +14093,7 @@ class LongitudinalCoupling(Operation):
             PyValueError: Remapping could not be performed
         """
 
-    def mode(self):  # type: ignore
+    def mode(self):
         """
         Return `mode` the bosonic Operation acts on.
 
@@ -13922,7 +14101,7 @@ class LongitudinalCoupling(Operation):
             int
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -13930,7 +14109,7 @@ class LongitudinalCoupling(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -13938,7 +14117,7 @@ class LongitudinalCoupling(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -13959,12 +14138,12 @@ class JaynesCummings(Operation):
     def __init__(self, qubit: int, mode: int, theta: Union[float, str]):
         return
 
-    def theta(self):  # type: ignore
+    def theta(self):
         """
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -13972,7 +14151,7 @@ class JaynesCummings(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -13980,7 +14159,7 @@ class JaynesCummings(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -13988,7 +14167,9 @@ class JaynesCummings(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -14005,7 +14186,7 @@ class JaynesCummings(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -14019,7 +14200,7 @@ class JaynesCummings(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -14027,7 +14208,7 @@ class JaynesCummings(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -14035,7 +14216,7 @@ class JaynesCummings(Operation):
             int
         """
 
-    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:
         """
         List of modes the operation acts on.
 
@@ -14043,7 +14224,7 @@ class JaynesCummings(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):
         """
         Remap the bosonic modes in copy of the operation.
 
@@ -14057,7 +14238,7 @@ class JaynesCummings(Operation):
             PyValueError: Remapping could not be performed
         """
 
-    def mode(self):  # type: ignore
+    def mode(self):
         """
         Return `mode` the bosonic Operation acts on.
 
@@ -14065,7 +14246,7 @@ class JaynesCummings(Operation):
             int
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -14073,7 +14254,7 @@ class JaynesCummings(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -14081,7 +14262,7 @@ class JaynesCummings(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -14104,7 +14285,7 @@ class SingleExcitationStore(Operation):
     def __init__(self, qubit: int, mode: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -14112,7 +14293,7 @@ class SingleExcitationStore(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -14120,7 +14301,7 @@ class SingleExcitationStore(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -14128,7 +14309,9 @@ class SingleExcitationStore(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -14145,7 +14328,7 @@ class SingleExcitationStore(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -14159,7 +14342,7 @@ class SingleExcitationStore(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -14167,7 +14350,7 @@ class SingleExcitationStore(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -14175,7 +14358,7 @@ class SingleExcitationStore(Operation):
             int
         """
 
-    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:
         """
         List of modes the operation acts on.
 
@@ -14183,7 +14366,7 @@ class SingleExcitationStore(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):
         """
         Remap the bosonic modes in copy of the operation.
 
@@ -14197,7 +14380,7 @@ class SingleExcitationStore(Operation):
             PyValueError: Remapping could not be performed
         """
 
-    def mode(self):  # type: ignore
+    def mode(self):
         """
         Return `mode` the bosonic Operation acts on.
 
@@ -14205,7 +14388,7 @@ class SingleExcitationStore(Operation):
             int
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -14213,7 +14396,7 @@ class SingleExcitationStore(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -14221,7 +14404,7 @@ class SingleExcitationStore(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -14244,7 +14427,7 @@ class SingleExcitationLoad(Operation):
     def __init__(self, qubit: int, mode: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -14252,7 +14435,7 @@ class SingleExcitationLoad(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -14260,7 +14443,7 @@ class SingleExcitationLoad(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -14268,7 +14451,9 @@ class SingleExcitationLoad(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -14285,7 +14470,7 @@ class SingleExcitationLoad(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -14299,7 +14484,7 @@ class SingleExcitationLoad(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -14307,7 +14492,7 @@ class SingleExcitationLoad(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -14315,7 +14500,7 @@ class SingleExcitationLoad(Operation):
             int
         """
 
-    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:
         """
         List of modes the operation acts on.
 
@@ -14323,7 +14508,7 @@ class SingleExcitationLoad(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):
         """
         Remap the bosonic modes in copy of the operation.
 
@@ -14337,7 +14522,7 @@ class SingleExcitationLoad(Operation):
             PyValueError: Remapping could not be performed
         """
 
-    def mode(self):  # type: ignore
+    def mode(self):
         """
         Return `mode` the bosonic Operation acts on.
 
@@ -14345,7 +14530,7 @@ class SingleExcitationLoad(Operation):
             int
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -14353,7 +14538,7 @@ class SingleExcitationLoad(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -14361,7 +14546,7 @@ class SingleExcitationLoad(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -14383,7 +14568,7 @@ class CZQubitResonator(Operation):
     def __init__(self, qubit: int, mode: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -14391,7 +14576,7 @@ class CZQubitResonator(Operation):
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -14399,7 +14584,7 @@ class CZQubitResonator(Operation):
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -14407,7 +14592,9 @@ class CZQubitResonator(Operation):
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -14424,7 +14611,7 @@ class CZQubitResonator(Operation):
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -14438,7 +14625,7 @@ class CZQubitResonator(Operation):
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -14446,7 +14633,7 @@ class CZQubitResonator(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -14454,7 +14641,7 @@ class CZQubitResonator(Operation):
             int
         """
 
-    def involved_modes(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_modes(self) -> Union[Set[int], str]:
         """
         List of modes the operation acts on.
 
@@ -14462,7 +14649,7 @@ class CZQubitResonator(Operation):
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def remap_modes(self, mapping: Dict[int, int]):  # type: ignore
+    def remap_modes(self, mapping: Dict[int, int]):
         """
         Remap the bosonic modes in copy of the operation.
 
@@ -14476,7 +14663,7 @@ class CZQubitResonator(Operation):
             PyValueError: Remapping could not be performed
         """
 
-    def mode(self):  # type: ignore
+    def mode(self):
         """
         Return `mode` the bosonic Operation acts on.
 
@@ -14484,7 +14671,7 @@ class CZQubitResonator(Operation):
             int
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -14492,7 +14679,7 @@ class CZQubitResonator(Operation):
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -14500,7 +14687,7 @@ class CZQubitResonator(Operation):
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -14526,7 +14713,7 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -14534,7 +14721,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -14542,7 +14729,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -14550,7 +14737,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -14567,7 +14756,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -14581,7 +14770,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -14589,7 +14778,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -14597,7 +14786,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -14613,7 +14802,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -14629,7 +14818,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -14643,7 +14832,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -14659,7 +14848,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -14676,7 +14865,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -14701,18 +14890,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -14720,7 +14909,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -14728,7 +14917,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -14738,7 +14927,7 @@ Returns:
 
 class InvSqrtPauliY(Operation):
     """
-The inverse square root XPower gate :math:`e^{i \frac{\pi}{2} \sigma^y}`.
+The inverse square root YPower gate :math:`e^{i \frac{\pi}{4} \sigma^y}`.
 
 .. math::
     U = \frac{1}{\sqrt{2}} \begin{pmatrix}
@@ -14754,7 +14943,7 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):  # type: ignore
+    def is_parametrized(self):
         """
         Returns true if operation contains symbolic parameters
 
@@ -14762,7 +14951,7 @@ Args:
             bool
         """
 
-    def tags(self) -> List[str]:  # type: ignore
+    def tags(self) -> List[str]:
         """
         Returns tags identifying the Operation
 
@@ -14770,7 +14959,7 @@ Args:
             List[str]: The tags identifying the operation
         """
 
-    def hqslang(self) -> str:  # type: ignore
+    def hqslang(self) -> str:
         """
         Returns hqslang name of Operation
 
@@ -14778,7 +14967,9 @@ Args:
             str: The name
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Operation:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
         """
         Substitutes internal symbolic parameters with float values
 
@@ -14795,7 +14986,7 @@ Args:
             RuntimeError: Parameter Substitution failed
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
         """
         Remap qubits
 
@@ -14809,7 +15000,7 @@ Args:
             RuntimeError: Qubit remapping failed
         """
 
-    def involved_qubits(self) -> Union[Set[int], str]:  # type: ignore
+    def involved_qubits(self) -> Union[Set[int], str]:
         """
         List all involved Qubits
 
@@ -14817,7 +15008,7 @@ Args:
             Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         """
 
-    def qubit(self):  # type: ignore
+    def qubit(self):
         """
         Return the qubit the operation acts on
 
@@ -14825,7 +15016,7 @@ Args:
             int
         """
 
-    def global_phase(self):  # type: ignore
+    def global_phase(self):
         """
 Return the global phase :math:`g` of a unitary gate acting on one qubit
 
@@ -14841,7 +15032,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_r(self):  # type: ignore
+    def alpha_r(self):
         """
 Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
 
@@ -14857,7 +15048,7 @@ Returns:
     CalculatorFloat
 """
 
-    def alpha_i(self):  # type: ignore
+    def alpha_i(self):
         """
 Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
 
@@ -14871,7 +15062,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_r(self):  # type: ignore
+    def beta_r(self):
         """
 Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
 
@@ -14887,7 +15078,7 @@ Returns:
     CalculatorFloat
 """
 
-    def beta_i(self):  # type: ignore
+    def beta_i(self):
         """
 Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
 
@@ -14904,7 +15095,7 @@ Returns:
     CalculatorFloat
 """
 
-    def mul(self) -> Operation:  # type: ignore
+    def mul(self) -> Operation:
         """
         Multiplies two compatible operations implementing OperateSingleQubitGate.
 
@@ -14929,18 +15120,18 @@ Returns:
 
         """
 
-    def unitary_matrix(self):  # type: ignore
+    def unitary_matrix(self) -> numpy.ndarray:
         """
         Return unitary matrix of gate.
 
         Returns:
-            np.ndarray
+            np.ndarray: matrix of gate.
 
         Raises:
             ValueError: Error symbolic operation cannot return float unitary matrix
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -14948,7 +15139,7 @@ Returns:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -14956,7 +15147,7 @@ Returns:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 

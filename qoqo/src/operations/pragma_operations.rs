@@ -1185,7 +1185,7 @@ impl PragmaGeneralNoiseWrapper {
     /// Return true when the operation has symbolic parameters.
     ///
     /// Returns:
-    ///     is_parametrized (bool): True if the operation contains symbolic parameters, False if it does not.
+    ///     bool: True if the operation contains symbolic parameters, False if it does not.
     fn is_parametrized(&self) -> bool {
         self.internal.is_parametrized()
     }
@@ -1480,7 +1480,7 @@ impl PragmaChangeDeviceWrapper {
     /// Return true when the operation has symbolic parameters.
     ///
     /// Returns:
-    ///     is_parametrized (bool): True if the operation contains symbolic parameters, False if it does not.
+    ///     bool: True if the operation contains symbolic parameters, False if it does not.
     fn is_parametrized(&self) -> bool {
         self.internal.is_parametrized()
     }
@@ -1763,7 +1763,7 @@ impl PragmaAnnotatedOpWrapper {
     /// Return true when the operation has symbolic parameters.
     ///
     /// Returns:
-    ///     is_parametrized (bool): True if the operation contains symbolic parameters, False if it does not.
+    ///     bool: True if the operation contains symbolic parameters, False if it does not.
     fn is_parametrized(&self) -> bool {
         self.internal.is_parametrized()
     }

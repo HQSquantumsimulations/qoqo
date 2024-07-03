@@ -346,7 +346,7 @@ impl SingleQubitOverrotationOnGateWrapper {
     ///     gate (str): The name of the gate.
     ///     qubit (int): The qubit the gate acts on.
     ///
-    /// Returns
+    /// Returns:
     ///     Optional[SingleQubitOverrotationDescription]: The overrotation applied when gate is applied.
     pub fn get_single_qubit_overrotation(
         &self,
@@ -404,8 +404,8 @@ impl SingleQubitOverrotationOnGateWrapper {
     ///     control (int): The control qubit the gate acts on.
     ///     target (int): The target qubit the gate acts on.
     ///
-    /// Returns
-    ///     Optional[(SingleQubitOverrotationDescription, SingleQubitOverrotationDescription)]: The overrotation applied when gate is applied.
+    /// Returns:
+    ///     Optional[Tuple[SingleQubitOverrotationDescription, SingleQubitOverrotationDescription]]: The overrotation applied when gate is applied.
     pub fn get_two_qubit_overrotation(
         &self,
         gate: &str,
