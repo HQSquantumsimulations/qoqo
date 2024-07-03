@@ -189,7 +189,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
     ///     op: Whether they should be equal or not.
     ///
     /// Returns:
-    ///     bool
+    ///     bool: Whether they are equal or not.
     ///
     /// Raises:
     ///     NotImplementedError: Other comparison not implemented.

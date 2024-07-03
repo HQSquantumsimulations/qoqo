@@ -52,12 +52,12 @@ Args:
     ):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -292,12 +292,12 @@ Args:
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -544,12 +544,12 @@ Args:
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -796,12 +796,12 @@ Args:
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -1050,12 +1050,12 @@ Args:
         Returns value of attribute phi
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -1327,12 +1327,12 @@ Args:
         Returns value of attribute spherical_phi
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -1569,12 +1569,12 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -1799,12 +1799,12 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -2029,12 +2029,12 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -2259,12 +2259,12 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -2489,12 +2489,12 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -2719,12 +2719,12 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -2949,12 +2949,12 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -3179,12 +3179,12 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -3414,12 +3414,12 @@ class DefinitionUsize(Operation):
         Get value of struct field is_output
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -3534,12 +3534,12 @@ class DefinitionBit(Operation):
         Get value of struct field is_output
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -3654,12 +3654,12 @@ class DefinitionFloat(Operation):
         Get value of struct field is_output
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -3774,12 +3774,12 @@ class DefinitionComplex(Operation):
         Get value of struct field is_output
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -3888,12 +3888,12 @@ class InputSymbolic(Operation):
         Get value of struct field input
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -4012,12 +4012,12 @@ class MeasureQubit(Operation):
         Get value of struct field readout_index
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -4132,12 +4132,12 @@ class PragmaGetStateVector(Operation):
         Get value of struct field circuit
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -4244,12 +4244,12 @@ class PragmaGetDensityMatrix(Operation):
         Get value of struct field circuit
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -4359,12 +4359,12 @@ class PragmaGetOccupationProbability(Operation):
         Get value of struct field circuit
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -4482,12 +4482,12 @@ class PragmaGetPauliProduct(Operation):
         Get value of struct field circuit
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -4602,12 +4602,12 @@ class PragmaRepeatedMeasurement(Operation):
         Get value of struct field qubit_mapping
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -4717,12 +4717,12 @@ class PragmaSetNumberOfMeasurements(Operation):
         Get value of struct field readout
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -5049,12 +5049,12 @@ class PragmaRepeatGate(Operation):
         Get value of struct field repetition_coefficient
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -5175,12 +5175,12 @@ class PragmaOverrotation(Operation):
         Get value of struct field variance
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -5288,12 +5288,12 @@ class PragmaBoostNoise(Operation):
         Returns value of attribute noise_coefficient
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -5394,12 +5394,12 @@ class PragmaStopParallelBlock(Operation):
         Returns value of attribute execution_time
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -5510,12 +5510,12 @@ class PragmaGlobalPhase(Operation):
         Returns value of attribute phase
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -5619,12 +5619,12 @@ class PragmaSleep(Operation):
         Returns value of attribute sleep_time
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -5727,12 +5727,12 @@ class PragmaActiveReset(Operation):
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -5841,12 +5841,12 @@ class PragmaStartDecompositionBlock(Operation):
         Get value of struct field reordering_dictionary
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -5949,12 +5949,12 @@ class PragmaStopDecompositionBlock(Operation):
     def __init__(self, qubits: List[int]):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -6080,12 +6080,12 @@ class PragmaDamping(Operation):
         Returns value of attribute rate
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -6233,12 +6233,12 @@ class PragmaDepolarising(Operation):
         Returns value of attribute rate
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -6386,12 +6386,12 @@ class PragmaDephasing(Operation):
         Returns value of attribute rate
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -6549,12 +6549,12 @@ class PragmaRandomNoise(Operation):
         Returns value of attribute dephasing_rate
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -6841,12 +6841,12 @@ class PragmaConditional(Operation):
         Get value of struct field circuit
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -7074,12 +7074,12 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -7205,12 +7205,12 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -7336,12 +7336,12 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -7467,12 +7467,12 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -7598,12 +7598,12 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -7729,12 +7729,12 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -7866,12 +7866,12 @@ Args:
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -8015,12 +8015,12 @@ Args:
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -8158,12 +8158,12 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -8289,12 +8289,12 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -8420,12 +8420,12 @@ Args:
     def __init__(self, control: int, target: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -8557,12 +8557,12 @@ Args:
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -8721,12 +8721,12 @@ Args:
         Returns value of attribute phi
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -8885,12 +8885,12 @@ Args:
         Returns value of attribute phi
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -9053,12 +9053,12 @@ Args:
         Returns value of attribute z
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -9213,12 +9213,12 @@ in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transfo
         Returns value of attribute delta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -9366,12 +9366,12 @@ class SpinInteraction(Operation):
         Returns value of attribute z
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -9522,12 +9522,12 @@ Args:
         Returns value of attribute delta_imag
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -9656,12 +9656,12 @@ class PMInteraction(Operation):
         Returns value of attribute t
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -9802,12 +9802,12 @@ class ComplexPMInteraction(Operation):
         Returns value of attribute t_imag
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -9943,12 +9943,12 @@ Args:
         Returns value of attribute phi
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -10079,12 +10079,12 @@ Args:
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -10329,12 +10329,12 @@ Args:
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -10569,12 +10569,12 @@ class MultiQubitMS(Operation):
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -10713,12 +10713,12 @@ class MultiQubitZZ(Operation):
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -10864,12 +10864,12 @@ class InputBit(Operation):
         Get value of struct field value
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -10984,12 +10984,12 @@ class PragmaLoop(Operation):
         Get value of struct field circuit
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -11114,12 +11114,12 @@ Args:
         Returns value of attribute phi
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -11264,12 +11264,12 @@ Args:
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -11426,12 +11426,12 @@ Args:
         Returns value of attribute phi
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -11573,12 +11573,12 @@ Args:
     def __init__(self, control_0: int, control_1: int, target: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -11727,12 +11727,12 @@ Args:
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -11887,12 +11887,12 @@ Args:
     def __init__(self, control_0: int, control_1: int, target: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -12034,12 +12034,12 @@ Args:
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -12282,12 +12282,12 @@ Args:
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -12533,12 +12533,12 @@ class PragmaControlledCircuit(Operation):
         Get value of struct field circuit
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -12651,12 +12651,12 @@ class Squeezing(Operation):
         Returns value of attribute phase
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -12789,12 +12789,12 @@ class PhaseShift(Operation):
         Returns value of attribute phase
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -12934,12 +12934,12 @@ class BeamSplitter(Operation):
         Returns value of attribute phi
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -13087,12 +13087,12 @@ class PhotonDetection(Operation):
         Get value of struct field readout_index
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -13223,12 +13223,12 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -13460,12 +13460,12 @@ class PhaseDisplacement(Operation):
         Returns value of attribute phase
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -13609,12 +13609,12 @@ Args:
     ):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -13853,12 +13853,12 @@ class QuantumRabi(Operation):
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -13998,12 +13998,12 @@ class LongitudinalCoupling(Operation):
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -14143,12 +14143,12 @@ class JaynesCummings(Operation):
         Returns value of attribute theta
         """
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -14285,12 +14285,12 @@ class SingleExcitationStore(Operation):
     def __init__(self, qubit: int, mode: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -14427,12 +14427,12 @@ class SingleExcitationLoad(Operation):
     def __init__(self, qubit: int, mode: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -14568,12 +14568,12 @@ class CZQubitResonator(Operation):
     def __init__(self, qubit: int, mode: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -14713,12 +14713,12 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:
@@ -14943,12 +14943,12 @@ Args:
     def __init__(self, qubit: int):
         return
 
-    def is_parametrized(self):
+    def is_parametrized(self) -> bool:
         """
         Returns true if operation contains symbolic parameters
 
         Returns:
-            bool
+            bool: Whether or not the operation contains symbolic parameters.
         """
 
     def tags(self) -> List[str]:

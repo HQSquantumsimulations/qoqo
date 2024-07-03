@@ -105,7 +105,7 @@ pub fn noise_model_wrapper_def(
             ///     op: Whether they should be equal or not.
             ///
             /// Returns:
-            ///     bool
+            ///     bool: Whether they are equal or not.
             ///
             /// Raises:
             ///     NotImplementedError: Other comparison not implemented.

@@ -76,7 +76,7 @@ class PauliZProductInput:
             RuntimeError: Failed to add linear expectation value.
         """
 
-    def add_symbolic_exp_val(self, name: str, symbolic: str, given):
+    def add_symbolic_exp_val(self, name: str, symbolic: str):
         """
         Add symbolic definition of expectation value to measurement input.
 
@@ -85,8 +85,7 @@ class PauliZProductInput:
 
         Args:
             name (str): The name of the expectation value.
-            symbolic (str): The symbolic expression for the expectation values
-                            given by [qoqo_calculator::CalculatorFloat].
+            symbolic (str): The symbolic expression for the expectation values given by [qoqo_calculator::CalculatorFloat].
 
         Raises:
             RuntimeError: Failed to add symbolic expectation value.
@@ -213,7 +212,7 @@ class CheatedPauliZProductInput:
             RuntimeError: Failed to add linear expectation value.
         """
 
-    def add_symbolic_exp_val(self, name: str, symbolic: str, given):
+    def add_symbolic_exp_val(self, name: str, symbolic: str):
         """
         Add symbolic definition of expectation value to measurement input.
 
@@ -222,8 +221,7 @@ class CheatedPauliZProductInput:
 
         Args:
             name (str): The name of the expectation value.
-            symbolic (str): The symbolic expression for the expectation values
-                            given by [qoqo_calculator::CalculatorFloat].
+            symbolic (str): The symbolic expression for the expectation values given by [qoqo_calculator::CalculatorFloat].
 
         Raises:
             RuntimeError: Failed to add symbolic expectation value.

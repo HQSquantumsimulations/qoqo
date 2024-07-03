@@ -203,7 +203,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         /// Returns true if operation contains symbolic parameters
         ///
         /// Returns:
-        ///     bool
+        ///     bool: Whether or not the operation contains symbolic parameters.
         fn is_parametrized(&self) -> bool {
                 self.internal.is_parametrized()
         }
