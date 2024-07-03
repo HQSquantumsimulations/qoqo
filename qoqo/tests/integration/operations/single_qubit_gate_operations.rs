@@ -17,10 +17,11 @@ use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
-    GPi2Wrapper, GPiWrapper, HadamardWrapper, IdentityWrapper, InvSqrtPauliXWrapper, PauliXWrapper,
-    PauliYWrapper, PauliZWrapper, PhaseShiftState0Wrapper, PhaseShiftState1Wrapper,
-    RotateAroundSphericalAxisWrapper, RotateXWrapper, RotateXYWrapper, RotateYWrapper,
-    RotateZWrapper, SGateWrapper, SingleQubitGateWrapper, SqrtPauliXWrapper, TGateWrapper,
+    GPi2Wrapper, GPiWrapper, HadamardWrapper, IdentityWrapper, InvSqrtPauliXWrapper,
+    InvSqrtPauliYWrapper, PauliXWrapper, PauliYWrapper, PauliZWrapper, PhaseShiftState0Wrapper,
+    PhaseShiftState1Wrapper, RotateAroundSphericalAxisWrapper, RotateXWrapper, RotateXYWrapper,
+    RotateYWrapper, RotateZWrapper, SGateWrapper, SingleQubitGateWrapper, SqrtPauliXWrapper,
+    SqrtPauliYWrapper, TGateWrapper,
 };
 use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorFloat;
@@ -840,6 +841,78 @@ fn test_new_identity(input_operation: Operation, arguments: (u32,), method: &str
     })
 }
 
+/// Test new() function for SqrtPauliY
+#[test_case(Operation::from(SqrtPauliY::new(1)), (1,), "__eq__"; "SqrtPauliY_eq")]
+#[test_case(Operation::from(SqrtPauliY::new(1)), (0,), "__ne__"; "SqrtPauliY_ne")]
+fn test_new_sqrtpauliy(input_operation: Operation, arguments: (u32,), method: &str) {
+    let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation_type = py.get_type_bound::<SqrtPauliYWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<SqrtPauliYWrapper>().unwrap();
+
+        let comparison = bool::extract_bound(
+            &operation
+                .bind(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        let def_wrapper = operation_py.extract::<SqrtPauliYWrapper>().unwrap();
+        let binding = operation_type.call1((2,)).unwrap();
+        let new_op_diff = binding.downcast::<SqrtPauliYWrapper>().unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<SqrtPauliYWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "SqrtPauliYWrapper { internal: SqrtPauliY { qubit: 2 } }"
+        );
+    })
+}
+
+/// Test new() function for InvSqrtPauliY
+#[test_case(Operation::from(InvSqrtPauliY::new(1)), (1,), "__eq__"; "InvSqrtPauliY_eq")]
+#[test_case(Operation::from(InvSqrtPauliY::new(1)), (0,), "__ne__"; "InvSqrtPauliY_ne")]
+fn test_new_invsqrtpauliy(input_operation: Operation, arguments: (u32,), method: &str) {
+    let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation_type = py.get_type_bound::<InvSqrtPauliYWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<InvSqrtPauliYWrapper>().unwrap();
+
+        let comparison = bool::extract_bound(
+            &operation
+                .bind(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        let def_wrapper = operation_py.extract::<InvSqrtPauliYWrapper>().unwrap();
+        let binding = operation_type.call1((2,)).unwrap();
+        let new_op_diff = binding.downcast::<InvSqrtPauliYWrapper>().unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<InvSqrtPauliYWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "InvSqrtPauliYWrapper { internal: InvSqrtPauliY { qubit: 2 } }"
+        );
+    })
+}
+
 /// Test is_parametrized() function for SingleQubitGate Operations
 #[test_case(Operation::from(RotateX::new(0, CalculatorFloat::from("theta"))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from("theta"))); "RotateY")]
@@ -934,6 +1007,8 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
 #[test_case(Operation::from(GPi::new(1, CalculatorFloat::from(0))); "GPi")]
 #[test_case(Operation::from(GPi2::new(1, CalculatorFloat::from(0))); "GPi2")]
 #[test_case(Operation::from(Identity::new(1)); "Identity")]
+#[test_case(Operation::from(SqrtPauliY::new(3)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(3)); "InvSqrtPauliY")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1015,6 +1090,8 @@ fn test_pyo3_theta(theta: CalculatorFloat, input_operation: Operation) {
 #[test_case(1, Operation::from(GPi::new(1, CalculatorFloat::from(0))); "GPi")]
 #[test_case(1, Operation::from(GPi2::new(1, CalculatorFloat::from(0))); "GPi2")]
 #[test_case(1, Operation::from(Identity::new(1)); "Identity")]
+#[test_case(3, Operation::from(SqrtPauliY::new(3)); "SqrtPauliY")]
+#[test_case(3, Operation::from(InvSqrtPauliY::new(3)); "InvSqrtPauliY")]
 fn test_pyo3_qubit(qubit: usize, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1073,6 +1150,8 @@ fn test_pyo3_qubit(qubit: usize, input_operation: Operation) {
 #[test_case("GPi", Operation::from(GPi::new(1, CalculatorFloat::from(0))); "GPi")]
 #[test_case("GPi2", Operation::from(GPi2::new(1, CalculatorFloat::from(0))); "GPi2")]
 #[test_case("Identity", Operation::from(Identity::new(1)); "Identity")]
+#[test_case("SqrtPauliY", Operation::from(SqrtPauliY::new(3)); "SqrtPauliY")]
+#[test_case("InvSqrtPauliY", Operation::from(InvSqrtPauliY::new(3)); "InvSqrtPauliY")]
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1272,6 +1351,24 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         "Identity",
         ];
     "Identity")]
+#[test_case(
+    Operation::from(SqrtPauliY::new(0)),
+    vec![
+        "Operation",
+        "GateOperation",
+        "SingleQubitGateOperation",
+        "SqrtPauliY",
+        ];
+    "SqrtPauliY")]
+#[test_case(
+    Operation::from(InvSqrtPauliY::new(0)),
+    vec![
+        "Operation",
+        "GateOperation",
+        "SingleQubitGateOperation",
+        "InvSqrtPauliY",
+        ];
+    "InvSqrtPauliY")]
 fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1334,6 +1431,8 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
 #[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0))); "GPi")]
 #[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0))); "GPi2")]
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
+#[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 fn test_pyo3_remapqubits(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1411,6 +1510,8 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 #[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0))); "GPi")]
 #[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0))); "GPi2")]
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
+#[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
@@ -1469,6 +1570,8 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
 #[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(2.3))); "GPi")]
 #[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(2.3))); "GPi2")]
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
+#[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 fn test_pyo3_unitarymatrix(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1602,6 +1705,8 @@ fn test_pyo3_unitarymatrix_singlequbitgate(input_operation: Operation) {
 #[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0.0))); "GPi")]
 #[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0.0))); "GPi2")]
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
+#[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1674,6 +1779,8 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 #[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0.0))); "GPi")]
 #[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0.0))); "GPi2")]
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
+#[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 fn test_pyo3_alpha_r(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1740,6 +1847,8 @@ fn test_pyo3_alpha_r(input_operation: Operation) {
 #[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0.0))); "GPi")]
 #[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0.0))); "GPi2")]
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
+#[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 fn test_pyo3_alpha_i(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1806,6 +1915,8 @@ fn test_pyo3_alpha_i(input_operation: Operation) {
 #[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0.0))); "GPi")]
 #[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0.0))); "GPi2")]
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
+#[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 fn test_pyo3_beta_r(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1872,6 +1983,8 @@ fn test_pyo3_beta_r(input_operation: Operation) {
 #[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0.0))); "GPi")]
 #[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0.0))); "GPi2")]
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
+#[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 fn test_pyo3_beta_i(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1938,6 +2051,8 @@ fn test_pyo3_beta_i(input_operation: Operation) {
 #[test_case(Operation::from(GPi::new(0, CalculatorFloat::from(0.0))); "GPi")]
 #[test_case(Operation::from(GPi2::new(0, CalculatorFloat::from(0.0))); "GPi2")]
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
+#[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 fn test_pyo3_global_phase(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2048,6 +2163,14 @@ fn test_pyo3_global_phase(input_operation: Operation) {
     "Identity { qubit: 0 }",
     Operation::from(Identity::new(0));
     "Identity")]
+#[test_case(
+    "SqrtPauliY { qubit: 0 }",
+    Operation::from(SqrtPauliY::new(0));
+    "SqrtPauliY")]
+#[test_case(
+    "InvSqrtPauliY { qubit: 0 }",
+    Operation::from(InvSqrtPauliY::new(0));
+    "InvSqrtPauliY")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2203,6 +2326,8 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 #[test_case(Operation::from(RotateX::new(0, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from(0))); "RotateY")]
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
+#[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 fn test_ineffective_substitute_parameters(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2306,6 +2431,8 @@ fn test_pyo3_rotate_powercf(first_op: Operation, second_op: Operation) {
 #[test_case(Operation::from(RotateX::new(1, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(1, CalculatorFloat::from(0))); "RotateY")]
 #[test_case(Operation::from(Identity::new(1)); "Identity")]
+#[test_case(Operation::from(SqrtPauliY::new(1)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(1)); "InvSqrtPauliY")]
 fn test_pyo3_mul(gate1: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2342,6 +2469,8 @@ fn test_pyo3_mul(gate1: Operation) {
 #[test_case(Operation::from(RotateX::new(1, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(1, CalculatorFloat::from(0))); "RotateY")]
 #[test_case(Operation::from(Identity::new(1)); "Identity")]
+#[test_case(Operation::from(SqrtPauliY::new(1)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(1)); "InvSqrtPauliY")]
 fn test_pyo3_mul_error1(gate1: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2371,6 +2500,8 @@ fn test_pyo3_mul_error1(gate1: Operation) {
 #[test_case(Operation::from(RotateX::new(1, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(1, CalculatorFloat::from(0))); "RotateY")]
 #[test_case(Operation::from(Identity::new(1)); "Identity")]
+#[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 fn test_pyo3_mul_error2(gate1: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2400,6 +2531,8 @@ fn test_pyo3_mul_error2(gate1: Operation) {
 #[test_case(Operation::from(RotateX::new(1, CalculatorFloat::from(0))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(1, CalculatorFloat::from(0))); "RotateY")]
 #[test_case(Operation::from(Identity::new(1)); "Identity")]
+#[test_case(Operation::from(SqrtPauliY::new(1)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(1)); "InvSqrtPauliY")]
 fn test_pyo3_mul_error3(gate1: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2508,6 +2641,12 @@ fn test_pyo3_mul_error3(gate1: Operation) {
 #[test_case(
     Operation::from(Identity::new(0)),
     Operation::from(Identity::new(1)); "Identity")]
+#[test_case(
+    Operation::from(SqrtPauliY::new(0)),
+    Operation::from(SqrtPauliY::new(1)); "SqrtPauliY")]
+#[test_case(
+    Operation::from(InvSqrtPauliY::new(0)),
+    Operation::from(InvSqrtPauliY::new(1)); "InvSqrtPauliY")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2586,6 +2725,8 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 #[test_case(SingleQubitGateOperation::from(GPi::new(0, CalculatorFloat::from(0.0))); "GPi")]
 #[test_case(SingleQubitGateOperation::from(GPi2::new(0, CalculatorFloat::from(0.0))); "GPi2")]
 #[test_case(SingleQubitGateOperation::from(Identity::new(1)); "Identity")]
+#[test_case(SingleQubitGateOperation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(SingleQubitGateOperation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 fn test_pyo3_json_schema(operation: SingleQubitGateOperation) {
     let rust_schema = match operation {
         SingleQubitGateOperation::SingleQubitGate(_) => {
@@ -2644,6 +2785,12 @@ fn test_pyo3_json_schema(operation: SingleQubitGateOperation) {
         }
         SingleQubitGateOperation::Identity(_) => {
             serde_json::to_string_pretty(&schemars::schema_for!(Identity)).unwrap()
+        }
+        SingleQubitGateOperation::SqrtPauliY(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(SqrtPauliY)).unwrap()
+        }
+        SingleQubitGateOperation::InvSqrtPauliY(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(InvSqrtPauliY)).unwrap()
         }
         _ => unreachable!(),
     };
