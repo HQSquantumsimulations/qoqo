@@ -296,7 +296,7 @@ struct SqrtPauliX {
     JsonSchema
 )]
 #[derive(Eq)]
-/// The inverse square root XPower gate :math:`e^{i \frac{\pi}{2} \sigma^x}`.
+/// The inverse square root XPower gate :math:`e^{i \frac{\pi}{4} \sigma^x}`.
 ///
 /// .. math::
 ///     U = \frac{1}{\sqrt{2}} \begin{pmatrix}
@@ -548,7 +548,7 @@ struct SqrtPauliY {
     JsonSchema
 )]
 #[derive(Eq)]
-/// The inverse square root XPower gate :math:`e^{i \frac{\pi}{2} \sigma^y}`.
+/// The inverse square root YPower gate :math:`e^{i \frac{\pi}{4} \sigma^y}`.
 ///
 /// .. math::
 ///     U = \frac{1}{\sqrt{2}} \begin{pmatrix}
