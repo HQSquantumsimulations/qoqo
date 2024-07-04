@@ -10,7 +10,7 @@ Devices in qoqo have two use cases:
     A typical example are abstract linear chains of square lattices in which two-qubit operations are only
     available between neighbouring qubits.  
 
-    The abstract devices can also encode a noise model. Q/// Qoqo devicesoqo noise models are in general based on a (pseudo) time
+    The abstract devices can also encode a noise model. Qoqo noise models are in general based on a (pseudo) time
     needed to execute a quantum operation and Lindblad rates for the qubits in the device.
     Specifically in the noise model each qubit undergoes a continuous Lindblad-type decoherence time evolution:
 
@@ -900,7 +900,9 @@ class SquareLatticeDevice:
 
         """
 
-    def set_all_two_qubit_gate_times(self, gate: str, gate_time: float):
+    def set_all_two_qubit_gate_times(
+        self, gate: str, gate_time: float
+    ) -> SquareLatticeDevice:
         """
         Set gate time of all two-qubit gates of specific type
 
@@ -909,11 +911,13 @@ class SquareLatticeDevice:
             gate_time (float): Gate time for the given gate, valid for all qubits in the device.
 
         Returns:
-            A qoqo Device with updated gate times.
+            Self: A qoqo Device with updated gate times.
 
         """
 
-    def set_all_single_qubit_gate_times(self, gate: str, gate_time: float):
+    def set_all_single_qubit_gate_times(
+        self, gate: str, gate_time: float
+    ) -> SquareLatticeDevice:
         """
         Set gate time of all single-qubit gates of specific type
 
@@ -922,11 +926,11 @@ class SquareLatticeDevice:
             gate_time (float): New gate time.
 
         Returns:
-            A qoqo Device with updated gate times.
+            Self: A qoqo Device with updated gate times.
 
         """
 
-    def set_all_qubit_decoherence_rates(self, rates):
+    def set_all_qubit_decoherence_rates(self, rates) -> SquareLatticeDevice:
         """
         Set the decoherence rates for all qubits in the SquareLatticeDevice device.
 
@@ -934,13 +938,13 @@ class SquareLatticeDevice:
             rates (2darray):: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
 
         Returns:
-            SquareLatticeDevice
+            Self: The new device with the new properties
 
         Raises:
             PyValueError: The input parameter `rates` needs to be a (3x3)-matrix.
         """
 
-    def add_damping_all(self, damping: float):
+    def add_damping_all(self, damping: float) -> SquareLatticeDevice:
         """
         Adds qubit damping to noise rates.
 
@@ -948,10 +952,10 @@ class SquareLatticeDevice:
             damping (float): The damping rates.
 
         Returns:
-            SquareLatticeDevice
+            Self: The new device with the new properties
         """
 
-    def add_dephasing_all(self, dephasing: float):
+    def add_dephasing_all(self, dephasing: float) -> SquareLatticeDevice:
         """
         Adds qubit dephasing to noise rates.
 
@@ -959,10 +963,10 @@ class SquareLatticeDevice:
             dephasing (float): The dephasing rates.
 
         Returns:
-            SquareLatticeDevice
+            Self: The new device with the new properties
         """
 
-    def add_depolarising_all(self, depolarising: float):
+    def add_depolarising_all(self, depolarising: float) -> SquareLatticeDevice:
         """
         Adds qubit depolarising to noise rates.
 
@@ -970,7 +974,7 @@ class SquareLatticeDevice:
             depolarising (float): The depolarising rates.
 
         Returns:
-            SquareLatticeDevice
+            Self: The new device with the new properties
         """
 
     def json_schema(self) -> str:

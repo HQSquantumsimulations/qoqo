@@ -434,7 +434,7 @@ pub fn device_wrapper_def(
             ///     op: Whether they should be equal or not.
             ///
             /// Returns:
-            ///     bool: Wether they are equal or not.
+            ///     bool: Whether they are equal or not.
             ///
             /// Raises:
             ///     NotImplementedError: Other comparison not implemented.

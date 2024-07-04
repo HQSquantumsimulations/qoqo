@@ -90,7 +90,7 @@ impl ChainWithEnvironmentDevice for ChainWithEnvironmentCapsule {
 ///     A typical example are abstract linear chains of square lattices in which two-qubit operations are only
 ///     available between neighbouring qubits.  
 ///
-///     The abstract devices can also encode a noise model. Q/// Qoqo devicesoqo noise models are in general based on a (pseudo) time
+///     The abstract devices can also encode a noise model. Qoqo noise models are in general based on a (pseudo) time
 ///     needed to execute a quantum operation and Lindblad rates for the qubits in the device.
 ///     Specifically in the noise model each qubit undergoes a continuous Lindblad-type decoherence time evolution:
 ///
