@@ -10,14 +10,14 @@ jobs:
     name: maturin_build-linux
     runs-on: 'ubuntu-20.04'
     steps:
-        - uses: actions/checkout@v4
+        - uses: actions/checkout@v3
         # - uses: Swatinem/rust-cache@v2
         - uses: actions-rs/toolchain@v1
           with:
             profile: minimal
             toolchain: stable
             default: true
-        - uses: actions/setup-python@v5
+        - uses: actions/setup-python@v4
           with:
             python-version: '3.12'
         - name: linux wheels
