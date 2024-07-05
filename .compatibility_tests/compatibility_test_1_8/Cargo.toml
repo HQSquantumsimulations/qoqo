@@ -1,6 +1,6 @@
 [package]
 name = "compatibility_test_1_8"
-version = "1.14.0"
+version = "1.15.0"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
@@ -22,7 +22,7 @@ publish = false
 test_roqoqo_1_8 = { package = "roqoqo", version = "=1.8.0" }
 test_roqoqo_derive_1_8 = { package = "roqoqo-derive", version = "=1.8.0" }
 qoqo_calculator = { version = "~1.2" }
-roqoqo = { version = "~1.14", path = "../../roqoqo", features = [
+roqoqo = { version = "~1.15", path = "../../roqoqo", features = [
     "serialize",
     "overrotate",
 ] }

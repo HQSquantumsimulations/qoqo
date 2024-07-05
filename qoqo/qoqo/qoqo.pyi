@@ -2,7 +2,26 @@
 # You can find the full implementation on this page:
 # https://github.com/HQSquantumsimulations/qoqo
 
-from typing import Dict, List, Optional, Set, Tuple
+"""
+Qoqo
+
+| Quantum Operation Quantum Operation
+| Yes we use `reduplication <https://en.wikipedia.org/wiki/Reduplication>`_.
+
+qoqo is the HQS python package to represent quantum circuits.
+
+.. autosummary::
+    :toctree: generated/
+
+    Circuit
+    operations
+    registers
+    measurements
+    QuantumProgram
+
+"""
+
+from typing import Optional, List, Tuple, Dict, Set
 
 class Circuit:
     """
@@ -14,7 +33,7 @@ class Circuit:
     def __init__(self):
         return
 
-    def __add__(self, rhs: Operation | Circuit) -> Circuit:  # type: ignore
+    def __add__(self, rhs: Operation | Circuit) -> Circuit:
         """
         Implement the `+` (__add__) magic method to add two Circuits.
 
@@ -29,7 +48,7 @@ class Circuit:
             TypeError: Right hand side cannot be converted to Operation or Circuit.
         """
 
-    def __iadd__(self, other: Operation | Circuit) -> Circuit:  # type: ignore
+    def __iadd__(self, other: Operation | Circuit) -> Circuit:
         """
         Implement the `+=` (__iadd__) magic method to add a Operation to a Circuit.
 
@@ -43,7 +62,9 @@ class Circuit:
             TypeError: Right hand side cannot be converted to Operation or Circuit.
         """
 
-    def substitute_parameters(self, substitution_parameters: Dict[str, float]) -> Circuit:  # type: ignore
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Circuit:
         """
         Substitute the symbolic parameters in a clone of the Circuit according to the substitution_parameters input.
 
@@ -57,7 +78,7 @@ class Circuit:
             RuntimeError: The parameter substitution failed.
         """
 
-    def remap_qubits(self, mapping: Dict[int, int]) -> Circuit:  # type: ignore
+    def remap_qubits(self, mapping: Dict[int, int]) -> Circuit:
         """
         Remap qubits in operations in clone of Circuit.
 
@@ -71,7 +92,7 @@ class Circuit:
             RuntimeError: The qubit remapping failed.
         """
 
-    def overrotate(self) -> Circuit:  # type: ignore
+    def overrotate(self) -> Circuit:
         """
         Return clone of the circuit with all overrotation Pragmas applied.
 
@@ -94,7 +115,7 @@ class Circuit:
 
         """
 
-    def count_occurences(self, operations: List[str]) -> int:  # type: ignore
+    def count_occurences(self, operations: List[str]) -> int:
         """
         Count the number of occurences of a set of operation tags in the circuit.
 
@@ -105,7 +126,7 @@ class Circuit:
             int: The number of occurences of these operation tags.
         """
 
-    def get_operation_types(self) -> Set[str]:  # type: ignore
+    def get_operation_types(self) -> Set[str]:
         """
         Return a list of the hqslang names of all operations occuring in the circuit.
 
@@ -113,7 +134,7 @@ class Circuit:
             Set[str]: The operation types in the Circuit.
         """
 
-    def _qoqo_versions(self) -> Tuple[str, str]:  # type: ignore
+    def _qoqo_versions(self) -> Tuple[str, str]:
         """
         Return the roqoqo and qoqo versions from when the code was compiled.
 
@@ -121,7 +142,7 @@ class Circuit:
             Tuple[str, str]: The roqoqo and qoqo versions.
         """
 
-    def to_bincode(self) -> bytearray:  # type: ignore
+    def to_bincode(self) -> bytearray:
         """
         Return the bincode representation of the Circuit using the [bincode] crate.
 
@@ -132,7 +153,7 @@ class Circuit:
             ValueError: Cannot serialize Circuit to bytes.
         """
 
-    def from_bincode(self, input: bytearray) -> Circuit:  # type: ignore
+    def from_bincode(self, input: bytearray) -> Circuit:
         """
         Convert the bincode representation of the Circuit to a Circuit using the [bincode] crate.
 
@@ -147,7 +168,7 @@ class Circuit:
             ValueError: Input cannot be deserialized to Circuit.
         """
 
-    def to_json(self) -> str:  # type: ignore
+    def to_json(self) -> str:
         """
         Return the json representation of the Circuit.
 
@@ -158,7 +179,7 @@ class Circuit:
             ValueError: Cannot serialize Circuit to json.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -166,7 +187,7 @@ class Circuit:
             str: The json schema serialized to json
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -174,7 +195,7 @@ class Circuit:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -182,7 +203,7 @@ class Circuit:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def from_json(self, input: str) -> Circuit:  # type: ignore
+    def from_json(self, input: str) -> Circuit:
         """
         Convert the json representation of a Circuit to a Circuit.
 
@@ -196,7 +217,7 @@ class Circuit:
             ValueError: Input cannot be deserialized to Circuit.
         """
 
-    def get(self, index: int) -> Operation:  # type: ignore
+    def get(self, index: int) -> Operation:
         """
         Return a copy of the Operation at a certain index of the Circuit.
 
@@ -210,7 +231,7 @@ class Circuit:
             IndexError: Index out of range.
         """
 
-    def get_slice(self, start: Optional[int], stop: Optional[int]) -> Circuit:  # type: ignore
+    def get_slice(self, start: Optional[int], stop: Optional[int]) -> Circuit:
         """
         Return the copy of a slice of the Circuit.
 
@@ -227,7 +248,7 @@ class Circuit:
             IndexError: Start index out of range.
         """
 
-    def definitions(self) -> List[Operation]:  # type: ignore
+    def definitions(self) -> List[Operation]:
         """
         Return a list of definitions in the Circuit.
 
@@ -237,7 +258,7 @@ class Circuit:
             List[Operation]: A vector of the definitions in the Circuit.
         """
 
-    def operations(self) -> List[Operation]:  # type: ignore
+    def operations(self) -> List[Operation]:
         """
         Return a list of all operations in the Circuit.
 
@@ -245,7 +266,7 @@ class Circuit:
             List[Operation]: A vector of the operations in the Circuit.
         """
 
-    def filter_by_tag(self, tag: str) -> List[Operation]:  # type: ignore
+    def filter_by_tag(self, tag: str) -> List[Operation]:
         """
         Return a list of operations with given tag.
 
@@ -256,7 +277,7 @@ class Circuit:
             List[Operation]: A vector of the operations with the specified tag in the Circuit.
         """
 
-    def add(self, op: Operation):  # type: ignore
+    def add(self, op: Operation):
         """
         Add an Operation to Circuit.
 
@@ -284,7 +305,7 @@ class QuantumProgram:
     def __init__(self):
         return
 
-    def measurement(self):  # type: ignore
+    def measurement(self):
         """
         Returns the measurement attribute of the QuantumProgram as Python object.
 
@@ -293,7 +314,7 @@ class QuantumProgram:
             i.e. PauliZProduct, CheatedPauliZProduct, Cheated or ClassicalRegister.
         """
 
-    def input_parameter_names(self):  # type: ignore
+    def input_parameter_names(self):
         """
         Returns the input_parameter_names attribute of the qoqo QuantumProgram.
 
@@ -301,7 +322,7 @@ class QuantumProgram:
             List of input parameter names.
         """
 
-    def run(self, backend: Backend, parameters: Optional[List[float]]):  # type: ignore
+    def run(self, backend: Backend, parameters: Optional[List[float]]):
         """
         Runs the QuantumProgram and returns expectation values.
 
@@ -313,7 +334,7 @@ class QuantumProgram:
             parameters (Optional[List[float]]): List of float  parameters of the function call in order of `input_parameter_names`
         """
 
-    def run_registers(self, backend: Backend, parameters: Optional[List[float]]):  # type: ignore
+    def run_registers(self, backend: Backend, parameters: Optional[List[float]]):
         """
         Runs the QuantumProgram and returns the classical registers of the quantum program.
 
@@ -328,7 +349,7 @@ class QuantumProgram:
             parameters (Optional[List[float]]): List of float  parameters of the function call in order of `input_parameter_names`
         """
 
-    def _qoqo_versions(self) -> Tuple[str, str]:  # type: ignore
+    def _qoqo_versions(self) -> Tuple[str, str]:
         """
         Return the roqoqo and qoqo versions from when the code was compiled.
 
@@ -336,7 +357,7 @@ class QuantumProgram:
             Tuple[str, str]: The roqoqo and qoqo versions.
         """
 
-    def to_bincode(self) -> bytearray:  # type: ignore
+    def to_bincode(self) -> bytearray:
         """
         Return the bincode representation of the QuantumProgram using the [bincode] crate.
 
@@ -347,7 +368,7 @@ class QuantumProgram:
             ValueError: Cannot serialize QuantumProgram to bytes.
         """
 
-    def from_bincode(self, input: bytearray) -> QuantumProgram:  # type: ignore
+    def from_bincode(self, input: bytearray) -> QuantumProgram:
         """
         Convert the bincode representation of the QuantumProgram to a QuantumProgram using the [bincode] crate.
 
@@ -362,7 +383,7 @@ class QuantumProgram:
             ValueError: Input cannot be deserialized to QuantumProgram.
         """
 
-    def to_json(self) -> str:  # type: ignore
+    def to_json(self) -> str:
         """
         Return the json representation of the QuantumProgram.
 
@@ -373,7 +394,7 @@ class QuantumProgram:
             ValueError: Cannot serialize QuantumProgram to json.
         """
 
-    def from_json(self, input: str) -> QuantumProgram:  # type: ignore
+    def from_json(self, input: str) -> QuantumProgram:
         """
         Convert the json representation of a QuantumProgram to a QuantumProgram.
 
@@ -387,7 +408,7 @@ class QuantumProgram:
             ValueError: Input cannot be deserialized to QuantumProgram.
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -395,7 +416,7 @@ class QuantumProgram:
             str: The json schema serialized to json
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -403,7 +424,7 @@ class QuantumProgram:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -420,7 +441,7 @@ class CircuitDag:
     def __init__(self):
         return
 
-    def from_circuit(self, circuit: Circuit) -> CircuitDag:  # type: ignore
+    def from_circuit(self, circuit: Circuit) -> CircuitDag:
         """
         Create a CircuitDag from a given Circuit;
 
@@ -431,13 +452,13 @@ class CircuitDag:
             self: The new CircuitDag.
         """
 
-    def to_circuit(self):  # type: ignore
+    def to_circuit(self):
         """
         Transforms the CircuitDag into a Circuit.
 
         """
 
-    def add_to_back(self, op: Operation):  # type: ignore
+    def add_to_back(self, op: Operation):
         """
         Add an Operation to the back of the CircuitDag, if necessary.
 
@@ -448,7 +469,7 @@ class CircuitDag:
             TypeError: The Python Object cannot be converted to Operation.
         """
 
-    def add_to_front(self, op: Operation):  # type: ignore
+    def add_to_front(self, op: Operation):
         """
         Add an Operation to the front of the CircuitDag, if necessary.
 
@@ -459,7 +480,9 @@ class CircuitDag:
             TypeError: The Python Object cannot be converted to Operation.
         """
 
-    def execution_blocked(self, already_executed: List[int], to_be_executed: int) -> List[int]:  # type: ignore
+    def execution_blocked(
+        self, already_executed: List[int], to_be_executed: int
+    ) -> List[int]:
         """
         Checks if executing an operation is blocked by any not-yet executed operation.
 
@@ -471,7 +494,9 @@ class CircuitDag:
             List[int]: List containing the sorted blocking elements.
         """
 
-    def blocking_predecessors(self, already_executed: List[int], to_be_executed: int) -> List[int]:  # type: ignore
+    def blocking_predecessors(
+        self, already_executed: List[int], to_be_executed: int
+    ) -> List[int]:
         """
         Checks which of the direct predecessors of an Operation in the CircuitDag blocks the execution.
 
@@ -488,7 +513,12 @@ class CircuitDag:
             List[int]: List containing the sorted blocking elements.
         """
 
-    def new_front_layer(self, already_executed: List[int], current_front_layer: List[int], to_be_executed: int):  # type: ignore
+    def new_front_layer(
+        self,
+        already_executed: List[int],
+        current_front_layer: List[int],
+        to_be_executed: int,
+    ):
         """
         Returns a new front-layer after executing an operation from the current front layer.
 
@@ -500,7 +530,7 @@ class CircuitDag:
             to_be_executed (int): NodeIndex of the operation that should be executed next.
         """
 
-    def parallel_blocks(self):  # type: ignore
+    def parallel_blocks(self):
         """
         Returns an iterator over the possible parallel blocks in circuit that can be executed simultaneously
 
@@ -508,7 +538,7 @@ class CircuitDag:
         as references to the Operation in the blocks
         """
 
-    def get(self, index: int) -> Operation:  # type: ignore
+    def get(self, index: int) -> Operation:
         """
         Given a NodeIndex, returns the Operation contained in the node of
         the CircuitDag.
@@ -523,7 +553,7 @@ class CircuitDag:
             IndexError: Index out of range.
         """
 
-    def _qoqo_versions(self) -> Tuple[str, str]:  # type: ignore
+    def _qoqo_versions(self) -> Tuple[str, str]:
         """
         Return the roqoqo and qoqo versions from when the code was compiled.
 
@@ -531,7 +561,7 @@ class CircuitDag:
             Tuple[str, str]: The roqoqo and qoqo versions.
         """
 
-    def to_bincode(self) -> bytearray:  # type: ignore
+    def to_bincode(self) -> bytearray:
         """
         Return the bincode representation of the CircuitDag using the [bincode] crate.
 
@@ -542,7 +572,7 @@ class CircuitDag:
             ValueError: Cannot serialize CircuitDag to bytes.
         """
 
-    def from_bincode(self, input: bytearray) -> CircuitDag:  # type: ignore
+    def from_bincode(self, input: bytearray) -> CircuitDag:
         """
         Convert the bincode representation of the CircuitDag to a CircuitDag using the [bincode] crate.
 
@@ -557,13 +587,13 @@ class CircuitDag:
             ValueError: Input cannot be deserialized to CircuitDag.
         """
 
-    def successors(self):  # type: ignore
+    def successors(self):
         """
         Returns the list of the successors of a given node in the CircuitDag.
 
         """
 
-    def commuting_operations(self) -> List[int]:  # type: ignore
+    def commuting_operations(self) -> List[int]:
         """
         Returns the list of nodes of commuting operations in CircuitDag.
 
@@ -571,7 +601,7 @@ class CircuitDag:
             List[int]: The list of nodes of commuting operations.
         """
 
-    def first_parallel_block(self) -> Set[int]:  # type: ignore
+    def first_parallel_block(self) -> Set[int]:
         """
         Returns a set containing the nodes in the first parallel block.
 
@@ -579,7 +609,7 @@ class CircuitDag:
             Set[int]: The set of nodes in the first parallel block.
         """
 
-    def last_parallel_block(self) -> Set[int]:  # type: ignore
+    def last_parallel_block(self) -> Set[int]:
         """
         Returns a set containing the nodes in the last parallel block.
 
@@ -587,7 +617,7 @@ class CircuitDag:
             Set[int]: The set of nodes in the last parallel block.
         """
 
-    def first_operation_involving_qubit(self) -> Dict[int, int]:  # type: ignore
+    def first_operation_involving_qubit(self) -> Dict[int, int]:
         """
         Returns a dictionary where a key represents a qubit and its value represents
         the first node that involves that qubit.
@@ -596,7 +626,7 @@ class CircuitDag:
             Dict[int, int]: The dictionary of {qubit: node} elements.
         """
 
-    def last_operation_involving_qubit(self) -> Dict[int, int]:  # type: ignore
+    def last_operation_involving_qubit(self) -> Dict[int, int]:
         """
         Returns a dictionary where a key represents a qubit and its value represents
         the last node that involves that qubit.
@@ -605,7 +635,7 @@ class CircuitDag:
             Dict[int, int]: The dictionary of {qubit: node} elements.
         """
 
-    def first_operation_involving_classical(self) -> Dict[(str, int), int]:  # type: ignore
+    def first_operation_involving_classical(self) -> Dict[(str, int), int]:
         """
         Returns a dictionary where a key is composed by the name and the size
         of the classical register and its value represents the first node that involves that
@@ -615,7 +645,7 @@ class CircuitDag:
             Dict[(str, int), int]: The dictionary of {(str, int), int} elements.
         """
 
-    def last_operation_involving_classical(self) -> Dict[(str, int), int]:  # type: ignore
+    def last_operation_involving_classical(self) -> Dict[(str, int), int]:
         """
         Returns a dictionary where a key is composed by the name and the size
         of the classical register and its value represents the last node that involves that
@@ -636,10 +666,15 @@ class Operation:
         GateOperations are single-, two- or multi-qubit gate operations that act on a set of qubits
         and can be executed on a quantum computing device.
         PRAGMAs are operations that can be used when running a simulation of a quantum computing program.
-        Measurement Operations are operations that perform a measurement either on a quantum computing device (MeasuareQubit)
+        Measurement Operations are operations that perform a measurement either on a quantum computing device (MeasureQubit)
         or on a simulation of a quantum computing program (PRAGMA measurement operations).
 
     """
 
     def __init__(self):
         return
+
+class Backend:
+    """
+    Can be any backend from a qoqo interface such as qoqo-qiskit, qoqo-quest or qoqo-qasm.
+    """

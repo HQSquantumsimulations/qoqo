@@ -17,7 +17,7 @@
 //! * GateOperations are single-, two- or multi-qubit gate operations that act on a set of qubits
 //! and can be executed on a quantum computing device.
 //! * PRAGMAs are operations that can be used when running a simulation of a quantum computing program.
-//! * Measurement Operations are operations that perform a measurement either on a quantum computing device (MeasuareQubit)
+//! * Measurement Operations are operations that perform a measurement either on a quantum computing device (MeasureQubit)
 //! or on a simulation of a quantum computing program (PRAGMA measurement operations).
 
 use crate::RoqoqoError;

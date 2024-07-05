@@ -2,7 +2,43 @@
 # You can find the full implementation on this page:
 # https://github.com/HQSquantumsimulations/qoqo
 
-from typing import List, Optional
+"""
+Devices in qoqo have two use cases:
+
+* Abstract devices: Contain abstract information for the model of a quantum computer and its parameters.
+    They can be used to determine which Operations are available on a specific device model.
+    A typical example are abstract linear chains of square lattices in which two-qubit operations are only
+    available between neighbouring qubits.  
+
+    The abstract devices can also encode a noise model. Qoqo noise models are in general based on a (pseudo) time
+    needed to execute a quantum operation and Lindblad rates for the qubits in the device.
+    Specifically in the noise model each qubit undergoes a continuous Lindblad-type decoherence time evolution:
+
+    math::
+    \frac{d}{dt}\rho = \sum_{i,j=0}^{2} M_{i,j} L_{i} \rho L_{j}^{\dagger} - \frac{1}{2} \{ L_{j}^{\dagger} L_i, \rho \} \\\\
+        L_0 = \sigma^{+} \\\\
+        L_1 = \sigma^{-} \\\\
+        L_3 = \sigma^{z}
+    $$
+    Note that as long as gate times and decoherence rates are scaled inversely any kind of units can be used,
+    but we recommend using nanoseconds and inverse nanosecconds as units for gate times and decoherence rates.
+
+
+* Actual hardware devices: These devices are provided by roqoqo backends and contain the necessary information for
+    accessing the quantum computing hardware. The devices also encode a connectivity model.
+
+The devices were introduced after qoqo 1.0.0, but their design may be refactored later for backwards compatibility
+
+.. autosummary::
+    :toctree: generated/
+    
+    AllToAllDevice
+    GenericDevice
+    SquareLatticeDevice
+"""
+
+import numpy
+from typing import Optional, List, Sequence
 
 class AllToAllDevice:
     """
@@ -24,7 +60,9 @@ class AllToAllDevice:
     ):
         return
 
-    def set_all_two_qubit_gate_times(self, gate: str, gate_time: float):  # type: ignore
+    def set_all_two_qubit_gate_times(
+        self, gate: str, gate_time: float
+    ) -> AllToAllDevice:
         """
         Set gate time of all single-qubit gates of specific type
 
@@ -33,11 +71,13 @@ class AllToAllDevice:
             gate_time (float): New gate time.
 
         Returns:
-            AllToAllDevice.
+            Self: The new device with the new properties.
 
         """
 
-    def set_all_single_qubit_gate_times(self, gate: str, gate_time: float):  # type: ignore
+    def set_all_single_qubit_gate_times(
+        self, gate: str, gate_time: float
+    ) -> AllToAllDevice:
         """
         Set gate time of all single-qubit gates of specific type
 
@@ -46,11 +86,11 @@ class AllToAllDevice:
             gate_time (float): New gate time.
 
         Returns:
-            AllToAllDevice
+            Self: The new device with the new properties
 
         """
 
-    def set_all_qubit_decoherence_rates(self, rates):  # type: ignore
+    def set_all_qubit_decoherence_rates(self, rates) -> AllToAllDevice:
         """
         Function to set the decoherence rates for all qubits in the AllToAllDevice device.
 
@@ -58,13 +98,13 @@ class AllToAllDevice:
             rates (2darray):: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
 
         Returns:
-            AllToAllDevice
+            Self: The new device with the new properties
 
         Raises:
             PyValueError: The input parameter `rates` needs to be a (3x3)-matrix.
         """
 
-    def add_damping_all(self, damping: float):  # type: ignore
+    def add_damping_all(self, damping: float) -> AllToAllDevice:
         """
         Adds qubit damping to noise rates.
 
@@ -72,10 +112,10 @@ class AllToAllDevice:
             damping (float): The damping rates.
 
         Returns:
-            AllToAllDevice
+            Self: The new device with the new properties
         """
 
-    def add_dephasing_all(self, dephasing: float):  # type: ignore
+    def add_dephasing_all(self, dephasing: float) -> AllToAllDevice:
         """
         Adds qubit dephasing to noise rates.
 
@@ -83,10 +123,10 @@ class AllToAllDevice:
             dephasing (float): The dephasing rates.
 
         Returns:
-            AllToAllDevice
+            Self: The new device with the new properties
         """
 
-    def add_depolarising_all(self, depolarising: float):  # type: ignore
+    def add_depolarising_all(self, depolarising: float) -> AllToAllDevice:
         """
         Adds qubit depolarising to noise rates.
 
@@ -94,10 +134,10 @@ class AllToAllDevice:
             depolarising (float): The depolarising rates.
 
         Returns:
-            AllToAllDevice
+            Self: The new device with the new properties
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -105,7 +145,7 @@ class AllToAllDevice:
             str: The json schema serialized to json
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -113,7 +153,7 @@ class AllToAllDevice:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -121,7 +161,7 @@ class AllToAllDevice:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def number_qubits(self) -> int:  # type: ignore
+    def number_qubits(self) -> int:
         """
         Return number of qubits in device.
 
@@ -129,7 +169,7 @@ class AllToAllDevice:
             int: The number of qubits.
         """
 
-    def two_qubit_edges(self) -> Sequence[(int, int)]:  # type: ignore
+    def two_qubit_edges(self) -> Sequence[(int, int)]:
         """
         Return the list of pairs of qubits linked by a native two-qubit-gate in the device.
 
@@ -149,7 +189,7 @@ class AllToAllDevice:
 
         """
 
-    def single_qubit_gate_time(self, hqslang: str, qubit: int) -> Optional[float]:  # type: ignore
+    def single_qubit_gate_time(self, hqslang: str, qubit: int) -> Optional[float]:
         """
         Returns the gate time of a single qubit operation if the single qubit operation is available on device.
 
@@ -164,7 +204,9 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    def two_qubit_gate_time(self, hqslang: str, control: int, target: int) -> Optional[float]:  # type: ignore
+    def two_qubit_gate_time(
+        self, hqslang: str, control: int, target: int
+    ) -> Optional[float]:
         """
         Returns the gate time of a two qubit operation if the two qubit operation is available on device.
 
@@ -181,7 +223,9 @@ class AllToAllDevice:
 
         """
 
-    def three_qubit_gate_time(self, hqslang: str, control_0: int, control_1: int, target: int) -> Optional[float]:  # type: ignore
+    def three_qubit_gate_time(
+        self, hqslang: str, control_0: int, control_1: int, target: int
+    ) -> Optional[float]:
         """
         three_qubit_gate_time(gate, control_0, control_1, target
         --
@@ -202,7 +246,7 @@ class AllToAllDevice:
 
         """
 
-    def multi_qubit_gate_time(self, hqslang: str, qubits: List[int]) -> Optional[float]:  # type: ignore
+    def multi_qubit_gate_time(self, hqslang: str, qubits: List[int]) -> Optional[float]:
         """
         Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
 
@@ -217,7 +261,7 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    def set_single_qubit_gate_time(self, gate: str, qubit: int, gate_time: float):  # type: ignore
+    def set_single_qubit_gate_time(self, gate: str, qubit: int, gate_time: float):
         """
         Set the gate time of a single qubit gate.
 
@@ -230,7 +274,9 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    def set_two_qubit_gate_time(self, gate: str, control: int, target: int, gate_time: float):  # type: ignore
+    def set_two_qubit_gate_time(
+        self, gate: str, control: int, target: int, gate_time: float
+    ):
         """
         Set the gate time of a two qubit gate.
 
@@ -244,7 +290,9 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    def set_three_qubit_gate_time(self, gate: str, control_0: int, control_1: int, target: int, gate_time: float):  # type: ignore
+    def set_three_qubit_gate_time(
+        self, gate: str, control_0: int, control_1: int, target: int, gate_time: float
+    ):
         """
         Set the gate time of a three qubit gate.
 
@@ -259,7 +307,7 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    def set_qubit_decoherence_rates(self, gate: str, qubits: int, gate_time: float):  # type: ignore
+    def set_qubit_decoherence_rates(self, gate: str, qubits: int, gate_time: float):
         """
         Set the gate time of a single qubit gate.
 
@@ -272,7 +320,7 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    def set_multi_qubit_gate_time(self, gate: str, qubits: List[int], gate_time: float):  # type: ignore
+    def set_multi_qubit_gate_time(self, gate: str, qubits: List[int], gate_time: float):
         """
         Set the gate time of a single qubit gate.
 
@@ -285,7 +333,7 @@ class AllToAllDevice:
             PyValueError: Qubits not in device
         """
 
-    def qubit_decoherence_rates(self, qubit: int) -> numpy.array:  # type: ignore
+    def qubit_decoherence_rates(self, qubit: int) -> numpy.array:
         """
         Return the matrix of the decoherence rates of the Lindblad equation.
 
@@ -297,7 +345,7 @@ class AllToAllDevice:
 
         """
 
-    def add_damping(self, qubit: int, damping: float):  # type: ignore
+    def add_damping(self, qubit: int, damping: float):
         """
         Adds single qubit damping to noise rates.
 
@@ -309,7 +357,7 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    def add_dephasing(self, qubit: int, dephasing: float):  # type: ignore
+    def add_dephasing(self, qubit: int, dephasing: float):
         """
         Adds single qubit dephasing to noise rates.
 
@@ -321,7 +369,7 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    def add_depolarising(self, qubit: int, depolarising: float):  # type: ignore
+    def add_depolarising(self, qubit: int, depolarising: float):
         """
         Adds single qubit depolarising to noise rates.
 
@@ -333,7 +381,7 @@ class AllToAllDevice:
             PyValueError: Qubit is not in device
         """
 
-    def generic_device(self) -> GenericDevice:  # type: ignore
+    def generic_device(self) -> GenericDevice:
         """
         Turns Device into GenericDevice
 
@@ -348,7 +396,7 @@ class AllToAllDevice:
             The memory usage will be inefficient for devices with large qubit numbers.
         """
 
-    def to_generic_device(self) -> GenericDevice:  # type: ignore
+    def to_generic_device(self) -> GenericDevice:
         """
         Turns Device into GenericDevice
 
@@ -363,7 +411,7 @@ class AllToAllDevice:
             The memory usage will be inefficient for devices with large qubit numbers.
         """
 
-    def single_qubit_gate_names(self) -> List[str]:  # type: ignore
+    def single_qubit_gate_names(self) -> List[str]:
         """
         Returns the names of a single qubit operations available on the device.
 
@@ -371,7 +419,7 @@ class AllToAllDevice:
             List[str]: The list of gate names.
         """
 
-    def two_qubit_gate_names(self) -> List[str]:  # type: ignore
+    def two_qubit_gate_names(self) -> List[str]:
         """
         Returns the names of a two qubit operations available on the device.
 
@@ -379,7 +427,7 @@ class AllToAllDevice:
             List[str]: The list of gate names.
         """
 
-    def multi_qubit_gate_names(self) -> List[str]:  # type: ignore
+    def multi_qubit_gate_names(self) -> List[str]:
         """
         Returns the names of a mutli qubit operations available on the device.
 
@@ -390,7 +438,7 @@ class AllToAllDevice:
 
         """
 
-    def to_bincode(self) -> bytearray:  # type: ignore
+    def to_bincode(self) -> bytearray:
         """
         Return the bincode representation of the Device using the bincode crate.
 
@@ -402,7 +450,7 @@ class AllToAllDevice:
 
         """
 
-    def to_json(self) -> str:  # type: ignore
+    def to_json(self) -> str:
         """
         Return the json representation of the Device.
 
@@ -414,7 +462,7 @@ class AllToAllDevice:
 
         """
 
-    def from_bincode(self, input: bytearray):  # type: ignore
+    def from_bincode(self, input: bytearray):
         """
         Convert the bincode representation of the qoqo device to a device using the bincode crate.
 
@@ -429,7 +477,7 @@ class AllToAllDevice:
             ValueError: Input cannot be deserialized to selected Device.
         """
 
-    def from_json(self, input: str):  # type: ignore
+    def from_json(self, input: str):
         """
         Convert the json representation of a device to a qoqo device.
 
@@ -458,7 +506,7 @@ class GenericDevice:
     def __init__(self, number_qubits: int):
         return
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -466,7 +514,7 @@ class GenericDevice:
             str: The json schema serialized to json
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -474,7 +522,7 @@ class GenericDevice:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -482,7 +530,7 @@ class GenericDevice:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def number_qubits(self) -> int:  # type: ignore
+    def number_qubits(self) -> int:
         """
         Return number of qubits in device.
 
@@ -490,7 +538,7 @@ class GenericDevice:
             int: The number of qubits.
         """
 
-    def two_qubit_edges(self) -> Sequence[(int, int)]:  # type: ignore
+    def two_qubit_edges(self) -> Sequence[(int, int)]:
         """
         Return the list of pairs of qubits linked by a native two-qubit-gate in the device.
 
@@ -510,7 +558,7 @@ class GenericDevice:
 
         """
 
-    def single_qubit_gate_time(self, hqslang: str, qubit: int) -> Optional[float]:  # type: ignore
+    def single_qubit_gate_time(self, hqslang: str, qubit: int) -> Optional[float]:
         """
         Returns the gate time of a single qubit operation if the single qubit operation is available on device.
 
@@ -525,7 +573,9 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    def two_qubit_gate_time(self, hqslang: str, control: int, target: int) -> Optional[float]:  # type: ignore
+    def two_qubit_gate_time(
+        self, hqslang: str, control: int, target: int
+    ) -> Optional[float]:
         """
         Returns the gate time of a two qubit operation if the two qubit operation is available on device.
 
@@ -542,7 +592,9 @@ class GenericDevice:
 
         """
 
-    def three_qubit_gate_time(self, hqslang: str, control_0: int, control_1: int, target: int) -> Optional[float]:  # type: ignore
+    def three_qubit_gate_time(
+        self, hqslang: str, control_0: int, control_1: int, target: int
+    ) -> Optional[float]:
         """
         three_qubit_gate_time(gate, control_0, control_1, target
         --
@@ -563,7 +615,7 @@ class GenericDevice:
 
         """
 
-    def multi_qubit_gate_time(self, hqslang: str, qubits: List[int]) -> Optional[float]:  # type: ignore
+    def multi_qubit_gate_time(self, hqslang: str, qubits: List[int]) -> Optional[float]:
         """
         Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
 
@@ -578,7 +630,7 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    def set_single_qubit_gate_time(self, gate: str, qubit: int, gate_time: float):  # type: ignore
+    def set_single_qubit_gate_time(self, gate: str, qubit: int, gate_time: float):
         """
         Set the gate time of a single qubit gate.
 
@@ -591,7 +643,9 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    def set_two_qubit_gate_time(self, gate: str, control: int, target: int, gate_time: float):  # type: ignore
+    def set_two_qubit_gate_time(
+        self, gate: str, control: int, target: int, gate_time: float
+    ):
         """
         Set the gate time of a two qubit gate.
 
@@ -605,7 +659,9 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    def set_three_qubit_gate_time(self, gate: str, control_0: int, control_1: int, target: int, gate_time: float):  # type: ignore
+    def set_three_qubit_gate_time(
+        self, gate: str, control_0: int, control_1: int, target: int, gate_time: float
+    ):
         """
         Set the gate time of a three qubit gate.
 
@@ -620,7 +676,7 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    def set_qubit_decoherence_rates(self, gate: str, qubits: int, gate_time: float):  # type: ignore
+    def set_qubit_decoherence_rates(self, gate: str, qubits: int, gate_time: float):
         """
         Set the gate time of a single qubit gate.
 
@@ -633,7 +689,7 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    def set_multi_qubit_gate_time(self, gate: str, qubits: List[int], gate_time: float):  # type: ignore
+    def set_multi_qubit_gate_time(self, gate: str, qubits: List[int], gate_time: float):
         """
         Set the gate time of a single qubit gate.
 
@@ -646,7 +702,7 @@ class GenericDevice:
             PyValueError: Qubits not in device
         """
 
-    def qubit_decoherence_rates(self, qubit: int) -> numpy.array:  # type: ignore
+    def qubit_decoherence_rates(self, qubit: int) -> numpy.array:
         """
         Return the matrix of the decoherence rates of the Lindblad equation.
 
@@ -658,7 +714,7 @@ class GenericDevice:
 
         """
 
-    def add_damping(self, qubit: int, damping: float):  # type: ignore
+    def add_damping(self, qubit: int, damping: float):
         """
         Adds single qubit damping to noise rates.
 
@@ -670,7 +726,7 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    def add_dephasing(self, qubit: int, dephasing: float):  # type: ignore
+    def add_dephasing(self, qubit: int, dephasing: float):
         """
         Adds single qubit dephasing to noise rates.
 
@@ -682,7 +738,7 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    def add_depolarising(self, qubit: int, depolarising: float):  # type: ignore
+    def add_depolarising(self, qubit: int, depolarising: float):
         """
         Adds single qubit depolarising to noise rates.
 
@@ -694,7 +750,7 @@ class GenericDevice:
             PyValueError: Qubit is not in device
         """
 
-    def generic_device(self) -> GenericDevice:  # type: ignore
+    def generic_device(self) -> GenericDevice:
         """
         Turns Device into GenericDevice
 
@@ -709,7 +765,7 @@ class GenericDevice:
             The memory usage will be inefficient for devices with large qubit numbers.
         """
 
-    def to_generic_device(self) -> GenericDevice:  # type: ignore
+    def to_generic_device(self) -> GenericDevice:
         """
         Turns Device into GenericDevice
 
@@ -724,7 +780,7 @@ class GenericDevice:
             The memory usage will be inefficient for devices with large qubit numbers.
         """
 
-    def single_qubit_gate_names(self) -> List[str]:  # type: ignore
+    def single_qubit_gate_names(self) -> List[str]:
         """
         Returns the names of a single qubit operations available on the device.
 
@@ -732,7 +788,7 @@ class GenericDevice:
             List[str]: The list of gate names.
         """
 
-    def two_qubit_gate_names(self) -> List[str]:  # type: ignore
+    def two_qubit_gate_names(self) -> List[str]:
         """
         Returns the names of a two qubit operations available on the device.
 
@@ -740,7 +796,7 @@ class GenericDevice:
             List[str]: The list of gate names.
         """
 
-    def multi_qubit_gate_names(self) -> List[str]:  # type: ignore
+    def multi_qubit_gate_names(self) -> List[str]:
         """
         Returns the names of a mutli qubit operations available on the device.
 
@@ -751,7 +807,7 @@ class GenericDevice:
 
         """
 
-    def to_bincode(self) -> bytearray:  # type: ignore
+    def to_bincode(self) -> bytearray:
         """
         Return the bincode representation of the Device using the bincode crate.
 
@@ -763,7 +819,7 @@ class GenericDevice:
 
         """
 
-    def to_json(self) -> str:  # type: ignore
+    def to_json(self) -> str:
         """
         Return the json representation of the Device.
 
@@ -775,7 +831,7 @@ class GenericDevice:
 
         """
 
-    def from_bincode(self, input: bytearray):  # type: ignore
+    def from_bincode(self, input: bytearray):
         """
         Convert the bincode representation of the qoqo device to a device using the bincode crate.
 
@@ -790,7 +846,7 @@ class GenericDevice:
             ValueError: Input cannot be deserialized to selected Device.
         """
 
-    def from_json(self, input: str):  # type: ignore
+    def from_json(self, input: str):
         """
         Convert the json representation of a device to a qoqo device.
 
@@ -826,7 +882,7 @@ class SquareLatticeDevice:
     ):
         return
 
-    def number_rows(self) -> int:  # type: ignore
+    def number_rows(self) -> int:
         """
         Return the number of rows of optical tweezers in the two-dimensional grid of potential qubit positions.
 
@@ -835,7 +891,7 @@ class SquareLatticeDevice:
 
         """
 
-    def number_columns(self) -> int:  # type: ignore
+    def number_columns(self) -> int:
         """
         Return number of columns in device.
 
@@ -844,7 +900,9 @@ class SquareLatticeDevice:
 
         """
 
-    def set_all_two_qubit_gate_times(self, gate: str, gate_time: float):  # type: ignore
+    def set_all_two_qubit_gate_times(
+        self, gate: str, gate_time: float
+    ) -> SquareLatticeDevice:
         """
         Set gate time of all two-qubit gates of specific type
 
@@ -853,11 +911,13 @@ class SquareLatticeDevice:
             gate_time (float): Gate time for the given gate, valid for all qubits in the device.
 
         Returns:
-            A qoqo Device with updated gate times.
+            Self: A qoqo Device with updated gate times.
 
         """
 
-    def set_all_single_qubit_gate_times(self, gate: str, gate_time: float):  # type: ignore
+    def set_all_single_qubit_gate_times(
+        self, gate: str, gate_time: float
+    ) -> SquareLatticeDevice:
         """
         Set gate time of all single-qubit gates of specific type
 
@@ -866,11 +926,11 @@ class SquareLatticeDevice:
             gate_time (float): New gate time.
 
         Returns:
-            A qoqo Device with updated gate times.
+            Self: A qoqo Device with updated gate times.
 
         """
 
-    def set_all_qubit_decoherence_rates(self, rates):  # type: ignore
+    def set_all_qubit_decoherence_rates(self, rates) -> SquareLatticeDevice:
         """
         Set the decoherence rates for all qubits in the SquareLatticeDevice device.
 
@@ -878,13 +938,13 @@ class SquareLatticeDevice:
             rates (2darray):: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
 
         Returns:
-            SquareLatticeDevice
+            Self: The new device with the new properties
 
         Raises:
             PyValueError: The input parameter `rates` needs to be a (3x3)-matrix.
         """
 
-    def add_damping_all(self, damping: float):  # type: ignore
+    def add_damping_all(self, damping: float) -> SquareLatticeDevice:
         """
         Adds qubit damping to noise rates.
 
@@ -892,10 +952,10 @@ class SquareLatticeDevice:
             damping (float): The damping rates.
 
         Returns:
-            SquareLatticeDevice
+            Self: The new device with the new properties
         """
 
-    def add_dephasing_all(self, dephasing: float):  # type: ignore
+    def add_dephasing_all(self, dephasing: float) -> SquareLatticeDevice:
         """
         Adds qubit dephasing to noise rates.
 
@@ -903,10 +963,10 @@ class SquareLatticeDevice:
             dephasing (float): The dephasing rates.
 
         Returns:
-            SquareLatticeDevice
+            Self: The new device with the new properties
         """
 
-    def add_depolarising_all(self, depolarising: float):  # type: ignore
+    def add_depolarising_all(self, depolarising: float) -> SquareLatticeDevice:
         """
         Adds qubit depolarising to noise rates.
 
@@ -914,10 +974,10 @@ class SquareLatticeDevice:
             depolarising (float): The depolarising rates.
 
         Returns:
-            SquareLatticeDevice
+            Self: The new device with the new properties
         """
 
-    def json_schema(self) -> str:  # type: ignore
+    def json_schema(self) -> str:
         """
         Return the JsonSchema for the json serialisation of the class.
 
@@ -925,7 +985,7 @@ class SquareLatticeDevice:
             str: The json schema serialized to json
         """
 
-    def current_version(self) -> str:  # type: ignore
+    def current_version(self) -> str:
         """
         Returns the current version of the qoqo library .
 
@@ -933,7 +993,7 @@ class SquareLatticeDevice:
             str: The current version of the library.
         """
 
-    def min_supported_version(self) -> str:  # type: ignore
+    def min_supported_version(self) -> str:
         """
         Return the minimum version of qoqo that supports this object.
 
@@ -941,7 +1001,7 @@ class SquareLatticeDevice:
             str: The minimum version of the qoqo library to deserialize this object.
         """
 
-    def number_qubits(self) -> int:  # type: ignore
+    def number_qubits(self) -> int:
         """
         Return number of qubits in device.
 
@@ -949,7 +1009,7 @@ class SquareLatticeDevice:
             int: The number of qubits.
         """
 
-    def two_qubit_edges(self) -> Sequence[(int, int)]:  # type: ignore
+    def two_qubit_edges(self) -> Sequence[(int, int)]:
         """
         Return the list of pairs of qubits linked by a native two-qubit-gate in the device.
 
@@ -969,7 +1029,7 @@ class SquareLatticeDevice:
 
         """
 
-    def single_qubit_gate_time(self, hqslang: str, qubit: int) -> Optional[float]:  # type: ignore
+    def single_qubit_gate_time(self, hqslang: str, qubit: int) -> Optional[float]:
         """
         Returns the gate time of a single qubit operation if the single qubit operation is available on device.
 
@@ -984,7 +1044,9 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    def two_qubit_gate_time(self, hqslang: str, control: int, target: int) -> Optional[float]:  # type: ignore
+    def two_qubit_gate_time(
+        self, hqslang: str, control: int, target: int
+    ) -> Optional[float]:
         """
         Returns the gate time of a two qubit operation if the two qubit operation is available on device.
 
@@ -1001,7 +1063,9 @@ class SquareLatticeDevice:
 
         """
 
-    def three_qubit_gate_time(self, hqslang: str, control_0: int, control_1: int, target: int) -> Optional[float]:  # type: ignore
+    def three_qubit_gate_time(
+        self, hqslang: str, control_0: int, control_1: int, target: int
+    ) -> Optional[float]:
         """
         three_qubit_gate_time(gate, control_0, control_1, target
         --
@@ -1022,7 +1086,7 @@ class SquareLatticeDevice:
 
         """
 
-    def multi_qubit_gate_time(self, hqslang: str, qubits: List[int]) -> Optional[float]:  # type: ignore
+    def multi_qubit_gate_time(self, hqslang: str, qubits: List[int]) -> Optional[float]:
         """
         Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
 
@@ -1037,7 +1101,7 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    def set_single_qubit_gate_time(self, gate: str, qubit: int, gate_time: float):  # type: ignore
+    def set_single_qubit_gate_time(self, gate: str, qubit: int, gate_time: float):
         """
         Set the gate time of a single qubit gate.
 
@@ -1050,7 +1114,9 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    def set_two_qubit_gate_time(self, gate: str, control: int, target: int, gate_time: float):  # type: ignore
+    def set_two_qubit_gate_time(
+        self, gate: str, control: int, target: int, gate_time: float
+    ):
         """
         Set the gate time of a two qubit gate.
 
@@ -1064,7 +1130,9 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    def set_three_qubit_gate_time(self, gate: str, control_0: int, control_1: int, target: int, gate_time: float):  # type: ignore
+    def set_three_qubit_gate_time(
+        self, gate: str, control_0: int, control_1: int, target: int, gate_time: float
+    ):
         """
         Set the gate time of a three qubit gate.
 
@@ -1079,7 +1147,7 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    def set_qubit_decoherence_rates(self, gate: str, qubits: int, gate_time: float):  # type: ignore
+    def set_qubit_decoherence_rates(self, gate: str, qubits: int, gate_time: float):
         """
         Set the gate time of a single qubit gate.
 
@@ -1092,7 +1160,7 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    def set_multi_qubit_gate_time(self, gate: str, qubits: List[int], gate_time: float):  # type: ignore
+    def set_multi_qubit_gate_time(self, gate: str, qubits: List[int], gate_time: float):
         """
         Set the gate time of a single qubit gate.
 
@@ -1105,7 +1173,7 @@ class SquareLatticeDevice:
             PyValueError: Qubits not in device
         """
 
-    def qubit_decoherence_rates(self, qubit: int) -> numpy.array:  # type: ignore
+    def qubit_decoherence_rates(self, qubit: int) -> numpy.array:
         """
         Return the matrix of the decoherence rates of the Lindblad equation.
 
@@ -1117,7 +1185,7 @@ class SquareLatticeDevice:
 
         """
 
-    def add_damping(self, qubit: int, damping: float):  # type: ignore
+    def add_damping(self, qubit: int, damping: float):
         """
         Adds single qubit damping to noise rates.
 
@@ -1129,7 +1197,7 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    def add_dephasing(self, qubit: int, dephasing: float):  # type: ignore
+    def add_dephasing(self, qubit: int, dephasing: float):
         """
         Adds single qubit dephasing to noise rates.
 
@@ -1141,7 +1209,7 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    def add_depolarising(self, qubit: int, depolarising: float):  # type: ignore
+    def add_depolarising(self, qubit: int, depolarising: float):
         """
         Adds single qubit depolarising to noise rates.
 
@@ -1153,7 +1221,7 @@ class SquareLatticeDevice:
             PyValueError: Qubit is not in device
         """
 
-    def generic_device(self) -> GenericDevice:  # type: ignore
+    def generic_device(self) -> GenericDevice:
         """
         Turns Device into GenericDevice
 
@@ -1168,7 +1236,7 @@ class SquareLatticeDevice:
             The memory usage will be inefficient for devices with large qubit numbers.
         """
 
-    def to_generic_device(self) -> GenericDevice:  # type: ignore
+    def to_generic_device(self) -> GenericDevice:
         """
         Turns Device into GenericDevice
 
@@ -1183,7 +1251,7 @@ class SquareLatticeDevice:
             The memory usage will be inefficient for devices with large qubit numbers.
         """
 
-    def single_qubit_gate_names(self) -> List[str]:  # type: ignore
+    def single_qubit_gate_names(self) -> List[str]:
         """
         Returns the names of a single qubit operations available on the device.
 
@@ -1191,7 +1259,7 @@ class SquareLatticeDevice:
             List[str]: The list of gate names.
         """
 
-    def two_qubit_gate_names(self) -> List[str]:  # type: ignore
+    def two_qubit_gate_names(self) -> List[str]:
         """
         Returns the names of a two qubit operations available on the device.
 
@@ -1199,7 +1267,7 @@ class SquareLatticeDevice:
             List[str]: The list of gate names.
         """
 
-    def multi_qubit_gate_names(self) -> List[str]:  # type: ignore
+    def multi_qubit_gate_names(self) -> List[str]:
         """
         Returns the names of a mutli qubit operations available on the device.
 
@@ -1210,7 +1278,7 @@ class SquareLatticeDevice:
 
         """
 
-    def to_bincode(self) -> bytearray:  # type: ignore
+    def to_bincode(self) -> bytearray:
         """
         Return the bincode representation of the Device using the bincode crate.
 
@@ -1222,7 +1290,7 @@ class SquareLatticeDevice:
 
         """
 
-    def to_json(self) -> str:  # type: ignore
+    def to_json(self) -> str:
         """
         Return the json representation of the Device.
 
@@ -1234,7 +1302,7 @@ class SquareLatticeDevice:
 
         """
 
-    def from_bincode(self, input: bytearray):  # type: ignore
+    def from_bincode(self, input: bytearray):
         """
         Convert the bincode representation of the qoqo device to a device using the bincode crate.
 
@@ -1249,7 +1317,7 @@ class SquareLatticeDevice:
             ValueError: Input cannot be deserialized to selected Device.
         """
 
-    def from_json(self, input: str):  # type: ignore
+    def from_json(self, input: str):
         """
         Convert the json representation of a device to a qoqo device.
 

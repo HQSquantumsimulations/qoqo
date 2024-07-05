@@ -94,7 +94,7 @@ impl DecoherenceOnGateModelWrapper {
     ///     gate (str): The name of the gate.
     ///     qubit (int): The qubit the gate acts on.
     ///
-    /// Returns
+    /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
     pub fn get_single_qubit_gate_error(
         &self,
@@ -149,7 +149,7 @@ impl DecoherenceOnGateModelWrapper {
     ///     control (int): The control qubit the gate acts on.
     ///     target (int): The target qubit the gate acts on.
     ///
-    /// Returns
+    /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
     pub fn get_two_qubit_gate_error(
         &self,
@@ -209,7 +209,7 @@ impl DecoherenceOnGateModelWrapper {
     ///     control1 (int): The second control qubit the gate acts on.
     ///     target (int): The target qubit the gate acts on.
     ///
-    /// Returns
+    /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
     pub fn get_three_qubit_gate_error(
         &self,
@@ -262,7 +262,7 @@ impl DecoherenceOnGateModelWrapper {
     ///     gate (str): The name of the gate.
     ///     qubits (List[int]): The qubits the gate acts on.
     ///
-    /// Returns
+    /// Returns:
     ///     Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]: The error model applied when gate is applied.
     pub fn get_multi_qubit_gate_error(
         &self,

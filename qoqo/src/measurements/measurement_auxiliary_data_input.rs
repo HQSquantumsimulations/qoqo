@@ -122,8 +122,7 @@ impl PauliZProductInputWrapper {
     ///
     /// Args:
     ///     name (str): The name of the expectation value.
-    ///     symbolic (str): The symbolic expression for the expectation values
-    ///                     given by [qoqo_calculator::CalculatorFloat].
+    ///     symbolic (str): The symbolic expression for the expectation values given by [qoqo_calculator::CalculatorFloat].
     ///
     /// Raises:
     ///     RuntimeError: Failed to add symbolic expectation value.
@@ -353,8 +352,7 @@ impl CheatedPauliZProductInputWrapper {
     ///
     /// Args:
     ///     name (str): The name of the expectation value.
-    ///     symbolic (str): The symbolic expression for the expectation values
-    ///                     given by [qoqo_calculator::CalculatorFloat].
+    ///     symbolic (str): The symbolic expression for the expectation values given by [qoqo_calculator::CalculatorFloat].
     ///
     /// Raises:
     ///     RuntimeError: Failed to add symbolic expectation value.

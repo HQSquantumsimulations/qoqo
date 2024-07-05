@@ -176,18 +176,13 @@ fn str_to_type(res: &str, class_name: &str) -> Option<String> {
         "String" | "string" => Some("str".to_owned()),
         "" => None,
         "uint" => Some("int".to_owned()),
-        "self" => Some(class_name.to_owned()),
+        "self" | "Self" => Some(class_name.to_owned()),
         "ByteArray" => Some("bytearray".to_owned()),
         _ => Some(
-            res.replace("list", "List")
-                .replace("dict", "Dict")
-                .replace("tuple", "Tuple")
-                .replace("set", "Set")
-                .replace("circuit", "Circuit")
-                .replace("Option[", "Optional[")
-                .replace("optional", "Optional")
+            res.replace("Option[", "Optional[")
                 .replace("operation", "Operation")
                 .replace("np.", "numpy.")
+                .replace("struqture_py.spins.", "")
                 .to_owned(),
         ),
     }
@@ -195,7 +190,7 @@ fn str_to_type(res: &str, class_name: &str) -> Option<String> {
 
 #[cfg(feature = "doc_generator")]
 fn extract_type(string: &str, class_name: &str) -> Option<String> {
-    let pattern = r"\(([a-zA-Z_\[\] ,|]+?)\)";
+    let pattern = r"\(([a-zA-Z_\[\]\. ,|]+?)\)";
     let re = Regex::new(pattern).unwrap();
     if let Some(captures) = re.captures(string) {
         if let Some(res) = captures.get(1).map(|s| s.as_str()) {
@@ -206,13 +201,7 @@ fn extract_type(string: &str, class_name: &str) -> Option<String> {
 }
 
 #[cfg(feature = "doc_generator")]
-fn collect_args_from_doc(
-    doc: &str,
-    class_name: &str,
-    typing_imports: &mut Vec<String>,
-    struqture_imports: &mut Vec<String>,
-    qoqo_imports: &mut Vec<String>,
-) -> Vec<String> {
+fn collect_args_from_doc(doc: &str, class_name: &str) -> Vec<String> {
     let args_vec: Vec<_> = doc
         .split('\n')
         .skip_while(|&line| line != "Args:")
@@ -225,25 +214,6 @@ fn collect_args_from_doc(
         .filter(|&line| line.contains(':') && line.trim().starts_with(char::is_alphabetic))
         .map(|&line| {
             let arg_type = extract_type(line, class_name);
-            let arg = arg_type.clone().unwrap_or_default();
-            for &import in TYPING_POTENTIAL_IMPORTS
-                .iter()
-                .filter(|&import| arg.contains(import))
-            {
-                typing_imports.push(import.to_owned());
-            }
-            for &import in STRUQTURE_POTENTIAL_IMPORTS
-                .iter()
-                .filter(|&import| arg.contains(import))
-            {
-                struqture_imports.push(import.to_owned());
-            }
-            for &import in QOQO_POTENTIAL_IMPORTS
-                .iter()
-                .filter(|&import| arg.contains(import))
-            {
-                qoqo_imports.push(import.to_owned());
-            }
             format!(
                 "{}{}",
                 line.trim().split_once([' ', ':']).unwrap_or(("", "")).0,
@@ -256,13 +226,7 @@ fn collect_args_from_doc(
 }
 
 #[cfg(feature = "doc_generator")]
-fn collect_return_from_doc(
-    doc: &str,
-    class_name: &str,
-    typing_imports: &mut Vec<String>,
-    struqture_imports: &mut Vec<String>,
-    qoqo_imports: &mut Vec<String>,
-) -> String {
+fn collect_return_from_doc(doc: &str, class_name: &str) -> String {
     let args_vec: Vec<_> = doc
         .split('\n')
         .skip_while(|&line| line != "Returns:")
@@ -276,24 +240,6 @@ fn collect_return_from_doc(
         args_vec[0].trim().split_once([':']).unwrap_or(("", "")).0,
         class_name,
     ) {
-        for &import in TYPING_POTENTIAL_IMPORTS
-            .iter()
-            .filter(|&import| ret.contains(import))
-        {
-            typing_imports.push(import.to_owned());
-        }
-        for &import in STRUQTURE_POTENTIAL_IMPORTS
-            .iter()
-            .filter(|&import| ret.contains(import))
-        {
-            struqture_imports.push(import.to_owned());
-        }
-        for &import in QOQO_POTENTIAL_IMPORTS
-            .iter()
-            .filter(|&import| ret.contains(import))
-        {
-            qoqo_imports.push(import.to_owned());
-        }
         format!(" -> {}", ret)
     } else {
         "".to_owned()
@@ -301,7 +247,9 @@ fn collect_return_from_doc(
 }
 
 #[cfg(feature = "doc_generator")]
-const TYPING_POTENTIAL_IMPORTS: &[&str] = &["Optional", "List", "Tuple", "Dict", "Set", "Union"];
+const TYPING_POTENTIAL_IMPORTS: &[&str] = &[
+    "Optional", "List", "Tuple", "Dict", "Set", "Union", "Sequence",
+];
 #[cfg(feature = "doc_generator")]
 const STRUQTURE_POTENTIAL_IMPORTS: &[&str] = &[
     "PauliProduct",
@@ -319,14 +267,15 @@ const QOQO_POTENTIAL_IMPORTS: &[&str] = &["Circuit", "Operation"];
 
 #[cfg(feature = "doc_generator")]
 fn create_doc(module: &str) -> PyResult<String> {
-    let mut module_doc = "".to_owned();
-    let mut typing_imports: Vec<String> = Vec::new();
-    let mut struqture_imports: Vec<String> = Vec::new();
-    let mut qoqo_imports: Vec<String> = Vec::new();
+    let mut main_doc = "".to_owned();
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> PyResult<String> {
         let python_module = PyModule::import_bound(py, module)?;
         let dict = python_module.as_gil_ref().getattr("__dict__")?;
+        let module_doc = python_module
+            .as_gil_ref()
+            .getattr("__doc__")?
+            .extract::<String>()?;
         let r_dict = dict.downcast::<PyDict>()?;
         for (fn_name, func) in r_dict.iter() {
             let name = fn_name.str()?.extract::<String>()?;
@@ -339,19 +288,12 @@ fn create_doc(module: &str) -> PyResult<String> {
             }
             let doc = func.getattr("__doc__")?.extract::<String>()?;
             if name == "operations" {
-                module_doc.push_str(&format!(
-                    "class Operation:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self):\n       return\n\n",
+                main_doc.push_str(&format!(
+                    "class Operation:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self):\n       return\n\nclass Backend:\n    \"\"\"\nCan be any backend from a qoqo interface such as qoqo-qiskit, qoqo-quest or qoqo-qasm.\n\"\"\"\n\n",
                 ));
             } else {
-                let args = collect_args_from_doc(
-                    doc.as_str(),
-                    name.as_str(),
-                    &mut typing_imports,
-                    &mut struqture_imports,
-                    &mut qoqo_imports,
-                )
-                .join(", ");
-                module_doc.push_str(&format!(
+                let args = collect_args_from_doc(doc.as_str(), name.as_str()).join(", ");
+                main_doc.push_str(&format!(
                     "class {name}{}:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self{}):\n       return\n\n",
                     module.eq("qoqo.operations").then(|| "(Operation)").unwrap_or_default(),
                     if args.is_empty() { "".to_owned() } else { format!(", {}", args) },
@@ -405,40 +347,48 @@ Raises:
                     if meth_doc.eq("") {
                         continue;
                     }
-                    let meth_args = collect_args_from_doc(
-                        meth_doc.as_str(),
-                        name.as_str(),
-                        &mut typing_imports,
-                        &mut struqture_imports,
-                        &mut qoqo_imports,
-                    )
-                    .join(", ");
-                    module_doc.push_str(&format!(
-                        "    def {meth_name}(self{}){}: # type: ignore\n        \"\"\"\n{meth_doc}\n\"\"\"\n\n",
-                        if meth_args.is_empty() { "".to_owned() } else { format!(", {}", meth_args) },
-                        collect_return_from_doc(
-                            meth_doc.as_str(),
-                            name.as_str(),
-                            &mut typing_imports,
-                            &mut struqture_imports,
-                            &mut qoqo_imports,
-                        )
+                    let meth_args =
+                        collect_args_from_doc(meth_doc.as_str(), name.as_str()).join(", ");
+                    main_doc.push_str(&format!(
+                        "    def {meth_name}(self{}){}:\n        \"\"\"\n{meth_doc}\n\"\"\"\n\n",
+                        if meth_args.is_empty() {
+                            "".to_owned()
+                        } else {
+                            format!(", {}", meth_args)
+                        },
+                        collect_return_from_doc(meth_doc.as_str(), name.as_str(),)
                     ));
                 }
             }
         }
-        typing_imports.sort();
-        typing_imports.dedup();
-        struqture_imports.sort();
-        struqture_imports.dedup();
-        qoqo_imports.sort();
-        qoqo_imports.dedup();
+        let typing_imports: Vec<&str> = TYPING_POTENTIAL_IMPORTS
+            .iter()
+            .filter(|&type_str| main_doc.contains(&format!("{type_str}[")))
+            .copied()
+            .collect();
+        let struqture_imports: Vec<&str> = STRUQTURE_POTENTIAL_IMPORTS
+            .iter()
+            .filter(|&type_str| {
+                main_doc.contains(&format!("{type_str}:"))
+                    || main_doc.contains(&format!(":{type_str}"))
+                    || main_doc.contains(&format!("[{type_str}]"))
+                    || main_doc.contains(&format!("({type_str})"))
+                    || main_doc.contains(&format!("-> {type_str}"))
+            })
+            .copied()
+            .collect();
+        let qoqo_imports: Vec<&str> = QOQO_POTENTIAL_IMPORTS
+            .iter()
+            .filter(|&type_str| main_doc.contains(type_str))
+            .copied()
+            .collect();
         Ok(
-            format!("# This is an auto generated file containing only the documentation.\n# You can find the full implementation on this page:\n# https://github.com/HQSquantumsimulations/qoqo\n\n{}{}{}\n{}",
-        if typing_imports.is_empty() { "".to_owned() } else {format!("from typing import {}\n", typing_imports.join(", "))},
-        if struqture_imports.is_empty() { "".to_owned() } else {format!("from struqture_py.spins import {} # type: ignore\n", struqture_imports.join(", "))},
+            format!("# This is an auto generated file containing only the documentation.\n# You can find the full implementation on this page:\n# https://github.com/HQSquantumsimulations/qoqo\n\n\"\"\"\n{module_doc}\n\"\"\"\n\n{}{}{}{}\n{}",
+        if main_doc.lines().any(|line| line.contains("numpy") && !line.contains("import")) { "import numpy\n" } else { "" },
+        if typing_imports.is_empty() { "".to_owned() } else { format!("from typing import {}\n", typing_imports.join(", ")) },
+        if struqture_imports.is_empty() { "".to_owned() } else { format!("from struqture_py.spins import {} \n", struqture_imports.join(", ")) },
         if module.eq("qoqo") || qoqo_imports.is_empty() { "".to_owned() } else {format!("from .qoqo import {}\n", qoqo_imports.join(", "))},
-        module_doc
+        main_doc
     ))
     })
 }

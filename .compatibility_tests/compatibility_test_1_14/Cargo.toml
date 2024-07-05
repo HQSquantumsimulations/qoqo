@@ -1,0 +1,34 @@
+[package]
+name = "compatibility_test_1_14"
+version = "1.15.0"
+authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
+license = "Apache-2.0"
+edition = "2021"
+rust-version = "1.56"
+categories = ["science", "simulation"]
+homepage = "https://github.com/HQSquantumsimulations/qoqo"
+repository = "https://github.com/HQSquantumsimulations/qoqo"
+documentation = "https://docs.rs/roqoqo/"
+readme = "../README.md"
+description = "Compatibility tests for roqoqo"
+include = ["src*", "build.rs", "LICENSE", "README.md"]
+publish = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[workspace]
+
+[dependencies]
+test_roqoqo_1_14 = { package = "roqoqo", version = "=1.14.0" }
+test_roqoqo_derive_1_14 = { package = "roqoqo-derive", version = "=1.14.0" }
+qoqo_calculator = { version = "~1.2" }
+roqoqo = { version = "~1.15", path = "../../roqoqo", features = [
+    "serialize",
+    "overrotate",
+] }
+struqture = { version = "~1.8" }
+bincode = { version = "1.3" }
+ndarray = "0.15"
+
+[dev-dependencies]
+test-case = "3.0"
