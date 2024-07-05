@@ -27,7 +27,7 @@ jobs:
             command: build
             manylinux: 2014
             # target: x86_64-unknown-linux-gnu
-            args: --out wheels -m qoqo/Cargo.toml --release --locked
+            args: --find-interpreter --out wheels -m qoqo/Cargo.toml --release --locked
 
   build_maturin_builds_linux_arm:
     name: maturin_build-linux-arm
