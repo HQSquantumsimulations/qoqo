@@ -60,6 +60,7 @@
       InputSymbolic
       InvSqrtISwap
       InvSqrtPauliX
+      InvSqrtPauliY
       JaynesCummings
       LongitudinalCoupling
       MeasureQubit
@@ -124,6 +125,7 @@
       SpinInteraction
       SqrtISwap
       SqrtPauliX
+      SqrtPauliY
       SquareLatticeDevice
       Squeezing
       TGate

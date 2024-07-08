@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qoqo.operations &mdash; qoqo 1.14.0 documentation</title>
+  <title>qoqo.operations &mdash; qoqo 1.15.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=533dc900"></script>
+        <script src="../../_static/documentation_options.js?v=2ff1638f"></script>
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -40,7 +40,7 @@
             qoqo
           </a>
               <div class="version">
-                1.14.0
+                1.15.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -86,6 +86,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.InputSymbolic"><code class="docutils literal notranslate"><span class="pre">InputSymbolic</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.InvSqrtISwap"><code class="docutils literal notranslate"><span class="pre">InvSqrtISwap</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.InvSqrtPauliX"><code class="docutils literal notranslate"><span class="pre">InvSqrtPauliX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.InvSqrtPauliY"><code class="docutils literal notranslate"><span class="pre">InvSqrtPauliY</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.JaynesCummings"><code class="docutils literal notranslate"><span class="pre">JaynesCummings</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.LongitudinalCoupling"><code class="docutils literal notranslate"><span class="pre">LongitudinalCoupling</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.MeasureQubit"><code class="docutils literal notranslate"><span class="pre">MeasureQubit</span></code></a></li>
@@ -145,6 +146,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.SpinInteraction"><code class="docutils literal notranslate"><span class="pre">SpinInteraction</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.SqrtISwap"><code class="docutils literal notranslate"><span class="pre">SqrtISwap</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.SqrtPauliX"><code class="docutils literal notranslate"><span class="pre">SqrtPauliX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.SqrtPauliY"><code class="docutils literal notranslate"><span class="pre">SqrtPauliY</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.Squeezing"><code class="docutils literal notranslate"><span class="pre">Squeezing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.TGate"><code class="docutils literal notranslate"><span class="pre">TGate</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qoqo.operations.Toffoli"><code class="docutils literal notranslate"><span class="pre">Toffoli</span></code></a></li>
@@ -197,6 +199,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InputSymbolic"><code class="docutils literal notranslate"><span class="pre">InputSymbolic</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InvSqrtISwap"><code class="docutils literal notranslate"><span class="pre">InvSqrtISwap</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InvSqrtPauliX"><code class="docutils literal notranslate"><span class="pre">InvSqrtPauliX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InvSqrtPauliY"><code class="docutils literal notranslate"><span class="pre">InvSqrtPauliY</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.JaynesCummings"><code class="docutils literal notranslate"><span class="pre">JaynesCummings</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.LongitudinalCoupling"><code class="docutils literal notranslate"><span class="pre">LongitudinalCoupling</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.MeasureQubit"><code class="docutils literal notranslate"><span class="pre">MeasureQubit</span></code></a></li>
@@ -261,6 +264,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SpinInteraction"><code class="docutils literal notranslate"><span class="pre">SpinInteraction</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SqrtISwap"><code class="docutils literal notranslate"><span class="pre">SqrtISwap</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SqrtPauliX"><code class="docutils literal notranslate"><span class="pre">SqrtPauliX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SqrtPauliY"><code class="docutils literal notranslate"><span class="pre">SqrtPauliY</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SquareLatticeDevice"><code class="docutils literal notranslate"><span class="pre">SquareLatticeDevice</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Squeezing"><code class="docutils literal notranslate"><span class="pre">Squeezing</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.TGate"><code class="docutils literal notranslate"><span class="pre">TGate</span></code></a></li>
@@ -308,7 +312,7 @@
 GateOperations are single-, two- or multi-qubit gate operations that act on a set of qubits
 and can be executed on a quantum computing device.
 PRAGMAs are operations that can be used when running a simulation of a quantum computing program.
-Measurement Operations are operations that perform a measurement either on a quantum computing device (MeasuareQubit)
+Measurement Operations are operations that perform a measurement either on a quantum computing device (MeasureQubit)
 or on a simulation of a quantum computing program (PRAGMA measurement operations).</p>
 </dd>
 </dl>
@@ -403,184 +407,190 @@ or on a simulation of a quantum computing program (PRAGMA measurement operations
 <td><p>The controlled inverse square root ISwap quantum operation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.InvSqrtPauliX" title="qoqo.operations.InvSqrtPauliX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InvSqrtPauliX</span></code></a>(qubit)</p></td>
-<td><p>The inverse square root XPower gate <span class="math notranslate nohighlight">\(e^{i \frac{\pi}{2} \sigma^x}\)</span>.</p></td>
+<td><p>The inverse square root XPower gate <span class="math notranslate nohighlight">\(e^{i \frac{\pi}{4} \sigma^x}\)</span>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.JaynesCummings" title="qoqo.operations.JaynesCummings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JaynesCummings</span></code></a>(qubit, mode, theta)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.InvSqrtPauliY" title="qoqo.operations.InvSqrtPauliY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InvSqrtPauliY</span></code></a>(qubit)</p></td>
+<td><p>The inverse square root YPower gate <span class="math notranslate nohighlight">\(e^{i \frac{\pi}{4} \sigma^y}\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.JaynesCummings" title="qoqo.operations.JaynesCummings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JaynesCummings</span></code></a>(qubit, mode, theta)</p></td>
 <td><p>The Jaynes-Cummings gate exp(-i * θ * (σ^- * b^† + σ^+ * b))</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.LongitudinalCoupling" title="qoqo.operations.LongitudinalCoupling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LongitudinalCoupling</span></code></a>(qubit, mode, theta)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.LongitudinalCoupling" title="qoqo.operations.LongitudinalCoupling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LongitudinalCoupling</span></code></a>(qubit, mode, theta)</p></td>
 <td><p>Longitudinal coupling gate exp(-i * θ * Z * (b^† + b))</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.MeasureQubit" title="qoqo.operations.MeasureQubit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MeasureQubit</span></code></a>(qubit, readout, readout_index)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.MeasureQubit" title="qoqo.operations.MeasureQubit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MeasureQubit</span></code></a>(qubit, readout, readout_index)</p></td>
 <td><p>Measurement gate operation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.MolmerSorensenXX" title="qoqo.operations.MolmerSorensenXX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MolmerSorensenXX</span></code></a>(control, target)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.MolmerSorensenXX" title="qoqo.operations.MolmerSorensenXX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MolmerSorensenXX</span></code></a>(control, target)</p></td>
 <td><p>The fixed phase MolmerSorensen XX gate.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.MultiQubitMS" title="qoqo.operations.MultiQubitMS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MultiQubitMS</span></code></a>(qubits, theta)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.MultiQubitMS" title="qoqo.operations.MultiQubitMS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MultiQubitMS</span></code></a>(qubits, theta)</p></td>
 <td><p>The Molmer-Sorensen gate between multiple qubits.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.MultiQubitZZ" title="qoqo.operations.MultiQubitZZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MultiQubitZZ</span></code></a>(qubits, theta)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.MultiQubitZZ" title="qoqo.operations.MultiQubitZZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MultiQubitZZ</span></code></a>(qubits, theta)</p></td>
 <td><p>The multi qubit Pauli-Z-Product gate.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PMInteraction" title="qoqo.operations.PMInteraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PMInteraction</span></code></a>(control, target, t)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PMInteraction" title="qoqo.operations.PMInteraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PMInteraction</span></code></a>(control, target, t)</p></td>
 <td><p>The transversal interaction gate.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PauliX" title="qoqo.operations.PauliX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PauliX</span></code></a>(qubit)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PauliX" title="qoqo.operations.PauliX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PauliX</span></code></a>(qubit)</p></td>
 <td><p>The Pauli X gate.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PauliY" title="qoqo.operations.PauliY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PauliY</span></code></a>(qubit)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PauliY" title="qoqo.operations.PauliY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PauliY</span></code></a>(qubit)</p></td>
 <td><p>The Pauli Y gate.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PauliZ" title="qoqo.operations.PauliZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PauliZ</span></code></a>(qubit)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PauliZ" title="qoqo.operations.PauliZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PauliZ</span></code></a>(qubit)</p></td>
 <td><p>The Pauli Z gate.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PhaseDisplacement" title="qoqo.operations.PhaseDisplacement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhaseDisplacement</span></code></a>(mode, displacement, phase)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PhaseDisplacement" title="qoqo.operations.PhaseDisplacement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhaseDisplacement</span></code></a>(mode, displacement, phase)</p></td>
 <td><p>The single-mode phase-displacement gate with variable magnitude and phase.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PhaseShift" title="qoqo.operations.PhaseShift"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhaseShift</span></code></a>(mode, phase)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PhaseShift" title="qoqo.operations.PhaseShift"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhaseShift</span></code></a>(mode, phase)</p></td>
 <td><p>The single-mode phase-shift gate with variable phase, given by R(θ) = eexp(i * θ * 𝑁̂).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PhaseShiftState0" title="qoqo.operations.PhaseShiftState0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhaseShiftState0</span></code></a>(qubit, theta)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PhaseShiftState0" title="qoqo.operations.PhaseShiftState0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhaseShiftState0</span></code></a>(qubit, theta)</p></td>
 <td><p>The phase shift gate applied on state <a href="#id5"><span class="problematic" id="id6">|</span></a>0&gt;.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PhaseShiftState1" title="qoqo.operations.PhaseShiftState1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhaseShiftState1</span></code></a>(qubit, theta)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PhaseShiftState1" title="qoqo.operations.PhaseShiftState1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhaseShiftState1</span></code></a>(qubit, theta)</p></td>
 <td><p>The phase shift gate applied on state <a href="#id7"><span class="problematic" id="id8">|</span></a>1&gt;.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PhaseShiftedControlledPhase" title="qoqo.operations.PhaseShiftedControlledPhase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhaseShiftedControlledPhase</span></code></a>(control, target, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PhaseShiftedControlledPhase" title="qoqo.operations.PhaseShiftedControlledPhase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhaseShiftedControlledPhase</span></code></a>(control, target, ...)</p></td>
 <td><p>Implements the phase-shifted controlled PhaseShift gate.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PhaseShiftedControlledZ" title="qoqo.operations.PhaseShiftedControlledZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhaseShiftedControlledZ</span></code></a>(control, target, phi)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PhaseShiftedControlledZ" title="qoqo.operations.PhaseShiftedControlledZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhaseShiftedControlledZ</span></code></a>(control, target, phi)</p></td>
 <td><p>The phased-shifted controlled-Z gate.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PhotonDetection" title="qoqo.operations.PhotonDetection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhotonDetection</span></code></a>(mode, readout, readout_index)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PhotonDetection" title="qoqo.operations.PhotonDetection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhotonDetection</span></code></a>(mode, readout, readout_index)</p></td>
 <td><p>The photon number-resolving detector measurement for bosons.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaActiveReset" title="qoqo.operations.PragmaActiveReset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaActiveReset</span></code></a>(qubit)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaActiveReset" title="qoqo.operations.PragmaActiveReset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaActiveReset</span></code></a>(qubit)</p></td>
 <td><p>This PRAGMA operation resets the chosen qubit to the zero state.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaAnnotatedOp" title="qoqo.operations.PragmaAnnotatedOp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaAnnotatedOp</span></code></a>(operation, annotation)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaAnnotatedOp" title="qoqo.operations.PragmaAnnotatedOp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaAnnotatedOp</span></code></a>(operation, annotation)</p></td>
 <td><p>An annotated Operation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaBoostNoise" title="qoqo.operations.PragmaBoostNoise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaBoostNoise</span></code></a>(noise_coefficient)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaBoostNoise" title="qoqo.operations.PragmaBoostNoise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaBoostNoise</span></code></a>(noise_coefficient)</p></td>
 <td><p>This PRAGMA operation boosts noise and overrotations in the circuit.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaChangeDevice" title="qoqo.operations.PragmaChangeDevice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaChangeDevice</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaChangeDevice" title="qoqo.operations.PragmaChangeDevice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaChangeDevice</span></code></a>()</p></td>
 <td><p>A wrapper around backend specific PRAGMA operations capable of changing a device.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaConditional" title="qoqo.operations.PragmaConditional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaConditional</span></code></a>(condition_register, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaConditional" title="qoqo.operations.PragmaConditional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaConditional</span></code></a>(condition_register, ...)</p></td>
 <td><p>The conditional PRAGMA operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaControlledCircuit" title="qoqo.operations.PragmaControlledCircuit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaControlledCircuit</span></code></a>(controlling_qubit, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaControlledCircuit" title="qoqo.operations.PragmaControlledCircuit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaControlledCircuit</span></code></a>(controlling_qubit, ...)</p></td>
 <td><p>A circuit controlled by a qubit.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaDamping" title="qoqo.operations.PragmaDamping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaDamping</span></code></a>(qubit, gate_time, rate)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaDamping" title="qoqo.operations.PragmaDamping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaDamping</span></code></a>(qubit, gate_time, rate)</p></td>
 <td><p>The damping PRAGMA noise operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaDephasing" title="qoqo.operations.PragmaDephasing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaDephasing</span></code></a>(qubit, gate_time, rate)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaDephasing" title="qoqo.operations.PragmaDephasing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaDephasing</span></code></a>(qubit, gate_time, rate)</p></td>
 <td><p>The dephasing PRAGMA noise operation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaDepolarising" title="qoqo.operations.PragmaDepolarising"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaDepolarising</span></code></a>(qubit, gate_time, rate)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaDepolarising" title="qoqo.operations.PragmaDepolarising"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaDepolarising</span></code></a>(qubit, gate_time, rate)</p></td>
 <td><p>The depolarising PRAGMA noise operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGeneralNoise" title="qoqo.operations.PragmaGeneralNoise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGeneralNoise</span></code></a>(qubit, gate_time, rates)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGeneralNoise" title="qoqo.operations.PragmaGeneralNoise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGeneralNoise</span></code></a>(qubit, gate_time, rates)</p></td>
 <td><p>The general noise PRAGMA operation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGetDensityMatrix" title="qoqo.operations.PragmaGetDensityMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGetDensityMatrix</span></code></a>(readout, circuit)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGetDensityMatrix" title="qoqo.operations.PragmaGetDensityMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGetDensityMatrix</span></code></a>(readout, circuit)</p></td>
 <td><p>This PRAGMA measurement operation returns the density matrix of a quantum register.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGetOccupationProbability" title="qoqo.operations.PragmaGetOccupationProbability"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGetOccupationProbability</span></code></a>(readout, circuit)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGetOccupationProbability" title="qoqo.operations.PragmaGetOccupationProbability"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGetOccupationProbability</span></code></a>(readout, circuit)</p></td>
 <td><p>This PRAGMA measurement operation returns the vector of the occupation probabilities.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGetPauliProduct" title="qoqo.operations.PragmaGetPauliProduct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGetPauliProduct</span></code></a>(qubit_paulis, readout, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGetPauliProduct" title="qoqo.operations.PragmaGetPauliProduct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGetPauliProduct</span></code></a>(qubit_paulis, readout, ...)</p></td>
 <td><p>This PRAGMA measurement operation returns a Pauli product expectation value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGetStateVector" title="qoqo.operations.PragmaGetStateVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGetStateVector</span></code></a>(readout, circuit)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGetStateVector" title="qoqo.operations.PragmaGetStateVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGetStateVector</span></code></a>(readout, circuit)</p></td>
 <td><p>This PRAGMA measurement operation returns the statevector of a quantum register.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGlobalPhase" title="qoqo.operations.PragmaGlobalPhase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGlobalPhase</span></code></a>(phase)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaGlobalPhase" title="qoqo.operations.PragmaGlobalPhase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaGlobalPhase</span></code></a>(phase)</p></td>
 <td><p>The global phase PRAGMA operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaLoop" title="qoqo.operations.PragmaLoop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaLoop</span></code></a>(repetitions, circuit)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaLoop" title="qoqo.operations.PragmaLoop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaLoop</span></code></a>(repetitions, circuit)</p></td>
 <td><p>This PRAGMA measurement operation returns the statevector of a quantum register.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaOverrotation" title="qoqo.operations.PragmaOverrotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaOverrotation</span></code></a>(gate_hqslang, qubits, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaOverrotation" title="qoqo.operations.PragmaOverrotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaOverrotation</span></code></a>(gate_hqslang, qubits, ...)</p></td>
 <td><p>The statistical overrotation PRAGMA operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaRandomNoise" title="qoqo.operations.PragmaRandomNoise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaRandomNoise</span></code></a>(qubit, gate_time, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaRandomNoise" title="qoqo.operations.PragmaRandomNoise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaRandomNoise</span></code></a>(qubit, gate_time, ...)</p></td>
 <td><p>The random noise PRAGMA operation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaRepeatGate" title="qoqo.operations.PragmaRepeatGate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaRepeatGate</span></code></a>(repetition_coefficient)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaRepeatGate" title="qoqo.operations.PragmaRepeatGate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaRepeatGate</span></code></a>(repetition_coefficient)</p></td>
 <td><p>The repeated gate PRAGMA operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaRepeatedMeasurement" title="qoqo.operations.PragmaRepeatedMeasurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaRepeatedMeasurement</span></code></a>(readout, ...[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaRepeatedMeasurement" title="qoqo.operations.PragmaRepeatedMeasurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaRepeatedMeasurement</span></code></a>(readout, ...[, ...])</p></td>
 <td><p>This PRAGMA measurement operation returns a measurement record for N repeated measurements.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaSetDensityMatrix" title="qoqo.operations.PragmaSetDensityMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaSetDensityMatrix</span></code></a>(density_matrix)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaSetDensityMatrix" title="qoqo.operations.PragmaSetDensityMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaSetDensityMatrix</span></code></a>(density_matrix)</p></td>
 <td><p>This PRAGMA operation sets the density matrix of a quantum register.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaSetNumberOfMeasurements" title="qoqo.operations.PragmaSetNumberOfMeasurements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaSetNumberOfMeasurements</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaSetNumberOfMeasurements" title="qoqo.operations.PragmaSetNumberOfMeasurements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaSetNumberOfMeasurements</span></code></a>(...)</p></td>
 <td><p>Wrap function automatically generates functions in these traits.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaSetStateVector" title="qoqo.operations.PragmaSetStateVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaSetStateVector</span></code></a>(statevector)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaSetStateVector" title="qoqo.operations.PragmaSetStateVector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaSetStateVector</span></code></a>(statevector)</p></td>
 <td><p>This PRAGMA operation sets the statevector of a quantum register.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaSleep" title="qoqo.operations.PragmaSleep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaSleep</span></code></a>(qubits, sleep_time)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaSleep" title="qoqo.operations.PragmaSleep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaSleep</span></code></a>(qubits, sleep_time)</p></td>
 <td><p>This PRAGMA operation makes the quantum hardware wait a given amount of time.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaStartDecompositionBlock" title="qoqo.operations.PragmaStartDecompositionBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaStartDecompositionBlock</span></code></a>(qubits, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaStartDecompositionBlock" title="qoqo.operations.PragmaStartDecompositionBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaStartDecompositionBlock</span></code></a>(qubits, ...)</p></td>
 <td><p>This PRAGMA operation signals the START of a decomposition block.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaStopDecompositionBlock" title="qoqo.operations.PragmaStopDecompositionBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaStopDecompositionBlock</span></code></a>(qubits)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaStopDecompositionBlock" title="qoqo.operations.PragmaStopDecompositionBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaStopDecompositionBlock</span></code></a>(qubits)</p></td>
 <td><p>This PRAGMA operation signals the STOP of a decomposition block.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.PragmaStopParallelBlock" title="qoqo.operations.PragmaStopParallelBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaStopParallelBlock</span></code></a>(qubits, execution_time)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.PragmaStopParallelBlock" title="qoqo.operations.PragmaStopParallelBlock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PragmaStopParallelBlock</span></code></a>(qubits, execution_time)</p></td>
 <td><p>This PRAGMA operation signals the STOP of a parallel execution block.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.Qsim" title="qoqo.operations.Qsim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Qsim</span></code></a>(control, target, x, y, z)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.Qsim" title="qoqo.operations.Qsim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Qsim</span></code></a>(control, target, x, y, z)</p></td>
 <td><p>The qubit simulation (Qsim) gate.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.QuantumRabi" title="qoqo.operations.QuantumRabi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QuantumRabi</span></code></a>(qubit, mode, theta)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.QuantumRabi" title="qoqo.operations.QuantumRabi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">QuantumRabi</span></code></a>(qubit, mode, theta)</p></td>
 <td><p>The quantum Rabi interaction exp(-i * θ * X * (b^† + b))</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.RotateAroundSphericalAxis" title="qoqo.operations.RotateAroundSphericalAxis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateAroundSphericalAxis</span></code></a>(qubit, theta, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.RotateAroundSphericalAxis" title="qoqo.operations.RotateAroundSphericalAxis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateAroundSphericalAxis</span></code></a>(qubit, theta, ...)</p></td>
 <td><p>Implements a rotation around an axis in the x-y plane in spherical coordinates.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.RotateX" title="qoqo.operations.RotateX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateX</span></code></a>(qubit, theta)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.RotateX" title="qoqo.operations.RotateX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateX</span></code></a>(qubit, theta)</p></td>
 <td><p>The XPower gate <span class="math notranslate nohighlight">\(e^{-i \frac{\theta}{2} \sigma^x}\)</span>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.RotateXY" title="qoqo.operations.RotateXY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateXY</span></code></a>(qubit, theta, phi)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.RotateXY" title="qoqo.operations.RotateXY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateXY</span></code></a>(qubit, theta, phi)</p></td>
 <td><p>Implements a rotation around an axis in the x-y plane in spherical coordinates.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.RotateY" title="qoqo.operations.RotateY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateY</span></code></a>(qubit, theta)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.RotateY" title="qoqo.operations.RotateY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateY</span></code></a>(qubit, theta)</p></td>
 <td><p>The YPower gate <span class="math notranslate nohighlight">\(e^{-i \frac{\theta}{2} \sigma^y}\)</span>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.RotateZ" title="qoqo.operations.RotateZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateZ</span></code></a>(qubit, theta)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.RotateZ" title="qoqo.operations.RotateZ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RotateZ</span></code></a>(qubit, theta)</p></td>
 <td><p>The ZPower gate <span class="math notranslate nohighlight">\(e^{-i \frac{\theta}{2} \sigma^z}\)</span>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.SGate" title="qoqo.operations.SGate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SGate</span></code></a>(qubit)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.SGate" title="qoqo.operations.SGate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SGate</span></code></a>(qubit)</p></td>
 <td><p>The S gate.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.SWAP" title="qoqo.operations.SWAP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SWAP</span></code></a>(control, target)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.SWAP" title="qoqo.operations.SWAP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SWAP</span></code></a>(control, target)</p></td>
 <td><p>The controlled SWAP quantum operation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.SingleExcitationLoad" title="qoqo.operations.SingleExcitationLoad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleExcitationLoad</span></code></a>(qubit, mode)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.SingleExcitationLoad" title="qoqo.operations.SingleExcitationLoad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleExcitationLoad</span></code></a>(qubit, mode)</p></td>
 <td><p>Loads a single excitation from a bosonic mode into a qubit as follows (c1 <a href="#id9"><span class="problematic" id="id10">|</span></a>0⟩_B + c2 <a href="#id11"><span class="problematic" id="id12">|</span></a>1⟩_B) ⨂ <a href="#id13"><span class="problematic" id="id14">|</span></a>0⟩_Q -&gt; <a href="#id15"><span class="problematic" id="id16">|</span></a>0⟩_B ⨂ (c1 <a href="#id17"><span class="problematic" id="id18">|</span></a>0⟩_Q + c2 <a href="#id19"><span class="problematic" id="id20">|</span></a>1⟩_Q)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.SingleExcitationStore" title="qoqo.operations.SingleExcitationStore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleExcitationStore</span></code></a>(qubit, mode)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.SingleExcitationStore" title="qoqo.operations.SingleExcitationStore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleExcitationStore</span></code></a>(qubit, mode)</p></td>
 <td><p>Stores a single excitation from the involved qubit into the involved bosonic mode as follows <a href="#id21"><span class="problematic" id="id22">|</span></a>0⟩_B ⨂ (a <a href="#id23"><span class="problematic" id="id24">|</span></a>0⟩_Q + b <a href="#id25"><span class="problematic" id="id26">|</span></a>1⟩_Q) -&gt; (a|0⟩_B + b <a href="#id27"><span class="problematic" id="id28">|</span></a>1⟩_B ) ⨂ <a href="#id29"><span class="problematic" id="id30">|</span></a>0⟩_Q</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.SingleQubitGate" title="qoqo.operations.SingleQubitGate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleQubitGate</span></code></a>(qubit, alpha_r, alpha_i, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.SingleQubitGate" title="qoqo.operations.SingleQubitGate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleQubitGate</span></code></a>(qubit, alpha_r, alpha_i, ...)</p></td>
 <td><p>The general single qubit unitary gate.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.SpinInteraction" title="qoqo.operations.SpinInteraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpinInteraction</span></code></a>(control, target, x, y, z)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.SpinInteraction" title="qoqo.operations.SpinInteraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpinInteraction</span></code></a>(control, target, x, y, z)</p></td>
 <td><p>The generalized, anisotropic XYZ Heisenberg interaction between spins.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.SqrtISwap" title="qoqo.operations.SqrtISwap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SqrtISwap</span></code></a>(control, target)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.SqrtISwap" title="qoqo.operations.SqrtISwap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SqrtISwap</span></code></a>(control, target)</p></td>
 <td><p>The controlled square root ISwap quantum operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.SqrtPauliX" title="qoqo.operations.SqrtPauliX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SqrtPauliX</span></code></a>(qubit)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.SqrtPauliX" title="qoqo.operations.SqrtPauliX"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SqrtPauliX</span></code></a>(qubit)</p></td>
 <td><p>The square root of the XPower gate <span class="math notranslate nohighlight">\(e^{-i \frac{\pi}{4} \sigma^x}\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.operations.SqrtPauliY" title="qoqo.operations.SqrtPauliY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SqrtPauliY</span></code></a>(qubit)</p></td>
+<td><p>The square root of the YPower gate <span class="math notranslate nohighlight">\(e^{-i \frac{\pi}{4} \sigma^y}\)</span>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#qoqo.operations.Squeezing" title="qoqo.operations.Squeezing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Squeezing</span></code></a>(mode, squeezing, phase)</p></td>
 <td><p>The single-mode squeezing gate with tunable squeezing.</p></td>
@@ -675,7 +685,10 @@ or on a simulation of a quantum computing program (PRAGMA measurement operations
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -908,7 +921,10 @@ and <span class="math notranslate nohighlight">\(Y_t\)</span> is the Pauli matri
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1009,10 +1025,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1092,7 +1111,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1193,10 +1215,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1279,7 +1304,10 @@ as the second qubit involved in the CZ operation.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1480,7 +1508,10 @@ and <span class="math notranslate nohighlight">\(Y_t\)</span> is the Pauli matri
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1593,10 +1624,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1698,7 +1732,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1799,10 +1836,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1905,7 +1945,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2029,10 +2072,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2112,7 +2158,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2213,10 +2262,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2296,7 +2348,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2397,10 +2452,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2481,7 +2539,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2605,10 +2666,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2690,7 +2754,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2814,10 +2881,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2900,7 +2970,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3030,10 +3103,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3107,7 +3183,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3282,7 +3361,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3457,7 +3539,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3632,7 +3717,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3816,7 +3904,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3917,10 +4008,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4000,7 +4094,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4101,10 +4198,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4196,7 +4296,10 @@ in which the gate is valid as a two-qubit gate (due to the Jordan-Wigner transfo
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4309,10 +4412,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4468,7 +4574,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4624,10 +4733,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4783,7 +4895,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4939,10 +5054,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -5026,7 +5144,10 @@ and <span class="math notranslate nohighlight">\(Y_t\)</span> is the Pauli matri
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -5156,10 +5277,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -5243,7 +5367,10 @@ and <span class="math notranslate nohighlight">\(Y_t\)</span> is the Pauli matri
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -5373,10 +5500,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -5529,7 +5659,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -5662,10 +5795,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -5745,7 +5881,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -5846,10 +5985,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6002,7 +6144,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6135,10 +6280,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6212,7 +6360,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6386,7 +6537,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6561,7 +6715,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6662,10 +6819,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6675,7 +6835,7 @@ provided parameters.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliX">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.operations.</span></span><span class="sig-name descname"><span class="pre">InvSqrtPauliX</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliX" title="Link to this definition"></a></dt>
-<dd><p>The inverse square root XPower gate <span class="math notranslate nohighlight">\(e^{i \frac{\pi}{2} \sigma^x}\)</span>.</p>
+<dd><p>The inverse square root XPower gate <span class="math notranslate nohighlight">\(e^{i \frac{\pi}{4} \sigma^x}\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}U = \frac{1}{\sqrt{2}} \begin{pmatrix}
     1 &amp; i \\\\
@@ -6818,7 +6978,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6951,10 +7114,308 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.operations.</span></span><span class="sig-name descname"><span class="pre">InvSqrtPauliY</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY" title="Link to this definition"></a></dt>
+<dd><p>The inverse square root YPower gate <span class="math notranslate nohighlight">\(e^{i \frac{\pi}{4} \sigma^y}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+    1 &amp; 1 \\\\
+    -1 &amp; 1
+    \end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>qubit</strong> (<em>int</em>) -- The qubit the unitary gate is applied to.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.alpha_i">
+<span class="sig-name descname"><span class="pre">alpha_i</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.alpha_i" title="Link to this definition"></a></dt>
+<dd><p>Return the property alpha_i <span class="math notranslate nohighlight">\(\alpha_i\)</span> of a unitary gate acting on one qubit</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U =e^{i \cdot g}\begin{pmatrix}
+\alpha_r+i \alpha_i &amp; -\beta_r+i \beta_i \\\\
+\beta_r+i \beta_i &amp; \alpha_r-i\alpha_i
+\end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CalculatorFloat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.alpha_r">
+<span class="sig-name descname"><span class="pre">alpha_r</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.alpha_r" title="Link to this definition"></a></dt>
+<dd><p>Return the property alpha_r <span class="math notranslate nohighlight">\(\alpha_r\)</span> of a unitary gate acting on one qubit</p>
+<p>Here alpha_r is defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U =e^{i \cdot g}\begin{pmatrix}
+\alpha_r+i \alpha_i &amp; -\beta_r+i \beta_i \\\\
+\beta_r+i \beta_i &amp; \alpha_r-i\alpha_i
+\end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CalculatorFloat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.beta_i">
+<span class="sig-name descname"><span class="pre">beta_i</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.beta_i" title="Link to this definition"></a></dt>
+<dd><p>Returns the property beta_i <span class="math notranslate nohighlight">\(\beta_i\)</span> of a unitary gate acting on one qubit</p>
+<p>Here beta_i is defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U =e^{i \cdot g}\begin{pmatrix}
+\alpha_r+i \alpha_i &amp; -\beta_r+i \beta_i \\\\
+\beta_r+i \beta_i &amp; \alpha_r-i\alpha_i
+\end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CalculatorFloat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.beta_r">
+<span class="sig-name descname"><span class="pre">beta_r</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.beta_r" title="Link to this definition"></a></dt>
+<dd><p>Return the property beta_r <span class="math notranslate nohighlight">\(\beta_r\)</span> of a unitary gate acting on one qubit</p>
+<p>Here beta_r is defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U =e^{i \cdot g}\begin{pmatrix}
+\alpha_r+i \alpha_i &amp; -\beta_r+i \beta_i \\\\
+\beta_r+i \beta_i &amp; \alpha_r-i\alpha_i
+\end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CalculatorFloat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.current_version">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.current_version" title="Link to this definition"></a></dt>
+<dd><p>Returns the current version of the qoqo library .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current version of the library.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.global_phase">
+<span class="sig-name descname"><span class="pre">global_phase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.global_phase" title="Link to this definition"></a></dt>
+<dd><p>Return the global phase <span class="math notranslate nohighlight">\(g\)</span> of a unitary gate acting on one qubit</p>
+<p>Here global_phase is defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U =e^{i \cdot g}\begin{pmatrix}
+\alpha_r+i \alpha_i &amp; -\beta_r+i \beta_i \\\\
+\beta_r+i \beta_i &amp; \alpha_r-i\alpha_i
+\end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CalculatorFloat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.hqslang">
+<span class="sig-name descname"><span class="pre">hqslang</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.hqslang" title="Link to this definition"></a></dt>
+<dd><p>Returns hqslang name of Operation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.involved_qubits">
+<span class="sig-name descname"><span class="pre">involved_qubits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.involved_qubits" title="Link to this definition"></a></dt>
+<dd><p>List all involved Qubits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The involved qubits as a set or 'ALL' if all qubits are involved</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Union[Set[int], str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.is_parametrized">
+<span class="sig-name descname"><span class="pre">is_parametrized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.is_parametrized" title="Link to this definition"></a></dt>
+<dd><p>Returns true if operation contains symbolic parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.json_schema">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">json_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.json_schema" title="Link to this definition"></a></dt>
+<dd><p>Return the JsonSchema for the json serialisation of the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The json schema serialized to json</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.min_supported_version">
+<span class="sig-name descname"><span class="pre">min_supported_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.min_supported_version" title="Link to this definition"></a></dt>
+<dd><p>Return the minimum version of qoqo that supports this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The minimum version of the qoqo library to deserialize this object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.mul">
+<span class="sig-name descname"><span class="pre">mul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.mul" title="Link to this definition"></a></dt>
+<dd><p>Multiplies two compatible operations implementing OperateSingleQubitGate.</p>
+<p>Does not consume the two operations being multiplied.
+Only Operations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Operation</p>
+</dd>
+</dl>
+<p>Example:
+<a href="#id65"><span class="problematic" id="id66">``</span></a>`
+from qoqo.operations import RotateZ, RotateX</p>
+<p>gate1 =  RotateZ(qubit=0, theta=1)
+gate2 = RotateX(qubit=0, theta=1)
+multiplied = gate1.mul(gate2)
+print(&quot;Multiplied gate: &quot;, multiplied)
+<a href="#id67"><span class="problematic" id="id68">``</span></a><a href="#id69"><span class="problematic" id="id70">`</span></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.qubit">
+<span class="sig-name descname"><span class="pre">qubit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.qubit" title="Link to this definition"></a></dt>
+<dd><p>Return the qubit the operation acts on</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.remap_qubits">
+<span class="sig-name descname"><span class="pre">remap_qubits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapping</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.remap_qubits" title="Link to this definition"></a></dt>
+<dd><p>Remap qubits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mapping</strong> (<em>Dict</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) -- The mapping</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The operation with the remapped qubits</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Operation</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dd class="field-even"><p><strong>RuntimeError</strong> -- Qubit remapping failed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.substitute_parameters">
+<span class="sig-name descname"><span class="pre">substitute_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substitution_parameters</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.substitute_parameters" title="Link to this definition"></a></dt>
+<dd><p>Substitutes internal symbolic parameters with float values</p>
+<p>Only available when all symbolic expressions can be evaluated to float with the
+provided parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>substitution_parameters</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) -- The substituted free parameters</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The operation with the parameters substituted</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Operation</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> -- Parameter Substitution failed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.tags">
+<span class="sig-name descname"><span class="pre">tags</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.tags" title="Link to this definition"></a></dt>
+<dd><p>Returns tags identifying the Operation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The tags identifying the operation</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.InvSqrtPauliY.unitary_matrix">
+<span class="sig-name descname"><span class="pre">unitary_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.InvSqrtPauliY.unitary_matrix" title="Link to this definition"></a></dt>
+<dd><p>Return unitary matrix of gate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matrix of gate.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -7036,7 +7497,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -7247,7 +7711,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -7446,7 +7913,10 @@ The classical register for the readout needs to be defined in advance by using a
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -7633,7 +8103,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -7734,10 +8207,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -7809,7 +8285,10 @@ In mathematical terms the gate applies exp(-i * theta/2 * X_i0 * X_i1 * ... * X_
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -7938,10 +8417,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -8013,7 +8495,10 @@ In mathematical terms the gate applies exp(-i * theta/2 * Z_i0 * Z_i1 * ... * Z_
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -8142,10 +8627,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -8222,7 +8710,10 @@ and <span class="math notranslate nohighlight">\(Y_t\)</span> is the Pauli matri
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -8329,10 +8820,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -8485,7 +8979,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -8536,13 +9033,13 @@ Only Operations</p>
 </dd>
 </dl>
 <p>Example:
-<a href="#id65"><span class="problematic" id="id66">``</span></a>`
+<a href="#id71"><span class="problematic" id="id72">``</span></a>`
 from qoqo.operations import RotateZ, RotateX</p>
 <p>gate1 =  RotateZ(qubit=0, theta=1)
 gate2 = RotateX(qubit=0, theta=1)
 multiplied = gate1.mul(gate2)
 print(&quot;Multiplied gate: &quot;, multiplied)
-<a href="#id67"><span class="problematic" id="id68">``</span></a><a href="#id69"><span class="problematic" id="id70">`</span></a></p>
+<a href="#id73"><span class="problematic" id="id74">``</span></a><a href="#id75"><span class="problematic" id="id76">`</span></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -8618,10 +9115,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -8774,7 +9274,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -8825,13 +9328,13 @@ Only Operations</p>
 </dd>
 </dl>
 <p>Example:
-<a href="#id71"><span class="problematic" id="id72">``</span></a>`
+<a href="#id77"><span class="problematic" id="id78">``</span></a>`
 from qoqo.operations import RotateZ, RotateX</p>
 <p>gate1 =  RotateZ(qubit=0, theta=1)
 gate2 = RotateX(qubit=0, theta=1)
 multiplied = gate1.mul(gate2)
 print(&quot;Multiplied gate: &quot;, multiplied)
-<a href="#id73"><span class="problematic" id="id74">``</span></a><a href="#id75"><span class="problematic" id="id76">`</span></a></p>
+<a href="#id79"><span class="problematic" id="id80">``</span></a><a href="#id81"><span class="problematic" id="id82">`</span></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -8907,10 +9410,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -9063,7 +9569,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -9114,13 +9623,13 @@ Only Operations</p>
 </dd>
 </dl>
 <p>Example:
-<a href="#id77"><span class="problematic" id="id78">``</span></a>`
+<a href="#id83"><span class="problematic" id="id84">``</span></a>`
 from qoqo.operations import RotateZ, RotateX</p>
 <p>gate1 =  RotateZ(qubit=0, theta=1)
 gate2 = RotateX(qubit=0, theta=1)
 multiplied = gate1.mul(gate2)
 print(&quot;Multiplied gate: &quot;, multiplied)
-<a href="#id79"><span class="problematic" id="id80">``</span></a><a href="#id81"><span class="problematic" id="id82">`</span></a></p>
+<a href="#id85"><span class="problematic" id="id86">``</span></a><a href="#id87"><span class="problematic" id="id88">`</span></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -9196,10 +9705,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -9287,7 +9799,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -9487,7 +10002,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -9615,8 +10133,8 @@ provided parameters.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="qoqo.operations.PhaseShiftState0">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.operations.</span></span><span class="sig-name descname"><span class="pre">PhaseShiftState0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PhaseShiftState0" title="Link to this definition"></a></dt>
-<dd><p>The phase shift gate applied on state <a href="#id83"><span class="problematic" id="id84">|</span></a>0&gt;.</p>
-<p>Rotation around Z-axis by an arbitrary angle $theta$ (AC Stark shift of the state <a href="#id85"><span class="problematic" id="id86">|</span></a>0&gt;).</p>
+<dd><p>The phase shift gate applied on state <a href="#id89"><span class="problematic" id="id90">|</span></a>0&gt;.</p>
+<p>Rotation around Z-axis by an arbitrary angle $theta$ (AC Stark shift of the state <a href="#id91"><span class="problematic" id="id92">|</span></a>0&gt;).</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}U = \begin{pmatrix}
     e^{i \theta} &amp; 0 \\\\
@@ -9762,7 +10280,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -9813,13 +10334,13 @@ Only Operations</p>
 </dd>
 </dl>
 <p>Example:
-<a href="#id87"><span class="problematic" id="id88">``</span></a>`
+<a href="#id93"><span class="problematic" id="id94">``</span></a>`
 from qoqo.operations import RotateZ, RotateX</p>
 <p>gate1 =  RotateZ(qubit=0, theta=1)
 gate2 = RotateX(qubit=0, theta=1)
 multiplied = gate1.mul(gate2)
 print(&quot;Multiplied gate: &quot;, multiplied)
-<a href="#id89"><span class="problematic" id="id90">``</span></a><a href="#id91"><span class="problematic" id="id92">`</span></a></p>
+<a href="#id95"><span class="problematic" id="id96">``</span></a><a href="#id97"><span class="problematic" id="id98">`</span></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -9918,10 +10439,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -9931,8 +10455,8 @@ provided parameters.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="qoqo.operations.PhaseShiftState1">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.operations.</span></span><span class="sig-name descname"><span class="pre">PhaseShiftState1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PhaseShiftState1" title="Link to this definition"></a></dt>
-<dd><p>The phase shift gate applied on state <a href="#id93"><span class="problematic" id="id94">|</span></a>1&gt;.</p>
-<p>Rotation around Z-axis by an arbitrary angle $theta$ (AC Stark shift of the state <a href="#id95"><span class="problematic" id="id96">|</span></a>1&gt;).</p>
+<dd><p>The phase shift gate applied on state <a href="#id99"><span class="problematic" id="id100">|</span></a>1&gt;.</p>
+<p>Rotation around Z-axis by an arbitrary angle $theta$ (AC Stark shift of the state <a href="#id101"><span class="problematic" id="id102">|</span></a>1&gt;).</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}U = \begin{pmatrix}
     1 &amp; 0 \\\\
@@ -10078,7 +10602,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -10129,13 +10656,13 @@ Only Operations</p>
 </dd>
 </dl>
 <p>Example:
-<a href="#id97"><span class="problematic" id="id98">``</span></a>`
+<a href="#id103"><span class="problematic" id="id104">``</span></a>`
 from qoqo.operations import RotateZ, RotateX</p>
 <p>gate1 =  RotateZ(qubit=0, theta=1)
 gate2 = RotateX(qubit=0, theta=1)
 multiplied = gate1.mul(gate2)
 print(&quot;Multiplied gate: &quot;, multiplied)
-<a href="#id99"><span class="problematic" id="id100">``</span></a><a href="#id101"><span class="problematic" id="id102">`</span></a></p>
+<a href="#id105"><span class="problematic" id="id106">``</span></a><a href="#id107"><span class="problematic" id="id108">`</span></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -10234,10 +10761,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -10320,7 +10850,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -10450,10 +10983,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -10536,7 +11072,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -10643,10 +11182,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -10730,7 +11272,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -10918,7 +11463,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -11103,7 +11651,7 @@ provided parameters.</p>
 <dd class="field-odd"><p>True if the operation contains symbolic parameters, False if it does not.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>is_parametrized (bool)</p>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -11264,7 +11812,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -11418,7 +11969,7 @@ device properties.</p>
 <dd class="field-odd"><p>True if the operation contains symbolic parameters, False if it does not.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>is_parametrized (bool)</p>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -11636,7 +12187,10 @@ device properties.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -11809,7 +12363,10 @@ by a unitary operation in qoqo for arbitraty circuits.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -11973,7 +12530,10 @@ an increase in energy.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -12096,7 +12656,10 @@ provided parameters.</p>
 <dd><p>Return the superoperator defining the evolution of the density matrix under the noise gate</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>superoperator of gate.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -12185,7 +12748,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -12308,7 +12874,10 @@ provided parameters.</p>
 <dd><p>Return the superoperator defining the evolution of the density matrix under the noise gate</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>superoperator of gate.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -12397,7 +12966,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -12520,7 +13092,10 @@ provided parameters.</p>
 <dd><p>Return the superoperator defining the evolution of the density matrix under the noise gate</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>superoperator of gate.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -12620,7 +13195,7 @@ provided parameters.</p>
 <dd class="field-odd"><p>True if the operation contains symbolic parameters, False if it does not.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>is_parametrized (bool)</p>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -12818,7 +13393,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -12983,7 +13561,10 @@ register in each <span class="math notranslate nohighlight">\(\sigma_z\)</span> 
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -13151,7 +13732,10 @@ sothat the actual quantum register remains unchanged.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -13320,7 +13904,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -13476,7 +14063,10 @@ i.e. it provides information that there is a global phase to be considered.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -13639,7 +14229,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -13815,7 +14408,10 @@ and standard deviation <cite>variance</cite> and is multiplied by the <cite>ampl
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -14004,7 +14600,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -14121,7 +14720,10 @@ provided parameters.</p>
 <dd><p>Return the superoperator defining the evolution of the density matrix under the noise gate</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>superoperator of gate.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -14201,7 +14803,10 @@ to increase the rate for error mitigation.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -14359,7 +14964,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -14472,7 +15080,7 @@ provided parameters.</p>
 <dt class="sig sig-object py" id="qoqo.operations.PragmaSetDensityMatrix">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.operations.</span></span><span class="sig-name descname"><span class="pre">PragmaSetDensityMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">density_matrix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaSetDensityMatrix" title="Link to this definition"></a></dt>
 <dd><p>This PRAGMA operation sets the density matrix of a quantum register.</p>
-<p>The Circuit() module automatically initializes the qubits in the <a href="#id103"><span class="problematic" id="id104">|</span></a>0&gt; state, so this PRAGMA
+<p>The Circuit() module automatically initializes the qubits in the <a href="#id109"><span class="problematic" id="id110">|</span></a>0&gt; state, so this PRAGMA
 operation allows you to set the state of the qubits by setting a density matrix of your choosing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -14697,7 +15305,10 @@ measurements does not allow access to the underlying wavefunction or density mat
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -14804,7 +15415,7 @@ provided parameters.</p>
 <dt class="sig sig-object py" id="qoqo.operations.PragmaSetStateVector">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.operations.</span></span><span class="sig-name descname"><span class="pre">PragmaSetStateVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">statevector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.PragmaSetStateVector" title="Link to this definition"></a></dt>
 <dd><p>This PRAGMA operation sets the statevector of a quantum register.</p>
-<p>The Circuit() module automatically initializes the qubits in the <a href="#id105"><span class="problematic" id="id106">|</span></a>0&gt; state, so this PRAGMA
+<p>The Circuit() module automatically initializes the qubits in the <a href="#id111"><span class="problematic" id="id112">|</span></a>0&gt; state, so this PRAGMA
 operation allows you to set the state of the qubits to a state of your choosing.
 For instance, to initialize the psi-minus Bell state, we pass the following vector to
 the PRAGMA:</p>
@@ -15033,7 +15644,10 @@ It can be used to boost the noise on the qubits since it gets worse with time.</
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -15201,7 +15815,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -15366,7 +15983,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -15534,7 +16154,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -15712,7 +16335,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -15813,10 +16439,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -15916,7 +16545,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -16212,7 +16844,10 @@ v_z = \cos(\theta_{sph}) \ .\end{split}\]</div>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -16263,13 +16898,13 @@ Only Operations</p>
 </dd>
 </dl>
 <p>Example:
-<a href="#id107"><span class="problematic" id="id108">``</span></a>`
+<a href="#id113"><span class="problematic" id="id114">``</span></a>`
 from qoqo.operations import RotateZ, RotateX</p>
 <p>gate1 =  RotateZ(qubit=0, theta=1)
 gate2 = RotateX(qubit=0, theta=1)
 multiplied = gate1.mul(gate2)
 print(&quot;Multiplied gate: &quot;, multiplied)
-<a href="#id109"><span class="problematic" id="id110">``</span></a><a href="#id111"><span class="problematic" id="id112">`</span></a></p>
+<a href="#id115"><span class="problematic" id="id116">``</span></a><a href="#id117"><span class="problematic" id="id118">`</span></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -16380,10 +17015,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -16543,7 +17181,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -16594,13 +17235,13 @@ Only Operations</p>
 </dd>
 </dl>
 <p>Example:
-<a href="#id113"><span class="problematic" id="id114">``</span></a>`
+<a href="#id119"><span class="problematic" id="id120">``</span></a>`
 from qoqo.operations import RotateZ, RotateX</p>
 <p>gate1 =  RotateZ(qubit=0, theta=1)
 gate2 = RotateX(qubit=0, theta=1)
 multiplied = gate1.mul(gate2)
 print(&quot;Multiplied gate: &quot;, multiplied)
-<a href="#id115"><span class="problematic" id="id116">``</span></a><a href="#id117"><span class="problematic" id="id118">`</span></a></p>
+<a href="#id121"><span class="problematic" id="id122">``</span></a><a href="#id123"><span class="problematic" id="id124">`</span></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -16699,10 +17340,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -16859,7 +17503,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -16910,13 +17557,13 @@ Only Operations</p>
 </dd>
 </dl>
 <p>Example:
-<a href="#id119"><span class="problematic" id="id120">``</span></a>`
+<a href="#id125"><span class="problematic" id="id126">``</span></a>`
 from qoqo.operations import RotateZ, RotateX</p>
 <p>gate1 =  RotateZ(qubit=0, theta=1)
 gate2 = RotateX(qubit=0, theta=1)
 multiplied = gate1.mul(gate2)
 print(&quot;Multiplied gate: &quot;, multiplied)
-<a href="#id121"><span class="problematic" id="id122">``</span></a><a href="#id123"><span class="problematic" id="id124">`</span></a></p>
+<a href="#id127"><span class="problematic" id="id128">``</span></a><a href="#id129"><span class="problematic" id="id130">`</span></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -17021,10 +17668,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -17184,7 +17834,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -17235,13 +17888,13 @@ Only Operations</p>
 </dd>
 </dl>
 <p>Example:
-<a href="#id125"><span class="problematic" id="id126">``</span></a>`
+<a href="#id131"><span class="problematic" id="id132">``</span></a>`
 from qoqo.operations import RotateZ, RotateX</p>
 <p>gate1 =  RotateZ(qubit=0, theta=1)
 gate2 = RotateX(qubit=0, theta=1)
 multiplied = gate1.mul(gate2)
 print(&quot;Multiplied gate: &quot;, multiplied)
-<a href="#id127"><span class="problematic" id="id128">``</span></a><a href="#id129"><span class="problematic" id="id130">`</span></a></p>
+<a href="#id133"><span class="problematic" id="id134">``</span></a><a href="#id135"><span class="problematic" id="id136">`</span></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -17340,10 +17993,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -17503,7 +18159,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -17554,13 +18213,13 @@ Only Operations</p>
 </dd>
 </dl>
 <p>Example:
-<a href="#id131"><span class="problematic" id="id132">``</span></a>`
+<a href="#id137"><span class="problematic" id="id138">``</span></a>`
 from qoqo.operations import RotateZ, RotateX</p>
 <p>gate1 =  RotateZ(qubit=0, theta=1)
 gate2 = RotateX(qubit=0, theta=1)
 multiplied = gate1.mul(gate2)
 print(&quot;Multiplied gate: &quot;, multiplied)
-<a href="#id133"><span class="problematic" id="id134">``</span></a><a href="#id135"><span class="problematic" id="id136">`</span></a></p>
+<a href="#id139"><span class="problematic" id="id140">``</span></a><a href="#id141"><span class="problematic" id="id142">`</span></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -17659,10 +18318,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -17815,7 +18477,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -17866,13 +18531,13 @@ Only Operations</p>
 </dd>
 </dl>
 <p>Example:
-<a href="#id137"><span class="problematic" id="id138">``</span></a>`
+<a href="#id143"><span class="problematic" id="id144">``</span></a>`
 from qoqo.operations import RotateZ, RotateX</p>
 <p>gate1 =  RotateZ(qubit=0, theta=1)
 gate2 = RotateX(qubit=0, theta=1)
 multiplied = gate1.mul(gate2)
 print(&quot;Multiplied gate: &quot;, multiplied)
-<a href="#id139"><span class="problematic" id="id140">``</span></a><a href="#id141"><span class="problematic" id="id142">`</span></a></p>
+<a href="#id145"><span class="problematic" id="id146">``</span></a><a href="#id147"><span class="problematic" id="id148">`</span></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -17948,10 +18613,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -18031,7 +18699,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -18132,10 +18803,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -18146,8 +18820,8 @@ provided parameters.</p>
 <dt class="sig sig-object py" id="qoqo.operations.SingleExcitationLoad">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.operations.</span></span><span class="sig-name descname"><span class="pre">SingleExcitationLoad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SingleExcitationLoad" title="Link to this definition"></a></dt>
 <dd><p>Loads a single excitation from a bosonic mode into a qubit as follows
-(c1 <a href="#id143"><span class="problematic" id="id144">|</span></a>0⟩_B + c2 <a href="#id145"><span class="problematic" id="id146">|</span></a>1⟩_B) ⨂ <a href="#id147"><span class="problematic" id="id148">|</span></a>0⟩_Q -&gt; <a href="#id149"><span class="problematic" id="id150">|</span></a>0⟩_B ⨂ (c1 <a href="#id151"><span class="problematic" id="id152">|</span></a>0⟩_Q + c2 <a href="#id153"><span class="problematic" id="id154">|</span></a>1⟩_Q)</p>
-<p>Note: if the initial qubit state is <a href="#id155"><span class="problematic" id="id156">|</span></a>1⟩_Q the operation is only defined if c2 = 0</p>
+(c1 <a href="#id149"><span class="problematic" id="id150">|</span></a>0⟩_B + c2 <a href="#id151"><span class="problematic" id="id152">|</span></a>1⟩_B) ⨂ <a href="#id153"><span class="problematic" id="id154">|</span></a>0⟩_Q -&gt; <a href="#id155"><span class="problematic" id="id156">|</span></a>0⟩_B ⨂ (c1 <a href="#id157"><span class="problematic" id="id158">|</span></a>0⟩_Q + c2 <a href="#id159"><span class="problematic" id="id160">|</span></a>1⟩_Q)</p>
+<p>Note: if the initial qubit state is <a href="#id161"><span class="problematic" id="id162">|</span></a>1⟩_Q the operation is only defined if c2 = 0</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -18218,7 +18892,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -18352,8 +19029,8 @@ provided parameters.</p>
 <dt class="sig sig-object py" id="qoqo.operations.SingleExcitationStore">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.operations.</span></span><span class="sig-name descname"><span class="pre">SingleExcitationStore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SingleExcitationStore" title="Link to this definition"></a></dt>
 <dd><p>Stores a single excitation from the involved qubit into the involved bosonic mode as follows
-<a href="#id157"><span class="problematic" id="id158">|</span></a>0⟩_B ⨂ (a <a href="#id159"><span class="problematic" id="id160">|</span></a>0⟩_Q + b <a href="#id161"><span class="problematic" id="id162">|</span></a>1⟩_Q) -&gt; (a|0⟩_B + b <a href="#id163"><span class="problematic" id="id164">|</span></a>1⟩_B ) ⨂ <a href="#id165"><span class="problematic" id="id166">|</span></a>0⟩_Q</p>
-<p>Note: not defined if the bosonic mode is in a state <a href="#id167"><span class="problematic" id="id168">|</span></a>n⟩ with n != 0</p>
+<a href="#id163"><span class="problematic" id="id164">|</span></a>0⟩_B ⨂ (a <a href="#id165"><span class="problematic" id="id166">|</span></a>0⟩_Q + b <a href="#id167"><span class="problematic" id="id168">|</span></a>1⟩_Q) -&gt; (a|0⟩_B + b <a href="#id169"><span class="problematic" id="id170">|</span></a>1⟩_B ) ⨂ <a href="#id171"><span class="problematic" id="id172">|</span></a>0⟩_Q</p>
+<p>Note: not defined if the bosonic mode is in a state <a href="#id173"><span class="problematic" id="id174">|</span></a>n⟩ with n != 0</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -18424,7 +19101,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -18707,7 +19387,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -18758,13 +19441,13 @@ Only Operations</p>
 </dd>
 </dl>
 <p>Example:
-<a href="#id169"><span class="problematic" id="id170">``</span></a>`
+<a href="#id175"><span class="problematic" id="id176">``</span></a>`
 from qoqo.operations import RotateZ, RotateX</p>
 <p>gate1 =  RotateZ(qubit=0, theta=1)
 gate2 = RotateX(qubit=0, theta=1)
 multiplied = gate1.mul(gate2)
 print(&quot;Multiplied gate: &quot;, multiplied)
-<a href="#id171"><span class="problematic" id="id172">``</span></a><a href="#id173"><span class="problematic" id="id174">`</span></a></p>
+<a href="#id177"><span class="problematic" id="id178">``</span></a><a href="#id179"><span class="problematic" id="id180">`</span></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -18840,10 +19523,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -18922,7 +19608,10 @@ with <span class="math notranslate nohighlight">\(XX \equiv \sigma_x \sigma_x\)<
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -19023,10 +19712,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -19124,7 +19816,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -19225,10 +19920,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -19381,7 +20079,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -19432,13 +20133,13 @@ Only Operations</p>
 </dd>
 </dl>
 <p>Example:
-<a href="#id175"><span class="problematic" id="id176">``</span></a>`
+<a href="#id181"><span class="problematic" id="id182">``</span></a>`
 from qoqo.operations import RotateZ, RotateX</p>
 <p>gate1 =  RotateZ(qubit=0, theta=1)
 gate2 = RotateX(qubit=0, theta=1)
 multiplied = gate1.mul(gate2)
 print(&quot;Multiplied gate: &quot;, multiplied)
-<a href="#id177"><span class="problematic" id="id178">``</span></a><a href="#id179"><span class="problematic" id="id180">`</span></a></p>
+<a href="#id183"><span class="problematic" id="id184">``</span></a><a href="#id185"><span class="problematic" id="id186">`</span></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -19514,10 +20215,308 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.operations.</span></span><span class="sig-name descname"><span class="pre">SqrtPauliY</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY" title="Link to this definition"></a></dt>
+<dd><p>The square root of the YPower gate <span class="math notranslate nohighlight">\(e^{-i \frac{\pi}{4} \sigma^y}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U = \frac{1}{\sqrt(2)} \begin{pmatrix}
+    1 &amp; -1 \\\\
+    1 &amp; 1
+    \end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>qubit</strong> (<em>int</em>) -- The qubit the unitary gate is applied to.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.alpha_i">
+<span class="sig-name descname"><span class="pre">alpha_i</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.alpha_i" title="Link to this definition"></a></dt>
+<dd><p>Return the property alpha_i <span class="math notranslate nohighlight">\(\alpha_i\)</span> of a unitary gate acting on one qubit</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U =e^{i \cdot g}\begin{pmatrix}
+\alpha_r+i \alpha_i &amp; -\beta_r+i \beta_i \\\\
+\beta_r+i \beta_i &amp; \alpha_r-i\alpha_i
+\end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CalculatorFloat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.alpha_r">
+<span class="sig-name descname"><span class="pre">alpha_r</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.alpha_r" title="Link to this definition"></a></dt>
+<dd><p>Return the property alpha_r <span class="math notranslate nohighlight">\(\alpha_r\)</span> of a unitary gate acting on one qubit</p>
+<p>Here alpha_r is defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U =e^{i \cdot g}\begin{pmatrix}
+\alpha_r+i \alpha_i &amp; -\beta_r+i \beta_i \\\\
+\beta_r+i \beta_i &amp; \alpha_r-i\alpha_i
+\end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CalculatorFloat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.beta_i">
+<span class="sig-name descname"><span class="pre">beta_i</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.beta_i" title="Link to this definition"></a></dt>
+<dd><p>Returns the property beta_i <span class="math notranslate nohighlight">\(\beta_i\)</span> of a unitary gate acting on one qubit</p>
+<p>Here beta_i is defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U =e^{i \cdot g}\begin{pmatrix}
+\alpha_r+i \alpha_i &amp; -\beta_r+i \beta_i \\\\
+\beta_r+i \beta_i &amp; \alpha_r-i\alpha_i
+\end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CalculatorFloat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.beta_r">
+<span class="sig-name descname"><span class="pre">beta_r</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.beta_r" title="Link to this definition"></a></dt>
+<dd><p>Return the property beta_r <span class="math notranslate nohighlight">\(\beta_r\)</span> of a unitary gate acting on one qubit</p>
+<p>Here beta_r is defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U =e^{i \cdot g}\begin{pmatrix}
+\alpha_r+i \alpha_i &amp; -\beta_r+i \beta_i \\\\
+\beta_r+i \beta_i &amp; \alpha_r-i\alpha_i
+\end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CalculatorFloat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.current_version">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.current_version" title="Link to this definition"></a></dt>
+<dd><p>Returns the current version of the qoqo library .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current version of the library.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.global_phase">
+<span class="sig-name descname"><span class="pre">global_phase</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.global_phase" title="Link to this definition"></a></dt>
+<dd><p>Return the global phase <span class="math notranslate nohighlight">\(g\)</span> of a unitary gate acting on one qubit</p>
+<p>Here global_phase is defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}U =e^{i \cdot g}\begin{pmatrix}
+\alpha_r+i \alpha_i &amp; -\beta_r+i \beta_i \\\\
+\beta_r+i \beta_i &amp; \alpha_r-i\alpha_i
+\end{pmatrix}\end{split}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CalculatorFloat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.hqslang">
+<span class="sig-name descname"><span class="pre">hqslang</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.hqslang" title="Link to this definition"></a></dt>
+<dd><p>Returns hqslang name of Operation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.involved_qubits">
+<span class="sig-name descname"><span class="pre">involved_qubits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.involved_qubits" title="Link to this definition"></a></dt>
+<dd><p>List all involved Qubits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The involved qubits as a set or 'ALL' if all qubits are involved</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Union[Set[int], str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.is_parametrized">
+<span class="sig-name descname"><span class="pre">is_parametrized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.is_parametrized" title="Link to this definition"></a></dt>
+<dd><p>Returns true if operation contains symbolic parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.json_schema">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">json_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.json_schema" title="Link to this definition"></a></dt>
+<dd><p>Return the JsonSchema for the json serialisation of the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The json schema serialized to json</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.min_supported_version">
+<span class="sig-name descname"><span class="pre">min_supported_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.min_supported_version" title="Link to this definition"></a></dt>
+<dd><p>Return the minimum version of qoqo that supports this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The minimum version of the qoqo library to deserialize this object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.mul">
+<span class="sig-name descname"><span class="pre">mul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.mul" title="Link to this definition"></a></dt>
+<dd><p>Multiplies two compatible operations implementing OperateSingleQubitGate.</p>
+<p>Does not consume the two operations being multiplied.
+Only Operations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>[</strong><strong>OperateSingleQubitGate</strong><strong>]</strong><strong>.</strong> (<em>other - An Operation implementing</em>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result of the multiplication, i.e. the multiplied single qubit gate.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Operation</p>
+</dd>
+</dl>
+<p>Example:
+<a href="#id187"><span class="problematic" id="id188">``</span></a>`
+from qoqo.operations import RotateZ, RotateX</p>
+<p>gate1 =  RotateZ(qubit=0, theta=1)
+gate2 = RotateX(qubit=0, theta=1)
+multiplied = gate1.mul(gate2)
+print(&quot;Multiplied gate: &quot;, multiplied)
+<a href="#id189"><span class="problematic" id="id190">``</span></a><a href="#id191"><span class="problematic" id="id192">`</span></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.qubit">
+<span class="sig-name descname"><span class="pre">qubit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.qubit" title="Link to this definition"></a></dt>
+<dd><p>Return the qubit the operation acts on</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.remap_qubits">
+<span class="sig-name descname"><span class="pre">remap_qubits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapping</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.remap_qubits" title="Link to this definition"></a></dt>
+<dd><p>Remap qubits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mapping</strong> (<em>Dict</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) -- The mapping</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The operation with the remapped qubits</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Operation</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dd class="field-even"><p><strong>RuntimeError</strong> -- Qubit remapping failed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.substitute_parameters">
+<span class="sig-name descname"><span class="pre">substitute_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substitution_parameters</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.substitute_parameters" title="Link to this definition"></a></dt>
+<dd><p>Substitutes internal symbolic parameters with float values</p>
+<p>Only available when all symbolic expressions can be evaluated to float with the
+provided parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>substitution_parameters</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) -- The substituted free parameters</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The operation with the parameters substituted</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Operation</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> -- Parameter Substitution failed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.tags">
+<span class="sig-name descname"><span class="pre">tags</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.tags" title="Link to this definition"></a></dt>
+<dd><p>Returns tags identifying the Operation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The tags identifying the operation</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.operations.SqrtPauliY.unitary_matrix">
+<span class="sig-name descname"><span class="pre">unitary_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.operations.SqrtPauliY.unitary_matrix" title="Link to this definition"></a></dt>
+<dd><p>Return unitary matrix of gate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matrix of gate.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -19602,7 +20601,10 @@ by reducing the uncertainty in one variable and therefore increasing the uncerta
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -19879,7 +20881,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -19930,13 +20935,13 @@ Only Operations</p>
 </dd>
 </dl>
 <p>Example:
-<a href="#id181"><span class="problematic" id="id182">``</span></a>`
+<a href="#id193"><span class="problematic" id="id194">``</span></a>`
 from qoqo.operations import RotateZ, RotateX</p>
 <p>gate1 =  RotateZ(qubit=0, theta=1)
 gate2 = RotateX(qubit=0, theta=1)
 multiplied = gate1.mul(gate2)
 print(&quot;Multiplied gate: &quot;, multiplied)
-<a href="#id183"><span class="problematic" id="id184">``</span></a><a href="#id185"><span class="problematic" id="id186">`</span></a></p>
+<a href="#id195"><span class="problematic" id="id196">``</span></a><a href="#id197"><span class="problematic" id="id198">`</span></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -20012,10 +21017,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -20117,7 +21125,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -20218,10 +21229,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -20302,7 +21316,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -20426,10 +21443,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>
@@ -20510,7 +21530,10 @@ provided parameters.</p>
 <dd><p>Returns true if operation contains symbolic parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>Whether or not the operation contains symbolic parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -20634,10 +21657,13 @@ provided parameters.</p>
 <dd><p>Return unitary matrix of gate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.ndarray</p>
+<dd class="field-odd"><p>matrix of gate.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Error symbolic operation cannot return float unitary matrix</p>
 </dd>
 </dl>
 </dd></dl>

@@ -47,6 +47,7 @@ qoqo.operations
       InputSymbolic
       InvSqrtISwap
       InvSqrtPauliX
+      InvSqrtPauliY
       JaynesCummings
       LongitudinalCoupling
       MeasureQubit
@@ -106,6 +107,7 @@ qoqo.operations
       SpinInteraction
       SqrtISwap
       SqrtPauliX
+      SqrtPauliY
       Squeezing
       TGate
       Toffoli
