@@ -7,7 +7,7 @@ maintainers = [
   { name = "HQS Quantum Simulations GmbH", email = "info@quantumsimulations.de" },
 ]
 requires-python = ">=3.8"
-readme = "README.md"
+readme = "README_qoqo.md"
 
 [build-system]
 requires = ["maturin>=1.0,<2.0"]
