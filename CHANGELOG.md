@@ -2,6 +2,12 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## Unreleased
+
+### Fixed in Unreleased
+
+* Renamed qoqo's `README.md` to `README_qoqo.md` to solve sdist build issues.
+
 ## 1.15.1
 
 ### Fixed in 1.15.1
