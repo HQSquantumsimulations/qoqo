@@ -19,6 +19,7 @@ compatibility = "manylinux2014"
 skip-auditwheel = false
 strip = true
 profile = "release"
+python-source = "python"
 
 [project.optional-dependencies]
 docs = [
