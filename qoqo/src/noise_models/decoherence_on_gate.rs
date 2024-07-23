@@ -82,7 +82,7 @@ impl DecoherenceOnGateModelWrapper {
                 noise_operator.clone(),
             ) {
                 Ok(x) => x,
-                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_two(noise_operator) {
+                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_2(noise_operator) {
                     Ok(x) => x.internal,
                     Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {:?}", err))),
                 }
@@ -143,7 +143,7 @@ impl DecoherenceOnGateModelWrapper {
                 noise_operator.clone(),
             ) {
                 Ok(x) => x,
-                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_two(noise_operator) {
+                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_2(noise_operator) {
                     Ok(x) => x.internal,
                     Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {:?}", err))),
                 }
@@ -209,7 +209,7 @@ impl DecoherenceOnGateModelWrapper {
                 noise_operator.clone(),
             ) {
                 Ok(x) => x,
-                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_two(noise_operator) {
+                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_2(noise_operator) {
                     Ok(x) => x.internal,
                     Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {:?}", err))),
                 }
@@ -274,7 +274,7 @@ impl DecoherenceOnGateModelWrapper {
                 noise_operator.clone(),
             ) {
                 Ok(x) => x,
-                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_two(noise_operator) {
+                Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_2(noise_operator) {
                     Ok(x) => x.internal,
                     Err(err) => return Err(PyValueError::new_err(format!("Could not convert input noise_operator from either struqture 1.x or struqture 2.x: {:?}", err))),
                 }

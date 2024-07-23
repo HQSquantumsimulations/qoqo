@@ -19,7 +19,7 @@ doctest = false
 proc-macro2 = "1.0"
 syn = { version = "2.0", features = ["full", "visit"] }
 quote = "1.0"
-struqture = {package = "struqture", version="1.7.0-alpha.0", default-features=false, path="../../test_struqture/struqture/struqture"}
+struqture = {package = "struqture", version="~1.9", default-features=false}
 
 [features]
 unstable_chain_with_environment = []
