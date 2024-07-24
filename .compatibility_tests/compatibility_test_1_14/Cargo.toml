@@ -30,6 +30,6 @@ roqoqo = { version = "~1.15", path = "../../roqoqo", features = [
 # struqture = { version = "~1.9" }
 bincode = { version = "1.3" }
 ndarray = "0.15"
-ty
+
 [dev-dependencies]
 test-case = "3.0"
