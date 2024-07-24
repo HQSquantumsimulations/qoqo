@@ -15,6 +15,7 @@ import pytest
 import sys
 from qoqo import operations as ops
 from qoqo import Circuit
+import struqture_py
 
 
 @pytest.mark.parametrize(
