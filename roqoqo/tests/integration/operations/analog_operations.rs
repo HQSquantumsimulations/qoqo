@@ -35,7 +35,7 @@ where
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
-    return ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
+    ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into())
 }
 
 fn create_apply_constant_spin_hamiltonian_param_time() -> ApplyConstantSpinHamiltonian {
@@ -44,7 +44,7 @@ fn create_apply_constant_spin_hamiltonian_param_time() -> ApplyConstantSpinHamil
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(1.0))
         .unwrap();
-    return ApplyConstantSpinHamiltonian::new(hamiltonian, "time".into());
+    ApplyConstantSpinHamiltonian::new(hamiltonian, "time".into())
 }
 
 fn create_param_apply_constant_spin_hamiltonian<T>(p: T) -> ApplyConstantSpinHamiltonian
@@ -59,7 +59,7 @@ where
     let pp = PauliProduct::new().x(1);
     hamiltonian.add_operator_product(pp, 1.0.into()).unwrap();
 
-    return ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
+    ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into())
 }
 
 fn create_apply_timedependent_spin_hamiltonian<T>(p: T) -> ApplyTimeDependentSpinHamiltonian
@@ -75,7 +75,7 @@ where
     let mut values = HashMap::new();
     values.insert("omega".to_string(), vec![1.0]);
 
-    return ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
+    ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone())
 }
 
 /// Test inputs
@@ -94,8 +94,13 @@ fn inputs() {
     assert_eq!(op.hamiltonian(), &hamiltonian);
     assert_eq!(op.time(), &CalculatorFloat::from(1.0));
 
-    let op = create_apply_timedependent_spin_hamiltonian(1.0);
-    assert_eq!(op.hamiltonian(), &hamiltonian);
+    let mut test_time_dep_hamiltonian = SpinHamiltonian::new();
+    test_time_dep_hamiltonian
+        .add_operator_product(pp.clone(), CalculatorFloat::from("omega"))
+        .unwrap();
+
+    let op = create_apply_timedependent_spin_hamiltonian("omega");
+    assert_eq!(op.hamiltonian(), &test_time_dep_hamiltonian);
     assert_eq!(op.time(), &(vec![1.0]));
     assert_eq!(op.values(), &values);
 }
@@ -172,8 +177,8 @@ fn remap_qubit() {
         .add_operator_product(pp2, CalculatorFloat::from(2.0))
         .unwrap();
 
-    let op = ApplyConstantSpinHamiltonian::new(hamiltonian.clone(), 1.0.into());
-    let test_op = ApplyConstantSpinHamiltonian::new(test_hamiltonian.clone(), 1.0.into());
+    let op = ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
+    let test_op = ApplyConstantSpinHamiltonian::new(test_hamiltonian, 1.0.into());
 
     let mut qubit_mapping_test: HashMap<usize, usize> = HashMap::new();
     qubit_mapping_test.insert(0, 2);
@@ -181,11 +186,34 @@ fn remap_qubit() {
     let result = op.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, test_op);
 
+    let pp1 = PauliProduct::new().z(0).x(1);
+    let pp2 = PauliProduct::new().z(2).x(3);
+    let mut time_dep_hamiltonian = SpinHamiltonian::new();
+    time_dep_hamiltonian
+        .add_operator_product(pp1, CalculatorFloat::from("omega"))
+        .unwrap();
+    time_dep_hamiltonian
+        .add_operator_product(pp2, CalculatorFloat::from(2.0))
+        .unwrap();
+
+    let pp1 = PauliProduct::new().z(2).x(1);
+    let pp2 = PauliProduct::new().z(0).x(3);
+    let mut test_time_dep_hamiltonian = SpinHamiltonian::new();
+    test_time_dep_hamiltonian
+        .add_operator_product(pp1, CalculatorFloat::from("omega"))
+        .unwrap();
+    test_time_dep_hamiltonian
+        .add_operator_product(pp2, CalculatorFloat::from(2.0))
+        .unwrap();
     let mut values = HashMap::new();
     values.insert("omega".to_string(), vec![1.0]);
-    let op = ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone());
-    let test_op =
-        ApplyTimeDependentSpinHamiltonian::new(test_hamiltonian, vec![1.0], values.clone());
+    let op =
+        ApplyTimeDependentSpinHamiltonian::new(time_dep_hamiltonian, vec![1.0], values.clone());
+    let test_op = ApplyTimeDependentSpinHamiltonian::new(
+        test_time_dep_hamiltonian,
+        vec![1.0],
+        values.clone(),
+    );
 
     let result = op.remap_qubits(&qubit_mapping_test).unwrap();
     assert_eq!(result, test_op);
@@ -357,7 +385,7 @@ fn constant_spin_hamiltonian_serde() {
 #[cfg(feature = "serialize")]
 #[test]
 fn timedependent_hamiltonian_serde() {
-    let op = create_apply_timedependent_spin_hamiltonian(1.0);
+    let op = create_apply_timedependent_spin_hamiltonian("omega");
 
     assert_tokens(
         &op.clone().readable(),
@@ -375,7 +403,7 @@ fn timedependent_hamiltonian_serde() {
             Token::Seq { len: Some(1) },
             Token::Tuple { len: 2 },
             Token::Str("0Z"),
-            Token::F64(1.0),
+            Token::Str("omega"),
             Token::TupleEnd,
             Token::SeqEnd,
             Token::Str("_struqture_version"),
@@ -430,9 +458,9 @@ fn timedependent_hamiltonian_serde() {
             Token::SeqEnd,
             Token::NewtypeVariant {
                 name: "CalculatorFloat",
-                variant: "Float",
+                variant: "Str",
             },
-            Token::F64(1.0),
+            Token::Str("omega"),
             Token::TupleEnd,
             Token::SeqEnd,
             Token::Str("_struqture_version"),

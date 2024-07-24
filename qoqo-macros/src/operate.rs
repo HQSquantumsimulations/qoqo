@@ -34,10 +34,10 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         .clone()
         .map(|(id, type_string, ty)| match type_string {
             Some(s) => match s.as_str() {
-                "CalculatorFloat" => quote! {#id: &pyo3::PyAny},
-                "Circuit" => quote! {#id: &pyo3::PyAny},
-                "Option<Circuit>" => quote! {#id: &pyo3::PyAny},
-                "SpinHamiltonian" => quote! {#id: pyo3::Py<pyo3::PyAny>},
+                "CalculatorFloat" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
+                "Circuit" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
+                "Option<Circuit>" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
+                "SpinHamiltonian" => quote! {#id: &pyo3::Bound<pyo3::PyAny>},
                 _ => quote! {#id: #ty},
             },
             _ => quote! {#id: #ty},
@@ -101,7 +101,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                         pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit {:?}",x))
                     })?;
                     let #id_extracted: Option<Circuit> = match tmp{
-                        Some(cw) => Some(convert_into_circuit(cw).map_err(|x| {
+                        Some(cw) => Some(convert_into_circuit(&cw.as_borrowed()).map_err(|x| {
                             pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit {:?}",x))
                     })?),
                         _ => None };
@@ -203,7 +203,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         /// Returns true if operation contains symbolic parameters
         ///
         /// Returns:
-        ///     bool
+        ///     bool: Whether or not the operation contains symbolic parameters.
         fn is_parametrized(&self) -> bool {
                 self.internal.is_parametrized()
         }
@@ -211,7 +211,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         /// Returns tags identifying the Operation
         ///
         /// Returns:
-        ///     list[str]: The tags identifying the operation
+        ///     List[str]: The tags identifying the operation
         fn tags(&self) -> Vec<String>{
             self.internal.tags().iter().map(|s| s.to_string()).collect()
         }
@@ -230,14 +230,14 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         /// provided parameters.
         ///
         /// Args:
-        ///     substitution_parameters (dict[str, float]): The substituted free parameters
+        ///     substitution_parameters (Dict[str, float]): The substituted free parameters
         ///
         /// Returns:
         ///     Operation: The operation with the parameters substituted
         ///
         /// Raises:
         ///     RuntimeError: Parameter Substitution failed
-        fn substitute_parameters(&self, substitution_parameters: std::collections::HashMap<&str, f64>) -> PyResult<Self> {
+        fn substitute_parameters(&self, substitution_parameters: std::collections::HashMap<String, f64>) -> PyResult<Self> {
             let mut calculator = qoqo_calculator::Calculator::new();
             for (key, val) in substitution_parameters.iter(){
                 calculator.set_variable(key, *val);
@@ -250,7 +250,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         /// Remap qubits
         ///
         /// Args:
-        ///     mapping (dict[int, int]): The mapping
+        ///     mapping (Dict[int, int]): The mapping
         ///
         /// Returns:
         ///     Operation: The operation with the remapped qubits
@@ -267,18 +267,18 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         /// List all involved Qubits
         ///
         /// Returns:
-        ///     Union[set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        ///     Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
         fn involved_qubits(&self) -> PyObject {
             Python::with_gil(|py| -> PyObject {
                 let involved = self.internal.involved_qubits();
                 match involved {
                     InvolvedQubits::All => {
-                        let pyref: &PySet = PySet::new(py, &["All"]).unwrap();
+                        let pyref: &Bound<PySet> = &PySet::new_bound(py, &["All"]).unwrap();
                         let pyobject: PyObject = pyref.to_object(py);
                         pyobject
                     },
                     InvolvedQubits::None => {
-                        let pyref: &PySet = PySet::empty(py).unwrap();
+                        let pyref: &Bound<PySet> = &PySet::empty_bound(py).unwrap();
                         let pyobject: PyObject = pyref.to_object(py);
                         pyobject
                     },
@@ -287,7 +287,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                         for qubit in x {
                             vector.push(qubit)
                         }
-                        let pyref: &PySet = PySet::new(py, &vector[..]).unwrap();
+                        let pyref: &Bound<PySet> = &PySet::new_bound(py, &vector[..]).unwrap();
                         let pyobject: PyObject = pyref.to_object(py);
                         pyobject
                     },
@@ -303,7 +303,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         }
 
         /// Creates deep copy of Operation
-        fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+        fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
             self.clone()
         }
     }

@@ -248,7 +248,7 @@ pub enum RoqoqoError {
         msg: String,
     },
     /// Error when trying to deserialize roqoqo data created with an incompatible version of roqoqo
-    #[error("Trying to deserialize data created with incompatible version of roqoqo Library version: {library_major_version}.{library_minor_version} Data version: {data_major_version}.{data_minor_version}. Try to convert data with roqoqo data conversion tool.")]
+    #[error("Version conflict. Data created with roqoqo version: {data_major_version}.{data_minor_version} could not be deserialized to Library version: {library_major_version}.{library_minor_version}. Please update your libraries to compatible versions or use the data conversion tool.")]
     VersionMissmatch {
         /// Major version of the library
         library_major_version: u32,
@@ -286,9 +286,9 @@ pub enum RoqoqoBackendError {
         /// hqslang name of the operation.
         hqslang: &'static str,
     },
-    /// Error for backends missing authentification information.
-    #[error("Backend authentification information is missing: {msg} ")]
-    MissingAuthentification {
+    /// Error for backends missing authentication information.
+    #[error("Backend authentication information is missing: {msg} ")]
+    MissingAuthentication {
         /// Error msg
         msg: String,
     },

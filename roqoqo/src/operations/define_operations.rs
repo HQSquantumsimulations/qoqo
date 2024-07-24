@@ -31,9 +31,10 @@
 //! (5) InputSymbolic, where the user can define a floating point type value to replace a certain symbolic parameter.
 //!
 
-use std::collections::HashSet;
-
 use crate::operations::{Define, InvolveQubits, InvolvedQubits, Operate, RoqoqoError, Substitute};
+#[cfg(feature = "unstable_operation_definition")]
+use crate::{operations::OperateMultiQubit, Circuit};
+use std::collections::HashSet;
 
 use super::SupportedVersion;
 
@@ -270,5 +271,61 @@ impl InvolveQubits for InputBit {
         let mut a: HashSet<(String, usize)> = HashSet::new();
         a.insert((self.name.clone(), self.index));
         super::InvolvedClassical::Set(a)
+    }
+}
+
+/// GateDefinition is the Definition of a new custom gate defined by a circuit that can be used with the CallDefinedGate Operation.
+///
+#[cfg(feature = "unstable_operation_definition")]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::OperateMultiQubit,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::Define,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct GateDefinition {
+    /// The circuit where the definition is stored.
+    circuit: Circuit,
+    /// The name of the gate that is defined.
+    name: String,
+    /// The indices of the qubits used in the internal definition.
+    qubits: Vec<usize>,
+    /// Names of the free CalculatorFloat variables in the internal definition.
+    free_parameters: Vec<String>,
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+impl super::ImplementedIn1point13 for GateDefinition {}
+
+#[cfg(feature = "unstable_operation_definition")]
+impl SupportedVersion for GateDefinition {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 13, 0)
+    }
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+#[allow(non_upper_case_globals)]
+const TAGS_GateDefinition: &[&str; 3] = &["Operation", "Definition", "GateDefinition"];
+
+#[cfg(feature = "unstable_operation_definition")]
+// Implementing the InvolveQubits trait for GateDefinition.
+impl InvolveQubits for GateDefinition {
+    /// Lists all involved Qubits (here, none).
+    fn involved_qubits(&self) -> InvolvedQubits {
+        InvolvedQubits::None
+    }
+
+    fn involved_classical(&self) -> super::InvolvedClassical {
+        let mut classical_set: HashSet<(String, usize)> = HashSet::new();
+        for parameter in &self.free_parameters {
+            classical_set.insert((parameter.to_owned(), 0));
+        }
+        super::InvolvedClassical::Set(classical_set)
     }
 }

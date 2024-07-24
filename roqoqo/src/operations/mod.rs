@@ -17,7 +17,7 @@
 //! * GateOperations are single-, two- or multi-qubit gate operations that act on a set of qubits
 //! and can be executed on a quantum computing device.
 //! * PRAGMAs are operations that can be used when running a simulation of a quantum computing program.
-//! * Measurement Operations are operations that perform a measurement either on a quantum computing device (MeasuareQubit)
+//! * Measurement Operations are operations that perform a measurement either on a quantum computing device (MeasureQubit)
 //! or on a simulation of a quantum computing program (PRAGMA measurement operations).
 
 use crate::RoqoqoError;
@@ -813,49 +813,46 @@ pub trait OperateMultiQubitGate:
 }
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.1.0
-#[allow(dead_code)]
-pub(crate) trait ImplementedIn1point1: Operate {}
+pub trait ImplementedIn1point1: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.2.0
-#[allow(dead_code)]
-pub(crate) trait ImplementedIn1point2: Operate {}
+pub trait ImplementedIn1point2: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.3.0
-#[allow(dead_code)]
-pub(crate) trait ImplementedIn1point3: Operate {}
+pub trait ImplementedIn1point3: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.4.0
-#[allow(dead_code)]
-pub(crate) trait ImplementedIn1point4: Operate {}
+pub trait ImplementedIn1point4: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.5.0
-#[allow(dead_code)]
-pub(crate) trait ImplementedIn1point5: Operate {}
+pub trait ImplementedIn1point5: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.6.0
-#[allow(dead_code)]
-pub(crate) trait ImplementedIn1point6: Operate {}
+pub trait ImplementedIn1point6: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.7.0
-#[allow(dead_code)]
-pub(crate) trait ImplementedIn1point7: Operate {}
+pub trait ImplementedIn1point7: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.8.0
-#[allow(dead_code)]
-pub(crate) trait ImplementedIn1point8: Operate {}
+pub trait ImplementedIn1point8: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.9.0
-#[allow(dead_code)]
-pub(crate) trait ImplementedIn1point9: Operate {}
+pub trait ImplementedIn1point9: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.10.0
-#[allow(dead_code)]
-pub(crate) trait ImplementedIn1point10: Operate {}
+pub trait ImplementedIn1point10: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.11.0
-#[allow(dead_code)]
-pub(crate) trait ImplementedIn1point11: Operate {}
+pub trait ImplementedIn1point11: Operate {}
 
+/// Marker trait to show that some operation has been implemented in roqoqo 1.13.0
+pub trait ImplementedIn1point13: Operate {}
+
+/// Marker trait to show that some operation has been implemented in roqoqo 1.14.0
+pub trait ImplementedIn1point14: Operate {}
+
+/// Marker trait to show that some operation has been implemented in roqoqo 1.15.0
+pub trait ImplementedIn1point15: Operate {}
 #[cfg(feature = "dynamic")]
 /// A wrapper for Operate trait objects.
 ///

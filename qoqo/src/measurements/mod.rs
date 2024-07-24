@@ -40,7 +40,7 @@ pub use classical_register_measurement::ClassicalRegisterWrapper;
 ///     Cheated
 ///     ClassicalRegister
 #[pymodule]
-pub fn measurements(_py: Python, m: &PyModule) -> PyResult<()> {
+pub fn measurements(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     m.add_class::<PauliZProductInputWrapper>()?;
     m.add_class::<CheatedPauliZProductInputWrapper>()?;
     m.add_class::<CheatedInputWrapper>()?;

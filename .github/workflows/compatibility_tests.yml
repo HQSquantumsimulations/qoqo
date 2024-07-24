@@ -1,13 +1,11 @@
-name: Test compatability with previous version
+name: Test compatibility with previous version
 
 on:
   workflow_dispatch:
   pull_request:
     branches: ["main"]
 
-
 jobs:
-
   unittests_check_compatibility_1_0:
     name: unittests_check-compatibility-1-0
     runs-on: "ubuntu-latest"
@@ -52,7 +50,7 @@ jobs:
       - run: |
           cd ./.compatibility_tests/compatibility_test_1_3/
           cargo test
-  
+
   unittests_check_compatibility_1_4:
     name: unittests_check-compatibility-1-4
     runs-on: "ubuntu-latest"
@@ -67,7 +65,7 @@ jobs:
       - run: |
           cd ./.compatibility_tests/compatibility_test_1_4/
           cargo test
-  
+
   unittests_check_compatibility_1_5:
     name: unittests_check-compatibility-1-5
     runs-on: "ubuntu-latest"
@@ -97,7 +95,7 @@ jobs:
       - run: |
           cd ./.compatibility_tests/compatibility_test_1_6/
           cargo test
-  
+
   unittests_check_compatibility_1_7:
     name: unittests_check-compatibility-1-7
     runs-on: "ubuntu-latest"
@@ -112,7 +110,7 @@ jobs:
       - run: |
           cd ./.compatibility_tests/compatibility_test_1_7/
           cargo test
-  
+
   unittests_check_compatibility_1_8:
     name: unittests_check-compatibility-1-8
     runs-on: "ubuntu-latest"
@@ -142,7 +140,7 @@ jobs:
       - run: |
           cd ./.compatibility_tests/compatibility_test_1_9/
           cargo test
-  
+
   unittests_check_compatibility_1_10:
     name: unittests_check-compatibility-1-10
     runs-on: "ubuntu-latest"
@@ -157,7 +155,52 @@ jobs:
       - run: |
           cd ./.compatibility_tests/compatibility_test_1_10/
           cargo test
-          
+
+  unittests_check_compatibility_1_11:
+    name: unittests_check-compatibility-1-11
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          default: true
+      - uses: Swatinem/rust-cache@v2
+      - run: |
+          cd ./.compatibility_tests/compatibility_test_1_11/
+          cargo test
+
+  unittests_check_compatibility_1_12:
+    name: unittests_check-compatibility-1-12
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          default: true
+      - uses: Swatinem/rust-cache@v2
+      - run: |
+          cd ./.compatibility_tests/compatibility_test_1_12/
+          cargo test
+
+  unittests_check_compatibility_1_13:
+    name: unittests_check-compatibility-1-13
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          default: true
+      - uses: Swatinem/rust-cache@v2
+      - run: |
+          cd ./.compatibility_tests/compatibility_test_1_13/
+          cargo test
+
   unittests_check_circuit_decompositions:
     name: unittests_check_circuit_decompositions
     runs-on: "ubuntu-latest"

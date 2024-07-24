@@ -27,4 +27,11 @@ qoqo is the HQS python package to represent quantum circuits.
 """
 
 from .qoqo import *
-__license__ = "Apache-2.0 for linked dependencies see qoqo/LICENSE_FOR_BINARY_DISTRIBUTION"
+from .operations import *  # type: ignore
+from .measurements import *  # type: ignore
+from .noise_models import *  # type: ignore
+from .devices import *  # type: ignore
+
+__license__ = (
+    "Apache-2.0 for linked dependencies see qoqo/LICENSE_FOR_BINARY_DISTRIBUTION"
+)

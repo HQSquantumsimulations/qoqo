@@ -54,11 +54,11 @@ pub struct ContinuousDecoherenceModelWrapper {
 impl ContinuousDecoherenceModelWrapper {
     /// Create a new ContinuousDecoherenceModel
     #[new]
-    pub fn new(noise_operator: Option<Py<PyAny>>) -> PyResult<Self> {
+    pub fn new(noise_operator: Option<&Bound<PyAny>>) -> PyResult<Self> {
         if let Some(lindblad_operator) = noise_operator {
             let noise_operator: struqture::spins::PlusMinusLindbladNoiseOperator =
                 match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_pyany(
-                    lindblad_operator.clone(),
+                    lindblad_operator,
                 ) {
                     Ok(x) => x,
                     Err(_) => match struqture_py::spins::PlusMinusLindbladNoiseOperatorWrapper::from_struqture_2(lindblad_operator) {
@@ -99,8 +99,8 @@ impl ContinuousDecoherenceModelWrapper {
     ///     ValueError: Input cannot be deserialized to selected Noise-Model.
     #[staticmethod]
     #[pyo3(text_signature = "(input)")]
-    pub fn from_bincode(input: &PyAny) -> PyResult<ContinuousDecoherenceModelWrapper> {
-        let bytes = input.extract::<Vec<u8>>().map_err(|_| {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<ContinuousDecoherenceModelWrapper> {
+        let bytes = input.as_gil_ref().extract::<Vec<u8>>().map_err(|_| {
             pyo3::exceptions::PyTypeError::new_err("Input cannot be converted to byte array")
         })?;
         let noise_model: NoiseModel = bincode::deserialize(&bytes[..]).map_err(|_| {
@@ -156,7 +156,7 @@ impl ContinuousDecoherenceModelWrapper {
     /// Convenience function to add damping to several qubits
     ///
     /// Args:
-    ///     qubits (list[int]): The qubits to add damping to.
+    ///     qubits (List[int]): The qubits to add damping to.
     ///     rate (float): The damping rate.
     ///
     /// Returns:
@@ -170,7 +170,7 @@ impl ContinuousDecoherenceModelWrapper {
     /// Convenience function to add dephasing to several qubits
     ///
     /// Args:
-    ///     qubits (list[int]): The qubits to add dephasing to.
+    ///     qubits (List[int]): The qubits to add dephasing to.
     ///     rate (float): The dephasing rate.
     ///
     /// Returns:
@@ -184,7 +184,7 @@ impl ContinuousDecoherenceModelWrapper {
     /// Convenience function to add depolarising to several qubits
     ///
     /// Args:
-    ///     qubits (list[int]): The qubits to add depolarising to.
+    ///     qubits (List[int]): The qubits to add depolarising to.
     ///     rate (float): The depolarising rate.
     ///
     /// Returns:
@@ -198,7 +198,7 @@ impl ContinuousDecoherenceModelWrapper {
     /// Convenience function to add excitation to several qubits
     ///
     /// Args:
-    ///     qubits (list[int]): The qubits to add excitation to.
+    ///     qubits (List[int]): The qubits to add excitation to.
     ///     rate (float): The excitation rate.
     ///
     /// Returns:

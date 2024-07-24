@@ -174,8 +174,7 @@ impl PauliZProductInput {
     /// # Arguments
     ///
     /// * `name` - The name of the expectation value.
-    /// * `symbolic` - The symbolic expression for the expectation values
-    ///                given by [qoqo_calculator::CalculatorFloat].
+    /// * `symbolic` - The symbolic expression for the expectation values given by [qoqo_calculator::CalculatorFloat].
     ///
     /// The i-th PauliProduct is hardcoded as variable `pauli_product_i`
     /// in the string expression of CalculatorFloat.
@@ -294,8 +293,7 @@ impl CheatedPauliZProductInput {
     /// # Arguments
     ///
     /// * `name` - The name of the expectation value.
-    /// * `symbolic` - The symbolic expression for the expectation values
-    ///                given by [qoqo_calculator::CalculatorFloat].
+    /// * `symbolic` - The symbolic expression for the expectation values given by [qoqo_calculator::CalculatorFloat].
     ///
     /// The i-th PauliProducts are hardcoded as variables pauli_product_i
     /// in the string expression of CalculatorFloat.

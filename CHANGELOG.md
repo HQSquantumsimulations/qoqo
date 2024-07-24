@@ -2,11 +2,45 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
-## 1.11.1
+## 1.15.1
 
-### Fixed in 1.11.1
+### Fixed in 1.15.1
 
-* Fixed dependencies issues caused by Pyo3 0.21 support release
+* Fixed package category.
+
+## 1.15.0
+
+### Added in 1.15.0
+
+* Added `SqrtPaulY` and `InvSqrtPauliY` gates.
+
+## 1.14.0
+
+### Added in 1.14.0
+
+* Added the doc_generator feature to qoqo that will create .pyi used for python IDE hints during cargo build.
+* Change version mismatch error message to be clearer.
+* `PragmaSetStateVector`, `PragmaSetDensityMatrix` and `PragmaGeneralNoise` interface casting errors when handling arrays/matrices
+* Dependencies issues caused by Pyo3 0.21 support release
+
+## 1.13.0
+
+### Added in 1.13.0
+
+* Unstable feature `unstable_operation_definition` adding new operations: GateDefinition and CallDefinedGate.
+
+## 1.12.1
+
+### Added in 1.12.1
+
+* Added the `__repr__` method to the SingleQubitOverrotationDescription noise model.
+
+## 1.12.0
+
+### Added in 1.12.0
+
+* Updated to pyo3 0.21.
+* Fix typo in name of RoqoqoBackendError::AuthenticationError
 
 ## 1.11.0
 

@@ -20,13 +20,10 @@ use crate::RoqoqoVersion;
 #[cfg(feature = "serialize")]
 use crate::RoqoqoVersionSerializable;
 use qoqo_calculator::Calculator;
+use std::collections::{HashMap, HashSet};
 #[cfg(feature = "overrotate")]
 use std::convert::TryFrom;
 use std::ops;
-use std::{
-    collections::{HashMap, HashSet},
-    usize,
-};
 use std::{
     fmt::{Display, Formatter, Write},
     iter::{FromIterator, IntoIterator},
@@ -174,6 +171,10 @@ impl Circuit {
                 self.definitions.push(input);
             }
             Operation::InputSymbolic(_) => {
+                self.definitions.push(input);
+            }
+            #[cfg(feature = "unstable_operation_definition")]
+            Operation::GateDefinition(_) => {
                 self.definitions.push(input);
             }
             _ => self.operations.push(input),

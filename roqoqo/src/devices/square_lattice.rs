@@ -388,6 +388,7 @@ impl SquareLatticeDevice {
     /// # Arguments
     ///
     /// * `dephasing` - The dephasing rates.
+    ///
     pub fn add_dephasing_all(mut self, dephasing: f64) -> Self {
         let number_qubits = <Self as Device>::number_qubits(&self);
         for qubit in 0..number_qubits {

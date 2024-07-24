@@ -52,12 +52,12 @@ use pyo3::prelude::*;
 ///     GateOperations are single-, two- or multi-qubit gate operations that act on a set of qubits
 ///     and can be executed on a quantum computing device.
 ///     PRAGMAs are operations that can be used when running a simulation of a quantum computing program.
-///     Measurement Operations are operations that perform a measurement either on a quantum computing device (MeasuareQubit)
+///     Measurement Operations are operations that perform a measurement either on a quantum computing device (MeasureQubit)
 ///     or on a simulation of a quantum computing program (PRAGMA measurement operations).
 ///
 #[pymodule]
 
-pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
+pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     // 1.0
     m.add_class::<SingleQubitGateWrapper>()?;
     m.add_class::<RotateZWrapper>()?;
@@ -159,6 +159,8 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     // unstable version of QuantumRabiWrapper, LongitudinalCouplingWrapper,
     // JaynesCummingsWrapper, SingleExcitationStoreWrapper, SingleExcitationLoadWrapper
     // and CZQubitResonatorWrapper now released as stable in 1.11
+    // unstable version of ApplyConstantSpinHamiltonianWrapper and ApplyTimeDependentSpinHamiltonianWrapper
+    // will be released later
     // 1.11
     #[cfg(feature = "unstable_analog_operations")]
     m.add_class::<ApplyConstantSpinHamiltonianWrapper>()?;
@@ -171,5 +173,16 @@ pub fn operations(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<SingleExcitationLoadWrapper>()?;
     m.add_class::<CZQubitResonatorWrapper>()?;
 
+    // unstable version of GateDefinitionWrapper and CallDefinedGateWrapper
+    // will be released later
+    // 1.13
+    #[cfg(feature = "unstable_operation_definition")]
+    m.add_class::<GateDefinitionWrapper>()?;
+    #[cfg(feature = "unstable_operation_definition")]
+    m.add_class::<CallDefinedGateWrapper>()?;
+
+    // 1.15
+    m.add_class::<SqrtPauliYWrapper>()?;
+    m.add_class::<InvSqrtPauliYWrapper>()?;
     Ok(())
 }

@@ -108,7 +108,7 @@ pub enum QoqoBackendError {
 ///
 
 #[pymodule]
-fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
+fn qoqo(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     module.add_class::<CircuitWrapper>()?;
     module.add_class::<QuantumProgramWrapper>()?;
     #[cfg(feature = "circuitdag")]
@@ -122,8 +122,9 @@ fn qoqo(_py: Python, module: &PyModule) -> PyResult<()> {
     let wrapper4 = wrap_pymodule!(noise_models::noise_models);
     module.add_wrapped(wrapper4)?;
     // Adding nice imports corresponding to maturin example
-    let system = PyModule::import(_py, "sys")?;
-    let system_modules: &PyDict = system.getattr("modules")?.downcast()?;
+    let system = PyModule::import_bound(_py, "sys")?;
+    let binding = system.getattr("modules")?;
+    let system_modules: &Bound<PyDict> = binding.downcast()?;
     system_modules.set_item("qoqo.operations", module.getattr("operations")?)?;
     system_modules.set_item("qoqo.measurements", module.getattr("measurements")?)?;
     system_modules.set_item("qoqo.devices", module.getattr("devices")?)?;

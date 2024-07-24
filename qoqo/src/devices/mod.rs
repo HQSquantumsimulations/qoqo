@@ -48,29 +48,22 @@ impl ChainWithEnvironmentCapsule {
     /// # Arguments
     ///
     /// * `python_device` - The python object that should implement the
-    pub fn new(python_device: Py<PyAny>) -> Result<Self, RoqoqoError> {
-        let implements_protocol = Python::with_gil(|py| -> bool {
-            let __implements_environment_with_chains =
-                python_device.call_method0(py, "__implements_environment_chains");
-            if __implements_environment_with_chains.is_err() {
-                return false;
-            }
-            let __implements_environment_with_chains = __implements_environment_with_chains
-                .unwrap()
-                .extract::<bool>(py);
-            if __implements_environment_with_chains.is_err() {
-                return false;
-            }
-            __implements_environment_with_chains.unwrap()
-        });
-        if !implements_protocol {
-            return Err(RoqoqoError::GenericError {
+    pub fn new(python_device: &Bound<PyAny>) -> Result<Self, RoqoqoError> {
+        let __implements_environment_with_chains =
+            python_device.call_method0("__implements_environment_chains");
+        let implements_protocol =
+            __implements_environment_with_chains.map(|implement| implement.extract::<bool>());
+
+        match implements_protocol {
+            Ok(Ok(true)) => Python::with_gil(|py| -> Result<Self, RoqoqoError> {
+                Ok(Self {
+                    internal: python_device.into_py(py),
+                })
+            }),
+            _ => Err(RoqoqoError::GenericError {
                 msg: "Python device does not implement `environment_chains` method.".to_string(),
-            });
+            }),
         }
-        Ok(Self {
-            internal: python_device,
-        })
     }
 }
 
@@ -97,7 +90,7 @@ impl ChainWithEnvironmentDevice for ChainWithEnvironmentCapsule {
 ///     A typical example are abstract linear chains of square lattices in which two-qubit operations are only
 ///     available between neighbouring qubits.  
 ///
-///     The abstract devices can also encode a noise model. Q/// Qoqo devicesoqo noise models are in general based on a (pseudo) time
+///     The abstract devices can also encode a noise model. Qoqo noise models are in general based on a (pseudo) time
 ///     needed to execute a quantum operation and Lindblad rates for the qubits in the device.
 ///     Specifically in the noise model each qubit undergoes a continuous Lindblad-type decoherence time evolution:
 ///
@@ -124,7 +117,7 @@ impl ChainWithEnvironmentDevice for ChainWithEnvironmentCapsule {
 ///     SquareLatticeDevice
 
 #[pymodule]
-pub fn devices(_py: Python, module: &PyModule) -> PyResult<()> {
+pub fn devices(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     module.add_class::<AllToAllDeviceWrapper>()?;
     module.add_class::<GenericDeviceWrapper>()?;
     module.add_class::<SquareLatticeDeviceWrapper>()?;

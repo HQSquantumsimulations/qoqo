@@ -125,6 +125,8 @@ fn test_to_single_qubit_gate_symbolic(operation: SingleQubitGateOperation) {
         CalculatorFloat::from(0.01),
     )); "PragmaRandomNoise")]
 #[test_case(Operation::from( PragmaGeneralNoise::new(0, CalculatorFloat::from(0.005), array![[1.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0],])); "PragmaGeneralNoise")]
+#[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 fn none_involved_classical(operation: Operation) {
     assert_eq!(operation.involved_classical(), InvolvedClassical::None);
 }
@@ -136,7 +138,7 @@ fn involved_classical_all_qubits(operation: Operation, involved: InvolvedClassic
 }
 
 #[test_case(Operation::from( PragmaRepeatedMeasurement::new("out".to_string(), 20, Some(get_reordering()))), vec![("out", 0), ("out", 1)]; "PragmaRepeatedMeasurement")]
-#[test_case(Operation::from( MeasureQubit::new(0, "out".to_string(), 1)), vec![("out", 1)]; "MeasuareQubit")]
+#[test_case(Operation::from( MeasureQubit::new(0, "out".to_string(), 1)), vec![("out", 1)]; "MeasureQubit")]
 #[test_case(Operation::from( PragmaRepeatedMeasurement::new("out".to_string(), 20, Some(get_reordering()))), vec![("out", 0), ("out", 1)]; "PragmaRepeatedMeasurement - none")]
 #[test_case(Operation::from( InputSymbolic::new("a".to_string(), 20.0)), vec![("a", 0)]; "InputSymbolic")]
 #[test_case(Operation::from( InputBit::new("ro".to_string(), 2, false)), vec![("ro", 2)]; "InputBit")]

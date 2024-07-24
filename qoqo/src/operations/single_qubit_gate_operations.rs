@@ -39,12 +39,12 @@ use std::collections::HashMap;
 ///         \end{pmatrix}
 ///
 /// Args:
-///     qubit: The qubit that the unitary gate is applied to.
-///     alpha_r: The real part of the on-diagonal elements of the single-qubit unitary.
-///     alpha_i: The imaginary part of the on-diagonal elements of the single-qubit unitary.
-///     beta_r: The real part of the off-diagonal elements of the single-qubit unitary.
-///     beta_i: The imaginary part of the off-diagonal elements of the single-qubit unitary.
-///     global_phase: The global phase of the single-qubit unitary.
+///     qubit (int): The qubit that the unitary gate is applied to.
+///     alpha_r (CalculatorFloat): The real part of the on-diagonal elements of the single-qubit unitary.
+///     alpha_i (CalculatorFloat): The imaginary part of the on-diagonal elements of the single-qubit unitary.
+///     beta_r (CalculatorFloat): The real part of the off-diagonal elements of the single-qubit unitary.
+///     beta_i (CalculatorFloat): The imaginary part of the off-diagonal elements of the single-qubit unitary.
+///     global_phase (CalculatorFloat): The global phase of the single-qubit unitary.
 ///
 struct SingleQubitGate {
     qubit: usize,
@@ -296,7 +296,7 @@ struct SqrtPauliX {
     JsonSchema
 )]
 #[derive(Eq)]
-/// The inverse square root XPower gate :math:`e^{i \frac{\pi}{2} \sigma^x}`.
+/// The inverse square root XPower gate :math:`e^{i \frac{\pi}{4} \sigma^x}`.
 ///
 /// .. math::
 ///     U = \frac{1}{\sqrt{2}} \begin{pmatrix}
@@ -514,5 +514,51 @@ struct GPi2 {
 /// Args:
 ///     qubit (int): The qubit the unitary gate is applied to.
 struct Identity {
+    qubit: usize,
+}
+
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
+#[derive(Eq)]
+/// The square root of the YPower gate :math:`e^{-i \frac{\pi}{4} \sigma^y}`.
+///
+/// .. math::
+///     U = \frac{1}{\sqrt(2)} \begin{pmatrix}
+///         1 & -1 \\\\
+///         1 & 1
+///         \end{pmatrix}
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+///
+struct SqrtPauliY {
+    qubit: usize,
+}
+
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
+#[derive(Eq)]
+/// The inverse square root YPower gate :math:`e^{i \frac{\pi}{4} \sigma^y}`.
+///
+/// .. math::
+///     U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+///         1 & 1 \\\\
+///         -1 & 1
+///         \end{pmatrix}
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+///
+struct InvSqrtPauliY {
     qubit: usize,
 }

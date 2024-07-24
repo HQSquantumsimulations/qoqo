@@ -48,7 +48,7 @@ impl AllToAllDeviceWrapper {
     ///     default_gate_time (float): The default starting gate time.
     ///
     /// Returns:
-    ///     AllToAllDevice
+    ///     Self: The new device with the new properties
     #[new]
     #[pyo3(
         text_signature = "(number_qubits, single_qubit_gates, two_qubit_gates, default_gate_time)"
@@ -76,7 +76,7 @@ impl AllToAllDeviceWrapper {
     ///     gate_time (float): New gate time.
     ///
     /// Returns:
-    ///     AllToAllDevice.
+    ///     Self: The new device with the new properties.
     ///
     #[pyo3(text_signature = "(gate, gate_time, /)")]
     pub fn set_all_two_qubit_gate_times(&mut self, gate: &str, gate_time: f64) -> Self {
@@ -95,7 +95,7 @@ impl AllToAllDeviceWrapper {
     ///     gate_time (float): New gate time.
     ///
     /// Returns:
-    ///     AllToAllDevice
+    ///     Self: The new device with the new properties
     ///
     #[pyo3(text_signature = "(gate, gate_time, /)")]
     pub fn set_all_single_qubit_gate_times(&self, gate: &str, gate_time: f64) -> Self {
@@ -110,10 +110,10 @@ impl AllToAllDeviceWrapper {
     /// Function to set the decoherence rates for all qubits in the AllToAllDevice device.
     ///
     /// Args:
-    ///     rates[2d array]: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
+    ///     rates (2darray):: Decoherence rates provided as (3x3)-matrix for all qubits in the device.
     ///
     /// Returns:
-    ///     AllToAllDevice
+    ///     Self: The new device with the new properties
     ///
     /// Raises:
     ///     PyValueError: The input parameter `rates` needs to be a (3x3)-matrix.
@@ -134,10 +134,10 @@ impl AllToAllDeviceWrapper {
     /// Adds qubit damping to noise rates.
     ///
     /// Args:
-    ///     daming[f64]: The damping rates.
+    ///     damping (float): The damping rates.
     ///
     /// Returns:
-    ///     AllToAllDevice
+    ///     Self: The new device with the new properties
     #[pyo3(text_signature = "(damping, /)")]
     pub fn add_damping_all(&mut self, damping: f64) -> Self {
         Self {
@@ -148,10 +148,10 @@ impl AllToAllDeviceWrapper {
     /// Adds qubit dephasing to noise rates.
     ///
     /// Args:
-    ///     dephasing[f64]: The dephasing rates.
+    ///     dephasing (float): The dephasing rates.
     ///
     /// Returns:
-    ///     AllToAllDevice
+    ///     Self: The new device with the new properties
     #[pyo3(text_signature = "(dephasing, /)")]
     pub fn add_dephasing_all(&mut self, dephasing: f64) -> Self {
         Self {
@@ -165,7 +165,7 @@ impl AllToAllDeviceWrapper {
     ///     depolarising (float): The depolarising rates.
     ///
     /// Returns:
-    ///     AllToAllDevice
+    ///     Self: The new device with the new properties
     #[pyo3(text_signature = "(depolarising, /)")]
     pub fn add_depolarising_all(&mut self, depolarising: f64) -> Self {
         Self {
@@ -208,18 +208,15 @@ impl AllToAllDeviceWrapper {
 
 impl AllToAllDeviceWrapper {
     /// Fallible conversion of generic python object.
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<AllToAllDevice> {
-        Python::with_gil(|py| -> PyResult<AllToAllDevice> {
-            let input = input.as_ref(py);
-            if let Ok(try_downcast) = input.extract::<AllToAllDeviceWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode")?;
-                let bytes = get_bytes.extract::<Vec<u8>>()?;
-                deserialize(&bytes[..]).map_err(|err| {
-                    PyValueError::new_err(format!("Cannot treat input as AllToAllDevice: {}", err))
-                })
-            }
-        })
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<AllToAllDevice> {
+        if let Ok(try_downcast) = input.extract::<AllToAllDeviceWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode")?;
+            let bytes = get_bytes.extract::<Vec<u8>>()?;
+            deserialize(&bytes[..]).map_err(|err| {
+                PyValueError::new_err(format!("Cannot treat input as AllToAllDevice: {}", err))
+            })
+        }
     }
 }

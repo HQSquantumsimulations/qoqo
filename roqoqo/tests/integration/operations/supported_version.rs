@@ -13,7 +13,7 @@
 //! Integration test for supported version trait
 
 use ndarray::array;
-#[cfg(feature = "unstable_analog_operations")]
+#[cfg(feature = "unstable_operation_definition")]
 use qoqo_calculator::CalculatorFloat;
 #[cfg(feature = "circuitdag")]
 use roqoqo::measurements::Cheated;
@@ -128,6 +128,14 @@ fn test_version_1_0_0_multi_qubit_gate(operation: operations::MultiQubitGateOper
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 0, 0));
 }
 
+#[cfg(feature = "unstable_operation_definition")]
+#[test_case(operations::MultiQubitOperation::from(operations::CallDefinedGate::new("test".into(), vec![0,1,2,3], vec![CalculatorFloat::Float(1.0)])); "CallDefinedGate")]
+fn test_version_1_13_0_multi_qubit_gate(operation: operations::MultiQubitOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 13, 0));
+    let op = operations::Operation::from(operation);
+    assert_eq!(op.minimum_supported_roqoqo_version(), (1, 13, 0));
+}
+
 #[test_case(operations::SingleModeGateOperation::from(operations::Squeezing::new(0, 1.0.into(), 0.0.into())); "Squeezing")]
 #[test_case(operations::SingleModeGateOperation::from(operations::PhaseShift::new(0, 1.0.into())); "PhaseShift")]
 fn test_version_1_6_0_single_mode_gate(operation: operations::SingleModeGateOperation) {
@@ -165,7 +173,7 @@ where
     hamiltonian
         .add_operator_product(pp.clone(), CalculatorFloat::from(p))
         .unwrap();
-    return operations::ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into());
+    operations::ApplyConstantSpinHamiltonian::new(hamiltonian, 1.0.into())
 }
 #[cfg(feature = "unstable_analog_operations")]
 fn create_apply_timedependent_spin_hamiltonian<T>(
@@ -183,11 +191,7 @@ where
     let mut values = HashMap::new();
     values.insert("omega".to_string(), vec![1.0]);
 
-    return operations::ApplyTimeDependentSpinHamiltonian::new(
-        hamiltonian,
-        vec![1.0],
-        values.clone(),
-    );
+    operations::ApplyTimeDependentSpinHamiltonian::new(hamiltonian, vec![1.0], values.clone())
 }
 
 #[cfg(feature = "unstable_analog_operations")]
@@ -195,7 +199,7 @@ where
 #[test_case(operations::SpinsAnalogOperation::from(create_apply_timedependent_spin_hamiltonian("omega"));"ApplyTimeDependentHamiltonian")]
 fn test_version_1_11_0_spin_analog_operations(operation: operations::SpinsAnalogOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 11, 0));
-    let op = operations::Operation::try_from(operation).unwrap();
+    let op = operations::Operation::from(operation);
     assert_eq!(op.minimum_supported_roqoqo_version(), (1, 11, 0));
 }
 
@@ -347,4 +351,16 @@ fn test_version_circuit(circuit: roqoqo::Circuit, version: (u32, u32, u32)) {
         input_parameter_names: vec![],
     };
     assert_eq!(program.minimum_supported_roqoqo_version(), version);
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+#[test_case(operations::Operation::from(operations::GateDefinition::new(roqoqo::Circuit::new(), "name".to_string(), vec![2], vec!["name".to_owned()])); "GateDefinition")]
+fn test_version_1_13_0_gate_definition(operation: operations::Operation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 13, 0));
+}
+
+#[test_case(operations::SingleQubitGateOperation::from(operations::SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(operations::SingleQubitGateOperation::from(operations::InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
+fn test_version_1_15_0_single_qubit_gate(operation: operations::SingleQubitGateOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 15, 0));
 }

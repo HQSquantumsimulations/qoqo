@@ -85,7 +85,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
     ///
     /// Returns:
     ///     A deep copy of self.
-    pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+    pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
         self.clone()
     }
 
@@ -105,7 +105,7 @@ impl SingleQubitOverrotationDescriptionWrapper {
         })?;
         let b: Py<pyo3::types::PyByteArray> =
             Python::with_gil(|py| -> Py<pyo3::types::PyByteArray> {
-                pyo3::types::PyByteArray::new(py, &serialized[..]).into()
+                pyo3::types::PyByteArray::new_bound(py, &serialized[..]).into()
             });
         Ok(b)
     }
@@ -140,8 +140,10 @@ impl SingleQubitOverrotationDescriptionWrapper {
     ///     ValueError: Input cannot be deserialized to selected Noise-Model.
     #[staticmethod]
     #[pyo3(text_signature = "(input)")]
-    pub fn from_bincode(input: &PyAny) -> PyResult<SingleQubitOverrotationDescriptionWrapper> {
-        let bytes = input.extract::<Vec<u8>>().map_err(|_| {
+    pub fn from_bincode(
+        input: &Bound<PyAny>,
+    ) -> PyResult<SingleQubitOverrotationDescriptionWrapper> {
+        let bytes = input.as_gil_ref().extract::<Vec<u8>>().map_err(|_| {
             pyo3::exceptions::PyTypeError::new_err("Input cannot be converted to byte array")
         })?;
         let noise_description: SingleQubitOverrotationDescription =
@@ -187,12 +189,16 @@ impl SingleQubitOverrotationDescriptionWrapper {
     ///     op: Whether they should be equal or not.
     ///
     /// Returns:
-    ///     bool
+    ///     bool: Whether they are equal or not.
     ///
     /// Raises:
     ///     NotImplementedError: Other comparison not implemented.
     ///
-    fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
+    fn __richcmp__(
+        &self,
+        other: &Bound<PyAny>,
+        op: pyo3::class::basic::CompareOp,
+    ) -> PyResult<bool> {
         let other = SingleQubitOverrotationDescriptionWrapper::from_pyany(other);
 
         match op {
@@ -243,28 +249,34 @@ impl SingleQubitOverrotationDescriptionWrapper {
         let schema = schemars::schema_for!(SingleQubitOverrotationDescription);
         serde_json::to_string_pretty(&schema).expect("Unexpected failure to serialize schema")
     }
+
+    /// Return a string containing a printable representation of the object.
+    ///
+    /// Returns:
+    ///     str: The SingleQubitOverrotationDescription, represented as a string.
+    fn __repr__(&self) -> String {
+        format!("{:?}", self.internal)
+    }
 }
 
 impl SingleQubitOverrotationDescriptionWrapper {
     /// Fallible conversion of generic python object..
-    pub fn from_pyany(input: Py<PyAny>) -> PyResult<SingleQubitOverrotationDescription> {
-        Python::with_gil(|py| -> PyResult<SingleQubitOverrotationDescription> {
-            let input = input.as_ref(py);
-            if let Ok(try_downcast) = input.extract::<SingleQubitOverrotationDescriptionWrapper>() {
-                Ok(try_downcast.internal)
-            } else {
-                let get_bytes = input.call_method0("to_bincode")?;
-                let bytes = get_bytes.extract::<Vec<u8>>()?;
-                bincode::deserialize(&bytes[..]).map_err(|err| {
-                    pyo3::exceptions::PyValueError::new_err(format!(
-                        "Cannot treat input as Overrotation Description: {}",
-                        err
-                    ))
-                })
-            }
-        })
+    pub fn from_pyany(input: &Bound<PyAny>) -> PyResult<SingleQubitOverrotationDescription> {
+        if let Ok(try_downcast) = input.extract::<SingleQubitOverrotationDescriptionWrapper>() {
+            Ok(try_downcast.internal)
+        } else {
+            let get_bytes = input.call_method0("to_bincode")?;
+            let bytes = get_bytes.extract::<Vec<u8>>()?;
+            bincode::deserialize(&bytes[..]).map_err(|err| {
+                pyo3::exceptions::PyValueError::new_err(format!(
+                    "Cannot treat input as Overrotation Description: {}",
+                    err
+                ))
+            })
+        }
     }
 }
+
 /// Single qubit overrotation noise model on gate.
 ///
 /// Adds a rotation gate with a randomly distributed rotation angle after specified gates in a quantum circuit.
@@ -315,7 +327,7 @@ impl SingleQubitOverrotationOnGateWrapper {
         &self,
         gate: &str,
         qubit: usize,
-        noise_description: Py<PyAny>,
+        noise_description: &Bound<PyAny>,
     ) -> PyResult<Self> {
         let noise_description =
             SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_description)?;
@@ -334,7 +346,7 @@ impl SingleQubitOverrotationOnGateWrapper {
     ///     gate (str): The name of the gate.
     ///     qubit (int): The qubit the gate acts on.
     ///
-    /// Returns
+    /// Returns:
     ///     Optional[SingleQubitOverrotationDescription]: The overrotation applied when gate is applied.
     pub fn get_single_qubit_overrotation(
         &self,
@@ -368,16 +380,20 @@ impl SingleQubitOverrotationOnGateWrapper {
         target: usize,
         noise_operator: (Py<PyAny>, Py<PyAny>),
     ) -> PyResult<Self> {
-        let noise1 = SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_operator.0)?;
-        let noise2 = SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_operator.1)?;
+        Python::with_gil(|py| -> PyResult<Self> {
+            let noise1 =
+                SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_operator.0.bind(py))?;
+            let noise2 =
+                SingleQubitOverrotationDescriptionWrapper::from_pyany(noise_operator.1.bind(py))?;
 
-        Ok(Self {
-            internal: self.internal.clone().set_two_qubit_overrotation(
-                gate,
-                control,
-                target,
-                (noise1, noise2),
-            ),
+            Ok(Self {
+                internal: self.internal.clone().set_two_qubit_overrotation(
+                    gate,
+                    control,
+                    target,
+                    (noise1, noise2),
+                ),
+            })
         })
     }
 
@@ -385,11 +401,11 @@ impl SingleQubitOverrotationOnGateWrapper {
     ///
     /// Args:
     ///     gate (str): The name of the gate.
-    ///     control (int) - The control qubit the gate acts on.
-    ///     target (int) - The target qubit the gate acts on.
+    ///     control (int): The control qubit the gate acts on.
+    ///     target (int): The target qubit the gate acts on.
     ///
-    /// Returns
-    ///     Optional[(SingleQubitOverrotationDescription, SingleQubitOverrotationDescription)]: The overrotation applied when gate is applied.
+    /// Returns:
+    ///     Optional[Tuple[SingleQubitOverrotationDescription, SingleQubitOverrotationDescription]]: The overrotation applied when gate is applied.
     pub fn get_two_qubit_overrotation(
         &self,
         gate: &str,
@@ -426,8 +442,8 @@ impl SingleQubitOverrotationOnGateWrapper {
     ///     ValueError: Input cannot be deserialized to selected Noise-Model.
     #[staticmethod]
     #[pyo3(text_signature = "(input)")]
-    pub fn from_bincode(input: &PyAny) -> PyResult<SingleQubitOverrotationOnGateWrapper> {
-        let bytes = input.extract::<Vec<u8>>().map_err(|_| {
+    pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<SingleQubitOverrotationOnGateWrapper> {
+        let bytes = input.as_gil_ref().extract::<Vec<u8>>().map_err(|_| {
             pyo3::exceptions::PyTypeError::new_err("Input cannot be converted to byte array")
         })?;
         let noise_model: NoiseModel = bincode::deserialize(&bytes[..]).map_err(|_| {

@@ -11,7 +11,14 @@
 // limitations under the License.
 
 use proc_macro2::TokenStream;
+#[cfg(feature = "doc_generator")]
+use pyo3::{
+    types::{PyAnyMethods, PyDict, PyModule},
+    {PyResult, Python},
+};
 use quote::{format_ident, quote};
+#[cfg(feature = "doc_generator")]
+use regex::Regex;
 use std::collections::HashSet;
 use std::fs;
 use std::path::PathBuf;
@@ -21,8 +28,8 @@ use syn::parse::{Parse, ParseStream};
 use syn::punctuated::Punctuated;
 use syn::visit::{self, Visit};
 use syn::{
-    AttrStyle, Fields, File, GenericArgument, Ident, ItemStruct, Macro, Path, PathArguments, Token,
-    Type, TypePath,
+    AttrStyle, Fields, File, GenericArgument, Ident, ItemStruct, LitStr, Macro, Path,
+    PathArguments, Token, Type, TypePath,
 };
 
 type StructFieldInfo = Vec<(Ident, Option<String>, Type)>;
@@ -45,6 +52,18 @@ impl Visitor {
             pyany_to_operation: Vec::new(),
             operation_to_pyobject: Vec::new(),
         }
+    }
+}
+
+#[derive(Debug, Eq, PartialEq)]
+struct CfgFeatureMacroArgument(String);
+
+impl Parse for CfgFeatureMacroArgument {
+    fn parse(input: ParseStream) -> syn::parse::Result<Self> {
+        input.parse::<Ident>()?;
+        input.parse::<Token![=]>()?;
+        let feature_name: LitStr = input.parse()?;
+        Ok(Self(feature_name.value()))
     }
 }
 
@@ -87,6 +106,17 @@ impl<'ast> Visit<'ast> for Visitor {
         // Check attributes
         for att in itemstruct.attrs.clone() {
             let path = att.path().get_ident().map(|id| id.to_string());
+            // TOFIX: REMOVE WHEN STABILISED
+            if matches!(att.style, AttrStyle::Outer)
+                && path == Some("cfg".to_string())
+                && !cfg!(feature = "unstable_operation_definition")
+            {
+                let cfg_feature_name: CfgFeatureMacroArgument =
+                    att.parse_args().expect("parsing failed 1");
+                if cfg_feature_name.0.contains("unstable_operation_definition") {
+                    return;
+                }
+            }
             // only consider the wrap attribute, if no derive attribute is present don't add anything
             // to the internal storage of the visitor
             if matches!(att.style, AttrStyle::Outer) && path == Some("wrap".to_string()) {
@@ -104,6 +134,14 @@ impl<'ast> Visit<'ast> for Visitor {
             Some(id) => Some(id.clone()),
             _ => i.path.segments.last().map(|segment| segment.ident.clone()),
         };
+        // TOFIX: REMOVE WHEN STABILISED
+        if i.tokens.clone().into_iter().any(|tok| {
+            tok.to_string().contains("CallDefinedGate")
+                || tok.to_string().contains("DefinitionGate")
+        }) && !cfg!(feature = "unstable_operation_definition")
+        {
+            return;
+        }
         if let Some(ident) = id {
             if ident.to_string().as_str() == "insert_pyany_to_operation" {
                 self.pyany_to_operation.push(i.tokens.clone())
@@ -129,6 +167,231 @@ const SOURCE_FILES: &[&str] = &[
     #[cfg(feature = "unstable_analog_operations")]
     "src/operations/analog_operations.rs",
 ];
+
+#[cfg(feature = "doc_generator")]
+fn str_to_type(res: &str, class_name: &str) -> Option<String> {
+    match res {
+        s if s.contains("Pragma") => Some("Operation".to_owned()),
+        "CalculatorFloat" => Some("Union[float, str]".to_owned()),
+        "String" | "string" => Some("str".to_owned()),
+        "" => None,
+        "uint" => Some("int".to_owned()),
+        "self" | "Self" => Some(class_name.to_owned()),
+        "ByteArray" => Some("bytearray".to_owned()),
+        _ => Some(
+            res.replace("Option[", "Optional[")
+                .replace("operation", "Operation")
+                .replace("np.", "numpy.")
+                .replace("struqture_py.spins.", "")
+                .to_owned(),
+        ),
+    }
+}
+
+#[cfg(feature = "doc_generator")]
+fn extract_type(string: &str, class_name: &str) -> Option<String> {
+    let pattern = r"\(([a-zA-Z_\[\]\. ,|]+?)\)";
+    let re = Regex::new(pattern).unwrap();
+    if let Some(captures) = re.captures(string) {
+        if let Some(res) = captures.get(1).map(|s| s.as_str()) {
+            return str_to_type(res, class_name);
+        }
+    }
+    None
+}
+
+#[cfg(feature = "doc_generator")]
+fn collect_args_from_doc(doc: &str, class_name: &str) -> Vec<String> {
+    let args_vec: Vec<_> = doc
+        .split('\n')
+        .skip_while(|&line| line != "Args:")
+        .skip(1)
+        .skip_while(|line| line.is_empty())
+        .take_while(|line| !line.is_empty())
+        .collect();
+    args_vec
+        .iter()
+        .filter(|&line| line.contains(':') && line.trim().starts_with(char::is_alphabetic))
+        .map(|&line| {
+            let arg_type = extract_type(line, class_name);
+            format!(
+                "{}{}",
+                line.trim().split_once([' ', ':']).unwrap_or(("", "")).0,
+                arg_type
+                    .map(|arg_type| format!(": {}", arg_type))
+                    .unwrap_or_default()
+            )
+        })
+        .collect()
+}
+
+#[cfg(feature = "doc_generator")]
+fn collect_return_from_doc(doc: &str, class_name: &str) -> String {
+    let args_vec: Vec<_> = doc
+        .split('\n')
+        .skip_while(|&line| line != "Returns:")
+        .skip(1)
+        .take(1)
+        .filter(|&line| line.contains(':') && line.trim().starts_with(char::is_alphabetic))
+        .collect();
+    if args_vec.is_empty() {
+        "".to_owned()
+    } else if let Some(ret) = str_to_type(
+        args_vec[0].trim().split_once([':']).unwrap_or(("", "")).0,
+        class_name,
+    ) {
+        format!(" -> {}", ret)
+    } else {
+        "".to_owned()
+    }
+}
+
+#[cfg(feature = "doc_generator")]
+const TYPING_POTENTIAL_IMPORTS: &[&str] = &[
+    "Optional", "List", "Tuple", "Dict", "Set", "Union", "Sequence",
+];
+#[cfg(feature = "doc_generator")]
+const STRUQTURE_POTENTIAL_IMPORTS: &[&str] = &[
+    "PauliProduct",
+    "DecoherenceProduct",
+    "SpinSystem",
+    "SpinHamiltonianSystem",
+    "SpinLindbladNoiseSystem",
+    "SpinLindbladOpenSystem",
+    "PlusMinusProduct",
+    "PlusMinusOperator",
+    "PlusMinusLindbladNoiseOperator",
+];
+#[cfg(feature = "doc_generator")]
+const QOQO_POTENTIAL_IMPORTS: &[&str] = &["Circuit", "Operation"];
+
+#[cfg(feature = "doc_generator")]
+fn create_doc(module: &str) -> PyResult<String> {
+    let mut main_doc = "".to_owned();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| -> PyResult<String> {
+        let python_module = PyModule::import_bound(py, module)?;
+        let dict = python_module.as_gil_ref().getattr("__dict__")?;
+        let module_doc = python_module
+            .as_gil_ref()
+            .getattr("__doc__")?
+            .extract::<String>()?;
+        let r_dict = dict.downcast::<PyDict>()?;
+        for (fn_name, func) in r_dict.iter() {
+            let name = fn_name.str()?.extract::<String>()?;
+            if name.starts_with("__")
+                || (module == "qoqo"
+                    && !["Circuit", "QuantumProgram", "CircuitDag", "operations"]
+                        .contains(&name.as_str()))
+            {
+                continue;
+            }
+            let doc = func.getattr("__doc__")?.extract::<String>()?;
+            if name == "operations" {
+                main_doc.push_str(&format!(
+                    "class Operation:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self):\n       return\n\nclass Backend:\n    \"\"\"\nCan be any backend from a qoqo interface such as qoqo-qiskit, qoqo-quest or qoqo-qasm.\n\"\"\"\n\n",
+                ));
+            } else {
+                let args = collect_args_from_doc(doc.as_str(), name.as_str()).join(", ");
+                main_doc.push_str(&format!(
+                    "class {name}{}:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self{}):\n       return\n\n",
+                    module.eq("qoqo.operations").then(|| "(Operation)").unwrap_or_default(),
+                    if args.is_empty() { "".to_owned() } else { format!(", {}", args) },
+                ));
+                let class_dict = func.getattr("__dict__")?;
+                let items = class_dict.call_method0("items")?;
+                let dict_obj = py
+                    .import_bound("builtins")?
+                    .call_method1("dict", (items,))?;
+                let class_r_dict = dict_obj.as_gil_ref().downcast::<PyDict>()?;
+                for (class_fn_name, meth) in class_r_dict.iter() {
+                    let meth_name = class_fn_name.str()?.extract::<String>()?;
+                    let meth_doc = match meth_name.as_str() {
+                        "__add__" if name.eq(&"Circuit") => r#"Implement the `+` (__add__) magic method to add two Circuits.
+
+Args:
+    rhs (Operation | Circuit): The second Circuit object in this operation.
+
+Returns:
+    Circuit: self + rhs the two Circuits added together.
+
+    Raises:
+    TypeError: Left hand side can not be converted to Circuit.
+    TypeError: Right hand side cannot be converted to Operation or Circuit."#.to_owned(),
+                        "__iadd__" if name.eq(&"Circuit") => r#"Implement the `+=` (__iadd__) magic method to add a Operation to a Circuit.
+
+Args:
+    other (Operation | Circuit): The Operation object to be added to self.
+
+Returns:
+    Circuit: self + other the two Circuits added together as the first one.
+
+Raises:
+    TypeError: Right hand side cannot be converted to Operation or Circuit."#.to_owned(),
+                        method if method.starts_with("__") => "".to_owned(),
+                        _ => {
+                            let tmp_doc = meth
+                            .getattr("__doc__")
+                            ?
+                            .extract::<String>()
+                            .unwrap_or_default();
+                        if tmp_doc.starts_with("staticmethod(function) -> method") {
+                            meth
+                            .getattr("__func__")
+                            ?.getattr("__doc__")?.extract::<String>().unwrap_or_default()
+                        } else {
+                            tmp_doc
+                        }
+                        }
+                    };
+                    if meth_doc.eq("") {
+                        continue;
+                    }
+                    let meth_args =
+                        collect_args_from_doc(meth_doc.as_str(), name.as_str()).join(", ");
+                    main_doc.push_str(&format!(
+                        "    def {meth_name}(self{}){}:\n        \"\"\"\n{meth_doc}\n\"\"\"\n\n",
+                        if meth_args.is_empty() {
+                            "".to_owned()
+                        } else {
+                            format!(", {}", meth_args)
+                        },
+                        collect_return_from_doc(meth_doc.as_str(), name.as_str(),)
+                    ));
+                }
+            }
+        }
+        let typing_imports: Vec<&str> = TYPING_POTENTIAL_IMPORTS
+            .iter()
+            .filter(|&type_str| main_doc.contains(&format!("{type_str}[")))
+            .copied()
+            .collect();
+        let struqture_imports: Vec<&str> = STRUQTURE_POTENTIAL_IMPORTS
+            .iter()
+            .filter(|&type_str| {
+                main_doc.contains(&format!("{type_str}:"))
+                    || main_doc.contains(&format!(":{type_str}"))
+                    || main_doc.contains(&format!("[{type_str}]"))
+                    || main_doc.contains(&format!("({type_str})"))
+                    || main_doc.contains(&format!("-> {type_str}"))
+            })
+            .copied()
+            .collect();
+        let qoqo_imports: Vec<&str> = QOQO_POTENTIAL_IMPORTS
+            .iter()
+            .filter(|&type_str| main_doc.contains(type_str))
+            .copied()
+            .collect();
+        Ok(
+            format!("# This is an auto generated file containing only the documentation.\n# You can find the full implementation on this page:\n# https://github.com/HQSquantumsimulations/qoqo\n\n\"\"\"\n{module_doc}\n\"\"\"\n\n{}{}{}{}\n{}",
+        if main_doc.lines().any(|line| line.contains("numpy") && !line.contains("import")) { "import numpy\n" } else { "" },
+        if typing_imports.is_empty() { "".to_owned() } else { format!("from typing import {}\n", typing_imports.join(", ")) },
+        if struqture_imports.is_empty() { "".to_owned() } else { format!("from struqture_py.spins import {} \n", struqture_imports.join(", ")) },
+        if module.eq("qoqo") || qoqo_imports.is_empty() { "".to_owned() } else {format!("from .qoqo import {}\n", qoqo_imports.join(", "))},
+        main_doc
+    ))
+    })
+}
 
 fn main() {
     pyo3_build_config::add_extension_module_link_args();
@@ -160,41 +423,41 @@ fn main() {
                         Some(type_str) =>
                             match  type_str.as_str(){
                                 "CalculatorFloat" => {quote!{
-                                    let #pyobject_name = op
+                                    let #pyobject_name = &op
                                     .call_method0(#ident_string)
                                     .map_err(|_| QoqoError::ConversionError)?;
                                     let #ident = convert_into_calculator_float(#pyobject_name).map_err(|_|
                                         QoqoError::ConversionError)?;
                                 }},
                                 "Circuit" => {quote!{
-                                    let #pyobject_name = op
+                                    let #pyobject_name = &op
                                     .call_method0(#ident_string)
                                     .map_err(|_| QoqoError::ConversionError)?;
                                     let #ident = convert_into_circuit(#pyobject_name).map_err(|_|
                                         QoqoError::ConversionError)?;
                                 }},
                                 "Option<Circuit>" => {quote!{
-                                    let #pyobject_name = op
+                                    let #pyobject_name = &op
                                     .call_method0(#ident_string)
                                     .map_err(|_| QoqoError::ConversionError)?;
                                     let tmp: Option<&PyAny> = #pyobject_name.extract().map_err(|_|
                                         QoqoError::ConversionError)?;
                                     let #ident = match tmp{
-                                        Some(cw) => Some(convert_into_circuit(cw)
+                                        Some(cw) => Some(convert_into_circuit(&cw.as_borrowed())
                                         .map_err(|_| QoqoError::ConversionError)?),
                                         _ => None
                                     };
                                 }},
                                 "SpinHamiltonian" => {quote!{
-                                    let #pyobject_name = op
+                                    let #pyobject_name = &op
                                     .call_method0(#ident_string)
                                     .map_err(|_| QoqoError::ConversionError)?;
-                                    let temp_op: struqture::spins::SpinHamiltonianSystem = struqture_py::spins::SpinHamiltonianSystemWrapper::from_pyany(#pyobject_name.into()).map_err(|_| QoqoError::ConversionError)?;
+                                    let temp_op: struqture::spins::SpinHamiltonianSystem = struqture_py::spins::SpinHamiltonianSystemWrapper::from_pyany(#pyobject_name).map_err(|_| QoqoError::ConversionError)?;
                                     let #ident = temp_op.hamiltonian().clone();
                                 }},
                                 _ => {
                                     quote!{
-                                    let #pyobject_name = op
+                                    let #pyobject_name = &op
                                     .call_method0(#ident_string)
                                     .map_err(|_| QoqoError::ConversionError)?;
                                     let #ident: #ty = #pyobject_name.extract()
@@ -203,7 +466,7 @@ fn main() {
                             },
                         None => {
                             quote!{
-                                let #pyobject_name = op
+                                let #pyobject_name = &op
                                 .call_method0(#ident_string)
                                 .map_err(|_| QoqoError::ConversionError)?;
                                 let #ident: #ty = #pyobject_name.extract()
@@ -262,11 +525,11 @@ fn main() {
         }
 
         /// Tries to convert any python object to a [roqoqo::operations::Operation]
-        pub fn convert_pyany_to_operation(op: &PyAny) -> Result<Operation, QoqoError> {
-            let hqslang_pyobject = op
+        pub fn convert_pyany_to_operation(op: &Bound<PyAny>) -> Result<Operation, QoqoError> {
+            let hqslang_pyobject = &op
                 .call_method0("hqslang")
                 .map_err(|_| QoqoError::ConversionError)?;
-            let hqslang: String = String::extract(hqslang_pyobject)
+            let hqslang: String = String::extract_bound(hqslang_pyobject)
                 .map_err(|_| QoqoError::ConversionError)?;
             match hqslang.as_str() {
                 #(#pyany_to_operation_quotes),*
@@ -285,6 +548,28 @@ fn main() {
     fs::write(&out_dir, final_str).expect("Could not write to file");
     // Try to format auto generated operations
     let _unused_output = Command::new("rustfmt").arg(&out_dir).output();
+
+    #[cfg(feature = "doc_generator")]
+    {
+        for &module in [
+            "qoqo",
+            "operations",
+            "measurements",
+            "noise_models",
+            "devices",
+        ]
+        .iter()
+        {
+            let qoqo_doc = if module.eq("qoqo") {
+                create_doc(module)
+            } else {
+                create_doc(&format!("qoqo.{module}"))
+            }
+            .expect("Could not generate documentation.");
+            let out_dir = PathBuf::from(format!("qoqo/{}.pyi", module));
+            fs::write(&out_dir, qoqo_doc).expect("Could not write to file");
+        }
+    }
 }
 
 fn extract_fields_with_types(input_fields: Fields) -> Vec<(Ident, Option<String>, Type)> {
@@ -297,7 +582,7 @@ fn extract_fields_with_types(input_fields: Fields) -> Vec<(Ident, Option<String>
             .ident
             .expect("Operate can only be derived on structs with named fields");
         let ty = f.ty;
-        let type_path =match &ty {
+        let type_path = match &ty {
             Type::Path(TypePath{path:p,..}) => p,
             _ => panic!("Trait only supports fields with normal types of form path (e.g. CalculatorFloat, qoqo_calculator::CalculatorFloat)")
         };

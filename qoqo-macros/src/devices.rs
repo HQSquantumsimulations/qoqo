@@ -57,8 +57,8 @@ pub fn device_wrapper_def(
             /// Returns the gate time of a single qubit operation if the single qubit operation is available on device.
             ///
             /// Args:
-            ///     hqslang[str]: The hqslang name of a single qubit gate.
-            ///     qubit[int]: The qubit the gate acts on
+            ///     hqslang (str): The hqslang name of a single qubit gate.
+            ///     qubit (int): The qubit the gate acts on
             ///
             /// Returns:
             ///     Option[float]: None if gate is not available
@@ -73,9 +73,9 @@ pub fn device_wrapper_def(
             /// Returns the gate time of a two qubit operation if the two qubit operation is available on device.
             ///
             /// Args:
-            ///     hqslang[str]: The hqslang name of a single qubit gate.
-            ///     control[int]: The control qubit the gate acts on.
-            ///     target[int]: The target qubit the gate acts on.
+            ///     hqslang (str): The hqslang name of a single qubit gate.
+            ///     control (int): The control qubit the gate acts on.
+            ///     target (int): The target qubit the gate acts on.
             ///
             /// Returns:
             ///     Option[float]: None if gate is not available
@@ -92,10 +92,10 @@ pub fn device_wrapper_def(
             /// Returns the gate time of a three qubit operation if the three qubit operation is available on device.
             ///
             /// Args:
-            ///     hqslang[str]: The hqslang name of a single qubit gate.
-            ///     control_0[int]: The control_0 qubit the gate acts on.
-            ///     control_1[int]: The control_1 qubit the gate acts on.
-            ///     target[int]: The target qubit the gate acts on.
+            ///     hqslang (str): The hqslang name of a single qubit gate.
+            ///     control_0 (int): The control_0 qubit the gate acts on.
+            ///     control_1 (int): The control_1 qubit the gate acts on.
+            ///     target (int): The target qubit the gate acts on.
             ///
             /// Returns:
             ///     Option[float]: None if gate is not available
@@ -112,8 +112,8 @@ pub fn device_wrapper_def(
             /// Returns the gate time of a multi qubit operation if the multi qubit operation is available on device.
             ///
             /// Args:
-            ///     hqslang[str]: The hqslang name of a multi qubit gate.
-            ///     qubits[List[int]]: The qubits the gate acts on.
+            ///     hqslang (str): The hqslang name of a multi qubit gate.
+            ///     qubits (List[int]): The qubits the gate acts on.
             ///
             /// Returns:
             ///     Option[float]: None if gate is not available
@@ -214,16 +214,16 @@ pub fn device_wrapper_def(
             ///     qubit (int): The qubit for which the rate matrix M is returned
             ///
             /// Returns:
-            ///     numpy.array: 3 by 3 numpy array of decoherence rates
+            ///     np.array: 3 by 3 numpy array of decoherence rates
             ///
             #[pyo3(text_signature = "(qubit)")]
             fn qubit_decoherence_rates(&self, qubit: usize) -> Py<PyArray2<f64>> {
                 Python::with_gil(|py| -> Py<PyArray2<f64>> {
                     match self.internal.qubit_decoherence_rates(&qubit) {
-                        Some(matrix) => matrix.to_pyarray(py).to_owned(),
+                        Some(matrix) => matrix.to_pyarray_bound(py).to_owned().into(),
                         None => {
                             let matrix = Array2::<f64>::zeros((3, 3));
-                            matrix.to_pyarray(py).to_owned()
+                            matrix.to_pyarray_bound(py).to_owned().into()
                         }
                     }
                 })
@@ -303,7 +303,7 @@ pub fn device_wrapper_def(
             /// Returns the names of a single qubit operations available on the device.
             ///
             /// Returns:
-            ///     List[strt]: The list of gate names.
+            ///     List[str]: The list of gate names.
             pub fn single_qubit_gate_names(&self) -> Vec<String>{
                 self.internal.single_qubit_gate_names()
             }
@@ -311,7 +311,7 @@ pub fn device_wrapper_def(
             /// Returns the names of a two qubit operations available on the device.
             ///
             /// Returns:
-            ///     List[strt]: The list of gate names.
+            ///     List[str]: The list of gate names.
             pub fn two_qubit_gate_names(&self) -> Vec<String>{
                 self.internal.two_qubit_gate_names()
             }
@@ -321,7 +321,7 @@ pub fn device_wrapper_def(
             /// The list of names also includes the three qubit gate operations.
             ///
             /// Returns:
-            ///     List[strt]: The list of gate names.
+            ///     List[str]: The list of gate names.
             ///
             pub fn multi_qubit_gate_names(&self) -> Vec<String>{
                 self.internal.multi_qubit_gate_names()
@@ -341,7 +341,7 @@ pub fn device_wrapper_def(
             /// Returns:
             ///     A deep copy of self.
             ///
-            pub fn __deepcopy__(&self, _memodict: Py<PyAny>) -> Self {
+            pub fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
                 self.clone()
             }
 
@@ -357,7 +357,7 @@ pub fn device_wrapper_def(
                 let serialized = serialize(&self.internal)
                     .map_err(|_| PyValueError::new_err("Cannot serialize Device to bytes"))?;
                 let b: Py<PyByteArray> = Python::with_gil(|py| -> Py<PyByteArray> {
-                    PyByteArray::new(py, &serialized[..]).into()
+                    PyByteArray::new_bound(py, &serialized[..]).into()
                 });
                 Ok(b)
             }
@@ -389,8 +389,9 @@ pub fn device_wrapper_def(
             ///     ValueError: Input cannot be deserialized to selected Device.
             #[staticmethod]
             #[pyo3(text_signature = "(input)")]
-            pub fn from_bincode(input: &PyAny) -> PyResult<#ident> {
+            pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<#ident> {
                 let bytes = input
+                    .as_gil_ref()
                     .extract::<Vec<u8>>()
                     .map_err(|_| PyTypeError::new_err("Input cannot be converted to byte array"))?;
 
@@ -433,12 +434,12 @@ pub fn device_wrapper_def(
             ///     op: Whether they should be equal or not.
             ///
             /// Returns:
-            ///     bool
+            ///     bool: Whether they are equal or not.
             ///
             /// Raises:
             ///     NotImplementedError: Other comparison not implemented.
             ///
-            fn __richcmp__(&self, other: Py<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
+            fn __richcmp__(&self, other: &Bound<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
                 let other = #ident::from_pyany(other);
                 match op {
                     pyo3::class::basic::CompareOp::Eq => match other {

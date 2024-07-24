@@ -160,3 +160,88 @@ impl OperateMultiQubitGate for MultiQubitZZ {
         circuit
     }
 }
+
+/// The gate to be replaced by a gate defined with GateDefinition gate.
+///
+/// The gate applies a gate previously defined by GateDefinition with the name gate_name.
+#[cfg(feature = "unstable_operation_definition")]
+#[allow(clippy::upper_case_acronyms)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::OperateMultiQubit,
+    roqoqo_derive::Operate,
+    roqoqo_derive::InvolveQubits,
+)]
+#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct CallDefinedGate {
+    /// The name of the called defined operations.
+    gate_name: String,
+    /// The qubits that for this call replace the qubits in the internal definition of the called gate
+    /// (get replaced in order of apppearance in gate defintion).
+    qubits: Vec<usize>,
+    /// List of float values that replace the free parameters in the internal defintion of the called gate
+    /// (get replaced in order of apppearance in gate defintion).
+    free_parameters: Vec<CalculatorFloat>,
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+impl Substitute for CallDefinedGate {
+    fn substitute_parameters(
+        &self,
+        calculator: &qoqo_calculator::Calculator,
+    ) -> Result<Self, RoqoqoError> {
+        let mut new_params: Vec<CalculatorFloat> = vec![];
+        for param in &self.free_parameters.clone() {
+            new_params.push(CalculatorFloat::from(
+                calculator
+                    .parse_get(param.clone())
+                    .map_err(RoqoqoError::CalculatorError)?,
+            ));
+        }
+
+        Ok(CallDefinedGate::new(
+            self.gate_name.clone(),
+            self.qubits.clone(),
+            new_params,
+        ))
+    }
+
+    fn remap_qubits(
+        &self,
+        mapping: &std::collections::HashMap<usize, usize>,
+    ) -> Result<Self, RoqoqoError> {
+        crate::operations::check_valid_mapping(mapping)?;
+        let mut new_qubits: Vec<usize> = Vec::new();
+        for q in &self.qubits {
+            new_qubits.push(*mapping.get(q).ok_or(Err("")).map_err(
+                |_x: std::result::Result<&usize, &str>| RoqoqoError::QubitMappingError {
+                    qubit: *q,
+                },
+            )?)
+        }
+
+        Ok(CallDefinedGate::new(
+            self.gate_name.clone(),
+            new_qubits,
+            self.free_parameters.clone(),
+        ))
+    }
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+impl super::ImplementedIn1point13 for CallDefinedGate {}
+
+#[cfg(feature = "unstable_operation_definition")]
+impl SupportedVersion for CallDefinedGate {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 13, 0)
+    }
+}
+
+#[cfg(feature = "unstable_operation_definition")]
+#[allow(non_upper_case_globals)]
+const TAGS_CallDefinedGate: &[&str; 3] =
+    &["Operation", "MultiQubitGateOperation", "CallDefinedGate"];
