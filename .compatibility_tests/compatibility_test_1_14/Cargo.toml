@@ -21,13 +21,13 @@ publish = false
 [dependencies]
 test_roqoqo_1_14 = { package = "roqoqo", version = "=1.14.0" }
 test_roqoqo_derive_1_14 = { package = "roqoqo-derive", version = "=1.14.0" }
+test_struqture_1_14 = { package = "struqture", version = "=1.7.1" }
 qoqo_calculator = { version = "~1.2" }
 roqoqo = { version = "~1.15", path = "../../roqoqo", features = [
     "serialize",
     "overrotate",
 ] }
-# struqture_1_4 = { version = "~1.7" }
-# struqture = { version = "~1.9" }
+struqture = { version = "1.9" }
 bincode = { version = "1.3" }
 ndarray = "0.15"
 
