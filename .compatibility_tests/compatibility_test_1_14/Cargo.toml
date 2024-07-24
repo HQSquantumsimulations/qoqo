@@ -26,9 +26,10 @@ roqoqo = { version = "~1.15", path = "../../roqoqo", features = [
     "serialize",
     "overrotate",
 ] }
-struqture = { version = "~1.7" }
+# struqture_1_4 = { version = "~1.7" }
+# struqture = { version = "~1.9" }
 bincode = { version = "1.3" }
 ndarray = "0.15"
-
+ty
 [dev-dependencies]
 test-case = "3.0"
