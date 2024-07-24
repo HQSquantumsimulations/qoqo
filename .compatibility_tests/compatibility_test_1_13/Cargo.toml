@@ -22,7 +22,7 @@ publish = false
 test_roqoqo_1_13 = { package = "roqoqo", version = "=1.13.0" }
 test_roqoqo_derive_1_13 = { package = "roqoqo-derive", version = "=1.13.0" }
 qoqo_calculator = { version = "~1.2" }
-roqoqo = { version = "~1.15", path = "../../roqoqo", features = [
+roqoqo = { version = "~1.15.2-alpha.0", path = "../../roqoqo", features = [
     "serialize",
     "overrotate",
 ] }
