@@ -2,6 +2,12 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.5.2-alpha.0
+
+### Added in 1.5.2-alpha.0
+
+* Added support for noise model operator input from struqture 2.x. Output remains in struqture 1.x.
+
 ## 1.15.1
 
 ### Fixed in 1.15.1
