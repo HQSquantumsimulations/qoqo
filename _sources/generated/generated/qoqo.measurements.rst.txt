@@ -4,15 +4,6 @@ qoqo.measurements
 .. automodule:: qoqo.measurements
 
    
-   
-   
-
-   
-   
-   
-
-   
-   
    .. rubric:: Classes
 
    .. autosummary::
@@ -25,11 +16,3 @@ qoqo.measurements
       PauliZProduct
       PauliZProductInput
    
-   
-
-   
-   
-   
-
-
-

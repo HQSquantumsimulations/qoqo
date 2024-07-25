@@ -4,15 +4,6 @@ qoqo.operations
 .. automodule:: qoqo.operations
 
    
-   
-   
-
-   
-   
-   
-
-   
-   
    .. rubric:: Classes
 
    .. autosummary::
@@ -114,11 +105,3 @@ qoqo.operations
       VariableMSXX
       XY
    
-   
-
-   
-   
-   
-
-
-

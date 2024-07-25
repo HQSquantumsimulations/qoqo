@@ -4,15 +4,6 @@
 .. automodule:: qoqo
 
    
-   
-   
-
-   
-   
-   
-
-   
-   
    .. rubric:: Classes
 
    .. autosummary::
@@ -133,11 +124,3 @@
       VariableMSXX
       XY
    
-   
-
-   
-   
-   
-
-
-
