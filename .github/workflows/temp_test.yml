@@ -2,7 +2,7 @@ name: temp_test
 
 on:
   workflow_dispatch:
-
+  pull_request:
 
 jobs:
   # Build linux wheels and upload them to PyPi
