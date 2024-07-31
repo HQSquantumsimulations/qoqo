@@ -15,10 +15,10 @@
 //! Operations can be of various kinds: Definitions, GateOperations, PRAGMAs or measurement Operations.
 //! * Definition operations define the classical registers and variables in the Circuit.
 //! * GateOperations are single-, two- or multi-qubit gate operations that act on a set of qubits
-//! and can be executed on a quantum computing device.
+//!   and can be executed on a quantum computing device.
 //! * PRAGMAs are operations that can be used when running a simulation of a quantum computing program.
 //! * Measurement Operations are operations that perform a measurement either on a quantum computing device (MeasureQubit)
-//! or on a simulation of a quantum computing program (PRAGMA measurement operations).
+//!   or on a simulation of a quantum computing program (PRAGMA measurement operations).
 
 use crate::RoqoqoError;
 #[cfg(feature = "dynamic")]
