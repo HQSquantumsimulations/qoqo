@@ -15,8 +15,8 @@
 //!
 //! * Abstract devices: Contain abstract information for the model of a quantum computer and its parameters.
 //! * Actual hardware devices: These devices are provided by roqoqo backends and
-//! contain the necessary information for accessing the quantum computing hardware.
-//! The devices also encode a connectivity model.
+//!   contain the necessary information for accessing the quantum computing hardware.
+//!   The devices also encode a connectivity model.
 
 #[cfg(feature = "unstable_chain_with_environment")]
 use std::collections::HashMap;
