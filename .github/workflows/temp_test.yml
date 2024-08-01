@@ -2,16 +2,71 @@ name: temp_test
 
 on:
   workflow_dispatch:
-
+  pull_request:
 
 jobs:
+  # Build linux wheels and upload them to PyPi
+  build_maturin_builds_linux:
+    name: maturin_build-linux
+    uses: mlodi-hqs/reusable_workflows/.github/workflows/reusable_build_maturin_linux.yml@separate_build_folders
+    with: 
+      py_interface_folder: "qoqo"
+      deploy: true
+      # Whether to build for aarch64. Can fail if there are C/C++ dependencies
+      build_for_arm: true
+    secrets: inherit
 
-# Build macos wheels and upload them to PyPi
+  # Build macos wheels and upload them to PyPi
   build_maturin_builds_macos:
     name: maturin_build-macos
-    uses: HQSquantumsimulations/reusable_workflows/.github/workflows/reusable_build_maturin_macos.yml@main
+    uses: mlodi-hqs/reusable_workflows/.github/workflows/reusable_build_maturin_macos.yml@separate_build_folders
     with: 
-      py_interface_folder: "qoqo_calculator_pyo3"
-      # Try to build python wheels with universal2 for arm and x86
-      universal2: true
-      deploy: false
+      py_interface_folder: "qoqo"
+      deploy: true
+    secrets: inherit
+
+  # Build windows wheels and upload them to PyPi
+  build_maturin_builds_windows:
+    name: maturin_build-windows
+    uses: mlodi-hqs/reusable_workflows/.github/workflows/reusable_build_maturin_windows.yml@separate_build_folders
+    with: 
+      py_interface_folder: "qoqo"
+      deploy: true
+    secrets: inherit
+  
+  faking_deploy:
+    needs: [build_maturin_builds_linux]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/setup-python@v4
+      with:
+        python-version: "3.12"
+    - uses: actions/download-artifact@v3
+      with:
+        name: linux_wheels
+    - uses: actions/download-artifact@v3
+      with:
+        name: linux_sdist
+    - name: Publish
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+      run: |
+        python -m pip install --upgrade pip
+    
+  faking_deploy_arm:
+    needs: [build_maturin_builds_linux]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/setup-python@v4
+      with:
+        python-version: "3.12"
+    - uses: actions/download-artifact@v3
+      with:
+        name: linux_arm_wheels
+    - name: Publish
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+      run: |
+        python -m pip install --upgrade pip
