@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="English" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qoqo.noise_models &mdash; qoqo 1.15.2-alpha.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=23ddf89d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="qoqo.noise_models.ContinuousDecoherenceModel" href="generated/qoqo.noise_models.ContinuousDecoherenceModel.html" />
+    <link rel="prev" title="qoqo.devices.SquareLatticeDevice" href="generated/qoqo.devices.SquareLatticeDevice.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            qoqo
+          </a>
+              <div class="version">
+                1.15.2-alpha.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../modules.html">qoqo documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../qoqo.html">qoqo</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="qoqo.Circuit.html">qoqo.Circuit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qoqo.CircuitDag.html">qoqo.CircuitDag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qoqo.operations.html">qoqo.operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qoqo.QuantumProgram.html">qoqo.QuantumProgram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qoqo.measurements.html">qoqo.measurements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qoqo.devices.html">qoqo.devices</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">qoqo.noise_models</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/qoqo.noise_models.ContinuousDecoherenceModel.html">qoqo.noise_models.ContinuousDecoherenceModel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/qoqo.noise_models.ImperfectReadoutModel.html">qoqo.noise_models.ImperfectReadoutModel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/qoqo.noise_models.DecoherenceOnGateModel.html">qoqo.noise_models.DecoherenceOnGateModel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/qoqo.noise_models.SingleQubitOverrotationDescription.html">qoqo.noise_models.SingleQubitOverrotationDescription</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/qoqo.noise_models.SingleQubitOverrotationOnGate.html">qoqo.noise_models.SingleQubitOverrotationOnGate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/qoqo.noise_models.DecoherenceOnIdleModel.html">qoqo.noise_models.DecoherenceOnIdleModel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.noise_models.ContinuousDecoherenceModel"><code class="docutils literal notranslate"><span class="pre">ContinuousDecoherenceModel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.noise_models.DecoherenceOnGateModel"><code class="docutils literal notranslate"><span class="pre">DecoherenceOnGateModel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.noise_models.DecoherenceOnIdleModel"><code class="docutils literal notranslate"><span class="pre">DecoherenceOnIdleModel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.noise_models.ImperfectReadoutModel"><code class="docutils literal notranslate"><span class="pre">ImperfectReadoutModel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.noise_models.SingleQubitOverrotationDescription"><code class="docutils literal notranslate"><span class="pre">SingleQubitOverrotationDescription</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qoqo.noise_models.SingleQubitOverrotationOnGate"><code class="docutils literal notranslate"><span class="pre">SingleQubitOverrotationOnGate</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.AllToAllDevice"><code class="docutils literal notranslate"><span class="pre">AllToAllDevice</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.BeamSplitter"><code class="docutils literal notranslate"><span class="pre">BeamSplitter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Bogoliubov"><code class="docutils literal notranslate"><span class="pre">Bogoliubov</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.CNOT"><code class="docutils literal notranslate"><span class="pre">CNOT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.CZQubitResonator"><code class="docutils literal notranslate"><span class="pre">CZQubitResonator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Cheated"><code class="docutils literal notranslate"><span class="pre">Cheated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.CheatedInput"><code class="docutils literal notranslate"><span class="pre">CheatedInput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.CheatedPauliZProduct"><code class="docutils literal notranslate"><span class="pre">CheatedPauliZProduct</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.CheatedPauliZProductInput"><code class="docutils literal notranslate"><span class="pre">CheatedPauliZProductInput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Circuit"><code class="docutils literal notranslate"><span class="pre">Circuit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.CircuitDag"><code class="docutils literal notranslate"><span class="pre">CircuitDag</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ClassicalRegister"><code class="docutils literal notranslate"><span class="pre">ClassicalRegister</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ComplexPMInteraction"><code class="docutils literal notranslate"><span class="pre">ComplexPMInteraction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ContinuousDecoherenceModel"><code class="docutils literal notranslate"><span class="pre">ContinuousDecoherenceModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ControlledControlledPauliZ"><code class="docutils literal notranslate"><span class="pre">ControlledControlledPauliZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ControlledControlledPhaseShift"><code class="docutils literal notranslate"><span class="pre">ControlledControlledPhaseShift</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ControlledPauliY"><code class="docutils literal notranslate"><span class="pre">ControlledPauliY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ControlledPauliZ"><code class="docutils literal notranslate"><span class="pre">ControlledPauliZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ControlledPhaseShift"><code class="docutils literal notranslate"><span class="pre">ControlledPhaseShift</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ControlledRotateX"><code class="docutils literal notranslate"><span class="pre">ControlledRotateX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ControlledRotateXY"><code class="docutils literal notranslate"><span class="pre">ControlledRotateXY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.DecoherenceOnGateModel"><code class="docutils literal notranslate"><span class="pre">DecoherenceOnGateModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.DecoherenceOnIdleModel"><code class="docutils literal notranslate"><span class="pre">DecoherenceOnIdleModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.DefinitionBit"><code class="docutils literal notranslate"><span class="pre">DefinitionBit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.DefinitionComplex"><code class="docutils literal notranslate"><span class="pre">DefinitionComplex</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.DefinitionFloat"><code class="docutils literal notranslate"><span class="pre">DefinitionFloat</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.DefinitionUsize"><code class="docutils literal notranslate"><span class="pre">DefinitionUsize</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.EchoCrossResonance"><code class="docutils literal notranslate"><span class="pre">EchoCrossResonance</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.FSwap"><code class="docutils literal notranslate"><span class="pre">FSwap</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Fsim"><code class="docutils literal notranslate"><span class="pre">Fsim</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.GPi"><code class="docutils literal notranslate"><span class="pre">GPi</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.GPi2"><code class="docutils literal notranslate"><span class="pre">GPi2</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.GenericDevice"><code class="docutils literal notranslate"><span class="pre">GenericDevice</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.GivensRotation"><code class="docutils literal notranslate"><span class="pre">GivensRotation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.GivensRotationLittleEndian"><code class="docutils literal notranslate"><span class="pre">GivensRotationLittleEndian</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Hadamard"><code class="docutils literal notranslate"><span class="pre">Hadamard</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ISwap"><code class="docutils literal notranslate"><span class="pre">ISwap</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Identity"><code class="docutils literal notranslate"><span class="pre">Identity</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.ImperfectReadoutModel"><code class="docutils literal notranslate"><span class="pre">ImperfectReadoutModel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InputBit"><code class="docutils literal notranslate"><span class="pre">InputBit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InputSymbolic"><code class="docutils literal notranslate"><span class="pre">InputSymbolic</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InvSqrtISwap"><code class="docutils literal notranslate"><span class="pre">InvSqrtISwap</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InvSqrtPauliX"><code class="docutils literal notranslate"><span class="pre">InvSqrtPauliX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.InvSqrtPauliY"><code class="docutils literal notranslate"><span class="pre">InvSqrtPauliY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.JaynesCummings"><code class="docutils literal notranslate"><span class="pre">JaynesCummings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.LongitudinalCoupling"><code class="docutils literal notranslate"><span class="pre">LongitudinalCoupling</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.MeasureQubit"><code class="docutils literal notranslate"><span class="pre">MeasureQubit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.MolmerSorensenXX"><code class="docutils literal notranslate"><span class="pre">MolmerSorensenXX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.MultiQubitMS"><code class="docutils literal notranslate"><span class="pre">MultiQubitMS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.MultiQubitZZ"><code class="docutils literal notranslate"><span class="pre">MultiQubitZZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PMInteraction"><code class="docutils literal notranslate"><span class="pre">PMInteraction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PauliX"><code class="docutils literal notranslate"><span class="pre">PauliX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PauliY"><code class="docutils literal notranslate"><span class="pre">PauliY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PauliZ"><code class="docutils literal notranslate"><span class="pre">PauliZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PauliZProduct"><code class="docutils literal notranslate"><span class="pre">PauliZProduct</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PauliZProductInput"><code class="docutils literal notranslate"><span class="pre">PauliZProductInput</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PhaseDisplacement"><code class="docutils literal notranslate"><span class="pre">PhaseDisplacement</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PhaseShift"><code class="docutils literal notranslate"><span class="pre">PhaseShift</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PhaseShiftState0"><code class="docutils literal notranslate"><span class="pre">PhaseShiftState0</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PhaseShiftState1"><code class="docutils literal notranslate"><span class="pre">PhaseShiftState1</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PhaseShiftedControlledPhase"><code class="docutils literal notranslate"><span class="pre">PhaseShiftedControlledPhase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PhaseShiftedControlledZ"><code class="docutils literal notranslate"><span class="pre">PhaseShiftedControlledZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PhotonDetection"><code class="docutils literal notranslate"><span class="pre">PhotonDetection</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaActiveReset"><code class="docutils literal notranslate"><span class="pre">PragmaActiveReset</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaAnnotatedOp"><code class="docutils literal notranslate"><span class="pre">PragmaAnnotatedOp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaBoostNoise"><code class="docutils literal notranslate"><span class="pre">PragmaBoostNoise</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaChangeDevice"><code class="docutils literal notranslate"><span class="pre">PragmaChangeDevice</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaConditional"><code class="docutils literal notranslate"><span class="pre">PragmaConditional</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaControlledCircuit"><code class="docutils literal notranslate"><span class="pre">PragmaControlledCircuit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaDamping"><code class="docutils literal notranslate"><span class="pre">PragmaDamping</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaDephasing"><code class="docutils literal notranslate"><span class="pre">PragmaDephasing</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaDepolarising"><code class="docutils literal notranslate"><span class="pre">PragmaDepolarising</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaGeneralNoise"><code class="docutils literal notranslate"><span class="pre">PragmaGeneralNoise</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaGetDensityMatrix"><code class="docutils literal notranslate"><span class="pre">PragmaGetDensityMatrix</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaGetOccupationProbability"><code class="docutils literal notranslate"><span class="pre">PragmaGetOccupationProbability</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaGetPauliProduct"><code class="docutils literal notranslate"><span class="pre">PragmaGetPauliProduct</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaGetStateVector"><code class="docutils literal notranslate"><span class="pre">PragmaGetStateVector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaGlobalPhase"><code class="docutils literal notranslate"><span class="pre">PragmaGlobalPhase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaLoop"><code class="docutils literal notranslate"><span class="pre">PragmaLoop</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaOverrotation"><code class="docutils literal notranslate"><span class="pre">PragmaOverrotation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaRandomNoise"><code class="docutils literal notranslate"><span class="pre">PragmaRandomNoise</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaRepeatGate"><code class="docutils literal notranslate"><span class="pre">PragmaRepeatGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaRepeatedMeasurement"><code class="docutils literal notranslate"><span class="pre">PragmaRepeatedMeasurement</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaSetDensityMatrix"><code class="docutils literal notranslate"><span class="pre">PragmaSetDensityMatrix</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaSetNumberOfMeasurements"><code class="docutils literal notranslate"><span class="pre">PragmaSetNumberOfMeasurements</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaSetStateVector"><code class="docutils literal notranslate"><span class="pre">PragmaSetStateVector</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaSleep"><code class="docutils literal notranslate"><span class="pre">PragmaSleep</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaStartDecompositionBlock"><code class="docutils literal notranslate"><span class="pre">PragmaStartDecompositionBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaStopDecompositionBlock"><code class="docutils literal notranslate"><span class="pre">PragmaStopDecompositionBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.PragmaStopParallelBlock"><code class="docutils literal notranslate"><span class="pre">PragmaStopParallelBlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Qsim"><code class="docutils literal notranslate"><span class="pre">Qsim</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.QuantumProgram"><code class="docutils literal notranslate"><span class="pre">QuantumProgram</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.QuantumRabi"><code class="docutils literal notranslate"><span class="pre">QuantumRabi</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.RotateAroundSphericalAxis"><code class="docutils literal notranslate"><span class="pre">RotateAroundSphericalAxis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.RotateX"><code class="docutils literal notranslate"><span class="pre">RotateX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.RotateXY"><code class="docutils literal notranslate"><span class="pre">RotateXY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.RotateY"><code class="docutils literal notranslate"><span class="pre">RotateY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.RotateZ"><code class="docutils literal notranslate"><span class="pre">RotateZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SGate"><code class="docutils literal notranslate"><span class="pre">SGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SWAP"><code class="docutils literal notranslate"><span class="pre">SWAP</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SingleExcitationLoad"><code class="docutils literal notranslate"><span class="pre">SingleExcitationLoad</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SingleExcitationStore"><code class="docutils literal notranslate"><span class="pre">SingleExcitationStore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SingleQubitGate"><code class="docutils literal notranslate"><span class="pre">SingleQubitGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SingleQubitOverrotationDescription"><code class="docutils literal notranslate"><span class="pre">SingleQubitOverrotationDescription</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SingleQubitOverrotationOnGate"><code class="docutils literal notranslate"><span class="pre">SingleQubitOverrotationOnGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SpinInteraction"><code class="docutils literal notranslate"><span class="pre">SpinInteraction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SqrtISwap"><code class="docutils literal notranslate"><span class="pre">SqrtISwap</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SqrtPauliX"><code class="docutils literal notranslate"><span class="pre">SqrtPauliX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SqrtPauliY"><code class="docutils literal notranslate"><span class="pre">SqrtPauliY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.SquareLatticeDevice"><code class="docutils literal notranslate"><span class="pre">SquareLatticeDevice</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Squeezing"><code class="docutils literal notranslate"><span class="pre">Squeezing</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.TGate"><code class="docutils literal notranslate"><span class="pre">TGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.Toffoli"><code class="docutils literal notranslate"><span class="pre">Toffoli</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.VariableMSXX"><code class="docutils literal notranslate"><span class="pre">VariableMSXX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qoqo.html#qoqo.XY"><code class="docutils literal notranslate"><span class="pre">XY</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">qoqo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../modules.html">qoqo documentation</a></li>
+          <li class="breadcrumb-item"><a href="../qoqo.html">qoqo</a></li>
+      <li class="breadcrumb-item active">qoqo.noise_models</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/generated/generated/qoqo.noise_models.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-qoqo.noise_models">
+<span id="qoqo-noise-models"></span><h1>qoqo.noise_models<a class="headerlink" href="#module-qoqo.noise_models" title="Link to this heading"></a></h1>
+<p>A collection of noise models that represent different types of noise that can be present in Quantum Computing hardware.</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.noise_models.ContinuousDecoherenceModel" title="qoqo.noise_models.ContinuousDecoherenceModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContinuousDecoherenceModel</span></code></a>([noise_operator])</p></td>
+<td><p>Noise model representing a continuous decoherence process on qubits.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.noise_models.ImperfectReadoutModel" title="qoqo.noise_models.ImperfectReadoutModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImperfectReadoutModel</span></code></a>()</p></td>
+<td><p>Noise model representing readout errors.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.noise_models.DecoherenceOnGateModel" title="qoqo.noise_models.DecoherenceOnGateModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DecoherenceOnGateModel</span></code></a>()</p></td>
+<td><p>Error model for noise that is only present on gate executions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.noise_models.SingleQubitOverrotationDescription" title="qoqo.noise_models.SingleQubitOverrotationDescription"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleQubitOverrotationDescription</span></code></a>(gate, ...)</p></td>
+<td><p>Description of single qubit overrotation noise model, [roqoqo::noise_models::SingleQubitOverrotationOnGate].</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.noise_models.SingleQubitOverrotationOnGate" title="qoqo.noise_models.SingleQubitOverrotationOnGate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleQubitOverrotationOnGate</span></code></a>()</p></td>
+<td><p>Single qubit overrotation noise model on gate.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.noise_models.DecoherenceOnIdleModel" title="qoqo.noise_models.DecoherenceOnIdleModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DecoherenceOnIdleModel</span></code></a>([noise_operator])</p></td>
+<td><p>Noise model representing a continuous decoherence process on idle qubits.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.noise_models.ContinuousDecoherenceModel" title="qoqo.noise_models.ContinuousDecoherenceModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContinuousDecoherenceModel</span></code></a>([noise_operator])</p></td>
+<td><p>Noise model representing a continuous decoherence process on qubits.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.noise_models.DecoherenceOnGateModel" title="qoqo.noise_models.DecoherenceOnGateModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DecoherenceOnGateModel</span></code></a>()</p></td>
+<td><p>Error model for noise that is only present on gate executions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.noise_models.DecoherenceOnIdleModel" title="qoqo.noise_models.DecoherenceOnIdleModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DecoherenceOnIdleModel</span></code></a>([noise_operator])</p></td>
+<td><p>Noise model representing a continuous decoherence process on idle qubits.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.noise_models.ImperfectReadoutModel" title="qoqo.noise_models.ImperfectReadoutModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImperfectReadoutModel</span></code></a>()</p></td>
+<td><p>Noise model representing readout errors.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qoqo.noise_models.SingleQubitOverrotationDescription" title="qoqo.noise_models.SingleQubitOverrotationDescription"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleQubitOverrotationDescription</span></code></a>(gate, ...)</p></td>
+<td><p>Description of single qubit overrotation noise model, [roqoqo::noise_models::SingleQubitOverrotationOnGate].</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#qoqo.noise_models.SingleQubitOverrotationOnGate" title="qoqo.noise_models.SingleQubitOverrotationOnGate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SingleQubitOverrotationOnGate</span></code></a>()</p></td>
+<td><p>Single qubit overrotation noise model on gate.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="qoqo.noise_models.ContinuousDecoherenceModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.noise_models.</span></span><span class="sig-name descname"><span class="pre">ContinuousDecoherenceModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">noise_operator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ContinuousDecoherenceModel" title="Link to this definition"></a></dt>
+<dd><p>Noise model representing a continuous decoherence process on qubits.</p>
+<p>This noise model assumes that all qubits are constantly experiencing
+decoherence over time (e.g. due to coupling to the environment).
+The noise for each qubit can be different but only single qubit noise is
+included in the model.</p>
+<p>Noise is given by the rates of the Lindblad equation.
+The Lindblad equation is a so-called master equation for the time evolution of a density matrix.
+For the example of a single qubit the non-coherent part of the Lindblad equation can take the following form:</p>
+<p>d/dt * ρ = Σ Mij * Li * ρ * Lj† - 1/2 * ( Lj† * Li * ρ + ρ * Lj† * Li),</p>
+<p>where the indices i and j run from 0 to 2</p>
+<p>with L0 = σ+, L1 = σ- and L3 = σz.</p>
+<p>Here the genreal incoherent part of the Lindblad equation is internally represented by a [struqture::spins::PlusMinusLindbladNoiseOperator].</p>
+<p>To create a complex decoherence model first create the Lindblad noise and then turn it into a ContinuousDecoherenceModel.
+For a simple decoherence model, use new to create an empty model and use the add_damping, add_excitation and add_dephasing methods.
+For more fine control access the internal lindblad_noise directly and modify it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>noise_operator</strong> (<em>struqture_py.spins.PlusMinusLindbladNoiseOperator</em>) -- Optional initialisation of Noise Model with given Lindblad operator.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ContinuousDecoherenceModel.add_damping_rate">
+<span class="sig-name descname"><span class="pre">add_damping_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ContinuousDecoherenceModel.add_damping_rate" title="Link to this definition"></a></dt>
+<dd><p>Convenience function to add damping to several qubits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qubits</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- The qubits to add damping to.</p></li>
+<li><p><strong>rate</strong> (<em>float</em>) -- The damping rate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The model with the damping added.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#qoqo.noise_models.ContinuousDecoherenceModel" title="qoqo.noise_models.ContinuousDecoherenceModel">ContinuousDecoherenceModel</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ContinuousDecoherenceModel.add_dephasing_rate">
+<span class="sig-name descname"><span class="pre">add_dephasing_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ContinuousDecoherenceModel.add_dephasing_rate" title="Link to this definition"></a></dt>
+<dd><p>Convenience function to add dephasing to several qubits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qubits</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- The qubits to add dephasing to.</p></li>
+<li><p><strong>rate</strong> (<em>float</em>) -- The dephasing rate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The model with the dephasing added.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#qoqo.noise_models.ContinuousDecoherenceModel" title="qoqo.noise_models.ContinuousDecoherenceModel">ContinuousDecoherenceModel</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ContinuousDecoherenceModel.add_depolarising_rate">
+<span class="sig-name descname"><span class="pre">add_depolarising_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ContinuousDecoherenceModel.add_depolarising_rate" title="Link to this definition"></a></dt>
+<dd><p>Convenience function to add depolarising to several qubits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qubits</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- The qubits to add depolarising to.</p></li>
+<li><p><strong>rate</strong> (<em>float</em>) -- The depolarising rate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The model with the depolarising added.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#qoqo.noise_models.ContinuousDecoherenceModel" title="qoqo.noise_models.ContinuousDecoherenceModel">ContinuousDecoherenceModel</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ContinuousDecoherenceModel.add_excitation_rate">
+<span class="sig-name descname"><span class="pre">add_excitation_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ContinuousDecoherenceModel.add_excitation_rate" title="Link to this definition"></a></dt>
+<dd><p>Convenience function to add excitation to several qubits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qubits</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- The qubits to add excitation to.</p></li>
+<li><p><strong>rate</strong> (<em>float</em>) -- The excitation rate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The model with the excitation added.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#qoqo.noise_models.ContinuousDecoherenceModel" title="qoqo.noise_models.ContinuousDecoherenceModel">ContinuousDecoherenceModel</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ContinuousDecoherenceModel.current_version">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ContinuousDecoherenceModel.current_version" title="Link to this definition"></a></dt>
+<dd><p>Returns the current version of the qoqo library .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current version of the library.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ContinuousDecoherenceModel.from_bincode">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_bincode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ContinuousDecoherenceModel.from_bincode" title="Link to this definition"></a></dt>
+<dd><p>Convert the bincode representation of the Noise-Model to a device using the bincode crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>ByteArray</em>) -- The serialized Noise-Model (in bincode form).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The deserialized Noise-Model.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TypeError</strong> -- Input cannot be converted to byte array.</p></li>
+<li><p><strong>ValueError</strong> -- Input cannot be deserialized to selected Noise-Model.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ContinuousDecoherenceModel.from_json">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ContinuousDecoherenceModel.from_json" title="Link to this definition"></a></dt>
+<dd><p>Convert the json representation of a device to a Noise-Model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>str</em>) -- The serialized device in json form.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The deserialized device.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Input cannot be deserialized to selected Noise-Model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ContinuousDecoherenceModel.get_noise_operator">
+<span class="sig-name descname"><span class="pre">get_noise_operator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ContinuousDecoherenceModel.get_noise_operator" title="Link to this definition"></a></dt>
+<dd><p>Return the internal Lindblad noise operator of the continuous noise model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The internal Lindblad noise operator of the continuous noise</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>PlusMinusLindbladNoiseOperator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ContinuousDecoherenceModel.json_schema">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">json_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ContinuousDecoherenceModel.json_schema" title="Link to this definition"></a></dt>
+<dd><p>Return the JsonSchema for the json serialisation of the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The json schema serialized to json</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ContinuousDecoherenceModel.min_supported_version">
+<span class="sig-name descname"><span class="pre">min_supported_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ContinuousDecoherenceModel.min_supported_version" title="Link to this definition"></a></dt>
+<dd><p>Return the minimum version of qoqo that supports this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The minimum version of the qoqo library to deserialize this object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ContinuousDecoherenceModel.to_bincode">
+<span class="sig-name descname"><span class="pre">to_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ContinuousDecoherenceModel.to_bincode" title="Link to this definition"></a></dt>
+<dd><p>Return the bincode representation of the Noise-Model using the bincode crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized Noise-Model (in bincode form).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ByteArray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize Noise-Model to bytes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ContinuousDecoherenceModel.to_json">
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ContinuousDecoherenceModel.to_json" title="Link to this definition"></a></dt>
+<dd><p>Return the json representation of the Noise-Model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized form of Noise-Model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize Noise-Model to json.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnGateModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.noise_models.</span></span><span class="sig-name descname"><span class="pre">DecoherenceOnGateModel</span></span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnGateModel" title="Link to this definition"></a></dt>
+<dd><p>Error model for noise that is only present on gate executions.</p>
+<p>Adds additional noise when specific gates (identified by hqslang name and qubits acted on) are executed.
+The noise is given in the form of a struqture.spins.PlusMinusLindbladNoiseOperator the same way it
+is for the ContinuousDecoherence model.</p>
+<p>Example:</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
+from qoqo.noise_models import DecoherenceOnGateModel
+from struqture_py.spins import (PlusMinusLindbladNoiseOperator, PlusMinusProduct)</p>
+<p>noise_model = DecoherenceOnGateModel()
+lindblad_noise = PlusMinusLindbladNoiseOperator()
+lindblad_noise.add_operator_product(</p>
+<blockquote>
+<div><p>(PlusMinusProduct().z(0), PlusMinusProduct().z(0)),
+0.9)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>lindblad_noise.add_operator_product(</dt><dd><p>(PlusMinusProduct().z(1), PlusMinusProduct().z(1)),
+0.9)</p>
+</dd>
+</dl>
+<p>noise_model = noise_model.set_two_qubit_term(
+&quot;CNOT&quot;, 0,1,
+lindblad_noise
+)
+<a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnGateModel.current_version">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnGateModel.current_version" title="Link to this definition"></a></dt>
+<dd><p>Returns the current version of the qoqo library .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current version of the library.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnGateModel.from_bincode">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_bincode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnGateModel.from_bincode" title="Link to this definition"></a></dt>
+<dd><p>Convert the bincode representation of the Noise-Model to a device using the bincode crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>ByteArray</em>) -- The serialized Noise-Model (in bincode form).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The deserialized Noise-Model.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TypeError</strong> -- Input cannot be converted to byte array.</p></li>
+<li><p><strong>ValueError</strong> -- Input cannot be deserialized to selected Noise-Model.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnGateModel.from_json">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnGateModel.from_json" title="Link to this definition"></a></dt>
+<dd><p>Convert the json representation of a device to a Noise-Model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>str</em>) -- The serialized device in json form.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The deserialized device.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Input cannot be deserialized to selected Noise-Model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnGateModel.get_multi_qubit_gate_error">
+<span class="sig-name descname"><span class="pre">get_multi_qubit_gate_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubits</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnGateModel.get_multi_qubit_gate_error" title="Link to this definition"></a></dt>
+<dd><p>Return the extra noise for a multi qubit gate, if it exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gate</strong> (<em>str</em>) -- The name of the gate.</p></li>
+<li><p><strong>qubits</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- The qubits the gate acts on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The error model applied when gate is applied.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnGateModel.get_single_qubit_gate_error">
+<span class="sig-name descname"><span class="pre">get_single_qubit_gate_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnGateModel.get_single_qubit_gate_error" title="Link to this definition"></a></dt>
+<dd><p>Return the extra noise for a single qubit gate, if it exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gate</strong> (<em>str</em>) -- The name of the gate.</p></li>
+<li><p><strong>qubit</strong> (<em>int</em>) -- The qubit the gate acts on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The error model applied when gate is applied.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnGateModel.get_three_qubit_gate_error">
+<span class="sig-name descname"><span class="pre">get_three_qubit_gate_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnGateModel.get_three_qubit_gate_error" title="Link to this definition"></a></dt>
+<dd><p>Return the extra noise for a three qubit gate, if it exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gate</strong> (<em>str</em>) -- The name of the gate.</p></li>
+<li><p><strong>control0</strong> (<em>int</em>) -- The first control qubit the gate acts on.</p></li>
+<li><p><strong>control1</strong> (<em>int</em>) -- The second control qubit the gate acts on.</p></li>
+<li><p><strong>target</strong> (<em>int</em>) -- The target qubit the gate acts on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The error model applied when gate is applied.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnGateModel.get_two_qubit_gate_error">
+<span class="sig-name descname"><span class="pre">get_two_qubit_gate_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnGateModel.get_two_qubit_gate_error" title="Link to this definition"></a></dt>
+<dd><p>Return the extra noise for a single qubit gate, if it exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gate</strong> (<em>str</em>) -- The name of the gate.</p></li>
+<li><p><strong>control</strong> (<em>int</em>) -- The control qubit the gate acts on.</p></li>
+<li><p><strong>target</strong> (<em>int</em>) -- The target qubit the gate acts on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The error model applied when gate is applied.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[struqture_py.spins.PlusMinusLindbladNoiseOperator]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnGateModel.json_schema">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">json_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnGateModel.json_schema" title="Link to this definition"></a></dt>
+<dd><p>Return the JsonSchema for the json serialisation of the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The json schema serialized to json</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnGateModel.min_supported_version">
+<span class="sig-name descname"><span class="pre">min_supported_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnGateModel.min_supported_version" title="Link to this definition"></a></dt>
+<dd><p>Return the minimum version of qoqo that supports this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The minimum version of the qoqo library to deserialize this object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnGateModel.set_multi_qubit_gate_error">
+<span class="sig-name descname"><span class="pre">set_multi_qubit_gate_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_operator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnGateModel.set_multi_qubit_gate_error" title="Link to this definition"></a></dt>
+<dd><p>Set extra noise for a multi qubit gate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gate</strong> (<em>str</em>) -- The name of the gate.</p></li>
+<li><p><strong>qubits</strong> (<em>list</em>) -- The qubits the gate acts on.</p></li>
+<li><p><strong>noise_operator</strong> (<em>struqture_py.spins.PlusMinusLindbladNoiseOperator</em>) -- The noise affecting system when gate is applied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The error model with the new noise on gate set.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Self</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>PyTypeError</strong> -- Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnGateModel.set_single_qubit_gate_error">
+<span class="sig-name descname"><span class="pre">set_single_qubit_gate_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_operator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnGateModel.set_single_qubit_gate_error" title="Link to this definition"></a></dt>
+<dd><p>Set extra noise for a single qubit gate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gate</strong> (<em>str</em>) -- The name of the gate.</p></li>
+<li><p><strong>qubit</strong> (<em>int</em>) -- The qubit the gate acts on.</p></li>
+<li><p><strong>noise_operator</strong> (<em>struqture_py.spins.PlusMinusLindbladNoiseOperator</em>) -- The noise affecting system when gate is applied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The error model with the new noise on gate set.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Self</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>PyTypeError</strong> -- Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnGateModel.set_three_qubit_gate_error">
+<span class="sig-name descname"><span class="pre">set_three_qubit_gate_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_operator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnGateModel.set_three_qubit_gate_error" title="Link to this definition"></a></dt>
+<dd><p>Set extra noise for a single qubit gate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gate</strong> (<em>str</em>) -- The name of the gate.</p></li>
+<li><p><strong>control0</strong> (<em>int</em>) -- The first control qubit the gate acts on.</p></li>
+<li><p><strong>control1</strong> (<em>int</em>) -- The second control qubit the gate acts on.</p></li>
+<li><p><strong>target</strong> (<em>int</em>) -- The target qubit the gate acts on.</p></li>
+<li><p><strong>noise_operator</strong> (<em>struqture_py.spins.PlusMinusLindbladNoiseOperator</em>) -- The noise affecting system when gate is applied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The error model with the new noise on gate set.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Self</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>PyTypeError</strong> -- Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnGateModel.set_two_qubit_gate_error">
+<span class="sig-name descname"><span class="pre">set_two_qubit_gate_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_operator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnGateModel.set_two_qubit_gate_error" title="Link to this definition"></a></dt>
+<dd><p>Set extra noise for a two qubit gate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gate</strong> (<em>str</em>) -- The name of the gate.</p></li>
+<li><p><strong>control</strong> (<em>int</em>) -- The control qubit the gate acts on.</p></li>
+<li><p><strong>target</strong> (<em>int</em>) -- The target qubit the gate acts on.</p></li>
+<li><p><strong>noise_operator</strong> (<em>struqture_py.spins.PlusMinusLindbladNoiseOperator</em>) -- The noise affecting system when gate is applied.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The error model with the new noise on gate set.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Self</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>PyTypeError</strong> -- Noise operator is not a struqture.spins.PlusMinusLindbladNoiseOperator.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnGateModel.to_bincode">
+<span class="sig-name descname"><span class="pre">to_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnGateModel.to_bincode" title="Link to this definition"></a></dt>
+<dd><p>Return the bincode representation of the Noise-Model using the bincode crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized Noise-Model (in bincode form).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ByteArray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize Noise-Model to bytes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnGateModel.to_json">
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnGateModel.to_json" title="Link to this definition"></a></dt>
+<dd><p>Return the json representation of the Noise-Model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized form of Noise-Model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize Noise-Model to json.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnIdleModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.noise_models.</span></span><span class="sig-name descname"><span class="pre">DecoherenceOnIdleModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">noise_operator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnIdleModel" title="Link to this definition"></a></dt>
+<dd><p>Noise model representing a continuous decoherence process on idle qubits.</p>
+<p>The purpose of this noise model is to enable defining background noise models that exclude the qubits involved
+in a gate, as these might be decoupled from the background noise.The noise for each qubit can be different but
+only single qubit noise is included in the model.</p>
+<p>Noise is given by the rates of the Lindblad equation.
+The Lindblad equation is a so-called master equation for the time evolution of a density matrix.
+For the example of a single qubit the non-coherent part of the Lindblad equation can take the following form:</p>
+<p>d/dt * ρ = Σ Mij * Li * ρ * Lj† - 1/2 * ( Lj† * Li * ρ + ρ * Lj† * Li),</p>
+<p>where the indices i and j run from 0 to 2</p>
+<p>with L0 = σ+, L1 = σ- and L3 = σz.</p>
+<p>Here the genreal incoherent part of the Lindblad equation is internally represented by a [struqture::spins::PlusMinusLindbladNoiseOperator].</p>
+<p>To create a complex decoherence model first create the Lindblad noise and then turn it into a DecoherenceOnIdleModel.
+For a simple decoherence model, use new to create an empty model and use the add_damping, add_excitation and add_dephasing methods.
+For more fine control access the internal lindblad_noise directly and modify it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>noise_operator</strong> (<em>struqture_py.spins.PlusMinusLindbladNoiseOperator</em>) -- Optional initialisation of Noise Model with given Lindblad operator.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnIdleModel.add_damping_rate">
+<span class="sig-name descname"><span class="pre">add_damping_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnIdleModel.add_damping_rate" title="Link to this definition"></a></dt>
+<dd><p>Convenience function to add damping to several qubits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qubits</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- The qubits to add damping to.</p></li>
+<li><p><strong>rate</strong> (<em>float</em>) -- The damping rate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The model with the damping added.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#qoqo.noise_models.DecoherenceOnIdleModel" title="qoqo.noise_models.DecoherenceOnIdleModel">DecoherenceOnIdleModel</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnIdleModel.add_dephasing_rate">
+<span class="sig-name descname"><span class="pre">add_dephasing_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnIdleModel.add_dephasing_rate" title="Link to this definition"></a></dt>
+<dd><p>Convenience function to add dephasing to several qubits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qubits</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- The qubits to add dephasing to.</p></li>
+<li><p><strong>rate</strong> (<em>float</em>) -- The dephasing rate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The model with the dephasing added.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#qoqo.noise_models.DecoherenceOnIdleModel" title="qoqo.noise_models.DecoherenceOnIdleModel">DecoherenceOnIdleModel</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnIdleModel.add_depolarising_rate">
+<span class="sig-name descname"><span class="pre">add_depolarising_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnIdleModel.add_depolarising_rate" title="Link to this definition"></a></dt>
+<dd><p>Convenience function to add depolarising to several qubits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qubits</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- The qubits to add depolarising to.</p></li>
+<li><p><strong>rate</strong> (<em>float</em>) -- The depolarising rate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The model with the depolarising added.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#qoqo.noise_models.DecoherenceOnIdleModel" title="qoqo.noise_models.DecoherenceOnIdleModel">DecoherenceOnIdleModel</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnIdleModel.add_excitation_rate">
+<span class="sig-name descname"><span class="pre">add_excitation_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnIdleModel.add_excitation_rate" title="Link to this definition"></a></dt>
+<dd><p>Convenience function to add excitation to several qubits</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qubits</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) -- The qubits to add excitation to.</p></li>
+<li><p><strong>rate</strong> (<em>float</em>) -- The excitation rate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The model with the excitation added.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#qoqo.noise_models.DecoherenceOnIdleModel" title="qoqo.noise_models.DecoherenceOnIdleModel">DecoherenceOnIdleModel</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnIdleModel.current_version">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnIdleModel.current_version" title="Link to this definition"></a></dt>
+<dd><p>Returns the current version of the qoqo library .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current version of the library.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnIdleModel.from_bincode">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_bincode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnIdleModel.from_bincode" title="Link to this definition"></a></dt>
+<dd><p>Convert the bincode representation of the Noise-Model to a device using the bincode crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>ByteArray</em>) -- The serialized Noise-Model (in bincode form).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The deserialized Noise-Model.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TypeError</strong> -- Input cannot be converted to byte array.</p></li>
+<li><p><strong>ValueError</strong> -- Input cannot be deserialized to selected Noise-Model.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnIdleModel.from_json">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnIdleModel.from_json" title="Link to this definition"></a></dt>
+<dd><p>Convert the json representation of a device to a Noise-Model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>str</em>) -- The serialized device in json form.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The deserialized device.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Input cannot be deserialized to selected Noise-Model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnIdleModel.get_noise_operator">
+<span class="sig-name descname"><span class="pre">get_noise_operator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnIdleModel.get_noise_operator" title="Link to this definition"></a></dt>
+<dd><p>Return the internal Lindblad noise operator of the continuous noise model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The internal Lindblad noise operator of the continuous noise</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>PlusMinusLindbladNoiseOperator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnIdleModel.json_schema">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">json_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnIdleModel.json_schema" title="Link to this definition"></a></dt>
+<dd><p>Return the JsonSchema for the json serialisation of the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The json schema serialized to json</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnIdleModel.min_supported_version">
+<span class="sig-name descname"><span class="pre">min_supported_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnIdleModel.min_supported_version" title="Link to this definition"></a></dt>
+<dd><p>Return the minimum version of qoqo that supports this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The minimum version of the qoqo library to deserialize this object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnIdleModel.to_bincode">
+<span class="sig-name descname"><span class="pre">to_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnIdleModel.to_bincode" title="Link to this definition"></a></dt>
+<dd><p>Return the bincode representation of the Noise-Model using the bincode crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized Noise-Model (in bincode form).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ByteArray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize Noise-Model to bytes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.DecoherenceOnIdleModel.to_json">
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.DecoherenceOnIdleModel.to_json" title="Link to this definition"></a></dt>
+<dd><p>Return the json representation of the Noise-Model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized form of Noise-Model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize Noise-Model to json.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qoqo.noise_models.ImperfectReadoutModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.noise_models.</span></span><span class="sig-name descname"><span class="pre">ImperfectReadoutModel</span></span><a class="headerlink" href="#qoqo.noise_models.ImperfectReadoutModel" title="Link to this definition"></a></dt>
+<dd><p>Noise model representing readout errors.</p>
+<p>Readout errors are modeled by two probabilities in this simple model.
+One probability to detect a 1 instead of a 0 when the quantum measurement gives 0 and
+one probability to detect a 0 instead of a 1 when the quantum measurement gives 1.</p>
+<p># Example</p>
+<p><a href="#id7"><span class="problematic" id="id8">``</span></a><a href="#id9"><span class="problematic" id="id10">`</span></a>Python
+form qoqo.noise_models import ImperfectReadoutModel</p>
+<p>model = ImperfectReadoutModel.new_with_uniform_error(3, 0.5, 0.5);
+model = model.set_error_probabilites(2, 0.3, 0.7)
+uniform_prob = model.prob_detect_0_as_1(0)
+assert uniform_prob == 0.5
+lower_prob = model.prob_detect_0_as_1(2)
+assert lower_prob == 0.3
+higher_prob = model.prob_detect_1_as_0(2)
+assert higher_prob == 0.7
+<a href="#id11"><span class="problematic" id="id12">``</span></a><a href="#id13"><span class="problematic" id="id14">`</span></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ImperfectReadoutModel.current_version">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ImperfectReadoutModel.current_version" title="Link to this definition"></a></dt>
+<dd><p>Returns the current version of the qoqo library .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current version of the library.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ImperfectReadoutModel.from_bincode">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_bincode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ImperfectReadoutModel.from_bincode" title="Link to this definition"></a></dt>
+<dd><p>Convert the bincode representation of the Noise-Model to a device using the bincode crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>ByteArray</em>) -- The serialized Noise-Model (in bincode form).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The deserialized Noise-Model.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TypeError</strong> -- Input cannot be converted to byte array.</p></li>
+<li><p><strong>ValueError</strong> -- Input cannot be deserialized to selected Noise-Model.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ImperfectReadoutModel.from_json">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ImperfectReadoutModel.from_json" title="Link to this definition"></a></dt>
+<dd><p>Convert the json representation of a device to a Noise-Model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>str</em>) -- The serialized device in json form.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The deserialized device.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Input cannot be deserialized to selected Noise-Model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ImperfectReadoutModel.json_schema">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">json_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ImperfectReadoutModel.json_schema" title="Link to this definition"></a></dt>
+<dd><p>Return the JsonSchema for the json serialisation of the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The json schema serialized to json</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ImperfectReadoutModel.min_supported_version">
+<span class="sig-name descname"><span class="pre">min_supported_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ImperfectReadoutModel.min_supported_version" title="Link to this definition"></a></dt>
+<dd><p>Return the minimum version of qoqo that supports this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The minimum version of the qoqo library to deserialize this object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ImperfectReadoutModel.new_with_uniform_error">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">new_with_uniform_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_qubits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_detect_0_as_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_detect_1_as_0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ImperfectReadoutModel.new_with_uniform_error" title="Link to this definition"></a></dt>
+<dd><p>Convenience function to create uniform error probabilities</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>number_qubits</strong> (<em>int</em>) -- The number of qubits the uniform error probabilites should be initialized for.</p></li>
+<li><p><strong>prob_detect_0_as_1</strong> (<em>float</em>) -- The error probability to detect a 1 instead of a 0 when measuring 0</p></li>
+<li><p><strong>prob_detect_1_as_0</strong> (<em>float</em>) -- The error probability to detect a 0 instead of a 1 when measuring 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The new error model</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#qoqo.noise_models.ImperfectReadoutModel" title="qoqo.noise_models.ImperfectReadoutModel">ImperfectReadoutModel</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> -- Raised if the error probabilities are not valid (&lt; 0 or &gt; 1)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ImperfectReadoutModel.prob_detect_0_as_1">
+<span class="sig-name descname"><span class="pre">prob_detect_0_as_1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ImperfectReadoutModel.prob_detect_0_as_1" title="Link to this definition"></a></dt>
+<dd><p>Return probability to detect 0 as 1 for a qubit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>qubit</strong> (<em>int</em>) -- The qubit for which the probability is returned.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The probability to detect 0 as 1 for the qubit</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ImperfectReadoutModel.prob_detect_1_as_0">
+<span class="sig-name descname"><span class="pre">prob_detect_1_as_0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ImperfectReadoutModel.prob_detect_1_as_0" title="Link to this definition"></a></dt>
+<dd><p>Return probability to detect 1 as 0 for a qubit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>qubit</strong> (<em>int</em>) -- The qubit for which the probability is returned.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The probability to detect 1 as 0 for the qubit</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ImperfectReadoutModel.set_error_probabilites">
+<span class="sig-name descname"><span class="pre">set_error_probabilites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_detect_0_as_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_detect_1_as_0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ImperfectReadoutModel.set_error_probabilites" title="Link to this definition"></a></dt>
+<dd><p>Set and overwrite the measurement error probabilities</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qubit</strong> (<em>int</em>) -- The qubitsfor which error rates is set.</p></li>
+<li><p><strong>prob_detect_0_as_1</strong> (<em>float</em>) -- The error probability to detect a 1 instead of a 0 when measuring 0</p></li>
+<li><p><strong>prob_detect_1_as_0</strong> (<em>float</em>) -- The error probability to detect a 0 instead of a 1 when measuring 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated error model</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Self</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> -- Raised if the error probabilities are not valid (&lt; 0 or &gt; 1).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ImperfectReadoutModel.to_bincode">
+<span class="sig-name descname"><span class="pre">to_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ImperfectReadoutModel.to_bincode" title="Link to this definition"></a></dt>
+<dd><p>Return the bincode representation of the Noise-Model using the bincode crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized Noise-Model (in bincode form).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ByteArray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize Noise-Model to bytes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.ImperfectReadoutModel.to_json">
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.ImperfectReadoutModel.to_json" title="Link to this definition"></a></dt>
+<dd><p>Return the json representation of the Noise-Model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized form of Noise-Model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize Noise-Model to json.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationDescription">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.noise_models.</span></span><span class="sig-name descname"><span class="pre">SingleQubitOverrotationDescription</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta_mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta_std</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationDescription" title="Link to this definition"></a></dt>
+<dd><p>Description of single qubit overrotation noise model, [roqoqo::noise_models::SingleQubitOverrotationOnGate].</p>
+<p>Consists of the raw data needed to construct a rotation gate that adds
+overrotation: gate name and statistics (mean and standard deviation) of a Gaussian distribution
+from which the overrotation angle is sampled.
+Example:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">from</span> <span class="pre">qoqo.noise_models</span> <span class="pre">import</span> <span class="pre">SingleQubitOverrotationDescription;</span>
+<span class="pre">gate</span> <span class="pre">=</span> <span class="pre">&quot;RotateX&quot;;</span>
+<span class="pre">theta_mean</span> <span class="pre">=</span> <span class="pre">0.0;</span>
+<span class="pre">theta_std</span> <span class="pre">=</span> <span class="pre">1.0;</span>
+<span class="pre">noise_desc</span> <span class="pre">=</span> <span class="pre">SingleQubitOverrotationDescription(gate,</span> <span class="pre">theta_mean,</span> <span class="pre">theta_std);</span>
+<span class="pre">`</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationDescription.current_version">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationDescription.current_version" title="Link to this definition"></a></dt>
+<dd><p>Return the current version of the qoqo library.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current version of the library.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationDescription.from_bincode">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_bincode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationDescription.from_bincode" title="Link to this definition"></a></dt>
+<dd><p>Convert the bincode representation of the overotation description to a device using the bincode crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>ByteArray</em>) -- The serialized Noise-Model (in bincode form).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The deserialized Noise-Model.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TypeError</strong> -- Input cannot be converted to byte array.</p></li>
+<li><p><strong>ValueError</strong> -- Input cannot be deserialized to selected Noise-Model.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationDescription.from_json">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationDescription.from_json" title="Link to this definition"></a></dt>
+<dd><p>Convert the json representation of a device to a overotation description.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>str</em>) -- The serialized device in json form.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The deserialized device.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Input cannot be deserialized to selected Noise-Model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationDescription.json_schema">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">json_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationDescription.json_schema" title="Link to this definition"></a></dt>
+<dd><p>Return the JsonSchema for the json serialisation of the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The json schema serialized to json</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationDescription.min_supported_version">
+<span class="sig-name descname"><span class="pre">min_supported_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationDescription.min_supported_version" title="Link to this definition"></a></dt>
+<dd><p>Return the minimum version of qoqo that supports this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The minimum version of the qoqo library to deserialize this object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationDescription.to_bincode">
+<span class="sig-name descname"><span class="pre">to_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationDescription.to_bincode" title="Link to this definition"></a></dt>
+<dd><p>Return the bincode representation of SingleQubitOverrotationDescription using the bincode crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized SingleQubitOverrotationDescription (in bincode form).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ByteArray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize SingleQubitOverrotationDescription to bytes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationDescription.to_json">
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationDescription.to_json" title="Link to this definition"></a></dt>
+<dd><p>Return the json representation of the SingleQubitOverrotationDescription.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized form of SingleQubitOverrotationDescription.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize SingleQubitOverrotationDescription.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationOnGate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qoqo.noise_models.</span></span><span class="sig-name descname"><span class="pre">SingleQubitOverrotationOnGate</span></span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationOnGate" title="Link to this definition"></a></dt>
+<dd><p>Single qubit overrotation noise model on gate.</p>
+<p>Adds a rotation gate with a randomly distributed rotation angle after specified gates in a quantum circuit.
+Example:</p>
+<p><a href="#id15"><span class="problematic" id="id16">``</span></a>`
+from qoqo.noise_models import SingleQubitOverrotationDescription
+from qoqo.noise_models import SingleQubitOverrotationOnGate
+gate = &quot;RotateX&quot;
+theta_mean = 0.0
+theta_std = 1.0
+noise_desc = SingleQubitOverrotationDescription(gate, theta_mean, theta_std)</p>
+<p>noise = SingleQubitOverrotationOnGate();
+circuit_gate_with_noise = &quot;RotateZ&quot;;
+qubit = 0;
+noise.set_single_qubit_overrotation(circuit_gate_with_noise, qubit, noise_desc);
+<a href="#id17"><span class="problematic" id="id18">``</span></a><a href="#id19"><span class="problematic" id="id20">`</span></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationOnGate.current_version">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">current_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationOnGate.current_version" title="Link to this definition"></a></dt>
+<dd><p>Returns the current version of the qoqo library .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current version of the library.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationOnGate.from_bincode">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_bincode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationOnGate.from_bincode" title="Link to this definition"></a></dt>
+<dd><p>Convert the bincode representation of the Noise-Model to a device using the bincode crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>ByteArray</em>) -- The serialized Noise-Model (in bincode form).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The deserialized Noise-Model.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TypeError</strong> -- Input cannot be converted to byte array.</p></li>
+<li><p><strong>ValueError</strong> -- Input cannot be deserialized to selected Noise-Model.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationOnGate.from_json">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationOnGate.from_json" title="Link to this definition"></a></dt>
+<dd><p>Convert the json representation of a device to a Noise-Model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>str</em>) -- The serialized device in json form.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The deserialized device.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Input cannot be deserialized to selected Noise-Model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationOnGate.get_single_qubit_overrotation">
+<span class="sig-name descname"><span class="pre">get_single_qubit_overrotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationOnGate.get_single_qubit_overrotation" title="Link to this definition"></a></dt>
+<dd><p>Return the overrotation description for a single qubit gate, if it exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gate</strong> (<em>str</em>) -- The name of the gate.</p></li>
+<li><p><strong>qubit</strong> (<em>int</em>) -- The qubit the gate acts on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The overrotation applied when gate is applied.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[<a class="reference internal" href="#qoqo.noise_models.SingleQubitOverrotationDescription" title="qoqo.noise_models.SingleQubitOverrotationDescription">SingleQubitOverrotationDescription</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationOnGate.get_two_qubit_overrotation">
+<span class="sig-name descname"><span class="pre">get_two_qubit_overrotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationOnGate.get_two_qubit_overrotation" title="Link to this definition"></a></dt>
+<dd><p>Return the extra noise for a single qubit gate, if it exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gate</strong> (<em>str</em>) -- The name of the gate.</p></li>
+<li><p><strong>control</strong> (<em>int</em>) -- The control qubit the gate acts on.</p></li>
+<li><p><strong>target</strong> (<em>int</em>) -- The target qubit the gate acts on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The overrotation applied when gate is applied.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[Tuple[<a class="reference internal" href="#qoqo.noise_models.SingleQubitOverrotationDescription" title="qoqo.noise_models.SingleQubitOverrotationDescription">SingleQubitOverrotationDescription</a>, <a class="reference internal" href="#qoqo.noise_models.SingleQubitOverrotationDescription" title="qoqo.noise_models.SingleQubitOverrotationDescription">SingleQubitOverrotationDescription</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationOnGate.json_schema">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">json_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationOnGate.json_schema" title="Link to this definition"></a></dt>
+<dd><p>Return the JsonSchema for the json serialisation of the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The json schema serialized to json</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationOnGate.min_supported_version">
+<span class="sig-name descname"><span class="pre">min_supported_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationOnGate.min_supported_version" title="Link to this definition"></a></dt>
+<dd><p>Return the minimum version of qoqo that supports this object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The minimum version of the qoqo library to deserialize this object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationOnGate.set_single_qubit_overrotation">
+<span class="sig-name descname"><span class="pre">set_single_qubit_overrotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_description</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationOnGate.set_single_qubit_overrotation" title="Link to this definition"></a></dt>
+<dd><p>Set overrotation for a single qubit gate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gate</strong> (<em>str</em>) -- The name of the gate.</p></li>
+<li><p><strong>qubit</strong> (<em>int</em>) -- The qubit the gate acts on.</p></li>
+<li><p><strong>noise_description</strong> (<a class="reference internal" href="#qoqo.noise_models.SingleQubitOverrotationDescription" title="qoqo.noise_models.SingleQubitOverrotationDescription"><em>SingleQubitOverrotationDescription</em></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The overotation model with the new overrotation on gate set.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Self</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>PyTypeError</strong> -- Noise description is not a SingleQubitOverrotationDescription.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationOnGate.set_two_qubit_overrotation">
+<span class="sig-name descname"><span class="pre">set_two_qubit_overrotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_operator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationOnGate.set_two_qubit_overrotation" title="Link to this definition"></a></dt>
+<dd><p>Set extra noise for a two qubit gate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gate</strong> (<em>str</em>) -- The name of the gate.</p></li>
+<li><p><strong>control</strong> (<em>int</em>) -- The control qubit the gate acts on.</p></li>
+<li><p><strong>target</strong> (<em>int</em>) -- The target qubit the gate acts on.</p></li>
+<li><p><strong>noise_description</strong> (<em>(</em><a class="reference internal" href="#qoqo.noise_models.SingleQubitOverrotationDescription" title="qoqo.noise_models.SingleQubitOverrotationDescription"><em>SingleQubitOverrotationDescription</em></a><em>, </em><a class="reference internal" href="#qoqo.noise_models.SingleQubitOverrotationDescription" title="qoqo.noise_models.SingleQubitOverrotationDescription"><em>SingleQubitOverrotationDescription</em></a><em>)</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The overrotation model with the new overrotation on gate set.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Self</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>PyTypeError</strong> -- Noise description is not a (SingleQubitOverrotationDescription, SingleQubitOverrotationDescription).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationOnGate.to_bincode">
+<span class="sig-name descname"><span class="pre">to_bincode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationOnGate.to_bincode" title="Link to this definition"></a></dt>
+<dd><p>Return the bincode representation of the Noise-Model using the bincode crate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized Noise-Model (in bincode form).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ByteArray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize Noise-Model to bytes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qoqo.noise_models.SingleQubitOverrotationOnGate.to_json">
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qoqo.noise_models.SingleQubitOverrotationOnGate.to_json" title="Link to this definition"></a></dt>
+<dd><p>Return the json representation of the Noise-Model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The serialized form of Noise-Model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- Cannot serialize Noise-Model to json.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="generated/qoqo.devices.SquareLatticeDevice.html" class="btn btn-neutral float-left" title="qoqo.devices.SquareLatticeDevice" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generated/qoqo.noise_models.ContinuousDecoherenceModel.html" class="btn btn-neutral float-right" title="qoqo.noise_models.ContinuousDecoherenceModel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, HQS Quantum Simulations GmbH.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

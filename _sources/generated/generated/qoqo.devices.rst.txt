@@ -1,0 +1,14 @@
+qoqo.devices
+============
+
+.. automodule:: qoqo.devices
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AllToAllDevice
+      GenericDevice
+      SquareLatticeDevice
+   
