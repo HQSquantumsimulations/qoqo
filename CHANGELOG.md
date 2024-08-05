@@ -2,9 +2,18 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
-## Unreleased
 
-* Fixed sphinx documentation
+## 1.5.2-alpha.2
+
+### Added in 1.5.2-alpha.2
+
+* Fixed sphinx documentation and compatibility test 1.14.
+
+## 1.5.2-alpha.1
+
+### Added in 1.5.2-alpha.1
+
+* Fixed release bug.
 
 ## 1.5.2-alpha.0
 
