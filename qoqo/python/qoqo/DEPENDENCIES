@@ -4812,7 +4812,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-cc 1.1.7
+cc 1.1.8
 https://github.com/rust-lang/cc-rs
 by Alex Crichton <alex@alexcrichton.com>
 A build-time dependency for Cargo build scripts to assist in invoking the native
@@ -20423,7 +20423,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 ====================================================
-object 0.36.2
+object 0.36.3
 https://github.com/gimli-rs/object
 by 
 A unified interface for reading and writing object file formats.
@@ -25017,7 +25017,7 @@ LICENSE:
 
 
 ====================================================
-qoqo_calculator 1.2.2
+qoqo_calculator 1.2.3
 https://github.com/HQSquantumsimulations/qoqo_calculator
 by HQS Quantum Simulations <info@quantumsimulations.de>
 qoqo-calculator is the calculator backend of the qoqo quantum computing toolkit by HQS Quantum Simulations
@@ -25229,7 +25229,7 @@ LICENSE:
 
 
 ====================================================
-qoqo_calculator_pyo3 1.2.2
+qoqo_calculator_pyo3 1.2.3
 https://github.com/HQSquantumsimulations/qoqo_calculator_pyo3
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Python interface to qoqo calculator, the calculator backend of the qoqo quantum computing toolkit by HQS Quantum Simulations
@@ -29552,7 +29552,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-serde 1.0.204
+serde 1.0.205
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A generic serialization/deserialization framework
@@ -29766,7 +29766,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-serde_derive 1.0.204
+serde_derive 1.0.205
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Macros 1.1 implementation of #[derive(Serialize, Deserialize)]
