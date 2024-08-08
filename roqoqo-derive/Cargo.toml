@@ -1,10 +1,10 @@
 [package]
 name = "roqoqo-derive"
-version = "1.15.2-alpha.2"
+version = "1.15.2-alpha.3"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"
-rust-version = "1.56"
+rust-version = "1.70"
 categories = ["science", "simulation"]
 readme = "../README.md"
 description = "Macros for the roqoqo crate"
