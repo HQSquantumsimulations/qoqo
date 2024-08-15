@@ -803,7 +803,7 @@ You may use this code under the terms of either license.
 
 
 ====================================================
-anstream 0.6.14
+anstream 0.6.15
 https://github.com/rust-cli/anstyle
 by 
 A simple cross platform library for writing colored text to a terminal.
@@ -1039,7 +1039,7 @@ LICENSE-APACHE:
 
 
 ====================================================
-anstyle 1.0.7
+anstyle 1.0.8
 https://github.com/rust-cli/anstyle
 by 
 ANSI text styling
@@ -1275,7 +1275,7 @@ LICENSE-APACHE:
 
 
 ====================================================
-anstyle-parse 0.2.4
+anstyle-parse 0.2.5
 https://github.com/rust-cli/anstyle
 by 
 Parse ANSI Style Escapes
@@ -1516,7 +1516,7 @@ LICENSE-APACHE:
 
 
 ====================================================
-anstyle-query 1.1.0
+anstyle-query 1.1.1
 https://github.com/rust-cli/anstyle
 by 
 Look up colored console capabilities
@@ -1752,7 +1752,7 @@ LICENSE-APACHE:
 
 
 ====================================================
-anstyle-wincon 3.0.3
+anstyle-wincon 3.0.4
 https://github.com/rust-cli/anstyle
 by 
 Styling legacy Windows terminals
@@ -4609,7 +4609,7 @@ SOFTWARE.
 
 
 ====================================================
-bytemuck 1.16.1
+bytemuck 1.16.3
 https://github.com/Lokathor/bytemuck
 by Lokathor <zefria@gmail.com>
 A crate for mucking around with piles of bytes.
@@ -4709,7 +4709,74 @@ limitations under the License.
 
 
 ====================================================
-bytes 1.6.1
+byteorder 1.5.0
+https://github.com/BurntSushi/byteorder
+by Andrew Gallant <jamslam@gmail.com>
+Library for reading/writing numbers in big-endian and little-endian.
+License: Unlicense OR MIT
+----------------------------------------------------
+LICENSE-MIT:
+
+The MIT License (MIT)
+
+Copyright (c) 2015 Andrew Gallant
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+----------------------------------------------------
+UNLICENSE:
+
+This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
+
+In jurisdictions that recognize copyright laws, the author or authors
+of this software dedicate any and all copyright interest in the
+software to the public domain. We make this dedication for the benefit
+of the public at large and to the detriment of our heirs and
+successors. We intend this dedication to be an overt act of
+relinquishment in perpetuity of all present and future rights to this
+software under copyright law.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+For more information, please refer to <http://unlicense.org/>
+
+----------------------------------------------------
+COPYING:
+
+This project is dual-licensed under the Unlicense and MIT licenses.
+
+You may use this code under the terms of either license.
+
+
+====================================================
+bytes 1.7.1
 https://github.com/tokio-rs/bytes
 by Carl Lerche <me@carllerche.com>, Sean McArthur <sean@seanmonstar.com>
 Types and traits for working with bytes
@@ -4745,7 +4812,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-cc 1.1.6
+cc 1.1.8
 https://github.com/rust-lang/cc-rs
 by Alex Crichton <alex@alexcrichton.com>
 A build-time dependency for Cargo build scripts to assist in invoking the native
@@ -5233,7 +5300,7 @@ limitations under the License.
 
 
 ====================================================
-clap 4.5.10
+clap 4.5.13
 https://github.com/clap-rs/clap
 by 
 A simple to use, efficient, and full-featured Command Line Argument Parser
@@ -5469,7 +5536,7 @@ LICENSE-APACHE:
 
 
 ====================================================
-clap_builder 4.5.10
+clap_builder 4.5.13
 https://github.com/clap-rs/clap
 by 
 A simple to use, efficient, and full-featured Command Line Argument Parser
@@ -5706,7 +5773,7 @@ LICENSE-APACHE:
 
 
 ====================================================
-clap_derive 4.5.8
+clap_derive 4.5.13
 https://github.com/clap-rs/clap
 by 
 Parse command line argument by defining a struct, derive crate.
@@ -5943,7 +6010,7 @@ LICENSE-APACHE:
 
 
 ====================================================
-clap_lex 0.7.1
+clap_lex 0.7.2
 https://github.com/clap-rs/clap
 by 
 Minimal, flexible command line parser
@@ -6180,7 +6247,7 @@ LICENSE-APACHE:
 
 
 ====================================================
-colorchoice 1.0.1
+colorchoice 1.0.2
 https://github.com/rust-cli/anstyle
 by 
 Global override of color control
@@ -13065,7 +13132,7 @@ limitations under the License.
 
 
 ====================================================
-indexmap 2.2.6
+indexmap 2.3.0
 https://github.com/indexmap-rs/indexmap
 by 
 A hash table with consistent order and fast iteration.
@@ -13957,7 +14024,7 @@ LICENSE-APACHE:
 
 
 ====================================================
-is_terminal_polyfill 1.70.0
+is_terminal_polyfill 1.70.1
 https://github.com/polyfill-rs/is_terminal_polyfill
 by 
 Polyfill for `is_terminal` stdlib feature for use with older MSRVs
@@ -16352,7 +16419,7 @@ limitations under the License.
 
 
 ====================================================
-matrixmultiply 0.3.8
+matrixmultiply 0.3.9
 https://github.com/bluss/matrixmultiply/
 by bluss, R. Janis Goldschmidt
 General matrix multiplication for f32 and f64 matrices. Operates on matrices with general layout (they can use arbitrary row and column stride). Detects and uses AVX or SSE2 on x86 platforms transparently for higher performance. Uses a microkernel strategy, so that the implementation is easy to parallelize and optimize.
@@ -20356,7 +20423,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 ====================================================
-object 0.36.2
+object 0.36.3
 https://github.com/gimli-rs/object
 by 
 A unified interface for reading and writing object file formats.
@@ -22927,7 +22994,7 @@ LICENSE-Apache:
 
 
 ====================================================
-ppv-lite86 0.2.17
+ppv-lite86 0.2.20
 https://github.com/cryptocorrosion/cryptocorrosion
 by The CryptoCorrosion Contributors
 Implementation of the crypto-simd API for x86
@@ -24527,7 +24594,7 @@ LICENSE-APACHE:
 
 
 ====================================================
-qoqo 1.15.2-alpha.1
+qoqo 1.15.2-alpha.3
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoqo
@@ -24739,7 +24806,7 @@ LICENSE:
 
 
 ====================================================
-qoqo-macros 1.15.2-alpha.1
+qoqo-macros 1.15.2-alpha.3
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -24950,7 +25017,7 @@ LICENSE:
 
 
 ====================================================
-qoqo_calculator 1.2.2
+qoqo_calculator 1.2.3
 https://github.com/HQSquantumsimulations/qoqo_calculator
 by HQS Quantum Simulations <info@quantumsimulations.de>
 qoqo-calculator is the calculator backend of the qoqo quantum computing toolkit by HQS Quantum Simulations
@@ -25162,7 +25229,7 @@ LICENSE:
 
 
 ====================================================
-qoqo_calculator_pyo3 1.2.2
+qoqo_calculator_pyo3 1.2.3
 https://github.com/HQSquantumsimulations/qoqo_calculator_pyo3
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Python interface to qoqo calculator, the calculator backend of the qoqo quantum computing toolkit by HQS Quantum Simulations
@@ -26784,7 +26851,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-regex 1.10.5
+regex 1.10.6
 https://github.com/rust-lang/regex
 by The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>
 An implementation of regular expressions for Rust. This implementation uses
@@ -27745,7 +27812,7 @@ limitations under the License.
 
 
 ====================================================
-roqoqo 1.15.2-alpha.1
+roqoqo 1.15.2-alpha.3
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
@@ -27957,7 +28024,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-derive 1.15.2-alpha.1
+roqoqo-derive 1.15.2-alpha.3
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the roqoqo crate
 License: Apache-2.0
@@ -28168,7 +28235,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-test 1.15.2-alpha.1
+roqoqo-test 1.15.2-alpha.3
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
@@ -29485,7 +29552,7 @@ limitations under the License.
 
 
 ====================================================
-serde 1.0.204
+serde 1.0.205
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A generic serialization/deserialization framework
@@ -29699,7 +29766,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-serde_derive 1.0.204
+serde_derive 1.0.205
 https://serde.rs
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Macros 1.1 implementation of #[derive(Serialize, Deserialize)]
@@ -30127,7 +30194,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-serde_json 1.0.120
+serde_json 1.0.122
 https://github.com/serde-rs/json
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 A JSON serialization file format
@@ -30341,7 +30408,7 @@ END OF TERMS AND CONDITIONS
 
 
 ====================================================
-serde_test 1.0.176
+serde_test 1.0.177
 https://github.com/serde-rs/test
 by Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>
 Token De/Serializer for testing De/Serialize implementations
@@ -31539,7 +31606,7 @@ SOFTWARE.
 
 
 ====================================================
-struqture 1.9.1
+struqture 1.9.2
 by HQS Quantum Simulations <info@quantumsimulations.de>
 HQS tool for representing operators, Hamiltonians and open systems.
 License: Apache-2.0
@@ -31961,13 +32028,13 @@ LICENSE:
 
 
 ====================================================
-struqture-py 1.9.1
+struqture-py 1.9.2
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Python interface of struqture, the HQS tool for representing operators, Hamiltonians and open systems.
 License: Apache-2.0
 
 ====================================================
-struqture-py-macros 1.9.1
+struqture-py-macros 1.9.2
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for struqture-py crate.
 License: Apache-2.0
@@ -32594,7 +32661,7 @@ Low level bindings to SystemConfiguration framework for macOS
 License: MIT OR Apache-2.0
 
 ====================================================
-target-lexicon 0.12.15
+target-lexicon 0.12.16
 https://github.com/bytecodealliance/target-lexicon
 by Dan Gohman <sunfish@mozilla.com>
 Targeting utilities for compilers and related tools
@@ -34558,7 +34625,7 @@ SOFTWARE.
 
 
 ====================================================
-tokio 1.39.1
+tokio 1.39.2
 https://tokio.rs
 by Tokio Contributors <team@tokio.rs>
 An event-driven, non-blocking I/O platform for writing asynchronous I/O
@@ -36678,7 +36745,7 @@ limitations under the License.
 
 
 ====================================================
-version_check 0.9.4
+version_check 0.9.5
 https://github.com/SergioBenitez/version_check
 by Sergio Benitez <sb@sergio.bz>
 Tiny crate to check the version of the installed/running rustc.

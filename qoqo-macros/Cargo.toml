@@ -1,11 +1,11 @@
 [package]
 name = "qoqo-macros"
-version = "1.15.2-alpha.1"
+version = "1.15.2-alpha.3"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 readme = "../README.md"
 edition = "2021"
-rust-version = "1.56"
+rust-version = "1.70"
 categories = ["science", "simulation"]
 description = "Macros for the qoqo crate"
 include = ["src*", "LICENSE"]

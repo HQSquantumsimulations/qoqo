@@ -566,7 +566,7 @@ fn main() {
                 create_doc(&format!("qoqo.{module}"))
             }
             .expect("Could not generate documentation.");
-            let out_dir = PathBuf::from(format!("qoqo/{}.pyi", module));
+            let out_dir = PathBuf::from(format!("python/qoqo/{}.pyi", module));
             fs::write(&out_dir, qoqo_doc).expect("Could not write to file");
         }
     }
