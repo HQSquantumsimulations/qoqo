@@ -17,7 +17,7 @@ jobs:
       # Run tests also on macos runners
       macos: true
       rust_package_name: "roqoqo"
-      # features: "json_schema"
+      features: "json_schema,overrotate"
 
   build_tests:
     uses: HQSquantumsimulations/reusable_workflows/.github/workflows/reusable_build_tests_rust_pyo3.yml@main
