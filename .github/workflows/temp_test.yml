@@ -26,7 +26,7 @@ jobs:
           maturin-version: latest
           command: build
           manylinux: 2014
-          args: --find-interpreter --out wheels -m ${{inputs.py_interface_folder}}/Cargo.toml --release --locked
+          args: --find-interpreter --out wheels -m qoqo/Cargo.toml --release --locked
       - name: store artifact
         uses: actions/upload-artifact@v3
         with:
@@ -35,7 +35,6 @@ jobs:
 
   build_maturin_builds_linux_arm:
     name: maturin_build-linux-arm
-    if: ${{inputs.build_for_arm}}
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v3
@@ -57,7 +56,7 @@ jobs:
           command: build
           manylinux: 2014
           target: aarch64-unknown-linux-gnu
-          args: --find-interpreter --out wheels -m ${{inputs.py_interface_folder}}/Cargo.toml --release --locked
+          args: --find-interpreter --out wheels -m qoqo/Cargo.toml --release --locked
       - name: store artifact
         uses: actions/upload-artifact@v3
         with:
@@ -83,7 +82,7 @@ jobs:
         with:
           maturin-version: latest
           command: sdist
-          args: --out wheels -m ${{inputs.py_interface_folder}}/Cargo.toml
+          args: --out wheels -m qoqo/Cargo.toml
       - name: store artifact
         uses: actions/upload-artifact@v3
         with:
@@ -104,9 +103,6 @@ jobs:
       with:
         name: linux_sdist
     - name: Publish
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
       run: |
         python -m pip install --upgrade pip
 
@@ -121,8 +117,5 @@ jobs:
       with:
         name: linux_arm_wheels
     - name: Publish
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
       run: |
         python -m pip install --upgrade pip
