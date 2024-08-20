@@ -10,7 +10,7 @@ jobs:
     uses: HQSquantumsimulations/reusable_workflows/.github/workflows/reusable_linting_rust_pyo3.yml@main
 
   unittests:
-    uses: HQSquantumsimulations/reusable_workflows/.github/workflows/reusable_unittests_rust_pyo3.yml@main
+    uses: mlodi-hqs/reusable_workflows/.github/workflows/reusable_unittests_rust_pyo3.yml@unittesting_features
     with:
       # Run tests also on windows runners
       windows: true
