@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: linux_wheels
-          path: linux_wheels
+          path: wheels
 
   build_maturin_builds_linux_arm:
     name: maturin_build-linux-arm
@@ -61,7 +61,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: linux_arm_wheels
-          path: linux_wheels
+          path: wheels
 
   build_maturin_src_builds_linux:
     name: maturin_build-src
@@ -87,7 +87,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: linux_sdist
-          path: linux_wheels
+          path: wheels
 
   deploy:
     needs: [build_maturin_src_builds_linux, build_maturin_builds_linux]
