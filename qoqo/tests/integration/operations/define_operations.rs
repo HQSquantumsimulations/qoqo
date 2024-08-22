@@ -1044,7 +1044,7 @@ fn test_pyo3_json_schema_gate_definition() {
     let rust_schema = serde_json::to_string_pretty(&schemars::schema_for!(GateDefinition)).unwrap();
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
-        let minimum_version: String = "1.10.1".to_owned();
+        let minimum_version: String = "1.13.0".to_owned();
         let pyobject = convert_operation_to_pyobject(operation).unwrap();
         let operation = pyobject.bind(py);
 
