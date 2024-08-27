@@ -1080,7 +1080,7 @@ pub trait OperateTwoModeGate:
 ///
 /// # Example
 /// ```
-/// use roqoqo::operations::{OperateSpinAnalog, ApplyConstantSpinHamiltonian};
+/// use roqoqo::operations::{OperateSpinsAnalog, ApplyConstantSpinHamiltonian};
 /// use struqture::prelude::*;
 /// use struqture::spins::{PauliProduct, SpinHamiltonian};
 /// use qoqo_calculator::CalculatorFloat;

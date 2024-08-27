@@ -495,7 +495,7 @@ pub trait ChainWithEnvironmentDevice {
     /// of a chain with equal or longer length and equal or higher ratio).
     ///
     /// For example, take a device with the connectivity graph:
-    /// ```
+    /// ```ignore
     /// 0 - 3 - 6
     /// |   |   |
     /// 1 - 4 - 7
@@ -504,12 +504,12 @@ pub trait ChainWithEnvironmentDevice {
     /// ```
     /// It would have one chain of length 1 and environment with ratio 4 to 1:
     ///
-    /// ```
+    /// ```ignore
     /// ([4], {4: [1,4,7,5]})
     /// ```
     ///
     /// One with length 2 and ratio 5 to 2:
-    /// ```
+    /// ```ignore
     /// ([3,4], {3:[0,6], 4: [1,7,5]})
     /// ```
     ///
@@ -517,15 +517,15 @@ pub trait ChainWithEnvironmentDevice {
     /// and does not need to be listed separately.
     ///
     /// The longest chain with ratio 1 to 1 is:
-    /// ```
+    /// ```ignore
     /// ([0,1,4,3], {1:[2], 4: [5,7], 3: [6]})
     /// ```
     /// One of the longest chains with ratio 2 to 6 is
-    /// ```
+    /// ```ignore
     /// ([0,1,2,5,4,3], {4: [7], 3: [6]})
     /// ```
     /// And one of the possible chains with just one environment qubit is:
-    /// ```
+    /// ```ignore
     /// ([0,1,2,5,4,3,6], {6: [7], 4: [7]})
     /// ```
     ///
