@@ -953,6 +953,6 @@ fn test_pyo3_json_schema_call_defined_gate() {
                 .unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
-        assert_eq!(minimum_supported_version_string, "1.10.1");
+        assert_eq!(minimum_supported_version_string, "1.13.0");
     });
 }

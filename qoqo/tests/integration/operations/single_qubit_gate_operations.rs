@@ -2800,6 +2800,8 @@ fn test_pyo3_json_schema(operation: SingleQubitGateOperation) {
             SingleQubitGateOperation::GPi(_) => "1.4.0".to_string(),
             SingleQubitGateOperation::GPi2(_) => "1.4.0".to_string(),
             SingleQubitGateOperation::Identity(_) => "1.7.0".to_string(),
+            SingleQubitGateOperation::SqrtPauliY(_) => "1.15.0".to_string(),
+            SingleQubitGateOperation::InvSqrtPauliY(_) => "1.15.0".to_string(),
             _ => "1.0.0".to_string(),
         };
         let converted_op = Operation::from(operation);

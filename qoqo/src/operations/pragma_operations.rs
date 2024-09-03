@@ -84,8 +84,7 @@ insert_pyany_to_operation!(
     "PragmaSetStateVector" =>{
         let array = op.call_method0("statevector").expect("error extracting");
         let statevec_casted: PyReadonlyArray1<Complex64> = array.extract().unwrap();
-        let statevec_array: Array1<Complex64> = statevec_casted.as_array().to_owned();;
-        // let statevec_array: Array1<Complex64> = Array1::from(statevec_casted);
+        let statevec_array: Array1<Complex64> = statevec_casted.as_array().to_owned();
         Ok(PragmaSetStateVector::new(statevec_array).into())
     }
 );
