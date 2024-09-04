@@ -2,13 +2,13 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
-## 1.15.2-alphas.4
+## 1.15.2-alpha.5
 
-### Added in 1.15.2-alpha.4
+### Added in 1.15.2-alpha.5
 
 * Renamed the readme in roqoqo.
 
-## 1.15.2-alphas.4
+## 1.15.2-alpha.4
 
 ### Added in 1.15.2-alpha.4
 
