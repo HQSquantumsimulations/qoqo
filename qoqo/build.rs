@@ -295,7 +295,7 @@ fn create_doc(module: &str) -> PyResult<String> {
                 let args = collect_args_from_doc(doc.as_str(), name.as_str()).join(", ");
                 main_doc.push_str(&format!(
                     "class {name}{}:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self{}):\n       return\n\n",
-                    module.eq("qoqo.operations").then(|| "(Operation)").unwrap_or_default(),
+                    module.eq("qoqo.operations").then_some("(Operation)").unwrap_or_default(),
                     if args.is_empty() { "".to_owned() } else { format!(", {}", args) },
                 ));
                 let class_dict = func.getattr("__dict__")?;
