@@ -6,6 +6,12 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ### Added in 1.15.2-alpha.4
 
+* Renamed the readme in roqoqo.
+
+## 1.15.2-alphas.4
+
+### Added in 1.15.2-alpha.4
+
 * Pinned clap version to use rust 1.70 (clap,clap_builder and clap_derive 4.4, clap_lex 0.6.0).
 
 ## 1.15.2-alphas.3
