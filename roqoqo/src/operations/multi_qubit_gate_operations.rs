@@ -245,3 +245,77 @@ impl SupportedVersion for CallDefinedGate {
 #[allow(non_upper_case_globals)]
 const TAGS_CallDefinedGate: &[&str; 3] =
     &["Operation", "MultiQubitGateOperation", "CallDefinedGate"];
+
+/// The triple-controlled PauliX gate.
+///
+///
+#[allow(clippy::upper_case_acronyms)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::OperateMultiQubit,
+    roqoqo_derive::Operate,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Substitute,
+)]
+#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct TripleControlledPauliX {
+    /// The control qubits involved in the triple-controlled PauliX gate.
+    qubits: Vec<usize>,
+}
+
+impl super::ImplementedIn1point15 for TripleControlledPauliX {}
+
+impl SupportedVersion for TripleControlledPauliX {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 15, 0)
+    }
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_TripleControlledPauliX: &[&str; 4] = &[
+    "Operation",
+    "GateOperation",
+    "MultiQubitGateOperation",
+    "TripleControlledPauliX",
+];
+
+/// The triple-controlled PauliZ gate.
+///
+///
+#[allow(clippy::upper_case_acronyms)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::OperateMultiQubit,
+    roqoqo_derive::Operate,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Substitute,
+)]
+#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct TripleControlledPauliZ {
+    /// The control qubits involved in the triple-controlled PauliZ gate.
+    controls: Vec<usize>,
+    /// The qubit to apply the PauliZ gate to.
+    qubits: Vec<usize>,
+}
+
+impl super::ImplementedIn1point15 for TripleControlledPauliZ {}
+
+impl SupportedVersion for TripleControlledPauliZ {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 15, 0)
+    }
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_TripleControlledPauliZ: &[&str; 4] = &[
+    "Operation",
+    "GateOperation",
+    "MultiQubitGateOperation",
+    "TripleControlledPauliZ",
+];
