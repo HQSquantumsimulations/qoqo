@@ -800,6 +800,23 @@ pub trait OperateThreeQubitGate:
     fn circuit(&self) -> crate::Circuit;
 }
 
+/// Trait for all Operations operating on or affecting exactly three qubits.
+///
+/// TODO EXAMPLE
+pub trait OperateFourQubitGate:
+    Operate
+    + OperateGate
+    + OperateFourQubit
+    + InvolveQubits
+    + Substitute
+    + Clone
+    + PartialEq
+    + SupportedVersion
+{
+    /// Returns a decomposition of the three-qubit operation using a circuit with two-qubit-operations.
+    fn circuit(&self) -> crate::Circuit;
+}
+
 /// Trait for all Operations operating on or affecting more than two qubits.
 ///
 /// # Example
