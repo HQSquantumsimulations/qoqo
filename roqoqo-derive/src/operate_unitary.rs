@@ -267,6 +267,46 @@ fn three_qubit_gate_struct(ident: Ident) -> TokenStream {
     }
 }
 
+pub fn dispatch_struct_enum_four_qubit_gate(input: DeriveInput) -> TokenStream {
+    let ident = input.ident;
+    match input.data {
+        Data::Struct(_ds) => four_qubit_gate_struct(ident),
+        Data::Enum(de) => four_qubit_gate_enum(de, ident),
+        _ => panic!("OperateFourQubitGate can only be derived on structs and enums"),
+    }
+}
+
+fn four_qubit_gate_enum(de: DataEnum, ident: Ident) -> TokenStream {
+    let variants_with_type = extract_variants_with_types(de).into_iter();
+    let match_quotes = variants_with_type.map(|(vident, _, _)| {
+        quote! {
+            &#ident::#vident(ref inner) => {OperateFourQubitGate::circuit(&(*inner))},
+        }
+    });
+    quote! {
+        #[automatically_derived]
+        impl OperateFourQubitGate for #ident{
+            fn circuit(&self) -> crate::Circuit {
+                match self{
+                    #(#match_quotes)*
+                    _ => panic!("Unexpectedly cannot match variant")
+                }
+            }
+        }
+    }
+}
+
+fn four_qubit_gate_struct(ident: Ident) -> TokenStream {
+    quote! {
+        #[automatically_derived]
+        impl OperateFourQubitGate for #ident{
+            fn circuit(&self ) -> crate::Circuit {
+                self.circuit
+            }
+        }
+    }
+}
+
 pub fn dispatch_struct_enum_multi_qubit_gate(input: DeriveInput) -> TokenStream {
     let ident = input.ident;
     match input.data {

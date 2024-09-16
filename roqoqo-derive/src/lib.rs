@@ -191,6 +191,13 @@ pub fn derive_operate_three_qubit_gate(input: proc_macro::TokenStream) -> proc_m
     operate_unitary::dispatch_struct_enum_three_qubit_gate(parsed_input).into()
 }
 
+/// Derive macro for the [roqoqo::OperateFourQubitGate] trait
+#[proc_macro_derive(OperateFourQubitGate)]
+pub fn derive_operate_four_qubit_gate(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    operate_unitary::dispatch_struct_enum_four_qubit_gate(parsed_input).into()
+}
+
 /// Derive macro for the [roqoqo::OperateMultiQubitGate] trait
 #[proc_macro_derive(OperateMultiQubitGate)]
 pub fn derive_operate_multi_qubit_gate(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
