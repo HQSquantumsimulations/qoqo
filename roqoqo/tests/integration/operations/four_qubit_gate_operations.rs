@@ -12,12 +12,18 @@
 
 //! Integration test for public API of four qubit gate operations
 
+#[cfg(feature = "json_schema")]
+use jsonschema::{Draft, JSONSchema};
 use ndarray::array;
 use num_complex::Complex64;
 use qoqo_calculator::Calculator;
 use roqoqo::operations::*;
 use roqoqo::Circuit;
+#[cfg(feature = "json_schema")]
+use schemars::schema_for;
 use std::collections::{HashMap, HashSet};
+
+use test_case::test_case;
 
 #[test]
 fn test_circuit_triple_controlled_x() {
@@ -823,4 +829,38 @@ fn test_involved_qubits_triple_controlled_z() {
     let _ = comp_set.insert(2);
     let _ = comp_set.insert(3);
     assert_eq!(involved_qubits, InvolvedQubits::Set(comp_set));
+}
+
+/// Test JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test_case(FourQubitGateOperation::from(TripleControlledPauliX::new(0, 1, 2, 3)); "TripleControlledPauliX")]
+#[test_case(FourQubitGateOperation::from(TripleControlledPauliZ::new(0, 1, 2, 3)); "TripleControlledPauliZ")]
+pub fn test_json_schema_three_qubit_gate_operations(gate: FourQubitGateOperation) {
+    // Serialize
+    let test_json = match gate.clone() {
+        FourQubitGateOperation::TripleControlledPauliX(op) => serde_json::to_string(&op).unwrap(),
+        FourQubitGateOperation::TripleControlledPauliZ(op) => serde_json::to_string(&op).unwrap(),
+        _ => unreachable!(),
+    };
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = match gate {
+        FourQubitGateOperation::TripleControlledPauliX(_) => {
+            schema_for!(TripleControlledPauliX)
+        }
+        FourQubitGateOperation::TripleControlledPauliZ(_) => {
+            schema_for!(TripleControlledPauliZ)
+        }
+        _ => unreachable!(),
+    };
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = JSONSchema::options()
+        .with_draft(Draft::Draft7)
+        .compile(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
 }
