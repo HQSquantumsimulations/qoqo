@@ -23,6 +23,7 @@ use roqoqo::Circuit;
 use schemars::schema_for;
 use std::collections::{HashMap, HashSet};
 
+#[cfg(feature = "json_schema")]
 use test_case::test_case;
 
 #[test]
