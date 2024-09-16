@@ -10,7 +10,8 @@
 // express or implied. See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::prelude::*;
+use crate::operations::*;
+use crate::Circuit;
 use ndarray::Array2;
 use num_complex::Complex64;
 
@@ -52,7 +53,7 @@ impl SupportedVersion for TripleControlledPauliX {
 const TAGS_TripleControlledPauliX: &[&str; 4] = &[
     "Operation",
     "GateOperation",
-    "MultiQubitGateOperation",
+    "FourQubitGateOperation",
     "TripleControlledPauliX",
 ];
 
@@ -69,6 +70,26 @@ impl OperateGate for TripleControlledPauliX {
     }
 }
 
+impl OperateFourQubitGate for TripleControlledPauliX {
+    fn circuit(&self) -> Circuit {
+        let mut circuit = Circuit::new();
+        circuit += CNOT::new(self.control_0, self.target);
+        circuit += CNOT::new(self.control_0, self.control_1);
+        circuit += CNOT::new(self.control_1, self.target);
+        circuit += CNOT::new(self.control_0, self.control_1);
+        circuit += CNOT::new(self.control_1, self.target);
+        circuit += CNOT::new(self.control_1, self.control_2);
+        circuit += CNOT::new(self.control_2, self.target);
+        circuit += CNOT::new(self.control_0, self.control_2);
+        circuit += CNOT::new(self.control_2, self.target);
+        circuit += CNOT::new(self.control_1, self.control_2);
+        circuit += CNOT::new(self.control_2, self.target);
+        circuit += CNOT::new(self.control_0, self.control_2);
+        circuit += CNOT::new(self.control_2, self.target);
+        circuit
+    }
+}
+
 /// The triple-controlled PauliZ gate.
 ///
 ///
@@ -78,6 +99,7 @@ impl OperateGate for TripleControlledPauliX {
     Clone,
     PartialEq,
     roqoqo_derive::Operate,
+    roqoqo_derive::OperateFourQubit,
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Substitute,
 )]
@@ -106,7 +128,7 @@ impl SupportedVersion for TripleControlledPauliZ {
 const TAGS_TripleControlledPauliZ: &[&str; 4] = &[
     "Operation",
     "GateOperation",
-    "MultiQubitGateOperation",
+    "FourQubitGateOperation",
     "TripleControlledPauliZ",
 ];
 
@@ -117,7 +139,27 @@ impl OperateGate for TripleControlledPauliZ {
         for i in 0..dim - 1 {
             array[(i, i)] = Complex64::new(1.0, 0.0);
         }
-        array[(dim, dim)] = Complex64::new(-1.0, 0.0);
+        array[(dim - 1, dim - 1)] = Complex64::new(-1.0, 0.0);
         Ok(array)
+    }
+}
+
+impl OperateFourQubitGate for TripleControlledPauliZ {
+    fn circuit(&self) -> Circuit {
+        let mut circuit = Circuit::new();
+        circuit += ControlledPauliZ::new(self.control_0, self.target);
+        circuit += CNOT::new(self.control_0, self.control_1);
+        circuit += ControlledPauliZ::new(self.control_1, self.target);
+        circuit += CNOT::new(self.control_0, self.control_1);
+        circuit += ControlledPauliZ::new(self.control_1, self.target);
+        circuit += CNOT::new(self.control_1, self.control_2);
+        circuit += ControlledPauliZ::new(self.control_2, self.target);
+        circuit += CNOT::new(self.control_0, self.control_2);
+        circuit += ControlledPauliZ::new(self.control_2, self.target);
+        circuit += CNOT::new(self.control_1, self.control_2);
+        circuit += ControlledPauliZ::new(self.control_2, self.target);
+        circuit += CNOT::new(self.control_0, self.control_2);
+        circuit += ControlledPauliZ::new(self.control_2, self.target);
+        circuit
     }
 }
