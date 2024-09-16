@@ -22,9 +22,9 @@ use qoqo::operations::{
 };
 use qoqo::CircuitWrapper;
 use roqoqo::operations::*;
-use roqoqo::{Circuit, RoqoqoError};
 #[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
+use roqoqo::{Circuit, RoqoqoError};
 
 use test_case::test_case;
 
