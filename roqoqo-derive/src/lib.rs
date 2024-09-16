@@ -30,11 +30,12 @@ mod substitute_modes;
 mod supported_version;
 
 /// Array of field names that are reserved for use with specific traits
-const RESERVED_FIELDS: &[&str; 15] = &[
+const RESERVED_FIELDS: &[&str; 16] = &[
     "qubit",
     "control",
     "control_0",
     "control_1",
+    "control_2",
     "target",
     "qubits",
     "global_phase",
@@ -102,6 +103,13 @@ pub fn derive_operate_two_qubit(input: proc_macro::TokenStream) -> proc_macro::T
 pub fn derive_operate_three_qubit(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let parsed_input = parse_macro_input!(input as DeriveInput);
     operate_n_qubit::dispatch_struct_enum_three_qubit(parsed_input).into()
+}
+
+/// Derive macro for the [roqoqo::OperateFourQubit] trait
+#[proc_macro_derive(OperateFourQubit)]
+pub fn derive_operate_four_qubit(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    let parsed_input = parse_macro_input!(input as DeriveInput);
+    operate_n_qubit::dispatch_struct_enum_four_qubit(parsed_input).into()
 }
 
 /// Derive macro for the [roqoqo::OperateMultiQubit] trait
