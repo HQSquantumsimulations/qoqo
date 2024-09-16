@@ -378,3 +378,27 @@ fn test_substitute_error_triple_controlled_x() {
     let remapped = gate.remap_qubits(&mapping);
     assert!(remapped.is_err());
 }
+
+#[test]
+fn test_format_triple_controlled_x() {
+    let gate = TripleControlledPauliX::new(0, 1, 2, 3);
+    let string = format!("{:?}", gate);
+    assert!(string.contains("TripleControlledPauliX"));
+    assert!(string.contains("control_0"));
+    assert!(string.contains("control_1"));
+    assert!(string.contains("control_2"));
+    assert!(string.contains("target"));
+    println!("{:?}", string);
+}
+
+#[test]
+fn test_involved_qubits_triple_controlled_x() {
+    let gate = TripleControlledPauliX::new(0, 1, 2, 3);
+    let involved_qubits = gate.involved_qubits();
+    let mut comp_set: HashSet<usize> = HashSet::new();
+    let _ = comp_set.insert(0);
+    let _ = comp_set.insert(1);
+    let _ = comp_set.insert(2);
+    let _ = comp_set.insert(3);
+    assert_eq!(involved_qubits, InvolvedQubits::Set(comp_set));
+}
