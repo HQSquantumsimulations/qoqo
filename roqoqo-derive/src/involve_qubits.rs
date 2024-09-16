@@ -72,6 +72,7 @@ fn involve_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
     let mut control: bool = false;
     let mut control_0: bool = false;
     let mut control_1: bool = false;
+    let mut control_2: bool = false;
     let mut target: bool = false;
     let mut qubits: bool = false;
 
@@ -115,6 +116,13 @@ fn involve_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     panic!("Field control_1 must have type usize")
                 }
             }
+            "control_2" => {
+                if type_string == Some("usize".to_string()) {
+                    control_2 = true;
+                } else {
+                    panic!("Field control_2 must have type usize")
+                }
+            }
             "qubits" => {
                 qubits = true;
             }
@@ -134,6 +142,26 @@ fn involve_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 fn involved_qubits(&self ) -> InvolvedQubits {
                     let mut new_hash_set: std::collections::HashSet<usize> = std::collections::HashSet::new();
                     new_hash_set.insert(self.qubit);
+                    InvolvedQubits::Set(new_hash_set)
+                }
+            }
+        }
+    } else if control_2 {
+        if !(control_0 && control_1 && target) {
+            panic!("When deriving InvolveQubits for a four-qubit operation control_0, control_1, control_2 and target have to be present");
+        };
+        // Creating a function that puts qubits `control_0`, `control_1` `control_2` and `target` into the InvolvedQubits HashSet
+        quote! {
+            /// Implements [InvolveQubits] trait for the qubits involved in this Operation.
+            #[automatically_derived]
+            impl InvolveQubits for #ident{
+                /// Returns a list of all involed qubits.
+                fn involved_qubits(&self ) -> InvolvedQubits {
+                    let mut new_hash_set: std::collections::HashSet<usize> = std::collections::HashSet::new();
+                    new_hash_set.insert(self.control_0);
+                    new_hash_set.insert(self.control_1);
+                    new_hash_set.insert(self.control_2);
+                    new_hash_set.insert(self.target);
                     InvolvedQubits::Set(new_hash_set)
                 }
             }
