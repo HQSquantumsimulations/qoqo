@@ -345,7 +345,7 @@ pub trait OperateThreeQubit: Operate + InvolveQubits + Substitute + Clone + Part
 ///
 /// # Example
 /// ```
-/// use roqoqo::operations::{ControlledControlledPauliZ, OperateFourQubit};
+/// use roqoqo::operations::{TripleControlledPauliX, OperateFourQubit};
 /// let cccx = TripleControlledPauliX::new(0, 1, 2, 3);
 /// assert_eq!(cccx.control_0(), &0_usize);
 /// assert_eq!(cccx.control_1(), &1_usize);
@@ -802,7 +802,29 @@ pub trait OperateThreeQubitGate:
 
 /// Trait for all Operations operating on or affecting exactly three qubits.
 ///
-/// TODO EXAMPLE
+/// # Example
+/// ```
+/// use roqoqo::operations::{CNOT, TripleControlledPauliX, OperateFourQubitGate};
+/// use roqoqo::Circuit;
+///
+/// let cccx = TripleControlledPauliX::new(0, 1, 2, 3);
+/// let mut circuit = Circuit::new();
+/// circuit += CNOT::new(0, 3);
+/// circuit += CNOT::new(0, 1);
+/// circuit += CNOT::new(1, 3);
+/// circuit += CNOT::new(0, 1);
+/// circuit += CNOT::new(1, 3);
+/// circuit += CNOT::new(1, 2);
+/// circuit += CNOT::new(2, 3);
+/// circuit += CNOT::new(0, 2);
+/// circuit += CNOT::new(2, 3);
+/// circuit += CNOT::new(1, 2);
+/// circuit += CNOT::new(2, 3);
+/// circuit += CNOT::new(0, 2);
+/// circuit += CNOT::new(2, 3);
+///
+/// assert_eq!(cccx.circuit(), circuit);
+/// ```
 pub trait OperateFourQubitGate:
     Operate
     + OperateGate
