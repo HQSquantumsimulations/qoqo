@@ -26,6 +26,8 @@ mod two_qubit_gate_operations;
 
 mod three_qubit_gate_operations;
 
+mod four_qubit_gate_operations;
+
 mod bosonic_operations;
 
 mod spin_boson_operations;
