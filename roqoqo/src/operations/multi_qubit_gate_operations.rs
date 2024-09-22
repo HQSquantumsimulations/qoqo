@@ -30,6 +30,7 @@ use serde::{Deserialize, Serialize};
 /// In mathematical terms the gate applies exp(-i * θ/2 * X_i0 * X_i1 * ... * X_in).
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -98,6 +99,7 @@ impl OperateMultiQubitGate for MultiQubitMS {
 /// In mathematical terms the gate applies exp(-i * θ/2 * Z_i0 * Z_i1 * ... * Z_in).
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
