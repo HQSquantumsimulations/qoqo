@@ -32,6 +32,7 @@ use rand_distr::{Distribution, Normal};
 /// is always normalized to one.
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -158,6 +159,7 @@ impl OperateSingleQubitGate for SingleQubitGate {
 /// The ZPower gate exp(-i * θ/2 * σ^z).
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -255,6 +257,7 @@ impl OperateSingleQubitGate for RotateZ {
 /// The XPower gate exp(-i * θ/2 * σ^x).
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -347,6 +350,7 @@ impl OperateSingleQubitGate for RotateX {
 /// The YPower gate exp(-i * θ/2 * σ^y).
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -439,6 +443,7 @@ impl OperateSingleQubitGate for RotateY {
 /// The Pauli X gate.
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -527,6 +532,7 @@ impl OperateSingleQubitGate for PauliX {
 /// The Pauli Y gate.
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -615,6 +621,7 @@ impl OperateSingleQubitGate for PauliY {
 /// The Pauli Z gate.
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -703,6 +710,7 @@ impl OperateSingleQubitGate for PauliZ {
 /// The square root of the XPower gate exp(-i * π/4 * σ^x).
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -794,6 +802,7 @@ impl OperateSingleQubitGate for SqrtPauliX {
 /// The inverse square root of the XPower gate: exp(i * π/4 * σ^x).
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -885,6 +894,7 @@ impl OperateSingleQubitGate for InvSqrtPauliX {
 /// The Hadamard gate.
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -974,6 +984,7 @@ impl OperateSingleQubitGate for Hadamard {
 /// The S gate.
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1062,6 +1073,7 @@ impl OperateSingleQubitGate for SGate {
 /// The T gate.
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1155,6 +1167,7 @@ impl OperateSingleQubitGate for TGate {
 /// Rotation around Z-axis by an arbitrary angle θ (AC Stark shift of the state |1>).
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1252,6 +1265,7 @@ impl OperateSingleQubitGate for PhaseShiftState1 {
 /// Rotation around Z-axis by an arbitrary angle θ (AC Stark shift of the state |0>).
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1347,6 +1361,7 @@ impl OperateSingleQubitGate for PhaseShiftState0 {
 /// Implements a rotation around an axis in the x-y plane in spherical coordinates.
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1463,6 +1478,7 @@ impl OperateSingleQubitGate for RotateAroundSphericalAxis {
 /// Implements a rotation around an x- and y-axis in spherical coordinates.
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1570,6 +1586,7 @@ impl OperateSingleQubitGate for RotateXY {
 /// Implements a pi-rotation with an embedded phase.
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1670,6 +1687,7 @@ impl OperateSingleQubitGate for GPi {
 /// Implements a pi/2-rotation with an embedded phase.
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1769,6 +1787,7 @@ impl OperateSingleQubitGate for GPi2 {
 /// The Identity gate.
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1864,6 +1883,7 @@ impl OperateSingleQubitGate for Identity {
 /// The square root of the PauliY gate exp(-i * π/4 * σ^y).
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1962,6 +1982,7 @@ impl OperateSingleQubitGate for SqrtPauliY {
 /// The inverse square root of the YPower gate: exp(i * π/4 * σ^x).
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
