@@ -3,9 +3,9 @@
 This changelog track changes to the qoqo project starting at version v0.5.0
 
 
-## Unrelead
+## Unreleased
 
-### Added in Unrelease
+### Added in Unreleased
 
 * Added possibility of iterating through gate enums in Roqoqo
 
