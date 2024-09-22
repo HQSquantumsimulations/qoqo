@@ -51,6 +51,7 @@ pub struct KakDecomposition {
 /// Flips the state of a `target` qubit based on the `control` qubit.
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -150,6 +151,7 @@ impl OperateTwoQubitGate for CNOT {
 /// Swaps the states of two qubits `target` and `control`.
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -242,6 +244,7 @@ impl OperateTwoQubitGate for SWAP {
 /// and applies a complex phase `i` to states |01> and |10>.
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -335,6 +338,7 @@ impl OperateTwoQubitGate for ISwap {
 /// Conserves the correct sign when the qubits represent Fermionic degrees of freedom.
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -431,6 +435,7 @@ impl OperateTwoQubitGate for FSwap {
 /// SqrtISwap * SqrtISwap = ISwap
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -523,6 +528,7 @@ impl OperateTwoQubitGate for SqrtISwap {
 /// InvSqrtISwap * SqrtISwap = Identity
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -617,6 +623,7 @@ impl OperateTwoQubitGate for InvSqrtISwap {
 /// XY = exp(i * (X_target * X_control + Y_target * Y_control) * theta / 2)
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -715,6 +722,7 @@ impl OperateTwoQubitGate for XY {
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -816,6 +824,7 @@ impl OperateTwoQubitGate for ControlledPhaseShift {
 /// Applies a PauliY unitary to the `target` qubit depending on the state of the `control`
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -915,6 +924,7 @@ impl OperateTwoQubitGate for ControlledPauliY {
 /// Applies a PauliZ unitary to the `target` qubit depending on the state of the `control` qubit.
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1010,6 +1020,7 @@ impl OperateTwoQubitGate for ControlledPauliZ {
 /// Applies the unitary exp(-1 X_control X_target * pi/4) to two qubits `control` and `target`
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1102,6 +1113,7 @@ impl OperateTwoQubitGate for MolmerSorensenXX {
 /// Applies the unitary exp(-1 X_control X_target * theta/2) to two qubits `control` and `target`
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1200,6 +1212,7 @@ impl OperateTwoQubitGate for VariableMSXX {
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1309,6 +1322,7 @@ impl OperateTwoQubitGate for GivensRotation {
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1419,6 +1433,7 @@ impl OperateTwoQubitGate for GivensRotationLittleEndian {
 /// exp(-i (x * X_c X_t + y * Y_c Y_t + z * Z_c Z_t))
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1536,6 +1551,7 @@ impl OperateTwoQubitGate for Qsim {
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1642,6 +1658,7 @@ impl OperateTwoQubitGate for Fsim {
 /// exp(-i (x * X_t X_c + y * Y_t Y_c + z * Z_t Z_c))
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1755,6 +1772,7 @@ impl OperateTwoQubitGate for SpinInteraction {
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1867,6 +1885,7 @@ impl OperateTwoQubitGate for Bogoliubov {
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -1964,6 +1983,7 @@ impl OperateTwoQubitGate for PMInteraction {
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -2070,6 +2090,7 @@ impl OperateTwoQubitGate for ComplexPMInteraction {
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -2176,6 +2197,7 @@ impl OperateTwoQubitGate for PhaseShiftedControlledZ {
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -2292,6 +2314,7 @@ impl OperateTwoQubitGate for PhaseShiftedControlledPhase {
 /// Implements the controlled RotateX operation.
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -2400,6 +2423,7 @@ impl OperateTwoQubitGate for ControlledRotateX {
 /// Implements the controlled RotateX operation.
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -2513,6 +2537,7 @@ impl OperateTwoQubitGate for ControlledRotateXY {
 /// Implements the controlled RotateX operation.
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
