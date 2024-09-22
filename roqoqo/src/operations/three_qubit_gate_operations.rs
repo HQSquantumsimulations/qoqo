@@ -28,6 +28,7 @@ use rand_distr::{Distribution, Normal};
 /// depending on the states of both `control_0` and `control_1` qubits.
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -179,6 +180,7 @@ impl OperateThreeQubitGate for ControlledControlledPauliZ {
 /// depending on the states of both `control_0` and `control_1` qubits.
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
@@ -333,6 +335,7 @@ impl OperateThreeQubitGate for ControlledControlledPhaseShift {
 /// depending on the states of both `control_0` and `control_1` qubits.
 ///
 #[derive(
+    Default,
     Debug,
     Clone,
     PartialEq,
