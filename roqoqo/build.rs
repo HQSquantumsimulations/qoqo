@@ -30,7 +30,7 @@ fn push_available_gate(gate: String) {
     AVAILABLE_GATES
         .get_or_init(|| Mutex::new(vec![]))
         .lock()
-        .unwrap()
+        .expect("Concurrency problem when pushing gate to available gates.")
         .push(gate);
 }
 
