@@ -47,7 +47,7 @@ pub use circuitdag::{convert_into_circuitdag, CircuitDagWrapper};
 /// qoqo version information, used for qoqo import/export checks
 pub const QOQO_VERSION: &str = env!("CARGO_PKG_VERSION");
 
-use roqoqo::{operations::AVAILABLE_GATES_NAMES, RoqoqoBackendError, RoqoqoError};
+use roqoqo::{operations::AVAILABLE_GATES_HQSLANG, RoqoqoBackendError, RoqoqoError};
 use thiserror::Error;
 
 /// Errors that can occur in qoqo.
@@ -91,8 +91,8 @@ pub enum QoqoBackendError {
 
 /// List of hqslang of all available gates
 #[pyfunction]
-pub fn available_gates_names() -> Vec<String> {
-    AVAILABLE_GATES_NAMES
+pub fn available_gates_hqslang() -> Vec<String> {
+    AVAILABLE_GATES_HQSLANG
         .iter()
         .map(|&s| String::from(s))
         .collect::<Vec<String>>()
@@ -114,7 +114,7 @@ pub fn available_gates_names() -> Vec<String> {
 ///     measurements
 ///     devices
 ///     noise_models
-///     available_gates_names
+///     available_gates_hqslang
 ///
 
 #[pymodule]
@@ -123,7 +123,7 @@ fn qoqo(_py: Python, module: &Bound<PyModule>) -> PyResult<()> {
     module.add_class::<QuantumProgramWrapper>()?;
     #[cfg(feature = "circuitdag")]
     module.add_class::<CircuitDagWrapper>()?;
-    module.add_function(wrap_pyfunction!(available_gates_names, module)?)?;
+    module.add_function(wrap_pyfunction!(available_gates_hqslang, module)?)?;
     let wrapper = wrap_pymodule!(operations::operations);
     module.add_wrapped(wrapper)?;
     let wrapper2 = wrap_pymodule!(measurements::measurements);
