@@ -638,7 +638,7 @@ fn main() {
         //use crate::operations::*;
 
         /// List of hqslang of all available gates
-        pub const AVAILABLE_GATES_NAMES: [&'static str; #available_gates_length] = [#(#available_gates),*];
+        pub const AVAILABLE_GATES_NAMES: [&str; #available_gates_length] = [#(#available_gates),*];
 
         /// Enum of all Operations implementing [Operate]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, Substitute, SupportedVersion)]
