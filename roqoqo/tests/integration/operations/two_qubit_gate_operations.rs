@@ -14,7 +14,7 @@
 
 use super::convert_matrix;
 #[cfg(feature = "json_schema")]
-use jsonschema::{Draft, JSONSchema};
+use jsonschema::{Draft, Validator};
 use nalgebra as na;
 use ndarray::{array, Array2};
 use num_complex::Complex64;
@@ -1340,9 +1340,9 @@ pub fn test_json_schema_two_qubit_gate_operations(gate: TwoQubitGateOperation) {
     };
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);

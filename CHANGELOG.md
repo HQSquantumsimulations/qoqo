@@ -15,6 +15,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 * Added support for noise model operator input from struqture 2.x. Output remains in struqture 1.x.
 * Pinned clap version to use rust 1.70 (clap,clap_builder and clap_derive 4.4, clap_lex 0.6.0).
 * Updated to rust 1.70.
+* Updated to jsonschema 0.20.
 
 ## 1.15.1
 
