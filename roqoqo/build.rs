@@ -24,13 +24,14 @@ use syn::{AttrStyle, File, Ident, ItemImpl, ItemStruct, LitStr, Path, Token, Typ
 
 const NUMBER_OF_MINOR_VERSIONS: usize = 16;
 
-fn get_available_gates() -> &'static Mutex<Vec<String>> {
-    static AVAILABLE_GATES: OnceLock<Mutex<Vec<String>>> = OnceLock::new();
-    AVAILABLE_GATES.get_or_init(|| Mutex::new(vec![]))
-}
+static AVAILABLE_GATES: OnceLock<Mutex<Vec<String>>> = OnceLock::new();
 
 fn push_available_gate(gate: String) {
-    get_available_gates().lock().unwrap().push(gate);
+    AVAILABLE_GATES
+        .get_or_init(|| Mutex::new(vec![]))
+        .lock()
+        .unwrap()
+        .push(gate);
 }
 
 /// Visitor scanning rust source code for struct belonging to enums
@@ -628,7 +629,7 @@ fn main() {
         spins_analog_operations_quote.extend(res);
     }
 
-    let available_gates = get_available_gates().lock().unwrap().clone();
+    let available_gates = AVAILABLE_GATES.get().unwrap().lock().unwrap().clone();
     let available_gates_length = available_gates.len();
 
     // Construct TokenStream for auto-generated rust file containing the enums
