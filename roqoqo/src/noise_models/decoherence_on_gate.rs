@@ -354,6 +354,8 @@ impl DecoherenceOnGateModel {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[cfg(feature = "json_schema")]
+    use jsonschema::Validator;
     use struqture::spins::PlusMinusLindbladNoiseOperator;
 
     #[test]
@@ -438,8 +440,7 @@ mod tests {
             model.set_single_qubit_gate_error("RotateX", 0, PlusMinusLindbladNoiseOperator::new());
         let schema = schemars::schema_for!(DecoherenceOnGateModel);
         let schema_checker =
-            jsonschema::JSONSchema::compile(&serde_json::to_value(&schema).unwrap())
-                .expect("schema is valid");
+            Validator::new(&serde_json::to_value(&schema).unwrap()).expect("schema is valid");
         let value = serde_json::to_value(model).unwrap();
         let val = match value {
             serde_json::Value::Object(ob) => ob,

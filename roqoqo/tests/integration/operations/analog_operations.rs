@@ -13,7 +13,7 @@
 //! Integration test for public API of analog operations
 
 #[cfg(feature = "json_schema")]
-use jsonschema::{Draft, JSONSchema};
+use jsonschema::{Draft, Validator};
 use qoqo_calculator::{Calculator, CalculatorError::VariableNotSet, CalculatorFloat};
 use roqoqo::operations::*;
 use roqoqo::RoqoqoError;
@@ -257,9 +257,9 @@ fn constant_spin_hamiltonian_json_schema() {
     let test_schema = schema_for!(ApplyConstantSpinHamiltonian);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);
@@ -279,9 +279,9 @@ fn timedependent_spin_hamiltonian_json_schema() {
     let test_schema = schema_for!(ApplyTimeDependentSpinHamiltonian);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);

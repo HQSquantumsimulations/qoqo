@@ -161,6 +161,8 @@ fn check_is_probability(prob: &f64) -> Result<(), RoqoqoError> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[cfg(feature = "json_schema")]
+    use jsonschema::Validator;
 
     #[test]
     fn test_check_is_probability_valid() {
@@ -231,8 +233,7 @@ mod tests {
         let model = ImperfectReadoutModel::new_with_uniform_error(2, 0.2, 0.8).unwrap();
         let schema = schemars::schema_for!(ImperfectReadoutModel);
         let schema_checker =
-            jsonschema::JSONSchema::compile(&serde_json::to_value(&schema).unwrap())
-                .expect("schema is valid");
+            Validator::new(&serde_json::to_value(&schema).unwrap()).expect("schema is valid");
         let value = serde_json::to_value(model).unwrap();
         let val = match value {
             serde_json::Value::Object(ob) => ob,
