@@ -4,6 +4,12 @@
 .. automodule:: qoqo
 
    
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      available_gates_hqslang
+   
    .. rubric:: Classes
 
    .. autosummary::
