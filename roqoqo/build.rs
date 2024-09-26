@@ -16,12 +16,23 @@ use std::fs;
 use std::path::PathBuf;
 use std::process::Command;
 use std::str::FromStr;
+use std::sync::{Mutex, OnceLock};
 use syn::parse::{Parse, ParseStream};
 use syn::punctuated::Punctuated;
 use syn::visit::{self, Visit};
 use syn::{AttrStyle, File, Ident, ItemImpl, ItemStruct, LitStr, Path, Token, Type, TypePath};
 
 const NUMBER_OF_MINOR_VERSIONS: usize = 16;
+
+static AVAILABLE_GATES: OnceLock<Mutex<Vec<String>>> = OnceLock::new();
+
+fn push_available_gate(gate: String) {
+    AVAILABLE_GATES
+        .get_or_init(|| Mutex::new(vec![]))
+        .lock()
+        .expect("Concurrency problem when pushing gate to available gates.")
+        .push(gate);
+}
 
 /// Visitor scanning rust source code for struct belonging to enums
 struct Visitor {
@@ -376,6 +387,7 @@ impl<'ast> Visit<'ast> for Visitor {
                 }
                 if trait_name.as_str() == "OperateGate" {
                     self.gate_operations.push(id.clone());
+                    push_available_gate(id.to_string());
                 }
                 if trait_name.as_str() == "OperateTwoQubitGate" {
                     self.two_qubit_gate_operations.push(id.clone());
@@ -617,10 +629,16 @@ fn main() {
         spins_analog_operations_quote.extend(res);
     }
 
+    let available_gates = AVAILABLE_GATES.get().unwrap().lock().unwrap().clone();
+    let available_gates_length = available_gates.len();
+
     // Construct TokenStream for auto-generated rust file containing the enums
     let final_quote = quote! {
 
         //use crate::operations::*;
+
+        /// List of hqslang of all available gates
+        pub const AVAILABLE_GATES_HQSLANG: [&str; #available_gates_length] = [#(#available_gates),*];
 
         /// Enum of all Operations implementing [Operate]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, Substitute, SupportedVersion)]

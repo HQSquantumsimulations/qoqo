@@ -38,6 +38,7 @@ mod analog_operations;
 use nalgebra as na;
 use ndarray::Array2;
 use num_complex::Complex64;
+use roqoqo::operations::AVAILABLE_GATES_HQSLANG;
 
 // Helper function to convert a two-dimensional ndarray to a NxM matrix (N, M depending on the vector)
 // The output can be used to be converted into a nalgebra matrix with `na::Matrix4::from()`
@@ -57,4 +58,10 @@ fn test_involved_qubits_clone() {
     let iq3 = roqoqo::operations::InvolvedQubits::None;
     let helper = iq != iq3;
     assert!(helper);
+}
+
+#[test]
+fn test_available_gates() {
+    assert!(AVAILABLE_GATES_HQSLANG.contains(&"Hadamard"));
+    assert!(!AVAILABLE_GATES_HQSLANG.contains(&"Error"));
 }
