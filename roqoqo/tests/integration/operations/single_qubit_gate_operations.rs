@@ -2306,6 +2306,15 @@ fn test_rotatearoundsphericalaxis_powerfc(
         ];
     "SGate")]
 #[test_case(
+    SingleQubitGateOperation::from(InvSGate::new(0)),
+    vec![
+        "Operation",
+        "GateOperation",
+        "SingleQubitGateOperation",
+        "InvSGate",
+        ];
+    "InvSGate")]
+#[test_case(
     SingleQubitGateOperation::from(PauliX::new(0)),
     vec![
         "Operation",
@@ -2474,6 +2483,7 @@ pub fn test_tags(gate: SingleQubitGateOperation, tags: Vec<&str>) {
 #[test_case(SingleQubitGateOperation::from(SqrtPauliX::new(0)); "SqrtPauliX")]
 #[test_case(SingleQubitGateOperation::from(InvSqrtPauliX::new(0)); "InvSqrtPauliX")]
 #[test_case(SingleQubitGateOperation::from(SGate::new(0)); "SGate")]
+#[test_case(SingleQubitGateOperation::from(InvSGate::new(0)); "InvSGate")]
 #[test_case(SingleQubitGateOperation::from(TGate::new(0)); "TGate")]
 #[test_case(SingleQubitGateOperation::from(Hadamard::new(0)); "Hadamard")]
 #[test_case(SingleQubitGateOperation::from(RotateAroundSphericalAxis::new(
@@ -2502,6 +2512,7 @@ pub fn test_json_schema_single_qubit_gate_operations(gate: SingleQubitGateOperat
         SingleQubitGateOperation::InvSqrtPauliX(op) => serde_json::to_string(&op).unwrap(),
         SingleQubitGateOperation::Hadamard(op) => serde_json::to_string(&op).unwrap(),
         SingleQubitGateOperation::SGate(op) => serde_json::to_string(&op).unwrap(),
+        SingleQubitGateOperation::InvSGate(op) => serde_json::to_string(&op).unwrap(),
         SingleQubitGateOperation::TGate(op) => serde_json::to_string(&op).unwrap(),
         SingleQubitGateOperation::PhaseShiftState1(op) => serde_json::to_string(&op).unwrap(),
         SingleQubitGateOperation::PhaseShiftState0(op) => serde_json::to_string(&op).unwrap(),
@@ -2531,6 +2542,7 @@ pub fn test_json_schema_single_qubit_gate_operations(gate: SingleQubitGateOperat
         SingleQubitGateOperation::InvSqrtPauliX(_) => schema_for!(InvSqrtPauliX),
         SingleQubitGateOperation::Hadamard(_) => schema_for!(Hadamard),
         SingleQubitGateOperation::SGate(_) => schema_for!(SGate),
+        SingleQubitGateOperation::InvSGate(_) => schema_for!(InvSGate),
         SingleQubitGateOperation::TGate(_) => schema_for!(TGate),
         SingleQubitGateOperation::PhaseShiftState1(_) => schema_for!(PhaseShiftState1),
         SingleQubitGateOperation::PhaseShiftState0(_) => schema_for!(PhaseShiftState0),
