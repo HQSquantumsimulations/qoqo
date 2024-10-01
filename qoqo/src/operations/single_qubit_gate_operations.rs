@@ -356,6 +356,30 @@ struct Hadamard {
 struct SGate {
     qubit: usize,
 }
+
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
+#[derive(Eq)]
+/// The InvS gate.
+///
+/// .. math::
+///     U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+///         1 & 0 \\\\
+///         0 & -i
+///         \end{pmatrix}
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+///
+struct InvSGate {
+    qubit: usize,
+}
+
 #[wrap(
     Operate,
     OperateSingleQubit,
