@@ -200,6 +200,9 @@ impl From<ContinuousDecoherenceModel> for PlusMinusLindbladNoiseOperator {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[cfg(feature = "json_schema")]
+    use jsonschema::Validator;
+
     #[test]
     fn test_continuous_decoherence_model_new() {
         let model = ContinuousDecoherenceModel::new();
@@ -351,8 +354,7 @@ mod tests {
         model = model.add_dephasing_rate(&[0, 1], 0.9);
         let schema = schemars::schema_for!(ContinuousDecoherenceModel);
         let schema_checker =
-            jsonschema::JSONSchema::compile(&serde_json::to_value(&schema).unwrap())
-                .expect("schema is valid");
+            Validator::new(&serde_json::to_value(&schema).unwrap()).expect("schema is valid");
         let value = serde_json::to_value(&model).unwrap();
         let val = match value {
             serde_json::Value::Object(ob) => ob,

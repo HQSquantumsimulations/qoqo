@@ -12,7 +12,7 @@
 
 //! Integration test for public API of measurement inputs
 #[cfg(feature = "json_schema")]
-use jsonschema::{Draft, JSONSchema};
+use jsonschema::{Draft, Validator};
 use num_complex::Complex64;
 use roqoqo::measurements::{
     CheatedInput, CheatedPauliZProductInput, PauliProductsToExpVal, PauliZProductInput,
@@ -224,9 +224,9 @@ fn test_json_schema_pp_to_exp() {
     let test_schema = schema_for!(PauliProductsToExpVal);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result_lin = compiled_schema.validate(&test_value_lin);
@@ -248,9 +248,9 @@ fn test_json_schema_br() {
     let test_schema = schema_for!(PauliZProductInput);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);
@@ -270,9 +270,9 @@ fn test_json_schema_cbr() {
     let test_schema = schema_for!(CheatedPauliZProductInput);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);
@@ -292,9 +292,9 @@ fn test_json_schema_cheated() {
     let test_schema = schema_for!(CheatedInput);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);

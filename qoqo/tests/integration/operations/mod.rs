@@ -39,6 +39,8 @@ use pyo3::prelude::*;
 use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::CalculatorFloatWrapper;
 
+use qoqo::available_gates_hqslang;
+
 // helper function to convert CalculatorFloat into a python object
 pub fn convert_cf_to_pyobject(
     py: Python,
@@ -59,4 +61,11 @@ pub fn convert_cf_to_pyobject(
             .unwrap()
             .to_owned(),
     }
+}
+
+#[test]
+fn test_available_gates() {
+    let names = available_gates_hqslang();
+    assert!(names.contains(&"Hadamard".to_string()));
+    assert!(!names.contains(&"Error".to_string()));
 }

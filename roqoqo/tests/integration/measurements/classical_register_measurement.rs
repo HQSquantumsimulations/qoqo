@@ -15,7 +15,7 @@
 use std::collections::HashMap;
 
 #[cfg(feature = "json_schema")]
-use jsonschema::{Draft, JSONSchema};
+use jsonschema::{Draft, Validator};
 use roqoqo::measurements::ClassicalRegister;
 use roqoqo::operations;
 use roqoqo::prelude::*;
@@ -149,9 +149,9 @@ fn test_json_schema() {
     let test_schema = schema_for!(ClassicalRegister);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);

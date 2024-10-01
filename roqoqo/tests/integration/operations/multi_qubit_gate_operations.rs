@@ -13,7 +13,7 @@
 //! Integration test for public API of multi qubit gate operations
 
 #[cfg(feature = "json_schema")]
-use jsonschema::{Draft, JSONSchema};
+use jsonschema::{Draft, Validator};
 use ndarray::array;
 use num_complex::Complex64;
 use qoqo_calculator::Calculator;
@@ -593,9 +593,9 @@ pub fn test_json_schema_multi_qubit_gate_operations(gate: MultiQubitGateOperatio
     };
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);
@@ -747,9 +747,9 @@ pub fn test_json_schema_multi_qubit_call_gate() {
     let test_schema = schema_for!(CallDefinedGate);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);
