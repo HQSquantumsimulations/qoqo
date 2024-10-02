@@ -2065,7 +2065,6 @@ impl OperateSingleQubitGate for InvSqrtPauliY {
     PartialEq,
     Eq,
     roqoqo_derive::InvolveQubits,
-    roqoqo_derive::SupportedVersion,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
     roqoqo_derive::OperateSingleQubit,
@@ -2084,6 +2083,14 @@ const TAGS_InvSGate: &[&str; 4] = &[
     "SingleQubitGateOperation",
     "InvSGate",
 ];
+
+impl SupportedVersion for InvSGate {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 16, 0)
+    }
+}
+
+impl super::ImplementedIn1point16 for InvSGate {}
 
 /// Trait for all operations acting with a unitary gate on a set of qubits.
 impl OperateGate for InvSGate {
