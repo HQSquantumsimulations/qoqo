@@ -2151,3 +2151,101 @@ impl OperateSingleQubitGate for InvSGate {
         CalculatorFloat::from(-PI / 4.0)
     }
 }
+
+/// The InvS gate.
+///
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    Eq,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateSingleQubit,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct InvTGate {
+    /// The qubit the unitary gate is applied to.
+    qubit: usize,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_InvTGate: &[&str; 4] = &[
+    "Operation",
+    "GateOperation",
+    "SingleQubitGateOperation",
+    "InvTGate",
+];
+
+impl SupportedVersion for InvTGate {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 16, 0)
+    }
+}
+
+impl super::ImplementedIn1point16 for InvTGate {}
+
+/// Trait for all operations acting with a unitary gate on a set of qubits.
+impl OperateGate for InvTGate {
+    /// Returns unitary matrix of the gate.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Array2<Complex64>)` - The unitary matrix representation of the gate.
+    /// * `Err(RoqoqoError)` - The parameter conversion to f64 failed (here, not possible).
+    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
+        Ok(array![
+            [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new((PI / 4.0).cos(), -(PI / 4.0).sin())
+            ] //exp(-i*pi/4) = cos(pi/4) - i*sin(pi/4)
+        ])
+    }
+}
+
+/// Trait for unitary operations acting on exactly one qubit.
+impl OperateSingleQubitGate for InvTGate {
+    /// Returns the alpha_r parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `alpha_r` - The real part Re(α) of the on-diagonal elements of the single-qubit unitary matrix.
+    fn alpha_r(&self) -> CalculatorFloat {
+        CalculatorFloat::from((PI / 8.0).cos())
+    }
+    /// Returns the alpha_i parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `alpha_i` - The imaginary part Im(α) of the on-diagonal elements of the single-qubit unitary matrix.
+    fn alpha_i(&self) -> CalculatorFloat {
+        CalculatorFloat::from((PI / 8.0).sin())
+    }
+    /// Returns the beta_r parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `beta_r` - The real part Re(β) of the off-diagonal elements of the single-qubit unitary matrix.
+    fn beta_r(&self) -> CalculatorFloat {
+        CalculatorFloat::from(0.0)
+    }
+    /// Returns the beta_i parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `beta_i` - The imaginary part Im(β) of the off-diagonal elements of the single-qubit unitary matrix.
+    fn beta_i(&self) -> CalculatorFloat {
+        CalculatorFloat::from(0.0)
+    }
+    /// Returns global_phase parameter of the operation.
+    ///
+    /// # Returns
+    ///
+    /// * `global_phase` - The global phase φ of the single-qubit unitary.
+    fn global_phase(&self) -> CalculatorFloat {
+        CalculatorFloat::from(-PI / 8.0)
+    }
+}
