@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -919,6 +919,9 @@ pub trait ImplementedIn1point14: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.15.0
 pub trait ImplementedIn1point15: Operate {}
+
+/// Marker trait to show that some operation has been implemented in roqoqo 1.16.0
+pub trait ImplementedIn1point16: Operate {}
 
 #[cfg(feature = "dynamic")]
 /// A wrapper for Operate trait objects.
