@@ -17,11 +17,11 @@ use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
-    GPi2Wrapper, GPiWrapper, HadamardWrapper, IdentityWrapper, InvSqrtPauliXWrapper,
-    InvSqrtPauliYWrapper, PauliXWrapper, PauliYWrapper, PauliZWrapper, PhaseShiftState0Wrapper,
-    PhaseShiftState1Wrapper, RotateAroundSphericalAxisWrapper, RotateXWrapper, RotateXYWrapper,
-    RotateYWrapper, RotateZWrapper, SGateWrapper, SingleQubitGateWrapper, SqrtPauliXWrapper,
-    SqrtPauliYWrapper, TGateWrapper,
+    GPi2Wrapper, GPiWrapper, HadamardWrapper, IdentityWrapper, InvSGateWrapper,
+    InvSqrtPauliXWrapper, InvSqrtPauliYWrapper, PauliXWrapper, PauliYWrapper, PauliZWrapper,
+    PhaseShiftState0Wrapper, PhaseShiftState1Wrapper, RotateAroundSphericalAxisWrapper,
+    RotateXWrapper, RotateXYWrapper, RotateYWrapper, RotateZWrapper, SGateWrapper,
+    SingleQubitGateWrapper, SqrtPauliXWrapper, SqrtPauliYWrapper, TGateWrapper,
 };
 use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorFloat;
@@ -250,6 +250,41 @@ fn test_new_sgate(input_operation: Operation, arguments: (u32,), method: &str) {
         assert_eq!(
             format!("{:?}", def_wrapper_diff),
             "SGateWrapper { internal: SGate { qubit: 2 } }"
+        );
+    })
+}
+
+#[test_case(Operation::from(InvSGate::new(1)), (1,), "__eq__"; "InvSGate_eq")]
+#[test_case(Operation::from(InvSGate::new(1)), (0,), "__ne__"; "InvSGate_ne")]
+fn test_new_ivsgate(input_operation: Operation, arguments: (u32,), method: &str) {
+    let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation_type = py.get_type_bound::<InvSGateWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<InvSGateWrapper>().unwrap();
+
+        let comparison = bool::extract_bound(
+            &operation
+                .bind(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        let def_wrapper = operation_py.extract::<InvSGateWrapper>().unwrap();
+        let binding = operation_type.call1((2,)).unwrap();
+        let new_op_diff = binding.downcast::<InvSGateWrapper>().unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<InvSGateWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "InvSGateWrapper { internal: InvSGate { qubit: 2 } }"
         );
     })
 }
@@ -1000,6 +1035,7 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
 #[test_case(Operation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
@@ -1084,6 +1120,7 @@ fn test_pyo3_theta(theta: CalculatorFloat, input_operation: Operation) {
 #[test_case(0, Operation::from(InvSqrtPauliX::new(0)); "InvSqrtPauliX")]
 #[test_case(0, Operation::from(TGate::new(0)); "TGate")]
 #[test_case(0, Operation::from(SGate::new(0)); "SGate")]
+#[test_case(0, Operation::from(InvSGate::new(0)); "InvSGate")]
 #[test_case(0, Operation::from(Hadamard::new(0)); "Hadamard")]
 #[test_case(1, Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
 #[test_case(1, Operation::from(PhaseShiftState1::new(1, CalculatorFloat::from(0))); "PhaseShiftState1")]
@@ -1134,6 +1171,7 @@ fn test_pyo3_qubit(qubit: usize, input_operation: Operation) {
 #[test_case("SqrtPauliX", Operation::from(SqrtPauliX::new(0)); "SqrtPauliX")]
 #[test_case("InvSqrtPauliX", Operation::from(InvSqrtPauliX::new(0)); "InvSqrtPauliX")]
 #[test_case("SGate", Operation::from(SGate::new(0)); "SGate")]
+#[test_case("InvSGate", Operation::from(InvSGate::new(0)); "InvSGate")]
 #[test_case("TGate", Operation::from(TGate::new(0)); "TGate")]
 #[test_case("Hadamard", Operation::from(Hadamard::new(0)); "Hadamard")]
 #[test_case("SingleQubitGate", Operation::from(
@@ -1232,6 +1270,15 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         "SGate",
         ];
     "SGate")]
+#[test_case(
+    Operation::from(InvSGate::new(0)),
+    vec![
+        "Operation",
+        "GateOperation",
+        "SingleQubitGateOperation",
+        "InvSGate",
+        ];
+    "InvSGate")]
 #[test_case(
     Operation::from(PauliX::new(0)),
     vec![
@@ -1424,6 +1471,7 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
 #[test_case(Operation::from(SqrtPauliX::new(0)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(0)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(0)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(0)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(0)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(0)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0))); "PhaseShiftState0")]
@@ -1503,6 +1551,7 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 #[test_case(Operation::from(SqrtPauliX::new(0)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(0)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(0)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(0)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(0)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(0)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0))); "PhaseShiftState0")]
@@ -1552,6 +1601,7 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
 #[test_case(Operation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(
@@ -1698,6 +1748,7 @@ fn test_pyo3_unitarymatrix_singlequbitgate(input_operation: Operation) {
 #[test_case(Operation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState0")]
@@ -1772,6 +1823,7 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 #[test_case(Operation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState0")]
@@ -1840,6 +1892,7 @@ fn test_pyo3_alpha_r(input_operation: Operation) {
 #[test_case(Operation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState0")]
@@ -1908,6 +1961,7 @@ fn test_pyo3_alpha_i(input_operation: Operation) {
 #[test_case(Operation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState0")]
@@ -1976,6 +2030,7 @@ fn test_pyo3_beta_r(input_operation: Operation) {
 #[test_case(Operation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState0")]
@@ -2044,6 +2099,7 @@ fn test_pyo3_beta_i(input_operation: Operation) {
 #[test_case(Operation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState0")]
@@ -2112,6 +2168,10 @@ fn test_pyo3_global_phase(input_operation: Operation) {
     "SGate { qubit: 0 }",
     Operation::from(SGate::new(0));
     "SGate")]
+#[test_case(
+    "InvSGate { qubit: 0 }",
+    Operation::from(InvSGate::new(0));
+    "InvSGate")]
 #[test_case(
     "TGate { qubit: 0 }",
     Operation::from(TGate::new(0));
@@ -2316,6 +2376,7 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 #[test_case(Operation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0))); "PhaseShiftState0")]
@@ -2421,6 +2482,7 @@ fn test_pyo3_rotate_powercf(first_op: Operation, second_op: Operation) {
 #[test_case(Operation::from(SqrtPauliX::new(1)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(1)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(1)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
@@ -2459,6 +2521,7 @@ fn test_pyo3_mul(gate1: Operation) {
 #[test_case(Operation::from(SqrtPauliX::new(1)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(1)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(1)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
@@ -2490,6 +2553,7 @@ fn test_pyo3_mul_error1(gate1: Operation) {
 #[test_case(Operation::from(SqrtPauliX::new(1)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(1)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(1)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
@@ -2521,6 +2585,7 @@ fn test_pyo3_mul_error2(gate1: Operation) {
 #[test_case(Operation::from(SqrtPauliX::new(1)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(1)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
 #[test_case(Operation::from(Hadamard::new(1)); "Hadamard")]
 #[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::from(0))); "PhaseShiftState0")]
@@ -2598,6 +2663,9 @@ fn test_pyo3_mul_error3(gate1: Operation) {
 #[test_case(
     Operation::from(SGate::new(0)),
     Operation::from(SGate::new(1)); "SGate")]
+#[test_case(
+    Operation::from(InvSGate::new(0)),
+    Operation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(
     Operation::from(TGate::new(0)),
     Operation::from(TGate::new(1)); "TGate")]
@@ -2718,6 +2786,7 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 #[test_case(SingleQubitGateOperation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
 #[test_case(SingleQubitGateOperation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
 #[test_case(SingleQubitGateOperation::from(SGate::new(1)); "SGate")]
+#[test_case(SingleQubitGateOperation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(SingleQubitGateOperation::from(TGate::new(1)); "TGate")]
 #[test_case(SingleQubitGateOperation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(0.0))); "PhaseShiftState0")]
@@ -2762,6 +2831,9 @@ fn test_pyo3_json_schema(operation: SingleQubitGateOperation) {
         SingleQubitGateOperation::SGate(_) => {
             serde_json::to_string_pretty(&schemars::schema_for!(SGate)).unwrap()
         }
+        SingleQubitGateOperation::InvSGate(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(InvSGate)).unwrap()
+        }
         SingleQubitGateOperation::TGate(_) => {
             serde_json::to_string_pretty(&schemars::schema_for!(TGate)).unwrap()
         }
@@ -2802,6 +2874,7 @@ fn test_pyo3_json_schema(operation: SingleQubitGateOperation) {
             SingleQubitGateOperation::Identity(_) => "1.7.0".to_string(),
             SingleQubitGateOperation::SqrtPauliY(_) => "1.15.0".to_string(),
             SingleQubitGateOperation::InvSqrtPauliY(_) => "1.15.0".to_string(),
+            SingleQubitGateOperation::InvSGate(_) => "1.16.0".to_string(),
             _ => "1.0.0".to_string(),
         };
         let converted_op = Operation::from(operation);
