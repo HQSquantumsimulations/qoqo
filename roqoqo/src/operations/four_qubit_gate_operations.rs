@@ -41,11 +41,11 @@ pub struct TripleControlledPauliX {
     target: usize,
 }
 
-impl super::ImplementedIn1point15 for TripleControlledPauliX {}
+impl super::ImplementedIn1point16 for TripleControlledPauliX {}
 
 impl SupportedVersion for TripleControlledPauliX {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 15, 0)
+        (1, 16, 0)
     }
 }
 
@@ -116,11 +116,11 @@ pub struct TripleControlledPauliZ {
     target: usize,
 }
 
-impl super::ImplementedIn1point15 for TripleControlledPauliZ {}
+impl super::ImplementedIn1point16 for TripleControlledPauliZ {}
 
 impl SupportedVersion for TripleControlledPauliZ {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
-        (1, 15, 0)
+        (1, 16, 0)
     }
 }
 
@@ -160,6 +160,87 @@ impl OperateFourQubitGate for TripleControlledPauliZ {
         circuit += ControlledPauliZ::new(self.control_2, self.target);
         circuit += CNOT::new(self.control_0, self.control_2);
         circuit += ControlledPauliZ::new(self.control_2, self.target);
+        circuit
+    }
+}
+
+/// The triple-controlled PhaseShift gate.
+///
+///
+#[allow(clippy::upper_case_acronyms)]
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    roqoqo_derive::Operate,
+    roqoqo_derive::OperateFourQubit,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Substitute,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct TripleControlledPhaseShift {
+    /// The first control qubit involved in the triple-controlled PhaseShift gate.
+    control_0: usize,
+    /// The second control qubit involved in the triple-controlled PhaseShift gate.
+    control_1: usize,
+    /// The third control qubit involved in the triple-controlled PhaseShift gate.
+    control_2: usize,
+    /// The target qubit to apply the PhaseShift gate to.
+    target: usize,
+    /// The rotation angle θ.
+    theta: CalculatorFloat,
+}
+
+impl super::ImplementedIn1point16 for TripleControlledPhaseShift {}
+
+impl SupportedVersion for TripleControlledPhaseShift {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 16, 0)
+    }
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_TripleControlledPhaseShift: &[&str; 4] = &[
+    "Operation",
+    "GateOperation",
+    "FourQubitGateOperation",
+    "TripleControlledPhaseShift",
+];
+
+impl OperateGate for TripleControlledPhaseShift {
+    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
+        let c: f64 = (f64::try_from(self.theta.clone())?).cos();
+        let s: f64 = (f64::try_from(self.theta.clone())?).sin();
+        let dim = 16;
+        let mut array: Array2<Complex64> = Array2::zeros((dim, dim));
+        for i in 0..dim - 1 {
+            array[(i, i)] = Complex64::new(1.0, 0.0);
+        }
+        array[(dim - 1, dim - 1)] = Complex64::new(c, s);
+        Ok(array)
+    }
+}
+
+impl OperateFourQubitGate for TripleControlledPhaseShift {
+    fn circuit(&self) -> Circuit {
+        let mut circuit = Circuit::new();
+        circuit += ControlledPhaseShift::new(self.control_0, self.target, self.theta().clone() / 2);
+        circuit += CNOT::new(self.control_0, self.control_1);
+        circuit +=
+            ControlledPhaseShift::new(self.control_1, self.target, -self.theta().clone() / 2);
+        circuit += CNOT::new(self.control_0, self.control_1);
+        circuit += ControlledPhaseShift::new(self.control_1, self.target, self.theta().clone() / 2);
+        circuit += CNOT::new(self.control_1, self.control_2);
+        circuit +=
+            ControlledPhaseShift::new(self.control_2, self.target, -self.theta().clone() / 2);
+        circuit += CNOT::new(self.control_0, self.control_2);
+        circuit += ControlledPhaseShift::new(self.control_2, self.target, self.theta().clone() / 2);
+        circuit += CNOT::new(self.control_1, self.control_2);
+        circuit +=
+            ControlledPhaseShift::new(self.control_2, self.target, -self.theta().clone() / 2);
+        circuit += CNOT::new(self.control_0, self.control_2);
+        circuit += ControlledPhaseShift::new(self.control_2, self.target, self.theta().clone() / 2);
         circuit
     }
 }

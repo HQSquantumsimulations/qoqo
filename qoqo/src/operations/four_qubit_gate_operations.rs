@@ -13,6 +13,9 @@
 use num_complex::Complex64;
 use numpy::{PyArray2, ToPyArray};
 
+use qoqo_calculator::CalculatorFloat;
+use qoqo_calculator_pyo3::{convert_into_calculator_float, CalculatorFloatWrapper};
+
 use crate::CircuitWrapper;
 
 use pyo3::exceptions::{PyRuntimeError, PyValueError};
@@ -58,4 +61,21 @@ pub struct TripleControlledPauliZ {
     control_1: usize,
     control_2: usize,
     target: usize,
+}
+
+#[wrap(
+    Operate,
+    OperateFourQubit,
+    OperateGate,
+    OperateFourQubitGate,
+    JsonSchema
+)]
+/// The triple-controlled PhaseShift gate.
+///
+pub struct TripleControlledPhaseShift {
+    control_0: usize,
+    control_1: usize,
+    control_2: usize,
+    target: usize,
+    theta: CalculatorFloat,
 }
