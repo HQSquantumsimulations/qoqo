@@ -484,3 +484,159 @@ impl OperateThreeQubitGate for Toffoli {
         circuit
     }
 }
+
+/// Implements the controlled SWAP gate.
+///
+#[derive(
+    Debug,
+    Clone,
+    PartialEq,
+    Eq,
+    roqoqo_derive::InvolveQubits,
+    roqoqo_derive::Operate,
+    roqoqo_derive::Substitute,
+    roqoqo_derive::OperateThreeQubit,
+)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct ControlledSWAP {
+    control: usize,
+    target_0: usize,
+    target_1: usize,
+}
+
+impl super::ImplementedIn1point16 for ControlledSWAP {}
+
+impl SupportedVersion for ControlledSWAP {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 16, 0)
+    }
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_ControlledSWAP: &[&str; 4] = &[
+    "Operation",
+    "GateOperation",
+    "ThreeQubitGateOperation",
+    "ControlledSWAP",
+];
+
+/// Trait for all Operations acting with a unitary gate on a set of qubits.
+impl OperateGate for ControlledSWAP {
+    /// Returns unitary matrix of the gate.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Array2<Complex64>)` - The unitary matrix representation of the gate.
+    /// * `Err(RoqoqoError)` - The conversion of parameters to f64 failed (here, not possible).
+    fn unitary_matrix(&self) -> Result<Array2<Complex64>, RoqoqoError> {
+        Ok(array![
+            [
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(1.0, 0.0)
+            ],
+        ])
+    }
+}
+
+/// Trait for all gate operations acting on exactly three qubits.
+impl OperateThreeQubitGate for ControlledSWAP {
+    fn circuit(&self) -> Circuit {
+        // Based on CNOT(2, 1) -> Toffoli(0, 1, 2) -> CNOT(2, 1)
+        let mut circuit = Circuit::new();
+        circuit += CNOT::new(self.target_1, self.target_0);
+        circuit += Hadamard::new(self.target_1);
+        circuit += CNOT::new(self.target_0, self.target_1);
+        circuit += RotateZ::new(self.target_1, -CalculatorFloat::FRAC_PI_4);
+        circuit += CNOT::new(self.control, self.target_1);
+        circuit += TGate::new(self.target_1);
+        circuit += CNOT::new(self.target_0, self.target_1);
+        circuit += RotateZ::new(self.target_1, -CalculatorFloat::FRAC_PI_4);
+        circuit += CNOT::new(self.control, self.target_1);
+        circuit += TGate::new(self.target_0);
+        circuit += TGate::new(self.target_1);
+        circuit += Hadamard::new(self.target_1);
+        circuit += CNOT::new(self.control, self.target_0);
+        circuit += TGate::new(self.control);
+        circuit += RotateZ::new(self.target_0, -CalculatorFloat::FRAC_PI_4);
+        circuit += CNOT::new(self.control, self.target_0);
+        circuit += CNOT::new(self.target_1, self.target_0);
+        circuit
+    }
+}

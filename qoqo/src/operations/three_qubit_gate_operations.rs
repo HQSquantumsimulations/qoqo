@@ -129,3 +129,35 @@ pub struct Toffoli {
     control_1: usize,
     target: usize,
 }
+
+#[allow(clippy::upper_case_acronyms)]
+#[wrap(
+    Operate,
+    OperateThreeQubit,
+    OperateGate,
+    OperateThreeQubitGate,
+    JsonSchema
+)]
+/// Implements ControlledSWAP gate.
+///
+/// .. math::
+///     U = \begin{pmatrix}
+///         1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
+///         \end{pmatrix}
+///
+/// Args:
+///     control (int): The index of the most significant qubit in the unitary representation. Here, the controlling qubit of the operation.
+///     target_0 (int): The index of the second most significant qubit in the unitary representation. Here, the first targeting qubit of the operation.
+///     target_1 (int): The index of the least significant qubit in the unitary representation. Here, the second targeting qubit of the operation.
+pub struct ControlledSWAP {
+    control: usize,
+    target_0: usize,
+    target_1: usize,
+}
