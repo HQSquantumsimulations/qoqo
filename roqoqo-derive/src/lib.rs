@@ -30,13 +30,15 @@ mod substitute_modes;
 mod supported_version;
 
 /// Array of field names that are reserved for use with specific traits
-const RESERVED_FIELDS: &[&str; 16] = &[
+const RESERVED_FIELDS: &[&str; 18] = &[
     "qubit",
     "control",
     "control_0",
     "control_1",
     "control_2",
     "target",
+    "target_0",
+    "target_1",
     "qubits",
     "global_phase",
     "alpha_r",
