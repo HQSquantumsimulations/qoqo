@@ -53,13 +53,15 @@ pub fn devicechainenvironmentwrapper(
 }
 
 /// Array of field names that are reserved for use with specific traits
-const RESERVED_FIELDS: &[&str; 16] = &[
+const RESERVED_FIELDS: &[&str; 18] = &[
     "qubit",
     "control",
     "control_0",
     "control_1",
     "control_2",
     "target",
+    "target_0",
+    "target_1",
     "qubits",
     "global_phase",
     "alpha_r",
@@ -340,17 +342,29 @@ pub fn wrap(
     // };
     let operate_three_qubit_quote = if attribute_arguments.contains("OperateThreeQubit") {
         quote! {
+            /// Returns control qubit of the three-qubit operation
+            pub fn control(&self) -> Option<usize> {
+                self.internal.control().copied()
+            }
             /// Returns control_0 qubit of the three-qubit operation
-            pub fn control_0(&self) -> usize {
-                self.internal.control_0().clone()
+            pub fn control_0(&self) -> Option<usize> {
+                self.internal.control_0().copied()
             }
             /// Returns control_1 qubit of the three-qubit operation
-            pub fn control_1(&self) -> usize {
-                self.internal.control_1().clone()
+            pub fn control_1(&self) -> Option<usize> {
+                self.internal.control_1().copied()
             }
             /// Returns target qubit of the three-qubit operation
-            pub fn target(&self) -> usize {
-                self.internal.target().clone()
+            pub fn target(&self) -> Option<usize> {
+                self.internal.target().copied()
+            }
+            /// Returns target_0 qubit of the three-qubit operation
+            pub fn target_0(&self) -> Option<usize> {
+                self.internal.target_0().copied()
+            }
+            /// Returns target_1 qubit of the three-qubit operation
+            pub fn target_1(&self) -> Option<usize> {
+                self.internal.target_1().copied()
             }
         }
     } else {
