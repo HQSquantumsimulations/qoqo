@@ -327,9 +327,9 @@ pub trait OperateTwoQubit: Operate + InvolveQubits + Substitute + Clone + Partia
 /// ```
 /// use roqoqo::operations::{ControlledControlledPauliZ, OperateThreeQubit};
 /// let ccz = ControlledControlledPauliZ::new(0, 1, 2);
-/// assert_eq!(ccz.control_0(), &0_usize);
-/// assert_eq!(ccz.control_1(), &1_usize);
-/// assert_eq!(ccz.target(), &2_usize);
+/// assert_eq!(ccz.control_0(), Some(&0_usize));
+/// assert_eq!(ccz.control_1(), Some(&1_usize));
+/// assert_eq!(ccz.target(), Some(&2_usize));
 /// ```
 ///
 pub trait OperateThreeQubit: Operate + InvolveQubits + Substitute + Clone + PartialEq {
