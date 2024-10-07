@@ -191,6 +191,27 @@ pub fn dispatch_struct_enum_three_qubit(input: DeriveInput) -> TokenStream {
 
 fn operate_three_qubit_enum(de: DataEnum, ident: Ident) -> TokenStream {
     let DataEnum { variants, .. } = de;
+    let control_quotes = variants.clone().into_iter().map(|v| {
+        let vident = v.ident.clone();
+
+        // We match the fields in the variant,
+        let fields = match v.fields {
+            Fields::Unnamed(fields) => fields,
+            // and panic when the fields are not unnamed,
+            _ => panic!(
+                "OperateThreeQubit can only be derived for enums with newtype structs as variants"
+            ),
+        };
+        // and panic when there is more than one field, ensuring newtype structs.
+        if fields.unnamed.iter().len() != 1 {
+            panic!(
+                "OperateThreeQubit can only be derived for enums with newtype structs as variants"
+            )
+        }
+        quote! {
+            &#ident::#vident(ref inner) => {OperateThreeQubit::control(&(*inner))},
+        }
+    });
     let control_0_quotes = variants.clone().into_iter().map(|v| {
         let vident = v.ident.clone();
 
@@ -233,7 +254,7 @@ fn operate_three_qubit_enum(de: DataEnum, ident: Ident) -> TokenStream {
             &#ident::#vident(ref inner) => {OperateThreeQubit::control_1(&(*inner))},
         }
     });
-    let target_quotes = variants.into_iter().map(|v| {
+    let target_quotes = variants.clone().into_iter().map(|v| {
         let vident = v.ident.clone();
         let fields = match v.fields {
             Fields::Unnamed(fields) => fields,
@@ -250,28 +271,83 @@ fn operate_three_qubit_enum(de: DataEnum, ident: Ident) -> TokenStream {
             &#ident::#vident(ref inner) => {OperateThreeQubit::target(&(*inner))},
         }
     });
+    let target_0_quotes = variants.clone().into_iter().map(|v| {
+        let vident = v.ident.clone();
+        let fields = match v.fields {
+            Fields::Unnamed(fields) => fields,
+            _ => panic!(
+                "OperateThreeQubit can only be derived for enums with newtype structs as variants"
+            ),
+        };
+        if fields.unnamed.iter().len() != 1 {
+            panic!(
+                "OperateThreeQubit can only be derived for enums with newtype structs as variants"
+            )
+        }
+        quote! {
+            &#ident::#vident(ref inner) => {OperateThreeQubit::target_0(&(*inner))},
+        }
+    });
+    let target_1_quotes = variants.into_iter().map(|v| {
+        let vident = v.ident.clone();
+        let fields = match v.fields {
+            Fields::Unnamed(fields) => fields,
+            _ => panic!(
+                "OperateThreeQubit can only be derived for enums with newtype structs as variants"
+            ),
+        };
+        if fields.unnamed.iter().len() != 1 {
+            panic!(
+                "OperateThreeQubit can only be derived for enums with newtype structs as variants"
+            )
+        }
+        quote! {
+            &#ident::#vident(ref inner) => {OperateThreeQubit::target_1(&(*inner))},
+        }
+    });
     quote! {
         #[automatically_derived]
         /// Trait for Operations acting on exactly three qubits.
         impl OperateThreeQubit for #ident{
+            /// Returns `control` qubit of the three qubit Operation.
+            fn control(&self) -> Option<&usize> {
+                match self{
+                    #(#control_quotes)*
+                    _ => panic!("Unexpectedly cannot match variant")
+                }
+            }
             /// Returns `control_0` qubit of the three qubit Operation.
-            fn control_0(&self) -> &usize {
+            fn control_0(&self) -> Option<&usize> {
                 match self{
                     #(#control_0_quotes)*
                     _ => panic!("Unexpectedly cannot match variant")
                 }
             }
             /// Returns `control_1` qubit of the three qubit Operation.
-            fn control_1(&self) -> &usize {
+            fn control_1(&self) -> Option<&usize> {
                 match self{
                     #(#control_1_quotes)*
                     _ => panic!("Unexpectedly cannot match variant")
                 }
             }
             /// Returns `target` qubit of the three qubit Operation.
-            fn target(&self) -> &usize {
+            fn target(&self) -> Option<&usize> {
                 match self{
                     #(#target_quotes)*
+                    _ => panic!("Unexpectedly cannot match variant")
+                }
+            }
+            /// Returns `target_0` qubit of the three qubit Operation.
+            fn target_0(&self) -> Option<&usize> {
+                match self{
+                    #(#target_0_quotes)*
+                    _ => panic!("Unexpectedly cannot match variant")
+                }
+            }
+            /// Returns `target_1` qubit of the three qubit Operation.
+            fn target_1(&self) -> Option<&usize> {
+                match self{
+                    #(#target_1_quotes)*
                     _ => panic!("Unexpectedly cannot match variant")
                 }
             }
@@ -280,27 +356,71 @@ fn operate_three_qubit_enum(de: DataEnum, ident: Ident) -> TokenStream {
 }
 
 fn operate_three_qubit_struct(ident: Ident) -> TokenStream {
-    quote! {
-        #[automatically_derived]
-        /// Trait for Operations acting on exactly three qubits.
-        impl OperateThreeQubit for #ident{
-            /// Returns `control_0` qubit of the three qubit Operation.
-            fn control_0(&self ) -> &usize {
-                &self.control_0
+    match ident.to_string().as_str() {
+        "ControlledControlledPauliZ" | "ControlledControlledPhaseShift" | "Toffoli" => quote! {
+            #[automatically_derived]
+            /// Trait for Operations acting on exactly three qubits.
+            impl OperateThreeQubit for #ident{
+                /// Returns `control` qubit of the three qubit Operation.
+                fn control(&self ) -> Option<&usize> {
+                    None
+                }
+                /// Returns `control_0` qubit of the three qubit Operation.
+                fn control_0(&self ) -> Option<&usize> {
+                    Some(&self.control_0)
+                }
+                /// Returns `control_1` qubit of the three qubit Operation.
+                fn control_1(&self ) -> Option<&usize> {
+                    Some(&self.control_1)
+                }
+                /// Returns `target` qubit of the three qubit Operation.
+                fn target(&self ) -> Option<&usize> {
+                    Some(&self.target)
+                }
+                /// Returns `target_0` qubit of the three qubit Operation.
+                fn target_0(&self ) -> Option<&usize> {
+                    None
+                }
+                /// Returns `target_1` qubit of the three qubit Operation.
+                fn target_1(&self ) -> Option<&usize> {
+                    None
+                }
             }
-            /// Returns `control_1` qubit of the three qubit Operation.
-            fn control_1(&self ) -> &usize {
-                &self.control_1
+        },
+        _ => quote! {
+            #[automatically_derived]
+            /// Trait for Operations acting on exactly three qubits.
+            impl OperateThreeQubit for #ident{
+                /// Returns `control` qubit of the three qubit Operation.
+                fn control(&self ) -> Option<&usize> {
+                    Some(&self.control)
+                }
+                /// Returns `control_0` qubit of the three qubit Operation.
+                fn control_0(&self ) -> Option<&usize> {
+                    None
+                }
+                /// Returns `control_1` qubit of the three qubit Operation.
+                fn control_1(&self ) -> Option<&usize> {
+                    None
+                }
+                /// Returns `target` qubit of the three qubit Operation.
+                fn target(&self ) -> Option<&usize> {
+                    None
+                }
+                /// Returns `target_0` qubit of the three qubit Operation.
+                fn target_0(&self ) -> Option<&usize> {
+                    Some(&self.target_0)
+                }
+                /// Returns `target_1` qubit of the three qubit Operation.
+                fn target_1(&self ) -> Option<&usize> {
+                    Some(&self.target_1)
+                }
             }
-            /// Returns `target` qubit of the three qubit Operation.
-            fn target(&self ) -> &usize {
-                &self.target
-            }
-        }
+        },
     }
 }
 
-/// Dispatch to derive OperateThreeQubit for enums and structs
+/// Dispatch to derive OperateFourQubit for enums and structs
 pub fn dispatch_struct_enum_four_qubit(input: DeriveInput) -> TokenStream {
     let ident = input.ident;
     match input.data {
