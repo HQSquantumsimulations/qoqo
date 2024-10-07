@@ -609,3 +609,49 @@ struct SqrtPauliY {
 struct InvSqrtPauliY {
     qubit: usize,
 }
+
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
+#[derive(Eq)]
+/// The SX gate.
+///
+/// .. math::
+///     U = \frac{1}{\sqrt(2)} \begin{pmatrix}
+///         1+i & 1-i \\\\
+///         1-i & 1+i
+///         \end{pmatrix}
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+///
+struct SXGate {
+    qubit: usize,
+}
+
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
+#[derive(Eq)]
+/// The InvSX gate.
+///
+/// .. math::
+///     U = \frac{1}{\sqrt(2)} \begin{pmatrix}
+///         1+i & 1-i \\\\
+///         1-i & 1+i
+///         \end{pmatrix}
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+///
+struct InvSXGate {
+    qubit: usize,
+}
