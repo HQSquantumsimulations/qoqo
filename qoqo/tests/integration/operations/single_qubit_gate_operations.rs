@@ -17,12 +17,12 @@ use pyo3::prelude::*;
 use pyo3::Python;
 use qoqo::operations::convert_operation_to_pyobject;
 use qoqo::operations::{
-    GPi2Wrapper, GPiWrapper, HadamardWrapper, IdentityWrapper, InvSGateWrapper,
+    GPi2Wrapper, GPiWrapper, HadamardWrapper, IdentityWrapper, InvSGateWrapper, InvSXGateWrapper,
     InvSqrtPauliXWrapper, InvSqrtPauliYWrapper, InvTGateWrapper, PauliXWrapper, PauliYWrapper,
     PauliZWrapper, PhaseShiftState0Wrapper, PhaseShiftState1Wrapper,
     RotateAroundSphericalAxisWrapper, RotateXWrapper, RotateXYWrapper, RotateYWrapper,
-    RotateZWrapper, SGateWrapper, SingleQubitGateWrapper, SqrtPauliXWrapper, SqrtPauliYWrapper,
-    TGateWrapper,
+    RotateZWrapper, SGateWrapper, SXGateWrapper, SingleQubitGateWrapper, SqrtPauliXWrapper,
+    SqrtPauliYWrapper, TGateWrapper,
 };
 use qoqo_calculator::Calculator;
 use qoqo_calculator::CalculatorFloat;
@@ -984,6 +984,78 @@ fn test_new_invsqrtpauliy(input_operation: Operation, arguments: (u32,), method:
     })
 }
 
+/// Test new() function for SXGate
+#[test_case(Operation::from(SXGate::new(1)), (1,), "__eq__"; "SXGate_eq")]
+#[test_case(Operation::from(SXGate::new(1)), (0,), "__ne__"; "SXGate_ne")]
+fn test_new_sxgate(input_operation: Operation, arguments: (u32,), method: &str) {
+    let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation_type = py.get_type_bound::<SXGateWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<SXGateWrapper>().unwrap();
+
+        let comparison = bool::extract_bound(
+            &operation
+                .bind(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        let def_wrapper = operation_py.extract::<SXGateWrapper>().unwrap();
+        let binding = operation_type.call1((2,)).unwrap();
+        let new_op_diff = binding.downcast::<SXGateWrapper>().unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<SXGateWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "SXGateWrapper { internal: SXGate { qubit: 2 } }"
+        );
+    })
+}
+
+/// Test new() function for InvSXGate
+#[test_case(Operation::from(InvSXGate::new(1)), (1,), "__eq__"; "InvSXGate_eq")]
+#[test_case(Operation::from(InvSXGate::new(1)), (0,), "__ne__"; "InvSXGate_ne")]
+fn test_new_invsxgate(input_operation: Operation, arguments: (u32,), method: &str) {
+    let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation_type = py.get_type_bound::<InvSXGateWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<InvSXGateWrapper>().unwrap();
+
+        let comparison = bool::extract_bound(
+            &operation
+                .bind(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        let def_wrapper = operation_py.extract::<InvSXGateWrapper>().unwrap();
+        let binding = operation_type.call1((2,)).unwrap();
+        let new_op_diff = binding.downcast::<InvSXGateWrapper>().unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<InvSXGateWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "InvSXGateWrapper { internal: InvSXGate { qubit: 2 } }"
+        );
+    })
+}
+
 /// Test is_parametrized() function for SingleQubitGate Operations
 #[test_case(Operation::from(RotateX::new(0, CalculatorFloat::from("theta"))); "RotateX")]
 #[test_case(Operation::from(RotateY::new(0, CalculatorFloat::from("theta"))); "RotateY")]
@@ -1082,6 +1154,8 @@ fn test_pyo3_is_parametrized(input_operation: Operation) {
 #[test_case(Operation::from(Identity::new(1)); "Identity")]
 #[test_case(Operation::from(SqrtPauliY::new(3)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(3)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(100)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(100)); "InvSXGate")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1167,6 +1241,8 @@ fn test_pyo3_theta(theta: CalculatorFloat, input_operation: Operation) {
 #[test_case(1, Operation::from(Identity::new(1)); "Identity")]
 #[test_case(3, Operation::from(SqrtPauliY::new(3)); "SqrtPauliY")]
 #[test_case(3, Operation::from(InvSqrtPauliY::new(3)); "InvSqrtPauliY")]
+#[test_case(0, Operation::from(SXGate::new(0)); "SXGate")]
+#[test_case(0, Operation::from(InvSXGate::new(0)); "InvSXGate")]
 fn test_pyo3_qubit(qubit: usize, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1229,6 +1305,8 @@ fn test_pyo3_qubit(qubit: usize, input_operation: Operation) {
 #[test_case("Identity", Operation::from(Identity::new(1)); "Identity")]
 #[test_case("SqrtPauliY", Operation::from(SqrtPauliY::new(3)); "SqrtPauliY")]
 #[test_case("InvSqrtPauliY", Operation::from(InvSqrtPauliY::new(3)); "InvSqrtPauliY")]
+#[test_case("SXGate", Operation::from(SXGate::new(0)); "SXGate")]
+#[test_case("InvSXGate", Operation::from(InvSXGate::new(0)); "InvSXGate")]
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1464,6 +1542,24 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
         "InvSqrtPauliY",
         ];
     "InvSqrtPauliY")]
+#[test_case(
+    Operation::from(SXGate::new(0)),
+    vec![
+        "Operation",
+        "GateOperation",
+        "SingleQubitGateOperation",
+        "SXGate",
+        ];
+    "SXGate")]
+#[test_case(
+    Operation::from(InvSXGate::new(0)),
+    vec![
+        "Operation",
+        "GateOperation",
+        "SingleQubitGateOperation",
+        "InvSXGate",
+        ];
+    "InvSXGate")]
 fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1530,6 +1626,8 @@ fn test_pyo3_tags(input_operation: Operation, tags: Vec<&str>) {
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
 #[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(0)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(0)); "InvSXGate")]
 fn test_pyo3_remapqubits(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1611,6 +1709,8 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
 #[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(0)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(0)); "InvSXGate")]
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
@@ -1673,6 +1773,8 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
 #[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(0)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(0)); "InvSXGate")]
 fn test_pyo3_unitarymatrix(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1810,6 +1912,8 @@ fn test_pyo3_unitarymatrix_singlequbitgate(input_operation: Operation) {
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
 #[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(0)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(0)); "InvSXGate")]
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1886,6 +1990,8 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
 #[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(0)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(0)); "InvSXGate")]
 fn test_pyo3_alpha_r(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -1956,6 +2062,8 @@ fn test_pyo3_alpha_r(input_operation: Operation) {
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
 #[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(0)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(0)); "InvSXGate")]
 fn test_pyo3_alpha_i(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2026,6 +2134,8 @@ fn test_pyo3_alpha_i(input_operation: Operation) {
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
 #[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(0)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(0)); "InvSXGate")]
 fn test_pyo3_beta_r(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2096,6 +2206,8 @@ fn test_pyo3_beta_r(input_operation: Operation) {
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
 #[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(0)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(0)); "InvSXGate")]
 fn test_pyo3_beta_i(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2166,6 +2278,8 @@ fn test_pyo3_beta_i(input_operation: Operation) {
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
 #[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(0)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(0)); "InvSXGate")]
 fn test_pyo3_global_phase(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2292,6 +2406,14 @@ fn test_pyo3_global_phase(input_operation: Operation) {
     "InvSqrtPauliY { qubit: 0 }",
     Operation::from(InvSqrtPauliY::new(0));
     "InvSqrtPauliY")]
+#[test_case(
+    "SXGate { qubit: 0 }",
+    Operation::from(SXGate::new(0));
+    "SXGate")]
+#[test_case(
+    "InvSXGate { qubit: 0 }",
+    Operation::from(InvSXGate::new(0));
+    "InvSXGate")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2451,6 +2573,8 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 #[test_case(Operation::from(Identity::new(0)); "Identity")]
 #[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(0)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(0)); "InvSXGate")]
 fn test_ineffective_substitute_parameters(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2558,6 +2682,8 @@ fn test_pyo3_rotate_powercf(first_op: Operation, second_op: Operation) {
 #[test_case(Operation::from(Identity::new(1)); "Identity")]
 #[test_case(Operation::from(SqrtPauliY::new(1)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(1)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(1)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(1)); "InvSXGate")]
 fn test_pyo3_mul(gate1: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2598,6 +2724,8 @@ fn test_pyo3_mul(gate1: Operation) {
 #[test_case(Operation::from(Identity::new(1)); "Identity")]
 #[test_case(Operation::from(SqrtPauliY::new(1)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(1)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(1)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(1)); "InvSXGate")]
 fn test_pyo3_mul_error1(gate1: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2631,6 +2759,8 @@ fn test_pyo3_mul_error1(gate1: Operation) {
 #[test_case(Operation::from(Identity::new(1)); "Identity")]
 #[test_case(Operation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(0)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(0)); "InvSXGate")]
 fn test_pyo3_mul_error2(gate1: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2664,6 +2794,8 @@ fn test_pyo3_mul_error2(gate1: Operation) {
 #[test_case(Operation::from(Identity::new(1)); "Identity")]
 #[test_case(Operation::from(SqrtPauliY::new(1)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(1)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(1)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(1)); "InvSXGate")]
 fn test_pyo3_mul_error3(gate1: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2784,6 +2916,12 @@ fn test_pyo3_mul_error3(gate1: Operation) {
 #[test_case(
     Operation::from(InvSqrtPauliY::new(0)),
     Operation::from(InvSqrtPauliY::new(1)); "InvSqrtPauliY")]
+#[test_case(
+    Operation::from(SXGate::new(0)),
+    Operation::from(SXGate::new(1)); "SXGate")]
+#[test_case(
+    Operation::from(InvSXGate::new(0)),
+    Operation::from(InvSXGate::new(1)); "InvSXGate")]
 fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -2866,6 +3004,8 @@ fn test_pyo3_richcmp(definition_1: Operation, definition_2: Operation) {
 #[test_case(SingleQubitGateOperation::from(Identity::new(1)); "Identity")]
 #[test_case(SingleQubitGateOperation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
 #[test_case(SingleQubitGateOperation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
+#[test_case(SingleQubitGateOperation::from(SXGate::new(0)); "SXGate")]
+#[test_case(SingleQubitGateOperation::from(InvSXGate::new(0)); "InvSXGate")]
 fn test_pyo3_json_schema(operation: SingleQubitGateOperation) {
     let rust_schema = match operation {
         SingleQubitGateOperation::SingleQubitGate(_) => {
@@ -2937,6 +3077,12 @@ fn test_pyo3_json_schema(operation: SingleQubitGateOperation) {
         SingleQubitGateOperation::InvSqrtPauliY(_) => {
             serde_json::to_string_pretty(&schemars::schema_for!(InvSqrtPauliY)).unwrap()
         }
+        SingleQubitGateOperation::SXGate(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(SXGate)).unwrap()
+        }
+        SingleQubitGateOperation::InvSXGate(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(InvSXGate)).unwrap()
+        }
         _ => unreachable!(),
     };
     pyo3::prepare_freethreaded_python();
@@ -2947,9 +3093,10 @@ fn test_pyo3_json_schema(operation: SingleQubitGateOperation) {
             SingleQubitGateOperation::Identity(_) => "1.7.0".to_string(),
             SingleQubitGateOperation::SqrtPauliY(_) => "1.15.0".to_string(),
             SingleQubitGateOperation::InvSqrtPauliY(_) => "1.15.0".to_string(),
-            SingleQubitGateOperation::InvSGate(_) | SingleQubitGateOperation::InvTGate(_) => {
-                "1.16.0".to_string()
-            }
+            SingleQubitGateOperation::InvSGate(_)
+            | SingleQubitGateOperation::InvTGate(_)
+            | SingleQubitGateOperation::SXGate(_)
+            | SingleQubitGateOperation::InvSXGate(_) => "1.16.0".to_string(),
             _ => "1.0.0".to_string(),
         };
         let converted_op = Operation::from(operation);
