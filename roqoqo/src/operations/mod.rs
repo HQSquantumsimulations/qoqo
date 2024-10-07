@@ -333,12 +333,18 @@ pub trait OperateTwoQubit: Operate + InvolveQubits + Substitute + Clone + Partia
 /// ```
 ///
 pub trait OperateThreeQubit: Operate + InvolveQubits + Substitute + Clone + PartialEq {
-    /// Returns `target` qubit of three qubit Operation.
-    fn target(&self) -> &usize;
-    /// Returns `control_0` qubit of three qubit Operation.
-    fn control_0(&self) -> &usize;
-    /// Returns `control_1` qubit of three qubit Operation.
-    fn control_1(&self) -> &usize;
+    /// Returns `target` qubit of three qubit Operation (if present).
+    fn target(&self) -> Option<&usize>;
+    /// Returns `target_0` qubit of three qubit Operation (if present).
+    fn target_0(&self) -> Option<&usize>;
+    /// Returns `target_1` qubit of three qubit Operation (if present).
+    fn target_1(&self) -> Option<&usize>;
+    /// Returns `control` qubit of three qubit Operation (if present).
+    fn control(&self) -> Option<&usize>;
+    /// Returns `control_0` qubit of three qubit Operation (if present).
+    fn control_0(&self) -> Option<&usize>;
+    /// Returns `control_1` qubit of three qubit Operation (if present).
+    fn control_1(&self) -> Option<&usize>;
 }
 
 /// Trait for Operations acting on exactly four qubits.
