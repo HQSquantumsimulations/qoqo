@@ -756,6 +756,7 @@ fn test_pyo3_json_schema(operation: ThreeQubitGateOperation) {
         }
         _ => unreachable!(),
     };
+    let og_op = operation.clone();
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
         let converted_op = Operation::from(operation);
@@ -774,7 +775,7 @@ fn test_pyo3_json_schema(operation: ThreeQubitGateOperation) {
                 .unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
-        match operation {
+        match og_op {
             ThreeQubitGateOperation::ControlledControlledPauliZ(_)
             | ThreeQubitGateOperation::ControlledControlledPhaseShift(_)
             | ThreeQubitGateOperation::Toffoli(_) => {
