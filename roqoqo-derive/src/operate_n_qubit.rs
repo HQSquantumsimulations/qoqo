@@ -357,7 +357,11 @@ fn operate_three_qubit_enum(de: DataEnum, ident: Ident) -> TokenStream {
 
 fn operate_three_qubit_struct(ident: Ident) -> TokenStream {
     match ident.to_string().as_str() {
-        "ControlledControlledPauliZ" | "ControlledControlledPhaseShift" | "Toffoli" => quote! {
+        "ControlledControlledPauliZ"
+        | "ControlledControlledPhaseShift"
+        | "Toffoli"
+        | "PhaseShiftedControlledControlledZ"
+        | "PhaseShiftedControlledControlledPhase" => quote! {
             #[automatically_derived]
             /// Trait for Operations acting on exactly three qubits.
             impl OperateThreeQubit for #ident{
