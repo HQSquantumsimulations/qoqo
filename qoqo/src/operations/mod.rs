@@ -189,5 +189,13 @@ pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     m.add_class::<TripleControlledPauliXWrapper>()?;
     m.add_class::<TripleControlledPauliZWrapper>()?;
 
+    // 1.16
+    m.add_class::<TripleControlledPauliXWrapper>()?;
+    m.add_class::<TripleControlledPauliZWrapper>()?;
+    m.add_class::<TripleControlledPhaseShiftWrapper>()?;
+    m.add_class::<ControlledSWAPWrapper>()?;
+    m.add_class::<PhaseShiftedControlledControlledZWrapper>()?;
+    m.add_class::<PhaseShiftedControlledControlledPhaseWrapper>()?;
+
     Ok(())
 }
