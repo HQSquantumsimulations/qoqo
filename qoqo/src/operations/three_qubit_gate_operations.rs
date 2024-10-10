@@ -131,12 +131,7 @@ pub struct Toffoli {
 }
 
 #[allow(clippy::upper_case_acronyms)]
-#[wrap(
-    Operate,
-    OperateGate,
-    OperateThreeQubitGate,
-    JsonSchema
-)]
+#[wrap(Operate, OperateGate, OperateThreeQubitGate, JsonSchema)]
 /// Implements ControlledSWAP gate.
 ///
 /// .. math::
