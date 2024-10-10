@@ -222,40 +222,22 @@ fn test_twoqubitgates_clone(gate1: Operation) {
 #[test_case(ThreeQubitGateOperation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(ThreeQubitGateOperation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
 #[test_case(ThreeQubitGateOperation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
+#[test_case(ThreeQubitGateOperation::from(ControlledSWAP::new(0, 1, 2)); "ControlledSwap")]
 #[test_case(ThreeQubitGateOperation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledControlledZ")]
 #[test_case(ThreeQubitGateOperation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::FRAC_PI_2, CalculatorFloat::PI)); "PhaseShiftedControlledControlledPhase")]
 fn test_qubits_threequbitgates(gate: ThreeQubitGateOperation) {
-    let control_0: Option<&usize> = gate.control_0();
-    assert_eq!(control_0, Some(&0));
-    let control_1: Option<&usize> = gate.control_1();
-    assert_eq!(control_1, Some(&1));
-    let target: Option<&usize> = gate.target();
-    assert_eq!(target, Some(&2));
+    let control_0: &usize = gate.control_0();
+    assert_eq!(control_0, &0);
+    let control_1: &usize = gate.control_1();
+    assert_eq!(control_1, &1);
+    let target: &usize = gate.target();
+    assert_eq!(target, &2);
     let mut qubits: HashSet<usize> = HashSet::new();
     qubits.insert(0);
     qubits.insert(1);
     qubits.insert(2);
     let test_qubits: InvolvedQubits = InvolvedQubits::Set(qubits);
     assert_eq!(gate.involved_qubits(), test_qubits);
-}
-
-#[test_case(ThreeQubitGateOperation::from(ControlledSWAP::new(0, 1, 2)); "ControlledSwap")]
-fn test_qubits_threequbitgates_cswap(gate: ThreeQubitGateOperation) {
-    let control: Option<&usize> = gate.control();
-    assert_eq!(control, Some(&0));
-    let target_0: Option<&usize> = gate.target_0();
-    assert_eq!(target_0, Some(&1));
-    let target_1: Option<&usize> = gate.target_1();
-    assert_eq!(target_1, Some(&2));
-    let mut qubits: HashSet<usize> = HashSet::new();
-    qubits.insert(0);
-    qubits.insert(1);
-    qubits.insert(2);
-    let test_qubits: InvolvedQubits = InvolvedQubits::Set(qubits);
-    assert_eq!(gate.involved_qubits(), test_qubits);
-    assert!(gate.control_0().is_none());
-    assert!(gate.control_1().is_none());
-    assert!(gate.target().is_none());
 }
 
 #[test_case(Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
@@ -501,57 +483,42 @@ fn test_substitute_parameters_error(gate: Operation) {
 #[test]
 fn test_inputs_controlledcontrolledpauliz() {
     let gate = ControlledControlledPauliZ::new(0, 1, 2);
-    assert_eq!(gate.control_0(), Some(&0));
-    assert_eq!(gate.control_1(), Some(&1));
-    assert_eq!(gate.target(), Some(&2));
-    assert!(gate.control().is_none());
-    assert!(gate.target_0().is_none());
-    assert!(gate.target_1().is_none());
+    assert_eq!(gate.control_0(), &0);
+    assert_eq!(gate.control_1(), &1);
+    assert_eq!(gate.target(), &2);
 }
 
 #[test]
 fn test_inputs_controlledcontrolledphaseshift() {
     let gate = ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2));
-    assert_eq!(gate.control_0(), Some(&0));
-    assert_eq!(gate.control_1(), Some(&1));
-    assert_eq!(gate.target(), Some(&2));
+    assert_eq!(gate.control_0(), &0);
+    assert_eq!(gate.control_1(), &1);
+    assert_eq!(gate.target(), &2);
     assert_eq!(gate.theta(), &CalculatorFloat::from(0.2));
-    assert!(gate.control().is_none());
-    assert!(gate.target_0().is_none());
-    assert!(gate.target_1().is_none());
 }
 
 #[test]
 fn test_inputs_toffoli() {
     let gate = Toffoli::new(0, 1, 2);
-    assert_eq!(gate.control_0(), Some(&0));
-    assert_eq!(gate.control_1(), Some(&1));
-    assert_eq!(gate.target(), Some(&2));
-    assert!(gate.control().is_none());
-    assert!(gate.target_0().is_none());
-    assert!(gate.target_1().is_none());
+    assert_eq!(gate.control_0(), &0);
+    assert_eq!(gate.control_1(), &1);
+    assert_eq!(gate.target(), &2);
 }
 
 #[test]
 fn test_inputs_cswap() {
     let gate = ControlledSWAP::new(0, 1, 2);
-    assert_eq!(gate.control(), Some(&0));
-    assert_eq!(gate.target_0(), Some(&1));
-    assert_eq!(gate.target_1(), Some(&2));
-    assert!(gate.control_0().is_none());
-    assert!(gate.control_1().is_none());
-    assert!(gate.target().is_none());
+    assert_eq!(gate.control_0(), &0);
+    assert_eq!(gate.control_1(), &1);
+    assert_eq!(gate.target(), &2);
 }
 
 #[test]
 fn test_inputs_phaseshiftedccz() {
     let gate = PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::PI);
-    assert!(gate.control().is_none());
-    assert_eq!(gate.control_0(), Some(&0));
-    assert_eq!(gate.control_1(), Some(&1));
-    assert_eq!(gate.target(), Some(&2));
-    assert!(gate.target_0().is_none());
-    assert!(gate.target_1().is_none());
+    assert_eq!(gate.control_0(), &0);
+    assert_eq!(gate.control_1(), &1);
+    assert_eq!(gate.target(), &2);
 }
 
 #[test]
@@ -563,12 +530,9 @@ fn test_inputs_phaseshiftedccps() {
         CalculatorFloat::PI,
         CalculatorFloat::PI,
     );
-    assert!(gate.control().is_none());
-    assert_eq!(gate.control_0(), Some(&0));
-    assert_eq!(gate.control_1(), Some(&1));
-    assert_eq!(gate.target(), Some(&2));
-    assert!(gate.target_0().is_none());
-    assert!(gate.target_1().is_none());
+    assert_eq!(gate.control_0(), &0);
+    assert_eq!(gate.control_1(), &1);
+    assert_eq!(gate.target(), &2);
 }
 
 /// Test JsonSchema trait

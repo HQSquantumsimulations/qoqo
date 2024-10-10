@@ -327,24 +327,18 @@ pub trait OperateTwoQubit: Operate + InvolveQubits + Substitute + Clone + Partia
 /// ```
 /// use roqoqo::operations::{ControlledControlledPauliZ, OperateThreeQubit};
 /// let ccz = ControlledControlledPauliZ::new(0, 1, 2);
-/// assert_eq!(ccz.control_0(), Some(&0_usize));
-/// assert_eq!(ccz.control_1(), Some(&1_usize));
-/// assert_eq!(ccz.target(), Some(&2_usize));
+/// assert_eq!(ccz.control_0(), &0_usize);
+/// assert_eq!(ccz.control_1(), &1_usize);
+/// assert_eq!(ccz.target(), &2_usize);
 /// ```
 ///
 pub trait OperateThreeQubit: Operate + InvolveQubits + Substitute + Clone + PartialEq {
-    /// Returns `target` qubit of three qubit Operation (if present).
-    fn target(&self) -> Option<&usize>;
-    /// Returns `target_0` qubit of three qubit Operation (if present).
-    fn target_0(&self) -> Option<&usize>;
-    /// Returns `target_1` qubit of three qubit Operation (if present).
-    fn target_1(&self) -> Option<&usize>;
-    /// Returns `control` qubit of three qubit Operation (if present).
-    fn control(&self) -> Option<&usize>;
-    /// Returns `control_0` qubit of three qubit Operation (if present).
-    fn control_0(&self) -> Option<&usize>;
-    /// Returns `control_1` qubit of three qubit Operation (if present).
-    fn control_1(&self) -> Option<&usize>;
+    /// Returns `target` qubit of three qubit Operation.
+    fn target(&self) -> &usize;
+    /// Returns `control_0` qubit of three qubit Operation.
+    fn control_0(&self) -> &usize;
+    /// Returns `control_1` qubit of three qubit Operation.
+    fn control_1(&self) -> &usize;
 }
 
 /// Trait for Operations acting on exactly four qubits.

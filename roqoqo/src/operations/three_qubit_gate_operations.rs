@@ -495,7 +495,6 @@ impl OperateThreeQubitGate for Toffoli {
     roqoqo_derive::InvolveQubits,
     roqoqo_derive::Operate,
     roqoqo_derive::Substitute,
-    roqoqo_derive::OperateThreeQubit,
 )]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
@@ -641,6 +640,20 @@ impl OperateThreeQubitGate for ControlledSWAP {
         circuit += CNOT::new(self.control, self.target_0);
         circuit += CNOT::new(self.target_1, self.target_0);
         circuit
+    }
+}
+
+impl OperateThreeQubit for ControlledSWAP {
+    fn target(&self) -> &usize {
+        &self.target_1
+    }
+
+    fn control_0(&self) -> &usize {
+        &self.control
+    }
+
+    fn control_1(&self) -> &usize {
+        &self.target_0
     }
 }
 
