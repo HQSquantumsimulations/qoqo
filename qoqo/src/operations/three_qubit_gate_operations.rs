@@ -161,3 +161,82 @@ pub struct ControlledSWAP {
     target_0: usize,
     target_1: usize,
 }
+
+#[allow(clippy::upper_case_acronyms)]
+#[wrap(
+    Operate,
+    OperateThreeQubit,
+    OperateGate,
+    OperateThreeQubitGate,
+    JsonSchema
+)]
+/// The phased-shifted double-controlled-Z gate.
+///
+///
+/// The unitary matrix representation is:
+///
+/// .. math::
+///     U = \begin{pmatrix}
+///         1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & e^{i \phi} & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & e^{i \phi} & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & 0 & e^{i (2\cdot\phi + \pi)}
+///         \end{pmatrix}
+///
+/// Args:
+///     control_0 (int): The index of the most significant qubit in the unitary representation. Here, the first qubit that controls the application of the phase-shift on the target qubit.
+///     control_1 (int): The index of the second most significant qubit in the unitary representation. Here, the second qubit that controls the application of the phase-shift on the target qubit.
+///     target (int):: The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
+///     phi (CalculatorFloat): The single qubit phase $\phi$.
+///
+pub struct PhaseShiftedControlledControlledZ {
+    control_0: usize,
+    control_1: usize,
+    target: usize,
+    phi: CalculatorFloat,
+}
+
+#[allow(clippy::upper_case_acronyms)]
+#[wrap(
+    Operate,
+    OperateThreeQubit,
+    OperateGate,
+    Rotate,
+    OperateThreeQubitGate,
+    JsonSchema
+)]
+/// The phased-shifted double-controlled-Z gate.
+///
+///
+/// The unitary matrix representation is:
+///
+/// .. math::
+///     U = \begin{pmatrix}
+///         1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & e^{i \phi} & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & e^{i \phi} & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & 0 & e^{i (2\cdot\phi + \theta)}
+///         \end{pmatrix}
+///
+/// Args:
+///     control_0 (int): The index of the most significant qubit in the unitary representation. Here, the first qubit that controls the application of the phase-shift on the target qubit.
+///     control_1 (int): The index of the second most significant qubit in the unitary representation. Here, the second qubit that controls the application of the phase-shift on the target qubit.
+///     target (int):: The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
+///     phi (CalculatorFloat): The single qubit phase $\phi$.
+///     theta (CalculatorFloat): The phase rotation $\theta$.
+///
+pub struct PhaseShiftedControlledControlledPhase {
+    control_0: usize,
+    control_1: usize,
+    target: usize,
+    theta: CalculatorFloat,
+    phi: CalculatorFloat,
+}
