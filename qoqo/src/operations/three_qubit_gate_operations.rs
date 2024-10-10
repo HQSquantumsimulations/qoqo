@@ -160,15 +160,15 @@ pub struct ControlledSWAP {
 impl ControlledSWAPWrapper {
     /// Returns control qubit of the three-qubit operation
     pub fn control(&self) -> usize {
-        self.internal.control_0().clone()
+        self.internal.control_0()
     }
     /// Returns target_0 qubit of the three-qubit operation
     pub fn target_0(&self) -> usize {
-        self.internal.control_1().clone()
+        self.internal.control_1()
     }
     /// Returns target_1 qubit of the three-qubit operation
     pub fn target_1(&self) -> usize {
-        self.internal.target().clone()
+        self.internal.target()
     }
 }
 
