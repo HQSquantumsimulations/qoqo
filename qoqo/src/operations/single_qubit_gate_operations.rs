@@ -645,8 +645,8 @@ struct SXGate {
 ///
 /// .. math::
 ///     U = \frac{1}{\sqrt(2)} \begin{pmatrix}
-///         1+i & 1-i \\\\
-///         1-i & 1+i
+///         1-i & 1+i \\\\
+///         1+i & 1-i
 ///         \end{pmatrix}
 ///
 /// Args:

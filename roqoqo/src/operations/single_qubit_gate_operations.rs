@@ -2152,7 +2152,7 @@ impl OperateSingleQubitGate for InvSGate {
     }
 }
 
-/// The InvS gate.
+/// The InvT gate.
 ///
 #[derive(
     Debug,
