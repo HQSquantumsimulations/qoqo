@@ -487,6 +487,10 @@ impl OperateThreeQubitGate for Toffoli {
 
 /// Implements the controlled SWAP gate.
 ///
+/// NOTE: for compatibility reasons, the OperateThreeQubit trait is implemented, but
+/// the "control" qubit of the operation can be accessed via the "control_0()" method,
+/// the "target_0" qubit of the operation can be accessed via the "control_1()" method and
+/// the "target_1" qubit of the operation can be accessed via the "target()" method.
 #[derive(
     Debug,
     Clone,
@@ -644,14 +648,17 @@ impl OperateThreeQubitGate for ControlledSWAP {
 }
 
 impl OperateThreeQubit for ControlledSWAP {
+    /// Returns `target_1` qubit of the three qubit Operation.
     fn target(&self) -> &usize {
         &self.target_1
     }
 
+    /// Returns `control` qubit of the three qubit Operation.
     fn control_0(&self) -> &usize {
         &self.control
     }
 
+    /// Returns `target_0` qubit of the three qubit Operation.
     fn control_1(&self) -> &usize {
         &self.target_0
     }
