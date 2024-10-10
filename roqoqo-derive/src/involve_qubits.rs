@@ -72,7 +72,10 @@ fn involve_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
     let mut control: bool = false;
     let mut control_0: bool = false;
     let mut control_1: bool = false;
+    let mut control_2: bool = false;
     let mut target: bool = false;
+    let mut target_0: bool = false;
+    let mut target_1: bool = false;
     let mut qubits: bool = false;
 
     // Iterating over the fields in the struct and setting the bool values to true if the field is
@@ -94,6 +97,20 @@ fn involve_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     panic!("Field target must have type usize")
                 }
             }
+            "target_0" => {
+                if type_string == Some("usize".to_string()) {
+                    target_0 = true;
+                } else {
+                    panic!("Field target_0 must have type usize")
+                }
+            }
+            "target_1" => {
+                if type_string == Some("usize".to_string()) {
+                    target_1 = true;
+                } else {
+                    panic!("Field target_1 must have type usize")
+                }
+            }
             "control" => {
                 if type_string == Some("usize".to_string()) {
                     control = true;
@@ -113,6 +130,13 @@ fn involve_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     control_1 = true;
                 } else {
                     panic!("Field control_1 must have type usize")
+                }
+            }
+            "control_2" => {
+                if type_string == Some("usize".to_string()) {
+                    control_2 = true;
+                } else {
+                    panic!("Field control_2 must have type usize")
                 }
             }
             "qubits" => {
@@ -138,6 +162,26 @@ fn involve_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 }
             }
         }
+    } else if control_2 {
+        if !(control_0 && control_1 && target) {
+            panic!("When deriving InvolveQubits for a four-qubit operation control_0, control_1, control_2 and target have to be present");
+        };
+        // Creating a function that puts qubits `control_0`, `control_1` `control_2` and `target` into the InvolvedQubits HashSet
+        quote! {
+            /// Implements [InvolveQubits] trait for the qubits involved in this Operation.
+            #[automatically_derived]
+            impl InvolveQubits for #ident{
+                /// Returns a list of all involed qubits.
+                fn involved_qubits(&self ) -> InvolvedQubits {
+                    let mut new_hash_set: std::collections::HashSet<usize> = std::collections::HashSet::new();
+                    new_hash_set.insert(self.control_0);
+                    new_hash_set.insert(self.control_1);
+                    new_hash_set.insert(self.control_2);
+                    new_hash_set.insert(self.target);
+                    InvolvedQubits::Set(new_hash_set)
+                }
+            }
+        }
     } else if control_0 || control_1 {
         if control {
             panic!("When deriving InvolveQubits for a three-qubit operation, control field must not be present")
@@ -159,6 +203,25 @@ fn involve_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                     new_hash_set.insert(self.control_0);
                     new_hash_set.insert(self.control_1);
                     new_hash_set.insert(self.target);
+                    InvolvedQubits::Set(new_hash_set)
+                }
+            }
+        }
+    } else if target_0 || target_1 {
+        if !control {
+            panic!("When deriving InvolveQubits for a three-qubit operation with two targets, control field must be present")
+        }
+        // Creating a function that puts qubits `control`, `target_0` and `target_1` into the InvolvedQubits HashSet
+        quote! {
+            /// Implements [InvolveQubits] trait for the qubits involved in this Operation.
+            #[automatically_derived]
+            impl InvolveQubits for #ident{
+                /// Returns a list of all involed qubits.
+                fn involved_qubits(&self ) -> InvolvedQubits {
+                    let mut new_hash_set: std::collections::HashSet<usize> = std::collections::HashSet::new();
+                    new_hash_set.insert(self.control);
+                    new_hash_set.insert(self.target_0);
+                    new_hash_set.insert(self.target_1);
                     InvolvedQubits::Set(new_hash_set)
                 }
             }

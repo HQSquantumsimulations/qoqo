@@ -60,7 +60,7 @@ fn test_circuit_multi_ms(qubits: Vec<usize>) {
 }
 
 #[test_case(vec![0,1]; "two_qubit")]
-fn test_matrix_output(qubits: Vec<usize>) {
+fn test_matrix_output_multi_ms(qubits: Vec<usize>) {
     let gate = MultiQubitMS::new(qubits, CalculatorFloat::FRAC_PI_2);
     let f: f64 = 1.0 / ((2.0_f64).sqrt());
     let test_array = array![
@@ -95,7 +95,7 @@ fn test_matrix_output(qubits: Vec<usize>) {
 }
 
 #[test_case(vec![0,1,2]; "three_qubit")]
-fn test_matrix_output_three(qubits: Vec<usize>) {
+fn test_matrix_output_three_multi_ms(qubits: Vec<usize>) {
     let gate = MultiQubitMS::new(qubits, CalculatorFloat::FRAC_PI_2);
     let f: f64 = 1.0 / ((2.0_f64).sqrt());
     let test_array = array![
@@ -186,7 +186,7 @@ fn test_matrix_output_three(qubits: Vec<usize>) {
 }
 
 #[test]
-fn test_clone_partial_eq() {
+fn test_clone_partial_eq_multi_ms() {
     let qubits = vec![0, 1, 2];
 
     let gate = MultiQubitMS::new(qubits.clone(), CalculatorFloat::FRAC_PI_2);
@@ -211,7 +211,7 @@ fn test_clone_partial_eq() {
 }
 
 #[test]
-fn test_operate() {
+fn test_operate_multi_ms() {
     let qubits = vec![0, 1, 2];
     let gate = MultiQubitMS::new(qubits.clone(), CalculatorFloat::FRAC_PI_2);
     assert_eq!(gate.hqslang(), "MultiQubitMS");
@@ -231,7 +231,7 @@ fn test_operate() {
 }
 
 #[test]
-fn test_substitute() {
+fn test_substitute_multi_ms() {
     let qubits = vec![0, 1, 2];
     let gate1 = MultiQubitMS::new(qubits.clone(), "theta".into());
     let gate = MultiQubitMS::new(qubits, CalculatorFloat::FRAC_PI_2);
@@ -250,7 +250,7 @@ fn test_substitute() {
 }
 
 #[test]
-fn test_substitute_error() {
+fn test_substitute_error_multi_ms() {
     let qubits = vec![0, 1, 2];
     let gate1 = MultiQubitMS::new(qubits, "theta".into());
     let calc = Calculator::new();
@@ -264,7 +264,7 @@ fn test_substitute_error() {
 }
 
 #[test]
-fn test_format() {
+fn test_format_multi_ms() {
     let qubits = vec![0, 1, 2];
     let gate = MultiQubitMS::new(qubits, "theta".into());
     let string = format!("{:?}", gate);
@@ -273,7 +273,7 @@ fn test_format() {
 }
 
 #[test]
-fn test_involved_qubits() {
+fn test_involved_qubits_multi_ms() {
     let qubits = vec![0, 1, 2];
     let gate = MultiQubitMS::new(qubits, "theta".into());
     let involved_qubits = gate.involved_qubits();
@@ -291,7 +291,7 @@ fn test_involved_qubits() {
 #[test_case(CalculatorFloat::from("theta"), CalculatorFloat::from(0.0); "power_0")]
 #[test_case(CalculatorFloat::from("theta"), CalculatorFloat::from(-2.0); "power_-2.0")]
 #[test_case(CalculatorFloat::from("theta"), CalculatorFloat::from("power"); "power_symbolic")]
-fn test_rotatex_powercf(theta: CalculatorFloat, power: CalculatorFloat) {
+fn test_rotatex_powercf_multi_ms(theta: CalculatorFloat, power: CalculatorFloat) {
     let qubits = vec![0, 1, 2];
     let gate = MultiQubitMS::new(qubits.clone(), theta);
 

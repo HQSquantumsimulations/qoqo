@@ -53,12 +53,15 @@ pub fn devicechainenvironmentwrapper(
 }
 
 /// Array of field names that are reserved for use with specific traits
-const RESERVED_FIELDS: &[&str; 15] = &[
+const RESERVED_FIELDS: &[&str; 18] = &[
     "qubit",
     "control",
     "control_0",
     "control_1",
+    "control_2",
     "target",
+    "target_0",
+    "target_1",
     "qubits",
     "global_phase",
     "alpha_r",
@@ -368,6 +371,41 @@ pub fn wrap(
     } else {
         TokenStream::new()
     };
+    let operate_four_qubit_quote = if attribute_arguments.contains("OperateFourQubit") {
+        quote! {
+            /// Returns control_0 qubit of the four-qubit operation
+            pub fn control_0(&self) -> usize {
+                self.internal.control_0().clone()
+            }
+            /// Returns control_1 qubit of the four-qubit operation
+            pub fn control_1(&self) -> usize {
+                self.internal.control_1().clone()
+            }
+            /// Returns control_2 qubit of the four-qubit operation
+            pub fn control_2(&self) -> usize {
+                self.internal.control_2().clone()
+            }
+            /// Returns target qubit of the four-qubit operation
+            pub fn target(&self) -> usize {
+                self.internal.target().clone()
+            }
+        }
+    } else {
+        TokenStream::new()
+    };
+    let operate_four_qubit_gate_quote = if attribute_arguments.contains("OperateFourQubitGate") {
+        quote! {
+            /// Returns circuit implementing the FourQubitGateOperation
+            ///
+            /// Returns:
+            ///     Circuit
+            pub fn circuit(&self) -> CircuitWrapper {
+                CircuitWrapper { internal: self.internal.circuit().clone() }
+            }
+        }
+    } else {
+        TokenStream::new()
+    };
     let operate_gate_quote = if attribute_arguments.contains("OperateGate") {
         quote! {
             /// Return unitary matrix of gate.
@@ -623,6 +661,8 @@ pub fn wrap(
             // #operate_two_qubit_gate_quote
             #operate_three_qubit_quote
             #operate_three_qubit_gate_quote
+            #operate_four_qubit_quote
+            #operate_four_qubit_gate_quote
             #operate_multi_qubit_quote
             #operate_multi_qubit_gate_quote
             #operate_gate_quote

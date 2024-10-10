@@ -22,6 +22,8 @@ mod two_qubit_gate_operations;
 
 mod three_qubit_gate_operations;
 
+mod four_qubit_gate_operations;
+
 mod multi_qubit_gate_operations;
 
 mod involved_classical;
