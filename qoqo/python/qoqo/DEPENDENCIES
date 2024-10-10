@@ -2415,7 +2415,7 @@ LICENSE:
 
 
 ====================================================
-autocfg 1.3.0
+autocfg 1.4.0
 https://github.com/cuviper/autocfg
 by Josh Stone <cuviper@gmail.com>
 Automatic cfg for Rust compiler features
@@ -10673,7 +10673,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-httparse 1.9.4
+httparse 1.9.5
 https://github.com/seanmonstar/httparse
 by Sean McArthur <sean@seanmonstar.com>
 A tiny, safe, speedy, zero-copy HTTP/1.x parser.
@@ -18742,7 +18742,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-once_cell 1.19.0
+once_cell 1.20.1
 https://github.com/matklad/once_cell
 by Aleksey Kladov <aleksey.kladov@gmail.com>
 Single assignment cells and lazy values.
@@ -20648,7 +20648,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-portable-atomic 1.8.0
+portable-atomic 1.9.0
 https://github.com/taiki-e/portable-atomic
 by 
 Portable atomic types including support for 128-bit atomics, atomic float, etc.
@@ -22703,7 +22703,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-qoqo 1.15.2
+qoqo 1.16.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Quantum computing circuit toolkit. Python interface of roqoqo
@@ -22915,7 +22915,7 @@ LICENSE:
 
 
 ====================================================
-qoqo-macros 1.15.2
+qoqo-macros 1.16.0
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the qoqo crate
 License: Apache-2.0
@@ -24927,7 +24927,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-redox_syscall 0.5.6
+redox_syscall 0.5.7
 https://gitlab.redox-os.org/redox-os/syscall
 by Jeremy Soller <jackpot51@gmail.com>
 A Rust library to access raw Redox system calls
@@ -24960,7 +24960,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-regex 1.10.6
+regex 1.11.0
 https://github.com/rust-lang/regex
 by The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>
 An implementation of regular expressions for Rust. This implementation uses
@@ -25203,7 +25203,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-regex-automata 0.4.7
+regex-automata 0.4.8
 https://github.com/rust-lang/regex/tree/master/regex-automata
 by The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>
 Automata construction and matching using regular expressions.
@@ -25444,7 +25444,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-regex-syntax 0.8.4
+regex-syntax 0.8.5
 https://github.com/rust-lang/regex/tree/master/regex-syntax
 by The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>
 A regular expression parser.
@@ -25685,7 +25685,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ====================================================
-reqwest 0.12.7
+reqwest 0.12.8
 https://github.com/seanmonstar/reqwest
 by Sean McArthur <sean@seanmonstar.com>
 higher level HTTP client library
@@ -25921,7 +25921,7 @@ THE SOFTWARE.
 
 
 ====================================================
-roqoqo 1.15.2
+roqoqo 1.16.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Rust Quantum Computing Toolkit by HQS
@@ -26133,7 +26133,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-derive 1.15.2
+roqoqo-derive 1.16.0
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Macros for the roqoqo crate
 License: Apache-2.0
@@ -26344,7 +26344,7 @@ LICENSE:
 
 
 ====================================================
-roqoqo-test 1.15.2
+roqoqo-test 1.16.0
 https://github.com/HQSquantumsimulations/qoqo
 by HQS Quantum Simulations <info@quantumsimulations.de>
 Testing helper functions for roqoqo toolkit
@@ -30354,7 +30354,7 @@ LICENSE:
 
 
 ====================================================
-syn 2.0.77
+syn 2.0.79
 https://github.com/dtolnay/syn
 by David Tolnay <dtolnay@gmail.com>
 Parser for Rust source code
