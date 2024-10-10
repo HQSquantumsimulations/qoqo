@@ -220,6 +220,7 @@ fn test_new_invsqrtpaulix(input_operation: Operation, arguments: (u32,), method:
     })
 }
 
+/// Test new() function for SGate
 #[test_case(Operation::from(SGate::new(1)), (1,), "__eq__"; "SGate_eq")]
 #[test_case(Operation::from(SGate::new(1)), (0,), "__ne__"; "SGate_ne")]
 fn test_new_sgate(input_operation: Operation, arguments: (u32,), method: &str) {
@@ -255,6 +256,7 @@ fn test_new_sgate(input_operation: Operation, arguments: (u32,), method: &str) {
     })
 }
 
+/// Test new() function for InvSGate
 #[test_case(Operation::from(InvSGate::new(1)), (1,), "__eq__"; "InvSGate_eq")]
 #[test_case(Operation::from(InvSGate::new(1)), (0,), "__ne__"; "InvSGate_ne")]
 fn test_new_invsgate(input_operation: Operation, arguments: (u32,), method: &str) {
@@ -290,6 +292,7 @@ fn test_new_invsgate(input_operation: Operation, arguments: (u32,), method: &str
     })
 }
 
+/// Test new() function for TGate
 #[test_case(Operation::from(TGate::new(1)), (1,), "__eq__"; "TGate_eq")]
 #[test_case(Operation::from(TGate::new(1)), (0,), "__ne__"; "TGate_ne")]
 fn test_new_tgate(input_operation: Operation, arguments: (u32,), method: &str) {
@@ -325,6 +328,7 @@ fn test_new_tgate(input_operation: Operation, arguments: (u32,), method: &str) {
     })
 }
 
+/// Test new() function for InvTGate
 #[test_case(Operation::from(InvTGate::new(1)), (1,), "__eq__"; "InvTGate_eq")]
 #[test_case(Operation::from(InvTGate::new(1)), (0,), "__ne__"; "InvTGate_ne")]
 fn test_new_invtgate(input_operation: Operation, arguments: (u32,), method: &str) {
@@ -360,6 +364,7 @@ fn test_new_invtgate(input_operation: Operation, arguments: (u32,), method: &str
     })
 }
 
+/// Test new() function for Hadamard
 #[test_case(Operation::from(Hadamard::new(1)), (1,), "__eq__"; "Hadamard_eq")]
 #[test_case(Operation::from(Hadamard::new(1)), (0,), "__ne__"; "Hadamard_ne")]
 fn test_new_hadamard(input_operation: Operation, arguments: (u32,), method: &str) {
@@ -395,6 +400,7 @@ fn test_new_hadamard(input_operation: Operation, arguments: (u32,), method: &str
     })
 }
 
+/// Test new() function for RotateX
 #[test_case(Operation::from(RotateX::new(1, CalculatorFloat::ZERO)), (1, 0.0,), "__eq__"; "RotateX_eq")]
 #[test_case(Operation::from(RotateX::new(1, CalculatorFloat::ZERO)), (0, 0.0,), "__ne__"; "RotateX_ne")]
 fn test_new_rotatex(input_operation: Operation, arguments: (u32, f64), method: &str) {
@@ -435,6 +441,7 @@ fn test_new_rotatex(input_operation: Operation, arguments: (u32, f64), method: &
     })
 }
 
+/// Test new() function for RotateY
 #[test_case(Operation::from(RotateY::new(1, CalculatorFloat::ZERO)), (1, 0.0,), "__eq__"; "RotateY_eq")]
 #[test_case(Operation::from(RotateY::new(1, CalculatorFloat::ZERO)), (0, 0.0,), "__ne__"; "RotateY_ne")]
 fn test_new_rotatey(input_operation: Operation, arguments: (u32, f64), method: &str) {
@@ -475,6 +482,7 @@ fn test_new_rotatey(input_operation: Operation, arguments: (u32, f64), method: &
     })
 }
 
+/// Test new() function for RotateZ
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::ZERO)), (1, 0.0,), "__eq__"; "RotateZ_eq")]
 #[test_case(Operation::from(RotateZ::new(1, CalculatorFloat::ZERO)), (0, 0.0,), "__ne__"; "RotateZ_ne")]
 fn test_new_rotatez(input_operation: Operation, arguments: (u32, f64), method: &str) {
@@ -516,6 +524,7 @@ fn test_new_rotatez(input_operation: Operation, arguments: (u32, f64), method: &
     })
 }
 
+/// Test new() function for PhaseShiftState0
 #[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::ZERO)), (1, 0.0,), "__eq__"; "PhaseShiftState0_eq")]
 #[test_case(Operation::from(PhaseShiftState0::new(1, CalculatorFloat::ZERO)), (0, 0.0,), "__ne__"; "PhaseShiftState0_ne")]
 fn test_new_phaseshiftstate0(input_operation: Operation, arguments: (u32, f64), method: &str) {
@@ -557,6 +566,7 @@ fn test_new_phaseshiftstate0(input_operation: Operation, arguments: (u32, f64), 
     })
 }
 
+/// Test new() function for PhaseShiftState1
 #[test_case(Operation::from(PhaseShiftState1::new(1, CalculatorFloat::ZERO)), (1, 0.0,), "__eq__"; "PhaseShiftState1_eq")]
 #[test_case(Operation::from(PhaseShiftState1::new(1, CalculatorFloat::ZERO)), (0, 0.0,), "__ne__"; "PhaseShiftState1_ne")]
 fn test_new_phaseshiftstate1(input_operation: Operation, arguments: (u32, f64), method: &str) {
@@ -598,6 +608,7 @@ fn test_new_phaseshiftstate1(input_operation: Operation, arguments: (u32, f64), 
     })
 }
 
+/// Test new() function for GPi
 #[test_case(Operation::from(GPi::new(1, CalculatorFloat::ZERO)), (1, 0.0,), "__eq__"; "GPi_eq")]
 #[test_case(Operation::from(GPi::new(1, CalculatorFloat::ZERO)), (0, 0.0,), "__ne__"; "GPi_ne")]
 fn test_new_gpi(input_operation: Operation, arguments: (u32, f64), method: &str) {
@@ -639,6 +650,7 @@ fn test_new_gpi(input_operation: Operation, arguments: (u32, f64), method: &str)
     })
 }
 
+/// Test new() function for GPi2
 #[test_case(Operation::from(GPi2::new(1, CalculatorFloat::ZERO)), (1, 0.0,), "__eq__"; "GPi2_eq")]
 #[test_case(Operation::from(GPi2::new(1, CalculatorFloat::ZERO)), (0, 0.0,), "__ne__"; "GPi2_ne")]
 fn test_new_gpi2(input_operation: Operation, arguments: (u32, f64), method: &str) {
