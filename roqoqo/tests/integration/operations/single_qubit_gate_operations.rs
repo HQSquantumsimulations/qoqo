@@ -510,37 +510,37 @@ fn test_singlequbitgate_debug() {
 //
 
 /// Test alpha, beta, global phase of single qubit gates with the unitary matrix
-// #[test_case(SingleQubitGateOperation::from(RotateX::new(0, CalculatorFloat::from(PI/3.0))); "RotateX")]
-// #[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from(PI/3.0))); "RotateY")]
-// #[test_case(SingleQubitGateOperation::from(RotateZ::new(0, CalculatorFloat::from(PI/3.0))); "RotateZ")]
-// #[test_case(SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate0")]
-// #[test_case(SingleQubitGateOperation::from(PhaseShiftState1::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate1")]
-// #[test_case(SingleQubitGateOperation::from(GPi::new(0, CalculatorFloat::from(PI/2.0))); "gpi")]
-// #[test_case(SingleQubitGateOperation::from(GPi2::new(0, CalculatorFloat::from(PI/2.0))); "gpi2")]
-// #[test_case(SingleQubitGateOperation::from(PauliX::new(1)); "PauliX")]
-// #[test_case(SingleQubitGateOperation::from(PauliY::new(1)); "PauliY")]
-// #[test_case(SingleQubitGateOperation::from(PauliZ::new(1)); "PauliZ")]
-// #[test_case(SingleQubitGateOperation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
-// #[test_case(SingleQubitGateOperation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
-// #[test_case(SingleQubitGateOperation::from(SGate::new(1)); "SGate")]
-// #[test_case(SingleQubitGateOperation::from(InvSGate::new(1)); "InvSGate")]
-// #[test_case(SingleQubitGateOperation::from(TGate::new(1)); "TGate")]
-// #[test_case(SingleQubitGateOperation::from(InvTGate::new(1)); "InvTGate")]
-// #[test_case(SingleQubitGateOperation::from(Hadamard::new(0)); "Hadamard")]
-// #[test_case(SingleQubitGateOperation::from(RotateAroundSphericalAxis::new(
-//     0,
-//     CalculatorFloat::from(PI/3.0),
-//     CalculatorFloat::from(PI/2.0),
-//     CalculatorFloat::from(PI/4.0))); "Rotation")]
-// #[test_case(SingleQubitGateOperation::from(RotateXY::new(
-//     0,
-//     CalculatorFloat::from(PI/3.0),
-//     CalculatorFloat::from(PI/4.0))); "RotationXY")]
-// #[test_case(SingleQubitGateOperation::from(Identity::new(0)); "Identity")]
-// #[test_case(SingleQubitGateOperation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
-// #[test_case(SingleQubitGateOperation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
+#[test_case(SingleQubitGateOperation::from(RotateX::new(0, CalculatorFloat::from(PI/3.0))); "RotateX")]
+#[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from(PI/3.0))); "RotateY")]
+#[test_case(SingleQubitGateOperation::from(RotateZ::new(0, CalculatorFloat::from(PI/3.0))); "RotateZ")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState0::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate0")]
+#[test_case(SingleQubitGateOperation::from(PhaseShiftState1::new(0, CalculatorFloat::from(PI/2.0))); "phaseshiftstate1")]
+#[test_case(SingleQubitGateOperation::from(GPi::new(0, CalculatorFloat::from(PI/2.0))); "gpi")]
+#[test_case(SingleQubitGateOperation::from(GPi2::new(0, CalculatorFloat::from(PI/2.0))); "gpi2")]
+#[test_case(SingleQubitGateOperation::from(PauliX::new(1)); "PauliX")]
+#[test_case(SingleQubitGateOperation::from(PauliY::new(1)); "PauliY")]
+#[test_case(SingleQubitGateOperation::from(PauliZ::new(1)); "PauliZ")]
+#[test_case(SingleQubitGateOperation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
+#[test_case(SingleQubitGateOperation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
+#[test_case(SingleQubitGateOperation::from(SGate::new(1)); "SGate")]
+#[test_case(SingleQubitGateOperation::from(InvSGate::new(1)); "InvSGate")]
+#[test_case(SingleQubitGateOperation::from(TGate::new(1)); "TGate")]
+#[test_case(SingleQubitGateOperation::from(InvTGate::new(1)); "InvTGate")]
+#[test_case(SingleQubitGateOperation::from(Hadamard::new(0)); "Hadamard")]
+#[test_case(SingleQubitGateOperation::from(RotateAroundSphericalAxis::new(
+    0,
+    CalculatorFloat::from(PI/3.0),
+    CalculatorFloat::from(PI/2.0),
+    CalculatorFloat::from(PI/4.0))); "Rotation")]
+#[test_case(SingleQubitGateOperation::from(RotateXY::new(
+    0,
+    CalculatorFloat::from(PI/3.0),
+    CalculatorFloat::from(PI/4.0))); "RotationXY")]
+#[test_case(SingleQubitGateOperation::from(Identity::new(0)); "Identity")]
+#[test_case(SingleQubitGateOperation::from(SqrtPauliY::new(0)); "SqrtPauliY")]
+#[test_case(SingleQubitGateOperation::from(InvSqrtPauliY::new(0)); "InvSqrtPauliY")]
 #[test_case(SingleQubitGateOperation::from(SXGate::new(0)); "SXGate")]
-// #[test_case(SingleQubitGateOperation::from(InvSXGate::new(0)); "InvSXGate")]
+#[test_case(SingleQubitGateOperation::from(InvSXGate::new(0)); "InvSXGate")]
 fn test_alpha_beta_singlequbitgates(gate: SingleQubitGateOperation) {
     let alpha_r = gate.alpha_r();
     let alpha_i = gate.alpha_i();
@@ -554,8 +554,6 @@ fn test_alpha_beta_singlequbitgates(gate: SingleQubitGateOperation) {
         SingleQubitGate::new(*qubit, alpha_r, alpha_i, beta_r, beta_i, global_phase);
     let test_matrix = singlequbitgate.unitary_matrix().unwrap();
 
-    println!("cargo:warning=MATRIX{:?}", matrix);
-    println!("cargo:warning=TEST_MATRIX{:?}", test_matrix);
     let epsilon = 1e-12;
     for i in 0..2 {
         assert!((matrix[[0, i]] - test_matrix[[0, i]]).norm() < epsilon);
@@ -2030,7 +2028,7 @@ fn test_singlequbitgate_mul_symb() {
 #[test_case(SingleQubitGateOperation::from(RotateY::new(0, CalculatorFloat::from("theta"))); "RotateY")]
 #[test_case(SingleQubitGateOperation::from(PauliX::new(0)); "PauliX")]
 #[test_case(SingleQubitGateOperation::from(PauliY::new(0)); "PauliY")]
-#[test_case( SingleQubitGateOperation::from(PauliZ::new(0)); "PauliZ")]
+#[test_case(SingleQubitGateOperation::from(PauliZ::new(0)); "PauliZ")]
 #[test_case(SingleQubitGateOperation::from(SqrtPauliX::new(0)); "SqrtPauliX")]
 #[test_case(SingleQubitGateOperation::from(InvSqrtPauliX::new(0)); "InvSqrtPauliX")]
 #[test_case(SingleQubitGateOperation::from(SGate::new(0)); "SGate")]
