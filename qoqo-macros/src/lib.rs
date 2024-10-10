@@ -342,29 +342,17 @@ pub fn wrap(
     // };
     let operate_three_qubit_quote = if attribute_arguments.contains("OperateThreeQubit") {
         quote! {
-            /// Returns control qubit of the three-qubit operation
-            pub fn control(&self) -> Option<usize> {
-                self.internal.control().copied()
-            }
             /// Returns control_0 qubit of the three-qubit operation
-            pub fn control_0(&self) -> Option<usize> {
-                self.internal.control_0().copied()
+            pub fn control_0(&self) -> usize {
+                self.internal.control_0().clone()
             }
             /// Returns control_1 qubit of the three-qubit operation
-            pub fn control_1(&self) -> Option<usize> {
-                self.internal.control_1().copied()
+            pub fn control_1(&self) -> usize {
+                self.internal.control_1().clone()
             }
             /// Returns target qubit of the three-qubit operation
-            pub fn target(&self) -> Option<usize> {
-                self.internal.target().copied()
-            }
-            /// Returns target_0 qubit of the three-qubit operation
-            pub fn target_0(&self) -> Option<usize> {
-                self.internal.target_0().copied()
-            }
-            /// Returns target_1 qubit of the three-qubit operation
-            pub fn target_1(&self) -> Option<usize> {
-                self.internal.target_1().copied()
+            pub fn target(&self) -> usize {
+                self.internal.target().clone()
             }
         }
     } else {

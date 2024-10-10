@@ -133,7 +133,6 @@ pub struct Toffoli {
 #[allow(clippy::upper_case_acronyms)]
 #[wrap(
     Operate,
-    OperateThreeQubit,
     OperateGate,
     OperateThreeQubitGate,
     JsonSchema
@@ -160,6 +159,22 @@ pub struct ControlledSWAP {
     control: usize,
     target_0: usize,
     target_1: usize,
+}
+
+#[pymethods]
+impl ControlledSWAPWrapper {
+    /// Returns control qubit of the three-qubit operation
+    pub fn control(&self) -> usize {
+        self.internal.control_0().clone()
+    }
+    /// Returns target_0 qubit of the three-qubit operation
+    pub fn target_0(&self) -> usize {
+        self.internal.control_1().clone()
+    }
+    /// Returns target_1 qubit of the three-qubit operation
+    pub fn target_1(&self) -> usize {
+        self.internal.target().clone()
+    }
 }
 
 #[allow(clippy::upper_case_acronyms)]
