@@ -184,5 +184,12 @@ pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     // 1.15
     m.add_class::<SqrtPauliYWrapper>()?;
     m.add_class::<InvSqrtPauliYWrapper>()?;
+
+    // 1.16
+    m.add_class::<InvSGateWrapper>()?;
+    m.add_class::<InvTGateWrapper>()?;
+    m.add_class::<SXGateWrapper>()?;
+    m.add_class::<InvSXGateWrapper>()?;
+
     Ok(())
 }

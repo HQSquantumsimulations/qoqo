@@ -56,7 +56,9 @@ use test_case::test_case;
 #[test_case(Operation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
+#[test_case(Operation::from(InvTGate::new(1)); "InvTGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(GPi::new(3, 0.1.into())); "GPi")]
 #[test_case(Operation::from(GPi2::new(3, 0.1.into())); "GPi2")]
@@ -139,6 +141,8 @@ use test_case::test_case;
 #[test_case(Operation::from(CZQubitResonator::new(0, 1)); "CZQubitResonator")]
 #[test_case(Operation::from(SqrtPauliY::new(100)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(100)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(1)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(1)); "InvSXGate")]
 fn test_conversion(input: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
