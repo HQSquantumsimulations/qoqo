@@ -13,7 +13,6 @@
 //! Integration test for supported version trait
 
 use ndarray::array;
-#[cfg(feature = "unstable_operation_definition")]
 use qoqo_calculator::CalculatorFloat;
 #[cfg(feature = "circuitdag")]
 use roqoqo::measurements::Cheated;
@@ -370,5 +369,25 @@ fn test_version_1_15_0_single_qubit_gate(operation: operations::SingleQubitGateO
 #[test_case(operations::SingleQubitGateOperation::from(operations::SXGate::new(0)); "SXGate")]
 #[test_case(operations::SingleQubitGateOperation::from(operations::InvSXGate::new(0)); "InvSXGate")]
 fn test_version_1_16_0_single_qubit_gate(operation: operations::SingleQubitGateOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 16, 0));
+}
+
+#[test_case(operations::ThreeQubitGateOperation::from(operations::ControlledSWAP::new(0, 1, 2)); "ControlledSWAP")]
+#[test_case(operations::ThreeQubitGateOperation::from(operations::PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::PI)); "PhaseShiftedControlledControlledZ")]
+#[test_case(operations::ThreeQubitGateOperation::from(operations::PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::PI, CalculatorFloat::PI)); "PhaseShiftedControlledControlledPhase")]
+fn test_version_1_16_0_three_qubit_gate(operation: operations::ThreeQubitGateOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 16, 0));
+}
+
+#[test_case(
+    operations::FourQubitGateOperation::from(operations::TripleControlledPauliX::new(0, 1, 2, 3)); "TripleControlledPauliX"
+)]
+#[test_case(
+    operations::FourQubitGateOperation::from(operations::TripleControlledPauliZ::new(0, 1, 2, 3)); "TripleControlledPauliZ"
+)]
+#[test_case(
+    operations::FourQubitGateOperation::from(operations::TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::PI)); "TripleControlledPhaseShift"
+)]
+fn test_version_1_16_0_four_qubit_gate(operation: operations::FourQubitGateOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 16, 0));
 }
