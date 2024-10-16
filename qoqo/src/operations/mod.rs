@@ -186,8 +186,6 @@ pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     // 1.15
     m.add_class::<SqrtPauliYWrapper>()?;
     m.add_class::<InvSqrtPauliYWrapper>()?;
-    m.add_class::<TripleControlledPauliXWrapper>()?;
-    m.add_class::<TripleControlledPauliZWrapper>()?;
 
     // 1.16
     m.add_class::<TripleControlledPauliXWrapper>()?;

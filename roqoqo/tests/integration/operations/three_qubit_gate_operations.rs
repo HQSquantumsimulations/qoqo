@@ -213,7 +213,7 @@ fn test_three_qubit_gate_unitarity(gate: GateOperation) {
 #[test_case(Operation::from(ControlledSWAP::new(0, 1, 2)); "ControlledSwap")]
 #[test_case(Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledControlledZ")]
 #[test_case(Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::FRAC_PI_2, CalculatorFloat::PI)); "PhaseShiftedControlledControlledPhase")]
-fn test_twoqubitgates_clone(gate1: Operation) {
+fn test_threequbitgates_clone(gate1: Operation) {
     #[allow(clippy::redundant_clone)]
     let gate2 = gate1.clone();
     assert_eq!(gate2, gate1);
