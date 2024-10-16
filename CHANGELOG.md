@@ -8,6 +8,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ### Added in 1.16.0
 
+* Added `InvSGate`, `InvTGate`, `SXGate`, `InvSXGate` gates.
 * Added `TripleControlledPauliX`, `TripleControlledPauliZ`, `TripleControlledPhaseShift`, `ControlledSWAP`, `PhaseShiftedControlledControlledZ`, `PhaseShiftedControlledControlledPhase` gates.
 
 ## 1.15.2

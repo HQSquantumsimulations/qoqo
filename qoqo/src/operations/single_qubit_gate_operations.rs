@@ -356,6 +356,30 @@ struct Hadamard {
 struct SGate {
     qubit: usize,
 }
+
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
+#[derive(Eq)]
+/// The InvS gate.
+///
+/// .. math::
+///     U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+///         1 & 0 \\\\
+///         0 & -i
+///         \end{pmatrix}
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+///
+struct InvSGate {
+    qubit: usize,
+}
+
 #[wrap(
     Operate,
     OperateSingleQubit,
@@ -376,6 +400,29 @@ struct SGate {
 ///     qubit (int): The qubit the unitary gate is applied to.
 ///
 struct TGate {
+    qubit: usize,
+}
+
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
+#[derive(Eq)]
+/// The InvT gate.
+///
+/// .. math::
+///     U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+///         1 & 0 \\\\
+///         0 & e^{-i \frac{\pi}{4}}
+///         \end{pmatrix}
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+///
+struct InvTGate {
     qubit: usize,
 }
 
@@ -560,5 +607,51 @@ struct SqrtPauliY {
 ///     qubit (int): The qubit the unitary gate is applied to.
 ///
 struct InvSqrtPauliY {
+    qubit: usize,
+}
+
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
+#[derive(Eq)]
+/// The SX gate.
+///
+/// .. math::
+///     U = \frac{1}{\sqrt(2)} \begin{pmatrix}
+///         1+i & 1-i \\\\
+///         1-i & 1+i
+///         \end{pmatrix}
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+///
+struct SXGate {
+    qubit: usize,
+}
+
+#[wrap(
+    Operate,
+    OperateSingleQubit,
+    OperateGate,
+    OperateSingleQubitGate,
+    JsonSchema
+)]
+#[derive(Eq)]
+/// The InvSX gate.
+///
+/// .. math::
+///     U = \frac{1}{\sqrt(2)} \begin{pmatrix}
+///         1-i & 1+i \\\\
+///         1+i & 1-i
+///         \end{pmatrix}
+///
+/// Args:
+///     qubit (int): The qubit the unitary gate is applied to.
+///
+struct InvSXGate {
     qubit: usize,
 }

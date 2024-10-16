@@ -364,3 +364,11 @@ fn test_version_1_13_0_gate_definition(operation: operations::Operation) {
 fn test_version_1_15_0_single_qubit_gate(operation: operations::SingleQubitGateOperation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 15, 0));
 }
+
+#[test_case(operations::SingleQubitGateOperation::from(operations::InvTGate::new(0)); "SqrtPaInvTGateuliY")]
+#[test_case(operations::SingleQubitGateOperation::from(operations::InvSGate::new(0)); "InvSGate")]
+#[test_case(operations::SingleQubitGateOperation::from(operations::SXGate::new(0)); "SXGate")]
+#[test_case(operations::SingleQubitGateOperation::from(operations::InvSXGate::new(0)); "InvSXGate")]
+fn test_version_1_16_0_single_qubit_gate(operation: operations::SingleQubitGateOperation) {
+    assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 16, 0));
+}
