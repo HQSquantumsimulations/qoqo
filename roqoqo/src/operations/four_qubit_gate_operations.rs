@@ -17,7 +17,6 @@ use num_complex::Complex64;
 
 /// The triple-controlled PauliX gate.
 ///
-///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
@@ -92,7 +91,6 @@ impl OperateFourQubitGate for TripleControlledPauliX {
 
 /// The triple-controlled PauliZ gate.
 ///
-///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
     Debug,
@@ -165,7 +163,6 @@ impl OperateFourQubitGate for TripleControlledPauliZ {
 }
 
 /// The triple-controlled PhaseShift gate.
-///
 ///
 #[allow(clippy::upper_case_acronyms)]
 #[derive(
