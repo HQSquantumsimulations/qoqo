@@ -491,15 +491,7 @@ impl OperateThreeQubitGate for Toffoli {
 /// the "control" qubit of the operation can be accessed via the "control_0()" method,
 /// the "target_0" qubit of the operation can be accessed via the "control_1()" method and
 /// the "target_1" qubit of the operation can be accessed via the "target()" method.
-#[derive(
-    Debug,
-    Clone,
-    PartialEq,
-    Eq,
-    roqoqo_derive::InvolveQubits,
-    roqoqo_derive::Operate,
-    roqoqo_derive::Substitute,
-)]
+#[derive(Debug, Clone, PartialEq, Eq, roqoqo_derive::Operate)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct ControlledSWAP {
@@ -661,6 +653,37 @@ impl OperateThreeQubit for ControlledSWAP {
     /// Returns `target_0` qubit of the three qubit Operation.
     fn control_1(&self) -> &usize {
         &self.target_0
+    }
+}
+
+impl Substitute for ControlledSWAP {
+    fn substitute_parameters(
+        &self,
+        _calculator: &qoqo_calculator::Calculator,
+    ) -> Result<Self, RoqoqoError> {
+        Ok(Self::new(self.control, self.target_0, self.target_1))
+    }
+
+    fn remap_qubits(
+        &self,
+        mapping: &std::collections::HashMap<usize, usize>,
+    ) -> Result<Self, RoqoqoError> {
+        crate::operations::check_valid_mapping(mapping)?;
+        Ok(Self::new(
+            *mapping.get(&self.control).unwrap_or(&self.control),
+            *mapping.get(&self.target_0).unwrap_or(&self.target_0),
+            *mapping.get(&self.target_1).unwrap_or(&self.target_1),
+        ))
+    }
+}
+
+impl InvolveQubits for ControlledSWAP {
+    fn involved_qubits(&self) -> InvolvedQubits {
+        let mut new_hash_set: std::collections::HashSet<usize> = std::collections::HashSet::new();
+        new_hash_set.insert(self.control);
+        new_hash_set.insert(self.target_0);
+        new_hash_set.insert(self.target_1);
+        InvolvedQubits::Set(new_hash_set)
     }
 }
 

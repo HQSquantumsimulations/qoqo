@@ -94,8 +94,6 @@ fn substitute_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             "control_1" => quote! {*mapping.get(&self.control_1).unwrap_or(&self.control_1)},
             "control_2" => quote! {*mapping.get(&self.control_2).unwrap_or(&self.control_2)},
             "target" => quote! {*mapping.get(&self.target).unwrap_or(&self.target)},
-            "target_0" => quote! {*mapping.get(&self.target_0).unwrap_or(&self.target_0)},
-            "target_1" => quote! {*mapping.get(&self.target_1).unwrap_or(&self.target_1)},
             "qubits" => quote! { new_qubits },
             _ => quote! {(self).#fid.clone()},
         });

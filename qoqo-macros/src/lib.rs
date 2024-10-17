@@ -53,15 +53,13 @@ pub fn devicechainenvironmentwrapper(
 }
 
 /// Array of field names that are reserved for use with specific traits
-const RESERVED_FIELDS: &[&str; 18] = &[
+const RESERVED_FIELDS: &[&str; 16] = &[
     "qubit",
     "control",
     "control_0",
     "control_1",
     "control_2",
     "target",
-    "target_0",
-    "target_1",
     "qubits",
     "global_phase",
     "alpha_r",
