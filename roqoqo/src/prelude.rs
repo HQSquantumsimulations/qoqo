@@ -26,11 +26,11 @@ pub use crate::measurements::{Measure, MeasureExpectationValues};
 pub use crate::operations::OperateSpinsAnalog;
 pub use crate::operations::{
     Define, InvolveModes, InvolveQubits, InvolvedModes, InvolvedQubits, Operate,
-    OperateConstantGate, OperateGate, OperateModeGate, OperateMultiQubit, OperateMultiQubitGate,
-    OperatePragma, OperatePragmaNoise, OperatePragmaNoiseProba, OperateSingleMode,
-    OperateSingleModeGate, OperateSingleQubit, OperateSingleQubitGate, OperateThreeQubit,
-    OperateThreeQubitGate, OperateTwoMode, OperateTwoModeGate, OperateTwoQubit,
-    OperateTwoQubitGate, Rotate, Substitute, SubstituteModes, SupportedVersion,
-    AVAILABLE_GATES_HQSLANG,
+    OperateConstantGate, OperateFourQubit, OperateFourQubitGate, OperateGate, OperateModeGate,
+    OperateMultiQubit, OperateMultiQubitGate, OperatePragma, OperatePragmaNoise,
+    OperatePragmaNoiseProba, OperateSingleMode, OperateSingleModeGate, OperateSingleQubit,
+    OperateSingleQubitGate, OperateThreeQubit, OperateThreeQubitGate, OperateTwoMode,
+    OperateTwoModeGate, OperateTwoQubit, OperateTwoQubitGate, Rotate, Substitute, SubstituteModes,
+    SupportedVersion, AVAILABLE_GATES_HQSLANG,
 };
 pub use crate::{RoqoqoBackendError, RoqoqoError};

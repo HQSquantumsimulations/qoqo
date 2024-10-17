@@ -143,6 +143,18 @@ use test_case::test_case;
 #[test_case(Operation::from(InvSqrtPauliY::new(100)); "InvSqrtPauliY")]
 #[test_case(Operation::from(SXGate::new(1)); "SXGate")]
 #[test_case(Operation::from(InvSXGate::new(1)); "InvSXGate")]
+#[test_case(Operation::from(ControlledSWAP::new(0, 1, 2)); "ControlledSWAP")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::PI)); "PhaseShiftedControlledControlledZ")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::PI, CalculatorFloat::PI)); "PhaseShiftedControlledControlledPhase")]
+#[test_case(
+    Operation::from(TripleControlledPauliX::new(0, 1, 2, 3)); "TripleControlledPauliX"
+)]
+#[test_case(
+    Operation::from(TripleControlledPauliZ::new(0, 1, 2, 3)); "TripleControlledPauliZ"
+)]
+#[test_case(
+    Operation::from(TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::PI)); "TripleControlledPhaseShift"
+)]
 fn test_conversion(input: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {

@@ -26,6 +26,8 @@ mod two_qubit_gate_operations;
 pub use two_qubit_gate_operations::*;
 mod three_qubit_gate_operations;
 pub use three_qubit_gate_operations::*;
+mod four_qubit_gate_operations;
+pub use four_qubit_gate_operations::*;
 mod multi_qubit_gate_operations;
 pub use multi_qubit_gate_operations::*;
 mod bosonic_operations;
@@ -190,6 +192,12 @@ pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     m.add_class::<InvTGateWrapper>()?;
     m.add_class::<SXGateWrapper>()?;
     m.add_class::<InvSXGateWrapper>()?;
+    m.add_class::<TripleControlledPauliXWrapper>()?;
+    m.add_class::<TripleControlledPauliZWrapper>()?;
+    m.add_class::<TripleControlledPhaseShiftWrapper>()?;
+    m.add_class::<ControlledSWAPWrapper>()?;
+    m.add_class::<PhaseShiftedControlledControlledZWrapper>()?;
+    m.add_class::<PhaseShiftedControlledControlledPhaseWrapper>()?;
 
     Ok(())
 }
