@@ -7,6 +7,8 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ### Fixed in 1.16.0
 
+* Updated nalgebra to 0.33.1, jsonschema to 0.23. Removed unnecessary dependencies.
+
 ### Added in 1.16.0
 
 * Added `InvSGate`, `InvTGate`, `SXGate`, `InvSXGate` gates.
