@@ -1,24 +1,22 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="English" data-content_root="../../../">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qoqo.noise_models.DecoherenceOnIdleModel &mdash; qoqo 1.15.2 documentation</title>
+  <title>qoqo.noise_models.DecoherenceOnIdleModel &mdash; qoqo 1.16.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=ca054cfa"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=aaa49c1e"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -36,9 +34,6 @@
           <a href="../../../index.html" class="icon icon-home">
             qoqo
           </a>
-              <div class="version">
-                1.15.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -93,6 +88,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ControlledPhaseShift"><code class="docutils literal notranslate"><span class="pre">ControlledPhaseShift</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ControlledRotateX"><code class="docutils literal notranslate"><span class="pre">ControlledRotateX</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ControlledRotateXY"><code class="docutils literal notranslate"><span class="pre">ControlledRotateXY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ControlledSWAP"><code class="docutils literal notranslate"><span class="pre">ControlledSWAP</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.DecoherenceOnGateModel"><code class="docutils literal notranslate"><span class="pre">DecoherenceOnGateModel</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.DecoherenceOnIdleModel"><code class="docutils literal notranslate"><span class="pre">DecoherenceOnIdleModel</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.DefinitionBit"><code class="docutils literal notranslate"><span class="pre">DefinitionBit</span></code></a></li>
@@ -113,9 +109,12 @@
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.ImperfectReadoutModel"><code class="docutils literal notranslate"><span class="pre">ImperfectReadoutModel</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.InputBit"><code class="docutils literal notranslate"><span class="pre">InputBit</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.InputSymbolic"><code class="docutils literal notranslate"><span class="pre">InputSymbolic</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.InvSGate"><code class="docutils literal notranslate"><span class="pre">InvSGate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.InvSXGate"><code class="docutils literal notranslate"><span class="pre">InvSXGate</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.InvSqrtISwap"><code class="docutils literal notranslate"><span class="pre">InvSqrtISwap</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.InvSqrtPauliX"><code class="docutils literal notranslate"><span class="pre">InvSqrtPauliX</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.InvSqrtPauliY"><code class="docutils literal notranslate"><span class="pre">InvSqrtPauliY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.InvTGate"><code class="docutils literal notranslate"><span class="pre">InvTGate</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.JaynesCummings"><code class="docutils literal notranslate"><span class="pre">JaynesCummings</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.LongitudinalCoupling"><code class="docutils literal notranslate"><span class="pre">LongitudinalCoupling</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.MeasureQubit"><code class="docutils literal notranslate"><span class="pre">MeasureQubit</span></code></a></li>
@@ -132,6 +131,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhaseShift"><code class="docutils literal notranslate"><span class="pre">PhaseShift</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhaseShiftState0"><code class="docutils literal notranslate"><span class="pre">PhaseShiftState0</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhaseShiftState1"><code class="docutils literal notranslate"><span class="pre">PhaseShiftState1</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhaseShiftedControlledControlledPhase"><code class="docutils literal notranslate"><span class="pre">PhaseShiftedControlledControlledPhase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhaseShiftedControlledControlledZ"><code class="docutils literal notranslate"><span class="pre">PhaseShiftedControlledControlledZ</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhaseShiftedControlledPhase"><code class="docutils literal notranslate"><span class="pre">PhaseShiftedControlledPhase</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhaseShiftedControlledZ"><code class="docutils literal notranslate"><span class="pre">PhaseShiftedControlledZ</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.PhotonDetection"><code class="docutils literal notranslate"><span class="pre">PhotonDetection</span></code></a></li>
@@ -172,6 +173,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.RotateZ"><code class="docutils literal notranslate"><span class="pre">RotateZ</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SGate"><code class="docutils literal notranslate"><span class="pre">SGate</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SWAP"><code class="docutils literal notranslate"><span class="pre">SWAP</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SXGate"><code class="docutils literal notranslate"><span class="pre">SXGate</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SingleExcitationLoad"><code class="docutils literal notranslate"><span class="pre">SingleExcitationLoad</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SingleExcitationStore"><code class="docutils literal notranslate"><span class="pre">SingleExcitationStore</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.SingleQubitGate"><code class="docutils literal notranslate"><span class="pre">SingleQubitGate</span></code></a></li>
@@ -185,6 +187,9 @@
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.Squeezing"><code class="docutils literal notranslate"><span class="pre">Squeezing</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.TGate"><code class="docutils literal notranslate"><span class="pre">TGate</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.Toffoli"><code class="docutils literal notranslate"><span class="pre">Toffoli</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.TripleControlledPauliX"><code class="docutils literal notranslate"><span class="pre">TripleControlledPauliX</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.TripleControlledPauliZ"><code class="docutils literal notranslate"><span class="pre">TripleControlledPauliZ</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.TripleControlledPhaseShift"><code class="docutils literal notranslate"><span class="pre">TripleControlledPhaseShift</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.VariableMSXX"><code class="docutils literal notranslate"><span class="pre">VariableMSXX</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.XY"><code class="docutils literal notranslate"><span class="pre">XY</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../qoqo.html#qoqo.available_gates_hqslang"><code class="docutils literal notranslate"><span class="pre">available_gates_hqslang()</span></code></a></li>
