@@ -18,12 +18,11 @@ doctest = false
 crate-type = ["rlib"]
 
 [dependencies]
-qoqo_calculator = { version = "~1.2" }
 roqoqo = { version = "~1.16", path = "../roqoqo", features = [
     "serialize",
 ] }
 rand = "~0.8"
-nalgebra = "0.32"
+nalgebra = "0.33.1"
 ndarray = { version = "0.15" }
 
 [build-dependencies]
