@@ -184,7 +184,7 @@ fn involve_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
         }
     } else if control_0 || control_1 {
         if control {
-            panic!("When deriving InvolveQubits for a three-qubit operation, control field must not be present")
+            panic!("When deriving InvolveQubits for a three-qubit operation, control field is not compatible with control_0 and control_1 fields");
         }
         if !(control_0 && control_1 && target) {
             panic!("When deriving InvolveQubits for a three-qubit operation control_0, control_1 and target have to be present");
@@ -208,6 +208,9 @@ fn involve_qubits_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             }
         }
     } else if target_0 || target_1 {
+        if !(target_0 && target_1) {
+            panic!("When deriving InvolveQubits for a three-qubit operation with two targets, both target fields must be present")
+        }
         if !control {
             panic!("When deriving InvolveQubits for a three-qubit operation with two targets, control field must be present")
         }
