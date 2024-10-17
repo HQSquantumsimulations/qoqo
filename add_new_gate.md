@@ -6,7 +6,7 @@ All supported gates are currently defined in the `roqoqo/src/operations` module 
 
 The general idea is: a `pub struct` defines the name, qubit-related fields as well as parameters (if any). Then, in order to add any kind of property to the gate, `traits` are either derived or manually implemented for it.
 
-As an examples, we'll take the roqoqo and qoqo definition of `RotateX`.
+As an example, we'll take the roqoqo and qoqo definition of `RotateX`.
 
 ### ROQOQO
 ```rust
@@ -125,9 +125,9 @@ In order, we have:
     #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
     #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
     ```
-    Traits represent "properties" one can add to a gate. The idea, after defining the gate's `struct`, is to add these already defined properties to the gate.
+    Traits represent "properties" one can add to a gate. The idea, after defining the gate's `struct`, is to add these previously defined properties to the gate.
 
-    Later on the guide will explain the meaning of all of these.
+    Later on, the guide will explain the meaning of all of these.
 
 * Struct containing definition of the gate
     ```rust
@@ -142,11 +142,12 @@ In order, we have:
     In general, structs define the signature of the gate: the name, the fields related to referencing qubits as well as the gate's parameter(s) (if any). In order to make the derivation of `traits` work, some of those fields are reserved, specifically:
     ```rust
     /// Array of field names that are reserved for use with specific traits
-    const RESERVED_FIELDS: &[&str; 15] = &[
+    const RESERVED_FIELDS: &[&str; 16] = &[
         "qubit",
         "control",
         "control_0",
         "control_1",
+        "control_2",
         "target",
         "qubits",
         "global_phase",
@@ -161,7 +162,7 @@ In order, we have:
     ];
     ```
     ##### In `roqoqo-derive/src/lib/rs`. If necessary, more can be added.
-    In this example, the `qubit` one. As for another example, a new two-qubit gate that is characterized by a `target` and `control` qubits will have to have those two fields (always of `usize` type) and the derivation of traits will work as expected, without having to do it manually.
+    In this example, we use the `qubit` one. As another example, a new two-qubit gate that is characterized by `target` and `control` qubits will have to have those two fields (always of `usize` type) and the derivation of traits will work as expected, without having to do it manually.
 
 * Tags, associating the new gate to different granularities of gate types
     ```rust
@@ -174,7 +175,7 @@ In order, we have:
         "RotateX",
     ];
     ```
-    These are related to the traits. In the example, "Operation" indicates that is a gate that implements the `Operate` trait; "GateOperation" the `OperateGate` trait; "SingleQubitGateOperation" the `OperateSingleQubitGate` trait and "Rotation" the `Rotate` trait. The last has to always be the gate's name. 
+    These are related to the traits. In the example, "Operation" indicates that is a gate that implements the `Operate` trait; "GateOperation" the `OperateGate` trait; "SingleQubitGateOperation" the `OperateSingleQubitGate` trait and "Rotation" the `Rotate` trait. The last tag must always be the gate's name. 
 
 * Manual implementation of traits
     ```rust
@@ -241,7 +242,7 @@ In order, we have:
     }
     ```
 
-    These are gate-specific properties that cannot be derived. In this case, `OperateGate` and `OperateSingleQubitGate` are related to the matrix representation of the gate, so something that has be to manually defined.
+    These are gate-specific properties that cannot be derived. In this case, `OperateGate` and `OperateSingleQubitGate` are related to the matrix representation of the gate, and must therefore be manually defined.
 
 ### QOQO
 ```rust
@@ -289,7 +290,7 @@ We have a similar structure:
     )]
     ```
 
-* Again, generic text definition of the gate
+* Again, generic text definition of the gate, with matrix representation of the gate.
     ```rust
     /// The XPower gate :math:`e^{-i \frac{\theta}{2} \sigma^x}`.
     ///
