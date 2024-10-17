@@ -219,10 +219,10 @@ impl ControlledSWAPWrapper {
                 })?,
         })
     }
-    /// Remap qubits
+    /// Remap qubits in the ControlledSWAP operation
     ///
     /// Args:
-    ///     mapping (Dict[int, int]): The mapping
+    ///     mapping (Dict[int, int]): The mapping to be used in the remapping.
     ///
     /// Returns:
     ///     Operation: The operation with the remapped qubits
@@ -238,7 +238,7 @@ impl ControlledSWAPWrapper {
             internal: new_internal,
         })
     }
-    /// List all involved Qubits
+    /// List all involved qubits in the ControlledSWAP operation.
     ///
     /// Returns:
     ///     Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
@@ -302,7 +302,6 @@ impl ControlledSWAPWrapper {
 )]
 /// The phased-shifted double-controlled-Z gate.
 ///
-///
 /// The unitary matrix representation is:
 ///
 /// .. math::
@@ -340,7 +339,6 @@ pub struct PhaseShiftedControlledControlledZ {
     JsonSchema
 )]
 /// The phased-shifted double-controlled-Z gate.
-///
 ///
 /// The unitary matrix representation is:
 ///

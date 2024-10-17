@@ -300,7 +300,7 @@ fn four_qubit_gate_struct(ident: Ident) -> TokenStream {
     quote! {
         #[automatically_derived]
         impl OperateFourQubitGate for #ident{
-            fn circuit(&self ) -> crate::Circuit {
+            fn circuit(&self) -> crate::Circuit {
                 self.circuit
             }
         }

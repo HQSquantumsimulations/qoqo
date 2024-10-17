@@ -435,19 +435,19 @@ fn operate_four_qubit_struct(ident: Ident) -> TokenStream {
         /// Trait for Operations acting on exactly four qubits.
         impl OperateFourQubit for #ident{
             /// Returns `control_0` qubit of the four qubit Operation.
-            fn control_0(&self ) -> &usize {
+            fn control_0(&self) -> &usize {
                 &self.control_0
             }
             /// Returns `control_1` qubit of the four qubit Operation.
-            fn control_1(&self ) -> &usize {
+            fn control_1(&self) -> &usize {
                 &self.control_1
             }
             /// Returns `control_2` qubit of the four qubit Operation.
-            fn control_2(&self ) -> &usize {
+            fn control_2(&self) -> &usize {
                 &self.control_2
             }
             /// Returns `target` qubit of the four qubit Operation.
-            fn target(&self ) -> &usize {
+            fn target(&self) -> &usize {
                 &self.target
             }
         }

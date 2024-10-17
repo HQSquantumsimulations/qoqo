@@ -13,22 +13,18 @@
 use ndarray::Array2;
 use num_complex::Complex64;
 use numpy::PyArray2;
-
-use qoqo_calculator::CalculatorFloat;
-
 use pyo3::prelude::*;
-use std::collections::HashMap;
-
 use qoqo::operations::{
     convert_operation_to_pyobject, TripleControlledPauliXWrapper, TripleControlledPauliZWrapper,
     TripleControlledPhaseShiftWrapper,
 };
 use qoqo::CircuitWrapper;
+use qoqo_calculator::CalculatorFloat;
 use roqoqo::operations::*;
 #[cfg(feature = "json_schema")]
 use roqoqo::ROQOQO_VERSION;
 use roqoqo::{Circuit, RoqoqoError};
-
+use std::collections::HashMap;
 use test_case::test_case;
 
 #[test_case(Operation::from(TripleControlledPauliX::new(0, 1, 2, 3)); "TripleControlledPauliX")]
