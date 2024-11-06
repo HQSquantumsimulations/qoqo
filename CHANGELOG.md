@@ -2,6 +2,12 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.16.1
+
+### Fixed in 1.16.1
+
+* Fixed `PhaseShiftedControlledControlledZ` and `PhaseShiftedControlledControlledPhase` unitary matrices.
+
 ## 1.16.0
 
 ### Fixed in 1.16.0
