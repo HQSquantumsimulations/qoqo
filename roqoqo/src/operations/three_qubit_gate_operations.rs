@@ -740,8 +740,10 @@ impl OperateGate for PhaseShiftedControlledControlledZ {
         let phi: f64 = f64::try_from(self.phi.clone())?;
         let cos: f64 = phi.cos();
         let sin: f64 = phi.sin();
-        let cos2: f64 = (2.0 * phi + PI).cos();
-        let sin2: f64 = (2.0 * phi + PI).sin();
+        let cos2: f64 = (2.0 * phi).cos();
+        let sin2: f64 = (2.0 * phi).sin();
+        let cos3: f64 = (3.0 * phi + PI).cos();
+        let sin3: f64 = (3.0 * phi + PI).sin();
         Ok(array![
             [
                 Complex64::new(1.0, 0.0),
@@ -755,7 +757,7 @@ impl OperateGate for PhaseShiftedControlledControlledZ {
             ],
             [
                 Complex64::new(0.0, 0.0),
-                Complex64::new(1.0, 0.0),
+                Complex64::new(cos, sin),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
@@ -766,7 +768,7 @@ impl OperateGate for PhaseShiftedControlledControlledZ {
             [
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new(1.0, 0.0),
+                Complex64::new(cos, sin),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
@@ -777,30 +779,30 @@ impl OperateGate for PhaseShiftedControlledControlledZ {
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new(1.0, 0.0),
+                Complex64::new(cos2, sin2),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0)
             ],
             [
-                Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, 0.0),
-                Complex64::new(1.0, 0.0),
-                Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, 0.0)
-            ],
-            [
-                Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(cos, sin),
                 Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(cos2, sin2),
+                Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0)
             ],
             [
@@ -810,7 +812,7 @@ impl OperateGate for PhaseShiftedControlledControlledZ {
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new(cos, sin),
+                Complex64::new(cos2, sin2),
                 Complex64::new(0.0, 0.0)
             ],
             [
@@ -821,7 +823,7 @@ impl OperateGate for PhaseShiftedControlledControlledZ {
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new(cos2, sin2)
+                Complex64::new(cos3, sin3)
             ],
         ])
     }
@@ -912,8 +914,10 @@ impl OperateGate for PhaseShiftedControlledControlledPhase {
         let theta: f64 = f64::try_from(self.theta.clone())?;
         let cos: f64 = phi.cos();
         let sin: f64 = phi.sin();
-        let cos2: f64 = (2.0 * phi + theta).cos();
-        let sin2: f64 = (2.0 * phi + theta).sin();
+        let cos2: f64 = (2.0 * phi).cos();
+        let sin2: f64 = (2.0 * phi).sin();
+        let cos3: f64 = (3.0 * phi + theta).cos();
+        let sin3: f64 = (3.0 * phi + theta).sin();
         Ok(array![
             [
                 Complex64::new(1.0, 0.0),
@@ -927,7 +931,7 @@ impl OperateGate for PhaseShiftedControlledControlledPhase {
             ],
             [
                 Complex64::new(0.0, 0.0),
-                Complex64::new(1.0, 0.0),
+                Complex64::new(cos, sin),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
@@ -938,7 +942,7 @@ impl OperateGate for PhaseShiftedControlledControlledPhase {
             [
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new(1.0, 0.0),
+                Complex64::new(cos, sin),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
@@ -949,30 +953,30 @@ impl OperateGate for PhaseShiftedControlledControlledPhase {
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new(1.0, 0.0),
+                Complex64::new(cos2, sin2),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0)
             ],
             [
-                Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, 0.0),
-                Complex64::new(1.0, 0.0),
-                Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, 0.0),
-                Complex64::new(0.0, 0.0)
-            ],
-            [
-                Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(cos, sin),
                 Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0)
+            ],
+            [
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(cos2, sin2),
+                Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0)
             ],
             [
@@ -982,7 +986,7 @@ impl OperateGate for PhaseShiftedControlledControlledPhase {
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new(cos, sin),
+                Complex64::new(cos2, sin2),
                 Complex64::new(0.0, 0.0)
             ],
             [
@@ -993,7 +997,7 @@ impl OperateGate for PhaseShiftedControlledControlledPhase {
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
                 Complex64::new(0.0, 0.0),
-                Complex64::new(cos2, sin2)
+                Complex64::new(cos3, sin3)
             ],
         ])
     }
