@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qoqo &mdash; qoqo 1.16.0 documentation</title>
+  <title>qoqo &mdash; qoqo 1.16.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=aaa49c1e"></script>
+      <script src="../_static/documentation_options.js?v=35e60884"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -18152,13 +18152,13 @@ provided parameters.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}U = \begin{pmatrix}
     1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\\\
-    0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\\\
-    0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\\\
-    0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\\\
-    0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\\\
-    0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e^{i \phi} &amp; 0 &amp; 0 \\\\
-    0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e^{i \phi} &amp; 0 \\\\
-    0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e^{i (2\cdot\phi + \theta)}
+    0 &amp; e^{i \phi} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\\\
+    0 &amp; 0 &amp; e^{i \phi} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\\\
+    0 &amp; 0 &amp; 0 &amp; e^{i (2\cdot\phi)} &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\\\
+    0 &amp; 0 &amp; 0 &amp; 0 &amp; e^{i \phi} &amp; 0 &amp; 0 &amp; 0 \\\\
+    0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e^{i (2\cdot\phi)} &amp; 0 &amp; 0 \\\\
+    0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e^{i (2\cdot\phi)} &amp; 0 \\\\
+    0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e^{i (3\cdot\phi + \theta)}
     \end{pmatrix}\end{split}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -18396,13 +18396,13 @@ provided parameters.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}U = \begin{pmatrix}
     1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\\\
-    0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\\\
-    0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\\\
-    0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\\\
-    0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\\\
-    0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e^{i \phi} &amp; 0 &amp; 0 \\\\
-    0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e^{i \phi} &amp; 0 \\\\
-    0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e^{i (2\cdot\phi + \pi)}
+    0 &amp; e^{i \phi} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\\\
+    0 &amp; 0 &amp; e^{i \phi} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\\\
+    0 &amp; 0 &amp; 0 &amp; e^{i (2\cdot\phi)} &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\\\
+    0 &amp; 0 &amp; 0 &amp; 0 &amp; e^{i \phi} &amp; 0 &amp; 0 &amp; 0 \\\\
+    0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e^{i (2\cdot\phi)} &amp; 0 &amp; 0 \\\\
+    0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e^{i (2\cdot\phi)} &amp; 0 \\\\
+    0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e^{i (3\cdot\phi + \pi)}
     \end{pmatrix}\end{split}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
