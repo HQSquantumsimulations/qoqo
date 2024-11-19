@@ -12,6 +12,7 @@
 
 //! Represents a quantum program evaluating measurements based on a one or more free float parameters.
 
+use rayon::prelude::*;
 use std::collections::HashMap;
 
 #[cfg(feature = "async")]
@@ -117,6 +118,47 @@ impl QuantumProgram {
         }
     }
 
+    pub fn run_parallel<T>(
+        &self,
+        backend: T,
+        vec_parameters: Vec<Vec<f64>>,
+    ) -> Result<Vec<Option<HashMap<String, f64>>>, RoqoqoBackendError>
+    where
+        T: EvaluatingBackend + Sync,
+    {
+        match self{
+            QuantumProgram::PauliZProduct{measurement, input_parameter_names } => {
+                if vec_parameters[0].len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), vec_parameters[0].len())})};
+                let vec_measurements: Vec<_> = vec_parameters.into_par_iter()
+                .map(|parameters| {
+                    let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
+                    let m = measurement.substitute_parameters(
+                        substituted_parameters
+                    ).expect("Failed to substitute parameters in measurement");
+                    backend.run_measurement(&m).unwrap()
+                }).collect();
+
+                Ok(vec_measurements)
+            }
+            // QuantumProgram::CheatedPauliZProduct{measurement, input_parameter_names } => {
+            //     if parameters.len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())})};
+            //     let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
+            //     let substituted_measurement = measurement.substitute_parameters(
+            //         substituted_parameters
+            //     )?;
+            //     backend.run_measurement(&substituted_measurement)
+            // }
+            // QuantumProgram::Cheated{measurement, input_parameter_names } => {
+            //     if parameters.len() != input_parameter_names.len() { return Err(RoqoqoBackendError::GenericError{msg: format!("Wrong number of parameters {} parameters expected {} parameters given", input_parameter_names.len(), parameters.len())})};
+            //     let substituted_parameters: HashMap<String, f64> = input_parameter_names.iter().zip(parameters.iter()).map(|(key, value)| (key.clone(), *value)).collect();
+            //     let substituted_measurement = measurement.substitute_parameters(
+            //         substituted_parameters
+            //     )?;
+            //     backend.run_measurement(&substituted_measurement)
+            // }
+            _ => Err(RoqoqoBackendError::GenericError{msg: "A quantum programm returning classical registeres cannot be executed by `run` use `run_registers` instead".to_string()})
+        }
+    }
     /// Runs the QuantumProgram and returns the classical registers of the quantum program.
     ///
     /// Runs the quantum programm for a given set of parameters passed in the same order as the parameters
