@@ -1,5 +1,5 @@
 [package]
-version = "1.16.0"
+version = "1.16.1"
 name = "qoqo"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
