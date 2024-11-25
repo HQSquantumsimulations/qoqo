@@ -6,10 +6,34 @@ on:
     types: [created]
 
 jobs:
-
   publish_documentation:
-    uses: HQSquantumsimulations/reusable_workflows/.github/workflows/reusable_publish_documentation_rust_sphinx.yml@main
-    with: 
-      py_interface_folder: "qoqo"
-      py_docs_folder: "qoqo/docs"
-    secrets: inherit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - uses: peaceiris/actions-mdbook@v1
+        with:
+          version: latest
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          default: true
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip maturin
+          pip install ${{inputs.py_interface_folder}}/[docs]
+      - name: build
+        run: |
+          cd ${{inputs.py_docs_folder}}
+          python -m sphinx -T -E -b html . _build/html
+          mv _build/html ../../documentation/src/python_api_docs
+          cd ../..
+          mdbook build documentation
+      - name: publish
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: documentation/book

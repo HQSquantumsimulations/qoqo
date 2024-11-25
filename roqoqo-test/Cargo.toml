@@ -18,9 +18,7 @@ doctest = false
 crate-type = ["rlib"]
 
 [dependencies]
-roqoqo = { version = "~1.16", path = "../roqoqo", features = [
-    "serialize",
-] }
+roqoqo = { version = "~1.16", path = "../roqoqo", features = ["serialize"] }
 rand = "~0.8"
 nalgebra = "0.33.1"
 ndarray = { version = "0.15" }

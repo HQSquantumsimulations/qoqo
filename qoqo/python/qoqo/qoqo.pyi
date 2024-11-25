@@ -14,10 +14,12 @@ qoqo is the HQS python package to represent quantum circuits.
     :toctree: generated/
 
     Circuit
+    CircuitDag
     operations
-    registers
-    measurements
     QuantumProgram
+    measurements
+    devices
+    noise_models
 
 """
 
