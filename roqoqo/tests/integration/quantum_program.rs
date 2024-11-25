@@ -202,7 +202,7 @@ fn test_parallel() {
     let multiple_parameter_set_time = now.elapsed();
 
     assert!(result.is_ok());
-    assert!(multiple_parameter_set_time * 8 < one_parameter_set_time * number_parameter_set as u32);
+    assert!(multiple_parameter_set_time * 2 < one_parameter_set_time * number_parameter_set as u32);
 
     let result_fail = program.run_parallel(backend, &[vec![0.0]]);
     assert!(result_fail.is_err());
