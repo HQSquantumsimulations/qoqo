@@ -1427,7 +1427,7 @@ impl InvolveQubits for PragmaAnnotatedOp {
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaSimulationRepetitions {
-    pub repetitions: usize,
+    repetitions: usize,
 }
 
 #[allow(non_upper_case_globals)]
@@ -1466,6 +1466,15 @@ impl PragmaSimulationRepetitions {
     /// * `repetitions` - The number of simulation repetitions.
     pub fn new(repetitions: usize) -> Self {
         Self { repetitions }
+    }
+
+    /// Getter for the number of repetitions.
+    ///
+    /// # Returns
+    ///
+    /// * `usize` - The number of simulation repetitions
+    pub fn repetitions(&self) -> usize {
+        self.repetitions
     }
 }
 

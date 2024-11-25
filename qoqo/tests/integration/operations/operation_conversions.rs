@@ -155,6 +155,9 @@ use test_case::test_case;
 #[test_case(
     Operation::from(TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::PI)); "TripleControlledPhaseShift"
 )]
+#[test_case(
+    Operation::from(PragmaSimulationRepetitions::new(100)); "PragmaSimulationRepetitions"
+)]
 fn test_conversion(input: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {

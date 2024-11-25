@@ -110,7 +110,7 @@ fn pragma_loop_substitute_trait() {
     assert_eq!(result, pragma);
 }
 
-/// Test PragmaSetNumberOfMeasurements Serialization and Deserialization traits (readable)
+/// Test PragmaLoop Serialization and Deserialization traits (readable)
 #[cfg(feature = "serialize")]
 #[test]
 fn pragma_loop_serde_readable() {
@@ -4059,8 +4059,7 @@ fn pragma_simulation_repetitions_simple_traits() {
 #[cfg(feature = "serialize")]
 #[test]
 fn pragma_simulation_repetitions_serde_readable() {
-    let pragma_serialization =
-        PragmaSimulationRepetitions::new(100);
+    let pragma_serialization = PragmaSimulationRepetitions::new(100);
     assert_tokens(
         &pragma_serialization.readable(),
         &[
@@ -4079,8 +4078,7 @@ fn pragma_simulation_repetitions_serde_readable() {
 #[cfg(feature = "serialize")]
 #[test]
 fn pragma_simulation_repetitions_serde_compact() {
-    let pragma_serialization =
-        PragmaSimulationRepetitions::new(100);
+    let pragma_serialization = PragmaSimulationRepetitions::new(100);
     assert_tokens(
         &pragma_serialization.compact(),
         &[
