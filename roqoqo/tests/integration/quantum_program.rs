@@ -24,6 +24,7 @@ use roqoqo::QuantumProgram;
 #[cfg(feature = "json_schema")]
 use schemars::schema_for;
 use std::collections::HashMap;
+use std::time::Instant;
 
 #[derive(Debug, Clone, Copy)]
 struct TestBackend;
@@ -159,6 +160,54 @@ fn test_cheated() {
     let result_fail = program.run(backend, &[0.0]);
     assert!(result_fail.is_err());
     let result_fail = program.run(backend, &[0.0, 1.0, 3.0]);
+    assert!(result_fail.is_err());
+}
+
+#[test]
+fn test_parallel() {
+    // setting ub BR measurement
+    let bri = CheatedInput::new(2);
+    let mut circs: Vec<Circuit> = Vec::new();
+    let mut circ1 = Circuit::new();
+    let mut circ1_subs = Circuit::new();
+    circ1 += operations::RotateX::new(0, "theta".into());
+    circ1_subs += operations::RotateX::new(0, 0.0.into());
+    let mut circ2 = Circuit::new();
+    let mut circ2_subs = Circuit::new();
+    circ2 += operations::RotateZ::new(0, "theta2".into());
+    circ2_subs += operations::RotateZ::new(0, 1.0.into());
+    circs.push(circ1);
+    let br = Cheated {
+        constant_circuit: Some(circ2),
+        circuits: circs.clone(),
+        input: bri,
+    };
+
+    let input_parameter_names = vec!["theta".to_string(), "theta2".to_string()];
+    let program = QuantumProgram::Cheated {
+        measurement: br,
+        input_parameter_names,
+    };
+
+    let backend = TestBackend;
+
+    let mut now = Instant::now();
+    let result = program.run_parallel(backend, &[vec![0.0, 1.0]]);
+    let one_parameter_set_time = now.elapsed();
+    assert!(result.is_ok());
+
+    let number_parameter_set = 1000;
+    now = Instant::now();
+    let result = program.run_parallel(backend, &vec![vec![0.0, 1.0]; number_parameter_set]);
+    let multiple_parameter_set_time = now.elapsed();
+
+    assert!(result.is_ok());
+    assert!(multiple_parameter_set_time * 8 < one_parameter_set_time * number_parameter_set as u32);
+
+    let result_fail = program.run_parallel(backend, &[vec![0.0]]);
+    assert!(result_fail.is_err());
+
+    let result_fail = program.run_parallel(backend, &[vec![0.0, 1.0, 3.0]]);
     assert!(result_fail.is_err());
 }
 

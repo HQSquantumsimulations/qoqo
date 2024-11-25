@@ -2,6 +2,10 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## Unreleased
+
+* Added the `run_parallel` method to QuantumProgram.
+
 ## 1.16.0
 
 ### Fixed in 1.16.0
