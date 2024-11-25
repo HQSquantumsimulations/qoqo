@@ -4071,8 +4071,6 @@ fn pragma_simulation_repetitions_serde_readable() {
             Token::Str("repetitions"),
             Token::U64(100),
             Token::StructEnd,
-            Token::Str("test"),
-            Token::StructEnd,
         ],
     );
 }
@@ -4092,8 +4090,6 @@ fn pragma_simulation_repetitions_serde_compact() {
             },
             Token::Str("repetitions"),
             Token::U64(100),
-            Token::StructEnd,
-            Token::Str("test"),
             Token::StructEnd,
         ],
     );
