@@ -200,7 +200,11 @@ fn test_parallel() {
     now = Instant::now();
     let result = program.run_parallel(backend, &vec![vec![0.0, 1.0]; number_parameter_set]);
     let multiple_parameter_set_time = now.elapsed();
-
+    println!(
+        "single:{}\nmultiple:{}",
+        one_parameter_set_time.as_nanos(),
+        multiple_parameter_set_time.as_nanos()
+    );
     assert!(result.is_ok());
     assert!(multiple_parameter_set_time * 2 < one_parameter_set_time * number_parameter_set as u32);
 
