@@ -4026,7 +4026,7 @@ fn pragma_simulation_repetitions_inputs_qubits() {
     let pragma = PragmaSimulationRepetitions::new(100);
 
     // Test inputs are correct
-    assert_eq!(pragma.repetitions, 100);
+    assert_eq!(pragma.repetitions(), 100);
 
     // Test InvolveQubits trait
     assert_eq!(pragma.involved_qubits(), InvolvedQubits::None);
