@@ -1,6 +1,6 @@
 [package]
 name = "compatibility_test_1_11"
-version = "1.16.1"
+version = "1.16.2"
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 license = "Apache-2.0"
 edition = "2021"

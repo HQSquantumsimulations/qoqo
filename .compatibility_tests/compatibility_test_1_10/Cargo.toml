@@ -1,7 +1,7 @@
 [package]
 authors = ["HQS Quantum Simulations <info@quantumsimulations.de>"]
 name = "compatibility_test_1_10"
-version = "1.16.1"
+version = "1.16.2"
 license = "Apache-2.0"
 edition = "2021"
 rust-version = "1.70"

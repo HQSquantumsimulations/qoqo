@@ -2,6 +2,12 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
+## 1.16.2
+
+### Fixed in 1.16.2
+
+* Added the documentation from qoqo_examples.
+
 ## 1.16.1
 
 ### Fixed in 1.16.1
