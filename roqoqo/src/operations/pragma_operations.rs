@@ -1427,7 +1427,7 @@ impl InvolveQubits for PragmaAnnotatedOp {
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
 pub struct PragmaSimulationRepetitions {
-    repetitions: usize,
+    pub repetitions: usize,
 }
 
 #[allow(non_upper_case_globals)]
