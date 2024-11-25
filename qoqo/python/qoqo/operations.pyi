@@ -15154,3 +15154,1828 @@ Returns:
         Returns:
             str: The json schema serialized to json
         """
+
+class InvSGate(Operation):
+    """
+The InvS gate.
+
+.. math::
+    U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+        1 & 0 \\\\
+        0 & -i
+        \end{pmatrix}
+
+Args:
+    qubit (int): The qubit the unitary gate is applied to.
+
+"""
+
+    def __init__(self, qubit: int):
+        return
+
+    def is_parametrized(self) -> bool:
+        """
+        Returns true if operation contains symbolic parameters
+
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters.
+        """
+
+    def tags(self) -> List[str]:
+        """
+        Returns tags identifying the Operation
+
+        Returns:
+            List[str]: The tags identifying the operation
+        """
+
+    def hqslang(self) -> str:
+        """
+        Returns hqslang name of Operation
+
+        Returns:
+            str: The name
+        """
+
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
+        """
+        Substitutes internal symbolic parameters with float values
+
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
+        """
+
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
+        """
+        Remap qubits
+
+        Args:
+            mapping (Dict[int, int]): The mapping
+
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
+        """
+
+    def involved_qubits(self) -> Union[Set[int], str]:
+        """
+        List all involved Qubits
+
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
+
+    def qubit(self):
+        """
+        Return the qubit the operation acts on
+
+        Returns:
+            int
+        """
+
+    def global_phase(self):
+        """
+Return the global phase :math:`g` of a unitary gate acting on one qubit
+
+Here global_phase is defined by
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+Returns:
+    CalculatorFloat
+"""
+
+    def alpha_r(self):
+        """
+Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
+
+Here alpha_r is defined by
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+Returns:
+    CalculatorFloat
+"""
+
+    def alpha_i(self):
+        """
+Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+Returns:
+    CalculatorFloat
+"""
+
+    def beta_r(self):
+        """
+Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
+
+Here beta_r is defined by
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+Returns:
+    CalculatorFloat
+"""
+
+    def beta_i(self):
+        """
+Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
+
+Here beta_i is defined by
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+
+Returns:
+    CalculatorFloat
+"""
+
+    def mul(self) -> Operation:
+        """
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
+
+        Does not consume the two operations being multiplied.
+        Only Operations
+
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
+
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
+
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+
+        """
+
+    def unitary_matrix(self) -> numpy.ndarray:
+        """
+        Return unitary matrix of gate.
+
+        Returns:
+            np.ndarray: matrix of gate.
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
+        """
+
+    def current_version(self) -> str:
+        """
+        Returns the current version of the qoqo library .
+
+        Returns:
+            str: The current version of the library.
+        """
+
+    def min_supported_version(self) -> str:
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
+
+class InvTGate(Operation):
+    """
+The InvT gate.
+
+.. math::
+    U = \frac{1}{\sqrt{2}} \begin{pmatrix}
+        1 & 0 \\\\
+        0 & e^{-i \frac{\pi}{4}}
+        \end{pmatrix}
+
+Args:
+    qubit (int): The qubit the unitary gate is applied to.
+
+"""
+
+    def __init__(self, qubit: int):
+        return
+
+    def is_parametrized(self) -> bool:
+        """
+        Returns true if operation contains symbolic parameters
+
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters.
+        """
+
+    def tags(self) -> List[str]:
+        """
+        Returns tags identifying the Operation
+
+        Returns:
+            List[str]: The tags identifying the operation
+        """
+
+    def hqslang(self) -> str:
+        """
+        Returns hqslang name of Operation
+
+        Returns:
+            str: The name
+        """
+
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
+        """
+        Substitutes internal symbolic parameters with float values
+
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
+        """
+
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
+        """
+        Remap qubits
+
+        Args:
+            mapping (Dict[int, int]): The mapping
+
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
+        """
+
+    def involved_qubits(self) -> Union[Set[int], str]:
+        """
+        List all involved Qubits
+
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
+
+    def qubit(self):
+        """
+        Return the qubit the operation acts on
+
+        Returns:
+            int
+        """
+
+    def global_phase(self):
+        """
+Return the global phase :math:`g` of a unitary gate acting on one qubit
+
+Here global_phase is defined by
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+Returns:
+    CalculatorFloat
+"""
+
+    def alpha_r(self):
+        """
+Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
+
+Here alpha_r is defined by
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+Returns:
+    CalculatorFloat
+"""
+
+    def alpha_i(self):
+        """
+Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+Returns:
+    CalculatorFloat
+"""
+
+    def beta_r(self):
+        """
+Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
+
+Here beta_r is defined by
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+Returns:
+    CalculatorFloat
+"""
+
+    def beta_i(self):
+        """
+Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
+
+Here beta_i is defined by
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+
+Returns:
+    CalculatorFloat
+"""
+
+    def mul(self) -> Operation:
+        """
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
+
+        Does not consume the two operations being multiplied.
+        Only Operations
+
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
+
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
+
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+
+        """
+
+    def unitary_matrix(self) -> numpy.ndarray:
+        """
+        Return unitary matrix of gate.
+
+        Returns:
+            np.ndarray: matrix of gate.
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
+        """
+
+    def current_version(self) -> str:
+        """
+        Returns the current version of the qoqo library .
+
+        Returns:
+            str: The current version of the library.
+        """
+
+    def min_supported_version(self) -> str:
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
+
+class SXGate(Operation):
+    """
+The SX gate.
+
+.. math::
+    U = \frac{1}{\sqrt(2)} \begin{pmatrix}
+        1+i & 1-i \\\\
+        1-i & 1+i
+        \end{pmatrix}
+
+Args:
+    qubit (int): The qubit the unitary gate is applied to.
+
+"""
+
+    def __init__(self, qubit: int):
+        return
+
+    def is_parametrized(self) -> bool:
+        """
+        Returns true if operation contains symbolic parameters
+
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters.
+        """
+
+    def tags(self) -> List[str]:
+        """
+        Returns tags identifying the Operation
+
+        Returns:
+            List[str]: The tags identifying the operation
+        """
+
+    def hqslang(self) -> str:
+        """
+        Returns hqslang name of Operation
+
+        Returns:
+            str: The name
+        """
+
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
+        """
+        Substitutes internal symbolic parameters with float values
+
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
+        """
+
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
+        """
+        Remap qubits
+
+        Args:
+            mapping (Dict[int, int]): The mapping
+
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
+        """
+
+    def involved_qubits(self) -> Union[Set[int], str]:
+        """
+        List all involved Qubits
+
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
+
+    def qubit(self):
+        """
+        Return the qubit the operation acts on
+
+        Returns:
+            int
+        """
+
+    def global_phase(self):
+        """
+Return the global phase :math:`g` of a unitary gate acting on one qubit
+
+Here global_phase is defined by
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+Returns:
+    CalculatorFloat
+"""
+
+    def alpha_r(self):
+        """
+Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
+
+Here alpha_r is defined by
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+Returns:
+    CalculatorFloat
+"""
+
+    def alpha_i(self):
+        """
+Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+Returns:
+    CalculatorFloat
+"""
+
+    def beta_r(self):
+        """
+Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
+
+Here beta_r is defined by
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+Returns:
+    CalculatorFloat
+"""
+
+    def beta_i(self):
+        """
+Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
+
+Here beta_i is defined by
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+
+Returns:
+    CalculatorFloat
+"""
+
+    def mul(self) -> Operation:
+        """
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
+
+        Does not consume the two operations being multiplied.
+        Only Operations
+
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
+
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
+
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+
+        """
+
+    def unitary_matrix(self) -> numpy.ndarray:
+        """
+        Return unitary matrix of gate.
+
+        Returns:
+            np.ndarray: matrix of gate.
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
+        """
+
+    def current_version(self) -> str:
+        """
+        Returns the current version of the qoqo library .
+
+        Returns:
+            str: The current version of the library.
+        """
+
+    def min_supported_version(self) -> str:
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
+
+class InvSXGate(Operation):
+    """
+The InvSX gate.
+
+.. math::
+    U = \frac{1}{\sqrt(2)} \begin{pmatrix}
+        1-i & 1+i \\\\
+        1+i & 1-i
+        \end{pmatrix}
+
+Args:
+    qubit (int): The qubit the unitary gate is applied to.
+
+"""
+
+    def __init__(self, qubit: int):
+        return
+
+    def is_parametrized(self) -> bool:
+        """
+        Returns true if operation contains symbolic parameters
+
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters.
+        """
+
+    def tags(self) -> List[str]:
+        """
+        Returns tags identifying the Operation
+
+        Returns:
+            List[str]: The tags identifying the operation
+        """
+
+    def hqslang(self) -> str:
+        """
+        Returns hqslang name of Operation
+
+        Returns:
+            str: The name
+        """
+
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
+        """
+        Substitutes internal symbolic parameters with float values
+
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
+        """
+
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
+        """
+        Remap qubits
+
+        Args:
+            mapping (Dict[int, int]): The mapping
+
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
+        """
+
+    def involved_qubits(self) -> Union[Set[int], str]:
+        """
+        List all involved Qubits
+
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
+
+    def qubit(self):
+        """
+        Return the qubit the operation acts on
+
+        Returns:
+            int
+        """
+
+    def global_phase(self):
+        """
+Return the global phase :math:`g` of a unitary gate acting on one qubit
+
+Here global_phase is defined by
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+Returns:
+    CalculatorFloat
+"""
+
+    def alpha_r(self):
+        """
+Return the property alpha_r :math:`\alpha_r` of a unitary gate acting on one qubit
+
+Here alpha_r is defined by
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+Returns:
+    CalculatorFloat
+"""
+
+    def alpha_i(self):
+        """
+Return the property alpha_i :math:`\alpha_i` of a unitary gate acting on one qubit
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+Returns:
+    CalculatorFloat
+"""
+
+    def beta_r(self):
+        """
+Return the property beta_r :math:`\beta_r` of a unitary gate acting on one qubit
+
+Here beta_r is defined by
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+Returns:
+    CalculatorFloat
+"""
+
+    def beta_i(self):
+        """
+Returns the property beta_i :math:`\beta_i` of a unitary gate acting on one qubit
+
+Here beta_i is defined by
+
+.. math::
+    U =e^{i \cdot g}\begin{pmatrix}
+    \alpha_r+i \alpha_i & -\beta_r+i \beta_i \\\\
+    \beta_r+i \beta_i & \alpha_r-i\alpha_i
+    \end{pmatrix}
+
+
+Returns:
+    CalculatorFloat
+"""
+
+    def mul(self) -> Operation:
+        """
+        Multiplies two compatible operations implementing OperateSingleQubitGate.
+
+        Does not consume the two operations being multiplied.
+        Only Operations
+
+        Args:
+            `other` - An Operation implementing [OperateSingleQubitGate].
+
+        Returns:
+            Operation: Result of the multiplication, i.e. the multiplied single qubit gate.
+
+        Example:
+        ```
+        from qoqo.operations import RotateZ, RotateX
+
+        gate1 =  RotateZ(qubit=0, theta=1)
+        gate2 = RotateX(qubit=0, theta=1)
+        multiplied = gate1.mul(gate2)
+        print("Multiplied gate: ", multiplied)
+        ```
+
+        """
+
+    def unitary_matrix(self) -> numpy.ndarray:
+        """
+        Return unitary matrix of gate.
+
+        Returns:
+            np.ndarray: matrix of gate.
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
+        """
+
+    def current_version(self) -> str:
+        """
+        Returns the current version of the qoqo library .
+
+        Returns:
+            str: The current version of the library.
+        """
+
+    def min_supported_version(self) -> str:
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
+
+class TripleControlledPauliX(Operation):
+    """
+    The triple-controlled PauliX gate.
+
+    """
+
+    def __init__(self):
+        return
+
+    def is_parametrized(self) -> bool:
+        """
+        Returns true if operation contains symbolic parameters
+
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters.
+        """
+
+    def tags(self) -> List[str]:
+        """
+        Returns tags identifying the Operation
+
+        Returns:
+            List[str]: The tags identifying the operation
+        """
+
+    def hqslang(self) -> str:
+        """
+        Returns hqslang name of Operation
+
+        Returns:
+            str: The name
+        """
+
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
+        """
+        Substitutes internal symbolic parameters with float values
+
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
+        """
+
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
+        """
+        Remap qubits
+
+        Args:
+            mapping (Dict[int, int]): The mapping
+
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
+        """
+
+    def involved_qubits(self) -> Union[Set[int], str]:
+        """
+        List all involved Qubits
+
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
+
+    def control_0(self):
+        """
+        Returns control_0 qubit of the four-qubit operation
+        """
+
+    def control_1(self):
+        """
+        Returns control_1 qubit of the four-qubit operation
+        """
+
+    def control_2(self):
+        """
+        Returns control_2 qubit of the four-qubit operation
+        """
+
+    def target(self):
+        """
+        Returns target qubit of the four-qubit operation
+        """
+
+    def circuit(self):
+        """
+        Returns circuit implementing the FourQubitGateOperation
+
+        Returns:
+            Circuit
+        """
+
+    def unitary_matrix(self) -> numpy.ndarray:
+        """
+        Return unitary matrix of gate.
+
+        Returns:
+            np.ndarray: matrix of gate.
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
+        """
+
+    def current_version(self) -> str:
+        """
+        Returns the current version of the qoqo library .
+
+        Returns:
+            str: The current version of the library.
+        """
+
+    def min_supported_version(self) -> str:
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
+
+class TripleControlledPauliZ(Operation):
+    """
+    The triple-controlled PauliZ gate.
+
+    """
+
+    def __init__(self):
+        return
+
+    def is_parametrized(self) -> bool:
+        """
+        Returns true if operation contains symbolic parameters
+
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters.
+        """
+
+    def tags(self) -> List[str]:
+        """
+        Returns tags identifying the Operation
+
+        Returns:
+            List[str]: The tags identifying the operation
+        """
+
+    def hqslang(self) -> str:
+        """
+        Returns hqslang name of Operation
+
+        Returns:
+            str: The name
+        """
+
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
+        """
+        Substitutes internal symbolic parameters with float values
+
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
+        """
+
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
+        """
+        Remap qubits
+
+        Args:
+            mapping (Dict[int, int]): The mapping
+
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
+        """
+
+    def involved_qubits(self) -> Union[Set[int], str]:
+        """
+        List all involved Qubits
+
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
+
+    def control_0(self):
+        """
+        Returns control_0 qubit of the four-qubit operation
+        """
+
+    def control_1(self):
+        """
+        Returns control_1 qubit of the four-qubit operation
+        """
+
+    def control_2(self):
+        """
+        Returns control_2 qubit of the four-qubit operation
+        """
+
+    def target(self):
+        """
+        Returns target qubit of the four-qubit operation
+        """
+
+    def circuit(self):
+        """
+        Returns circuit implementing the FourQubitGateOperation
+
+        Returns:
+            Circuit
+        """
+
+    def unitary_matrix(self) -> numpy.ndarray:
+        """
+        Return unitary matrix of gate.
+
+        Returns:
+            np.ndarray: matrix of gate.
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
+        """
+
+    def current_version(self) -> str:
+        """
+        Returns the current version of the qoqo library .
+
+        Returns:
+            str: The current version of the library.
+        """
+
+    def min_supported_version(self) -> str:
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
+
+class TripleControlledPhaseShift(Operation):
+    """
+    The triple-controlled PhaseShift gate.
+
+    """
+
+    def __init__(self):
+        return
+
+    def theta(self):
+        """
+        Returns value of attribute theta
+        """
+
+    def is_parametrized(self) -> bool:
+        """
+        Returns true if operation contains symbolic parameters
+
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters.
+        """
+
+    def tags(self) -> List[str]:
+        """
+        Returns tags identifying the Operation
+
+        Returns:
+            List[str]: The tags identifying the operation
+        """
+
+    def hqslang(self) -> str:
+        """
+        Returns hqslang name of Operation
+
+        Returns:
+            str: The name
+        """
+
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
+        """
+        Substitutes internal symbolic parameters with float values
+
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
+        """
+
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
+        """
+        Remap qubits
+
+        Args:
+            mapping (Dict[int, int]): The mapping
+
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
+        """
+
+    def involved_qubits(self) -> Union[Set[int], str]:
+        """
+        List all involved Qubits
+
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
+
+    def control_0(self):
+        """
+        Returns control_0 qubit of the four-qubit operation
+        """
+
+    def control_1(self):
+        """
+        Returns control_1 qubit of the four-qubit operation
+        """
+
+    def control_2(self):
+        """
+        Returns control_2 qubit of the four-qubit operation
+        """
+
+    def target(self):
+        """
+        Returns target qubit of the four-qubit operation
+        """
+
+    def circuit(self):
+        """
+        Returns circuit implementing the FourQubitGateOperation
+
+        Returns:
+            Circuit
+        """
+
+    def unitary_matrix(self) -> numpy.ndarray:
+        """
+        Return unitary matrix of gate.
+
+        Returns:
+            np.ndarray: matrix of gate.
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
+        """
+
+    def current_version(self) -> str:
+        """
+        Returns the current version of the qoqo library .
+
+        Returns:
+            str: The current version of the library.
+        """
+
+    def min_supported_version(self) -> str:
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
+
+class ControlledSWAP(Operation):
+    """
+Implements ControlledSWAP gate.
+
+.. math::
+    U = \begin{pmatrix}
+        1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+        0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+        0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\\\
+        0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\\\
+        0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\\\
+        0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\\\
+        0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\\\
+        0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
+        \end{pmatrix}
+
+Args:
+    control (int): The index of the most significant qubit in the unitary representation. Here, the controlling qubit of the operation.
+    target_0 (int): The index of the second most significant qubit in the unitary representation. Here, the first targeting qubit of the operation.
+    target_1 (int): The index of the least significant qubit in the unitary representation. Here, the second targeting qubit of the operation.
+"""
+
+    def __init__(self, control: int, target_0: int, target_1: int):
+        return
+
+    def is_parametrized(self) -> bool:
+        """
+        Returns true if operation contains symbolic parameters
+
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters.
+        """
+
+    def tags(self) -> List[str]:
+        """
+        Returns tags identifying the Operation
+
+        Returns:
+            List[str]: The tags identifying the operation
+        """
+
+    def hqslang(self) -> str:
+        """
+        Returns hqslang name of Operation
+
+        Returns:
+            str: The name
+        """
+
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
+        """
+        Substitutes internal symbolic parameters with float values
+
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
+        """
+
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
+        """
+        Remap qubits in the ControlledSWAP operation
+
+        Args:
+            mapping (Dict[int, int]): The mapping to be used in the remapping.
+
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
+        """
+
+    def involved_qubits(self) -> Union[Set[int], str]:
+        """
+        List all involved qubits in the ControlledSWAP operation.
+
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
+
+    def control(self):
+        """
+        Returns control qubit of the three-qubit operation
+        """
+
+    def target_0(self):
+        """
+        Returns target_0 qubit of the three-qubit operation
+        """
+
+    def target_1(self):
+        """
+        Returns target_1 qubit of the three-qubit operation
+        """
+
+    def circuit(self):
+        """
+        Returns circuit implementing the ThreeQubitGateOperation
+
+        Returns:
+            Circuit
+        """
+
+    def unitary_matrix(self) -> numpy.ndarray:
+        """
+        Return unitary matrix of gate.
+
+        Returns:
+            np.ndarray: matrix of gate.
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
+        """
+
+    def current_version(self) -> str:
+        """
+        Returns the current version of the qoqo library .
+
+        Returns:
+            str: The current version of the library.
+        """
+
+    def min_supported_version(self) -> str:
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
+
+class PhaseShiftedControlledControlledZ(Operation):
+    """
+The phased-shifted double-controlled-Z gate.
+
+The unitary matrix representation is:
+
+.. math::
+    U = \begin{pmatrix}
+        1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+        0 & e^{i \phi} & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+        0 & 0 & e^{i \phi} & 0 & 0 & 0 & 0 & 0 \\\\
+        0 & 0 & 0 & e^{i (2\cdot\phi)} & 0 & 0 & 0 & 0 \\\\
+        0 & 0 & 0 & 0 & e^{i \phi} & 0 & 0 & 0 \\\\
+        0 & 0 & 0 & 0 & 0 & e^{i (2\cdot\phi)} & 0 & 0 \\\\
+        0 & 0 & 0 & 0 & 0 & 0 & e^{i (2\cdot\phi)} & 0 \\\\
+        0 & 0 & 0 & 0 & 0 & 0 & 0 & e^{i (3\cdot\phi + \pi)}
+        \end{pmatrix}
+
+Args:
+    control_0 (int): The index of the most significant qubit in the unitary representation. Here, the first qubit that controls the application of the phase-shift on the target qubit.
+    control_1 (int): The index of the second most significant qubit in the unitary representation. Here, the second qubit that controls the application of the phase-shift on the target qubit.
+    target (int):: The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
+    phi (CalculatorFloat): The single qubit phase $\phi$.
+
+"""
+
+    def __init__(
+        self, control_0: int, control_1: int, target: int, phi: Union[float, str]
+    ):
+        return
+
+    def phi(self):
+        """
+        Returns value of attribute phi
+        """
+
+    def is_parametrized(self) -> bool:
+        """
+        Returns true if operation contains symbolic parameters
+
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters.
+        """
+
+    def tags(self) -> List[str]:
+        """
+        Returns tags identifying the Operation
+
+        Returns:
+            List[str]: The tags identifying the operation
+        """
+
+    def hqslang(self) -> str:
+        """
+        Returns hqslang name of Operation
+
+        Returns:
+            str: The name
+        """
+
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
+        """
+        Substitutes internal symbolic parameters with float values
+
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
+        """
+
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
+        """
+        Remap qubits
+
+        Args:
+            mapping (Dict[int, int]): The mapping
+
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
+        """
+
+    def involved_qubits(self) -> Union[Set[int], str]:
+        """
+        List all involved Qubits
+
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
+
+    def control_0(self):
+        """
+        Returns control_0 qubit of the three-qubit operation
+        """
+
+    def control_1(self):
+        """
+        Returns control_1 qubit of the three-qubit operation
+        """
+
+    def target(self):
+        """
+        Returns target qubit of the three-qubit operation
+        """
+
+    def circuit(self):
+        """
+        Returns circuit implementing the ThreeQubitGateOperation
+
+        Returns:
+            Circuit
+        """
+
+    def unitary_matrix(self) -> numpy.ndarray:
+        """
+        Return unitary matrix of gate.
+
+        Returns:
+            np.ndarray: matrix of gate.
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
+        """
+
+    def current_version(self) -> str:
+        """
+        Returns the current version of the qoqo library .
+
+        Returns:
+            str: The current version of the library.
+        """
+
+    def min_supported_version(self) -> str:
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
+
+class PhaseShiftedControlledControlledPhase(Operation):
+    """
+The phased-shifted double-controlled-Z gate.
+
+The unitary matrix representation is:
+
+.. math::
+    U = \begin{pmatrix}
+        1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+        0 & e^{i \phi} & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+        0 & 0 & e^{i \phi} & 0 & 0 & 0 & 0 & 0 \\\\
+        0 & 0 & 0 & e^{i (2\cdot\phi)} & 0 & 0 & 0 & 0 \\\\
+        0 & 0 & 0 & 0 & e^{i \phi} & 0 & 0 & 0 \\\\
+        0 & 0 & 0 & 0 & 0 & e^{i (2\cdot\phi)} & 0 & 0 \\\\
+        0 & 0 & 0 & 0 & 0 & 0 & e^{i (2\cdot\phi)} & 0 \\\\
+        0 & 0 & 0 & 0 & 0 & 0 & 0 & e^{i (3\cdot\phi + \theta)}
+        \end{pmatrix}
+
+Args:
+    control_0 (int): The index of the most significant qubit in the unitary representation. Here, the first qubit that controls the application of the phase-shift on the target qubit.
+    control_1 (int): The index of the second most significant qubit in the unitary representation. Here, the second qubit that controls the application of the phase-shift on the target qubit.
+    target (int):: The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
+    phi (CalculatorFloat): The single qubit phase $\phi$.
+    theta (CalculatorFloat): The phase rotation $\theta$.
+
+"""
+
+    def __init__(
+        self,
+        control_0: int,
+        control_1: int,
+        target: int,
+        phi: Union[float, str],
+        theta: Union[float, str],
+    ):
+        return
+
+    def theta(self):
+        """
+        Returns value of attribute theta
+        """
+
+    def phi(self):
+        """
+        Returns value of attribute phi
+        """
+
+    def is_parametrized(self) -> bool:
+        """
+        Returns true if operation contains symbolic parameters
+
+        Returns:
+            bool: Whether or not the operation contains symbolic parameters.
+        """
+
+    def tags(self) -> List[str]:
+        """
+        Returns tags identifying the Operation
+
+        Returns:
+            List[str]: The tags identifying the operation
+        """
+
+    def hqslang(self) -> str:
+        """
+        Returns hqslang name of Operation
+
+        Returns:
+            str: The name
+        """
+
+    def substitute_parameters(
+        self, substitution_parameters: Dict[str, float]
+    ) -> Operation:
+        """
+        Substitutes internal symbolic parameters with float values
+
+        Only available when all symbolic expressions can be evaluated to float with the
+        provided parameters.
+
+        Args:
+            substitution_parameters (Dict[str, float]): The substituted free parameters
+
+        Returns:
+            Operation: The operation with the parameters substituted
+
+        Raises:
+            RuntimeError: Parameter Substitution failed
+        """
+
+    def remap_qubits(self, mapping: Dict[int, int]) -> Operation:
+        """
+        Remap qubits
+
+        Args:
+            mapping (Dict[int, int]): The mapping
+
+        Returns:
+            Operation: The operation with the remapped qubits
+
+        Raises:
+            RuntimeError: Qubit remapping failed
+        """
+
+    def involved_qubits(self) -> Union[Set[int], str]:
+        """
+        List all involved Qubits
+
+        Returns:
+            Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+        """
+
+    def control_0(self):
+        """
+        Returns control_0 qubit of the three-qubit operation
+        """
+
+    def control_1(self):
+        """
+        Returns control_1 qubit of the three-qubit operation
+        """
+
+    def target(self):
+        """
+        Returns target qubit of the three-qubit operation
+        """
+
+    def circuit(self):
+        """
+        Returns circuit implementing the ThreeQubitGateOperation
+
+        Returns:
+            Circuit
+        """
+
+    def unitary_matrix(self) -> numpy.ndarray:
+        """
+        Return unitary matrix of gate.
+
+        Returns:
+            np.ndarray: matrix of gate.
+
+        Raises:
+            ValueError: Error symbolic operation cannot return float unitary matrix
+        """
+
+    def powercf(self) -> PhaseShiftedControlledControlledPhase:
+        """
+        Returns Rotated gate raised to power
+
+        Args:
+            `power`(CalculatorFloat): exponent of the power operation.
+
+        Returns:
+            Self: gate raised to the power of `power`
+
+        """
+
+    def current_version(self) -> str:
+        """
+        Returns the current version of the qoqo library .
+
+        Returns:
+            str: The current version of the library.
+        """
+
+    def min_supported_version(self) -> str:
+        """
+        Return the minimum version of qoqo that supports this object.
+
+        Returns:
+            str: The minimum version of the qoqo library to deserialize this object.
+        """
+
+    def json_schema(self) -> str:
+        """
+        Return the JsonSchema for the json serialisation of the class.
+
+        Returns:
+            str: The json schema serialized to json
+        """
