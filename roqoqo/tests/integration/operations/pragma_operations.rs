@@ -154,7 +154,7 @@ fn pragma_loop_serde_readable() {
 /// Test PragmaLoop Serialization and Deserialization traits (compact)
 #[cfg(feature = "serialize")]
 #[test]
-fn pragma_pragma_loop_serde_compact() {
+fn pragma_loop_serde_compact() {
     let pragma_serialization = PragmaLoop::new(1.0.into(), Circuit::new());
     assert_tokens(
         &pragma_serialization.compact(),
