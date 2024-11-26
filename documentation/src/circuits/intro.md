@@ -6,7 +6,7 @@ qoqo/roqoqo distinguishes between:
 
 * Definitions: Operations that declare (and initialize) classical register values ([see also here](readout.md))
 * Gate Operations: Unitary operations that can be executed on every unitary quantum computer (but might need to be decomposed into a sequence of native operations) ([see also here](unitary.md))
-* Pragma operations that are not generally available on all universal quantum computers (see [pragma operations](pragma.md) and [noise operations](noise.md) )
+* Pragma operations that provide additional functionality to a quantum program, and are not generally available on all universal quantum computers (see [pragma operations](pragma.md) and [noise operations](noise.md) )
 
 In order to create a useful result, a Circuit in qoqo/roqoqo must contain:
 

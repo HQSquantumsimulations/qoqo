@@ -52,7 +52,7 @@ Information is written to registers by the `MeasureQubit` operation or Pragma op
 * On _simulators_ one can also read out the full state vector or density matrix into a complex register.
 
 `MeasureQubit` corresponds directly to a _projectivce_ measurement. By definition, projective measurements are available on universal quantum computers. 
-`PragmaRepeatedMeasurement` is shorthand for repeatedly running the circuit and applying a projective measurement each time. While it is not necessarily available on every [backend](backends.md) it is compatible with hardware quantum computers.
+`PragmaRepeatedMeasurement` is shorthand for repeatedly running the circuit and applying a projective measurement each time. While it is not necessarily available on every [backend](backends.md), it is compatible with hardware quantum computers.
 
 As shown in the example below, the operation `MeasureQubit` can be used to provide measurement instructions for each individual qubit. The input parameter `qubit` specifies the qubit to be measured, whereas the parameter `readout_index` defines the position in the classical register `readout` where the measurement value of the `qubit` is stored. The explicit assignment of a qubit measurement to a readout register index can be used to handle qubit remapping in a quantum circuit.
 
