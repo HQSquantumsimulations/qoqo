@@ -136,6 +136,12 @@ use test_roqoqo_1_16;
 #[test_case(test_roqoqo_1_16::operations::InvTGate::new(0).into(); "InvTGate")]
 #[test_case(test_roqoqo_1_16::operations::SXGate::new(0).into(); "SXGate")]
 #[test_case(test_roqoqo_1_16::operations::InvSXGate::new(0).into(); "InvSXGate")]
+#[test_case(test_roqoqo_1_16::operations::TripleControlledPauliX::new(0, 1, 2, 3).into(); "TripleControlledPauliX")]
+#[test_case(test_roqoqo_1_16::operations::TripleControlledPauliZ::new(0, 1, 2, 3).into(); "TripleControlledPauliZ")]
+#[test_case(test_roqoqo_1_16::operations::TripleControlledPhaseShift::new(0, 1, 2, 3, 1.0.into()).into(); "TripleControlledPhaseShift")]
+#[test_case(test_roqoqo_1_16::operations::ControlledSWAP::new(0, 1, 2).into(); "ControlledSWAP")]
+#[test_case(test_roqoqo_1_16::operations::PhaseShiftedControlledControlledZ::new(0, 1, 2, 1.0.into()).into(); "PhaseShiftedControlledControlledZ")]
+#[test_case(test_roqoqo_1_16::operations::PhaseShiftedControlledControlledPhase::new(0, 1, 2, 1.0.into(), 1.0.into()).into(); "PhaseShiftedControlledControlledPhase")]
 // Operations from 1.17
 // #[test_case(test_roqoqo_1_16::operations::PragmaSimulationRepetitions::new(0).into(); "PragmaSimulationRepetitions")]
 fn test_bincode_compatibility_1_16(operation: test_roqoqo_1_16::operations::Operation) {
