@@ -132,7 +132,10 @@ use test_roqoqo_1_15;
 #[test_case(test_roqoqo_1_15::operations::SqrtPauliY::new(0).into(); "SqrtPauliY")]
 #[test_case(test_roqoqo_1_15::operations::InvSqrtPauliY::new(0).into(); "InvSqrtPauliY")]
 // Operations from 1.16
-// TODO: add the new gates
+// #[test_case(test_roqoqo_1_15::operations::InvSGate::new(0).into(); "InvSGate")]
+// #[test_case(test_roqoqo_1_15::operations::InvTGate::new(0).into(); "InvTGate")]
+// #[test_case(test_roqoqo_1_15::operations::SXGate::new(0).into(); "SXGate")]
+// #[test_case(test_roqoqo_1_15::operations::InvSXGate::new(0).into(); "InvSXGate")]
 fn test_bincode_compatibility_1_15(operation: test_roqoqo_1_15::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_15::Circuit::new();
     test_circuit += operation;
