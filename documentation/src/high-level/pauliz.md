@@ -4,13 +4,13 @@ The `PauliZProduct` measurement is based on measuring the product of PauliZ oper
 
 The `PauliZProduct` measurement takes as inputs:
 * `constant_circuit`: circuit that is always executed first. This circuit can be used to prepare the inital state from the \\(Z\\)-basis state, \\(|0...00\rangle\\).
-* `circuits`: list of circuits to perform computations.
+* `circuits`: list of circuits to perform computations or measurements.
 * `input`: Post-processing of measurements. It prescribes how readout registers from `circuits` are combined to generate the required expectation value.
 
 ```python
 measurement = PauliZProduct(
 constant_circuit=init_circuit,
-circuits=[computation_circuit1, computation_circuit2, ... ],
+circuits=[circuit1, circuit2, ... ],
 input=measurement_input)
 ```
 
@@ -32,7 +32,7 @@ init_circuit += ops.Hadamard(0)
 
 The given Hamiltonian includes \\(X\\) and \\(Z\\) terms that cannot be measured at the same time, since they are measured using different bases. Thus, we need to create a list of `circuits` for each type of measurement, \\( \langle Z \rangle\\) and \\( \langle X \rangle\\). The circuit for measuring \\( \langle X \rangle\\) requires an additional `Hadamard` gate that rotates the qubit basis into the \\(X\\)-basis. In this example, each measured Pauli product contains only one Pauli operator. In general, one can measure the expectation values of the products of local Pauli operators, *e.g.* \\(\langle Z_0 \rangle\\), \\(\langle Z_1 \rangle\\), \\(\langle X_0 Z_1 \rangle\\), \\(\langle X_0 X_3 \rangle\\), *etc.* 
 
- We define bit-registers `"ro_z"` and `"ro_x"` to store the measurements in the \\(Z\\)- and \\(X\\)-basis respectively. The `PragmaRepeatedMeasurement` operation is used to declare that we are making `1000` measurements of each circuit.
+ We define bit-registers `"ro_z"` and `"ro_x"` to store the measurements in the \\(Z\\)- and \\(X\\)-basis respectively. The `PragmaRepeatedMeasurement` operation is used to set the number of shots for expectation value measurements to 1000 for each circuit.
 
 ```python
 # Z-basis measurement circuit with 1000 shots
@@ -54,11 +54,14 @@ For the post-processing of the measured results, the `PauliZProduct` measurement
 * The weights of the Pauli product expectation values in the final expectation values (`add_linear_exp_val()`).
 
 The `PauliZProductInput` needs to define all of the products that are measured. In the given example, we will measure two products \\(\langle Z_0 \rangle\\) - one after a rotation in the \\(X\\)-basis (corresponding to \\(\langle X_0 \rangle\\)) and \\(\langle Z_0 \rangle\\) _without_ a rotation before the measurement.
+The `PauliZProductInput` specifies which combinations of qubit measurements in the Z-basis (or rotated bases) are needed to calculate the target observables for the quantum computation. In the given example, we will measure two products \\(\langle Z_0 \rangle\\):
+one after a rotation in the \\(X\\)-basis (corresponding to \\(\langle X_0 \rangle\\)) and \\(\langle Z_0 \rangle\\) without a rotation before the measurement.
 
 We prepare the measurement input for one qubit. The `PauliZProductInput` starts with just the number of qubits. The option `use_flipped_measurement` is used to specify whether the endianess is flipped.
 ```python
 measurement_input = PauliZProductInput(1, use_flipped_measurement=False)
 ```
+
 Next, pauli products are added to the `PauliZProductInput`, using `add_pauliz_product` where we specify the register and list of qubits measured.
 ```python
 # Read out product of Z on site 0 for register ro_z (no basis change)
@@ -75,7 +78,7 @@ measurement_input.add_linear_exp_val(
     "<H>", {x_basis_index: 0.1, z_basis_index: 0.2},
 )
 ```
-We can now define a qoqo measurement that can be seamlessly supplied into a quantum program for execution on either a simulator or quantum hardware. Below is the complete code for creating this measurement.
+We can now define a qoqo measurement that can be seamlessly supplied to a quantum program for execution on either a simulator or quantum hardware. Below is the complete code for creating this measurement.
 
 ```python
 from qoqo import Circuit
