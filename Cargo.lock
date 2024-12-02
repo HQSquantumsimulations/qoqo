@@ -1128,7 +1128,6 @@ dependencies = [
  "qoqo_calculator",
  "qoqo_calculator_pyo3",
  "quote",
- "rayon",
  "regex",
  "roqoqo",
  "schemars",
