@@ -40,7 +40,6 @@ pub type BitOutputRegister = Vec<BitRegister>;
 ///
 /// Vector over single float registers that are each the output of a single run
 /// of a quantum program.
-
 pub type FloatOutputRegister = Vec<FloatRegister>;
 
 /// Represents classical complex registers for output of computations in qoqo.

@@ -17,7 +17,6 @@ use std::collections::HashSet;
 use syn::{Data, DataStruct, DeriveInput, Ident};
 
 /// Dispatch to derive Operate for enums and structs
-
 pub fn dispatch_struct(input: DeriveInput) -> TokenStream {
     let ident = input.ident;
     match input.data {

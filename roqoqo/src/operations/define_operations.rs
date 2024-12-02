@@ -99,7 +99,6 @@ pub struct DefinitionComplex {
 }
 
 #[allow(non_upper_case_globals)]
-
 const TAGS_DefinitionComplex: &[&str; 3] = &["Operation", "Definition", "DefinitionComplex"];
 
 // Implementing the InvolveQubits trait for DefinitionComplex.

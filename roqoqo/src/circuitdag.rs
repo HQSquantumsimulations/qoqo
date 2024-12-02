@@ -850,7 +850,7 @@ impl From<CircuitDag> for Circuit {
     }
 }
 
-impl<'a> Iterator for ParallelBlocks<'a> {
+impl Iterator for ParallelBlocks<'_> {
     type Item = Vec<NodeIndex<usize>>;
 
     fn next(&mut self) -> Option<Self::Item> {
