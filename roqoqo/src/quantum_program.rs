@@ -11,7 +11,7 @@
 // limitations under the License.
 
 //! Represents a quantum program evaluating measurements based on a one or more free float parameters.
-
+#[cfg(feature = "unstable_parallel_run")]
 use rayon::prelude::*;
 use std::collections::HashMap;
 

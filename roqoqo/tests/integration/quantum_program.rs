@@ -24,6 +24,7 @@ use roqoqo::QuantumProgram;
 #[cfg(feature = "json_schema")]
 use schemars::schema_for;
 use std::collections::HashMap;
+#[cfg(feature = "unstable_parallel_run")]
 use std::time::Instant;
 
 #[derive(Debug, Clone, Copy)]
