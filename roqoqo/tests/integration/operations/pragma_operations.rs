@@ -30,7 +30,7 @@ use serde_test::{assert_tokens, Configure, Token};
 use std::collections::{HashMap, HashSet};
 use test_case::test_case;
 
-/// Test PragmaSetNumberOfMeasurements inputs and involved qubits
+/// Test PragmaLoop inputs and involved qubits
 #[test]
 fn pragma_loop_inputs_qubits() {
     let pragma = PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::new());
@@ -43,7 +43,7 @@ fn pragma_loop_inputs_qubits() {
     assert_eq!(pragma.involved_qubits(), InvolvedQubits::None);
 }
 
-/// Test PragmaSetNumberOfMeasurements standard derived traits (Debug, Clone, PartialEq)
+/// Test PragmaLoop standard derived traits (Debug, Clone, PartialEq)
 #[test]
 fn pragma_loop_simple_traits() {
     let pragma = PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::new());
@@ -65,7 +65,7 @@ fn pragma_loop_simple_traits() {
     assert!(pragma != pragma_1);
 }
 
-/// Test PragmaSetNumberOfMeasurements Operate trait
+/// Test PragmaLoop Operate trait
 #[test]
 fn pragma_loop_operate_trait() {
     let pragma = PragmaLoop::new(CalculatorFloat::from("number_t"), Circuit::new());
@@ -81,7 +81,7 @@ fn pragma_loop_operate_trait() {
     assert!(pragma.is_parametrized());
 }
 
-/// Test PragmaSetNumberOfMeasurements Substitute trait
+/// Test PragmaLoop Substitute trait
 #[test]
 fn pragma_loop_substitute_trait() {
     let mut circuit = Circuit::new();
@@ -110,43 +110,87 @@ fn pragma_loop_substitute_trait() {
     assert_eq!(result, pragma);
 }
 
-/// Test PragmaSetNumberOfMeasurements Serialization and Deserialization traits (readable)
+/// Test PragmaLoop Serialization and Deserialization traits (readable)
 #[cfg(feature = "serialize")]
 #[test]
 fn pragma_loop_serde_readable() {
-    let pragma_serialization = PragmaSetNumberOfMeasurements::new(1, String::from("ro"));
+    let pragma_serialization = PragmaLoop::new(1.0.into(), Circuit::new());
     assert_tokens(
         &pragma_serialization.readable(),
         &[
             Token::Struct {
-                name: "PragmaSetNumberOfMeasurements",
+                name: "PragmaLoop",
                 len: 2,
             },
-            Token::Str("number_measurements"),
-            Token::U64(1),
-            Token::Str("readout"),
-            Token::Str("ro"),
+            Token::Str("repetitions"),
+            Token::F64(1.0),
+            Token::Str("circuit"),
+            Token::Struct {
+                name: "Circuit",
+                len: 3,
+            },
+            Token::Str("definitions"),
+            Token::Seq { len: Some(0) },
+            Token::SeqEnd,
+            Token::Str("operations"),
+            Token::Seq { len: Some(0) },
+            Token::SeqEnd,
+            Token::Str("_roqoqo_version"),
+            Token::Struct {
+                name: "RoqoqoVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(1),
+            Token::Str("minor_version"),
+            Token::U32(0),
+            Token::StructEnd,
+            Token::StructEnd,
             Token::StructEnd,
         ],
     );
 }
 
-/// Test PragmaSetNumberOfMeasurements Serialization and Deserialization traits (compact)
+/// Test PragmaLoop Serialization and Deserialization traits (compact)
 #[cfg(feature = "serialize")]
 #[test]
 fn pragma_loop_serde_compact() {
-    let pragma_serialization = PragmaSetNumberOfMeasurements::new(1, String::from("ro"));
+    let pragma_serialization = PragmaLoop::new(1.0.into(), Circuit::new());
     assert_tokens(
         &pragma_serialization.compact(),
         &[
             Token::Struct {
-                name: "PragmaSetNumberOfMeasurements",
+                name: "PragmaLoop",
                 len: 2,
             },
-            Token::Str("number_measurements"),
-            Token::U64(1),
-            Token::Str("readout"),
-            Token::Str("ro"),
+            Token::Str("repetitions"),
+            Token::NewtypeVariant {
+                name: "CalculatorFloat",
+                variant: "Float",
+            },
+            Token::F64(1.0),
+            Token::Str("circuit"),
+            Token::Struct {
+                name: "Circuit",
+                len: 3,
+            },
+            Token::Str("definitions"),
+            Token::Seq { len: Some(0) },
+            Token::SeqEnd,
+            Token::Str("operations"),
+            Token::Seq { len: Some(0) },
+            Token::SeqEnd,
+            Token::Str("_roqoqo_version"),
+            Token::Struct {
+                name: "RoqoqoVersionSerializable",
+                len: 2,
+            },
+            Token::Str("major_version"),
+            Token::U32(1),
+            Token::Str("minor_version"),
+            Token::U32(0),
+            Token::StructEnd,
+            Token::StructEnd,
             Token::StructEnd,
         ],
     );
@@ -3965,6 +4009,102 @@ fn pragma_annotated_op_json_schema() {
 
     // Create JSONSchema
     let test_schema = schema_for!(PragmaAnnotatedOp);
+    let schema = serde_json::to_string(&test_schema).unwrap();
+    let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
+    let compiled_schema = Validator::options()
+        .with_draft(Draft::Draft7)
+        .build(&schema_value)
+        .unwrap();
+
+    let validation_result = compiled_schema.validate(&test_value);
+    assert!(validation_result.is_ok());
+}
+
+/// Test PragmaSimulationRepetitions inputs and involved qubits
+#[test]
+fn pragma_simulation_repetitions_inputs_qubits() {
+    let pragma = PragmaSimulationRepetitions::new(100);
+
+    // Test inputs are correct
+    assert_eq!(pragma.repetitions(), 100);
+
+    // Test InvolveQubits trait
+    assert_eq!(pragma.involved_qubits(), InvolvedQubits::None);
+}
+
+/// Test PragmaSimulationRepetitions standard derived traits (Debug, Clone, PartialEq)
+#[test]
+fn pragma_simulation_repetitions_simple_traits() {
+    let pragma = PragmaSimulationRepetitions::new(100);
+
+    // Test Debug trait
+    assert_eq!(
+        format!("{:?}", pragma),
+        "PragmaSimulationRepetitions { repetitions: 100 }"
+    );
+
+    // Test Clone trait
+    assert_eq!(pragma.clone(), pragma);
+
+    // Test PartialEq trait
+    let pragma_0 = PragmaSimulationRepetitions::new(100);
+    let pragma_1 = PragmaSimulationRepetitions::new(5);
+    assert!(pragma_0 == pragma);
+    assert!(pragma == pragma_0);
+    assert!(pragma_1 != pragma);
+    assert!(pragma != pragma_1);
+}
+
+/// Test PragmaSimulationRepetitions Serialization and Deserialization traits (readable)
+#[cfg(feature = "serialize")]
+#[test]
+fn pragma_simulation_repetitions_serde_readable() {
+    let pragma_serialization = PragmaSimulationRepetitions::new(100);
+    assert_tokens(
+        &pragma_serialization.readable(),
+        &[
+            Token::Struct {
+                name: "PragmaSimulationRepetitions",
+                len: 1,
+            },
+            Token::Str("repetitions"),
+            Token::U64(100),
+            Token::StructEnd,
+        ],
+    );
+}
+
+/// Test PragmaSimulationRepetitions Serialization and Deserialization traits (compact)
+#[cfg(feature = "serialize")]
+#[test]
+fn pragma_simulation_repetitions_serde_compact() {
+    let pragma_serialization = PragmaSimulationRepetitions::new(100);
+    assert_tokens(
+        &pragma_serialization.compact(),
+        &[
+            Token::Struct {
+                name: "PragmaSimulationRepetitions",
+                len: 1,
+            },
+            Token::Str("repetitions"),
+            Token::U64(100),
+            Token::StructEnd,
+        ],
+    );
+}
+
+/// Test PragmaSimulationRepetitions JsonSchema trait
+#[cfg(feature = "json_schema")]
+#[test]
+fn pragma_simulation_repetitions_json_schema() {
+    let op = PragmaSimulationRepetitions::new(100);
+
+    // Serialize
+    let test_json = serde_json::to_string(&op).unwrap();
+    let test_value: serde_json::Value = serde_json::from_str(&test_json).unwrap();
+
+    // Create JSONSchema
+    let test_schema = schema_for!(PragmaSimulationRepetitions);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
     let compiled_schema = Validator::options()

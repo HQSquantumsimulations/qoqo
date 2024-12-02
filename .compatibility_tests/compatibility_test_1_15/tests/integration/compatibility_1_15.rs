@@ -132,7 +132,16 @@ use test_roqoqo_1_15;
 #[test_case(test_roqoqo_1_15::operations::SqrtPauliY::new(0).into(); "SqrtPauliY")]
 #[test_case(test_roqoqo_1_15::operations::InvSqrtPauliY::new(0).into(); "InvSqrtPauliY")]
 // Operations from 1.16
-// TODO: add the new gates
+// #[test_case(test_roqoqo_1_16::operations::InvSGate::new(0).into(); "InvSGate")]
+// #[test_case(test_roqoqo_1_16::operations::InvTGate::new(0).into(); "InvTGate")]
+// #[test_case(test_roqoqo_1_16::operations::SXGate::new(0).into(); "SXGate")]
+// #[test_case(test_roqoqo_1_16::operations::InvSXGate::new(0).into(); "InvSXGate")]
+// #[test_case(test_roqoqo_1_16::operations::TripleControlledPauliX::new(0, 1, 2, 3).into(); "TripleControlledPauliX")]
+// #[test_case(test_roqoqo_1_16::operations::TripleControlledPauliZ::new(0, 1, 2, 3).into(); "TripleControlledPauliZ")]
+// #[test_case(test_roqoqo_1_16::operations::TripleControlledPhaseShift::new(0, 1, 2, 3).into(); "TripleControlledPhaseShift")]
+// #[test_case(test_roqoqo_1_16::operations::ControlledSWAP::new(0, 1, 2).into(); "ControlledSWAP")]
+// #[test_case(test_roqoqo_1_16::operations::PhaseShiftedControlledControlledZ::new(0, 1, 2, 1.0.into()).into(); "PhaseShiftedControlledControlledZ")]
+// #[test_case(test_roqoqo_1_16::operations::PhaseShiftedControlledControlledPhase::new(0, 1, 2, 1.0.into()).into(); "PhaseShiftedControlledControlledPhase")]
 fn test_bincode_compatibility_1_15(operation: test_roqoqo_1_15::operations::Operation) {
     let mut test_circuit = test_roqoqo_1_15::Circuit::new();
     test_circuit += operation;
