@@ -164,6 +164,43 @@ fn test_cheated() {
 }
 
 #[test]
+fn test_registers() {
+    // setting up BR measurement
+    let mut circs: Vec<Circuit> = Vec::new();
+    let mut circ1 = Circuit::new();
+    let mut circ1_subs = Circuit::new();
+    circ1 += operations::RotateX::new(0, "theta".into());
+    circ1_subs += operations::RotateX::new(0, 0.0.into());
+    let mut circ2 = Circuit::new();
+    let mut circ2_subs = Circuit::new();
+    circ2 += operations::RotateZ::new(0, "theta2".into());
+    circ2_subs += operations::RotateZ::new(0, 1.0.into());
+    circs.push(circ1);
+    let br = ClassicalRegister {
+        constant_circuit: Some(circ2),
+        circuits: circs.clone(),
+    };
+
+    let input_parameter_names = vec!["theta".to_string(), "theta2".to_string()];
+    let program = QuantumProgram::ClassicalRegister {
+        measurement: br,
+        input_parameter_names,
+    };
+
+    let backend = TestBackend;
+
+    let result_fail = program.run(backend, &[0.0, 1.0]);
+    assert!(result_fail.is_err());
+    let result = program.run_registers(backend, &[0.0, 1.0]);
+    assert!(result.is_ok());
+    let result_fail = program.run_registers(backend, &[0.0]);
+    assert!(result_fail.is_err());
+    let result_fail = program.run_registers(backend, &[0.0, 1.0, 3.0]);
+    assert!(result_fail.is_err());
+}
+
+#[cfg(feature = "unstable_parallel_run")]
+#[test]
 fn test_parallel() {
     // setting ub BR measurement
     let bri = CheatedInput::new(2);
@@ -210,42 +247,6 @@ fn test_parallel() {
     assert!(result_fail.is_err());
 
     let result_fail = program.run_parallel(backend, &[vec![0.0, 1.0, 3.0]]);
-    assert!(result_fail.is_err());
-}
-
-#[test]
-fn test_registers() {
-    // setting up BR measurement
-    let mut circs: Vec<Circuit> = Vec::new();
-    let mut circ1 = Circuit::new();
-    let mut circ1_subs = Circuit::new();
-    circ1 += operations::RotateX::new(0, "theta".into());
-    circ1_subs += operations::RotateX::new(0, 0.0.into());
-    let mut circ2 = Circuit::new();
-    let mut circ2_subs = Circuit::new();
-    circ2 += operations::RotateZ::new(0, "theta2".into());
-    circ2_subs += operations::RotateZ::new(0, 1.0.into());
-    circs.push(circ1);
-    let br = ClassicalRegister {
-        constant_circuit: Some(circ2),
-        circuits: circs.clone(),
-    };
-
-    let input_parameter_names = vec!["theta".to_string(), "theta2".to_string()];
-    let program = QuantumProgram::ClassicalRegister {
-        measurement: br,
-        input_parameter_names,
-    };
-
-    let backend = TestBackend;
-
-    let result_fail = program.run(backend, &[0.0, 1.0]);
-    assert!(result_fail.is_err());
-    let result = program.run_registers(backend, &[0.0, 1.0]);
-    assert!(result.is_ok());
-    let result_fail = program.run_registers(backend, &[0.0]);
-    assert!(result_fail.is_err());
-    let result_fail = program.run_registers(backend, &[0.0, 1.0, 3.0]);
     assert!(result_fail.is_err());
 }
 

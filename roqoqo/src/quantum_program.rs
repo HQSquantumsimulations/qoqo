@@ -118,6 +118,7 @@ impl QuantumProgram {
         }
     }
 
+    #[cfg(feature = "unstable_parallel_run")]
     /// Runs the QuantumProgram and returns expectation values.
     ///
     /// Runs the quantum programm for multiple given sets of parameters in parallel and returns expectation values.
