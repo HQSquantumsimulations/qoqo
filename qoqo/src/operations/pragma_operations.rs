@@ -440,7 +440,6 @@ impl PragmaSetDensityMatrixWrapper {
     ///
     /// Returns:
     ///     np.ndarray: The density matrix (2d array) representing the qubit register.
-
     fn density_matrix(&self) -> Py<PyArray2<Complex64>> {
         Python::with_gil(|py| -> Py<PyArray2<Complex64>> {
             self.internal.density_matrix().to_pyarray_bound(py).unbind()
