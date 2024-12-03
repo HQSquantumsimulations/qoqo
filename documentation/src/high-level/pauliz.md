@@ -53,9 +53,10 @@ For the post-processing of the measured results, the `PauliZProduct` measurement
 * The definition of the measured Pauli products after basis transformations (`add_pauliz_product()`),
 * The weights of the Pauli product expectation values in the final expectation values (`add_linear_exp_val()`).
 
-The `PauliZProductInput` needs to define all of the products that are measured. In the given example, we will measure two products \\(\langle Z_0 \rangle\\) - one after a rotation in the \\(X\\)-basis (corresponding to \\(\langle X_0 \rangle\\)) and \\(\langle Z_0 \rangle\\) _without_ a rotation before the measurement.
-The `PauliZProductInput` specifies which combinations of qubit measurements in the Z-basis (or rotated bases) are needed to calculate the target observables for the quantum computation. In the given example, we will measure two products \\(\langle Z_0 \rangle\\):
-one after a rotation in the \\(X\\)-basis (corresponding to \\(\langle X_0 \rangle\\)) and \\(\langle Z_0 \rangle\\) without a rotation before the measurement.
+The `PauliZProductInput` is used to define all measurement products required for the computation. For instance, in the provided example, two measurements of \\( \langle Z_0 \rangle\\) are performed:
+one after applying a rotation to the X-basis (equivalent to measuring \\( \langle X_0 \rangle\\)) and another without any rotation, directly measured in the Z-basis.
+
+The `PauliZProductInput` specifies how qubit measurements in the Z-basis (or their rotated variants) are combined to calculate the desired observables in the quantum computation.
 
 We prepare the measurement input for one qubit. The `PauliZProductInput` starts with just the number of qubits. The option `use_flipped_measurement` is used to specify whether the endianess is flipped.
 ```python
