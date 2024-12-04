@@ -125,3 +125,5 @@ This project has been partly supported by [PlanQK](https://planqk.de) and is par
 ## Contributing
 
 We welcome contributions to the project. If you want to contribute code, please have a look at CONTRIBUTE.md for our code contribution guidelines.
+
+In order to facilitate the contribution of the addition of a new gate, please also have a look at add_new_gate.md to read a quick explanation of the main steps necessary.

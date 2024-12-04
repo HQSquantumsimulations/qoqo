@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -17,7 +17,6 @@ use std::collections::HashSet;
 use syn::{Data, DataStruct, DeriveInput, Ident};
 
 /// Dispatch to derive Operate for enums and structs
-
 pub fn dispatch_struct(input: DeriveInput) -> TokenStream {
     let ident = input.ident;
     match input.data {

@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -26,10 +26,11 @@ pub use crate::measurements::{Measure, MeasureExpectationValues};
 pub use crate::operations::OperateSpinsAnalog;
 pub use crate::operations::{
     Define, InvolveModes, InvolveQubits, InvolvedModes, InvolvedQubits, Operate,
-    OperateConstantGate, OperateGate, OperateModeGate, OperateMultiQubit, OperateMultiQubitGate,
-    OperatePragma, OperatePragmaNoise, OperatePragmaNoiseProba, OperateSingleMode,
-    OperateSingleModeGate, OperateSingleQubit, OperateSingleQubitGate, OperateThreeQubit,
-    OperateThreeQubitGate, OperateTwoMode, OperateTwoModeGate, OperateTwoQubit,
-    OperateTwoQubitGate, Rotate, Substitute, SubstituteModes, SupportedVersion,
+    OperateConstantGate, OperateFourQubit, OperateFourQubitGate, OperateGate, OperateModeGate,
+    OperateMultiQubit, OperateMultiQubitGate, OperatePragma, OperatePragmaNoise,
+    OperatePragmaNoiseProba, OperateSingleMode, OperateSingleModeGate, OperateSingleQubit,
+    OperateSingleQubitGate, OperateThreeQubit, OperateThreeQubitGate, OperateTwoMode,
+    OperateTwoModeGate, OperateTwoQubit, OperateTwoQubitGate, Rotate, Substitute, SubstituteModes,
+    SupportedVersion, AVAILABLE_GATES_HQSLANG,
 };
 pub use crate::{RoqoqoBackendError, RoqoqoError};

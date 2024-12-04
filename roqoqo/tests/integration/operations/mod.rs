@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -22,6 +22,8 @@ mod two_qubit_gate_operations;
 
 mod three_qubit_gate_operations;
 
+mod four_qubit_gate_operations;
+
 mod multi_qubit_gate_operations;
 
 mod involved_classical;
@@ -38,6 +40,7 @@ mod analog_operations;
 use nalgebra as na;
 use ndarray::Array2;
 use num_complex::Complex64;
+use roqoqo::operations::AVAILABLE_GATES_HQSLANG;
 
 // Helper function to convert a two-dimensional ndarray to a NxM matrix (N, M depending on the vector)
 // The output can be used to be converted into a nalgebra matrix with `na::Matrix4::from()`
@@ -57,4 +60,10 @@ fn test_involved_qubits_clone() {
     let iq3 = roqoqo::operations::InvolvedQubits::None;
     let helper = iq != iq3;
     assert!(helper);
+}
+
+#[test]
+fn test_available_gates() {
+    assert!(AVAILABLE_GATES_HQSLANG.contains(&"Hadamard"));
+    assert!(!AVAILABLE_GATES_HQSLANG.contains(&"Error"));
 }

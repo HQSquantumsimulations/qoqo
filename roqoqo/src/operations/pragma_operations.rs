@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -1411,5 +1411,77 @@ impl Substitute for PragmaAnnotatedOp {
 impl InvolveQubits for PragmaAnnotatedOp {
     fn involved_qubits(&self) -> InvolvedQubits {
         self.operation.involved_qubits()
+    }
+}
+
+/// This PRAGMA sets the number of repetitions for stochastic simulations of the quantum circuit.
+///
+/// This is different from the number of measurements, which is set either with
+/// PragmaSetNumberOfMeasurements of with PragmaRepeatedMeasurement. PragmaSimulationRepetitions
+/// only applies to stochastic simulations, i.e. simulations of quantum circuits that involve either
+/// multiple subsequent measurements on the same qubits, or operations on qubits that have already
+/// been measured, and sets the number of times that the whole circuit is simulated in order to obtain
+/// sufficient statistics.
+///
+#[derive(Debug, Clone, PartialEq, Eq, roqoqo_derive::Substitute, roqoqo_derive::OperatePragma)]
+#[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+pub struct PragmaSimulationRepetitions {
+    repetitions: usize,
+}
+
+#[allow(non_upper_case_globals)]
+const TAGS_PragmaSimulationRepetitions: &[&str; 3] = &[
+    "Operation",
+    "PragmaOperation",
+    "PragmaSimulationRepetitions",
+];
+
+// Implementing the InvolveQubits trait for PragmaSimulationRepetitions.
+impl InvolveQubits for PragmaSimulationRepetitions {
+    /// Lists all involved qubits (here, none).
+    fn involved_qubits(&self) -> InvolvedQubits {
+        InvolvedQubits::None
+    }
+}
+
+#[cfg_attr(feature = "dynamic", typetag::serde)]
+impl Operate for PragmaSimulationRepetitions {
+    fn tags(&self) -> &'static [&'static str] {
+        TAGS_PragmaSimulationRepetitions
+    }
+    fn hqslang(&self) -> &'static str {
+        "PragmaSimulationRepetitions"
+    }
+    fn is_parametrized(&self) -> bool {
+        false
+    }
+}
+
+impl PragmaSimulationRepetitions {
+    /// Create a PragmaSimulationRepetitions instance.
+    ///
+    /// # Arguments
+    ///
+    /// * `repetitions` - The number of simulation repetitions.
+    pub fn new(repetitions: usize) -> Self {
+        Self { repetitions }
+    }
+
+    /// Getter for the number of repetitions.
+    ///
+    /// # Returns
+    ///
+    /// * `usize` - The number of simulation repetitions
+    pub fn repetitions(&self) -> usize {
+        self.repetitions
+    }
+}
+
+impl super::ImplementedIn1point17 for PragmaSimulationRepetitions {}
+
+impl SupportedVersion for PragmaSimulationRepetitions {
+    fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
+        (1, 17, 0)
     }
 }

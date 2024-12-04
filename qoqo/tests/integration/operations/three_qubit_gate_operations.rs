@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -23,7 +23,9 @@ use pyo3::prelude::*;
 use qoqo::{
     operations::{
         convert_operation_to_pyobject, ControlledControlledPauliZWrapper,
-        ControlledControlledPhaseShiftWrapper, ToffoliWrapper,
+        ControlledControlledPhaseShiftWrapper, ControlledSWAPWrapper,
+        PhaseShiftedControlledControlledPhaseWrapper, PhaseShiftedControlledControlledZWrapper,
+        ToffoliWrapper,
     },
     CircuitWrapper,
 };
@@ -37,11 +39,29 @@ use test_case::test_case;
 #[test_case(Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
 #[test_case(Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
+#[test_case(Operation::from(ControlledSWAP::new(0, 1, 2)); "ControlledSWAP")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledControlledZ")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::FRAC_PI_2, CalculatorFloat::PI)); "PhaseShiftedControlledControlledPhase")]
 fn test_pyo3_is_not_parametrized(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(input_operation).unwrap();
         assert!(!operation
+            .call_method0(py, "is_parametrized")
+            .unwrap()
+            .bind(py)
+            .extract::<bool>()
+            .unwrap());
+    })
+}
+
+#[test_case(Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::from("theta"))); "PhaseShiftedControlledControlledZ")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::from("phi"), CalculatorFloat::from("theta"))); "PhaseShiftedControlledControlledPhase")]
+fn test_pyo3_is_parametrized(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        assert!(operation
             .call_method0(py, "is_parametrized")
             .unwrap()
             .bind(py)
@@ -75,6 +95,30 @@ fn test_pyo3_is_not_parametrized(input_operation: Operation) {
         "Toffoli",
         ],
     Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
+#[test_case(
+    vec![
+        "Operation",
+        "GateOperation",
+        "ThreeQubitGateOperation",
+        "ControlledSWAP",
+        ],
+    Operation::from(ControlledSWAP::new(0, 1, 2)); "ControlledSWAP")]
+#[test_case(
+    vec![
+        "Operation",
+        "GateOperation",
+        "ThreeQubitGateOperation",
+        "PhaseShiftedControlledControlledZ",
+        ],
+    Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::PI)); "PhaseShiftedControlledControlledZ")]
+#[test_case(
+    vec![
+        "Operation",
+        "GateOperation",
+        "ThreeQubitGateOperation",
+        "PhaseShiftedControlledControlledPhase",
+        ],
+    Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::PI, CalculatorFloat::PI)); "PhaseShiftedControlledControlledPhase")]
 fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -95,6 +139,9 @@ fn test_pyo3_tags(tags: Vec<&str>, input_operation: Operation) {
 #[test_case("ControlledControlledPauliZ", Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case("ControlledControlledPhaseShift", Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
 #[test_case("Toffoli", Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
+#[test_case("ControlledSWAP", Operation::from(ControlledSWAP::new(0, 1, 2)); "ControlledSWAP")]
+#[test_case("PhaseShiftedControlledControlledZ", Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::from("theta"))); "PhaseShiftedControlledControlledZ")]
+#[test_case("PhaseShiftedControlledControlledPhase", Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::from("phi"), CalculatorFloat::from("theta"))); "PhaseShiftedControlledControlledPhase")]
 fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -112,6 +159,8 @@ fn test_pyo3_hqslang(name: &'static str, input_operation: Operation) {
 #[test_case(Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
 #[test_case(Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledControlledZ")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::FRAC_PI_2, CalculatorFloat::PI)); "PhaseShiftedControlledControlledPhase")]
 fn test_pyo3_remapqubits(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -180,9 +229,81 @@ fn test_pyo3_remapqubits(input_operation: Operation) {
     })
 }
 
+#[test_case(Operation::from(ControlledSWAP::new(0, 1, 2)); "ControlledSWAP")]
+fn test_pyo3_remapqubits_cswap(input_operation: Operation) {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+
+        // test initial qubits
+        let control: usize = operation
+            .call_method0(py, "control")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
+        assert_eq!(control.clone(), 0);
+        let target_0: usize = operation
+            .call_method0(py, "target_0")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
+        assert_eq!(target_0.clone(), 1);
+        let target_1: usize = operation
+            .call_method0(py, "target_1")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
+        assert_eq!(target_1.clone(), 2);
+
+        // remap qubits
+        let mut qubit_mapping: HashMap<usize, usize> = HashMap::new();
+        qubit_mapping.insert(0, 2);
+        qubit_mapping.insert(2, 0);
+        qubit_mapping.insert(1, 3);
+        qubit_mapping.insert(3, 1);
+        let result = operation
+            .call_method1(py, "remap_qubits", (qubit_mapping,))
+            .unwrap();
+
+        // test re-mapped qubit
+        let control_new: usize = result
+            .call_method0(py, "control")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
+        assert_eq!(control_new.clone(), 2);
+        let target_0_new: usize = result
+            .call_method0(py, "target_0")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
+        assert_eq!(target_0_new.clone(), 3);
+        let target_1_new: usize = result
+            .call_method0(py, "target_1")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
+        assert_eq!(target_1_new.clone(), 0);
+
+        // test that initial and rempapped qubits are different
+        assert_ne!(control, control_new);
+        assert_ne!(target_0, target_0_new);
+        assert_ne!(target_1, target_1_new);
+    })
+}
+
 #[test_case(Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
 #[test_case(Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
+#[test_case(Operation::from(ControlledSWAP::new(0, 1, 2)); "ControlledSWAP")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledControlledZ")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::FRAC_PI_2, CalculatorFloat::PI)); "PhaseShiftedControlledControlledPhase")]
 fn test_pyo3_remapqubits_error(input_operation: Operation) {
     // preparation
     pyo3::prepare_freethreaded_python();
@@ -197,6 +318,8 @@ fn test_pyo3_remapqubits_error(input_operation: Operation) {
 }
 
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from("theta"))); "ControlledControlledPhaseShift")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::from("theta"))); "PhaseShiftedControlledControlledZ")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::FRAC_PI_2, CalculatorFloat::from("theta"))); "PhaseShiftedControlledControlledPhase")]
 fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -209,6 +332,9 @@ fn test_pyo3_unitarymatrix_error(input_operation: Operation) {
 #[test_case(Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
 #[test_case(Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
+#[test_case(Operation::from(ControlledSWAP::new(0, 1, 2)); "ControlledSWAP")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledControlledZ")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::FRAC_PI_2, CalculatorFloat::PI)); "PhaseShiftedControlledControlledPhase")]
 fn test_pyo3_unitarymatrix(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -240,6 +366,15 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
 #[test_case(
     "Toffoli { control_0: 1, control_1: 0, target: 2 }",
     Operation::from(Toffoli::new(1, 0, 2)); "Toffoli")]
+#[test_case(
+    "ControlledSWAP { control: 1, target_0: 0, target_1: 2 }",
+    Operation::from(ControlledSWAP::new(1, 0, 2)); "ControlledSWAP")]
+#[test_case(
+    "PhaseShiftedControlledControlledZ { control_0: 0, control_1: 1, target: 2, phi: Float(1.5707963267948966) }",
+    Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledControlledZ")]
+#[test_case(
+    "PhaseShiftedControlledControlledPhase { control_0: 0, control_1: 1, target: 2, theta: Float(1.5707963267948966), phi: Float(3.141592653589793) }",
+    Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::FRAC_PI_2, CalculatorFloat::PI)); "PhaseShiftedControlledControlledPhase")]
 fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -256,6 +391,9 @@ fn test_pyo3_format_repr(format_repr: &str, input_operation: Operation) {
 #[test_case(Operation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlledControlledPauliZ")]
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(0.2))); "ControlledControlledPhaseShift")]
 #[test_case(Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
+#[test_case(Operation::from(ControlledSWAP::new(0, 1, 2)); "ControlledSWAP")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledControlledZ")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::FRAC_PI_2, CalculatorFloat::PI)); "PhaseShiftedControlledControlledPhase")]
 fn test_pyo3_copy_deepcopy(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -288,6 +426,12 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
             Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(1.0))); "ControlledControlledPhaseShift")]
 #[test_case(Operation::from(Toffoli::new(0, 1, 2)),
             Operation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
+#[test_case(Operation::from(ControlledSWAP::new(0, 1, 2)),
+            Operation::from(ControlledSWAP::new(0, 1, 2)); "ControlledSWAP")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::from("test"))),
+            Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::from(1.0))); "PhaseShiftedControlledControlledZ")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::from("test"), CalculatorFloat::from("test"))),
+            Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0))); "PhaseShiftedControlledControlledPhase")]
 fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -311,6 +455,8 @@ fn test_pyo3_substitute_parameters(first_op: Operation, second_op: Operation) {
 }
 
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from("test"))); "ControlledControlledPhaseShift")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::from("test"))); "PhaseShiftedControlledControlledZ")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::from("test"), CalculatorFloat::from("test"))); "PhaseShiftedControlledControlledPhase")]
 fn test_pyo3_substitute_params_error(input_operation: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -323,6 +469,8 @@ fn test_pyo3_substitute_params_error(input_operation: Operation) {
 
 #[test_case(Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(1.0))),
             Operation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from(1.0 * 1.5))); "ControlledControlledPhaseShift")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0))),
+            Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::from(1.0 * 1.5), CalculatorFloat::from(1.0))); "PhaseShiftedControlledControlledPhase")]
 fn test_pyo3_powercf(first_op: Operation, second_op: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
@@ -495,6 +643,159 @@ fn test_new_toffoli(input_operation: Operation, arguments: (u32, u32, u32), meth
     })
 }
 
+#[test_case(Operation::from(ControlledSWAP::new(0, 1, 2)), (0, 1, 2), "__eq__"; "ControlledSWAP_eq")]
+#[test_case(Operation::from(ControlledSWAP::new(2, 1, 0)), (0, 1, 2), "__ne__"; "ControlledSWAP_ne")]
+fn test_new_controlledswap(input_operation: Operation, arguments: (u32, u32, u32), method: &str) {
+    let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type_bound::<ControlledSWAPWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding.downcast::<ControlledSWAPWrapper>().unwrap();
+        let comparison = bool::extract_bound(
+            &operation
+                .bind(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        // Error initialisation
+        let result = operation_type.call1((0, 1, vec!["fails"]));
+        assert!(result.is_err());
+
+        let result = operation_type.call1((0, vec!["fails"], 2));
+        assert!(result.is_err());
+
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py.extract::<ControlledSWAPWrapper>().unwrap();
+        let binding = operation_type.call1((1, 2, 3)).unwrap();
+        let new_op_diff = binding.downcast::<ControlledSWAPWrapper>().unwrap();
+        let def_wrapper_diff = new_op_diff.extract::<ControlledSWAPWrapper>().unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "ControlledSWAPWrapper { internal: ControlledSWAP { control: 1, target_0: 2, target_1: 3 } }"
+        );
+    })
+}
+
+#[test_case(Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::from(1.0))), (0, 1, 2, 1.0), "__eq__"; "PhaseShiftedControlledControlledZ_eq")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledZ::new(2, 1, 0, CalculatorFloat::from(1.0))), (0, 1, 2, 1.0), "__ne__"; "PhaseShiftedControlledControlledZ_ne")]
+fn test_new_phaseshiftedccz(
+    input_operation: Operation,
+    arguments: (u32, u32, u32, f64),
+    method: &str,
+) {
+    let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type_bound::<PhaseShiftedControlledControlledZWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding
+            .downcast::<PhaseShiftedControlledControlledZWrapper>()
+            .unwrap();
+        let comparison = bool::extract_bound(
+            &operation
+                .bind(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        // Error initialisation
+        let result = operation_type.call1((0, 1, vec!["fails"]));
+        assert!(result.is_err());
+
+        let result = operation_type.call1((0, vec!["fails"], 2));
+        assert!(result.is_err());
+
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py
+            .extract::<PhaseShiftedControlledControlledZWrapper>()
+            .unwrap();
+        let binding = operation_type.call1((1, 2, 3, 1.0)).unwrap();
+        let new_op_diff = binding
+            .downcast::<PhaseShiftedControlledControlledZWrapper>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff
+            .extract::<PhaseShiftedControlledControlledZWrapper>()
+            .unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "PhaseShiftedControlledControlledZWrapper { internal: PhaseShiftedControlledControlledZ { control_0: 1, control_1: 2, target: 3, phi: Float(1.0) } }"
+        );
+    })
+}
+
+#[test_case(Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0))), (0, 1, 2, 1.0, 1.0), "__eq__"; "PhaseShiftedControlledControlledPhase_eq")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledPhase::new(2, 1, 0, CalculatorFloat::from(1.0), CalculatorFloat::from(1.0))), (0, 1, 2, 1.0, 1.0), "__ne__"; "PhaseShiftedControlledControlledPhase_ne")]
+fn test_new_phaseshiftedccphase(
+    input_operation: Operation,
+    arguments: (u32, u32, u32, f64, f64),
+    method: &str,
+) {
+    let operation = convert_operation_to_pyobject(input_operation).unwrap();
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        // Basic initialisation, no errors
+        let operation_type = py.get_type_bound::<PhaseShiftedControlledControlledPhaseWrapper>();
+        let binding = operation_type.call1(arguments).unwrap();
+        let operation_py = binding
+            .downcast::<PhaseShiftedControlledControlledPhaseWrapper>()
+            .unwrap();
+        let comparison = bool::extract_bound(
+            &operation
+                .bind(py)
+                .call_method1(method, (operation_py,))
+                .unwrap(),
+        )
+        .unwrap();
+        assert!(comparison);
+
+        // Error initialisation
+        let result = operation_type.call1((0, 1, vec!["fails"]));
+        assert!(result.is_err());
+
+        let result = operation_type.call1((0, vec!["fails"], 2));
+        assert!(result.is_err());
+
+        // Testing PartialEq, Clone and Debug
+        let def_wrapper = operation_py
+            .extract::<PhaseShiftedControlledControlledPhaseWrapper>()
+            .unwrap();
+        let binding = operation_type.call1((1, 2, 3, 1.0, 1.0)).unwrap();
+        let new_op_diff = binding
+            .downcast::<PhaseShiftedControlledControlledPhaseWrapper>()
+            .unwrap();
+        let def_wrapper_diff = new_op_diff
+            .extract::<PhaseShiftedControlledControlledPhaseWrapper>()
+            .unwrap();
+        let helper_ne: bool = def_wrapper_diff != def_wrapper;
+        assert!(helper_ne);
+        let helper_eq: bool = def_wrapper == def_wrapper.clone();
+        assert!(helper_eq);
+
+        assert_eq!(
+            format!("{:?}", def_wrapper_diff),
+            "PhaseShiftedControlledControlledPhaseWrapper { internal: PhaseShiftedControlledControlledPhase { control_0: 1, control_1: 2, target: 3, theta: Float(1.0), phi: Float(1.0) } }"
+        );
+    })
+}
+
 #[test]
 fn test_circuit_pyo3_controlledcontrolledpauliz() {
     pyo3::prepare_freethreaded_python();
@@ -570,11 +871,127 @@ fn test_circuit_pyo3_toffoli() {
     });
 }
 
+#[test]
+fn test_circuit_pyo3_controlledswap() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let input_operation = Operation::from(ControlledSWAP::new(0, 1, 2));
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let py_result = operation.call_method0(py, "circuit").unwrap();
+        let result_circuit: CircuitWrapper = py_result.extract(py).unwrap();
+
+        let mut circuit = Circuit::new();
+        circuit += CNOT::new(2, 1);
+        circuit += Hadamard::new(2);
+        circuit += CNOT::new(1, 2);
+        circuit += RotateZ::new(2, -CalculatorFloat::FRAC_PI_4);
+        circuit += CNOT::new(0, 2);
+        circuit += TGate::new(2);
+        circuit += CNOT::new(1, 2);
+        circuit += RotateZ::new(2, -CalculatorFloat::FRAC_PI_4);
+        circuit += CNOT::new(0, 2);
+        circuit += TGate::new(1);
+        circuit += TGate::new(2);
+        circuit += Hadamard::new(2);
+        circuit += CNOT::new(0, 1);
+        circuit += TGate::new(0);
+        circuit += RotateZ::new(1, -CalculatorFloat::FRAC_PI_4);
+        circuit += CNOT::new(0, 1);
+        circuit += CNOT::new(2, 1);
+
+        assert_eq!(result_circuit.internal, circuit);
+    });
+}
+
+#[test]
+fn test_circuit_pyo3_phaseshiftedccz() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let input_operation = Operation::from(PhaseShiftedControlledControlledZ::new(
+            0,
+            1,
+            2,
+            CalculatorFloat::from(1.0),
+        ));
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let py_result = operation.call_method0(py, "circuit").unwrap();
+        let result_circuit: CircuitWrapper = py_result.extract(py).unwrap();
+
+        let mut circuit = Circuit::new();
+        circuit += PhaseShiftedControlledPhase::new(
+            1,
+            2,
+            CalculatorFloat::FRAC_PI_2,
+            CalculatorFloat::from(1.0),
+        );
+        circuit += CNOT::new(0, 1);
+        circuit += PhaseShiftedControlledPhase::new(
+            1,
+            2,
+            -CalculatorFloat::FRAC_PI_2,
+            CalculatorFloat::from(1.0),
+        );
+        circuit += CNOT::new(0, 1);
+        circuit += PhaseShiftedControlledPhase::new(
+            0,
+            2,
+            CalculatorFloat::FRAC_PI_2,
+            CalculatorFloat::from(1.0),
+        );
+
+        assert_eq!(result_circuit.internal, circuit);
+    });
+}
+
+#[test]
+fn test_circuit_pyo3_phaseshiftedccphase() {
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let input_operation = Operation::from(PhaseShiftedControlledControlledPhase::new(
+            0,
+            1,
+            2,
+            CalculatorFloat::from(1.0),
+            CalculatorFloat::from(1.0),
+        ));
+        let operation = convert_operation_to_pyobject(input_operation).unwrap();
+        let py_result = operation.call_method0(py, "circuit").unwrap();
+        let result_circuit: CircuitWrapper = py_result.extract(py).unwrap();
+
+        let mut circuit = Circuit::new();
+        circuit += PhaseShiftedControlledPhase::new(
+            1,
+            2,
+            CalculatorFloat::from(0.5),
+            CalculatorFloat::from(1.0),
+        );
+        circuit += CNOT::new(0, 1);
+        circuit += PhaseShiftedControlledPhase::new(
+            1,
+            2,
+            -CalculatorFloat::from(0.5),
+            CalculatorFloat::from(1.0),
+        );
+        circuit += CNOT::new(0, 1);
+        circuit += PhaseShiftedControlledPhase::new(
+            0,
+            2,
+            CalculatorFloat::from(0.5),
+            CalculatorFloat::from(1.0),
+        );
+
+        assert_eq!(result_circuit.internal, circuit);
+    });
+}
+
 /// Test json_schema function for all three qubit gate operations
 #[cfg(feature = "json_schema")]
 #[test_case(ThreeQubitGateOperation::from(ControlledControlledPauliZ::new(0, 1, 2)); "ControlleControlledPauliZ")]
 #[test_case(ThreeQubitGateOperation::from(ControlledControlledPhaseShift::new(0, 1, 2, CalculatorFloat::from("test"))); "ControlledControlledPhaseShift")]
 #[test_case(ThreeQubitGateOperation::from(Toffoli::new(0, 1, 2)); "Toffoli")]
+#[test_case(ThreeQubitGateOperation::from(ControlledSWAP::new(0, 1, 2)); "ControlledSWAP")]
+#[test_case(ThreeQubitGateOperation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::FRAC_PI_2)); "PhaseShiftedControlledControlledZ")]
+#[test_case(ThreeQubitGateOperation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::FRAC_PI_2, CalculatorFloat::PI)); "PhaseShiftedControlledControlledPhase")]
 fn test_pyo3_json_schema(operation: ThreeQubitGateOperation) {
     let rust_schema = match operation {
         ThreeQubitGateOperation::ControlledControlledPauliZ(_) => {
@@ -588,8 +1005,22 @@ fn test_pyo3_json_schema(operation: ThreeQubitGateOperation) {
         ThreeQubitGateOperation::Toffoli(_) => {
             serde_json::to_string_pretty(&schemars::schema_for!(Toffoli)).unwrap()
         }
+        ThreeQubitGateOperation::ControlledSWAP(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(ControlledSWAP)).unwrap()
+        }
+        ThreeQubitGateOperation::PhaseShiftedControlledControlledZ(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(PhaseShiftedControlledControlledZ))
+                .unwrap()
+        }
+        ThreeQubitGateOperation::PhaseShiftedControlledControlledPhase(_) => {
+            serde_json::to_string_pretty(&schemars::schema_for!(
+                PhaseShiftedControlledControlledPhase
+            ))
+            .unwrap()
+        }
         _ => unreachable!(),
     };
+    let og_op = operation.clone();
     pyo3::prepare_freethreaded_python();
     pyo3::Python::with_gil(|py| {
         let converted_op = Operation::from(operation);
@@ -608,6 +1039,18 @@ fn test_pyo3_json_schema(operation: ThreeQubitGateOperation) {
                 .unwrap();
 
         assert_eq!(current_version_string, ROQOQO_VERSION);
-        assert_eq!(minimum_supported_version_string, "1.3.0");
+        match og_op {
+            ThreeQubitGateOperation::ControlledControlledPauliZ(_)
+            | ThreeQubitGateOperation::ControlledControlledPhaseShift(_)
+            | ThreeQubitGateOperation::Toffoli(_) => {
+                assert_eq!(minimum_supported_version_string, "1.3.0")
+            }
+            ThreeQubitGateOperation::ControlledSWAP(_)
+            | ThreeQubitGateOperation::PhaseShiftedControlledControlledZ(_)
+            | ThreeQubitGateOperation::PhaseShiftedControlledControlledPhase(_) => {
+                assert_eq!(minimum_supported_version_string, "1.16.0")
+            }
+            _ => unreachable!(),
+        };
     });
 }

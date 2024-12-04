@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -56,7 +56,9 @@ use test_case::test_case;
 #[test_case(Operation::from(SqrtPauliX::new(100)); "SqrtPauliX")]
 #[test_case(Operation::from(InvSqrtPauliX::new(100)); "InvSqrtPauliX")]
 #[test_case(Operation::from(SGate::new(1)); "SGate")]
+#[test_case(Operation::from(InvSGate::new(1)); "InvSGate")]
 #[test_case(Operation::from(TGate::new(1)); "TGate")]
+#[test_case(Operation::from(InvTGate::new(1)); "InvTGate")]
 #[test_case(Operation::from(Hadamard::new(3)); "Hadamard")]
 #[test_case(Operation::from(GPi::new(3, 0.1.into())); "GPi")]
 #[test_case(Operation::from(GPi2::new(3, 0.1.into())); "GPi2")]
@@ -139,6 +141,23 @@ use test_case::test_case;
 #[test_case(Operation::from(CZQubitResonator::new(0, 1)); "CZQubitResonator")]
 #[test_case(Operation::from(SqrtPauliY::new(100)); "SqrtPauliY")]
 #[test_case(Operation::from(InvSqrtPauliY::new(100)); "InvSqrtPauliY")]
+#[test_case(Operation::from(SXGate::new(1)); "SXGate")]
+#[test_case(Operation::from(InvSXGate::new(1)); "InvSXGate")]
+#[test_case(Operation::from(ControlledSWAP::new(0, 1, 2)); "ControlledSWAP")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledZ::new(0, 1, 2, CalculatorFloat::PI)); "PhaseShiftedControlledControlledZ")]
+#[test_case(Operation::from(PhaseShiftedControlledControlledPhase::new(0, 1, 2, CalculatorFloat::PI, CalculatorFloat::PI)); "PhaseShiftedControlledControlledPhase")]
+#[test_case(
+    Operation::from(TripleControlledPauliX::new(0, 1, 2, 3)); "TripleControlledPauliX"
+)]
+#[test_case(
+    Operation::from(TripleControlledPauliZ::new(0, 1, 2, 3)); "TripleControlledPauliZ"
+)]
+#[test_case(
+    Operation::from(TripleControlledPhaseShift::new(0, 1, 2, 3, CalculatorFloat::PI)); "TripleControlledPhaseShift"
+)]
+#[test_case(
+    Operation::from(PragmaSimulationRepetitions::new(100)); "PragmaSimulationRepetitions"
+)]
 fn test_conversion(input: Operation) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {

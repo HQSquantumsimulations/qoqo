@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -11,7 +11,7 @@
 // limitations under the License.
 
 #[cfg(feature = "json_schema")]
-use jsonschema::{Draft, JSONSchema};
+use jsonschema::{Draft, Validator};
 use ndarray::array;
 use roqoqo::{
     devices::{AllToAllDevice, Device, GenericDevice, SquareLatticeDevice},
@@ -524,17 +524,17 @@ fn test_json_schema() {
     let schema_value_squared: serde_json::Value = serde_json::from_str(&schema_squared).unwrap();
     let schema_value_all_to_all: serde_json::Value =
         serde_json::from_str(&schema_all_to_all).unwrap();
-    let compiled_schema_generic = JSONSchema::options()
+    let compiled_schema_generic = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value_generic)
+        .build(&schema_value_generic)
         .unwrap();
-    let compiled_schema_squared = JSONSchema::options()
+    let compiled_schema_squared = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value_squared)
+        .build(&schema_value_squared)
         .unwrap();
-    let compiled_schema_all_to_all = JSONSchema::options()
+    let compiled_schema_all_to_all = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value_all_to_all)
+        .build(&schema_value_all_to_all)
         .unwrap();
 
     let validation_result_generic = compiled_schema_generic.validate(&test_value_generic);

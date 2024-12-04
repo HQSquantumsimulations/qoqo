@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -26,6 +26,8 @@ mod two_qubit_gate_operations;
 pub use two_qubit_gate_operations::*;
 mod three_qubit_gate_operations;
 pub use three_qubit_gate_operations::*;
+mod four_qubit_gate_operations;
+pub use four_qubit_gate_operations::*;
 mod multi_qubit_gate_operations;
 pub use multi_qubit_gate_operations::*;
 mod bosonic_operations;
@@ -184,5 +186,21 @@ pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     // 1.15
     m.add_class::<SqrtPauliYWrapper>()?;
     m.add_class::<InvSqrtPauliYWrapper>()?;
+
+    // 1.16
+    m.add_class::<InvSGateWrapper>()?;
+    m.add_class::<InvTGateWrapper>()?;
+    m.add_class::<SXGateWrapper>()?;
+    m.add_class::<InvSXGateWrapper>()?;
+    m.add_class::<TripleControlledPauliXWrapper>()?;
+    m.add_class::<TripleControlledPauliZWrapper>()?;
+    m.add_class::<TripleControlledPhaseShiftWrapper>()?;
+    m.add_class::<ControlledSWAPWrapper>()?;
+    m.add_class::<PhaseShiftedControlledControlledZWrapper>()?;
+    m.add_class::<PhaseShiftedControlledControlledPhaseWrapper>()?;
+
+    // 1.17
+    m.add_class::<PragmaSimulationRepetitionsWrapper>()?;
+
     Ok(())
 }

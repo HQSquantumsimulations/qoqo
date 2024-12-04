@@ -1,4 +1,4 @@
-// Copyright © 2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2023-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -354,6 +354,8 @@ impl DecoherenceOnGateModel {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[cfg(feature = "json_schema")]
+    use jsonschema::Validator;
     use struqture::spins::PlusMinusLindbladNoiseOperator;
 
     #[test]
@@ -438,8 +440,7 @@ mod tests {
             model.set_single_qubit_gate_error("RotateX", 0, PlusMinusLindbladNoiseOperator::new());
         let schema = schemars::schema_for!(DecoherenceOnGateModel);
         let schema_checker =
-            jsonschema::JSONSchema::compile(&serde_json::to_value(&schema).unwrap())
-                .expect("schema is valid");
+            Validator::new(&serde_json::to_value(&schema).unwrap()).expect("schema is valid");
         let value = serde_json::to_value(model).unwrap();
         let val = match value {
             serde_json::Value::Object(ob) => ob,

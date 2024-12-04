@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -40,7 +40,6 @@ pub type BitOutputRegister = Vec<BitRegister>;
 ///
 /// Vector over single float registers that are each the output of a single run
 /// of a quantum program.
-
 pub type FloatOutputRegister = Vec<FloatRegister>;
 
 /// Represents classical complex registers for output of computations in qoqo.

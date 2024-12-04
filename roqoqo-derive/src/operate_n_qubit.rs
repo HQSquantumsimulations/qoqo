@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -294,6 +294,160 @@ fn operate_three_qubit_struct(ident: Ident) -> TokenStream {
             }
             /// Returns `target` qubit of the three qubit Operation.
             fn target(&self ) -> &usize {
+                &self.target
+            }
+        }
+    }
+}
+
+/// Dispatch to derive OperateFourQubit for enums and structs
+pub fn dispatch_struct_enum_four_qubit(input: DeriveInput) -> TokenStream {
+    let ident = input.ident;
+    match input.data {
+        Data::Struct(_ds) => operate_four_qubit_struct(ident),
+        Data::Enum(de) => operate_four_qubit_enum(de, ident),
+        // There can be other objects that are valid Derive inputs, but we define our macro only for structs and enums
+        _ => panic!("OperateFourQubit can only be derived on structs and enums"),
+    }
+}
+
+fn operate_four_qubit_enum(de: DataEnum, ident: Ident) -> TokenStream {
+    let DataEnum { variants, .. } = de;
+    let control_0_quotes = variants.clone().into_iter().map(|v| {
+        let vident = v.ident.clone();
+
+        // We match the fields in the variant,
+        let fields = match v.fields {
+            Fields::Unnamed(fields) => fields,
+            // and panic when the fields are not unnamed,
+            _ => panic!(
+                "OperateFourQubit can only be derived for enums with newtype structs as variants"
+            ),
+        };
+        // and panic when there is more than one field, ensuring newtype structs.
+        if fields.unnamed.iter().len() != 1 {
+            panic!(
+                "OperateFourQubit can only be derived for enums with newtype structs as variants"
+            )
+        }
+        quote! {
+            &#ident::#vident(ref inner) => {OperateFourQubit::control_0(&(*inner))},
+        }
+    });
+    let control_1_quotes = variants.clone().into_iter().map(|v| {
+        let vident = v.ident.clone();
+
+        // We match the fields in the variant,
+        let fields = match v.fields {
+            Fields::Unnamed(fields) => fields,
+            // and panic when the fields are not unnamed,
+            _ => panic!(
+                "OperateFourQubit can only be derived for enums with newtype structs as variants"
+            ),
+        };
+        // and panic when there is more than one field, ensuring newtype structs.
+        if fields.unnamed.iter().len() != 1 {
+            panic!(
+                "OperateFourQubit can only be derived for enums with newtype structs as variants"
+            )
+        }
+        quote! {
+            &#ident::#vident(ref inner) => {OperateFourQubit::control_1(&(*inner))},
+        }
+    });
+    let control_2_quotes = variants.clone().into_iter().map(|v| {
+        let vident = v.ident.clone();
+
+        // We match the fields in the variant,
+        let fields = match v.fields {
+            Fields::Unnamed(fields) => fields,
+            // and panic when the fields are not unnamed,
+            _ => panic!(
+                "OperateFourQubit can only be derived for enums with newtype structs as variants"
+            ),
+        };
+        // and panic when there is more than one field, ensuring newtype structs.
+        if fields.unnamed.iter().len() != 1 {
+            panic!(
+                "OperateFourQubit can only be derived for enums with newtype structs as variants"
+            )
+        }
+        quote! {
+            &#ident::#vident(ref inner) => {OperateFourQubit::control_2(&(*inner))},
+        }
+    });
+    let target_quotes = variants.into_iter().map(|v| {
+        let vident = v.ident.clone();
+        let fields = match v.fields {
+            Fields::Unnamed(fields) => fields,
+            _ => panic!(
+                "OperateFourQubit can only be derived for enums with newtype structs as variants"
+            ),
+        };
+        if fields.unnamed.iter().len() != 1 {
+            panic!(
+                "OperateFourQubit can only be derived for enums with newtype structs as variants"
+            )
+        }
+        quote! {
+            &#ident::#vident(ref inner) => {OperateFourQubit::target(&(*inner))},
+        }
+    });
+    quote! {
+        #[automatically_derived]
+        /// Trait for Operations acting on exactly four qubits.
+        impl OperateFourQubit for #ident{
+            /// Returns `control_0` qubit of the four qubit Operation.
+            fn control_0(&self) -> &usize {
+                match self{
+                    #(#control_0_quotes)*
+                    _ => panic!("Unexpectedly cannot match variant")
+                }
+            }
+            /// Returns `control_1` qubit of the four qubit Operation.
+            fn control_1(&self) -> &usize {
+                match self{
+                    #(#control_1_quotes)*
+                    _ => panic!("Unexpectedly cannot match variant")
+                }
+            }
+            /// Returns `control_2` qubit of the four qubit Operation.
+            fn control_2(&self) -> &usize {
+                match self{
+                    #(#control_2_quotes)*
+                    _ => panic!("Unexpectedly cannot match variant")
+                }
+            }
+            /// Returns `target` qubit of the four qubit Operation.
+            fn target(&self) -> &usize {
+                match self{
+                    #(#target_quotes)*
+                    _ => panic!("Unexpectedly cannot match variant")
+                }
+            }
+        }
+    }
+}
+
+fn operate_four_qubit_struct(ident: Ident) -> TokenStream {
+    quote! {
+        #[automatically_derived]
+        /// Trait for Operations acting on exactly four qubits.
+        impl OperateFourQubit for #ident{
+            /// Returns `control_0` qubit of the four qubit Operation.
+            fn control_0(&self) -> &usize {
+                &self.control_0
+            }
+            /// Returns `control_1` qubit of the four qubit Operation.
+            fn control_1(&self) -> &usize {
+                &self.control_1
+            }
+            /// Returns `control_2` qubit of the four qubit Operation.
+            fn control_2(&self) -> &usize {
+                &self.control_2
+            }
+            /// Returns `target` qubit of the four qubit Operation.
+            fn target(&self) -> &usize {
                 &self.target
             }
         }

@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -13,7 +13,7 @@
 //! Integration test for public API of multi qubit gate operations
 
 #[cfg(feature = "json_schema")]
-use jsonschema::{Draft, JSONSchema};
+use jsonschema::{Draft, Validator};
 use ndarray::array;
 use num_complex::Complex64;
 use qoqo_calculator::Calculator;
@@ -60,7 +60,7 @@ fn test_circuit_multi_ms(qubits: Vec<usize>) {
 }
 
 #[test_case(vec![0,1]; "two_qubit")]
-fn test_matrix_output(qubits: Vec<usize>) {
+fn test_matrix_output_multi_ms(qubits: Vec<usize>) {
     let gate = MultiQubitMS::new(qubits, CalculatorFloat::FRAC_PI_2);
     let f: f64 = 1.0 / ((2.0_f64).sqrt());
     let test_array = array![
@@ -95,7 +95,7 @@ fn test_matrix_output(qubits: Vec<usize>) {
 }
 
 #[test_case(vec![0,1,2]; "three_qubit")]
-fn test_matrix_output_three(qubits: Vec<usize>) {
+fn test_matrix_output_three_multi_ms(qubits: Vec<usize>) {
     let gate = MultiQubitMS::new(qubits, CalculatorFloat::FRAC_PI_2);
     let f: f64 = 1.0 / ((2.0_f64).sqrt());
     let test_array = array![
@@ -186,7 +186,7 @@ fn test_matrix_output_three(qubits: Vec<usize>) {
 }
 
 #[test]
-fn test_clone_partial_eq() {
+fn test_clone_partial_eq_multi_ms() {
     let qubits = vec![0, 1, 2];
 
     let gate = MultiQubitMS::new(qubits.clone(), CalculatorFloat::FRAC_PI_2);
@@ -211,7 +211,7 @@ fn test_clone_partial_eq() {
 }
 
 #[test]
-fn test_operate() {
+fn test_operate_multi_ms() {
     let qubits = vec![0, 1, 2];
     let gate = MultiQubitMS::new(qubits.clone(), CalculatorFloat::FRAC_PI_2);
     assert_eq!(gate.hqslang(), "MultiQubitMS");
@@ -231,7 +231,7 @@ fn test_operate() {
 }
 
 #[test]
-fn test_substitute() {
+fn test_substitute_multi_ms() {
     let qubits = vec![0, 1, 2];
     let gate1 = MultiQubitMS::new(qubits.clone(), "theta".into());
     let gate = MultiQubitMS::new(qubits, CalculatorFloat::FRAC_PI_2);
@@ -250,7 +250,7 @@ fn test_substitute() {
 }
 
 #[test]
-fn test_substitute_error() {
+fn test_substitute_error_multi_ms() {
     let qubits = vec![0, 1, 2];
     let gate1 = MultiQubitMS::new(qubits, "theta".into());
     let calc = Calculator::new();
@@ -264,7 +264,7 @@ fn test_substitute_error() {
 }
 
 #[test]
-fn test_format() {
+fn test_format_multi_ms() {
     let qubits = vec![0, 1, 2];
     let gate = MultiQubitMS::new(qubits, "theta".into());
     let string = format!("{:?}", gate);
@@ -273,7 +273,7 @@ fn test_format() {
 }
 
 #[test]
-fn test_involved_qubits() {
+fn test_involved_qubits_multi_ms() {
     let qubits = vec![0, 1, 2];
     let gate = MultiQubitMS::new(qubits, "theta".into());
     let involved_qubits = gate.involved_qubits();
@@ -291,7 +291,7 @@ fn test_involved_qubits() {
 #[test_case(CalculatorFloat::from("theta"), CalculatorFloat::from(0.0); "power_0")]
 #[test_case(CalculatorFloat::from("theta"), CalculatorFloat::from(-2.0); "power_-2.0")]
 #[test_case(CalculatorFloat::from("theta"), CalculatorFloat::from("power"); "power_symbolic")]
-fn test_rotatex_powercf(theta: CalculatorFloat, power: CalculatorFloat) {
+fn test_rotatex_powercf_multi_ms(theta: CalculatorFloat, power: CalculatorFloat) {
     let qubits = vec![0, 1, 2];
     let gate = MultiQubitMS::new(qubits.clone(), theta);
 
@@ -593,9 +593,9 @@ pub fn test_json_schema_multi_qubit_gate_operations(gate: MultiQubitGateOperatio
     };
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);
@@ -747,9 +747,9 @@ pub fn test_json_schema_multi_qubit_call_gate() {
     let test_schema = schema_for!(CallDefinedGate);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);

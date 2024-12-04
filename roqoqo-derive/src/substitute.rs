@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -92,6 +92,7 @@ fn substitute_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             "control" => quote! {*mapping.get(&self.control).unwrap_or(&self.control)},
             "control_0" => quote! {*mapping.get(&self.control_0).unwrap_or(&self.control_0)},
             "control_1" => quote! {*mapping.get(&self.control_1).unwrap_or(&self.control_1)},
+            "control_2" => quote! {*mapping.get(&self.control_2).unwrap_or(&self.control_2)},
             "target" => quote! {*mapping.get(&self.target).unwrap_or(&self.target)},
             "qubits" => quote! { new_qubits },
             _ => quote! {(self).#fid.clone()},

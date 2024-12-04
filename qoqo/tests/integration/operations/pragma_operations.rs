@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -100,6 +100,25 @@ pub(crate) fn new_circuit(py: Python) -> Bound<CircuitWrapper> {
         .to_owned()
 }
 
+/// Test inputs of PragmaSimulationRepetitions
+#[test]
+fn test_pyo3_inputs_simulation_repetitions() {
+    let input_pragma = Operation::from(PragmaSimulationRepetitions::new(100));
+    pyo3::prepare_freethreaded_python();
+    Python::with_gil(|py| {
+        let operation = convert_operation_to_pyobject(input_pragma).unwrap();
+
+        let repetitions: &usize = &operation
+            .call_method0(py, "repetitions")
+            .unwrap()
+            .bind(py)
+            .extract()
+            .unwrap();
+        let repetitions_param: &usize = &100_usize;
+        assert_eq!(repetitions, repetitions_param);
+    })
+}
+
 /// Test inputs of PragmaSetNumberOfMeasurements
 #[test]
 fn test_pyo3_inputs_setnumbermeasurements() {
@@ -128,7 +147,7 @@ fn test_pyo3_inputs_setnumbermeasurements() {
     })
 }
 
-/// Test inputs of PragmaSetNumberOfMeasurements
+/// Test inputs of PragmaLoop
 #[test]
 fn test_pyo3_inputs_loop() {
     let input_pragma = Operation::from(PragmaLoop::new(

@@ -1,4 +1,4 @@
-// Copyright © 2020-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2020-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -159,6 +159,7 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/pragma_operations.rs",
     "src/operations/two_qubit_gate_operations.rs",
     "src/operations/three_qubit_gate_operations.rs",
+    "src/operations/four_qubit_gate_operations.rs",
     "src/operations/multi_qubit_gate_operations.rs",
     "src/operations/measurement_operations.rs",
     "src/operations/define_operations.rs",
@@ -295,7 +296,7 @@ fn create_doc(module: &str) -> PyResult<String> {
                 let args = collect_args_from_doc(doc.as_str(), name.as_str()).join(", ");
                 main_doc.push_str(&format!(
                     "class {name}{}:\n    \"\"\"\n{doc}\n\"\"\"\n\n    def __init__(self{}):\n       return\n\n",
-                    module.eq("qoqo.operations").then(|| "(Operation)").unwrap_or_default(),
+                    module.eq("qoqo.operations").then_some("(Operation)").unwrap_or_default(),
                     if args.is_empty() { "".to_owned() } else { format!(", {}", args) },
                 ));
                 let class_dict = func.getattr("__dict__")?;

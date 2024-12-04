@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -26,6 +26,8 @@ mod two_qubit_gate_operations;
 
 mod three_qubit_gate_operations;
 
+mod four_qubit_gate_operations;
+
 mod bosonic_operations;
 
 mod spin_boson_operations;
@@ -36,6 +38,8 @@ mod analog_operations;
 use pyo3::prelude::*;
 use qoqo_calculator::CalculatorFloat;
 use qoqo_calculator_pyo3::CalculatorFloatWrapper;
+
+use qoqo::available_gates_hqslang;
 
 // helper function to convert CalculatorFloat into a python object
 pub fn convert_cf_to_pyobject(
@@ -57,4 +61,11 @@ pub fn convert_cf_to_pyobject(
             .unwrap()
             .to_owned(),
     }
+}
+
+#[test]
+fn test_available_gates() {
+    let names = available_gates_hqslang();
+    assert!(names.contains(&"Hadamard".to_string()));
+    assert!(!names.contains(&"Error".to_string()));
 }

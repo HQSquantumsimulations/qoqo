@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -261,6 +261,46 @@ fn three_qubit_gate_struct(ident: Ident) -> TokenStream {
         #[automatically_derived]
         impl OperateThreeQubitGate for #ident{
             fn circuit(&self ) -> crate::Circuit {
+                self.circuit
+            }
+        }
+    }
+}
+
+pub fn dispatch_struct_enum_four_qubit_gate(input: DeriveInput) -> TokenStream {
+    let ident = input.ident;
+    match input.data {
+        Data::Struct(_ds) => four_qubit_gate_struct(ident),
+        Data::Enum(de) => four_qubit_gate_enum(de, ident),
+        _ => panic!("OperateFourQubitGate can only be derived on structs and enums"),
+    }
+}
+
+fn four_qubit_gate_enum(de: DataEnum, ident: Ident) -> TokenStream {
+    let variants_with_type = extract_variants_with_types(de).into_iter();
+    let match_quotes = variants_with_type.map(|(vident, _, _)| {
+        quote! {
+            &#ident::#vident(ref inner) => {OperateFourQubitGate::circuit(&(*inner))},
+        }
+    });
+    quote! {
+        #[automatically_derived]
+        impl OperateFourQubitGate for #ident{
+            fn circuit(&self) -> crate::Circuit {
+                match self{
+                    #(#match_quotes)*
+                    _ => panic!("Unexpectedly cannot match variant")
+                }
+            }
+        }
+    }
+}
+
+fn four_qubit_gate_struct(ident: Ident) -> TokenStream {
+    quote! {
+        #[automatically_derived]
+        impl OperateFourQubitGate for #ident{
+            fn circuit(&self) -> crate::Circuit {
                 self.circuit
             }
         }

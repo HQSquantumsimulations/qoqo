@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -56,6 +56,10 @@ pub use two_qubit_gate_operations::*;
 #[doc(hidden)]
 mod three_qubit_gate_operations;
 pub use three_qubit_gate_operations::*;
+/// Collection of roqoqo four qubit gate operations.
+#[doc(hidden)]
+mod four_qubit_gate_operations;
+pub use four_qubit_gate_operations::*;
 /// Collection of roqoqo bosonic operations.
 #[doc(hidden)]
 mod bosonic_operations;
@@ -335,6 +339,29 @@ pub trait OperateThreeQubit: Operate + InvolveQubits + Substitute + Clone + Part
     fn control_0(&self) -> &usize;
     /// Returns `control_1` qubit of three qubit Operation.
     fn control_1(&self) -> &usize;
+}
+
+/// Trait for Operations acting on exactly four qubits.
+///
+/// # Example
+/// ```
+/// use roqoqo::operations::{TripleControlledPauliX, OperateFourQubit};
+/// let cccx = TripleControlledPauliX::new(0, 1, 2, 3);
+/// assert_eq!(cccx.control_0(), &0_usize);
+/// assert_eq!(cccx.control_1(), &1_usize);
+/// assert_eq!(cccx.control_2(), &2_usize);
+/// assert_eq!(cccx.target(), &3_usize);
+/// ```
+///
+pub trait OperateFourQubit: Operate + InvolveQubits + Substitute + Clone + PartialEq {
+    /// Returns `target` qubit of four qubit Operation.
+    fn target(&self) -> &usize;
+    /// Returns `control_0` qubit of four qubit Operation.
+    fn control_0(&self) -> &usize;
+    /// Returns `control_1` qubit of four qubit Operation.
+    fn control_1(&self) -> &usize;
+    /// Returns `control_2` qubit of four qubit Operation.
+    fn control_2(&self) -> &usize;
 }
 
 /// Trait for operations acting on multiple (more than two) qubits.
@@ -773,6 +800,45 @@ pub trait OperateThreeQubitGate:
     fn circuit(&self) -> crate::Circuit;
 }
 
+/// Trait for all Operations operating on or affecting exactly three qubits.
+///
+/// # Example
+/// ```
+/// use roqoqo::operations::{CNOT, TripleControlledPauliX, OperateFourQubitGate};
+/// use roqoqo::Circuit;
+///
+/// let cccx = TripleControlledPauliX::new(0, 1, 2, 3);
+/// let mut circuit = Circuit::new();
+/// circuit += CNOT::new(0, 3);
+/// circuit += CNOT::new(0, 1);
+/// circuit += CNOT::new(1, 3);
+/// circuit += CNOT::new(0, 1);
+/// circuit += CNOT::new(1, 3);
+/// circuit += CNOT::new(1, 2);
+/// circuit += CNOT::new(2, 3);
+/// circuit += CNOT::new(0, 2);
+/// circuit += CNOT::new(2, 3);
+/// circuit += CNOT::new(1, 2);
+/// circuit += CNOT::new(2, 3);
+/// circuit += CNOT::new(0, 2);
+/// circuit += CNOT::new(2, 3);
+///
+/// assert_eq!(cccx.circuit(), circuit);
+/// ```
+pub trait OperateFourQubitGate:
+    Operate
+    + OperateGate
+    + OperateFourQubit
+    + InvolveQubits
+    + Substitute
+    + Clone
+    + PartialEq
+    + SupportedVersion
+{
+    /// Returns a decomposition of the three-qubit operation using a circuit with two-qubit-operations.
+    fn circuit(&self) -> crate::Circuit;
+}
+
 /// Trait for all Operations operating on or affecting more than two qubits.
 ///
 /// # Example
@@ -853,6 +919,13 @@ pub trait ImplementedIn1point14: Operate {}
 
 /// Marker trait to show that some operation has been implemented in roqoqo 1.15.0
 pub trait ImplementedIn1point15: Operate {}
+
+/// Marker trait to show that some operation has been implemented in roqoqo 1.16.0
+pub trait ImplementedIn1point16: Operate {}
+
+/// Marker trait to show that some operation has been implemented in roqoqo 1.17.0
+pub trait ImplementedIn1point17: Operate {}
+
 #[cfg(feature = "dynamic")]
 /// A wrapper for Operate trait objects.
 ///

@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -13,7 +13,7 @@
 //! Integration test for public API of cheated Basis rotation measurement
 
 #[cfg(feature = "jsonschema")]
-use jsonschema::{Draft, JSONSchema};
+use jsonschema::{Draft, Validator};
 use qoqo_calculator::CalculatorFloat;
 use roqoqo::operations;
 use roqoqo::prelude::*;
@@ -234,9 +234,9 @@ fn test_json_schema() {
     let test_schema = schema_for!(CheatedPauliZProduct);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);

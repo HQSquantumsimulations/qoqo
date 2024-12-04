@@ -2,35 +2,46 @@
 
 This changelog track changes to the qoqo project starting at version v0.5.0
 
-## 1.15.2-alphas.4
+## Unreleased
 
-### Added in 1.15.2-alpha.4
+## 1.17.0
 
-* Pinned clap version to use rust 1.70 (clap,clap_builder and clap_derive 4.4, clap_lex 0.6.0).
+### Added in 1.17.0
 
-## 1.15.2-alphas.3
+* Added the documentation from qoqo_examples.
+* Added `PragmaSimulationRepetitions` operation.
 
-### Added in 1.15.2-alpha.3
+## 1.16.1
 
-* Updated to rust 1.70.
+### Fixed in 1.16.1
 
-## 1.15.2-alpha.2
+* Fixed `PhaseShiftedControlledControlledZ` and `PhaseShiftedControlledControlledPhase` unitary matrices.
 
-### Added in 1.15.2-alpha.2
+## 1.16.0
 
-* Fixed sphinx documentation and compatibility test 1.14.
+### Fixed in 1.16.0
 
-## 1.15.2-alpha.1
+* Updated nalgebra to 0.33.1, jsonschema to 0.23. Removed unnecessary dependencies.
 
-### Added in 1.15.2-alpha.1
+### Added in 1.16.0
+
+* Added `InvSGate`, `InvTGate`, `SXGate`, `InvSXGate`, `TripleControlledPauliX`, `TripleControlledPauliZ`, `TripleControlledPhaseShift`, `ControlledSWAP`, `PhaseShiftedControlledControlledZ`, `PhaseShiftedControlledControlledPhase` gates.
+
+## 1.15.2
+
+### Fixed in 1.15.2
 
 * Fixed release bug.
+* Fixed sphinx documentation and compatibility test 1.14.
+* Renamed the readme in roqoqo.
 
-## 1.15.2-alpha.0
-
-### Added in 1.15.2-alpha.0
+### Added in 1.15.2
 
 * Added support for noise model operator input from struqture 2.x. Output remains in struqture 1.x.
+* Pinned clap version to use rust 1.70 (clap,clap_builder and clap_derive 4.4, clap_lex 0.6.0).
+* Updated to rust 1.70.
+* Updated to jsonschema 0.20.
+* Added list of available gates names.
 
 ## 1.15.1
 
@@ -42,7 +53,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 ### Added in 1.15.0
 
-* Added `SqrtPaulY` and `InvSqrtPauliY` gates.
+* Added `SqrtPauliY` and `InvSqrtPauliY` gates.
 
 ## 1.14.0
 

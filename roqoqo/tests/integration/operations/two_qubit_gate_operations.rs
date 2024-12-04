@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -14,7 +14,7 @@
 
 use super::convert_matrix;
 #[cfg(feature = "json_schema")]
-use jsonschema::{Draft, JSONSchema};
+use jsonschema::{Draft, Validator};
 use nalgebra as na;
 use ndarray::{array, Array2};
 use num_complex::Complex64;
@@ -1340,9 +1340,9 @@ pub fn test_json_schema_two_qubit_gate_operations(gate: TwoQubitGateOperation) {
     };
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);

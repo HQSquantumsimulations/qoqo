@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -13,7 +13,7 @@
 //! Integration test for public API of Define operations
 
 #[cfg(feature = "json_schema")]
-use jsonschema::{Draft, JSONSchema};
+use jsonschema::{Draft, Validator};
 use qoqo_calculator::Calculator;
 use roqoqo::operations::*;
 #[cfg(feature = "unstable_operation_definition")]
@@ -159,9 +159,9 @@ pub fn definition_float_json_schema() {
     let test_schema = schema_for!(DefinitionFloat);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);
@@ -303,9 +303,9 @@ pub fn definition_complex_json_schema() {
     let test_schema = schema_for!(DefinitionComplex);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);
@@ -447,9 +447,9 @@ pub fn definition_usize_json_schema() {
     let test_schema = schema_for!(DefinitionUsize);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);
@@ -591,9 +591,9 @@ pub fn definition_bit_json_schema() {
     let test_schema = schema_for!(DefinitionBit);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);
@@ -730,9 +730,9 @@ pub fn input_symbolic_json_schema() {
     let test_schema = schema_for!(InputSymbolic);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);
@@ -874,9 +874,9 @@ pub fn input_bit_json_schema() {
     let test_schema = schema_for!(InputBit);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);
@@ -1134,9 +1134,9 @@ pub fn gate_definition_json_schema() {
     let test_schema = schema_for!(GateDefinition);
     let schema = serde_json::to_string(&test_schema).unwrap();
     let schema_value: serde_json::Value = serde_json::from_str(&schema).unwrap();
-    let compiled_schema = JSONSchema::options()
+    let compiled_schema = Validator::options()
         .with_draft(Draft::Draft7)
-        .compile(&schema_value)
+        .build(&schema_value)
         .unwrap();
 
     let validation_result = compiled_schema.validate(&test_value);

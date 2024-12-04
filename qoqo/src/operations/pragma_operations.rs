@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -440,7 +440,6 @@ impl PragmaSetDensityMatrixWrapper {
     ///
     /// Returns:
     ///     np.ndarray: The density matrix (2d array) representing the qubit register.
-
     fn density_matrix(&self) -> Py<PyArray2<Complex64>> {
         Python::with_gil(|py| -> Py<PyArray2<Complex64>> {
             self.internal.density_matrix().to_pyarray_bound(py).unbind()
@@ -1913,6 +1912,24 @@ impl PragmaAnnotatedOpWrapper {
             PragmaAnnotatedOp::minimum_supported_roqoqo_version(&self.internal);
         format!("{}.{}.{}", min_version.0, min_version.1, min_version.2)
     }
+}
+
+/// Wrap function automatically generates functions in these traits.
+#[wrap(Operate, OperatePragma, JsonSchema)]
+#[derive(Eq)]
+/// This PRAGMA sets the number of repetitions for stochastic simulations of the quantum circuit.
+///
+/// This is different from the number of measurements, which is set either with
+/// PragmaSetNumberOfMeasurements of with PragmaRepeatedMeasurement. PragmaSimulationRepetitions
+/// only applies to stochastic simulations, i.e. simulations of quantum circuits that involve either
+/// multiple subsequent measurements on the same qubits, or operations on qubits that have already
+/// been measured, and sets the number of times that the whole circuit is simulated in order to obtain
+/// sufficient statistics.
+///
+/// Args:
+///     repetitions (int): Number of simulation repetitions.
+struct PragmaSimulationRepetitions {
+    repetitions: usize,
 }
 
 #[cfg(test)]

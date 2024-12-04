@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -128,4 +128,243 @@ pub struct Toffoli {
     control_0: usize,
     control_1: usize,
     target: usize,
+}
+
+#[allow(clippy::upper_case_acronyms)]
+#[wrap(OperateGate, OperateThreeQubitGate, JsonSchema)]
+/// Implements ControlledSWAP gate.
+///
+/// .. math::
+///     U = \begin{pmatrix}
+///         1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
+///         \end{pmatrix}
+///
+/// Args:
+///     control (int): The index of the most significant qubit in the unitary representation. Here, the controlling qubit of the operation.
+///     target_0 (int): The index of the second most significant qubit in the unitary representation. Here, the first targeting qubit of the operation.
+///     target_1 (int): The index of the least significant qubit in the unitary representation. Here, the second targeting qubit of the operation.
+pub struct ControlledSWAP {
+    control: usize,
+    target_0: usize,
+    target_1: usize,
+}
+
+#[pymethods]
+impl ControlledSWAPWrapper {
+    #[new]
+    /// Creates new instance of Operation ControlledSWAP
+    fn new(control: usize, target_0: usize, target_1: usize) -> PyResult<Self> {
+        Ok(Self {
+            internal: ControlledSWAP::new(control, target_0, target_1),
+        })
+    }
+    /// Returns true if operation contains symbolic parameters
+    ///
+    /// Returns:
+    ///     bool: Whether or not the operation contains symbolic parameters.
+    fn is_parametrized(&self) -> bool {
+        self.internal.is_parametrized()
+    }
+    /// Returns tags identifying the Operation
+    ///
+    /// Returns:
+    ///     List[str]: The tags identifying the operation
+    fn tags(&self) -> Vec<String> {
+        self.internal.tags().iter().map(|s| s.to_string()).collect()
+    }
+    /// Returns hqslang name of Operation
+    ///
+    /// Returns:
+    ///     str: The name
+    fn hqslang(&self) -> &'static str {
+        self.internal.hqslang()
+    }
+    /// Substitutes internal symbolic parameters with float values
+    ///
+    /// Only available when all symbolic expressions can be evaluated to float with the
+    /// provided parameters.
+    ///
+    /// Args:
+    ///     substitution_parameters (Dict[str, float]): The substituted free parameters
+    ///
+    /// Returns:
+    ///     Operation: The operation with the parameters substituted
+    ///
+    /// Raises:
+    ///     RuntimeError: Parameter Substitution failed
+    fn substitute_parameters(
+        &self,
+        substitution_parameters: std::collections::HashMap<String, f64>,
+    ) -> PyResult<Self> {
+        let mut calculator = qoqo_calculator::Calculator::new();
+        for (key, val) in substitution_parameters.iter() {
+            calculator.set_variable(key, *val);
+        }
+        Ok(Self {
+            internal: self
+                .internal
+                .substitute_parameters(&calculator)
+                .map_err(|x| {
+                    pyo3::exceptions::PyRuntimeError::new_err(format!(
+                        "Parameter Substitution failed: {:?}",
+                        x
+                    ))
+                })?,
+        })
+    }
+    /// Remap qubits in the ControlledSWAP operation
+    ///
+    /// Args:
+    ///     mapping (Dict[int, int]): The mapping to be used in the remapping.
+    ///
+    /// Returns:
+    ///     Operation: The operation with the remapped qubits
+    ///
+    /// Raises:
+    ///     RuntimeError: Qubit remapping failed
+    fn remap_qubits(&self, mapping: HashMap<usize, usize>) -> PyResult<Self> {
+        let new_internal = self
+            .internal
+            .remap_qubits(&mapping)
+            .map_err(|x| PyRuntimeError::new_err(format!("Qubit remapping failed: {:?}", x)))?;
+        Ok(Self {
+            internal: new_internal,
+        })
+    }
+    /// List all involved qubits in the ControlledSWAP operation.
+    ///
+    /// Returns:
+    ///     Union[Set[int], str]: The involved qubits as a set or 'ALL' if all qubits are involved
+    fn involved_qubits(&self) -> PyObject {
+        Python::with_gil(|py| -> PyObject {
+            let involved = self.internal.involved_qubits();
+            match involved {
+                InvolvedQubits::All => {
+                    let pyref: &Bound<PySet> = &PySet::new_bound(py, &["All"]).unwrap();
+                    let pyobject: PyObject = pyref.to_object(py);
+                    pyobject
+                }
+                InvolvedQubits::None => {
+                    let pyref: &Bound<PySet> = &PySet::empty_bound(py).unwrap();
+                    let pyobject: PyObject = pyref.to_object(py);
+                    pyobject
+                }
+                InvolvedQubits::Set(x) => {
+                    let mut vector: Vec<usize> = Vec::new();
+                    for qubit in x {
+                        vector.push(qubit)
+                    }
+                    let pyref: &Bound<PySet> = &PySet::new_bound(py, &vector[..]).unwrap();
+                    let pyobject: PyObject = pyref.to_object(py);
+                    pyobject
+                }
+            }
+        })
+    }
+    /// Copies Operation
+    ///
+    /// For qoqo operations copy is always a deep copy
+    fn __copy__(&self) -> Self {
+        self.clone()
+    }
+    /// Creates deep copy of Operation
+    fn __deepcopy__(&self, _memodict: &Bound<PyAny>) -> Self {
+        self.clone()
+    }
+    /// Returns control qubit of the three-qubit operation
+    pub fn control(&self) -> usize {
+        *self.internal.control_0()
+    }
+    /// Returns target_0 qubit of the three-qubit operation
+    pub fn target_0(&self) -> usize {
+        *self.internal.control_1()
+    }
+    /// Returns target_1 qubit of the three-qubit operation
+    pub fn target_1(&self) -> usize {
+        *self.internal.target()
+    }
+}
+
+#[allow(clippy::upper_case_acronyms)]
+#[wrap(
+    Operate,
+    OperateThreeQubit,
+    OperateGate,
+    OperateThreeQubitGate,
+    JsonSchema
+)]
+/// The phased-shifted double-controlled-Z gate.
+///
+/// The unitary matrix representation is:
+///
+/// .. math::
+///     U = \begin{pmatrix}
+///         1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & e^{i \phi} & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & e^{i \phi} & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & e^{i (2\cdot\phi)} & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & e^{i \phi} & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & e^{i (2\cdot\phi)} & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & e^{i (2\cdot\phi)} & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & 0 & e^{i (3\cdot\phi + \pi)}
+///         \end{pmatrix}
+///
+/// Args:
+///     control_0 (int): The index of the most significant qubit in the unitary representation. Here, the first qubit that controls the application of the phase-shift on the target qubit.
+///     control_1 (int): The index of the second most significant qubit in the unitary representation. Here, the second qubit that controls the application of the phase-shift on the target qubit.
+///     target (int):: The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
+///     phi (CalculatorFloat): The single qubit phase $\phi$.
+///
+pub struct PhaseShiftedControlledControlledZ {
+    control_0: usize,
+    control_1: usize,
+    target: usize,
+    phi: CalculatorFloat,
+}
+
+#[allow(clippy::upper_case_acronyms)]
+#[wrap(
+    Operate,
+    OperateThreeQubit,
+    OperateGate,
+    Rotate,
+    OperateThreeQubitGate,
+    JsonSchema
+)]
+/// The phased-shifted double-controlled-Z gate.
+///
+/// The unitary matrix representation is:
+///
+/// .. math::
+///     U = \begin{pmatrix}
+///         1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & e^{i \phi} & 0 & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & e^{i \phi} & 0 & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & e^{i (2\cdot\phi)} & 0 & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & e^{i \phi} & 0 & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & e^{i (2\cdot\phi)} & 0 & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & e^{i (2\cdot\phi)} & 0 \\\\
+///         0 & 0 & 0 & 0 & 0 & 0 & 0 & e^{i (3\cdot\phi + \theta)}
+///         \end{pmatrix}
+///
+/// Args:
+///     control_0 (int): The index of the most significant qubit in the unitary representation. Here, the first qubit that controls the application of the phase-shift on the target qubit.
+///     control_1 (int): The index of the second most significant qubit in the unitary representation. Here, the second qubit that controls the application of the phase-shift on the target qubit.
+///     target (int):: The index of the least significant qubit in the unitary representation. Here, the qubit phase-shift is applied to.
+///     phi (CalculatorFloat): The single qubit phase $\phi$.
+///     theta (CalculatorFloat): The phase rotation $\theta$.
+///
+pub struct PhaseShiftedControlledControlledPhase {
+    control_0: usize,
+    control_1: usize,
+    target: usize,
+    theta: CalculatorFloat,
+    phi: CalculatorFloat,
 }

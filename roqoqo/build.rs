@@ -1,4 +1,4 @@
-// Copyright © 2021-2023 HQS Quantum Simulations GmbH. All Rights Reserved.
+// Copyright © 2021-2024 HQS Quantum Simulations GmbH. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License. You may obtain a copy of the License at
@@ -16,12 +16,23 @@ use std::fs;
 use std::path::PathBuf;
 use std::process::Command;
 use std::str::FromStr;
+use std::sync::{Mutex, OnceLock};
 use syn::parse::{Parse, ParseStream};
 use syn::punctuated::Punctuated;
 use syn::visit::{self, Visit};
 use syn::{AttrStyle, File, Ident, ItemImpl, ItemStruct, LitStr, Path, Token, Type, TypePath};
 
-const NUMBER_OF_MINOR_VERSIONS: usize = 16;
+const NUMBER_OF_MINOR_VERSIONS: usize = 18;
+
+static AVAILABLE_GATES: OnceLock<Mutex<Vec<String>>> = OnceLock::new();
+
+fn push_available_gate(gate: String) {
+    AVAILABLE_GATES
+        .get_or_init(|| Mutex::new(vec![]))
+        .lock()
+        .expect("Concurrency problem when pushing gate to available gates.")
+        .push(gate);
+}
 
 /// Visitor scanning rust source code for struct belonging to enums
 struct Visitor {
@@ -33,6 +44,8 @@ struct Visitor {
     two_qubit_operations: Vec<Ident>,
     // Identifiers of structs belonging to ThreeQubitOperation enum
     three_qubit_operations: Vec<Ident>,
+    // Identifiers of structs belonging to FourQubitOperation enum
+    four_qubit_operations: Vec<Ident>,
     // Identifiers of structs belonging to MultiQubitOperation enum
     multi_qubit_operations: Vec<Ident>,
     // Identifiers of structs belonging to PragmaOperation enum
@@ -55,6 +68,8 @@ struct Visitor {
     two_qubit_gate_operations: Vec<Ident>,
     // Identifiers of structs belonging to ThreeQubitGateOperation enum
     three_qubit_gate_operations: Vec<Ident>,
+    // Identifiers of structs belonging to FourQubitGateOperation enum
+    four_qubit_gate_operations: Vec<Ident>,
     // Identifiers of structs belonging to MultiQubitGateOperation enum
     multi_qubit_gate_operations: Vec<Ident>,
     // Register of minor point version Operation was introduced in.
@@ -80,6 +95,7 @@ impl Visitor {
             single_qubit_operations: Vec::new(),
             two_qubit_operations: Vec::new(),
             three_qubit_operations: Vec::new(),
+            four_qubit_operations: Vec::new(),
             multi_qubit_operations: Vec::new(),
             pragma_operations: Vec::new(),
             pragma_noise_operations: Vec::new(),
@@ -91,6 +107,7 @@ impl Visitor {
             single_qubit_gate_operations: Vec::new(),
             two_qubit_gate_operations: Vec::new(),
             three_qubit_gate_operations: Vec::new(),
+            four_qubit_gate_operations: Vec::new(),
             multi_qubit_gate_operations: Vec::new(),
             roqoqo_version_register: HashMap::new(),
             mode_gate_operations: Vec::new(),
@@ -203,6 +220,11 @@ impl<'ast> Visit<'ast> for Visitor {
                     self.three_qubit_operations.push(i.ident.clone());
                 }
                 if parsed_arguments.contains("Operate")
+                    && parsed_arguments.contains("OperateFourQubit")
+                {
+                    self.four_qubit_operations.push(i.ident.clone());
+                }
+                if parsed_arguments.contains("Operate")
                     && parsed_arguments.contains("OperateMultiQubit")
                 {
                     self.multi_qubit_operations.push(i.ident.clone());
@@ -248,6 +270,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 }
                 if parsed_arguments.contains("OperateThreeQubitGate") {
                     self.three_qubit_gate_operations.push(i.ident.clone());
+                }
+                if parsed_arguments.contains("OperateFourQubitGate") {
+                    self.four_qubit_gate_operations.push(i.ident.clone());
                 }
                 if parsed_arguments.contains("OperateMultiQubitGate") {
                     self.multi_qubit_gate_operations.push(i.ident.clone());
@@ -323,6 +348,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 if trait_name.as_str() == "OperateThreeQubit" {
                     self.three_qubit_operations.push(id.clone());
                 }
+                if trait_name.as_str() == "OperateFourQubit" {
+                    self.four_qubit_operations.push(id.clone());
+                }
                 if trait_name.as_str() == "OperateMultiQubit" {
                     self.multi_qubit_operations.push(id.clone());
                 }
@@ -371,17 +399,27 @@ impl<'ast> Visit<'ast> for Visitor {
                 if trait_name.as_str() == "ImplementedIn1point15" {
                     self.roqoqo_version_register.insert(id.clone(), 15);
                 }
+                if trait_name.as_str() == "ImplementedIn1point16" {
+                    self.roqoqo_version_register.insert(id.clone(), 16);
+                }
+                if trait_name.as_str() == "ImplementedIn1point17" {
+                    self.roqoqo_version_register.insert(id.clone(), 17);
+                }
                 if trait_name.as_str() == "OperateSingleQubitGate" {
                     self.single_qubit_gate_operations.push(id.clone());
                 }
                 if trait_name.as_str() == "OperateGate" {
                     self.gate_operations.push(id.clone());
+                    push_available_gate(id.to_string());
                 }
                 if trait_name.as_str() == "OperateTwoQubitGate" {
                     self.two_qubit_gate_operations.push(id.clone());
                 }
                 if trait_name.as_str() == "OperateThreeQubitGate" {
                     self.three_qubit_gate_operations.push(id.clone());
+                }
+                if trait_name.as_str() == "OperateFourQubitGate" {
+                    self.four_qubit_gate_operations.push(id.clone());
                 }
                 if trait_name.as_str() == "OperatePragmaNoise" {
                     self.pragma_noise_operations.push(id.clone());
@@ -421,6 +459,7 @@ const SOURCE_FILES: &[&str] = &[
     "src/operations/pragma_operations.rs",
     "src/operations/two_qubit_gate_operations.rs",
     "src/operations/three_qubit_gate_operations.rs",
+    "src/operations/four_qubit_gate_operations.rs",
     "src/operations/multi_qubit_gate_operations.rs",
     "src/operations/measurement_operations.rs",
     "src/operations/define_operations.rs",
@@ -467,6 +506,7 @@ fn main() {
 
         two_qubit_operations_quotes.extend(res);
     }
+
     // Construct TokenStreams for variants of operation enum
     let mut three_qubit_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
     for i in 0..NUMBER_OF_MINOR_VERSIONS {
@@ -474,6 +514,15 @@ fn main() {
             build_quotes(&vis, i, vis.three_qubit_operations.clone());
 
         three_qubit_operations_quotes.extend(res);
+    }
+
+    // Construct TokenStreams for variants of operation enum
+    let mut four_qubit_operations_quotes: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.four_qubit_operations.clone());
+
+        four_qubit_operations_quotes.extend(res);
     }
 
     // Construct TokenStreams for variants of operation enum
@@ -560,6 +609,14 @@ fn main() {
     }
 
     // Construct TokenStreams for variants of operation enum
+    let mut four_qubit_gate_operations_quote: Vec<proc_macro2::TokenStream> = Vec::new();
+    for i in 0..NUMBER_OF_MINOR_VERSIONS {
+        let res: Vec<proc_macro2::TokenStream> =
+            build_quotes(&vis, i, vis.four_qubit_gate_operations.clone());
+        four_qubit_gate_operations_quote.extend(res);
+    }
+
+    // Construct TokenStreams for variants of operation enum
     let mut multi_qubit_gate_operations_quote: Vec<proc_macro2::TokenStream> = Vec::new();
     for i in 0..NUMBER_OF_MINOR_VERSIONS {
         let res: Vec<proc_macro2::TokenStream> =
@@ -617,10 +674,16 @@ fn main() {
         spins_analog_operations_quote.extend(res);
     }
 
+    let available_gates = AVAILABLE_GATES.get().unwrap().lock().unwrap().clone();
+    let available_gates_length = available_gates.len();
+
     // Construct TokenStream for auto-generated rust file containing the enums
     let final_quote = quote! {
 
         //use crate::operations::*;
+
+        /// List of hqslang of all available gates
+        pub const AVAILABLE_GATES_HQSLANG: [&str; #available_gates_length] = [#(#available_gates),*];
 
         /// Enum of all Operations implementing [Operate]
         #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, Substitute, SupportedVersion)]
@@ -757,6 +820,15 @@ fn main() {
         #[non_exhaustive]
         pub enum ThreeQubitGateOperation {
             #(#three_qubit_gate_operations_quote),*
+        }
+
+        /// Enum of all Operations implementing [OperateFourQubitGate]
+        #[derive(Debug, Clone, PartialEq, InvolveQubits, Operate, OperateTryFromEnum, Substitute, OperateGate, OperateFourQubit, OperateFourQubitGate,  SupportedVersion)]
+        #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
+        #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
+        #[non_exhaustive]
+        pub enum FourQubitGateOperation {
+            #(#four_qubit_gate_operations_quote),*
         }
 
         /// Enum of all Operations implementing [OperateMultiQubitGate]
