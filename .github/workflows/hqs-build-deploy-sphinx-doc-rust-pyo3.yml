@@ -15,7 +15,7 @@ jobs:
           python-version: "3.11"
       - uses: peaceiris/actions-mdbook@v1
         with:
-          version: latest
+          mdbook-version: latest
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
