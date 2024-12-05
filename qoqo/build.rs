@@ -345,7 +345,7 @@ Raises:
                         }
                         }
                     };
-                    if meth_doc.eq("") {
+                    if meth_doc.is_empty() {
                         continue;
                     }
                     let meth_args =
