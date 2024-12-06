@@ -10,6 +10,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 * Added the documentation from qoqo_examples.
 * Added `PragmaSimulationRepetitions` operation.
+* Added the `run_parallel` method to QuantumProgram under the `unstable_parallel_run` feature.
 
 ## 1.16.1
 
