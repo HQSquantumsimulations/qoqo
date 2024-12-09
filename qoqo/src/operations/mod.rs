@@ -200,6 +200,7 @@ pub fn operations(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     m.add_class::<PhaseShiftedControlledControlledPhaseWrapper>()?;
 
     // 1.17
+    #[cfg(feature = "unstable_simulation_repetitions")]
     m.add_class::<PragmaSimulationRepetitionsWrapper>()?;
 
     Ok(())

@@ -4020,6 +4020,7 @@ fn pragma_annotated_op_json_schema() {
     assert!(validation_result.is_ok());
 }
 
+#[cfg(feature = "unstable_simulation_repetitions")]
 /// Test PragmaSimulationRepetitions inputs and involved qubits
 #[test]
 fn pragma_simulation_repetitions_inputs_qubits() {
@@ -4032,6 +4033,7 @@ fn pragma_simulation_repetitions_inputs_qubits() {
     assert_eq!(pragma.involved_qubits(), InvolvedQubits::None);
 }
 
+#[cfg(feature = "unstable_simulation_repetitions")]
 /// Test PragmaSimulationRepetitions standard derived traits (Debug, Clone, PartialEq)
 #[test]
 fn pragma_simulation_repetitions_simple_traits() {
@@ -4055,6 +4057,7 @@ fn pragma_simulation_repetitions_simple_traits() {
     assert!(pragma != pragma_1);
 }
 
+#[cfg(feature = "unstable_simulation_repetitions")]
 /// Test PragmaSimulationRepetitions Serialization and Deserialization traits (readable)
 #[cfg(feature = "serialize")]
 #[test]
@@ -4074,6 +4077,7 @@ fn pragma_simulation_repetitions_serde_readable() {
     );
 }
 
+#[cfg(feature = "unstable_simulation_repetitions")]
 /// Test PragmaSimulationRepetitions Serialization and Deserialization traits (compact)
 #[cfg(feature = "serialize")]
 #[test]
@@ -4093,6 +4097,7 @@ fn pragma_simulation_repetitions_serde_compact() {
     );
 }
 
+#[cfg(feature = "unstable_simulation_repetitions")]
 /// Test PragmaSimulationRepetitions JsonSchema trait
 #[cfg(feature = "json_schema")]
 #[test]
