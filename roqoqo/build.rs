@@ -180,11 +180,10 @@ impl<'ast> Visit<'ast> for Visitor {
     // Only visit struct declarations
     fn visit_item_struct(&mut self, i: &'ast ItemStruct) {
         // Check attributes
-        for att in i.attrs.clone() {
-            let path = att.path().get_ident().map(|id| id.to_string());
-            // TOFIX: REMOVE WHEN STABILISED
+        for att in &i.attrs {
+            // TEMP: REMOVE WHEN STABILISED
             if matches!(att.style, AttrStyle::Outer)
-                && path == Some("cfg".to_string())
+                && att.path().is_ident("cfg")
                 && !cfg!(feature = "unstable_operation_definition")
             {
                 let cfg_feature_name: CfgFeatureMacroArgument =
@@ -194,21 +193,9 @@ impl<'ast> Visit<'ast> for Visitor {
                 }
             }
 
-            if matches!(att.style, AttrStyle::Outer)
-                && path == Some("cfg".to_string())
-                && !cfg!(feature = "unstable_simulation_repetitions")
-            {
-                let cfg_feature_name: CfgFeatureMacroArgument =
-                    att.parse_args().expect("parsing failed 1");
-
-                if cfg_feature_name.0.contains("unstable_simulation_repetitions") {
-                    return;
-                }
-            }
-
             // only consider the derive attribute, if no derive attribute is present don't add anything
             // to the internal storage of the visitor
-            if matches!(att.style, AttrStyle::Outer) && path == Some("derive".to_string()) {
+            if matches!(att.style, AttrStyle::Outer) && att.path().is_ident("derive") {
                 //let tokens: TokenStream = att.tokens.into();
                 let parsed_arguments: DeriveMacroArguments =
                     att.parse_args().expect("parsing failed 1");
@@ -323,7 +310,6 @@ impl<'ast> Visit<'ast> for Visitor {
             }
         }
 
-        panic!("pragmas: {:?}", self.pragma_operations);
 
         visit::visit_item_struct(self, i);
     }
@@ -350,6 +336,24 @@ impl<'ast> Visit<'ast> for Visitor {
                         .ident
                         .clone(),
                 };
+
+                // TEMP remove this block when PragmaSimulationRepetitions is stable
+                for att in &i.attrs {
+                    // check outer attributes
+                    if matches!(att.style, AttrStyle::Outer)
+                        // if attribute is cfg
+                        && att.path().is_ident("cfg")
+                        // and if the feature is not active
+                        && !cfg!(feature = "unstable_simulation_repetitions")
+                    {
+                        let cfg_feature_name: CfgFeatureMacroArgument =
+                            att.parse_args().expect("parsing failed 1");
+
+                        if cfg_feature_name.0.contains("unstable_simulation_repetitions") {
+                            return;
+                        }
+                    }
+                }
 
                 if trait_name.as_str() == "Operate" {
                     self.operations.push(id.clone());

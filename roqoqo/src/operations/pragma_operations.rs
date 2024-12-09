@@ -1417,7 +1417,7 @@ impl InvolveQubits for PragmaAnnotatedOp {
 /// This PRAGMA sets the number of repetitions for stochastic simulations of the quantum circuit.
 ///
 /// This is different from the number of measurements, which is set either with
-/// PragmaSetNumberOfMeasurements of with PragmaRepeatedMeasurement. PragmaSimulationRepetitions
+/// PragmaSetNumberOfMeasurements or with PragmaRepeatedMeasurement. PragmaSimulationRepetitions
 /// only applies to stochastic simulations, i.e. simulations of quantum circuits that involve either
 /// multiple subsequent measurements on the same qubits, or operations on qubits that have already
 /// been measured, and sets the number of times that the whole circuit is simulated in order to obtain
