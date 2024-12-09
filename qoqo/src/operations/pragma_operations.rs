@@ -1928,6 +1928,7 @@ impl PragmaAnnotatedOpWrapper {
 ///
 /// Args:
 ///     repetitions (int): Number of simulation repetitions.
+#[cfg(feature = "unstable_simulation_repetitions")]
 struct PragmaSimulationRepetitions {
     repetitions: usize,
 }

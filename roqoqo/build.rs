@@ -193,6 +193,19 @@ impl<'ast> Visit<'ast> for Visitor {
                     return;
                 }
             }
+
+            if matches!(att.style, AttrStyle::Outer)
+                && path == Some("cfg".to_string())
+                && !cfg!(feature = "unstable_simulation_repetitions")
+            {
+                let cfg_feature_name: CfgFeatureMacroArgument =
+                    att.parse_args().expect("parsing failed 1");
+
+                if cfg_feature_name.0.contains("unstable_simulation_repetitions") {
+                    return;
+                }
+            }
+
             // only consider the derive attribute, if no derive attribute is present don't add anything
             // to the internal storage of the visitor
             if matches!(att.style, AttrStyle::Outer) && path == Some("derive".to_string()) {
@@ -309,6 +322,8 @@ impl<'ast> Visit<'ast> for Visitor {
                 }
             }
         }
+
+        panic!("pragmas: {:?}", self.pragma_operations);
 
         visit::visit_item_struct(self, i);
     }
@@ -470,8 +485,9 @@ const SOURCE_FILES: &[&str] = &[
 ];
 
 fn main() {
-    // create a visitor that will go through source code and collect the identifiers of structs that belong ad variants
-    // in the Operation enum, those that belong in the SingleQubitGateOperationEnum and so on
+    // create a visitor that will go through source code and collect the identifiers of structs that
+    // belong in variants in the Operation enum, those that belong in the
+    // SingleQubitGateOperationEnum and so on
     let mut vis = Visitor::new();
     // iterate over all source files where Operations are supposed to be located
     for source_location in SOURCE_FILES {
@@ -679,9 +695,6 @@ fn main() {
 
     // Construct TokenStream for auto-generated rust file containing the enums
     let final_quote = quote! {
-
-        //use crate::operations::*;
-
         /// List of hqslang of all available gates
         pub const AVAILABLE_GATES_HQSLANG: [&str; #available_gates_length] = [#(#available_gates),*];
 

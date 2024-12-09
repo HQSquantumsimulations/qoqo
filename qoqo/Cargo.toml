@@ -81,3 +81,4 @@ unstable_chain_with_environment = [
 ]
 unstable_analog_operations = ["roqoqo/unstable_analog_operations"]
 unstable_operation_definition = ["roqoqo/unstable_operation_definition"]
+unstable_simulation_repetitions = ["roqoqo/unstable_simulation_repetitions"]
