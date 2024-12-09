@@ -310,7 +310,6 @@ impl<'ast> Visit<'ast> for Visitor {
             }
         }
 
-
         visit::visit_item_struct(self, i);
     }
 
@@ -349,7 +348,10 @@ impl<'ast> Visit<'ast> for Visitor {
                         let cfg_feature_name: CfgFeatureMacroArgument =
                             att.parse_args().expect("parsing failed 1");
 
-                        if cfg_feature_name.0.contains("unstable_simulation_repetitions") {
+                        if cfg_feature_name
+                            .0
+                            .contains("unstable_simulation_repetitions")
+                        {
                             return;
                         }
                     }

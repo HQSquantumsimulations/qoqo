@@ -106,7 +106,7 @@ impl<'ast> Visit<'ast> for Visitor {
         // Check attributes
         for att in itemstruct.attrs.clone() {
             let path = att.path().get_ident().map(|id| id.to_string());
-            // TOFIX: REMOVE WHEN STABILISED
+            // TEMP: REMOVE WHEN STABILISED
             if matches!(att.style, AttrStyle::Outer)
                 && path == Some("cfg".to_string())
                 && !cfg!(feature = "unstable_operation_definition")
@@ -116,8 +116,10 @@ impl<'ast> Visit<'ast> for Visitor {
                 if cfg_feature_name.0.contains("unstable_operation_definition") {
                     return;
                 }
-            // }
-            } else if matches!(att.style, AttrStyle::Outer)
+            }
+
+            // TEMP: REMOVE WHEN STABILISED
+            if matches!(att.style, AttrStyle::Outer)
                 && path == Some("cfg".to_string())
                 && !cfg!(feature = "unstable_simulation_repetitions")
             {
@@ -148,7 +150,7 @@ impl<'ast> Visit<'ast> for Visitor {
             Some(id) => Some(id.clone()),
             _ => i.path.segments.last().map(|segment| segment.ident.clone()),
         };
-        // TOFIX: REMOVE WHEN STABILISED
+        // TEMP: REMOVE WHEN STABILISED
         if i.tokens.clone().into_iter().any(|tok| {
             tok.to_string().contains("CallDefinedGate")
                 || tok.to_string().contains("DefinitionGate")
@@ -157,6 +159,7 @@ impl<'ast> Visit<'ast> for Visitor {
             return;
         }
 
+        // TEMP: REMOVE WHEN STABILISED
         if i.tokens
             .clone()
             .into_iter()
