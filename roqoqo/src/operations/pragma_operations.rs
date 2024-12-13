@@ -1417,12 +1417,13 @@ impl InvolveQubits for PragmaAnnotatedOp {
 /// This PRAGMA sets the number of repetitions for stochastic simulations of the quantum circuit.
 ///
 /// This is different from the number of measurements, which is set either with
-/// PragmaSetNumberOfMeasurements of with PragmaRepeatedMeasurement. PragmaSimulationRepetitions
+/// PragmaSetNumberOfMeasurements or with PragmaRepeatedMeasurement. PragmaSimulationRepetitions
 /// only applies to stochastic simulations, i.e. simulations of quantum circuits that involve either
 /// multiple subsequent measurements on the same qubits, or operations on qubits that have already
 /// been measured, and sets the number of times that the whole circuit is simulated in order to obtain
 /// sufficient statistics.
 ///
+#[cfg(feature = "unstable_simulation_repetitions")]
 #[derive(Debug, Clone, PartialEq, Eq, roqoqo_derive::Substitute, roqoqo_derive::OperatePragma)]
 #[cfg_attr(feature = "serialize", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "json_schema", derive(schemars::JsonSchema))]
@@ -1430,6 +1431,7 @@ pub struct PragmaSimulationRepetitions {
     repetitions: usize,
 }
 
+#[cfg(feature = "unstable_simulation_repetitions")]
 #[allow(non_upper_case_globals)]
 const TAGS_PragmaSimulationRepetitions: &[&str; 3] = &[
     "Operation",
@@ -1438,6 +1440,7 @@ const TAGS_PragmaSimulationRepetitions: &[&str; 3] = &[
 ];
 
 // Implementing the InvolveQubits trait for PragmaSimulationRepetitions.
+#[cfg(feature = "unstable_simulation_repetitions")]
 impl InvolveQubits for PragmaSimulationRepetitions {
     /// Lists all involved qubits (here, none).
     fn involved_qubits(&self) -> InvolvedQubits {
@@ -1445,6 +1448,7 @@ impl InvolveQubits for PragmaSimulationRepetitions {
     }
 }
 
+#[cfg(feature = "unstable_simulation_repetitions")]
 #[cfg_attr(feature = "dynamic", typetag::serde)]
 impl Operate for PragmaSimulationRepetitions {
     fn tags(&self) -> &'static [&'static str] {
@@ -1458,6 +1462,7 @@ impl Operate for PragmaSimulationRepetitions {
     }
 }
 
+#[cfg(feature = "unstable_simulation_repetitions")]
 impl PragmaSimulationRepetitions {
     /// Create a PragmaSimulationRepetitions instance.
     ///
@@ -1478,8 +1483,10 @@ impl PragmaSimulationRepetitions {
     }
 }
 
+#[cfg(feature = "unstable_simulation_repetitions")]
 impl super::ImplementedIn1point17 for PragmaSimulationRepetitions {}
 
+#[cfg(feature = "unstable_simulation_repetitions")]
 impl SupportedVersion for PragmaSimulationRepetitions {
     fn minimum_supported_roqoqo_version(&self) -> (u32, u32, u32) {
         (1, 17, 0)

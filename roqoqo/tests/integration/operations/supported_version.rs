@@ -392,6 +392,7 @@ fn test_version_1_16_0_four_qubit_gate(operation: operations::FourQubitGateOpera
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 16, 0));
 }
 
+#[cfg(feature = "unstable_simulation_repetitions")]
 #[test_case(operations::Operation::from(operations::PragmaSimulationRepetitions::new(100)))]
 fn test_version_1_17_0_pragmas(operation: operations::Operation) {
     assert_eq!(operation.minimum_supported_roqoqo_version(), (1, 17, 0));

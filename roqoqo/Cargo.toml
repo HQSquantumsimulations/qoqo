@@ -56,7 +56,6 @@ rand = { version = "~0.8" }
 rustdoc-args = ["--document-private-items"]
 
 [features]
-
 default = ["serialize", "circuitdag"]
 dynamic = ["typetag", "dyn-clone"]
 unstable_qoqo_devices = []
@@ -79,3 +78,4 @@ circuitdag = ["petgraph"]
 unstable_chain_with_environment = []
 unstable_analog_operations = []
 unstable_operation_definition = []
+unstable_simulation_repetitions = []

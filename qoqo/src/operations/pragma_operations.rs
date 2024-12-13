@@ -1914,6 +1914,7 @@ impl PragmaAnnotatedOpWrapper {
     }
 }
 
+#[cfg(feature = "unstable_simulation_repetitions")]
 /// Wrap function automatically generates functions in these traits.
 #[wrap(Operate, OperatePragma, JsonSchema)]
 #[derive(Eq)]
