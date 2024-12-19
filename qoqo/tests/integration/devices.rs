@@ -11,7 +11,7 @@
 // limitations under the License.
 
 use ndarray::{array, Array2};
-use numpy::{pyarray_bound, PyArray2};
+use numpy::{pyarray_bound, PyArray2, PyReadonlyArray2};
 use pyo3::prelude::*;
 use qoqo::devices::{AllToAllDeviceWrapper, GenericDeviceWrapper, SquareLatticeDeviceWrapper};
 use roqoqo::devices::{AllToAllDevice, GenericDevice, SquareLatticeDevice};
@@ -139,9 +139,9 @@ fn test_to_from_json(device: Py<PyAny>) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let serialised = device.call_method0(py, "to_json").unwrap();
-        let new = device.clone();
+        let new = device.clone_ref(py);
         let deserialised = new
-            .call_method1(py, "from_json", (serialised.clone(),))
+            .call_method1(py, "from_json", (serialised.clone_ref(py),))
             .unwrap();
 
         let vec: Vec<u8> = Vec::new();
@@ -169,9 +169,9 @@ fn test_to_from_bincode(device: Py<PyAny>) {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let serialised = device.call_method0(py, "to_bincode").unwrap();
-        let new = device.clone();
+        let new = device.clone_ref(py);
         let deserialised = new
-            .call_method1(py, "from_bincode", (serialised.clone(),))
+            .call_method1(py, "from_bincode", (serialised.clone_ref(py),))
             .unwrap();
 
         let vec: Vec<u8> = Vec::new();
@@ -343,10 +343,8 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
         let matrix_test2 = matrix_py2
-            .downcast_bound::<PyArray2<f64>>(py)
+            .extract::<PyReadonlyArray2<f64>>(py)
             .unwrap()
-            .as_gil_ref()
-            .readonly()
             .as_array()
             .to_owned();
         assert_eq!(matrix_test2, pyarray_testmatrix);
@@ -368,10 +366,8 @@ fn test_decoherence_rates_all(device: Py<PyAny>) {
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
         let matrix_test2 = matrix_py2
-            .downcast_bound::<PyArray2<f64>>(py)
+            .extract::<PyReadonlyArray2<f64>>(py)
             .unwrap()
-            .as_gil_ref()
-            .readonly()
             .as_array()
             .to_owned();
         assert_eq!(matrix_test2, pyarray_testmatrix);
@@ -390,10 +386,8 @@ fn test_decoherence_rates(device: Py<PyAny>) {
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
         let matrix_test = matrix_py
-            .downcast_bound::<PyArray2<f64>>(py)
+            .extract::<PyReadonlyArray2<f64>>(py)
             .unwrap()
-            .as_gil_ref()
-            .readonly()
             .as_array()
             .to_owned();
         assert_eq!(matrix_test, matrix_zeros_py);
@@ -402,10 +396,8 @@ fn test_decoherence_rates(device: Py<PyAny>) {
             .call_method1(py, "qubit_decoherence_rates", (100_i64,))
             .unwrap();
         let matrix2_test = matrix2_py
-            .downcast_bound::<PyArray2<f64>>(py)
+            .extract::<PyReadonlyArray2<f64>>(py)
             .unwrap()
-            .as_gil_ref()
-            .readonly()
             .as_array()
             .to_owned();
         assert_eq!(matrix2_test, matrix_zeros_py);
@@ -436,10 +428,8 @@ fn test_decoherence_rates(device: Py<PyAny>) {
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
         let matrix_test2 = matrix_py2
-            .downcast_bound::<PyArray2<f64>>(py)
+            .extract::<PyReadonlyArray2<f64>>(py)
             .unwrap()
-            .as_gil_ref()
-            .readonly()
             .as_array()
             .to_owned();
         assert_eq!(matrix_test2, pyarray_testmatrix);
@@ -463,10 +453,8 @@ fn test_decoherence_rates(device: Py<PyAny>) {
             .call_method1(py, "qubit_decoherence_rates", (0_i64,))
             .unwrap();
         let matrix_test2 = matrix_py2
-            .downcast_bound::<PyArray2<f64>>(py)
+            .extract::<PyReadonlyArray2<f64>>(py)
             .unwrap()
-            .as_gil_ref()
-            .readonly()
             .as_array()
             .to_owned();
         assert_eq!(matrix_test2, pyarray_testmatrix);

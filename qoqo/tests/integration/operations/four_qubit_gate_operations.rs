@@ -12,7 +12,7 @@
 
 use ndarray::Array2;
 use num_complex::Complex64;
-use numpy::PyArray2;
+use numpy::PyReadonlyArray2;
 use pyo3::prelude::*;
 use qoqo::operations::{
     convert_operation_to_pyobject, TripleControlledPauliXWrapper, TripleControlledPauliZWrapper,
@@ -226,10 +226,8 @@ fn test_pyo3_unitarymatrix(input_operation: Operation) {
         let operation = convert_operation_to_pyobject(input_operation.clone()).unwrap();
         let py_result = operation.call_method0(py, "unitary_matrix").unwrap();
         let result_matrix = py_result
-            .downcast_bound::<PyArray2<Complex64>>(py)
+            .extract::<PyReadonlyArray2<Complex64>>(py)
             .unwrap()
-            .as_gil_ref()
-            .readonly()
             .as_array()
             .to_owned();
 
@@ -271,7 +269,7 @@ fn test_pyo3_copy_deepcopy(input_operation: Operation) {
 
         let comparison_copy = copy_op
             .bind(py)
-            .call_method1("__eq__", (copy_deepcopy_param.clone(),))
+            .call_method1("__eq__", (copy_deepcopy_param.clone_ref(py),))
             .unwrap()
             .extract::<bool>()
             .unwrap();

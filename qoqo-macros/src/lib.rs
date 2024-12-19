@@ -154,7 +154,7 @@ pub fn wrap(
             ///
             pub fn superoperator(&self) -> PyResult<Py<PyArray2<f64>>>{
                 Python::with_gil(|py| -> PyResult<Py<PyArray2<f64>>> {
-                    Ok(self.internal.superoperator().unwrap().to_pyarray_bound(py).as_gil_ref().into())
+                    Ok(self.internal.superoperator().unwrap().to_pyarray_bound(py).into())
                 })
             }
             /// Return the power of the noise gate
@@ -417,7 +417,6 @@ pub fn wrap(
                 Python::with_gil(|py| -> PyResult<Py<PyArray2<Complex64>>> {
                     Ok(self.internal.unitary_matrix().map_err(|x| PyValueError::new_err(format!("Error symbolic operation cannot return float unitary matrix {:?}",x)))?
                         .to_pyarray_bound(py)
-                        .as_gil_ref()
                         .into())
                 })
             }
@@ -702,7 +701,7 @@ pub fn wrap(
             ///
             fn __richcmp__(&self, other: &Bound<PyAny>, op: pyo3::class::basic::CompareOp) -> PyResult<bool> {
                 let other: Operation = crate::operations::convert_pyany_to_operation(other).map_err(|x| {
-                    pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}",x))
+                    pyo3::exceptions::PyTypeError::new_err(format!("Right hand side cannot be converted to Operation {:?}", x))
                 })?;
                 match op {
                     pyo3::class::basic::CompareOp::Eq => Ok(Operation::from(self.internal.clone()) == other),
@@ -761,7 +760,7 @@ fn extract_fields_with_types(ds: DataStruct) -> Vec<(Ident, Option<String>, Type
         };
         if let Some(ref x) = type_string{
             if x.as_str() == "Option"{
-           let inner_type = match &type_path.segments.iter().next().unwrap().arguments{
+           let inner_type: Option<String> = match &type_path.segments.iter().next().unwrap().arguments{
                PathArguments::AngleBracketed(angle_argumnets) =>  match angle_argumnets.args.iter().next().unwrap() {
                GenericArgument::Type(Type::Path(TypePath{path:innerty,..})) => match innerty.get_ident(){
                    Some(ident_path) => Some(ident_path.to_string()),

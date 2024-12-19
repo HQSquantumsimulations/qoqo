@@ -54,6 +54,7 @@ pub struct ContinuousDecoherenceModelWrapper {
 impl ContinuousDecoherenceModelWrapper {
     /// Create a new ContinuousDecoherenceModel
     #[new]
+    #[pyo3(signature = (noise_operator=None))]
     pub fn new(noise_operator: Option<&Bound<PyAny>>) -> PyResult<Self> {
         if let Some(lindblad_operator) = noise_operator {
             let noise_operator: struqture::spins::PlusMinusLindbladNoiseOperator =
@@ -100,7 +101,7 @@ impl ContinuousDecoherenceModelWrapper {
     #[staticmethod]
     #[pyo3(text_signature = "(input)")]
     pub fn from_bincode(input: &Bound<PyAny>) -> PyResult<ContinuousDecoherenceModelWrapper> {
-        let bytes = input.as_gil_ref().extract::<Vec<u8>>().map_err(|_| {
+        let bytes = input.as_ref().extract::<Vec<u8>>().map_err(|_| {
             pyo3::exceptions::PyTypeError::new_err("Input cannot be converted to byte array")
         })?;
         let noise_model: NoiseModel = bincode::deserialize(&bytes[..]).map_err(|_| {

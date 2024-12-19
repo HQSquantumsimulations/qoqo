@@ -71,7 +71,9 @@ fn test_default() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let circuit = new_circuit(py);
-        circuit.call_method1("add", (operation.clone(),)).unwrap();
+        circuit
+            .call_method1("add", (operation.clone_ref(py),))
+            .unwrap();
         let circuit_wrapper = circuit.extract::<CircuitWrapper>();
 
         let helper_ne: bool = CircuitWrapper::default() != circuit_wrapper.unwrap();
@@ -168,9 +170,15 @@ fn test_count_occurences() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let circuit = new_circuit(py);
-        circuit.call_method1("add", (operation1.clone(),)).unwrap();
-        circuit.call_method1("add", (operation2.clone(),)).unwrap();
-        circuit.call_method1("add", (operation3.clone(),)).unwrap();
+        circuit
+            .call_method1("add", (operation1.clone_ref(py),))
+            .unwrap();
+        circuit
+            .call_method1("add", (operation2.clone_ref(py),))
+            .unwrap();
+        circuit
+            .call_method1("add", (operation3.clone_ref(py),))
+            .unwrap();
 
         let comp_op = usize::extract_bound(
             &circuit
@@ -222,9 +230,15 @@ fn test_get_operation_types() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let circuit = new_circuit(py);
-        circuit.call_method1("add", (operation1.clone(),)).unwrap();
-        circuit.call_method1("add", (operation2.clone(),)).unwrap();
-        circuit.call_method1("add", (operation3.clone(),)).unwrap();
+        circuit
+            .call_method1("add", (operation1.clone_ref(py),))
+            .unwrap();
+        circuit
+            .call_method1("add", (operation2.clone_ref(py),))
+            .unwrap();
+        circuit
+            .call_method1("add", (operation3.clone_ref(py),))
+            .unwrap();
 
         let mut op_types: HashSet<String> = HashSet::new();
         op_types.insert("DefinitionBit".to_owned());
@@ -464,7 +478,7 @@ fn test_single_index_access_get() {
         .unwrap();
 
         circuit
-            .call_method1("__setitem__", (1, operation2.clone()))
+            .call_method1("__setitem__", (1, operation2.clone_ref(py)))
             .unwrap();
 
         let comp_op = circuit.call_method1("get", (1,)).unwrap();
@@ -552,8 +566,12 @@ fn test_definitions() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let circuit = new_circuit(py);
-        circuit.call_method1("add", (operation1.clone(),)).unwrap();
-        circuit.call_method1("add", (operation2.clone(),)).unwrap();
+        circuit
+            .call_method1("add", (operation1.clone_ref(py),))
+            .unwrap();
+        circuit
+            .call_method1("add", (operation2.clone_ref(py),))
+            .unwrap();
 
         let comp_op = circuit.call_method0("definitions").unwrap();
         let comparison = bool::extract_bound(
@@ -576,8 +594,12 @@ fn test_operations() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let circuit = new_circuit(py);
-        circuit.call_method1("add", (operation1.clone(),)).unwrap();
-        circuit.call_method1("add", (operation2.clone(),)).unwrap();
+        circuit
+            .call_method1("add", (operation1.clone_ref(py),))
+            .unwrap();
+        circuit
+            .call_method1("add", (operation2.clone_ref(py),))
+            .unwrap();
 
         let comp_op = circuit.call_method0("operations").unwrap();
         let comparison = bool::extract_bound(
@@ -600,8 +622,12 @@ fn test_filter_by_tag() {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let circuit = new_circuit(py);
-        circuit.call_method1("add", (operation1.clone(),)).unwrap();
-        circuit.call_method1("add", (operation2.clone(),)).unwrap();
+        circuit
+            .call_method1("add", (operation1.clone_ref(py),))
+            .unwrap();
+        circuit
+            .call_method1("add", (operation2.clone_ref(py),))
+            .unwrap();
         populate_circuit_rotatex(py, &circuit, 0, 2);
 
         let comp_op = circuit
@@ -641,7 +667,9 @@ fn test_circuit_add_function(added_operation: Operation) {
     Python::with_gil(|py| {
         let operation = convert_operation_to_pyobject(added_operation).unwrap();
         let circuit = new_circuit(py);
-        circuit.call_method1("add", (operation.clone(),)).unwrap();
+        circuit
+            .call_method1("add", (operation.clone_ref(py),))
+            .unwrap();
 
         let comp_op = circuit.call_method1("__getitem__", (0,)).unwrap();
         let comparison =
@@ -682,9 +710,9 @@ fn test_fmt_circuititerator() {
         let binding = &new_circuit.call_method0("__iter__").unwrap();
         let circuit_iter = binding.downcast::<OperationIteratorWrapper>().unwrap();
 
-        let fmt = "RefCell { value: OperationIteratorWrapper { internal: OperationIterator { definition_iter: IntoIter([]), operation_iter: IntoIter([RotateX(RotateX { qubit: 0, theta: Float(0.0) }), RotateX(RotateX { qubit: 1, theta: Float(1.0) })]) } } }";
+        let fmt = "OperationIteratorWrapper { internal: OperationIterator { definition_iter: IntoIter([]), operation_iter: IntoIter([RotateX(RotateX { qubit: 0, theta: Float(0.0) }), RotateX(RotateX { qubit: 1, theta: Float(1.0) })]) } }";
 
-        assert_eq!(format!("{:?}", circuit_iter.as_gil_ref()), fmt);
+        assert_eq!(format!("{:?}", circuit_iter.borrow()), fmt);
     })
 }
 
@@ -705,7 +733,7 @@ fn test_richcmp() {
         assert!(!comparison);
         let comparison = bool::extract_bound(
             &circuit_one
-                .call_method1("__eq__", (operation1.clone(),))
+                .call_method1("__eq__", (operation1.clone_ref(py),))
                 .unwrap(),
         )
         .unwrap();
@@ -717,7 +745,7 @@ fn test_richcmp() {
         assert!(comparison);
         let comparison = bool::extract_bound(
             &circuit_one
-                .call_method1("__ne__", (operation1.clone(),))
+                .call_method1("__ne__", (operation1.clone_ref(py),))
                 .unwrap(),
         )
         .unwrap();
@@ -740,13 +768,15 @@ fn test_circuit_iadd_magic_method() {
     Python::with_gil(|py| {
         let added_circuit = new_circuit(py);
         added_circuit
-            .call_method1("add", (operation3.clone(),))
+            .call_method1("add", (operation3.clone_ref(py),))
             .unwrap();
 
         let circuit = new_circuit(py);
-        circuit.call_method1("add", (operation1.clone(),)).unwrap();
         circuit
-            .call_method1("__iadd__", (operation2.clone(),))
+            .call_method1("add", (operation1.clone_ref(py),))
+            .unwrap();
+        circuit
+            .call_method1("__iadd__", (operation2.clone_ref(py),))
             .unwrap();
         circuit.call_method1("__iadd__", (added_circuit,)).unwrap();
 
@@ -782,13 +812,15 @@ fn test_circuit_add_magic_method() {
     Python::with_gil(|py| {
         let added_circuit = new_circuit(py);
         added_circuit
-            .call_method1("add", (operation3.clone(),))
+            .call_method1("add", (operation3.clone_ref(py),))
             .unwrap();
 
         let circuit = new_circuit(py);
-        circuit.call_method1("add", (operation1.clone(),)).unwrap();
+        circuit
+            .call_method1("add", (operation1.clone_ref(py),))
+            .unwrap();
         let circuit1 = circuit
-            .call_method1("__add__", (operation2.clone(),))
+            .call_method1("__add__", (operation2.clone_ref(py),))
             .unwrap();
         let circuit2 = circuit1.call_method1("__add__", (added_circuit,)).unwrap();
 
@@ -892,13 +924,13 @@ fn test_single_index_access_getitem() {
         .unwrap();
 
         circuit
-            .call_method1("__setitem__", (1, operation2.clone()))
+            .call_method1("__setitem__", (1, operation2.clone_ref(py)))
             .unwrap();
 
         let comp_op = circuit.call_method1("__getitem__", (1,)).unwrap();
         let comparison = bool::extract_bound(
             &comp_op
-                .call_method1("__eq__", (operation2.clone(),))
+                .call_method1("__eq__", (operation2.clone_ref(py),))
                 .unwrap(),
         )
         .unwrap();

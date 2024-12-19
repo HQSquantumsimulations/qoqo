@@ -102,8 +102,8 @@ struct PragmaGetPauliProduct {
 ///
 /// Args:
 ///     readout (string): The name of the classical readout register.
-///     qubit_mapping (Dict[int, int]): The mapping of qubits to indices in readout register.
 ///     number_measurements (int): The number of times to repeat the measurement.
+///     qubit_mapping (Dict[int, int]): The mapping of qubits to indices in readout register.
 ///
 struct PragmaRepeatedMeasurement {
     readout: String,

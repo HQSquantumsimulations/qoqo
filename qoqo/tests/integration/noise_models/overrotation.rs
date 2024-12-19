@@ -150,8 +150,8 @@ fn test_to_from_json() {
             .downcast::<SingleQubitOverrotationOnGateWrapper>()
             .unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.borrow()),
+            format!("{:?}", deserialised.borrow())
         );
 
         let deserialised_error =
@@ -184,8 +184,8 @@ fn test_to_from_json_description() {
             .downcast::<SingleQubitOverrotationDescriptionWrapper>()
             .unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.borrow()),
+            format!("{:?}", deserialised.borrow())
         );
 
         let deserialised_error =
@@ -218,8 +218,8 @@ fn test_to_from_bincode() {
             .downcast::<SingleQubitOverrotationOnGateWrapper>()
             .unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.borrow()),
+            format!("{:?}", deserialised.borrow())
         );
 
         let deserialised_error =
@@ -251,8 +251,8 @@ fn test_to_from_bincode_description() {
             .downcast::<SingleQubitOverrotationDescriptionWrapper>()
             .unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.borrow()),
+            format!("{:?}", deserialised.borrow())
         );
 
         let deserialised_error =

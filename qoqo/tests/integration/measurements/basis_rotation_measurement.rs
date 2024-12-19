@@ -504,11 +504,11 @@ fn test_pyo3_debug() {
         let br_clone = br_wrapper.clone();
         assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
 
-        let debug_string = "RefCell { value: PauliZProductWrapper { internal: PauliZProduct { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: PauliZProductInput { pauli_product_qubit_masks: {\"ro\": {0: []}}, number_qubits: 3, number_pauli_products: 1, measured_exp_vals: {}, use_flipped_measurement: false } } } }";
-        assert_eq!(format!("{:?}", br.as_gil_ref()), debug_string);
+        let debug_string = "PauliZProductWrapper { internal: PauliZProduct { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: PauliZProductInput { pauli_product_qubit_masks: {\"ro\": {0: []}}, number_qubits: 3, number_pauli_products: 1, measured_exp_vals: {}, use_flipped_measurement: false } } }";
+        assert_eq!(format!("{:?}", br.borrow()), debug_string);
 
-        let debug_input_string = "RefCell { value: PauliZProductInputWrapper { internal: PauliZProductInput { pauli_product_qubit_masks: {\"ro\": {0: []}}, number_qubits: 3, number_pauli_products: 1, measured_exp_vals: {}, use_flipped_measurement: false } } }";
-        assert_eq!(format!("{:?}", input.as_gil_ref()), debug_input_string);
+        let debug_input_string = "PauliZProductInputWrapper { internal: PauliZProductInput { pauli_product_qubit_masks: {\"ro\": {0: []}}, number_qubits: 3, number_pauli_products: 1, measured_exp_vals: {}, use_flipped_measurement: false } }";
+        assert_eq!(format!("{:?}", input.borrow()), debug_input_string);
 
         let debug_input = input;
         let mut linear_map: HashMap<usize, f64> = HashMap::new();
@@ -609,8 +609,8 @@ fn test_to_from_bincode() {
         let binding = new_br.call_method1("from_bincode", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<PauliZProductWrapper>().unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.as_ref()),
+            format!("{:?}", deserialised.as_ref())
         );
 
         let deserialised_error =
@@ -657,8 +657,8 @@ fn test_to_from_json() {
         let binding = new_br.call_method1("from_json", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<PauliZProductWrapper>().unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.as_ref()),
+            format!("{:?}", deserialised.as_ref())
         );
 
         let deserialised_error =
