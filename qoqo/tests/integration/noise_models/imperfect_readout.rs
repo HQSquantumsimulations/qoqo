@@ -98,8 +98,8 @@ fn test_to_from_json() {
         let binding = new_br.call_method1("from_json", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.borrow()),
+            format!("{:?}", deserialised.borrow())
         );
 
         let deserialised_error =
@@ -128,8 +128,8 @@ fn test_to_from_bincode() {
         let binding = new_br.call_method1("from_bincode", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<ImperfectReadoutModelWrapper>().unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.borrow()),
+            format!("{:?}", deserialised.borrow())
         );
 
         let deserialised_error =

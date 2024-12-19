@@ -46,7 +46,7 @@ fn test_default() {
     let operation = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
     Python::with_gil(|py| {
         let dag = new_circuitdag(py);
-        dag.call_method1("add_to_back", (operation.clone(),))
+        dag.call_method1("add_to_back", (operation.clone_ref(py),))
             .unwrap();
         let circuitdag_wrapper = dag.extract::<CircuitDagWrapper>();
 
@@ -65,9 +65,9 @@ fn test_add_to() {
     let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
     Python::with_gil(|py| {
         let dag = new_circuitdag(py);
-        dag.call_method1("add_to_back", (paulix_0.clone(),))
+        dag.call_method1("add_to_back", (paulix_0.clone_ref(py),))
             .unwrap();
-        dag.call_method1("add_to_front", (cnot_01.clone(),))
+        dag.call_method1("add_to_front", (cnot_01.clone_ref(py),))
             .unwrap();
         let _circuit_wrapper = dag.extract::<CircuitDagWrapper>();
     })
@@ -81,9 +81,9 @@ fn test_get() {
     let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
     Python::with_gil(|py| {
         let dag = new_circuitdag(py);
-        dag.call_method1("add_to_back", (paulix_0.clone(),))
+        dag.call_method1("add_to_back", (paulix_0.clone_ref(py),))
             .unwrap();
-        dag.call_method1("add_to_back", (pauliy_0.clone(),))
+        dag.call_method1("add_to_back", (pauliy_0.clone_ref(py),))
             .unwrap();
 
         let comp_op = dag.call_method1("get", (0,)).unwrap();
@@ -110,9 +110,9 @@ fn test_copy() {
     let pauliy_0 = convert_operation_to_pyobject(Operation::from(PauliY::new(0))).unwrap();
     Python::with_gil(|py| {
         let dag = new_circuitdag(py);
-        dag.call_method1("add_to_back", (paulix_0.clone(),))
+        dag.call_method1("add_to_back", (paulix_0.clone_ref(py),))
             .unwrap();
-        dag.call_method1("add_to_back", (pauliy_0.clone(),))
+        dag.call_method1("add_to_back", (pauliy_0.clone_ref(py),))
             .unwrap();
         let empty_dag = new_circuitdag(py);
 
@@ -139,16 +139,16 @@ fn test_richcmp() {
     let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
     Python::with_gil(|py| {
         let dag1 = new_circuitdag(py);
-        dag1.call_method1("add_to_back", (paulix_0.clone(),))
+        dag1.call_method1("add_to_back", (paulix_0.clone_ref(py),))
             .unwrap();
-        dag1.call_method1("add_to_back", (pauliy_0.clone(),))
+        dag1.call_method1("add_to_back", (pauliy_0.clone_ref(py),))
             .unwrap();
         let dag2 = new_circuitdag(py);
-        dag2.call_method1("add_to_back", (cnot_01.clone(),))
+        dag2.call_method1("add_to_back", (cnot_01.clone_ref(py),))
             .unwrap();
-        dag2.call_method1("add_to_front", (paulix_0.clone(),))
+        dag2.call_method1("add_to_front", (paulix_0.clone_ref(py),))
             .unwrap();
-        dag2.call_method1("add_to_back", (pauliy_0.clone(),))
+        dag2.call_method1("add_to_back", (pauliy_0.clone_ref(py),))
             .unwrap();
 
         let comparison =
@@ -169,7 +169,7 @@ fn test_qoqo_versions() {
     let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
     Python::with_gil(|py| {
         let dag = new_circuitdag(py);
-        dag.call_method1("add_to_back", (paulix_0.clone(),))
+        dag.call_method1("add_to_back", (paulix_0.clone_ref(py),))
             .unwrap();
         let mut rsplit = ROQOQO_VERSION.split('.').take(2);
         let mut qsplit = QOQO_VERSION.split('.').take(2);
@@ -197,7 +197,7 @@ fn test_to_from_bincode() {
     let paulix_0 = convert_operation_to_pyobject(Operation::from(PauliX::new(0))).unwrap();
     Python::with_gil(|py| {
         let dag = new_circuitdag(py);
-        dag.call_method1("add_to_back", (paulix_0.clone(),))
+        dag.call_method1("add_to_back", (paulix_0.clone_ref(py),))
             .unwrap();
 
         // testing 'to_bincode' and 'from_bincode' functions
@@ -243,9 +243,15 @@ fn test_from_circuit() {
     let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
     Python::with_gil(|py| {
         let circuit = new_circuit(py);
-        circuit.call_method1("add", (paulix_0.clone(),)).unwrap();
-        circuit.call_method1("add", (pauliy_0.clone(),)).unwrap();
-        circuit.call_method1("add", (cnot_01.clone(),)).unwrap();
+        circuit
+            .call_method1("add", (paulix_0.clone_ref(py),))
+            .unwrap();
+        circuit
+            .call_method1("add", (pauliy_0.clone_ref(py),))
+            .unwrap();
+        circuit
+            .call_method1("add", (cnot_01.clone_ref(py),))
+            .unwrap();
 
         let dag = new_circuitdag(py);
         let binding = dag.call_method1("from_circuit", (circuit,)).unwrap();
@@ -276,16 +282,23 @@ fn test_to_circuit() {
     let cnot_01 = convert_operation_to_pyobject(Operation::from(CNOT::new(0, 1))).unwrap();
     Python::with_gil(|py| {
         let dag = new_circuitdag(py);
-        dag.call_method1("add_to_back", (paulix_0.clone(),))
+        dag.call_method1("add_to_back", (paulix_0.clone_ref(py),))
             .unwrap();
-        dag.call_method1("add_to_back", (pauliy_0.clone(),))
+        dag.call_method1("add_to_back", (pauliy_0.clone_ref(py),))
             .unwrap();
-        dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
+        dag.call_method1("add_to_back", (cnot_01.clone_ref(py),))
+            .unwrap();
 
         let circuit = new_circuit(py);
-        circuit.call_method1("add", (paulix_0.clone(),)).unwrap();
-        circuit.call_method1("add", (pauliy_0.clone(),)).unwrap();
-        circuit.call_method1("add", (cnot_01.clone(),)).unwrap();
+        circuit
+            .call_method1("add", (paulix_0.clone_ref(py),))
+            .unwrap();
+        circuit
+            .call_method1("add", (pauliy_0.clone_ref(py),))
+            .unwrap();
+        circuit
+            .call_method1("add", (cnot_01.clone_ref(py),))
+            .unwrap();
 
         let new_circuit = dag.call_method0("to_circuit").unwrap();
 
@@ -319,17 +332,19 @@ fn test_execution_blocked() {
         let dag = new_circuitdag(py);
 
         let a = &dag
-            .call_method1("add_to_back", (paulix_0.clone(),))
+            .call_method1("add_to_back", (paulix_0.clone_ref(py),))
             .unwrap();
         let b = &dag
-            .call_method1("add_to_back", (pauliz_0.clone(),))
+            .call_method1("add_to_back", (pauliz_0.clone_ref(py),))
             .unwrap();
         let c = &dag
-            .call_method1("add_to_back", (pauliy_1.clone(),))
+            .call_method1("add_to_back", (pauliy_1.clone_ref(py),))
             .unwrap();
-        let d = &dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
+        let d = &dag
+            .call_method1("add_to_back", (cnot_01.clone_ref(py),))
+            .unwrap();
         let e = &dag
-            .call_method1("add_to_back", (cpauliz_12.clone(),))
+            .call_method1("add_to_back", (cpauliz_12.clone_ref(py),))
             .unwrap();
 
         let comp = dag
@@ -382,15 +397,17 @@ fn test_blocking_predecessors() {
         let dag = new_circuitdag(py);
 
         let a = &dag
-            .call_method1("add_to_back", (paulix_0.clone(),))
+            .call_method1("add_to_back", (paulix_0.clone_ref(py),))
             .unwrap();
         let b = &dag
-            .call_method1("add_to_back", (pauliz_0.clone(),))
+            .call_method1("add_to_back", (pauliz_0.clone_ref(py),))
             .unwrap();
         let c = &dag
-            .call_method1("add_to_back", (pauliy_1.clone(),))
+            .call_method1("add_to_back", (pauliy_1.clone_ref(py),))
             .unwrap();
-        let d = &dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
+        let d = &dag
+            .call_method1("add_to_back", (cnot_01.clone_ref(py),))
+            .unwrap();
 
         let comp = dag
             .call_method1("blocking_predecessors", (vec![a, b, c], d))
@@ -429,17 +446,19 @@ fn test_new_front_layer() {
         let dag = new_circuitdag(py);
 
         let a = &dag
-            .call_method1("add_to_back", (paulix_0.clone(),))
+            .call_method1("add_to_back", (paulix_0.clone_ref(py),))
             .unwrap();
         let b = &dag
-            .call_method1("add_to_back", (pauliz_0.clone(),))
+            .call_method1("add_to_back", (pauliz_0.clone_ref(py),))
             .unwrap();
         let c = &dag
-            .call_method1("add_to_back", (pauliy_1.clone(),))
+            .call_method1("add_to_back", (pauliy_1.clone_ref(py),))
             .unwrap();
-        let d = &dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
+        let d = &dag
+            .call_method1("add_to_back", (cnot_01.clone_ref(py),))
+            .unwrap();
         let e = &dag
-            .call_method1("add_to_back", (cpauliz_12.clone(),))
+            .call_method1("add_to_back", (cpauliz_12.clone_ref(py),))
             .unwrap();
 
         assert!(dag
@@ -488,15 +507,16 @@ fn test_parallel_blocks() {
     Python::with_gil(|py| {
         let dag = new_circuitdag(py);
 
-        dag.call_method1("add_to_back", (paulix_0.clone(),))
+        dag.call_method1("add_to_back", (paulix_0.clone_ref(py),))
             .unwrap();
-        dag.call_method1("add_to_back", (pauliz_0.clone(),))
+        dag.call_method1("add_to_back", (pauliz_0.clone_ref(py),))
             .unwrap();
-        dag.call_method1("add_to_back", (pauliy_1.clone(),))
+        dag.call_method1("add_to_back", (pauliy_1.clone_ref(py),))
             .unwrap();
-        dag.call_method1("add_to_back", (paulix_1.clone(),))
+        dag.call_method1("add_to_back", (paulix_1.clone_ref(py),))
             .unwrap();
-        dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
+        dag.call_method1("add_to_back", (cnot_01.clone_ref(py),))
+            .unwrap();
 
         let par_bl = dag.call_method0("parallel_blocks").unwrap();
 
@@ -561,12 +581,14 @@ fn test_successors() {
     Python::with_gil(|py| {
         let dag = new_circuitdag(py);
 
-        let a = dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
+        let a = dag
+            .call_method1("add_to_back", (cnot_01.clone_ref(py),))
+            .unwrap();
         let b = dag
-            .call_method1("add_to_back", (paulix_0.clone(),))
+            .call_method1("add_to_back", (paulix_0.clone_ref(py),))
             .unwrap();
         let c = dag
-            .call_method1("add_to_back", (paulix_1.clone(),))
+            .call_method1("add_to_back", (paulix_1.clone_ref(py),))
             .unwrap();
 
         let vec = dag.call_method1("successors", (a,)).unwrap();
@@ -597,7 +619,7 @@ fn test_getters_commuting_operations() {
         let commut_vec = dag.call_method0("commuting_operations").unwrap();
         assert_eq!(commut_vec.len().unwrap(), 0);
 
-        dag.call_method1("add_to_back", (commut_op.clone(),))
+        dag.call_method1("add_to_back", (commut_op.clone_ref(py),))
             .unwrap();
 
         let commut_vec = dag.call_method0("commuting_operations").unwrap();
@@ -619,7 +641,7 @@ fn test_getters_parallel_blocks() {
         assert_eq!(fpb.len().unwrap(), 0);
         assert_eq!(lpb.len().unwrap(), 0);
 
-        dag.call_method1("add_to_back", (paulix_0.clone(),))
+        dag.call_method1("add_to_back", (paulix_0.clone_ref(py),))
             .unwrap();
 
         let fpb = dag.call_method0("first_parallel_block").unwrap();
@@ -627,7 +649,8 @@ fn test_getters_parallel_blocks() {
         assert_eq!(fpb.len().unwrap(), 1);
         assert_eq!(lpb.len().unwrap(), 1);
 
-        dag.call_method1("add_to_back", (cnot_01.clone(),)).unwrap();
+        dag.call_method1("add_to_back", (cnot_01.clone_ref(py),))
+            .unwrap();
         dag.call_method1("add_to_front", (paulix_1,)).unwrap();
 
         let fpb = dag.call_method0("first_parallel_block").unwrap();
@@ -649,7 +672,7 @@ fn test_getters_operation_involving_qubit() {
         assert_eq!(foiq.len().unwrap(), 0);
         assert_eq!(loiq.len().unwrap(), 0);
 
-        dag.call_method1("add_to_back", (paulix_0.clone(),))
+        dag.call_method1("add_to_back", (paulix_0.clone_ref(py),))
             .unwrap();
 
         let foiq = dag.call_method0("first_operation_involving_qubit").unwrap();

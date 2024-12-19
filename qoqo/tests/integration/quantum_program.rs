@@ -567,7 +567,7 @@ fn test_richcmp() {
         assert!(!comparison);
         let comparison = bool::extract_bound(
             &program_one
-                .call_method1("__eq__", (operation1.clone(),))
+                .call_method1("__eq__", (operation1.clone_ref(py),))
                 .unwrap(),
         )
         .unwrap();
@@ -579,7 +579,7 @@ fn test_richcmp() {
         assert!(comparison);
         let comparison = bool::extract_bound(
             &program_one
-                .call_method1("__ne__", (operation1.clone(),))
+                .call_method1("__ne__", (operation1.clone_ref(py),))
                 .unwrap(),
         )
         .unwrap();
@@ -602,7 +602,8 @@ fn test_convert_into_program() {
             .call1((&input, vec!["one".to_string()]))
             .unwrap();
         let program = binding.downcast::<QuantumProgramWrapper>().unwrap();
-        let comparison = program.call_method1("convert_into_quantum_program", (operation.clone(),));
+        let comparison =
+            program.call_method1("convert_into_quantum_program", (operation.clone_ref(py),));
         assert!(comparison.is_err());
         assert_eq!(
             convert_into_quantum_program(operation.bind(py)),

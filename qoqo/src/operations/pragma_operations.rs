@@ -82,7 +82,7 @@ pub struct PragmaSetStateVectorWrapper {
 
 insert_pyany_to_operation!(
     "PragmaSetStateVector" =>{
-        let array = op.call_method0("statevector").expect("error extracting");
+        let array = op.call_method0("statevector").map_err(|_| QoqoError::ConversionError)?;
         let statevec_casted: PyReadonlyArray1<Complex64> = array.extract().unwrap();
         let statevec_array: Array1<Complex64> = statevec_casted.as_array().to_owned();
         Ok(PragmaSetStateVector::new(statevec_array).into())
@@ -367,12 +367,10 @@ pub struct PragmaSetDensityMatrixWrapper {
 
 insert_pyany_to_operation!(
     "PragmaSetDensityMatrix" =>{
-        let density_matrix = op.call_method0("density_matrix")
-                      .map_err(|_| QoqoError::ConversionError)?;
-
-        let density_matrix_op = density_matrix.downcast::<PyArray2<Complex64>>().unwrap();
-        let densmat_array = density_matrix_op.as_gil_ref().readonly().as_array().to_owned();
-        Ok(PragmaSetDensityMatrix::new(densmat_array).into())
+        let array = op.call_method0("density_matrix").map_err(|_| QoqoError::ConversionError)?;
+        let density_matrix_op: PyReadonlyArray2<Complex64> = array.extract().unwrap();
+        let density_matrix: Array2<Complex64> = density_matrix_op.as_array().to_owned();
+        Ok(PragmaSetDensityMatrix::new(density_matrix).into())
     }
 );
 insert_operation_to_pyobject!(
@@ -1033,8 +1031,8 @@ insert_pyany_to_operation!(
 
         let array = op.call_method0("rates")
                       .map_err(|_| QoqoError::ConversionError)?;
-        let rates_array = array.downcast::<PyArray2<f64>>().unwrap();
-        let rates = rates_array.as_gil_ref().readonly().as_array().to_owned();
+        let rates_array: PyReadonlyArray2<f64> = array.extract().unwrap();
+        let rates: Array2<f64> = rates_array.as_array().to_owned();
 
         Ok(PragmaGeneralNoise::new(qubit, gate_time, rates).into())
     }
@@ -1991,7 +1989,7 @@ mod tests {
 
             let comparison_copy = bool::extract_bound(
                 copy_op
-                    .call_method1(py, "__eq__", (copy_deepcopy_param.clone(),))
+                    .call_method1(py, "__eq__", (copy_deepcopy_param.clone_ref(py),))
                     .unwrap()
                     .bind(py),
             )
@@ -2141,7 +2139,7 @@ mod tests {
 
             let comparison = bool::extract_bound(
                 operation_one
-                    .call_method1(py, "__eq__", (operation_two.clone(),))
+                    .call_method1(py, "__eq__", (operation_two.clone_ref(py),))
                     .unwrap()
                     .bind(py),
             )
@@ -2150,7 +2148,7 @@ mod tests {
 
             let comparison = bool::extract_bound(
                 operation_one
-                    .call_method1(py, "__ne__", (operation_two.clone(),))
+                    .call_method1(py, "__ne__", (operation_two.clone_ref(py),))
                     .unwrap()
                     .bind(py),
             )

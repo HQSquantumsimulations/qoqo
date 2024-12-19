@@ -275,11 +275,11 @@ fn test_pyo3_debug() {
         let br_clone = br_wrapper.clone();
         assert_eq!(format!("{:?}", br_wrapper), format!("{:?}", br_clone));
 
-        let debug_string = "RefCell { value: CheatedWrapper { internal: Cheated { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: CheatedInput { measured_operators: {\"test_diagonal\": ([(0, 0, Complex { re: 1.0, im: 0.0 }), (0, 1, Complex { re: 0.0, im: 0.0 }), (1, 0, Complex { re: 0.0, im: 0.0 }), (1, 1, Complex { re: -1.0, im: 0.0 })], \"ro\")}, number_qubits: 3 } } } }";
-        assert_eq!(format!("{:?}", br.as_gil_ref()), debug_string);
+        let debug_string = "CheatedWrapper { internal: Cheated { constant_circuit: Some(Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }), circuits: [Circuit { definitions: [], operations: [], _roqoqo_version: RoqoqoVersion }], input: CheatedInput { measured_operators: {\"test_diagonal\": ([(0, 0, Complex { re: 1.0, im: 0.0 }), (0, 1, Complex { re: 0.0, im: 0.0 }), (1, 0, Complex { re: 0.0, im: 0.0 }), (1, 1, Complex { re: -1.0, im: 0.0 })], \"ro\")}, number_qubits: 3 } } }";
+        assert_eq!(format!("{:?}", br.borrow()), debug_string);
 
-        let debug_input_string = "RefCell { value: CheatedInputWrapper { internal: CheatedInput { measured_operators: {\"test_diagonal\": ([(0, 0, Complex { re: 1.0, im: 0.0 }), (0, 1, Complex { re: 0.0, im: 0.0 }), (1, 0, Complex { re: 0.0, im: 0.0 }), (1, 1, Complex { re: -1.0, im: 0.0 })], \"ro\")}, number_qubits: 3 } } }";
-        assert_eq!(format!("{:?}", input.as_gil_ref()), debug_input_string);
+        let debug_input_string = "CheatedInputWrapper { internal: CheatedInput { measured_operators: {\"test_diagonal\": ([(0, 0, Complex { re: 1.0, im: 0.0 }), (0, 1, Complex { re: 0.0, im: 0.0 }), (1, 0, Complex { re: 0.0, im: 0.0 }), (1, 1, Complex { re: -1.0, im: 0.0 })], \"ro\")}, number_qubits: 3 } }";
+        assert_eq!(format!("{:?}", input.borrow()), debug_input_string);
 
         let debug_input = input;
         let error = debug_input.call_method1(
@@ -385,8 +385,8 @@ fn test_to_from_bincode() {
         let binding = new_br.call_method1("from_bincode", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<CheatedWrapper>().unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.as_ref()),
+            format!("{:?}", deserialised.as_ref())
         );
 
         let deserialised_error =
@@ -439,8 +439,8 @@ fn test_to_from_json() {
         let binding = new_br.call_method1("from_json", (&serialised,)).unwrap();
         let deserialised = binding.downcast::<CheatedWrapper>().unwrap();
         assert_eq!(
-            format!("{:?}", br.as_gil_ref()),
-            format!("{:?}", deserialised.as_gil_ref())
+            format!("{:?}", br.as_ref()),
+            format!("{:?}", deserialised.as_ref())
         );
 
         let deserialised_error =

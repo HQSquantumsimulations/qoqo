@@ -81,7 +81,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
                     let #id_extracted: #ty = convert_into_calculator_float(#id).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to CalculatorFloat {:?}",x))
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to CalculatorFloat: {:?}",x))
                     })?;
                 }
             },
@@ -89,27 +89,33 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
                     let #id_extracted: #ty = convert_into_circuit(#id).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit {:?}",x))
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit: {:?}",x))
                     })?;
                 }
             },
             "Option<Circuit>" => {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
-                    let tmp: Option<&PyAny> = #id.extract().map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit {:?}",x))
+                    let tmp: Option<&Bound<PyAny>> = #id.try_into().map_err(|x| {
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to PyAny: {:?}",x))
                     })?;
-                    let #id_extracted: Option<Circuit> = match tmp{
-                        Some(cw) => Some(convert_into_circuit(&cw.as_borrowed()).map_err(|x| {
-                            pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Circuit {:?}",x))
-                    })?),
+                    let #id_extracted: Option<Circuit> = match tmp {
+                        Some(cw) => {
+                            if cw.is_none() {
+                                None
+                            } else {
+                                Some(convert_into_circuit(cw).map_err(|x| {
+                                    pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to Some(Circuit): {:?}",x))
+                                })?)
+                            }
+                        },
                         _ => None };
             }},
             "SpinHamiltonian" => {
                 let id_extracted = format_ident!("{}_extracted", id);
                 quote! {
                     let temp_op: struqture::spins::SpinHamiltonianSystem = SpinHamiltonianSystemWrapper::from_pyany(#id).map_err(|x| {
-                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to SpinHamiltonianSystem {:?}",x))
+                        pyo3::exceptions::PyTypeError::new_err(format!("Argument cannot be converted to SpinHamiltonianSystem: {:?}",x))
                     })?;
                     let #id_extracted: #ty = temp_op.hamiltonian().clone();
                 }

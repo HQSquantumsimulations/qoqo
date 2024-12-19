@@ -272,9 +272,9 @@ fn create_doc(module: &str) -> PyResult<String> {
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| -> PyResult<String> {
         let python_module = PyModule::import_bound(py, module)?;
-        let dict = python_module.as_gil_ref().getattr("__dict__")?;
+        let dict = python_module.as_ref().getattr("__dict__")?;
         let module_doc = python_module
-            .as_gil_ref()
+            .as_ref()
             .getattr("__doc__")?
             .extract::<String>()?;
         let r_dict = dict.downcast::<PyDict>()?;
@@ -304,7 +304,7 @@ fn create_doc(module: &str) -> PyResult<String> {
                 let dict_obj = py
                     .import_bound("builtins")?
                     .call_method1("dict", (items,))?;
-                let class_r_dict = dict_obj.as_gil_ref().downcast::<PyDict>()?;
+                let class_r_dict = dict_obj.as_ref().downcast::<PyDict>()?;
                 for (class_fn_name, meth) in class_r_dict.iter() {
                     let meth_name = class_fn_name.str()?.extract::<String>()?;
                     let meth_doc = match meth_name.as_str() {
@@ -439,13 +439,19 @@ fn main() {
                                 }},
                                 "Option<Circuit>" => {quote!{
                                     let #pyobject_name = &op
-                                    .call_method0(#ident_string)
-                                    .map_err(|_| QoqoError::ConversionError)?;
-                                    let tmp: Option<&PyAny> = #pyobject_name.extract().map_err(|_|
-                                        QoqoError::ConversionError)?;
-                                    let #ident = match tmp{
-                                        Some(cw) => Some(convert_into_circuit(&cw.as_borrowed())
-                                        .map_err(|_| QoqoError::ConversionError)?),
+                                        .call_method0(#ident_string)
+                                        .map_err(|_| QoqoError::ConversionError)?;
+                                    let tmp: Option<&Bound<PyAny>> = #pyobject_name.into();
+                                    let #ident = match tmp {
+                                        Some(cw) => {
+                                            if cw.is_none() {
+                                                None
+                                            } else {
+                                                Some(convert_into_circuit(cw).map_err(|_| {
+                                                    QoqoError::ConversionError
+                                                })?)
+                                            }
+                                        },
                                         _ => None
                                     };
                                 }},
@@ -510,9 +516,9 @@ fn main() {
         use pyo3::conversion::ToPyObject;
         use roqoqo::operations::*;
         use std::collections::HashMap;
-        use ndarray::Array1;
+        use ndarray::{Array1, Array2};
         use num_complex::Complex64;
-        use numpy::{PyArray2, PyReadonlyArray1};
+        use numpy::{PyReadonlyArray1, PyReadonlyArray2};
 
         /// Tries to convert a [roqoqo::operations::Operation] to a PyObject
         pub fn convert_operation_to_pyobject(operation: Operation) -> PyResult<PyObject> {
