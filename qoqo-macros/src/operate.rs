@@ -41,6 +41,13 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
             },
             _ => quote! {#id: #ty},
         });
+    let formatted_input_arguments =
+        fields_with_type
+            .clone()
+            .map(|(id, type_string, _ty)| match type_string {
+                Some(s) if s.contains("Option") && !s.contains("Circuit") => quote! {#id=None},
+                _ => quote! {#id},
+            });
     let arguments = fields_with_type
         .clone()
         .map(|(id, type_string, _)| match type_string {
@@ -200,6 +207,7 @@ fn operate_struct(ds: DataStruct, ident: Ident) -> TokenStream {
 
         #[new]
         #[doc = #new_msg]
+        #[pyo3(signature = (#(#formatted_input_arguments),*))]
         fn new(#(#input_arguments),*) -> PyResult<Self>{
             #(#conversion_quotes)*
             Ok(Self{internal: #ident::new(#(#arguments),*)})
