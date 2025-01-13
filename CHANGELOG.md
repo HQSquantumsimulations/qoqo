@@ -10,6 +10,7 @@ This changelog track changes to the qoqo project starting at version v0.5.0
 
 * Added the documentation from qoqo_examples.
 * Added `PragmaSimulationRepetitions` operation.
+* Updated to pyo3 0.22, thereby adding support for python 3.13.
 
 ## 1.16.1
 
