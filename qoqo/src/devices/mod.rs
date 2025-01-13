@@ -36,7 +36,7 @@ pub use all_to_all::AllToAllDeviceWrapper;
 /// A wrapper around a python object that implements the ChainWithEnvironment trait.
 ///
 /// Can be used to avoid deserializain the python object.
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct ChainWithEnvironmentCapsule {
     internal: Py<PyAny>,
 }
