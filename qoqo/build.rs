@@ -278,7 +278,7 @@ fn create_doc(module: &str) -> PyResult<String> {
             .getattr("__doc__")?
             .extract::<String>()?;
         let r_dict = dict.downcast::<PyDict>()?;
-        for (fn_name, func) in r_dict.iter() {
+        for (fn_name, func) in pyo3::types::PyDictMethods::iter(r_dict) {
             let name = fn_name.str()?.extract::<String>()?;
             if name.starts_with("__")
                 || (module == "qoqo"
@@ -305,7 +305,7 @@ fn create_doc(module: &str) -> PyResult<String> {
                     .import_bound("builtins")?
                     .call_method1("dict", (items,))?;
                 let class_r_dict = dict_obj.as_ref().downcast::<PyDict>()?;
-                for (class_fn_name, meth) in class_r_dict.iter() {
+                for (class_fn_name, meth) in pyo3::types::PyDictMethods::iter(class_r_dict) {
                     let meth_name = class_fn_name.str()?.extract::<String>()?;
                     let meth_doc = match meth_name.as_str() {
                         "__add__" if name.eq(&"Circuit") => r#"Implement the `+` (__add__) magic method to add two Circuits.
